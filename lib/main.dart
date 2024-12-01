@@ -13,12 +13,3 @@ void main() async {
     appRouter: AppRouter(),
   ));
 }
-// checkIfLoggedInUser() async {
-//   String? userToken =
-//       await CacheHelper.getSecuredString(SharedPrefKeys.userToken);
-//   if (!userToken.isEmpty) {
-//     isLoggedInUser = true;
-//   } else {
-//     isLoggedInUser = false;
-//   }
-// }
