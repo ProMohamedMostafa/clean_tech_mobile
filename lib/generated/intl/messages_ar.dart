@@ -32,9 +32,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginTitle2": MessageLookupByLibrary.simpleMessage(
             "قم بتسجيل الدخول للوصول إلى حساب الخاص بك"),
         "termsConditions": MessageLookupByLibrary.simpleMessage(
-            "الشروط والأحكام وسياسة الخصوصية"),
-        "validationEmail":
-            MessageLookupByLibrary.simpleMessage("اكتب الايميل بطريقة صحيحة"),
+            "الشروط والأحكام و سياسة الخصوصية"),
+        "validationEmail": MessageLookupByLibrary.simpleMessage(
+            "اكتب الايميل او اسم المستخدم بطريقة صحيحة"),
         "validationPassword": MessageLookupByLibrary.simpleMessage(
             "اكتب كلمة المرور بطريقة صحيحة")
       };
