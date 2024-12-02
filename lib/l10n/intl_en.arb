@@ -1,1 +1,11 @@
-{}
+{
+    "loginTitle1": "Welcome Back,",
+    "loginTitle2": "Login to access your Clean Tech  account",
+    "labelEmail":"Email or userName",
+    "labelPassword":"Password",
+    "validationEmail": "Invalid email address",
+    "validationPassword": "Invalid password",
+    "forgotPassButton": "Forgot Password?",
+    "loginButton":"Login",
+    "termsConditions":"Terms & Conditions and Conditions"
+}

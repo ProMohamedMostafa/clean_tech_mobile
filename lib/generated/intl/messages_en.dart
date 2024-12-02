@@ -21,5 +21,20 @@ class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
-  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{};
+  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "forgotPassButton":
+            MessageLookupByLibrary.simpleMessage("Forgot Password?"),
+        "labelEmail": MessageLookupByLibrary.simpleMessage("Email or userName"),
+        "labelPassword": MessageLookupByLibrary.simpleMessage("Password"),
+        "loginButton": MessageLookupByLibrary.simpleMessage("Login"),
+        "loginTitle1": MessageLookupByLibrary.simpleMessage("Welcome Back,"),
+        "loginTitle2": MessageLookupByLibrary.simpleMessage(
+            "Login to access your Clean Tech  account"),
+        "termsConditions": MessageLookupByLibrary.simpleMessage(
+            "Terms & Conditions and Conditions"),
+        "validationEmail":
+            MessageLookupByLibrary.simpleMessage("Invalid email address"),
+        "validationPassword":
+            MessageLookupByLibrary.simpleMessage("Invalid password")
+      };
 }

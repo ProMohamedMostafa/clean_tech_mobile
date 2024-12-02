@@ -46,7 +46,7 @@ class ThemeCubit extends Cubit<ThemeState> {
       expansionTileTheme: ExpansionTileThemeData(
         iconColor: ThemeFactory.currentTheme.primary,
       ),
-      fontFamily: 'Jannah',
+      fontFamily: 'Poppins',
       useMaterial3: false);
 
   ThemeData applicationDarkThemeData = ThemeData(
@@ -59,7 +59,7 @@ class ThemeCubit extends Cubit<ThemeState> {
       )),
       brightness: Brightness.dark,
       primarySwatch: Colors.green,
-      fontFamily: 'Jannah',
+      fontFamily: 'Poppins',
       useMaterial3: false);
 
   setApplicationTheme() {

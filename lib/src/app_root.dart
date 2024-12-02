@@ -18,7 +18,7 @@ class AppRoot extends StatelessWidget {
       builder: (BuildContext context, Widget? child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          locale: const Locale('en'),
+          locale: const Locale('ar'),
           localizationsDelegates: const [
             S.delegate,
             GlobalMaterialLocalizations.delegate,
@@ -26,6 +26,10 @@ class AppRoot extends StatelessWidget {
             GlobalCupertinoLocalizations.delegate,
           ],
           supportedLocales: S.delegate.supportedLocales,
+          theme: ThemeData(
+            scaffoldBackgroundColor: Colors.white,
+            fontFamily: 'Poppins',
+          ),
           initialRoute: Routes.splashScreen,
           onGenerateRoute: appRouter.generateRoute,
         );

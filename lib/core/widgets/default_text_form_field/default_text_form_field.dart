@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
+import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 
 class DefaultTextField extends StatelessWidget {
   final TextEditingController controller;
-  final String hintText;
+  final String label;
   final bool obscureText;
-  final double radius = 12.0;
+  final double radius = 4.0;
   final TextInputType keyboardType;
   final IconData? suffixIcon;
   final VoidCallback? onTap;
-  final Widget? prefixIcon;
-  final String? Function(String?)? validator;
+  final Function(String?) validator;
   final FocusNode? focusNode;
   final String? errorMsg;
   final String? Function(String?)? onChanged;
@@ -23,25 +23,26 @@ class DefaultTextField extends StatelessWidget {
   const DefaultTextField(
       {super.key,
       required this.controller,
-      required this.hintText,
       required this.obscureText,
       required this.keyboardType,
       this.suffixIcon,
       this.onTap,
-      this.prefixIcon,
-      this.validator,
+      required this.validator,
       this.focusNode,
       this.errorMsg,
       this.onChanged,
       this.suffixPressed,
       this.perfix,
-      this.inputFormatters});
+      this.inputFormatters,
+      required this.label});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       inputFormatters: inputFormatters,
-      validator: validator,
+      validator: (value) {
+        return validator(value);
+      },
       controller: controller,
       obscureText: obscureText,
       keyboardType: keyboardType,
@@ -51,6 +52,8 @@ class DefaultTextField extends StatelessWidget {
       onChanged: onChanged,
       style: TextStyle(color: Colors.black, fontSize: 14.sp),
       decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyles.font12BlackRegular,
         isDense: false,
         suffixIcon: suffixIcon != null
             ? IconButton(
@@ -68,9 +71,8 @@ class DefaultTextField extends StatelessWidget {
                 ),
               )
             : null,
-        prefixIcon: prefixIcon,
         prefix: perfix,
-        prefixStyle: TextStyle(color: Colors.grey, fontSize: 14.sp),
+        prefixStyle: TextStyles.font16BlackRegular,
         border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(radius),
             borderSide: const BorderSide(
@@ -79,12 +81,12 @@ class DefaultTextField extends StatelessWidget {
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(radius),
             borderSide: const BorderSide(
-              color: AppColor.darkBlue,
+              color: AppColor.buttonColor,
             )),
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(radius),
             borderSide: const BorderSide(
-              color: AppColor.darkBlue,
+              color: AppColor.buttonColor,
             )),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(radius),
@@ -92,8 +94,6 @@ class DefaultTextField extends StatelessWidget {
         ),
         fillColor: Colors.white,
         filled: true,
-        hintText: hintText,
-        hintStyle: TextStyle(color: Colors.grey, fontSize: 14.sp),
         errorText: errorMsg,
       ),
     );

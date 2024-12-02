@@ -49,6 +49,96 @@ class S {
   static S? maybeOf(BuildContext context) {
     return Localizations.of<S>(context, S);
   }
+
+  /// `Welcome Back,`
+  String get loginTitle1 {
+    return Intl.message(
+      'Welcome Back,',
+      name: 'loginTitle1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login to access your Clean Tech  account`
+  String get loginTitle2 {
+    return Intl.message(
+      'Login to access your Clean Tech  account',
+      name: 'loginTitle2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email or userName`
+  String get labelEmail {
+    return Intl.message(
+      'Email or userName',
+      name: 'labelEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password`
+  String get labelPassword {
+    return Intl.message(
+      'Password',
+      name: 'labelPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid email address`
+  String get validationEmail {
+    return Intl.message(
+      'Invalid email address',
+      name: 'validationEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid password`
+  String get validationPassword {
+    return Intl.message(
+      'Invalid password',
+      name: 'validationPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Forgot Password?`
+  String get forgotPassButton {
+    return Intl.message(
+      'Forgot Password?',
+      name: 'forgotPassButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login`
+  String get loginButton {
+    return Intl.message(
+      'Login',
+      name: 'loginButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Terms & Conditions and Conditions`
+  String get termsConditions {
+    return Intl.message(
+      'Terms & Conditions and Conditions',
+      name: 'termsConditions',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

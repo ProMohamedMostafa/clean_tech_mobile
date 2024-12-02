@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/cache_helper/cache_helper.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
-import 'package:smart_cleaning_application/features/screens/home/ui/screen/home_screen.dart';
-import 'package:smart_cleaning_application/features/screens/login/ui/screen/login_screen.dart';
+import 'package:smart_cleaning_application/src/adaptive_layout.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -35,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
           width: 300.w,
         ),
       ),
-      nextScreen: token == null ? const LoginScreen() : const HomeScreen(),
+      nextScreen: const AdaptiveLayout(),
       splashIconSize: 600,
       duration: 2500,
       splashTransition: SplashTransition.scaleTransition,

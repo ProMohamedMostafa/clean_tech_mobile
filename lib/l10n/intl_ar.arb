@@ -1,1 +1,11 @@
-{}
+{
+    "loginTitle1": "مرحبا،",
+    "loginTitle2": "قم بتسجيل الدخول للوصول إلى حساب الخاص بك",
+    "labelEmail": "الأيميل او اسم المستخدم",
+    "labelPassword": "كلمة المرور",
+    "validationEmail": "اكتب الايميل بطريقة صحيحة",
+    "validationPassword": "اكتب كلمة المرور بطريقة صحيحة",
+    "forgotPassButton": "هل نسيت كلمة المرور؟",
+    "loginButton": "تسجيل الدخول",
+    "termsConditions": "الشروط والأحكام وسياسة الخصوصية"
+}

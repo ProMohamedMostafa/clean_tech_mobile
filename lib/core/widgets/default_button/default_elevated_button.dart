@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
+import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 
 class DefaultElevatedButton extends StatelessWidget {
   final String name;
@@ -20,23 +21,22 @@ class DefaultElevatedButton extends StatelessWidget {
       height: 50.h,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15.r),
-        color: color,
+        // borderRadius: BorderRadius.circular(15.r),
         border: Border.all(
-          color: Colors.grey,
+          color: AppColor.buttonColor,
           width: 1.w,
         ),
       ),
       child: ElevatedButton(
         style: ButtonStyle(
-          backgroundColor: WidgetStateProperty.all(Colors.white),
+          backgroundColor: WidgetStateProperty.all(color),
           overlayColor: WidgetStateProperty.all(AppColor.lightBlue),
           shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                15.r,
-              ),
-            ),
+                // borderRadius: BorderRadius.circular(
+                //   15.r,
+                // ),
+                ),
           ),
           elevation: WidgetStateProperty.all(1),
         ),
@@ -47,11 +47,7 @@ class DefaultElevatedButton extends StatelessWidget {
         },
         child: Text(
           name,
-          style: TextStyle(
-            fontSize: 18.sp,
-            color: AppColor.darkBlue,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyles.font16WhiteSemiBold,
         ),
       ),
     );
