@@ -23,4 +23,9 @@ class TextStyles {
     fontWeight: FontWeightHelper.regular,
     color: Colors.black,
   );
+  static TextStyle font14Redbold = TextStyle(
+    fontSize: 14.sp,
+    fontWeight: FontWeightHelper.bold,
+    color: Colors.red,
+  );
 }

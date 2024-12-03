@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/helpers/cache_helper/cache_helper.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_factory/dio_factory.dart';
-import 'package:smart_cleaning_application/features/screens/login/logic/login_cubit_state.dart';
+import 'package:smart_cleaning_application/features/screens/auth/login/logic/login_cubit_state.dart';
 
 class LoginCubit extends Cubit<LoginStates> {
   LoginCubit() : super(LoginInitialState());

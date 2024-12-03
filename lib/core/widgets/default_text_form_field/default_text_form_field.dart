@@ -15,7 +15,7 @@ class DefaultTextField extends StatelessWidget {
   final Function(String?) validator;
   final FocusNode? focusNode;
   final String? errorMsg;
-  final String? Function(String?)? onChanged;
+  final Function(String?)? onChanged;
   final Function? suffixPressed;
   final Widget? perfix;
   final List<TextInputFormatter>? inputFormatters;

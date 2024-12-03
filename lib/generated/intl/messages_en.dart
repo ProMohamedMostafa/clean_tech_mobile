@@ -22,19 +22,61 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "createPass1":
+            MessageLookupByLibrary.simpleMessage("At least 1 lowercase letter"),
+        "createPass2":
+            MessageLookupByLibrary.simpleMessage("At least 1 uppercase letter"),
+        "createPass3": MessageLookupByLibrary.simpleMessage(
+            "At least 1 special character"),
+        "createPass4":
+            MessageLookupByLibrary.simpleMessage("At least 1 number"),
+        "createPass5":
+            MessageLookupByLibrary.simpleMessage("At least 8 characters long"),
         "forgotPassButton":
             MessageLookupByLibrary.simpleMessage("Forgot Password?"),
+        "forgotPassScreenTextField":
+            MessageLookupByLibrary.simpleMessage("Email"),
+        "forgotPassScreenTitle1":
+            MessageLookupByLibrary.simpleMessage("Forgot your password?"),
+        "forgotPassScreenTitle2": MessageLookupByLibrary.simpleMessage(
+            "Don’t worry, happens to all of us. Enter your email below to recover your password"),
         "labelEmail": MessageLookupByLibrary.simpleMessage("Email or userName"),
         "labelPassword": MessageLookupByLibrary.simpleMessage("Password"),
         "loginButton": MessageLookupByLibrary.simpleMessage("Login"),
         "loginTitle1": MessageLookupByLibrary.simpleMessage("Welcome Back,"),
         "loginTitle2": MessageLookupByLibrary.simpleMessage(
             "Login to access your Clean Tech  account"),
+        "resendButton": MessageLookupByLibrary.simpleMessage(" Resend"),
+        "setButton": MessageLookupByLibrary.simpleMessage("Set password"),
+        "setPassTextField1":
+            MessageLookupByLibrary.simpleMessage("Create New Password"),
+        "setPassTextField2":
+            MessageLookupByLibrary.simpleMessage("Re-enter Password"),
+        "setPassTitle1":
+            MessageLookupByLibrary.simpleMessage("Set a new password"),
+        "setPassTitle2": MessageLookupByLibrary.simpleMessage(
+            "Please set a new password for your account."),
+        "submitButton": MessageLookupByLibrary.simpleMessage("Submit"),
         "termsConditions": MessageLookupByLibrary.simpleMessage(
             "Terms & Conditions and Conditions"),
         "validationEmail":
             MessageLookupByLibrary.simpleMessage("Invalid email address"),
+        "validationEmailAndUser": MessageLookupByLibrary.simpleMessage(
+            "Invalid email address or userName"),
         "validationPassword":
-            MessageLookupByLibrary.simpleMessage("Invalid password")
+            MessageLookupByLibrary.simpleMessage("Invalid password"),
+        "validationRepeatPassword":
+            MessageLookupByLibrary.simpleMessage("Password not matched"),
+        "validationVerify":
+            MessageLookupByLibrary.simpleMessage("Invalid code"),
+        "verifyAccountScreenTextField":
+            MessageLookupByLibrary.simpleMessage("Enter Code"),
+        "verifyAccountScreenTitle1":
+            MessageLookupByLibrary.simpleMessage("Verify code"),
+        "verifyAccountScreenTitle2": MessageLookupByLibrary.simpleMessage(
+            "An authentication code has been sent to your email."),
+        "verifyAccountScreenTitle3":
+            MessageLookupByLibrary.simpleMessage("Didn’t receive a code?"),
+        "verifyButton": MessageLookupByLibrary.simpleMessage("Verify")
       };
 }

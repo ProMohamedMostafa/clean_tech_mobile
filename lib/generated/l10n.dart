@@ -90,11 +90,31 @@ class S {
     );
   }
 
+  /// `Invalid email address or userName`
+  String get validationEmailAndUser {
+    return Intl.message(
+      'Invalid email address or userName',
+      name: 'validationEmailAndUser',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Invalid email address`
   String get validationEmail {
     return Intl.message(
       'Invalid email address',
       name: 'validationEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid code`
+  String get validationVerify {
+    return Intl.message(
+      'Invalid code',
+      name: 'validationVerify',
       desc: '',
       args: [],
     );
@@ -120,6 +140,16 @@ class S {
     );
   }
 
+  /// `Password not matched`
+  String get validationRepeatPassword {
+    return Intl.message(
+      'Password not matched',
+      name: 'validationRepeatPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Login`
   String get loginButton {
     return Intl.message(
@@ -135,6 +165,206 @@ class S {
     return Intl.message(
       'Terms & Conditions and Conditions',
       name: 'termsConditions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Forgot your password?`
+  String get forgotPassScreenTitle1 {
+    return Intl.message(
+      'Forgot your password?',
+      name: 'forgotPassScreenTitle1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Don’t worry, happens to all of us. Enter your email below to recover your password`
+  String get forgotPassScreenTitle2 {
+    return Intl.message(
+      'Don’t worry, happens to all of us. Enter your email below to recover your password',
+      name: 'forgotPassScreenTitle2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email`
+  String get forgotPassScreenTextField {
+    return Intl.message(
+      'Email',
+      name: 'forgotPassScreenTextField',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Submit`
+  String get submitButton {
+    return Intl.message(
+      'Submit',
+      name: 'submitButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Verify code`
+  String get verifyAccountScreenTitle1 {
+    return Intl.message(
+      'Verify code',
+      name: 'verifyAccountScreenTitle1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An authentication code has been sent to your email.`
+  String get verifyAccountScreenTitle2 {
+    return Intl.message(
+      'An authentication code has been sent to your email.',
+      name: 'verifyAccountScreenTitle2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Didn’t receive a code?`
+  String get verifyAccountScreenTitle3 {
+    return Intl.message(
+      'Didn’t receive a code?',
+      name: 'verifyAccountScreenTitle3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter Code`
+  String get verifyAccountScreenTextField {
+    return Intl.message(
+      'Enter Code',
+      name: 'verifyAccountScreenTextField',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ` Resend`
+  String get resendButton {
+    return Intl.message(
+      ' Resend',
+      name: 'resendButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Verify`
+  String get verifyButton {
+    return Intl.message(
+      'Verify',
+      name: 'verifyButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Set a new password`
+  String get setPassTitle1 {
+    return Intl.message(
+      'Set a new password',
+      name: 'setPassTitle1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please set a new password for your account.`
+  String get setPassTitle2 {
+    return Intl.message(
+      'Please set a new password for your account.',
+      name: 'setPassTitle2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create New Password`
+  String get setPassTextField1 {
+    return Intl.message(
+      'Create New Password',
+      name: 'setPassTextField1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Re-enter Password`
+  String get setPassTextField2 {
+    return Intl.message(
+      'Re-enter Password',
+      name: 'setPassTextField2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Set password`
+  String get setButton {
+    return Intl.message(
+      'Set password',
+      name: 'setButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `At least 1 lowercase letter`
+  String get createPass1 {
+    return Intl.message(
+      'At least 1 lowercase letter',
+      name: 'createPass1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `At least 1 uppercase letter`
+  String get createPass2 {
+    return Intl.message(
+      'At least 1 uppercase letter',
+      name: 'createPass2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `At least 1 special character`
+  String get createPass3 {
+    return Intl.message(
+      'At least 1 special character',
+      name: 'createPass3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `At least 1 number`
+  String get createPass4 {
+    return Intl.message(
+      'At least 1 number',
+      name: 'createPass4',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `At least 8 characters long`
+  String get createPass5 {
+    return Intl.message(
+      'At least 8 characters long',
+      name: 'createPass5',
       desc: '',
       args: [],
     );
