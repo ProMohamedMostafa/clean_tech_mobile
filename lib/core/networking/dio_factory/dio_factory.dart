@@ -12,7 +12,6 @@ class DioFactory {
     Duration timeOut = const Duration(seconds: 30);
 
     if (dio == null) {
-      dio = Dio();
       dio = Dio(BaseOptions(
         baseUrl: ApiConstants.apiBaseUrl,
         receiveDataWhenStatusError: true,
@@ -21,7 +20,6 @@ class DioFactory {
       ));
       await setHeaders();
       addDioInterceptor();
-      return dio!;
     }
     return dio!;
   }

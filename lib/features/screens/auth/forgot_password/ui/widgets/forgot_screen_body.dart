@@ -27,7 +27,7 @@ class ForgotScreenBody extends StatelessWidget {
               verticalSpace(40),
               Text(
                 S.of(context).forgotPassScreenTitle1,
-                style: TextStyles.font24BlackBold,
+                style: TextStyles.font24BlacksemiBold,
               ),
               verticalSpace(8),
               Text(
@@ -58,7 +58,7 @@ class ForgotScreenBody extends StatelessWidget {
                       .formKey
                       .currentState!
                       .validate()) {}
-                      context.pushNamed(Routes.verifyScreen);
+                  context.pushNamed(Routes.verifyScreen);
                 },
               ),
             ],

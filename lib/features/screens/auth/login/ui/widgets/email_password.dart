@@ -46,7 +46,7 @@ class _EmailAndPasswordState extends State<EmailAndPassword> {
                   obscureText: context.read<LoginCubit>().ispassword,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      S.of(context).validationPassword;
+                      return S.of(context).validationPassword;
                     }
                   }),
             ],

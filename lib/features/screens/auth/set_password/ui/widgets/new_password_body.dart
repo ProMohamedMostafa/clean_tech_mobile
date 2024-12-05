@@ -76,7 +76,7 @@ class _NewPasswordBodyState extends State<NewPasswordBody> {
                         value.isEmpty ||
                         !RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~`)\%\-(_+=;:,.<>/?"[{\]}\|^]).{8,}$')
                             .hasMatch(value)) {
-                      S.of(context).validationPassword;
+                      return S.of(context).validationPassword;
                     }
                   }),
               verticalSpace(12),
@@ -107,7 +107,7 @@ class _NewPasswordBodyState extends State<NewPasswordBody> {
                   }
                   if (value !=
                       context.read<SetPasswordCubit>().passController.text) {
-                  return S.of(context).validationRepeatPassword;
+                    return S.of(context).validationRepeatPassword;
                   }
                 },
               ),

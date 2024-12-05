@@ -32,6 +32,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("At least 1 number"),
         "createPass5":
             MessageLookupByLibrary.simpleMessage("At least 8 characters long"),
+        "doneTitl1": MessageLookupByLibrary.simpleMessage("Password Changed!"),
+        "doneTitl2": MessageLookupByLibrary.simpleMessage(
+            "Your password has been changed successfully."),
+        "donebutton": MessageLookupByLibrary.simpleMessage("Back to login"),
         "forgotPassButton":
             MessageLookupByLibrary.simpleMessage("Forgot Password?"),
         "forgotPassScreenTextField":
@@ -43,11 +47,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "labelEmail": MessageLookupByLibrary.simpleMessage("Email or userName"),
         "labelPassword": MessageLookupByLibrary.simpleMessage("Password"),
         "loginButton": MessageLookupByLibrary.simpleMessage("Login"),
-        "loginTitle1": MessageLookupByLibrary.simpleMessage("Welcome Back,"),
+        "loginTitle1": MessageLookupByLibrary.simpleMessage("Login"),
         "loginTitle2": MessageLookupByLibrary.simpleMessage(
             "Login to access your Clean Tech  account"),
         "resendButton": MessageLookupByLibrary.simpleMessage(" Resend"),
-        "setButton": MessageLookupByLibrary.simpleMessage("Set password"),
+        "setButton": MessageLookupByLibrary.simpleMessage("Reset Password"),
         "setPassTextField1":
             MessageLookupByLibrary.simpleMessage("Create New Password"),
         "setPassTextField2":

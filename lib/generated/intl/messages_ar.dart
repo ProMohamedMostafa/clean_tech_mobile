@@ -31,6 +31,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "createPass4": MessageLookupByLibrary.simpleMessage("على الأقل 1 رقم "),
         "createPass5":
             MessageLookupByLibrary.simpleMessage("لا يقل طوله عن 8 احرف"),
+        "doneTitl1":
+            MessageLookupByLibrary.simpleMessage("تم تغيير كلمة المرور!"),
+        "doneTitl2": MessageLookupByLibrary.simpleMessage(
+            "لقد تم تغيير كلمة المرور الخاصة بك بنجاح."),
+        "donebutton":
+            MessageLookupByLibrary.simpleMessage("العودة إلى تسجيل الدخول"),
         "forgotPassButton":
             MessageLookupByLibrary.simpleMessage("هل نسيت كلمة المرور؟"),
         "forgotPassScreenTextField":
@@ -43,7 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("الأيميل او اسم المستخدم"),
         "labelPassword": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
         "loginButton": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
-        "loginTitle1": MessageLookupByLibrary.simpleMessage("مرحبا،"),
+        "loginTitle1": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
         "loginTitle2": MessageLookupByLibrary.simpleMessage(
             "قم بتسجيل الدخول للوصول إلى حساب الخاص بك"),
         "resendButton":

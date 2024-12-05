@@ -55,11 +55,11 @@ class _ReceiveCodeTextState extends State<ReceiveCodeText> {
               children: [
                 Text(
                   S.of(context).verifyAccountScreenTitle3,
-                  style: TextStyles.font12BlackRegular,
+                  style: TextStyles.font13Blackmedium,
                 ),
                 InkWell(
                     onTap: () {
-                      start = 10;
+                      start = 60;
                       setState(() {});
                     },
                     child: Text(

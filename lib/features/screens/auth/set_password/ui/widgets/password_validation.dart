@@ -41,7 +41,7 @@ class PasswordValidations extends StatelessWidget {
       children: [
         Text(
           '⚈ $text',
-          style: TextStyles.font12BlackRegular.copyWith(
+          style: TextStyles.font13Blackmedium.copyWith(
             decoration: hasValidated ? TextDecoration.lineThrough : null,
             decorationColor: Colors.blue,
             decorationThickness: 2,

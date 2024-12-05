@@ -24,7 +24,7 @@ class SetPasswordbody extends StatelessWidget {
             verticalSpace(40),
             Text(
               S.of(context).setPassTitle1,
-              style: TextStyles.font24BlackBold,
+              style: TextStyles.font24BlacksemiBold,
             ),
             verticalSpace(8),
             Text(
@@ -43,10 +43,7 @@ class SetPasswordbody extends StatelessWidget {
                     .formKey
                     .currentState!
                     .validate()) {}
-                context.pushNamedAndRemoveUntil(
-                  Routes.loginScreen,
-                  predicate: (route) => false,
-                );
+                context.pushNamed(Routes.doneScreen);
               },
             ),
           ],

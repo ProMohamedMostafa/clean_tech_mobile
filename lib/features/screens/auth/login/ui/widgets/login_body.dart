@@ -26,12 +26,12 @@ class LoginBody extends StatelessWidget {
               children: [
                 Text(
                   S.of(context).loginTitle1,
-                  style: TextStyles.font24BlackBold,
+                  style: TextStyles.font24BlacksemiBold,
                 ),
                 verticalSpace(8),
                 Text(
                   S.of(context).loginTitle2,
-                  style: TextStyles.font24BlackBold,
+                  style: TextStyles.font14BlackRegular,
                 ),
                 verticalSpace(36),
                 const EmailAndPassword(),
@@ -60,16 +60,7 @@ class LoginBody extends StatelessWidget {
                         .validate()) {}
                   },
                 ),
-                verticalSpace(40),
-                Center(
-                  child: InkWell(
-                    onTap: () {},
-                    child: Text(
-                      S.of(context).termsConditions,
-                      style: TextStyles.font12BlackRegular,
-                    ),
-                  ),
-                )
+               
               ],
             ),
           ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/features/layout/splash/splash_screen.dart';
+import 'package:smart_cleaning_application/features/screens/auth/done_screen/ui/screen/done_screen.dart';
 import 'package:smart_cleaning_application/features/screens/auth/forgot_password/logic/forgot_password_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/auth/forgot_password/ui/screen/forgot_password.dart';
 import 'package:smart_cleaning_application/features/screens/auth/login/logic/login_cubit_cubit.dart';
@@ -50,6 +51,10 @@ class AppRouter {
             create: (context) => SetPasswordCubit(),
             child: const SetPasswordScreen(),
           ),
+        );
+              case Routes.doneScreen:
+        return MaterialPageRoute(
+          builder: (_) => const DoneScreen(),
         );
 
       case Routes.homeScreen:

@@ -1,5 +1,5 @@
 {
-    "loginTitle1": "Welcome Back,",
+    "loginTitle1": "Login",
     "loginTitle2": "Login to access your Clean Tech  account",
     "labelEmail": "Email or userName",
     "labelPassword": "Password",
@@ -25,10 +25,13 @@
     "setPassTitle2": "Please set a new password for your account.",
     "setPassTextField1": "Create New Password",
     "setPassTextField2": "Re-enter Password",
-    "setButton": "Set password",
-    "createPass1":"At least 1 lowercase letter",
-    "createPass2":"At least 1 uppercase letter",
-    "createPass3":"At least 1 special character",
-    "createPass4":"At least 1 number",
-    "createPass5":"At least 8 characters long"
+    "setButton": "Reset Password",
+    "createPass1": "At least 1 lowercase letter",
+    "createPass2": "At least 1 uppercase letter",
+    "createPass3": "At least 1 special character",
+    "createPass4": "At least 1 number",
+    "createPass5": "At least 8 characters long",
+    "doneTitl1": "Password Changed!",
+    "doneTitl2": "Your password has been changed successfully.",
+    "donebutton": "Back to login"
 }

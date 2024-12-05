@@ -53,7 +53,7 @@ class DefaultTextField extends StatelessWidget {
       style: TextStyle(color: Colors.black, fontSize: 14.sp),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyles.font12BlackRegular,
+        labelStyle: TextStyles.font13Blackmedium,
         isDense: false,
         suffixIcon: suffixIcon != null
             ? IconButton(
@@ -66,7 +66,7 @@ class DefaultTextField extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 5),
                   child: Icon(
                     suffixIcon,
-                    color: Colors.grey[400],
+                    color: Colors.black,
                   ),
                 ),
               )

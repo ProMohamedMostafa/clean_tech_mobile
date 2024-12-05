@@ -50,10 +50,10 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  /// `Welcome Back,`
+  /// `Login`
   String get loginTitle1 {
     return Intl.message(
-      'Welcome Back,',
+      'Login',
       name: 'loginTitle1',
       desc: '',
       args: [],
@@ -310,10 +310,10 @@ class S {
     );
   }
 
-  /// `Set password`
+  /// `Reset Password`
   String get setButton {
     return Intl.message(
-      'Set password',
+      'Reset Password',
       name: 'setButton',
       desc: '',
       args: [],
@@ -365,6 +365,36 @@ class S {
     return Intl.message(
       'At least 8 characters long',
       name: 'createPass5',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password Changed!`
+  String get doneTitl1 {
+    return Intl.message(
+      'Password Changed!',
+      name: 'doneTitl1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your password has been changed successfully.`
+  String get doneTitl2 {
+    return Intl.message(
+      'Your password has been changed successfully.',
+      name: 'doneTitl2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Back to login`
+  String get donebutton {
+    return Intl.message(
+      'Back to login',
+      name: 'donebutton',
       desc: '',
       args: [],
     );

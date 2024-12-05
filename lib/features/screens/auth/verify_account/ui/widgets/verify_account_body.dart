@@ -28,7 +28,7 @@ class VerifyAccountScreenBody extends StatelessWidget {
               verticalSpace(40),
               Text(
                 S.of(context).verifyAccountScreenTitle1,
-                style: TextStyles.font24BlackBold,
+                style: TextStyles.font24BlacksemiBold,
               ),
               verticalSpace(8),
               Text(
