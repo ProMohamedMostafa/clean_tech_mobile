@@ -22,7 +22,7 @@
     "resendButton": " Resend",
     "verifyButton": "Verify",
     "setPassTitle1": "Set a new password",
-    "setPassTitle2": "Please set a new password for your account.",
+    "setPassTitle2": "Your new password must be unique from those previously used.",
     "setPassTextField1": "Create New Password",
     "setPassTextField2": "Re-enter Password",
     "setButton": "Reset Password",

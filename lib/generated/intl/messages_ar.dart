@@ -62,7 +62,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "setPassTitle1":
             MessageLookupByLibrary.simpleMessage("تعيين كلمة مرور جديدة"),
         "setPassTitle2": MessageLookupByLibrary.simpleMessage(
-            "يرجى تعيين كلمة مرور جديدة لحسابك."),
+            "يجب أن تكون كلمة المرور الجديدة مميزة من بين تلك التي استخدمتها سابقًا."),
         "submitButton": MessageLookupByLibrary.simpleMessage("ارسال"),
         "termsConditions": MessageLookupByLibrary.simpleMessage(
             "الشروط والأحكام و سياسة الخصوصية"),

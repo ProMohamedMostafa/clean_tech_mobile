@@ -59,7 +59,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "setPassTitle1":
             MessageLookupByLibrary.simpleMessage("Set a new password"),
         "setPassTitle2": MessageLookupByLibrary.simpleMessage(
-            "Please set a new password for your account."),
+            "Your new password must be unique from those previously used."),
         "submitButton": MessageLookupByLibrary.simpleMessage("Submit"),
         "termsConditions": MessageLookupByLibrary.simpleMessage(
             "Terms & Conditions and Conditions"),

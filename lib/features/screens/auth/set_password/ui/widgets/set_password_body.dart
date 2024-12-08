@@ -26,10 +26,10 @@ class SetPasswordbody extends StatelessWidget {
               S.of(context).setPassTitle1,
               style: TextStyles.font24BlacksemiBold,
             ),
-            verticalSpace(8),
+            verticalSpace(12),
             Text(
               S.of(context).setPassTitle2,
-              style: TextStyles.font16BlackRegular,
+              style: TextStyles.font14BlackRegular,
             ),
             verticalSpace(36),
             const NewPasswordBody(),

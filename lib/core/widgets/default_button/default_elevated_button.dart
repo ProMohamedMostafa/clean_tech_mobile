@@ -30,7 +30,7 @@ class DefaultElevatedButton extends StatelessWidget {
       child: ElevatedButton(
         style: ButtonStyle(
           backgroundColor: WidgetStateProperty.all(color),
-          overlayColor: WidgetStateProperty.all(AppColor.lightBlue),
+          overlayColor: WidgetStateProperty.all(AppColor.titleColor2),
           shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(
@@ -47,7 +47,7 @@ class DefaultElevatedButton extends StatelessWidget {
         },
         child: Text(
           name,
-          style: TextStyles.font16Whitemedium,
+          style: TextStyles.font16WhiteSemiBold,
         ),
       ),
     );

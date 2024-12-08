@@ -280,10 +280,10 @@ class S {
     );
   }
 
-  /// `Please set a new password for your account.`
+  /// `Your new password must be unique from those previously used.`
   String get setPassTitle2 {
     return Intl.message(
-      'Please set a new password for your account.',
+      'Your new password must be unique from those previously used.',
       name: 'setPassTitle2',
       desc: '',
       args: [],

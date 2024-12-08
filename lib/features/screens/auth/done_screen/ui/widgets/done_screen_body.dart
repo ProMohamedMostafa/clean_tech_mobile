@@ -28,7 +28,7 @@ class DoneScreenBody extends StatelessWidget {
             S.of(context).doneTitl1,
             style: TextStyles.font24BlacksemiBold,
           ),
-          verticalSpace(8),
+          verticalSpace(12),
           Text(
             textAlign: TextAlign.center,
             S.of(context).doneTitl2,

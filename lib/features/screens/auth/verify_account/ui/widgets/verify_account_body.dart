@@ -30,10 +30,10 @@ class VerifyAccountScreenBody extends StatelessWidget {
                 S.of(context).verifyAccountScreenTitle1,
                 style: TextStyles.font24BlacksemiBold,
               ),
-              verticalSpace(8),
+              verticalSpace(12),
               Text(
                 S.of(context).verifyAccountScreenTitle2,
-                style: TextStyles.font16BlackRegular,
+                style: TextStyles.font14BlackRegular,
               ),
               verticalSpace(36),
               DefaultTextField(

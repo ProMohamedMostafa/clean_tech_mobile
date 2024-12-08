@@ -76,7 +76,7 @@ class DefaultTextField extends StatelessWidget {
         border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(radius),
             borderSide: const BorderSide(
-              color: AppColor.lightBlue,
+              color: AppColor.titleColor2,
             )),
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(radius),

@@ -19,50 +19,48 @@ class LoginBody extends StatelessWidget {
       body: SafeArea(
           child: Padding(
         padding: const EdgeInsets.all(30),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  S.of(context).loginTitle1,
-                  style: TextStyles.font24BlacksemiBold,
-                ),
-                verticalSpace(8),
-                Text(
-                  S.of(context).loginTitle2,
-                  style: TextStyles.font14BlackRegular,
-                ),
-                verticalSpace(36),
-                const EmailAndPassword(),
-                verticalSpace(24),
-                Align(
-                  alignment: AlignmentDirectional.centerEnd,
-                  child: InkWell(
-                    onTap: () {
-                      context.pushNamed(Routes.forgotPasswordScreen);
-                    },
-                    child: Text(
-                      S.of(context).forgotPassButton,
-                      style: TextStyles.font16BlackRegular,
-                    ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              verticalSpace(80),
+              Text(
+                S.of(context).loginTitle1,
+                style: TextStyles.font24BlacksemiBold,
+              ),
+              verticalSpace(12),
+              Text(
+                S.of(context).loginTitle2,
+                style: TextStyles.font14BlackRegular,
+              ),
+              verticalSpace(36),
+              const EmailAndPassword(),
+              verticalSpace(24),
+              Align(
+                alignment: AlignmentDirectional.centerEnd,
+                child: InkWell(
+                  onTap: () {
+                    context.pushNamed(Routes.forgotPasswordScreen);
+                  },
+                  child: Text(
+                    S.of(context).forgotPassButton,
+                    style: TextStyles.font13Blackmedium,
                   ),
                 ),
-                verticalSpace(40),
-                DefaultElevatedButton(
-                  name: S.of(context).loginButton,
-                  color: AppColor.buttonColor,
-                  onPressed: () {
-                    if (context
-                        .read<LoginCubit>()
-                        .formKey
-                        .currentState!
-                        .validate()) {}
-                  },
-                ),
-               
-              ],
-            ),
+              ),
+              verticalSpace(40),
+              DefaultElevatedButton(
+                name: S.of(context).loginButton,
+                color: AppColor.buttonColor,
+                onPressed: () {
+                  if (context
+                      .read<LoginCubit>()
+                      .formKey
+                      .currentState!
+                      .validate()) {}
+                },
+              ),
+            ],
           ),
         ),
       )),
