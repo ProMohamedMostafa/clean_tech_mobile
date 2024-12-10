@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
-import 'package:smart_cleaning_application/features/screens/auth/login/logic/login_cubit_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/auth/login/ui/widgets/email_password.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
@@ -31,7 +29,7 @@ class LoginBody extends StatelessWidget {
               verticalSpace(12),
               Text(
                 S.of(context).loginTitle2,
-                style: TextStyles.font14BlackRegular,
+                style: TextStyles.font14GreyRegular,
               ),
               verticalSpace(36),
               const EmailAndPassword(),
@@ -51,13 +49,14 @@ class LoginBody extends StatelessWidget {
               verticalSpace(40),
               DefaultElevatedButton(
                 name: S.of(context).loginButton,
-                color: AppColor.buttonColor,
+                color: AppColor.primaryColor,
                 onPressed: () {
-                  if (context
-                      .read<LoginCubit>()
-                      .formKey
-                      .currentState!
-                      .validate()) {}
+                  // if (context
+                  //     .read<LoginCubit>()
+                  //     .formKey
+                  //     .currentState!
+                  //     .validate()) {}
+                  context.pushNamed(Routes.mainLayoutScreen);
                 },
               ),
             ],

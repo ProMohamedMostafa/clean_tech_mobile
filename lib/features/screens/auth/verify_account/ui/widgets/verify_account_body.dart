@@ -33,7 +33,7 @@ class VerifyAccountScreenBody extends StatelessWidget {
               verticalSpace(12),
               Text(
                 S.of(context).verifyAccountScreenTitle2,
-                style: TextStyles.font14BlackRegular,
+                style: TextStyles.font14GreyRegular,
               ),
               verticalSpace(36),
               DefaultTextField(
@@ -56,7 +56,7 @@ class VerifyAccountScreenBody extends StatelessWidget {
               verticalSpace(40),
               DefaultElevatedButton(
                 name: S.of(context).verifyButton,
-                color: AppColor.buttonColor,
+                color: AppColor.primaryColor,
                 onPressed: () {
                   if (context
                       .read<VerifyAccountCubit>()

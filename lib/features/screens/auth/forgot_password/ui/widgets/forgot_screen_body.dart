@@ -32,7 +32,7 @@ class ForgotScreenBody extends StatelessWidget {
               verticalSpace(12),
               Text(
                 S.of(context).forgotPassScreenTitle2,
-                style: TextStyles.font14BlackRegular,
+                style: TextStyles.font14GreyRegular,
               ),
               verticalSpace(36),
               DefaultTextField(
@@ -51,7 +51,7 @@ class ForgotScreenBody extends StatelessWidget {
               verticalSpace(40),
               DefaultElevatedButton(
                 name: S.of(context).submitButton,
-                color: AppColor.buttonColor,
+                color: AppColor.primaryColor,
                 onPressed: () {
                   if (context
                       .read<ForgotPasswordCubit>()

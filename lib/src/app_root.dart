@@ -3,6 +3,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/routing/app_router.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
+import 'package:smart_cleaning_application/core/theming/colors/color.dart';
+import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class AppRoot extends StatelessWidget {
@@ -27,7 +29,20 @@ class AppRoot extends StatelessWidget {
           ],
           supportedLocales: S.delegate.supportedLocales,
           theme: ThemeData(
-            appBarTheme: const AppBarTheme(backgroundColor: Colors.white),
+            floatingActionButtonTheme: FloatingActionButtonThemeData(
+              backgroundColor: AppColor.primaryColor,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30)),
+            ),
+            appBarTheme: const AppBarTheme(
+                backgroundColor: Colors.white, surfaceTintColor: Colors.white),
+            bottomNavigationBarTheme: BottomNavigationBarThemeData(
+                type: BottomNavigationBarType.fixed,
+                backgroundColor: AppColor.primaryColor,
+                elevation: 12,
+                selectedItemColor: Colors.white,
+                unselectedItemColor: Colors.grey[500],
+                selectedLabelStyle: TextStyles.font11light),
             scaffoldBackgroundColor: Colors.white,
             fontFamily: 'Poppins',
           ),

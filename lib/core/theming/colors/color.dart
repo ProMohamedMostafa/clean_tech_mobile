@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class AppColor {
-  static const Color mainBlue = Color(0xFF247CFF);
-  static const Color titleColor2 = Color(0xFF8391A1);
-  static const Color buttonColor = Color(0xFF364653);
+  static const Color secondaryColor = Color(0xFF247CFF);
+  static const Color thirdColor = Color(0xFF8391A1);
+  static const Color primaryColor = Color(0xFF364653);
 
   static List<Color> splashColor = const [
     Color(0xff68B9FD),

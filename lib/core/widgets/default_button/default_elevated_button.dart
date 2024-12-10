@@ -23,14 +23,14 @@ class DefaultElevatedButton extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4.r),
         border: Border.all(
-          color: AppColor.buttonColor,
+          color: AppColor.primaryColor,
           width: 1.w,
         ),
       ),
       child: ElevatedButton(
         style: ButtonStyle(
           backgroundColor: WidgetStateProperty.all(color),
-          overlayColor: WidgetStateProperty.all(AppColor.titleColor2),
+          overlayColor: WidgetStateProperty.all(AppColor.thirdColor),
           shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(

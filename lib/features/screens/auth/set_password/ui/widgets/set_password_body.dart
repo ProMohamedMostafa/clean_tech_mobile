@@ -29,14 +29,14 @@ class SetPasswordbody extends StatelessWidget {
             verticalSpace(12),
             Text(
               S.of(context).setPassTitle2,
-              style: TextStyles.font14BlackRegular,
+              style: TextStyles.font14GreyRegular,
             ),
             verticalSpace(36),
             const NewPasswordBody(),
             verticalSpace(40),
             DefaultElevatedButton(
               name: S.of(context).setButton,
-              color: AppColor.buttonColor,
+              color: AppColor.primaryColor,
               onPressed: () {
                 if (context
                     .read<SetPasswordCubit>()

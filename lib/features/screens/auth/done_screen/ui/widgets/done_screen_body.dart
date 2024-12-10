@@ -32,12 +32,12 @@ class DoneScreenBody extends StatelessWidget {
           Text(
             textAlign: TextAlign.center,
             S.of(context).doneTitl2,
-            style: TextStyles.font14BlackRegular,
+            style: TextStyles.font14GreyRegular,
           ),
           verticalSpace(40),
           DefaultElevatedButton(
             name: S.of(context).donebutton,
-            color: AppColor.buttonColor,
+            color: AppColor.primaryColor,
             onPressed: () {
               context.pushNamedAndRemoveUntil(
                 Routes.loginScreen,
