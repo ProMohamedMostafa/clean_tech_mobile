@@ -18,6 +18,7 @@ import 'package:smart_cleaning_application/features/screens/home/ui/screen/home_
 import 'package:smart_cleaning_application/features/screens/auth/login/ui/screen/login_screen.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/screen/integrations_screen.dart';
 import 'package:smart_cleaning_application/features/screens/settings/ui/screen/settings_screen.dart';
+import 'package:smart_cleaning_application/features/screens/user_managment/ui/screen/user_managment.dart';
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
@@ -30,7 +31,7 @@ class AppRouter {
       case Routes.loginScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => LoginCubit(),
+            create: (context) => LoginCubit()..getSavedLanguage(),
             child: const LoginScreen(),
           ),
         );
@@ -85,7 +86,11 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => const IntegrationsScreen(),
         );
-      case Routes.settingssScreen:
+      case Routes.userManagmentScreen:
+        return MaterialPageRoute(
+          builder: (_) => const userManagmentScreen(),
+        );
+      case Routes.settingsScreen:
         return MaterialPageRoute(
           builder: (_) => const SettingsScreen(),
         );

@@ -22,6 +22,10 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "botNavTitle1": MessageLookupByLibrary.simpleMessage("الرئيسية"),
+        "botNavTitle2": MessageLookupByLibrary.simpleMessage("تحليلات"),
+        "botNavTitle3": MessageLookupByLibrary.simpleMessage("التقويم"),
+        "botNavTitle4": MessageLookupByLibrary.simpleMessage("التكاملات"),
         "createPass1":
             MessageLookupByLibrary.simpleMessage("على الأقل حرف 1 صغير"),
         "createPass2":
@@ -45,6 +49,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("هل نسيت كلمة المرور"),
         "forgotPassScreenTitle2": MessageLookupByLibrary.simpleMessage(
             "لا تقلق،أدخل بريدك الإلكتروني أدناه لاستعادة كلمة المرور الخاصة بك"),
+        "integ1": MessageLookupByLibrary.simpleMessage("إدارة المستخدمين"),
+        "integ2": MessageLookupByLibrary.simpleMessage("إضافة مهمة"),
+        "integ3": MessageLookupByLibrary.simpleMessage("التقارير"),
+        "integ4": MessageLookupByLibrary.simpleMessage("الإعدادات"),
         "labelEmail":
             MessageLookupByLibrary.simpleMessage("الأيميل او اسم المستخدم"),
         "labelPassword": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
@@ -63,6 +71,18 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("تعيين كلمة مرور جديدة"),
         "setPassTitle2": MessageLookupByLibrary.simpleMessage(
             "يجب أن تكون كلمة المرور الجديدة مميزة من بين تلك التي استخدمتها سابقًا."),
+        "settingTitle1":
+            MessageLookupByLibrary.simpleMessage("تغيير المعلومات الشخصية"),
+        "settingTitle2":
+            MessageLookupByLibrary.simpleMessage("تغيير كلمة المرور"),
+        "settingTitle3": MessageLookupByLibrary.simpleMessage("التقارير"),
+        "settingTitle4": MessageLookupByLibrary.simpleMessage("اتصل بنا"),
+        "settingTitle5":
+            MessageLookupByLibrary.simpleMessage("موقعنا الإلكتروني"),
+        "settingTitle6": MessageLookupByLibrary.simpleMessage("اللغات"),
+        "settingTitle7": MessageLookupByLibrary.simpleMessage("الإشعارات"),
+        "settingTitle8": MessageLookupByLibrary.simpleMessage("الوضع الداكن"),
+        "settingTitle9": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
         "submitButton": MessageLookupByLibrary.simpleMessage("ارسال"),
         "termsConditions": MessageLookupByLibrary.simpleMessage(
             "الشروط والأحكام و سياسة الخصوصية"),

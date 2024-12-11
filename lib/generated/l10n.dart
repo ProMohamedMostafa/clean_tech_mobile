@@ -399,6 +399,176 @@ class S {
       args: [],
     );
   }
+
+  /// `Home`
+  String get botNavTitle1 {
+    return Intl.message(
+      'Home',
+      name: 'botNavTitle1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Analytics`
+  String get botNavTitle2 {
+    return Intl.message(
+      'Analytics',
+      name: 'botNavTitle2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Calendar`
+  String get botNavTitle3 {
+    return Intl.message(
+      'Calendar',
+      name: 'botNavTitle3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Integrations`
+  String get botNavTitle4 {
+    return Intl.message(
+      'Integrations',
+      name: 'botNavTitle4',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User Management`
+  String get integ1 {
+    return Intl.message(
+      'User Management',
+      name: 'integ1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Task`
+  String get integ2 {
+    return Intl.message(
+      'Add Task',
+      name: 'integ2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reports`
+  String get integ3 {
+    return Intl.message(
+      'Reports',
+      name: 'integ3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Settings`
+  String get integ4 {
+    return Intl.message(
+      'Settings',
+      name: 'integ4',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change personal information`
+  String get settingTitle1 {
+    return Intl.message(
+      'Change personal information',
+      name: 'settingTitle1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change password`
+  String get settingTitle2 {
+    return Intl.message(
+      'Change password',
+      name: 'settingTitle2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reports`
+  String get settingTitle3 {
+    return Intl.message(
+      'Reports',
+      name: 'settingTitle3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contact us`
+  String get settingTitle4 {
+    return Intl.message(
+      'Contact us',
+      name: 'settingTitle4',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Our Website`
+  String get settingTitle5 {
+    return Intl.message(
+      'Our Website',
+      name: 'settingTitle5',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Languages`
+  String get settingTitle6 {
+    return Intl.message(
+      'Languages',
+      name: 'settingTitle6',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notification`
+  String get settingTitle7 {
+    return Intl.message(
+      'Notification',
+      name: 'settingTitle7',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dark Theme`
+  String get settingTitle8 {
+    return Intl.message(
+      'Dark Theme',
+      name: 'settingTitle8',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Log out`
+  String get settingTitle9 {
+    return Intl.message(
+      'Log out',
+      name: 'settingTitle9',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

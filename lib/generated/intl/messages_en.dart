@@ -22,6 +22,10 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "botNavTitle1": MessageLookupByLibrary.simpleMessage("Home"),
+        "botNavTitle2": MessageLookupByLibrary.simpleMessage("Analytics"),
+        "botNavTitle3": MessageLookupByLibrary.simpleMessage("Calendar"),
+        "botNavTitle4": MessageLookupByLibrary.simpleMessage("Integrations"),
         "createPass1":
             MessageLookupByLibrary.simpleMessage("At least 1 lowercase letter"),
         "createPass2":
@@ -44,6 +48,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Forgot your password?"),
         "forgotPassScreenTitle2": MessageLookupByLibrary.simpleMessage(
             "Don’t worry, happens to all of us. Enter your email below to recover your password"),
+        "integ1": MessageLookupByLibrary.simpleMessage("User Management"),
+        "integ2": MessageLookupByLibrary.simpleMessage("Add Task"),
+        "integ3": MessageLookupByLibrary.simpleMessage("Reports"),
+        "integ4": MessageLookupByLibrary.simpleMessage("Settings"),
         "labelEmail": MessageLookupByLibrary.simpleMessage("Email or userName"),
         "labelPassword": MessageLookupByLibrary.simpleMessage("Password"),
         "loginButton": MessageLookupByLibrary.simpleMessage("Login"),
@@ -60,6 +68,17 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Set a new password"),
         "setPassTitle2": MessageLookupByLibrary.simpleMessage(
             "Your new password must be unique from those previously used."),
+        "settingTitle1":
+            MessageLookupByLibrary.simpleMessage("Change personal information"),
+        "settingTitle2":
+            MessageLookupByLibrary.simpleMessage("Change password"),
+        "settingTitle3": MessageLookupByLibrary.simpleMessage("Reports"),
+        "settingTitle4": MessageLookupByLibrary.simpleMessage("Contact us"),
+        "settingTitle5": MessageLookupByLibrary.simpleMessage("Our Website"),
+        "settingTitle6": MessageLookupByLibrary.simpleMessage("Languages"),
+        "settingTitle7": MessageLookupByLibrary.simpleMessage("Notification"),
+        "settingTitle8": MessageLookupByLibrary.simpleMessage("Dark Theme"),
+        "settingTitle9": MessageLookupByLibrary.simpleMessage("Log out"),
         "submitButton": MessageLookupByLibrary.simpleMessage("Submit"),
         "termsConditions": MessageLookupByLibrary.simpleMessage(
             "Terms & Conditions and Conditions"),

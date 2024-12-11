@@ -6,6 +6,7 @@ import 'package:smart_cleaning_application/features/screens/analytics/ui/screen/
 import 'package:smart_cleaning_application/features/screens/calendar/calendar_screen.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/screen/home_screen.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/screen/integrations_screen.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class BottomNavbarCubit extends Cubit<BottomNavbarStates> {
   BottomNavbarCubit() : super(InitialBottomNavbarState());
@@ -22,18 +23,23 @@ class BottomNavbarCubit extends Cubit<BottomNavbarStates> {
     const IntegrationsScreen()
   ];
 
-  List<BottomNavigationBarItem> bottomNavbarItems = const [
-    BottomNavigationBarItem(
-        icon: Icon(
-          IconBroken.Home,
-        ),
-        label: 'Home'),
-    BottomNavigationBarItem(
-        icon: Icon(Icons.bar_chart_rounded), label: 'Analytics'),
-    BottomNavigationBarItem(icon: Icon(IconBroken.Calendar), label: 'Calendar'),
-    BottomNavigationBarItem(
-        icon: Icon(Icons.more_horiz_outlined), label: 'Integrations'),
-  ];
+  List<BottomNavigationBarItem> getBottomNavbarItems(BuildContext context) {
+    return [
+      BottomNavigationBarItem(
+          icon: Icon(
+            IconBroken.home,
+          ),
+          label: S.of(context).botNavTitle1),
+      BottomNavigationBarItem(
+          icon: Icon(Icons.bar_chart_rounded),
+          label: S.of(context).botNavTitle2),
+      BottomNavigationBarItem(
+          icon: Icon(IconBroken.calendar), label: S.of(context).botNavTitle3),
+      BottomNavigationBarItem(
+          icon: Icon(Icons.more_horiz_outlined),
+          label: S.of(context).botNavTitle4),
+    ];
+  }
 
   void changeBottomNavbar(int index) {
     currentIndex = index;

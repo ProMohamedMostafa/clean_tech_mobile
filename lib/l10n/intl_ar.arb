@@ -33,5 +33,22 @@
     "createPass5": "لا يقل طوله عن 8 احرف",
     "doneTitl1": "تم تغيير كلمة المرور!",
     "doneTitl2": "لقد تم تغيير كلمة المرور الخاصة بك بنجاح.",
-    "donebutton": "العودة إلى تسجيل الدخول"
+    "donebutton": "العودة إلى تسجيل الدخول",
+    "botNavTitle1": "الرئيسية",
+    "botNavTitle2": "تحليلات",
+    "botNavTitle3": "التقويم",
+    "botNavTitle4": "التكاملات",
+    "integ1": "إدارة المستخدمين",
+    "integ2": "إضافة مهمة",
+    "integ3": "التقارير",
+    "integ4": "الإعدادات",
+    "settingTitle1": "تغيير المعلومات الشخصية",
+    "settingTitle2": "تغيير كلمة المرور",
+    "settingTitle3": "التقارير",
+    "settingTitle4": "اتصل بنا",
+    "settingTitle5": "موقعنا الإلكتروني",
+    "settingTitle6": "اللغات",
+    "settingTitle7": "الإشعارات",
+    "settingTitle8": "الوضع الداكن",
+    "settingTitle9": "تسجيل الخروج"
 }

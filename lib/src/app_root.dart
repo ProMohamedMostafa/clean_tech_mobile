@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/routing/app_router.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
+import 'package:smart_cleaning_application/features/screens/auth/login/logic/login_cubit_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/auth/login/logic/login_cubit_state.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class AppRoot extends StatelessWidget {
@@ -13,41 +16,55 @@ class AppRoot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Locale? locale;
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (BuildContext context, Widget? child) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          locale: const Locale('en'),
-          localizationsDelegates: const [
-            S.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: S.delegate.supportedLocales,
-          theme: ThemeData(
-            floatingActionButtonTheme: FloatingActionButtonThemeData(
-              backgroundColor: AppColor.primaryColor,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-            appBarTheme: const AppBarTheme(
-                backgroundColor: Colors.white, surfaceTintColor: Colors.white),
-            bottomNavigationBarTheme: BottomNavigationBarThemeData(
-                type: BottomNavigationBarType.fixed,
-                backgroundColor: AppColor.primaryColor,
-                elevation: 12,
-                selectedItemColor: Colors.white,
-                unselectedItemColor: Colors.grey[500],
-                selectedLabelStyle: TextStyles.font11light),
-            scaffoldBackgroundColor: Colors.white,
-            fontFamily: 'Poppins',
+        return BlocProvider(
+          create: (context) => LoginCubit()..getSavedLanguage(),
+          child: BlocConsumer<LoginCubit, LoginStates>(
+            listener: (context, state) {
+              if (state is ChangeLocaleState) {
+                locale = state.locale;
+              }
+            },
+            builder: (context, state) {
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                locale: Locale(locale.toString()),
+                localizationsDelegates: const [
+                  S.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: S.delegate.supportedLocales,
+                theme: ThemeData(
+                  floatingActionButtonTheme: FloatingActionButtonThemeData(
+                    backgroundColor: AppColor.primaryColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                  ),
+                  appBarTheme: const AppBarTheme(
+                      backgroundColor: Colors.white,
+                      surfaceTintColor: Colors.white),
+                  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+                      type: BottomNavigationBarType.fixed,
+                      backgroundColor: AppColor.primaryColor,
+                      elevation: 12,
+                      selectedItemColor: Colors.white,
+                      unselectedItemColor: Colors.grey[500],
+                      selectedLabelStyle: TextStyles.font11light),
+                  scaffoldBackgroundColor: Colors.white,
+                  fontFamily: 'Poppins',
+                ),
+                initialRoute: Routes.loginScreen,
+                onGenerateRoute: appRouter.generateRoute,
+              );
+            },
           ),
-          initialRoute: Routes.splashScreen,
-          onGenerateRoute: appRouter.generateRoute,
         );
       },
     );

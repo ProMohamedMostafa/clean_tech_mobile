@@ -3,6 +3,7 @@ import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/itegration_item.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class IntegrationsBody extends StatelessWidget {
   const IntegrationsBody({super.key});
@@ -25,26 +26,28 @@ class IntegrationsBody extends StatelessWidget {
                 childAspectRatio: 1 / 1,
                 children: [
                   buildIntegrationItem(
-                    () {},
-                    'User Management',
-                    IconBroken.Add_User,
+                    () {
+                      context.pushNamed(Routes.userManagmentScreen);
+                    },
+                    S.of(context).integ1,
+                    IconBroken.addUser,
                   ),
                   buildIntegrationItem(
                     () {},
-                    'Add Task',
+                    S.of(context).integ2,
                     Icons.task_outlined,
                   ),
                   buildIntegrationItem(
                     () {},
-                    'Reports',
+                    S.of(context).integ3,
                     Icons.file_copy_outlined,
                   ),
                   buildIntegrationItem(
                     () {
-                      context.pushNamed(Routes.settingssScreen);
+                      context.pushNamed(Routes.settingsScreen);
                     },
-                    'Settings',
-                    IconBroken.Setting,
+                    S.of(context).integ4,
+                    IconBroken.setting,
                   ),
                 ],
               ),

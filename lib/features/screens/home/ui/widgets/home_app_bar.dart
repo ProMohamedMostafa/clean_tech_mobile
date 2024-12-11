@@ -21,7 +21,7 @@ Widget homeAppBar(BuildContext context) {
             bottomLeft: Radius.circular(20.r),
             bottomRight: Radius.circular(20.r))),
     child: Padding(
-      padding: const EdgeInsets.fromLTRB(20, 0, 10, 5),
+      padding: const EdgeInsets.fromLTRB(10, 0, 20, 5),
       child: Column(
         children: [
           Row(
@@ -49,7 +49,7 @@ Widget homeAppBar(BuildContext context) {
               InkWell(
                   onTap: () {},
                   child: Icon(
-                    IconBroken.Search,
+                    IconBroken.search,
                     size: 27.sp,
                     color: Colors.white,
                   )),

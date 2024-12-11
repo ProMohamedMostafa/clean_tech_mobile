@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 abstract class LoginStates {}
 
 class LoginInitialState extends LoginStates {}
@@ -17,3 +19,10 @@ class LoginErrorState extends LoginStates {
 
 //************ */
 class ChangeSuffixIconVisiabiltyState extends LoginStates {}
+
+//************ */
+// Locale state
+class ChangeLocaleState extends LoginStates {
+  final Locale locale;
+  ChangeLocaleState({required this.locale});
+}

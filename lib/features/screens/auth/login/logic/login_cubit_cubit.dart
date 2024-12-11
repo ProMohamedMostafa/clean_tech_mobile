@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_cleaning_application/core/helpers/cache_helper/cache_helper.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_factory/dio_factory.dart';
@@ -42,5 +43,34 @@ class LoginCubit extends Cubit<LoginStates> {
     suffixIcon =
         ispassword ? Icons.visibility_outlined : Icons.visibility_off_outlined;
     emit(ChangeSuffixIconVisiabiltyState());
+  }
+
+  // Locale functionality
+  Locale locale = const Locale('en');
+
+  Future<void> getSavedLanguage() async {
+    final String cachedLanguageCode =
+        await LanguageCacheHelper().getCachedLanguageCode();
+    locale = Locale(cachedLanguageCode);
+    emit(ChangeLocaleState(locale: locale));
+  }
+
+  Future<void> changeLanguage(String languageCode) async {
+    await LanguageCacheHelper()
+        .cacheLanguageCode(languageCode); // Save the new language
+    locale = Locale(languageCode); // Update the current locale
+    emit(ChangeLocaleState(locale: locale)); // Emit the state change
+  }
+}
+
+class LanguageCacheHelper {
+  Future<void> cacheLanguageCode(String languageCode) async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString("LOCALE", languageCode);
+  }
+
+  Future<String> getCachedLanguageCode() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences.getString("LOCALE") ?? "en";
   }
 }

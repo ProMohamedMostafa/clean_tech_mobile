@@ -11,7 +11,7 @@ class MobileView extends StatelessWidget {
   Widget build(BuildContext context) {
     return token!.isEmpty
         ? BlocProvider(
-            create: (context) => LoginCubit(),
+            create: (context) => LoginCubit()..getSavedLanguage(),
             child: const LoginScreen(),
           )
         : const Center(child: Text("Mobile"));

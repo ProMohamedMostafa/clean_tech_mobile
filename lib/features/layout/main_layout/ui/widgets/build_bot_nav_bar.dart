@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/features/layout/main_layout/logic/bottom_navbar_cubit.dart';
 
-Widget buildBottomNavigationBar(context) => Container(
-      height: 60.h,
-      decoration: const BoxDecoration(
-        boxShadow: [
-          BoxShadow(color: Colors.black12, blurRadius: 200),
-        ],
+Widget buildBottomNavigationBar(BuildContext context) {
+  final cubit = context.read<BottomNavbarCubit>();
+  return Container(
+    height: 60.h,
+    decoration: const BoxDecoration(
+      boxShadow: [
+        BoxShadow(color: Colors.black12, blurRadius: 200),
+      ],
+    ),
+    child: ClipRRect(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(20.r),
+        topRight: Radius.circular(20.r),
       ),
-      child: ClipRRect(
-        borderRadius:  BorderRadius.only(
-                topLeft: Radius.circular(20.r),
-                topRight: Radius.circular(20.r),
-              ),
-        child: BottomNavigationBar(
-          items: context.bottomNavbarItems,
-          currentIndex: context.currentIndex,
-          onTap: (int index) {
-            context.changeBottomNavbar(index);
-          },
-        ),
+      child: BottomNavigationBar(
+        items: cubit.getBottomNavbarItems(context),
+        currentIndex: cubit.currentIndex,
+        onTap: (int index) {
+          cubit.changeBottomNavbar(index);
+        },
       ),
-    );
+    ),
+  );
+}

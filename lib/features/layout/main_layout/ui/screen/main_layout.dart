@@ -14,8 +14,7 @@ class MainLayout extends StatelessWidget {
         return Scaffold(
             body: context.read<BottomNavbarCubit>().bottomNavbarScreens[
                 context.read<BottomNavbarCubit>().currentIndex],
-            bottomNavigationBar:
-                buildBottomNavigationBar(context.read<BottomNavbarCubit>()));
+            bottomNavigationBar: buildBottomNavigationBar(context));
       },
     );
   }

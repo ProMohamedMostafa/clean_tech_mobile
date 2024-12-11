@@ -6,6 +6,7 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/features/screens/settings/ui/widgets/list_tile_widget.dart';
 import 'package:smart_cleaning_application/features/screens/settings/ui/widgets/profile_widget.dart';
 import 'package:smart_cleaning_application/features/screens/settings/ui/widgets/toggle_list_tile_widget.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class SettingsBody extends StatefulWidget {
   const SettingsBody({super.key});
@@ -16,7 +17,7 @@ class SettingsBody extends StatefulWidget {
 
 class _SettingsBodyState extends State<SettingsBody> {
   bool isSwitched = false;
-  bool isDark = false;
+  bool isDark = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,31 +33,35 @@ class _SettingsBodyState extends State<SettingsBody> {
             verticalSpace(15),
             Text('Mosad Selim', style: TextStyles.font20BlacksemiBold),
             Text('Admin', style: TextStyles.font14GreyRegular),
-            verticalSpace(35),
+            verticalSpace(25),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5),
               child: Column(
                 children: [
-                  listTileWidget(() {}, 'Change personal information',
+                  listTileWidget(() {}, S.of(context).settingTitle1,
                       Icons.edit_note_rounded),
                   listTileWidget(
-                      () {}, 'Change password', Icons.password_sharp),
-                  listTileWidget(() {}, 'Reports', Icons.file_copy_outlined),
-                  listTileWidget(() {}, 'Contact us', Icons.phone),
+                      () {}, S.of(context).settingTitle2, Icons.password_sharp),
+                  listTileWidget(() {}, S.of(context).settingTitle3,
+                      Icons.file_copy_outlined),
                   listTileWidget(
-                      () {}, 'Our Website', Icons.desktop_windows_outlined),
-                  listTileWidget(() {}, 'Language', Icons.language),
+                      () {}, S.of(context).settingTitle4, Icons.phone),
+                  listTileWidget(() {}, S.of(context).settingTitle5,
+                      Icons.desktop_windows_outlined),
+                  listTileWidget(
+                      () {}, S.of(context).settingTitle6, Icons.language),
                   toggleListTile(() {
                     setState(() {
                       isSwitched = !isSwitched;
                     });
-                  }, 'Notification', Icons.notification_add_outlined,
-                      isSwitched),
+                  }, S.of(context).settingTitle7,
+                      Icons.notification_add_outlined, isSwitched),
                   toggleListTile(() {
                     setState(() {
                       isDark = !isDark;
                     });
-                  }, 'Theme', Icons.brightness_4_outlined, isDark),
+                  }, S.of(context).settingTitle8, Icons.brightness_4_outlined,
+                      isDark),
                   ListTile(
                     onTap: () {},
                     leading: Transform.flip(
@@ -68,7 +73,7 @@ class _SettingsBodyState extends State<SettingsBody> {
                       ),
                     ),
                     title: Text(
-                      'Log out',
+                      S.of(context).settingTitle9,
                       style: TextStyles.font14Redbold,
                     ),
                     dense: false,

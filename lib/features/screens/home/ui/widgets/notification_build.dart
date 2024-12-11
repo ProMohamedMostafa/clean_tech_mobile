@@ -10,17 +10,16 @@ Widget notificationBuild() {
       Padding(
         padding: const EdgeInsets.all(5),
         child: Icon(
-          IconBroken.Notification,
+          IconBroken.notification,
           size: 27.sp,
           color: Colors.white,
         ),
       ),
       // if (unreadCount > 0)
       Positioned(
-        right: 0,
+        left: 0,
         top: 2,
         child: Container(
-          padding: const EdgeInsets.all(0),
           decoration: const BoxDecoration(
             color: Colors.red,
             shape: BoxShape.circle,
