@@ -16,43 +16,46 @@ class EmailAndPassword extends StatefulWidget {
 class _EmailAndPasswordState extends State<EmailAndPassword> {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoginCubit, LoginStates>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        return Form(
-          key: context.read<LoginCubit>().formKey,
-          child: Column(
-            children: [
-              DefaultTextField(
-                label: S.of(context).labelEmail,
-                keyboardType: TextInputType.emailAddress,
-                controller: context.read<LoginCubit>().emailController,
-                obscureText: false,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return S.of(context).validationEmailAndUser;
-                  }
-                },
-              ),
-              verticalSpace(12),
-              DefaultTextField(
-                  label: S.of(context).labelPassword,
-                  keyboardType: TextInputType.visiblePassword,
-                  controller: context.read<LoginCubit>().passwordController,
-                  suffixIcon: context.read<LoginCubit>().suffixIcon,
-                  suffixPressed: () {
-                    context.read<LoginCubit>().changeSuffixIconVisiability();
-                  },
-                  obscureText: context.read<LoginCubit>().ispassword,
+    return BlocProvider(
+      create: (context) => LoginCubit(),
+      child: BlocConsumer<LoginCubit, LoginStates>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          return Form(
+            key: context.read<LoginCubit>().formKey,
+            child: Column(
+              children: [
+                DefaultTextField(
+                  label: S.of(context).labelEmail,
+                  keyboardType: TextInputType.emailAddress,
+                  controller: context.read<LoginCubit>().emailController,
+                  obscureText: false,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return S.of(context).validationPassword;
+                      return S.of(context).validationEmailAndUser;
                     }
-                  }),
-            ],
-          ),
-        );
-      },
+                  },
+                ),
+                verticalSpace(12),
+                DefaultTextField(
+                    label: S.of(context).labelPassword,
+                    keyboardType: TextInputType.visiblePassword,
+                    controller: context.read<LoginCubit>().passwordController,
+                    suffixIcon: context.read<LoginCubit>().suffixIcon,
+                    suffixPressed: () {
+                      context.read<LoginCubit>().changeSuffixIconVisiability();
+                    },
+                    obscureText: context.read<LoginCubit>().ispassword,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return S.of(context).validationPassword;
+                      }
+                    }),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

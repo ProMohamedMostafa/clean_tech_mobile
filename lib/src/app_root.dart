@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/src/app_cubit/app_cubit.dart';
+import 'package:smart_cleaning_application/src/app_cubit/app_states.dart';
 import 'package:smart_cleaning_application/core/routing/app_router.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/features/screens/auth/login/logic/login_cubit_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/auth/login/logic/login_cubit_state.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class AppRoot extends StatelessWidget {
@@ -22,12 +22,12 @@ class AppRoot extends StatelessWidget {
       splitScreenMode: true,
       builder: (BuildContext context, Widget? child) {
         return BlocProvider(
-          create: (context) => LoginCubit()..getSavedLanguage(),
-          child: BlocBuilder<LoginCubit, LoginStates>(
+          create: (context) => AppCubit()..getSavedLanguage(),
+          child: BlocBuilder<AppCubit, AppStates>(
             builder: (context, state) {
               return MaterialApp(
                 debugShowCheckedModeBanner: false,
-                locale: context.read<LoginCubit>().locale,
+                locale: context.read<AppCubit>().locale,
                 localizationsDelegates: const [
                   S.delegate,
                   GlobalMaterialLocalizations.delegate,
