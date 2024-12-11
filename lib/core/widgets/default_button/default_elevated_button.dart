@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
-import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 
 class DefaultElevatedButton extends StatelessWidget {
   final String name;
@@ -58,7 +57,7 @@ class DefaultElevatedButton extends StatelessWidget {
         child: FittedBox(
           child: Text(
             name,
-            style: textStyles ?? TextStyles.font16WhiteSemiBold,
+            style: textStyles,
           ),
         ),
       ),

@@ -4,6 +4,8 @@ import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/features/layout/main_layout/logic/bottom_navbar_cubit.dart';
 import 'package:smart_cleaning_application/features/layout/main_layout/ui/screen/main_layout.dart';
 import 'package:smart_cleaning_application/features/layout/splash/splash_screen.dart';
+import 'package:smart_cleaning_application/features/screens/add_user/logic/add_user_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/add_user/ui/screen/add_user_screen.dart';
 import 'package:smart_cleaning_application/features/screens/analytics/ui/screen/analytics_screen.dart';
 import 'package:smart_cleaning_application/features/screens/auth/done_screen/ui/screen/done_screen.dart';
 import 'package:smart_cleaning_application/features/screens/auth/forgot_password/logic/forgot_password_cubit.dart';
@@ -89,6 +91,13 @@ class AppRouter {
       case Routes.userManagmentScreen:
         return MaterialPageRoute(
           builder: (_) => const UserManagmentScreen(),
+        );
+      case Routes.addUserScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => AddUserCubit(),
+            child: const AddUserScreen(),
+          ),
         );
       case Routes.settingsScreen:
         return MaterialPageRoute(

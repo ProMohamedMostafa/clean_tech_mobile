@@ -4,6 +4,10 @@ import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_weight_helper.dart';
 
 class TextStyles {
+  static TextStyle font24PrimsemiBold = TextStyle(
+      fontSize: 24.sp,
+      fontWeight: FontWeightHelper.semiBold,
+      color: AppColor.primaryColor);
   static TextStyle font24BlacksemiBold = TextStyle(
     fontSize: 24.sp,
     fontWeight: FontWeightHelper.semiBold,
@@ -13,6 +17,16 @@ class TextStyles {
     fontSize: 20.sp,
     fontWeight: FontWeightHelper.semiBold,
     color: AppColor.primaryColor,
+  );
+  static TextStyle font20Blacksemimedium = TextStyle(
+    fontSize: 20.sp,
+    fontWeight: FontWeightHelper.medium,
+    color: AppColor.primaryColor,
+  );
+  static TextStyle font20Whitesemimedium = TextStyle(
+    fontSize: 20.sp,
+    fontWeight: FontWeightHelper.medium,
+    color: Colors.white,
   );
   static TextStyle font16WhiteSemiBold = TextStyle(
     fontSize: 16.sp,
@@ -60,7 +74,7 @@ class TextStyles {
     fontWeight: FontWeightHelper.bold,
     color: AppColor.primaryColor,
   );
-    static TextStyle font14WhiteMedium = TextStyle(
+  static TextStyle font14WhiteMedium = TextStyle(
     fontSize: 14.sp,
     fontWeight: FontWeightHelper.medium,
     color: Colors.white,

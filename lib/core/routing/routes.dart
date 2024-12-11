@@ -11,5 +11,6 @@ class Routes {
   static const String calendarScreen = '/calendarScreen';
   static const String integrationsScreen = '/integrationsScreen';
   static const String userManagmentScreen = '/userManagmentScreen';
+  static const String addUserScreen = '/addUserScreen';
   static const String settingsScreen = '/settingsScreen';
 }
