@@ -45,8 +45,7 @@ class LoginCubit extends Cubit<LoginStates> {
     emit(ChangeSuffixIconVisiabiltyState());
   }
 
-  // Locale functionality
-  Locale locale = const Locale('en');
+  Locale locale = Locale('en');
 
   Future<void> getSavedLanguage() async {
     final String cachedLanguageCode =
@@ -56,10 +55,9 @@ class LoginCubit extends Cubit<LoginStates> {
   }
 
   Future<void> changeLanguage(String languageCode) async {
-    await LanguageCacheHelper()
-        .cacheLanguageCode(languageCode); // Save the new language
-    locale = Locale(languageCode); // Update the current locale
-    emit(ChangeLocaleState(locale: locale)); // Emit the state change
+    await LanguageCacheHelper().cacheLanguageCode(languageCode);
+    locale = Locale(languageCode);
+    emit(ChangeLocaleState(locale: locale));
   }
 }
 

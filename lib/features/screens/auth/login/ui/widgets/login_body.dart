@@ -9,6 +9,7 @@ import 'package:smart_cleaning_application/core/widgets/default_button/default_e
 import 'package:smart_cleaning_application/features/screens/auth/login/logic/login_cubit_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/auth/login/logic/login_cubit_state.dart';
 import 'package:smart_cleaning_application/features/screens/auth/login/ui/widgets/email_password.dart';
+import 'package:smart_cleaning_application/features/screens/auth/login/ui/widgets/login_app_bar.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class LoginBody extends StatefulWidget {
@@ -21,36 +22,13 @@ class LoginBody extends StatefulWidget {
 class _LoginBodyState extends State<LoginBody> {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoginCubit, LoginStates>(
-      listener: (context, state) {
-        if (state is ChangeLocaleState) {
-          // If the locale changes, we can perform additional actions if needed
-        }
-      },
+    return BlocBuilder<LoginCubit, LoginStates>(
       builder: (context, state) {
         final cubit = LoginCubit.get(context);
         final currentLanguage = cubit.locale.languageCode;
 
         return Scaffold(
-          appBar: AppBar(
-            leading: SizedBox.shrink(),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: TextButton(
-                  onPressed: () {
-                    final newLanguage = currentLanguage == 'en' ? 'ar' : 'en';
-                    cubit.changeLanguage(newLanguage); // Change the language
-                    setState(() {}); // Trigger a rebuild to reflect changes
-                  },
-                  child: Text(
-                    currentLanguage == 'en' ? 'AR' : 'EN',
-                    style: TextStyles.font14Primarybold,
-                  ),
-                ),
-              )
-            ],
-          ),
+          appBar: loginAppBar(currentLanguage, cubit),
           body: SafeArea(
               child: Padding(
             padding: const EdgeInsets.all(30),

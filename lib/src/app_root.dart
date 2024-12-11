@@ -16,7 +16,6 @@ class AppRoot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Locale? locale;
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       minTextAdapt: true,
@@ -24,16 +23,11 @@ class AppRoot extends StatelessWidget {
       builder: (BuildContext context, Widget? child) {
         return BlocProvider(
           create: (context) => LoginCubit()..getSavedLanguage(),
-          child: BlocConsumer<LoginCubit, LoginStates>(
-            listener: (context, state) {
-              if (state is ChangeLocaleState) {
-                locale = state.locale;
-              }
-            },
+          child: BlocBuilder<LoginCubit, LoginStates>(
             builder: (context, state) {
               return MaterialApp(
                 debugShowCheckedModeBanner: false,
-                locale: Locale(locale.toString()),
+                locale: context.read<LoginCubit>().locale,
                 localizationsDelegates: const [
                   S.delegate,
                   GlobalMaterialLocalizations.delegate,
@@ -60,7 +54,7 @@ class AppRoot extends StatelessWidget {
                   scaffoldBackgroundColor: Colors.white,
                   fontFamily: 'Poppins',
                 ),
-                initialRoute: Routes.loginScreen,
+                initialRoute: Routes.splashScreen,
                 onGenerateRoute: appRouter.generateRoute,
               );
             },
