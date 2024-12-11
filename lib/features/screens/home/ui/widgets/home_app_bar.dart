@@ -58,7 +58,7 @@ Widget homeAppBar(BuildContext context) {
                   )),
               IconButton(
                 onPressed: () {},
-                icon: notificationBuild(),
+                icon: notificationBuild(context),
               )
             ],
           ),

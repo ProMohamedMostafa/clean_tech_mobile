@@ -54,9 +54,11 @@ class VerifyAccountScreenBody extends StatelessWidget {
                   alignment: AlignmentDirectional.centerStart,
                   child: ReceiveCodeText()),
               verticalSpace(40),
-              DefaultElevatedButton(
+              DefaultElevatedButton( width: 310,
+                  height: 50,
                 name: S.of(context).verifyButton,
                 color: AppColor.primaryColor,
+                textStyles: TextStyles.font16WhiteSemiBold,
                 onPressed: () {
                   if (context
                       .read<VerifyAccountCubit>()

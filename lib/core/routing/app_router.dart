@@ -88,7 +88,7 @@ class AppRouter {
         );
       case Routes.userManagmentScreen:
         return MaterialPageRoute(
-          builder: (_) => const userManagmentScreen(),
+          builder: (_) => const UserManagmentScreen(),
         );
       case Routes.settingsScreen:
         return MaterialPageRoute(

@@ -50,8 +50,11 @@ class ForgotScreenBody extends StatelessWidget {
               ),
               verticalSpace(40),
               DefaultElevatedButton(
+                 width: 310,
+                  height: 50,
                 name: S.of(context).submitButton,
                 color: AppColor.primaryColor,
+                textStyles: TextStyles.font16WhiteSemiBold,
                 onPressed: () {
                   if (context
                       .read<ForgotPasswordCubit>()

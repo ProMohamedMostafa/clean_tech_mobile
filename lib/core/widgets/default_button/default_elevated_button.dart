@@ -5,36 +5,46 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 
 class DefaultElevatedButton extends StatelessWidget {
   final String name;
+  final int height;
+  final int width;
   final Function? onPressed;
   final Color color;
+  final TextStyle? textStyles;
   const DefaultElevatedButton({
     super.key,
     required this.name,
     required this.onPressed,
     required this.color,
+    required this.height,
+    required this.width,
+    required this.textStyles,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 310.w,
-      height: 50.h,
+      width: width.w,
+      height: height.h,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4.r),
+        borderRadius: BorderRadius.circular(9.r),
         border: Border.all(
-          color: AppColor.primaryColor,
-          width: 1.w,
+          color: color,
         ),
       ),
       child: ElevatedButton(
         style: ButtonStyle(
+          side: WidgetStateProperty.all(
+            BorderSide(
+              color: color,
+            ),
+          ),
           backgroundColor: WidgetStateProperty.all(color),
           overlayColor: WidgetStateProperty.all(AppColor.thirdColor),
           shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(
-                4.r,
+                9.r,
               ),
             ),
           ),
@@ -45,9 +55,11 @@ class DefaultElevatedButton extends StatelessWidget {
             onPressed!();
           }
         },
-        child: Text(
-          name,
-          style: TextStyles.font16WhiteSemiBold,
+        child: FittedBox(
+          child: Text(
+            name,
+            style: textStyles ?? TextStyles.font16WhiteSemiBold,
+          ),
         ),
       ),
     );

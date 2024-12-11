@@ -34,9 +34,11 @@ class SetPasswordbody extends StatelessWidget {
             verticalSpace(36),
             const NewPasswordBody(),
             verticalSpace(40),
-            DefaultElevatedButton(
+            DefaultElevatedButton( width: 310,
+                  height: 50,
               name: S.of(context).setButton,
               color: AppColor.primaryColor,
+              textStyles: TextStyles.font16WhiteSemiBold,
               onPressed: () {
                 if (context
                     .read<SetPasswordCubit>()

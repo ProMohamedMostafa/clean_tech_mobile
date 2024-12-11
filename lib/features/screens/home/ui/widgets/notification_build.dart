@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
+import 'package:smart_cleaning_application/src/app_cubit/app_cubit.dart';
 
-Widget notificationBuild() {
+Widget notificationBuild(BuildContext context) {
   return Stack(
     alignment: Alignment.center,
     children: [
@@ -16,27 +18,49 @@ Widget notificationBuild() {
         ),
       ),
       // if (unreadCount > 0)
-      Positioned(
-        left: 0,
-        top: 2,
-        child: Container(
-          decoration: const BoxDecoration(
-            color: Colors.red,
-            shape: BoxShape.circle,
-          ),
-          constraints: const BoxConstraints(
-            minWidth: 16,
-            minHeight: 16,
-          ),
-          child: Center(
-            child: Text(
-              '1',
-              style: TextStyles.font11WhiteSemiBold,
-              textAlign: TextAlign.center,
+      context.read<AppCubit>().isArabic()
+          ? Positioned(
+              left: 0,
+              top: 2,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.red,
+                  shape: BoxShape.circle,
+                ),
+                constraints: const BoxConstraints(
+                  minWidth: 16,
+                  minHeight: 16,
+                ),
+                child: Center(
+                  child: Text(
+                    '1',
+                    style: TextStyles.font11WhiteSemiBold,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            )
+          : Positioned(
+              right: 0,
+              top: 2,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.red,
+                  shape: BoxShape.circle,
+                ),
+                constraints: const BoxConstraints(
+                  minWidth: 16,
+                  minHeight: 16,
+                ),
+                child: Center(
+                  child: Text(
+                    '1',
+                    style: TextStyles.font11WhiteSemiBold,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
     ],
   );
 }
