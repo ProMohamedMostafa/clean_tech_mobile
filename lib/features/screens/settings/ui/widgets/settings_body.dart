@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
@@ -7,6 +8,7 @@ import 'package:smart_cleaning_application/features/screens/settings/ui/widgets/
 import 'package:smart_cleaning_application/features/screens/settings/ui/widgets/profile_widget.dart';
 import 'package:smart_cleaning_application/features/screens/settings/ui/widgets/toggle_list_tile_widget.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
+import 'package:smart_cleaning_application/src/app_cubit/app_cubit.dart';
 
 class SettingsBody extends StatefulWidget {
   const SettingsBody({super.key});
@@ -65,7 +67,7 @@ class _SettingsBodyState extends State<SettingsBody> {
                   ListTile(
                     onTap: () {},
                     leading: Transform.flip(
-                      flipX: true,
+                      flipX: context.read<AppCubit>().isArabic() ? false : true,
                       child: Icon(
                         Icons.logout_outlined,
                         size: 20.sp,

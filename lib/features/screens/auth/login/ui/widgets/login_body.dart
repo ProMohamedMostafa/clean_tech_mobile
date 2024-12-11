@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_cleaning_application/src/app_cubit/app_cubit.dart';
-import 'package:smart_cleaning_application/src/app_cubit/app_states.dart';
+import 'package:smart_cleaning_application/features/screens/auth/login/ui/widgets/login_app_bar.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
@@ -22,33 +20,7 @@ class _LoginBodyState extends State<LoginBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: SizedBox.shrink(),
-          actions: [
-            BlocBuilder<AppCubit, AppStates>(
-              builder: (context, state) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: TextButton(
-                    onPressed: () {
-                      final newLanguage =
-                          context.read<AppCubit>().locale.toString() == 'en'
-                              ? 'ar'
-                              : 'en';
-                      context.read<AppCubit>().changeLanguage(newLanguage);
-                    },
-                    child: Text(
-                      context.read<AppCubit>().locale.toString() == 'en'
-                          ? 'AR'
-                          : 'EN',
-                      style: TextStyles.font14Primarybold,
-                    ),
-                  ),
-                );
-              },
-            )
-          ],
-        ),
+        appBar: loginAppBar(),
         body: SafeArea(
             child: Padding(
           padding: const EdgeInsets.all(30),

@@ -7,6 +7,7 @@ import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/features/layout/main_layout/logic/bottom_navbar_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/notification_build.dart';
+import 'package:smart_cleaning_application/src/app_cubit/app_cubit.dart';
 
 Widget homeAppBar(BuildContext context) {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -21,7 +22,9 @@ Widget homeAppBar(BuildContext context) {
             bottomLeft: Radius.circular(20.r),
             bottomRight: Radius.circular(20.r))),
     child: Padding(
-      padding: const EdgeInsets.fromLTRB(10, 0, 20, 5),
+      padding: context.read<AppCubit>().isArabic()
+          ? const EdgeInsets.fromLTRB(10, 0, 20, 5)
+          : const EdgeInsets.fromLTRB(20, 0, 10, 5),
       child: Column(
         children: [
           Row(
