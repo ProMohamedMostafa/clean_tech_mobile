@@ -5,7 +5,7 @@ import 'package:smart_cleaning_application/core/helpers/constants/constants.dart
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/api_error_handler/api_error_handler.dart';
 
-class DioFactory {
+class DioHelper {
   static Dio? dio;
 
   static Future<Dio> initDio() async {

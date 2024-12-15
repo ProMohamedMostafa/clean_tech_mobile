@@ -8,7 +8,6 @@ class AddUserTextFormField extends StatelessWidget {
   final TextEditingController controller;
 
   final bool obscureText;
-  final double radius = 8;
   final TextInputType keyboardType;
   final IconData? suffixIcon;
   final VoidCallback? onTap;
@@ -52,7 +51,7 @@ class AddUserTextFormField extends StatelessWidget {
       onChanged: onChanged,
       style: TextStyle(color: Colors.black, fontSize: 14.sp),
       decoration: InputDecoration(
-        isDense: false,
+        isDense: true,
         suffixIcon: suffixIcon != null
             ? IconButton(
                 onPressed: () {
@@ -72,22 +71,22 @@ class AddUserTextFormField extends StatelessWidget {
         prefix: perfix,
         prefixStyle: TextStyles.font16BlackRegular,
         border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(radius),
+            borderRadius: BorderRadius.circular(8.r),
             borderSide: const BorderSide(
               color: AppColor.thirdColor,
             )),
         enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(radius),
+            borderRadius: BorderRadius.circular(8.r),
             borderSide: const BorderSide(
               color: AppColor.thirdColor,
             )),
         focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(radius),
+            borderRadius: BorderRadius.circular(8.r),
             borderSide: const BorderSide(
               color: AppColor.thirdColor,
             )),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(radius),
+          borderRadius: BorderRadius.circular(8.r),
           borderSide: const BorderSide(color: Colors.red),
         ),
         fillColor: Colors.white,

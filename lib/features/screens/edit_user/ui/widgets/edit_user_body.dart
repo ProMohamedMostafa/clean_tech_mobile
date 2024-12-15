@@ -6,31 +6,31 @@ import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
-import 'package:smart_cleaning_application/features/screens/add_user/logic/add_user_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/add_user/logic/add_user_state.dart';
-import 'package:smart_cleaning_application/features/screens/add_user/ui/widgets/add_user_text_form_field.dart';
+import 'package:smart_cleaning_application/features/screens/edit_user/logic/edit_user_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/edit_user/logic/edit_user_state.dart';
+import 'package:smart_cleaning_application/features/screens/edit_user/ui/widgets/edit_user_text_form_field/edit_user_text_form_field.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
-class AddUserBody extends StatelessWidget {
-  const AddUserBody({super.key});
+class EditUserBody extends StatelessWidget {
+  const EditUserBody({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          S.of(context).addUserTitle,
+         S.of(context).editUserTitle,
           style: TextStyles.font24PrimsemiBold,
         ),
         centerTitle: true,
         leading: customBackButton(context),
       ),
-      body: BlocListener<AddUserCubit, AddUserState>(
+      body: BlocListener<EditUserCubit, EditUserState>(
         listener: (context, state) {},
         child: SafeArea(
             child: SingleChildScrollView(
           child: Form(
-            key: context.read<AddUserCubit>().formKey,
+            key: context.read<EditUserCubit>().formKey,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
@@ -51,7 +51,7 @@ class AddUserBody extends StatelessWidget {
                                   color: AppColor.primaryColor, width: 3.w)),
                           child: ClipOval(
                               child: Image.asset(
-                            'assets/images/noImage.png',
+                            'assets/images/profile.png',
                             fit: BoxFit.fill,
                           )),
                         ),
@@ -77,13 +77,9 @@ class AddUserBody extends StatelessWidget {
                     ),
                   ),
                   verticalSpace(35),
-                  Text(
-                    S.of(context).addUserText1,
-                    style: TextStyles.font16BlackRegular,
-                  ),
-                  AddUserTextFormField(
+                  EditUserTextField(
                     controller:
-                        context.read<AddUserCubit>().firstNameController,
+                        context.read<EditUserCubit>().firstNameController,
                     obscureText: false,
                     keyboardType: TextInputType.text,
                     validator: (value) {
@@ -91,29 +87,25 @@ class AddUserBody extends StatelessWidget {
                         return S.of(context).validationEmailAndUser;
                       }
                     },
+                    label: S.of(context).addUserText1,
+                    hint: "mossad",
                   ),
                   verticalSpace(15),
-                  Text(
-                    S.of(context).addUserText2,
-                    style: TextStyles.font16BlackRegular,
-                  ),
-                  AddUserTextFormField(
-                    controller: context.read<AddUserCubit>().lastNameController,
-                    obscureText: false,
-                    keyboardType: TextInputType.text,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return S.of(context).validationEmailAndUser;
-                      }
-                    },
-                  ),
+                  EditUserTextField(
+                      controller:
+                          context.read<EditUserCubit>().lastNameController,
+                      obscureText: false,
+                      keyboardType: TextInputType.text,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return S.of(context).validationEmailAndUser;
+                        }
+                      },
+                      label: S.of(context).addUserText2,
+                      hint: "selim"),
                   verticalSpace(15),
-                  Text(
-                    S.of(context).addUserText3,
-                    style: TextStyles.font16BlackRegular,
-                  ),
-                  AddUserTextFormField(
-                    controller: context.read<AddUserCubit>().emailController,
+                  EditUserTextField(
+                    controller: context.read<EditUserCubit>().emailController,
                     obscureText: false,
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
@@ -121,14 +113,12 @@ class AddUserBody extends StatelessWidget {
                         return S.of(context).validationEmailAndUser;
                       }
                     },
+                    label: S.of(context).addUserText3,
+                    hint: "mossad.selim11@gmail.com",
                   ),
                   verticalSpace(15),
-                  Text(
-                    S.of(context).addUserText10,
-                    style: TextStyles.font16BlackRegular,
-                  ),
-                  AddUserTextFormField(
-                    controller: context.read<AddUserCubit>().phoneController,
+                  EditUserTextField(
+                    controller: context.read<EditUserCubit>().phoneController,
                     obscureText: false,
                     keyboardType: TextInputType.phone,
                     validator: (value) {
@@ -136,75 +126,26 @@ class AddUserBody extends StatelessWidget {
                         return S.of(context).validationEmailAndUser;
                       }
                     },
+                    label: S.of(context).addUserText10,
+                    hint: "01060056199",
                   ),
                   verticalSpace(15),
-                  Text(
-                    S.of(context).addUserText4,
-                    style: TextStyles.font16BlackRegular,
-                  ),
-                  AddUserTextFormField(
-                    controller: context.read<AddUserCubit>().birthController,
+                  EditUserTextField(
+                    controller: context.read<EditUserCubit>().birthController,
                     obscureText: false,
-                    keyboardType: TextInputType.text,
+                    keyboardType: TextInputType.number,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return S.of(context).validationEmailAndUser;
                       }
                     },
+                    label: S.of(context).addUserText4,
+                    hint: "6-6-1994",
                   ),
-                  verticalSpace(10),
-                  Text(
-                    S.of(context).addUserText5,
-                    style: TextStyles.font16BlackRegular,
-                  ),
-                  AddUserTextFormField(
-                    controller: context.read<AddUserCubit>().userNameController,
-                    obscureText: false,
-                    keyboardType: TextInputType.text,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return S.of(context).validationEmailAndUser;
-                      }
-                    },
-                  ),
-                  verticalSpace(10),
-                  Text(
-                    S.of(context).addUserText6,
-                    style: TextStyles.font16BlackRegular,
-                  ),
-                  AddUserTextFormField(
-                    controller: context.read<AddUserCubit>().passwordController,
-                    obscureText: false,
-                    keyboardType: TextInputType.text,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return S.of(context).validationEmailAndUser;
-                      }
-                    },
-                  ),
-                  verticalSpace(10),
-                  Text(
-                    S.of(context).addUserText7,
-                    style: TextStyles.font16BlackRegular,
-                  ),
-                  AddUserTextFormField(
-                    controller: context.read<AddUserCubit>().idNumberController,
-                    obscureText: false,
-                    keyboardType: TextInputType.text,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return S.of(context).validationEmailAndUser;
-                      }
-                    },
-                  ),
-                  verticalSpace(10),
-                  Text(
-                    S.of(context).addUserText8,
-                    style: TextStyles.font16BlackRegular,
-                  ),
-                  AddUserTextFormField(
+                  verticalSpace(15),
+                  EditUserTextField(
                     controller:
-                        context.read<AddUserCubit>().nationalityController,
+                        context.read<EditUserCubit>().userNameController,
                     obscureText: false,
                     keyboardType: TextInputType.text,
                     validator: (value) {
@@ -212,14 +153,27 @@ class AddUserBody extends StatelessWidget {
                         return S.of(context).validationEmailAndUser;
                       }
                     },
+                    label: S.of(context).addUserText5,
+                    hint: "mosad11",
                   ),
                   verticalSpace(10),
-                  Text(
-                    S.of(context).addUserText9,
-                    style: TextStyles.font16BlackRegular,
+                  EditUserTextField(
+                    controller:
+                        context.read<EditUserCubit>().idNumberController,
+                    obscureText: false,
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return S.of(context).validationEmailAndUser;
+                      }
+                    },
+                    label: S.of(context).addUserText7,
+                    hint: "(684) 555-0102",
                   ),
-                  AddUserTextFormField(
-                    controller: context.read<AddUserCubit>().genderController,
+                  verticalSpace(10),
+                  EditUserTextField(
+                    controller:
+                        context.read<EditUserCubit>().nationalityController,
                     obscureText: false,
                     keyboardType: TextInputType.text,
                     validator: (value) {
@@ -227,26 +181,31 @@ class AddUserBody extends StatelessWidget {
                         return S.of(context).validationEmailAndUser;
                       }
                     },
+                    label: S.of(context).addUserText8,
+                    hint: "Egyption",
+                  ),
+                  verticalSpace(10),
+                  EditUserTextField(
+                    controller: context.read<EditUserCubit>().genderController,
+                    obscureText: false,
+                    keyboardType: TextInputType.text,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return S.of(context).validationEmailAndUser;
+                      }
+                    },
+                    label: S.of(context).addUserText9,
+                    hint: "male",
                   ),
                   verticalSpace(35),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      DefaultElevatedButton(
-                          name: S.of(context).addAnotherButton,
-                          onPressed: () {},
-                          color: AppColor.thirdColor,
-                          height: 52,
-                          width: 158,
-                          textStyles: TextStyles.font20Whitesemimedium),
-                      DefaultElevatedButton(
-                          name: S.of(context).saveButtton,
-                          onPressed: () {},
-                          color: AppColor.primaryColor,
-                          height: 52,
-                          width: 158,
-                          textStyles: TextStyles.font20Whitesemimedium),
-                    ],
+                  Center(
+                    child: DefaultElevatedButton(
+                        name: S.of(context).saveButtton,
+                        onPressed: () {},
+                        color: AppColor.primaryColor,
+                        height: 52,
+                        width: 158,
+                        textStyles: TextStyles.font20Whitesemimedium),
                   ),
                   verticalSpace(30),
                 ],

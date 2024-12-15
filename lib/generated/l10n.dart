@@ -569,6 +569,216 @@ class S {
       args: [],
     );
   }
+
+  /// `Add User`
+  String get addUserTitle {
+    return Intl.message(
+      'Add User',
+      name: 'addUserTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `First Name`
+  String get addUserText1 {
+    return Intl.message(
+      'First Name',
+      name: 'addUserText1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last Name`
+  String get addUserText2 {
+    return Intl.message(
+      'Last Name',
+      name: 'addUserText2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email`
+  String get addUserText3 {
+    return Intl.message(
+      'Email',
+      name: 'addUserText3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Birthdate`
+  String get addUserText4 {
+    return Intl.message(
+      'Birthdate',
+      name: 'addUserText4',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User Name`
+  String get addUserText5 {
+    return Intl.message(
+      'User Name',
+      name: 'addUserText5',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password`
+  String get addUserText6 {
+    return Intl.message(
+      'Password',
+      name: 'addUserText6',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ID Number`
+  String get addUserText7 {
+    return Intl.message(
+      'ID Number',
+      name: 'addUserText7',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nationality`
+  String get addUserText8 {
+    return Intl.message(
+      'Nationality',
+      name: 'addUserText8',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Gender`
+  String get addUserText9 {
+    return Intl.message(
+      'Gender',
+      name: 'addUserText9',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone Number`
+  String get addUserText10 {
+    return Intl.message(
+      'Phone Number',
+      name: 'addUserText10',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add User`
+  String get addUserButton {
+    return Intl.message(
+      'Add User',
+      name: 'addUserButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Another`
+  String get addAnotherButton {
+    return Intl.message(
+      'Add Another',
+      name: 'addAnotherButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get saveButtton {
+    return Intl.message(
+      'Save',
+      name: 'saveButtton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `NO`
+  String get noButtton {
+    return Intl.message(
+      'NO',
+      name: 'noButtton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yes, i’m sure`
+  String get yesButtton {
+    return Intl.message(
+      'Yes, i’m sure',
+      name: 'yesButtton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are You Sure You Want To Remove This User ?`
+  String get deleteMessage {
+    return Intl.message(
+      'Are You Sure You Want To Remove This User ?',
+      name: 'deleteMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit User`
+  String get editUserTitle {
+    return Intl.message(
+      'Edit User',
+      name: 'editUserTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User Details`
+  String get userDetailsTitle {
+    return Intl.message(
+      'User Details',
+      name: 'userDetailsTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get deleteButton {
+    return Intl.message(
+      'Delete',
+      name: 'deleteButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit`
+  String get editButton {
+    return Intl.message(
+      'Edit',
+      name: 'editButton',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

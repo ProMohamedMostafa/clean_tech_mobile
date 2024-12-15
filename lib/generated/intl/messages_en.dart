@@ -22,6 +22,19 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "addAnotherButton": MessageLookupByLibrary.simpleMessage("Add Another"),
+        "addUserButton": MessageLookupByLibrary.simpleMessage("Add User"),
+        "addUserText1": MessageLookupByLibrary.simpleMessage("First Name"),
+        "addUserText10": MessageLookupByLibrary.simpleMessage("Phone Number"),
+        "addUserText2": MessageLookupByLibrary.simpleMessage("Last Name"),
+        "addUserText3": MessageLookupByLibrary.simpleMessage("Email"),
+        "addUserText4": MessageLookupByLibrary.simpleMessage("Birthdate"),
+        "addUserText5": MessageLookupByLibrary.simpleMessage("User Name"),
+        "addUserText6": MessageLookupByLibrary.simpleMessage("Password"),
+        "addUserText7": MessageLookupByLibrary.simpleMessage("ID Number"),
+        "addUserText8": MessageLookupByLibrary.simpleMessage("Nationality"),
+        "addUserText9": MessageLookupByLibrary.simpleMessage("Gender"),
+        "addUserTitle": MessageLookupByLibrary.simpleMessage("Add User"),
         "botNavTitle1": MessageLookupByLibrary.simpleMessage("Home"),
         "botNavTitle2": MessageLookupByLibrary.simpleMessage("Analytics"),
         "botNavTitle3": MessageLookupByLibrary.simpleMessage("Calendar"),
@@ -36,10 +49,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("At least 1 number"),
         "createPass5":
             MessageLookupByLibrary.simpleMessage("At least 8 characters long"),
+        "deleteButton": MessageLookupByLibrary.simpleMessage("Delete"),
+        "deleteMessage": MessageLookupByLibrary.simpleMessage(
+            "Are You Sure You Want To Remove This User ?"),
         "doneTitl1": MessageLookupByLibrary.simpleMessage("Password Changed!"),
         "doneTitl2": MessageLookupByLibrary.simpleMessage(
             "Your password has been changed successfully."),
         "donebutton": MessageLookupByLibrary.simpleMessage("Back to login"),
+        "editButton": MessageLookupByLibrary.simpleMessage("Edit"),
+        "editUserTitle": MessageLookupByLibrary.simpleMessage("Edit User"),
         "forgotPassButton":
             MessageLookupByLibrary.simpleMessage("Forgot Password?"),
         "forgotPassScreenTextField":
@@ -58,7 +76,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginTitle1": MessageLookupByLibrary.simpleMessage("Login"),
         "loginTitle2": MessageLookupByLibrary.simpleMessage(
             "Login to access your Clean Tech  account"),
+        "noButtton": MessageLookupByLibrary.simpleMessage("NO"),
         "resendButton": MessageLookupByLibrary.simpleMessage(" Resend"),
+        "saveButtton": MessageLookupByLibrary.simpleMessage("Save"),
         "setButton": MessageLookupByLibrary.simpleMessage("Reset Password"),
         "setPassTextField1":
             MessageLookupByLibrary.simpleMessage("Create New Password"),
@@ -82,6 +102,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "submitButton": MessageLookupByLibrary.simpleMessage("Submit"),
         "termsConditions": MessageLookupByLibrary.simpleMessage(
             "Terms & Conditions and Conditions"),
+        "userDetailsTitle":
+            MessageLookupByLibrary.simpleMessage("User Details"),
         "validationEmail":
             MessageLookupByLibrary.simpleMessage("Invalid email address"),
         "validationEmailAndUser": MessageLookupByLibrary.simpleMessage(
@@ -100,6 +122,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "An authentication code has been sent to your email."),
         "verifyAccountScreenTitle3":
             MessageLookupByLibrary.simpleMessage("Didn’t receive a code?"),
-        "verifyButton": MessageLookupByLibrary.simpleMessage("Verify")
+        "verifyButton": MessageLookupByLibrary.simpleMessage("Verify"),
+        "yesButtton": MessageLookupByLibrary.simpleMessage("Yes, i’m sure")
       };
 }

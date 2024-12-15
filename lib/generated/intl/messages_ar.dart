@@ -22,6 +22,21 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "addAnotherButton":
+            MessageLookupByLibrary.simpleMessage("اضافه مستخدم اخر"),
+        "addUserButton": MessageLookupByLibrary.simpleMessage("اضافه مستخدم"),
+        "addUserText1": MessageLookupByLibrary.simpleMessage("الاسم الاول"),
+        "addUserText10": MessageLookupByLibrary.simpleMessage("رقم الهاتف"),
+        "addUserText2": MessageLookupByLibrary.simpleMessage("الاسم الاخير"),
+        "addUserText3": MessageLookupByLibrary.simpleMessage("الايميل"),
+        "addUserText4": MessageLookupByLibrary.simpleMessage("تارخ الميلاد"),
+        "addUserText5": MessageLookupByLibrary.simpleMessage("اسم المسنخدم"),
+        "addUserText6": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
+        "addUserText7": MessageLookupByLibrary.simpleMessage("رقم البطاقة"),
+        "addUserText8": MessageLookupByLibrary.simpleMessage("الجنسية"),
+        "addUserText9": MessageLookupByLibrary.simpleMessage("النوع"),
+        "addUserTitle":
+            MessageLookupByLibrary.simpleMessage("اضافة مستخدم جديد"),
         "botNavTitle1": MessageLookupByLibrary.simpleMessage("الرئيسية"),
         "botNavTitle2": MessageLookupByLibrary.simpleMessage("تحليلات"),
         "botNavTitle3": MessageLookupByLibrary.simpleMessage("التقويم"),
@@ -35,12 +50,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "createPass4": MessageLookupByLibrary.simpleMessage("على الأقل 1 رقم "),
         "createPass5":
             MessageLookupByLibrary.simpleMessage("لا يقل طوله عن 8 احرف"),
+        "deleteButton": MessageLookupByLibrary.simpleMessage("حذف"),
+        "deleteMessage": MessageLookupByLibrary.simpleMessage(
+            "هل انت متاكد من ازالة هذا المستخدم ؟"),
         "doneTitl1":
             MessageLookupByLibrary.simpleMessage("تم تغيير كلمة المرور!"),
         "doneTitl2": MessageLookupByLibrary.simpleMessage(
             "لقد تم تغيير كلمة المرور الخاصة بك بنجاح."),
         "donebutton":
             MessageLookupByLibrary.simpleMessage("العودة إلى تسجيل الدخول"),
+        "editButton": MessageLookupByLibrary.simpleMessage("تعديل"),
+        "editUserTitle":
+            MessageLookupByLibrary.simpleMessage("تعديل بيانات المستخدم"),
         "forgotPassButton":
             MessageLookupByLibrary.simpleMessage("هل نسيت كلمة المرور؟"),
         "forgotPassScreenTextField":
@@ -60,8 +81,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginTitle1": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
         "loginTitle2": MessageLookupByLibrary.simpleMessage(
             "قم بتسجيل الدخول للوصول إلى حساب الخاص بك"),
+        "noButtton": MessageLookupByLibrary.simpleMessage("لا"),
         "resendButton":
             MessageLookupByLibrary.simpleMessage(" إعادة إرسال الرمز"),
+        "saveButtton": MessageLookupByLibrary.simpleMessage("حفظ"),
         "setButton": MessageLookupByLibrary.simpleMessage("حفظ"),
         "setPassTextField1":
             MessageLookupByLibrary.simpleMessage("انشاء كلمة مرور جديدة"),
@@ -86,6 +109,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "submitButton": MessageLookupByLibrary.simpleMessage("ارسال"),
         "termsConditions": MessageLookupByLibrary.simpleMessage(
             "الشروط والأحكام و سياسة الخصوصية"),
+        "userDetailsTitle":
+            MessageLookupByLibrary.simpleMessage("تفاصيل المستخدم"),
         "validationEmail":
             MessageLookupByLibrary.simpleMessage("اكتب الايميل بطريقة صحيحة"),
         "validationEmailAndUser": MessageLookupByLibrary.simpleMessage(
@@ -104,6 +129,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "لقد تم إرسال رمز المصادقة إلى بريدك الإلكتروني."),
         "verifyAccountScreenTitle3":
             MessageLookupByLibrary.simpleMessage("لم تستلم الرمز؟"),
-        "verifyButton": MessageLookupByLibrary.simpleMessage("تاكيد")
+        "verifyButton": MessageLookupByLibrary.simpleMessage("تاكيد"),
+        "yesButtton": MessageLookupByLibrary.simpleMessage("نعم, بالتاكيد")
       };
 }

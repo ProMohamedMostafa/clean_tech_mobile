@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 void showCustomDialog(BuildContext context, String text) {
   showDialog(
@@ -36,14 +38,16 @@ void showCustomDialog(BuildContext context, String text) {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   DefaultElevatedButton(
-                      name: "NO",
+                      name: S.of(context).noButtton,
                       textStyles: TextStyles.font14WhiteMedium,
-                      onPressed: () {},
+                      onPressed: () {
+                        context.pop();
+                      },
                       color: AppColor.thirdColor,
                       height: 44,
                       width: 127),
                   DefaultElevatedButton(
-                      name: "Yes, i’m sure",
+                      name: S.of(context).yesButtton,
                       textStyles: TextStyles.font14WhiteMedium,
                       onPressed: () {},
                       color: AppColor.primaryColor,

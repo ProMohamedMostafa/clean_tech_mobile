@@ -11,7 +11,7 @@ class ApiErrorHandler {
         case DioExceptionType.connectionTimeout:
           return ApiErrorModel(message: 'Connection timeout with server');
         case DioExceptionType.unknown:
-          return ApiErrorModel(message: 'An unexpected error occurred');
+          return ApiErrorModel(message: 'Unexpected error: ${error.message}');
         case DioExceptionType.receiveTimeout:
           return ApiErrorModel(message: 'Receive timeout from server');
         case DioExceptionType.sendTimeout:

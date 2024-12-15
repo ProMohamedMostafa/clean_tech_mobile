@@ -8,6 +8,7 @@ import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class UserManagmentBody extends StatelessWidget {
   const UserManagmentBody({super.key});
@@ -26,8 +27,8 @@ class UserManagmentBody extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: 43.h,
-                width: 101.w,
+                height: 40.h,
+                width: 110.w,
                 child: ElevatedButton(
                     onPressed: () {
                       context.pushNamed(Routes.addUserScreen);
@@ -53,7 +54,7 @@ class UserManagmentBody extends StatelessWidget {
                         ),
                         horizontalSpace(3),
                         Text(
-                          'Add User',
+                          S.of(context).addUserButton,
                           style: TextStyles.font13Whitemedium,
                         ),
                       ],
@@ -95,7 +96,7 @@ class UserManagmentBody extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Phone Number',
+                    S.of(context).addUserText10,
                     style: TextStyles.font14GreyRegular,
                   ),
                   Text(
@@ -109,7 +110,7 @@ class UserManagmentBody extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'ID Number',
+                    S.of(context).addUserText7,
                     style: TextStyles.font14GreyRegular,
                   ),
                   Text(
@@ -123,7 +124,7 @@ class UserManagmentBody extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Birthdate',
+                    S.of(context).addUserText4,
                     style: TextStyles.font14GreyRegular,
                   ),
                   Text(
@@ -137,7 +138,7 @@ class UserManagmentBody extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Nationality',
+                    S.of(context).addUserText8,
                     style: TextStyles.font14GreyRegular,
                   ),
                   Text(
@@ -151,29 +152,34 @@ class UserManagmentBody extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Gender',
+                    S.of(context).addUserText9,
                     style: TextStyles.font14GreyRegular,
                   ),
                   Text(
-                    'Female',
+                    'Male',
                     style: TextStyles.font13Blackmedium,
                   ),
                 ],
               ),
-              verticalSpace(5),
+              verticalSpace(20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   IconButton(
                       onPressed: () {
-                        showCustomDialog(context,
-                            'Are You Sure You Want To Remove This User ?');
+                        showCustomDialog(context, S.of(context).deleteMessage);
                       },
                       icon: Icon(IconBroken.delete)),
                   IconButton(
-                      onPressed: () {}, icon: Icon(Icons.mode_edit_outlined)),
+                      onPressed: () {
+                        context.pushNamed(Routes.editUserScreen);
+                      },
+                      icon: Icon(Icons.mode_edit_outlined)),
                   IconButton(
-                      onPressed: () {}, icon: Icon(Icons.edit_note_sharp)),
+                      onPressed: () {
+                        context.pushNamed(Routes.userDetailsScreen);
+                      },
+                      icon: Icon(Icons.edit_note_sharp)),
                 ],
               ),
             ],

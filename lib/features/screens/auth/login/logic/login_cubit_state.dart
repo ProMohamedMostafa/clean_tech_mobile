@@ -1,3 +1,5 @@
+import 'package:smart_cleaning_application/features/screens/auth/login/data/model/log_in_model.dart';
+
 abstract class LoginStates {}
 
 class LoginInitialState extends LoginStates {}
@@ -5,9 +7,9 @@ class LoginInitialState extends LoginStates {}
 class LoginLoadingState extends LoginStates {}
 
 class LoginSuccessState extends LoginStates {
-  // final SignInModel signinmodel;
+  final LogInModel loginmodel;
 
-  // LoginStateSuccessState(this.signinmodel);
+  LoginSuccessState(this.loginmodel);
 }
 
 class LoginErrorState extends LoginStates {
@@ -17,5 +19,3 @@ class LoginErrorState extends LoginStates {
 
 //************ */
 class ChangeSuffixIconVisiabiltyState extends LoginStates {}
-
-
