@@ -67,9 +67,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "forgotPassScreenTitle2": MessageLookupByLibrary.simpleMessage(
             "Don’t worry, happens to all of us. Enter your email below to recover your password"),
         "integ1": MessageLookupByLibrary.simpleMessage("User Management"),
-        "integ2": MessageLookupByLibrary.simpleMessage("Add Task"),
-        "integ3": MessageLookupByLibrary.simpleMessage("Reports"),
-        "integ4": MessageLookupByLibrary.simpleMessage("Settings"),
+        "integ2": MessageLookupByLibrary.simpleMessage("Organizations"),
+        "integ3": MessageLookupByLibrary.simpleMessage("Add Task"),
+        "integ4": MessageLookupByLibrary.simpleMessage("Reports"),
+        "integ5": MessageLookupByLibrary.simpleMessage("Settings"),
         "labelEmail": MessageLookupByLibrary.simpleMessage("Email or userName"),
         "labelPassword": MessageLookupByLibrary.simpleMessage("Password"),
         "loginButton": MessageLookupByLibrary.simpleMessage("Login"),

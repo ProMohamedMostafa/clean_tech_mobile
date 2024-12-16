@@ -33,20 +33,27 @@ class IntegrationsBody extends StatelessWidget {
                     IconBroken.addUser,
                   ),
                   buildIntegrationItem(
-                    () {},
+                    () {
+                      context.pushNamed(Routes.organizationsScreen);
+                    },
                     S.of(context).integ2,
-                    Icons.task_outlined,
+                    Icons.location_city_outlined,
                   ),
                   buildIntegrationItem(
                     () {},
                     S.of(context).integ3,
+                    Icons.task_outlined,
+                  ),
+                  buildIntegrationItem(
+                    () {},
+                    S.of(context).integ4,
                     Icons.file_copy_outlined,
                   ),
                   buildIntegrationItem(
                     () {
                       context.pushNamed(Routes.settingsScreen);
                     },
-                    S.of(context).integ4,
+                    S.of(context).integ5,
                     IconBroken.setting,
                   ),
                 ],

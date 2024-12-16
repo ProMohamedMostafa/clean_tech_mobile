@@ -71,9 +71,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "forgotPassScreenTitle2": MessageLookupByLibrary.simpleMessage(
             "لا تقلق،أدخل بريدك الإلكتروني أدناه لاستعادة كلمة المرور الخاصة بك"),
         "integ1": MessageLookupByLibrary.simpleMessage("إدارة المستخدمين"),
-        "integ2": MessageLookupByLibrary.simpleMessage("إضافة مهمة"),
-        "integ3": MessageLookupByLibrary.simpleMessage("التقارير"),
-        "integ4": MessageLookupByLibrary.simpleMessage("الإعدادات"),
+        "integ2": MessageLookupByLibrary.simpleMessage("المنظمات"),
+        "integ3": MessageLookupByLibrary.simpleMessage("إضافة مهمة"),
+        "integ4": MessageLookupByLibrary.simpleMessage("التقارير"),
+        "integ5": MessageLookupByLibrary.simpleMessage("الإعدادات"),
         "labelEmail":
             MessageLookupByLibrary.simpleMessage("الأيميل او اسم المستخدم"),
         "labelPassword": MessageLookupByLibrary.simpleMessage("كلمة المرور"),

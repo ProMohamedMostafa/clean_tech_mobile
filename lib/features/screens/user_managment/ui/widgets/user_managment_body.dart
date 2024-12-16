@@ -169,17 +169,26 @@ class UserManagmentBody extends StatelessWidget {
                       onPressed: () {
                         showCustomDialog(context, S.of(context).deleteMessage);
                       },
-                      icon: Icon(IconBroken.delete)),
+                      icon: Icon(
+                        IconBroken.delete,
+                        color: AppColor.primaryColor,
+                      )),
                   IconButton(
                       onPressed: () {
                         context.pushNamed(Routes.editUserScreen);
                       },
-                      icon: Icon(Icons.mode_edit_outlined)),
+                      icon: Icon(
+                        Icons.mode_edit_outlined,
+                        color: AppColor.primaryColor,
+                      )),
                   IconButton(
                       onPressed: () {
                         context.pushNamed(Routes.userDetailsScreen);
                       },
-                      icon: Icon(Icons.edit_note_sharp)),
+                      icon: Icon(
+                        Icons.edit_note_sharp,
+                        color: AppColor.primaryColor,
+                      )),
                 ],
               ),
             ],

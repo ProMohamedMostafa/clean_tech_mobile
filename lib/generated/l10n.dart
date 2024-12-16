@@ -450,31 +450,41 @@ class S {
     );
   }
 
-  /// `Add Task`
+  /// `Organizations`
   String get integ2 {
     return Intl.message(
-      'Add Task',
+      'Organizations',
       name: 'integ2',
       desc: '',
       args: [],
     );
   }
 
-  /// `Reports`
+  /// `Add Task`
   String get integ3 {
     return Intl.message(
-      'Reports',
+      'Add Task',
       name: 'integ3',
       desc: '',
       args: [],
     );
   }
 
-  /// `Settings`
+  /// `Reports`
   String get integ4 {
     return Intl.message(
-      'Settings',
+      'Reports',
       name: 'integ4',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Settings`
+  String get integ5 {
+    return Intl.message(
+      'Settings',
+      name: 'integ5',
       desc: '',
       args: [],
     );
