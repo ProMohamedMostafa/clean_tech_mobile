@@ -7,5 +7,16 @@ class OrganizationsCubit extends Cubit<OrganizationsState> {
 
   static OrganizationsCubit get(context) => BlocProvider.of(context);
   TextEditingController searchController = TextEditingController();
+
+  TextEditingController countryController = TextEditingController();
+  TextEditingController areaController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
+  TextEditingController organizationsController = TextEditingController();
+  TextEditingController buildingController = TextEditingController();
+  TextEditingController floorController = TextEditingController();
+  TextEditingController pointController = TextEditingController();
+  
+  
+
   final formKey = GlobalKey<FormState>();
 }

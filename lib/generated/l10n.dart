@@ -510,20 +510,20 @@ class S {
     );
   }
 
-  /// `Reports`
+  /// `Sharing App`
   String get settingTitle3 {
     return Intl.message(
-      'Reports',
+      'Sharing App',
       name: 'settingTitle3',
       desc: '',
       args: [],
     );
   }
 
-  /// `Contact us`
+  /// `Technical Support`
   String get settingTitle4 {
     return Intl.message(
-      'Contact us',
+      'Technical Support',
       name: 'settingTitle4',
       desc: '',
       args: [],
@@ -560,10 +560,10 @@ class S {
     );
   }
 
-  /// `Dark Theme`
+  /// `Night Mode`
   String get settingTitle8 {
     return Intl.message(
-      'Dark Theme',
+      'Night Mode',
       name: 'settingTitle8',
       desc: '',
       args: [],

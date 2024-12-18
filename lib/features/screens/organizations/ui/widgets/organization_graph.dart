@@ -6,7 +6,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 Widget graph(TooltipBehavior? tooltipBehavior, List<ChartData>? chartData) {
   return SizedBox(
       width: double.infinity,
-      height: 270.h,
+      height: 200.h,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: SizedBox(
@@ -18,7 +18,7 @@ Widget graph(TooltipBehavior? tooltipBehavior, List<ChartData>? chartData) {
               primaryXAxis: CategoryAxis(
                 majorGridLines: MajorGridLines(width: 0),
                 majorTickLines: MajorTickLines(size: 2),
-                labelRotation: -45,
+                labelRotation: 0,
                 labelPlacement: LabelPlacement.onTicks,
                 minimum: 0,
                 maximum: chartData.length - 1,

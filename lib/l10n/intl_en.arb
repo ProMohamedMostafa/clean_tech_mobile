@@ -45,12 +45,12 @@
     "integ5": "Settings",
     "settingTitle1": "Change personal information",
     "settingTitle2": "Change password",
-    "settingTitle3": "Reports",
-    "settingTitle4": "Contact us",
+    "settingTitle3": "Sharing App",
+    "settingTitle4": "Technical Support",
     "settingTitle5": "Our Website",
     "settingTitle6": "Languages",
     "settingTitle7": "Notification",
-    "settingTitle8": "Dark Theme",
+    "settingTitle8": "Night Mode",
     "settingTitle9": "Log out",
     "addUserTitle": "Add User",
     "addUserText1": "First Name",
@@ -71,6 +71,6 @@
     "deleteMessage": "Are You Sure You Want To Remove This User ?",
     "editUserTitle": "Edit User",
     "userDetailsTitle": "User Details",
-    "deleteButton":"Delete",
-    "editButton":"Edit"
+    "deleteButton": "Delete",
+    "editButton": "Edit"
 }

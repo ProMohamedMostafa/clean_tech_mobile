@@ -99,13 +99,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("تغيير المعلومات الشخصية"),
         "settingTitle2":
             MessageLookupByLibrary.simpleMessage("تغيير كلمة المرور"),
-        "settingTitle3": MessageLookupByLibrary.simpleMessage("التقارير"),
-        "settingTitle4": MessageLookupByLibrary.simpleMessage("اتصل بنا"),
+        "settingTitle3": MessageLookupByLibrary.simpleMessage("مشاركة التطبيق"),
+        "settingTitle4": MessageLookupByLibrary.simpleMessage("الدعم الفني"),
         "settingTitle5":
             MessageLookupByLibrary.simpleMessage("موقعنا الإلكتروني"),
         "settingTitle6": MessageLookupByLibrary.simpleMessage("اللغات"),
         "settingTitle7": MessageLookupByLibrary.simpleMessage("الإشعارات"),
-        "settingTitle8": MessageLookupByLibrary.simpleMessage("الوضع الداكن"),
+        "settingTitle8": MessageLookupByLibrary.simpleMessage("الوضع الليلي"),
         "settingTitle9": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
         "submitButton": MessageLookupByLibrary.simpleMessage("ارسال"),
         "termsConditions": MessageLookupByLibrary.simpleMessage(

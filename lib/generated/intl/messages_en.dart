@@ -93,12 +93,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Change personal information"),
         "settingTitle2":
             MessageLookupByLibrary.simpleMessage("Change password"),
-        "settingTitle3": MessageLookupByLibrary.simpleMessage("Reports"),
-        "settingTitle4": MessageLookupByLibrary.simpleMessage("Contact us"),
+        "settingTitle3": MessageLookupByLibrary.simpleMessage("Sharing App"),
+        "settingTitle4":
+            MessageLookupByLibrary.simpleMessage("Technical Support"),
         "settingTitle5": MessageLookupByLibrary.simpleMessage("Our Website"),
         "settingTitle6": MessageLookupByLibrary.simpleMessage("Languages"),
         "settingTitle7": MessageLookupByLibrary.simpleMessage("Notification"),
-        "settingTitle8": MessageLookupByLibrary.simpleMessage("Dark Theme"),
+        "settingTitle8": MessageLookupByLibrary.simpleMessage("Night Mode"),
         "settingTitle9": MessageLookupByLibrary.simpleMessage("Log out"),
         "submitButton": MessageLookupByLibrary.simpleMessage("Submit"),
         "termsConditions": MessageLookupByLibrary.simpleMessage(

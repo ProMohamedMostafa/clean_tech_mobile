@@ -44,12 +44,12 @@ class _SettingsBodyState extends State<SettingsBody> {
                       Icons.edit_note_rounded),
                   listTileWidget(
                       () {}, S.of(context).settingTitle2, Icons.password_sharp),
-                  listTileWidget(() {}, S.of(context).settingTitle3,
-                      Icons.file_copy_outlined),
                   listTileWidget(
                       () {}, S.of(context).settingTitle4, Icons.phone),
                   listTileWidget(() {}, S.of(context).settingTitle5,
                       Icons.desktop_windows_outlined),
+                  listTileWidget(
+                      () {}, S.of(context).settingTitle3, Icons.share),
                   listTileWidget(
                       () {}, S.of(context).settingTitle6, Icons.language),
                   toggleListTile(() {

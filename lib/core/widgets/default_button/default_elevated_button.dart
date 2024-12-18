@@ -5,7 +5,7 @@ import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 class DefaultElevatedButton extends StatelessWidget {
   final String name;
   final int height;
-  final int width;
+  final num width;
   final Function? onPressed;
   final Color color;
   final TextStyle? textStyles;

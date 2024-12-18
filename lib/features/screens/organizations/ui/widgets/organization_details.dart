@@ -7,9 +7,12 @@ import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/organizations/logic/organizations_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/organizations/ui/widgets/details_bottom_dialog.dart';
+import 'package:smart_cleaning_application/features/screens/organizations/ui/widgets/edit_bottom_dialog.dart';
+import 'package:smart_cleaning_application/features/screens/organizations/ui/widgets/filter_search.dart';
 import 'package:smart_cleaning_application/features/screens/organizations/ui/widgets/organizations_text_form_field.dart';
 
-Widget organizationsDetails(BuildContext context) {
+Widget organizationsDetails(OrganizationsCubit cubit, BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -19,22 +22,12 @@ Widget organizationsDetails(BuildContext context) {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Expanded(
-              flex: 1,
-              child: IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.tune,
-                    color: AppColor.primaryColor,
-                    size: 30.sp,
-                  )),
-            ),
+            filterSearchOrganizationBuild(),
             horizontalSpace(10),
             Expanded(
               flex: 7,
               child: OrganizationsTextFormField(
-                  controller:
-                      context.read<OrganizationsCubit>().searchController,
+                  controller: cubit.searchController,
                   hintText: 'Choose Country',
                   suffixIcon: Icons.arrow_forward_ios_rounded,
                   keyboardType: TextInputType.text,
@@ -111,9 +104,27 @@ Widget organizationsDetails(BuildContext context) {
                 showCustomDialog(context,
                     'Are You Sure You Want To Remove This Organization ?');
               },
-              icon: Icon(IconBroken.delete,color: AppColor.primaryColor,)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.mode_edit_outlined,color: AppColor.primaryColor,)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.edit_note_sharp,color: AppColor.primaryColor,)),
+              icon: Icon(
+                IconBroken.delete,
+                color: AppColor.primaryColor,
+              )),
+          IconButton(
+              onPressed: () {
+                EditBottomDialog().showBottomDialog(
+                    context, context.read<OrganizationsCubit>());
+              },
+              icon: Icon(
+                Icons.mode_edit_outlined,
+                color: AppColor.primaryColor,
+              )),
+          IconButton(
+              onPressed: () {
+                DetailsBottomDialog().showBottomDialog(context);
+              },
+              icon: Icon(
+                Icons.edit_note_sharp,
+                color: AppColor.primaryColor,
+              )),
         ],
       ),
       Divider(
