@@ -17,15 +17,19 @@ Widget graph(TooltipBehavior? tooltipBehavior, List<ChartData>? chartData) {
               plotAreaBorderWidth: 0,
               primaryXAxis: CategoryAxis(
                 majorGridLines: MajorGridLines(width: 0),
-                majorTickLines: MajorTickLines(size: 2),
+                majorTickLines: MajorTickLines(size: 1),
                 labelRotation: 0,
                 labelPlacement: LabelPlacement.onTicks,
                 minimum: 0,
                 maximum: chartData.length - 1,
               ),
-              primaryYAxis: const NumericAxis(
-                majorGridLines: MajorGridLines(width: 0),
+              primaryYAxis: NumericAxis(
+                majorGridLines: MajorGridLines(
+                  width: 0.5,
+                  color: Colors.grey.withOpacity(0.3),
+                ),
                 majorTickLines: MajorTickLines(size: 0),
+                axisLine: AxisLine(width: 0),
               ),
               tooltipBehavior: tooltipBehavior,
               // legend: const Legend(isVisible: true),
@@ -37,8 +41,8 @@ Widget graph(TooltipBehavior? tooltipBehavior, List<ChartData>? chartData) {
                   //     isVisible: true, useSeriesColor: true),
                   gradient: LinearGradient(
                     colors: [
-                      AppColor.primaryColor.withOpacity(0.8),
-                      AppColor.primaryColor.withOpacity(0.1),
+                      AppColor.primaryColor.withOpacity(0.5),
+                      Colors.white.withOpacity(0.1),
                     ],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,

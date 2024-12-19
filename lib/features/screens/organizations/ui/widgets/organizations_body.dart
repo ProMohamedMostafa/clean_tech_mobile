@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/features/screens/organizations/logic/organizations_cubit.dart';
@@ -52,25 +54,35 @@ class _OrganizationsBodyState extends State<OrganizationsBody> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Add Organization",
-                      style: TextStyles.font20BlacksemiBold,
-                    ),
-                    verticalSpace(10),
                     addOrganizationBuild(context),
                     verticalSpace(20),
-                    Text(
-                      "Number of Area in Countries",
-                      style: TextStyles.font20BlacksemiBold,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Countries overview",
+                          style: TextStyles.font18PrimBold,
+                        ),
+                        Spacer(),
+                        Text(
+                          "Weekly",
+                          style: TextStyles.font12GreyRegular,
+                        ),
+                        Icon(
+                          Icons.keyboard_arrow_down_rounded,
+                          size: 20.sp,
+                          color: AppColor.thirdColor,
+                        )
+                      ],
                     ),
                     verticalSpace(15),
                     graph(_tooltipBehavior, chartData),
-                    verticalSpace(20),
+                    verticalSpace(25),
                     Text(
                       "Organization Details",
-                      style: TextStyles.font20BlacksemiBold,
+                      style: TextStyles.font18PrimBold,
                     ),
-                    verticalSpace(5),
+                    verticalSpace(10),
                     organizationsDetails(
                         context.read<OrganizationsCubit>(), context),
                   ],

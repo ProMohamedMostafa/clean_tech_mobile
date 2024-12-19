@@ -12,12 +12,20 @@ Widget addOrganizationBuild(BuildContext context) {
   return Container(
     decoration: BoxDecoration(
         border: Border.all(color: AppColor.primaryColor),
-        borderRadius: BorderRadius.circular(5.r)),
+        borderRadius: BorderRadius.circular(20.r)),
     padding: EdgeInsets.all(10),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            "Add Organization",
+            style: TextStyles.font18PrimBold,
+          ),
+        ),
+        verticalSpace(15),
         StepProgressIndicator(
           currentStep: 1,
           steps: [
