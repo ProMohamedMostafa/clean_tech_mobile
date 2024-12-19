@@ -4,7 +4,7 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/features/screens/user_managment/logic/user_mangement_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/user_managment/ui/widgets/addin_search_build.dart';
+import 'package:smart_cleaning_application/features/screens/user_managment/ui/widgets/filter_search_build.dart';
 import 'package:smart_cleaning_application/features/screens/user_managment/ui/widgets/data_view_build.dart';
 import 'package:smart_cleaning_application/features/screens/user_managment/ui/widgets/graph_user_management.dart';
 import 'package:smart_cleaning_application/features/screens/user_managment/ui/widgets/user_details_build.dart';
@@ -26,11 +26,11 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
   }
 
   final List<ChartData> chartData = [
-    ChartData('NasrCity', 3, 4),
-    ChartData('Future', 5, 6),
-    ChartData('Hegaz', 6, 8),
-    ChartData('Tagmoa', 5, 7),
-    ChartData('Sherok', 2, 3),
+    ChartData('Building 1', 6, 7),
+    ChartData('Building 2', 5, 6),
+    ChartData('Building 3', 6, 8),
+    ChartData('Building 4', 5, 7),
+    ChartData('Building 5', 3, 6),
   ];
 
   @override
@@ -49,14 +49,14 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
               verticalSpace(10),
               dataViewBuild(),
               verticalSpace(20),
-              Text("User management overview",
+              Text("User-management overview",
                   style: TextStyles.font18PrimBold),
               verticalSpace(20),
               graphUserManagement(_tooltipBehavior, chartData),
               verticalSpace(20),
-              Text("Adding user", style: TextStyles.font18PrimBold),
-              verticalSpace(20),
-              addingAndSearchBuild(
+              Text("User-management Details", style: TextStyles.font18PrimBold),
+              verticalSpace(10),
+              filterAndSearchBuild(
                   context, context.read<UserManagementCubit>()),
               verticalSpace(20),
               userDetailsBuild(context)
@@ -66,8 +66,6 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
       )),
     );
   }
-
-  
 }
 
 

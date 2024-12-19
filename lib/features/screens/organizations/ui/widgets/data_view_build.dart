@@ -3,11 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 
-Widget dataViewBuild() {
-  return Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+Widget dataViewOrgnizationBuild() {
+  return Row(children: [
     Expanded(
       child: Container(
-        height: 110.h,
+        height: 80.h,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.r),
           color: Color(0xFF00a9b5),
@@ -26,12 +26,11 @@ Widget dataViewBuild() {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "64",
+                    "3",
                     style: TextStyles.font16WhiteSemiBold,
                   ),
                   Text(
-                    "employee\nIn\nOrganization ",
-                    textAlign: TextAlign.center,
+                    "Buildings",
                     style: TextStyles.font13Whitemedium,
                   ),
                 ],
@@ -44,7 +43,7 @@ Widget dataViewBuild() {
     horizontalSpace(10),
     Expanded(
       child: Container(
-        height: 110.h,
+        height: 80.h,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.r),
           color: Color(0xFFEAAC7F),
@@ -67,8 +66,7 @@ Widget dataViewBuild() {
                     style: TextStyles.font16WhiteSemiBold,
                   ),
                   Text(
-                    "employee\nIn\nBuilding",
-                    textAlign: TextAlign.center,
+                    "Floors",
                     style: TextStyles.font13Whitemedium,
                   ),
                 ],
@@ -81,7 +79,7 @@ Widget dataViewBuild() {
     horizontalSpace(10),
     Expanded(
       child: Container(
-        height: 110.h,
+        height: 80.h,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.r),
           color: Color(0xFF00a9b5),
@@ -100,12 +98,11 @@ Widget dataViewBuild() {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "8",
+                    "192",
                     style: TextStyles.font16WhiteSemiBold,
                   ),
                   Text(
-                    "employee\nIn\nFloor",
-                    textAlign: TextAlign.center,
+                    "Points",
                     style: TextStyles.font13Whitemedium,
                   ),
                 ],
