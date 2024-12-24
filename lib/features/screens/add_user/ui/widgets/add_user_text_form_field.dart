@@ -8,6 +8,7 @@ class AddUserTextFormField extends StatelessWidget {
   final TextEditingController controller;
 
   final bool obscureText;
+  final bool readOnly;
   final TextInputType keyboardType;
   final IconData? suffixIcon;
   final VoidCallback? onTap;
@@ -33,6 +34,7 @@ class AddUserTextFormField extends StatelessWidget {
     this.suffixPressed,
     this.perfix,
     this.inputFormatters,
+    required this.readOnly,
   });
 
   @override
@@ -44,6 +46,7 @@ class AddUserTextFormField extends StatelessWidget {
       },
       controller: controller,
       obscureText: obscureText,
+      readOnly: readOnly,
       keyboardType: keyboardType,
       focusNode: focusNode,
       onTap: onTap,
@@ -61,10 +64,7 @@ class AddUserTextFormField extends StatelessWidget {
                 },
                 icon: Padding(
                   padding: const EdgeInsets.only(right: 5),
-                  child: Icon(
-                    suffixIcon,
-                    color: Colors.black,
-                  ),
+                  child: Icon(suffixIcon, color: AppColor.thirdColor),
                 ),
               )
             : null,

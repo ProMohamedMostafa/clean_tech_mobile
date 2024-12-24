@@ -25,6 +25,7 @@ class LoginCubit extends Cubit<LoginStates> {
     }).then((value) {
       logInModel = LogInModel.fromJson(value!.data);
       saveUserToken(logInModel!.data?.token ?? '');
+      saveUserId(logInModel!.data?.id ?? 0);
       emit(LoginSuccessState(logInModel!));
     }).catchError((error) {
       emit(LoginErrorState(error.toString()));
@@ -34,6 +35,11 @@ class LoginCubit extends Cubit<LoginStates> {
   Future<void> saveUserToken(String token) async {
     await CacheHelper.setSecuredString(SharedPrefKeys.userToken, token);
     DioHelper.setTokenIntoHeaderAfterLogin(token);
+  }
+
+  Future<void> saveUserId(int id) async {
+    await CacheHelper.setData(key: SharedPrefKeys.userId, value: id);
+    uId = await CacheHelper.getInt(SharedPrefKeys.userId);
   }
 
   IconData suffixIcon = Icons.visibility_outlined;

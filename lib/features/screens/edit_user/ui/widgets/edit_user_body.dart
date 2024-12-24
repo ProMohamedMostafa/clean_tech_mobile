@@ -19,7 +19,7 @@ class EditUserBody extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-         S.of(context).editUserTitle,
+          S.of(context).editUserTitle,
           style: TextStyles.font24PrimsemiBold,
         ),
         centerTitle: true,
@@ -77,6 +77,20 @@ class EditUserBody extends StatelessWidget {
                     ),
                   ),
                   verticalSpace(35),
+                  EditUserTextField(
+                    controller:
+                        context.read<EditUserCubit>().userNameController,
+                    obscureText: false,
+                    keyboardType: TextInputType.text,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return S.of(context).validationUserName;
+                      }
+                    },
+                    label: S.of(context).addUserText5,
+                    hint: "mosad11",
+                  ),
+                  verticalSpace(15),
                   EditUserTextField(
                     controller:
                         context.read<EditUserCubit>().firstNameController,
@@ -141,20 +155,6 @@ class EditUserBody extends StatelessWidget {
                     },
                     label: S.of(context).addUserText4,
                     hint: "6-6-1994",
-                  ),
-                  verticalSpace(15),
-                  EditUserTextField(
-                    controller:
-                        context.read<EditUserCubit>().userNameController,
-                    obscureText: false,
-                    keyboardType: TextInputType.text,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return S.of(context).validationEmailAndUser;
-                      }
-                    },
-                    label: S.of(context).addUserText5,
-                    hint: "mosad11",
                   ),
                   verticalSpace(10),
                   EditUserTextField(

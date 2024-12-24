@@ -16,6 +16,8 @@ import 'package:smart_cleaning_application/features/screens/auth/set_password/ui
 import 'package:smart_cleaning_application/features/screens/auth/verify_account/logic/verify_account_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/auth/verify_account/ui/screen/verify_account.dart';
 import 'package:smart_cleaning_application/features/screens/calendar/calendar_screen.dart';
+import 'package:smart_cleaning_application/features/screens/change_password/logic/change_password_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/change_password/ui/screen/change_password_screen.dart';
 import 'package:smart_cleaning_application/features/screens/edit_user/logic/edit_user_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/edit_user/ui/screen/edit_user_screen.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/screen/home_screen.dart';
@@ -24,6 +26,7 @@ import 'package:smart_cleaning_application/features/screens/integrations/ui/scre
 import 'package:smart_cleaning_application/features/screens/organizations/logic/organizations_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/organizations/ui/screen/organizations_screen.dart';
 import 'package:smart_cleaning_application/features/screens/settings/ui/screen/settings_screen.dart';
+import 'package:smart_cleaning_application/features/screens/user_details/logic/user_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user_managment/logic/user_mangement_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user_managment/ui/screen/user_managment.dart';
 import 'package:smart_cleaning_application/features/screens/user_details/ui/widgets/user_details_body.dart';
@@ -117,7 +120,10 @@ class AppRouter {
         );
       case Routes.userDetailsScreen:
         return MaterialPageRoute(
-          builder: (_) => const UserDetailsBody(),
+          builder: (_) => BlocProvider(
+            create: (context) => UserCubit(),
+            child: const UserDetailsBody(),
+          ),
         );
       case Routes.editUserScreen:
         return MaterialPageRoute(
@@ -129,6 +135,13 @@ class AppRouter {
       case Routes.settingsScreen:
         return MaterialPageRoute(
           builder: (_) => const SettingsScreen(),
+        );
+      case Routes.changepasswordScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => ChangePasswordCubit(),
+            child: const ChangePasswordScreen(),
+          ),
         );
       default:
         return null;

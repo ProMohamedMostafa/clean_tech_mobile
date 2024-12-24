@@ -26,6 +26,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "addUserButton": MessageLookupByLibrary.simpleMessage("Add User"),
         "addUserText1": MessageLookupByLibrary.simpleMessage("First Name"),
         "addUserText10": MessageLookupByLibrary.simpleMessage("Phone Number"),
+        "addUserText11":
+            MessageLookupByLibrary.simpleMessage("Password Confirmation"),
+        "addUserText12": MessageLookupByLibrary.simpleMessage("Country"),
+        "addUserText13": MessageLookupByLibrary.simpleMessage("Role"),
+        "addUserText14": MessageLookupByLibrary.simpleMessage("Manager"),
+        "addUserText15": MessageLookupByLibrary.simpleMessage("Provider"),
         "addUserText2": MessageLookupByLibrary.simpleMessage("Last Name"),
         "addUserText3": MessageLookupByLibrary.simpleMessage("Email"),
         "addUserText4": MessageLookupByLibrary.simpleMessage("Birthdate"),
@@ -106,14 +112,47 @@ class MessageLookup extends MessageLookupByLibrary {
             "Terms & Conditions and Conditions"),
         "userDetailsTitle":
             MessageLookupByLibrary.simpleMessage("User Details"),
+        "validationAddEmail":
+            MessageLookupByLibrary.simpleMessage("Email is required"),
+        "validationAddEmail2":
+            MessageLookupByLibrary.simpleMessage("Invalid email format"),
+        "validationAddPassword":
+            MessageLookupByLibrary.simpleMessage("Password is required"),
+        "validationAddPasswordConfirmation":
+            MessageLookupByLibrary.simpleMessage(
+                "Password confirmation is required"),
+        "validationBirthdate": MessageLookupByLibrary.simpleMessage(
+            "Choose Birthdate is required"),
+        "validationCountry": MessageLookupByLibrary.simpleMessage(
+            "Selected Country is required"),
         "validationEmail":
             MessageLookupByLibrary.simpleMessage("Invalid email address"),
         "validationEmailAndUser": MessageLookupByLibrary.simpleMessage(
             "Invalid email address or userName"),
+        "validationFirstName":
+            MessageLookupByLibrary.simpleMessage("First name is required"),
+        "validationGender":
+            MessageLookupByLibrary.simpleMessage("Gender is required"),
+        "validationIdNumber":
+            MessageLookupByLibrary.simpleMessage("ID number is required"),
+        "validationLastName":
+            MessageLookupByLibrary.simpleMessage("Last name is required"),
+        "validationManager": MessageLookupByLibrary.simpleMessage(
+            "Selected Manager is required"),
+        "validationNationality":
+            MessageLookupByLibrary.simpleMessage("Nationality is required"),
         "validationPassword":
             MessageLookupByLibrary.simpleMessage("Invalid password"),
+        "validationPhoneNumber":
+            MessageLookupByLibrary.simpleMessage("Phone number is required"),
+        "validationProvider":
+            MessageLookupByLibrary.simpleMessage("Provider is required"),
         "validationRepeatPassword":
             MessageLookupByLibrary.simpleMessage("Password not matched"),
+        "validationRole":
+            MessageLookupByLibrary.simpleMessage("Selected Role is required"),
+        "validationUserName":
+            MessageLookupByLibrary.simpleMessage("User name is required"),
         "validationVerify":
             MessageLookupByLibrary.simpleMessage("Invalid code"),
         "verifyAccountScreenTextField":

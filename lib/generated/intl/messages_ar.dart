@@ -27,6 +27,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "addUserButton": MessageLookupByLibrary.simpleMessage("اضافه مستخدم"),
         "addUserText1": MessageLookupByLibrary.simpleMessage("الاسم الاول"),
         "addUserText10": MessageLookupByLibrary.simpleMessage("رقم الهاتف"),
+        "addUserText11":
+            MessageLookupByLibrary.simpleMessage("تاكيد كلمة المرور"),
+        "addUserText12": MessageLookupByLibrary.simpleMessage("البلد"),
+        "addUserText13": MessageLookupByLibrary.simpleMessage("الدور"),
+        "addUserText14": MessageLookupByLibrary.simpleMessage("مدير"),
+        "addUserText15": MessageLookupByLibrary.simpleMessage("مزود"),
         "addUserText2": MessageLookupByLibrary.simpleMessage("الاسم الاخير"),
         "addUserText3": MessageLookupByLibrary.simpleMessage("الايميل"),
         "addUserText4": MessageLookupByLibrary.simpleMessage("تارخ الميلاد"),
@@ -112,14 +118,45 @@ class MessageLookup extends MessageLookupByLibrary {
             "الشروط والأحكام و سياسة الخصوصية"),
         "userDetailsTitle":
             MessageLookupByLibrary.simpleMessage("تفاصيل المستخدم"),
+        "validationAddEmail":
+            MessageLookupByLibrary.simpleMessage("مطلوب البريد الإلكتروني"),
+        "validationAddEmail2": MessageLookupByLibrary.simpleMessage(
+            "تنسيق البريد الإلكتروني غير صحيح"),
+        "validationAddPassword":
+            MessageLookupByLibrary.simpleMessage("مطلوب كلمة المرور"),
+        "validationAddPasswordConfirmation":
+            MessageLookupByLibrary.simpleMessage("مطلوب تأكيد كلمة المرور"),
+        "validationBirthdate":
+            MessageLookupByLibrary.simpleMessage("مطلوب اختيار تاريخ الميلاد"),
+        "validationCountry":
+            MessageLookupByLibrary.simpleMessage("مطلوب اختيارالدولة"),
         "validationEmail":
             MessageLookupByLibrary.simpleMessage("اكتب الايميل بطريقة صحيحة"),
         "validationEmailAndUser": MessageLookupByLibrary.simpleMessage(
             "اكتب الايميل او اسم المستخدم بطريقة صحيحة"),
+        "validationFirstName":
+            MessageLookupByLibrary.simpleMessage("مطلوب الاسم الأول"),
+        "validationGender": MessageLookupByLibrary.simpleMessage("مطلوب النوع"),
+        "validationIdNumber":
+            MessageLookupByLibrary.simpleMessage("مطلوب رقم الهوية"),
+        "validationLastName":
+            MessageLookupByLibrary.simpleMessage("مطلوب الاسم الأخير"),
+        "validationManager":
+            MessageLookupByLibrary.simpleMessage("مطلوب اختيار المدير"),
+        "validationNationality":
+            MessageLookupByLibrary.simpleMessage("مطلوبة الجنسية"),
         "validationPassword": MessageLookupByLibrary.simpleMessage(
             "اكتب كلمة المرور بطريقة صحيحة"),
+        "validationPhoneNumber": MessageLookupByLibrary.simpleMessage(
+            "كلمة المرور يجب ان تكون متشابه"),
+        "validationProvider":
+            MessageLookupByLibrary.simpleMessage("مطلوب المزود"),
         "validationRepeatPassword": MessageLookupByLibrary.simpleMessage(
             "كلمة المرور يجب ان تكون متشابه"),
+        "validationRole":
+            MessageLookupByLibrary.simpleMessage("مطلوب اختيار الدور"),
+        "validationUserName":
+            MessageLookupByLibrary.simpleMessage("مطلوب اسم المستخدم"),
         "validationVerify":
             MessageLookupByLibrary.simpleMessage("اكتب الرمز بطريقة صحيحة"),
         "verifyAccountScreenTextField":

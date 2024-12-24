@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import 'package:smart_cleaning_application/core/helpers/cache_helper/cache_helper.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/api_error_handler/api_error_handler.dart';
@@ -32,8 +31,6 @@ class DioHelper {
 
   /// Add default headers
   static Future<void> setHeaders() async {
-    String? token =
-        await CacheHelper.getSecuredString(SharedPrefKeys.userToken);
     dio?.options.headers = {
       'lang': 'en',
       'Content-Type': 'application/json',
@@ -83,12 +80,24 @@ class DioHelper {
       throw Exception(error.message);
     }
   }
+  static Future<Response?> postData2({
+    required String url,
+    Map<String, dynamic>? query,
+    required FormData data,
+  }) async {
+    try {
+      return await dio!.post(url, queryParameters: query, data: data);
+    } on DioException catch (e) {
+      final error = ApiErrorHandler.handle(e);
+      throw Exception(error.message);
+    }
+  }
 
   /// PUT request
   static Future<Response?> putData({
     required String url,
     Map<String, dynamic>? query,
-    required Map<String, dynamic> data,
+    Map<String, dynamic>? data,
   }) async {
     try {
       return await dio!.put(url, queryParameters: query, data: data);

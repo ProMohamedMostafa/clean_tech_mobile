@@ -130,6 +130,166 @@ class S {
     );
   }
 
+  /// `User name is required`
+  String get validationUserName {
+    return Intl.message(
+      'User name is required',
+      name: 'validationUserName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `First name is required`
+  String get validationFirstName {
+    return Intl.message(
+      'First name is required',
+      name: 'validationFirstName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last name is required`
+  String get validationLastName {
+    return Intl.message(
+      'Last name is required',
+      name: 'validationLastName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email is required`
+  String get validationAddEmail {
+    return Intl.message(
+      'Email is required',
+      name: 'validationAddEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid email format`
+  String get validationAddEmail2 {
+    return Intl.message(
+      'Invalid email format',
+      name: 'validationAddEmail2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password is required`
+  String get validationAddPassword {
+    return Intl.message(
+      'Password is required',
+      name: 'validationAddPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password confirmation is required`
+  String get validationAddPasswordConfirmation {
+    return Intl.message(
+      'Password confirmation is required',
+      name: 'validationAddPasswordConfirmation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ID number is required`
+  String get validationIdNumber {
+    return Intl.message(
+      'ID number is required',
+      name: 'validationIdNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nationality is required`
+  String get validationNationality {
+    return Intl.message(
+      'Nationality is required',
+      name: 'validationNationality',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Selected Country is required`
+  String get validationCountry {
+    return Intl.message(
+      'Selected Country is required',
+      name: 'validationCountry',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Selected Role is required`
+  String get validationRole {
+    return Intl.message(
+      'Selected Role is required',
+      name: 'validationRole',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Selected Manager is required`
+  String get validationManager {
+    return Intl.message(
+      'Selected Manager is required',
+      name: 'validationManager',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Gender is required`
+  String get validationGender {
+    return Intl.message(
+      'Gender is required',
+      name: 'validationGender',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Provider is required`
+  String get validationProvider {
+    return Intl.message(
+      'Provider is required',
+      name: 'validationProvider',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone number is required`
+  String get validationPhoneNumber {
+    return Intl.message(
+      'Phone number is required',
+      name: 'validationPhoneNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose Birthdate is required`
+  String get validationBirthdate {
+    return Intl.message(
+      'Choose Birthdate is required',
+      name: 'validationBirthdate',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Forgot Password?`
   String get forgotPassButton {
     return Intl.message(
@@ -685,6 +845,56 @@ class S {
     return Intl.message(
       'Phone Number',
       name: 'addUserText10',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password Confirmation`
+  String get addUserText11 {
+    return Intl.message(
+      'Password Confirmation',
+      name: 'addUserText11',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Country`
+  String get addUserText12 {
+    return Intl.message(
+      'Country',
+      name: 'addUserText12',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Role`
+  String get addUserText13 {
+    return Intl.message(
+      'Role',
+      name: 'addUserText13',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Manager`
+  String get addUserText14 {
+    return Intl.message(
+      'Manager',
+      name: 'addUserText14',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Provider`
+  String get addUserText15 {
+    return Intl.message(
+      'Provider',
+      name: 'addUserText15',
       desc: '',
       args: [],
     );

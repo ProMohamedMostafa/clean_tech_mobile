@@ -33,6 +33,11 @@ class TextStyles {
     fontWeight: FontWeightHelper.medium,
     color: Colors.white,
   );
+  static TextStyle font20Greysemimedium = TextStyle(
+    fontSize: 20.sp,
+    fontWeight: FontWeightHelper.medium,
+    color: AppColor.thirdColor,
+  );
   static TextStyle font18PrimBold = TextStyle(
       fontSize: 18.sp,
       fontWeight: FontWeightHelper.bold,

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/features/screens/settings/ui/widgets/list_tile_widget.dart';
@@ -42,8 +44,9 @@ class _SettingsBodyState extends State<SettingsBody> {
                 children: [
                   listTileWidget(() {}, S.of(context).settingTitle1,
                       Icons.edit_note_rounded),
-                  listTileWidget(
-                      () {}, S.of(context).settingTitle2, Icons.password_sharp),
+                  listTileWidget(() {
+                    context.pushNamed(Routes.changepasswordScreen);
+                  }, S.of(context).settingTitle2, Icons.password_sharp),
                   listTileWidget(
                       () {}, S.of(context).settingTitle4, Icons.phone),
                   listTileWidget(() {}, S.of(context).settingTitle5,
