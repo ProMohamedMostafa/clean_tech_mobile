@@ -26,7 +26,7 @@ class DefaultElevatedButton extends StatelessWidget {
       height: height.h,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(9.r),
+        borderRadius: BorderRadius.circular(4.r),
         border: Border.all(
           color: color,
         ),
@@ -43,7 +43,7 @@ class DefaultElevatedButton extends StatelessWidget {
           shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(
-                9.r,
+                4.r,
               ),
             ),
           ),

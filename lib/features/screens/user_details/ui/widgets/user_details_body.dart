@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
@@ -12,17 +14,31 @@ import 'package:smart_cleaning_application/features/screens/user_details/ui/widg
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class UserDetailsBody extends StatefulWidget {
-  const UserDetailsBody({super.key});
+  final int id;
+  const UserDetailsBody({super.key, required this.id});
 
   @override
   State<UserDetailsBody> createState() => _UserDetailsBodyState();
 }
 
-class _UserDetailsBodyState extends State<UserDetailsBody> {
+class _UserDetailsBodyState extends State<UserDetailsBody>
+    with TickerProviderStateMixin {
+  late TabController controller;
+
   @override
   void initState() {
-    context.read<UserCubit>().getUserDetails();
+    context.read<UserCubit>().getUserDetails(widget.id);
+    controller = TabController(length: 2, vsync: this);
+    controller.addListener(() {
+      setState(() {});
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -31,107 +47,269 @@ class _UserDetailsBodyState extends State<UserDetailsBody> {
       appBar: AppBar(
         title: Text(
           S.of(context).userDetailsTitle,
-          style: TextStyles.font24PrimsemiBold,
+          style: TextStyles.font16BlackSemiBold,
         ),
         centerTitle: true,
         leading: customBackButton(context),
+        actions: [
+          IconButton(
+              onPressed: () {
+                context.pushNamed(Routes.editUserScreen, arguments: 1);
+              },
+              icon: Icon(
+                Icons.edit,
+                color: AppColor.primaryColor,
+              ))
+        ],
       ),
       body: BlocBuilder<UserCubit, UserState>(
         builder: (context, state) {
-          return SafeArea(
-              child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  verticalSpace(15),
-                  Center(
-                    child: Container(
-                      width: 100.w,
-                      height: 100.h,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          // color: Colors.white,
-                          border: Border.all(
-                              color: AppColor.primaryColor, width: 3.w)),
-                      child: ClipOval(
-                          child: Image.asset(
-                        'assets/images/profile.png',
-                        fit: BoxFit.fill,
-                      )),
-                    ),
-                  ),
-                  verticalSpace(35),
-                  rowDetailsBuild(context, S.of(context).addUserText1,
-                      context.read<UserCubit>().userModel!.data!.firstName!),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Divider(),
-                  ),
-                  rowDetailsBuild(context, S.of(context).addUserText2,
-                      context.read<UserCubit>().userModel!.data!.lastName!),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Divider(),
-                  ),
-                  rowDetailsBuild(context, S.of(context).addUserText3,
-                      context.read<UserCubit>().userModel!.data!.email!),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Divider(),
-                  ),
-                  rowDetailsBuild(context, S.of(context).addUserText10,
-                      context.read<UserCubit>().userModel!.data!.phoneNumber!),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Divider(),
-                  ),
-                  rowDetailsBuild(context, S.of(context).addUserText4,
-                      context.read<UserCubit>().userModel!.data!.birthdate!),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Divider(),
-                  ),
-                  rowDetailsBuild(context, S.of(context).addUserText5,
-                      context.read<UserCubit>().userModel!.data!.userName!),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Divider(),
-                  ),
-                  rowDetailsBuild(context, S.of(context).addUserText7,
-                      context.read<UserCubit>().userModel!.data!.idNumber!),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Divider(),
-                  ),
-                  rowDetailsBuild(
-                      context,
-                      S.of(context).addUserText8,
-                      context
-                          .read<UserCubit>()
-                          .userModel!
-                          .data!
-                          .nationalityName!),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Divider(),
-                  ),
-                  rowDetailsBuild(context, S.of(context).addUserText9,
-                      context.read<UserCubit>().userModel!.data!.gender!),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Divider(),
-                  ),
-                  verticalSpace(35),
-                  ButtonsDetailsBuild(),
-                  verticalSpace(30),
-                ],
+          if (state is UserLoadingState) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: AppColor.primaryColor,
               ),
-            ),
-          ));
+            );
+          } else if (state is UserSuccessState) {
+            return SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: Container(
+                        width: 100.w,
+                        height: 100.h,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: AppColor.primaryColor,
+                            width: 3.w,
+                          ),
+                        ),
+                        child: ClipOval(
+                          child: Image.asset(
+                            'assets/images/profile.png',
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ),
+                    ),
+                    verticalSpace(25),
+                    Container(
+                      height: 40.h,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(5.r)),
+                          border: Border.all(
+                            color: AppColor.secondaryColor,
+                          )),
+                      child: TabBar(
+                          tabAlignment: TabAlignment.fill,
+                          isScrollable: false,
+                          indicatorSize: TabBarIndicatorSize.tab,
+                          controller: controller,
+                          dividerColor: Colors.transparent,
+                          indicator: BoxDecoration(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(5.r)),
+                            color: controller.index == controller.index
+                                ? AppColor.primaryColor
+                                : Colors.transparent,
+                          ),
+                          tabs: [
+                            Tab(
+                              child: Text(
+                                "User Data",
+                                style: TextStyle(
+                                    color: controller.index == 0
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16.sp),
+                              ),
+                            ),
+                            Tab(
+                              child: Text(
+                                "User Location",
+                                style: TextStyle(
+                                    color: controller.index == 1
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16.sp),
+                              ),
+                            ),
+                          ]),
+                    ),
+                    verticalSpace(20),
+                    Expanded(
+                      child: TabBarView(controller: controller, children: [
+                        userDetails(),
+                        locationUserDetails(),
+                      ]),
+                    ),
+                    verticalSpace(15),
+                    ButtonsDetailsBuild(),
+                  ],
+                ),
+              ),
+            );
+          } else {
+            return Center(
+                child: Text(
+              "Please try again",
+            ));
+          }
         },
+      ),
+    );
+  }
+
+  Widget userDetails() {
+    final userModel = context.read<UserCubit>().userModel!;
+
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          rowDetailsBuild(
+              context, S.of(context).addUserText5, userModel.data!.userName!),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(
+              context, S.of(context).addUserText1, userModel.data!.firstName!),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(
+              context, S.of(context).addUserText2, userModel.data!.lastName!),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(
+              context, S.of(context).addUserText3, userModel.data!.email!),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(context, S.of(context).addUserText10,
+              userModel.data!.phoneNumber!),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(
+              context, S.of(context).addUserText4, userModel.data!.birthdate!),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(
+              context, S.of(context).addUserText7, userModel.data!.idNumber!),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(context, S.of(context).addUserText8,
+              userModel.data!.nationalityName!),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(context, S.of(context).addUserText12,
+              userModel.data!.countryName!),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(
+              context, S.of(context).addUserText9, userModel.data!.gender!),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(context, S.of(context).addUserText15,
+              userModel.data!.providerName!),
+        ],
+      ),
+    );
+  }
+
+  Widget locationUserDetails() {
+    final userModel = context.read<UserCubit>().userModel!;
+
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          rowDetailsBuild(
+              context, S.of(context).addUserText5, userModel.data!.userName!),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(
+              context, S.of(context).addUserText1, userModel.data!.firstName!),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(
+              context, S.of(context).addUserText2, userModel.data!.lastName!),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(
+              context, S.of(context).addUserText3, userModel.data!.email!),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(context, S.of(context).addUserText10,
+              userModel.data!.phoneNumber!),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(
+              context, S.of(context).addUserText4, userModel.data!.birthdate!),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(
+              context, S.of(context).addUserText7, userModel.data!.idNumber!),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(context, S.of(context).addUserText8,
+              userModel.data!.nationalityName!),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(context, S.of(context).addUserText12,
+              userModel.data!.countryName!),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(
+              context, S.of(context).addUserText9, userModel.data!.gender!),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(context, S.of(context).addUserText15,
+              userModel.data!.providerName!),
+        ],
       ),
     );
   }

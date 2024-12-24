@@ -14,31 +14,14 @@ class ButtonsDetailsBuild extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          DefaultElevatedButton(
-              name: S.of(context).editButton,
-              onPressed: () {
-                context.pushNamed(Routes.editUserScreen);
-              },
-              color: AppColor.primaryColor,
-              height: 52,
-              width: 158,
-              textStyles: TextStyles.font20Whitesemimedium),
-          DefaultElevatedButton(
-              name: S.of(context).deleteButton,
-              onPressed: () {
-                showCustomDialog(
-                    context, S.of(context).deleteMessage);
-              },
-              color: AppColor.primaryColor,
-              height: 52,
-              width: 158,
-              textStyles: TextStyles.font20Whitesemimedium),
-        ],
-      ),
-    );
+    return DefaultElevatedButton(
+        name: S.of(context).deleteButton,
+        onPressed: () {
+          showCustomDialog(context, S.of(context).deleteMessage);
+        },
+        color: AppColor.primaryColor,
+        height: 48,
+        width: double.infinity,
+        textStyles: TextStyles.font20Whitesemimedium);
   }
 }

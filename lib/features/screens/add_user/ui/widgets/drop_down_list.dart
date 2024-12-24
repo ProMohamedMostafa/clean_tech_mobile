@@ -56,11 +56,11 @@ class _DropdownListState extends State<DropdownList> {
                           : BorderRadius.circular(8.r),
                       border: state.hasError
                           ? Border.all(
-                              width: 1,
+                              width: 1.w,
                               color: Colors.red,
                             )
                           : Border.all(
-                              width: 1,
+                              width: 1.w,
                               color: AppColor.thirdColor,
                             ),
                     ),
@@ -131,7 +131,7 @@ class _DropdownListState extends State<DropdownList> {
                         const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                     child: Text(
                       state.errorText!,
-                      style: TextStyle(color: Color(0xFFB3261E), fontSize: 12),
+                      style: TextStyle(color: Color(0xFFB3261E), fontSize: 12.sp),
                     ),
                   ),
               ],
@@ -150,7 +150,7 @@ class _DropdownListState extends State<DropdownList> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   verticalSpace(5),
-                  Text(item, style: TextStyle(fontSize: 16)),
+                  Text(item, style: TextStyle(fontSize: 16.sp)),
                   if (items.last != item)
                     Divider(
                       color: Colors.grey.shade400,

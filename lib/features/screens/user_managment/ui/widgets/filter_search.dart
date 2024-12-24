@@ -7,10 +7,17 @@ Widget filterSearchUserManagmentBuild() {
   return Builder(
     builder: (context) => DropdownButtonHideUnderline(
       child: DropdownButton2(
-        customButton: Icon(
-          Icons.tune,
-          color: AppColor.primaryColor,
-          size: 30.sp,
+        customButton: Container(
+          height: 52,
+          width: 52,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.r),
+              border: Border.all(color: AppColor.secondaryColor)),
+          child: Icon(
+            Icons.tune,
+            color: AppColor.primaryColor,
+            size: 25.sp,
+          ),
         ),
         items: [
           DropdownMenuItem(

@@ -7,4 +7,5 @@ class ApiConstants {
   static const rolesUrl = "authorization/roles";
   static const allUsersUrl = "users";
   static const allProvidersUrl = "providers";
+  static const editUserUrl = "users/edit";
 }

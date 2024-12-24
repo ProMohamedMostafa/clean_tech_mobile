@@ -45,7 +45,7 @@ class Data {
   String? phoneNumber;
   String? image;
   String? birthdate;
-  String? managerId;
+  int? managerId;
   String? idNumber;
   String? nationalityName;
   String? countryName;

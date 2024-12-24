@@ -80,6 +80,7 @@ class DioHelper {
       throw Exception(error.message);
     }
   }
+
   static Future<Response?> postData2({
     required String url,
     Map<String, dynamic>? query,
@@ -98,6 +99,19 @@ class DioHelper {
     required String url,
     Map<String, dynamic>? query,
     Map<String, dynamic>? data,
+  }) async {
+    try {
+      return await dio!.put(url, queryParameters: query, data: data);
+    } on DioException catch (e) {
+      final error = ApiErrorHandler.handle(e);
+      throw Exception(error.message);
+    }
+  }
+
+  static Future<Response?> putData2({
+    required String url,
+    Map<String, dynamic>? query,
+    required FormData data,
   }) async {
     try {
       return await dio!.put(url, queryParameters: query, data: data);

@@ -9,9 +9,9 @@ class UserCubit extends Cubit<UserState> {
   static UserCubit get(context) => BlocProvider.of(context);
 
   UserModel? userModel;
-  getUserDetails() {
+  getUserDetails(int? id) {
     emit(UserLoadingState());
-    DioHelper.getData(url: 'users/1').then((value) {
+    DioHelper.getData(url: 'users/$id').then((value) {
       userModel = UserModel.fromJson(value!.data);
       emit(UserSuccessState(userModel!));
     }).catchError((error) {
