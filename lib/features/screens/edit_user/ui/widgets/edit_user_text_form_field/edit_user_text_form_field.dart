@@ -13,7 +13,6 @@ class EditUserTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final IconData? suffixIcon;
   final VoidCallback? onTap;
-  final Function(String?) validator;
   final FocusNode? focusNode;
   final String? errorMsg;
   final Function(String?)? onChanged;
@@ -28,7 +27,6 @@ class EditUserTextField extends StatelessWidget {
       required this.keyboardType,
       this.suffixIcon,
       this.onTap,
-      required this.validator,
       this.focusNode,
       this.errorMsg,
       this.onChanged,
@@ -43,9 +41,7 @@ class EditUserTextField extends StatelessWidget {
     return TextFormField(
       inputFormatters: inputFormatters,
       
-      validator: (value) {
-        return validator(value);
-      },
+      
       controller: controller,
       obscureText: obscureText,
       keyboardType: keyboardType,

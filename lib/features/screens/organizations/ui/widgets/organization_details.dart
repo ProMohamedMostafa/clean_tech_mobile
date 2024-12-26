@@ -11,6 +11,7 @@ import 'package:smart_cleaning_application/features/screens/organizations/ui/wid
 import 'package:smart_cleaning_application/features/screens/organizations/ui/widgets/edit_bottom_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/organizations/ui/widgets/filter_search.dart';
 import 'package:smart_cleaning_application/features/screens/organizations/ui/widgets/organizations_text_form_field.dart';
+import 'package:smart_cleaning_application/features/screens/user_managment/logic/user_mangement_cubit.dart';
 
 Widget organizationsDetails(OrganizationsCubit cubit, BuildContext context) {
   return Column(
@@ -102,7 +103,13 @@ Widget organizationsDetails(OrganizationsCubit cubit, BuildContext context) {
           IconButton(
               onPressed: () {
                 showCustomDialog(context,
-                    'Are You Sure You Want To Remove This Organization ?');
+                    'Are You Sure You Want To Remove This Organization ?', () {
+                  context.read<UserManagementCubit>().userDelete(context
+                      .read<UserManagementCubit>()
+                      .usersModel!
+                      .data![1]
+                      .id!);
+                });
               },
               icon: Icon(
                 IconBroken.delete,

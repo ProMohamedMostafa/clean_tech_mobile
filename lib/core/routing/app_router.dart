@@ -26,7 +26,6 @@ import 'package:smart_cleaning_application/features/screens/integrations/ui/scre
 import 'package:smart_cleaning_application/features/screens/organizations/logic/organizations_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/organizations/ui/screen/organizations_screen.dart';
 import 'package:smart_cleaning_application/features/screens/settings/ui/screen/settings_screen.dart';
-import 'package:smart_cleaning_application/features/screens/user_details/logic/user_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user_details/ui/screen/user_details_screen.dart';
 import 'package:smart_cleaning_application/features/screens/user_managment/logic/user_mangement_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user_managment/ui/screen/user_managment.dart';
@@ -122,18 +121,20 @@ class AppRouter {
         var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => UserCubit(),
+            create: (context) => UserManagementCubit(),
             child: UserDetailsScreen(
               id: id,
             ),
           ),
         );
       case Routes.editUserScreen:
-      var id = settings.arguments as int;
+        var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => EditUserCubit(),
-            child:  EditUserScreen(id: id,),
+            child: EditUserScreen(
+              id: id,
+            ),
           ),
         );
       case Routes.settingsScreen:

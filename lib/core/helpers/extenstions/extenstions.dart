@@ -5,6 +5,15 @@ extension Navigation on BuildContext {
     return Navigator.of(this).pushNamed(routeName, arguments: arguments);
   }
 
+  Future<dynamic> pushNamedAndRemoveLastTwo(String routeName,
+      {Object? arguments}) {
+    return Navigator.of(this).pushNamedAndRemoveUntil(
+      routeName,
+      (route) => Navigator.of(this).canPop() ? route.isFirst : false,
+      arguments: arguments,
+    );
+  }
+
   Future<dynamic> pushReplacementNamed(String routeName, {Object? arguments}) {
     return Navigator.of(this)
         .pushReplacementNamed(routeName, arguments: arguments);

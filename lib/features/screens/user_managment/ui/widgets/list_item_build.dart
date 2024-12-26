@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -7,9 +9,10 @@ import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
+import 'package:smart_cleaning_application/features/screens/user_managment/logic/user_mangement_cubit.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
-Widget listItemBuild(BuildContext context, index) {
+Widget listItemBuild(BuildContext context, selectedIndex, index) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.start,
     children: [
@@ -17,7 +20,8 @@ Widget listItemBuild(BuildContext context, index) {
         onTap: () {
           context.pushNamed(
             Routes.userDetailsScreen,
-            arguments: 1,
+            arguments:
+                context.read<UserManagementCubit>().usersModel!.data![index].id,
           );
         },
         child: Row(
@@ -35,11 +39,31 @@ Widget listItemBuild(BuildContext context, index) {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  'Mosad Selim',
+                  selectedIndex == 0
+                      ? context
+                          .read<UserManagementCubit>()
+                          .usersModel!
+                          .data![index]
+                          .userName!
+                      : context
+                          .read<UserManagementCubit>()
+                          .deletedListModel!
+                          .data![index]
+                          .userName!,
                   style: TextStyles.font14BlackSemiBold,
                 ),
                 Text(
-                  'mossad.selim11@gmail.com',
+                  selectedIndex == 0
+                      ? context
+                          .read<UserManagementCubit>()
+                          .usersModel!
+                          .data![index]
+                          .email!
+                      : context
+                          .read<UserManagementCubit>()
+                          .deletedListModel!
+                          .data![index]
+                          .email!,
                   style: TextStyles.font12GreyRegular,
                 ),
               ],
@@ -48,31 +72,81 @@ Widget listItemBuild(BuildContext context, index) {
         ),
       ),
       Spacer(),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          InkWell(
-              onTap: () {
-                context.pushNamed(
-                  Routes.editUserScreen,
-                  arguments: 1,
-                );
-              },
-              child: Icon(
-                Icons.mode_edit_outlined,
-                color: AppColor.thirdColor,
-              )),
-          horizontalSpace(10),
-          InkWell(
-              onTap: () {
-                showCustomDialog(context, S.of(context).deleteMessage);
-              },
-              child: Icon(
-                IconBroken.delete,
-                color: AppColor.thirdColor,
-              )),
-        ],
-      ),
+      (selectedIndex == 0 &&
+              uId ==
+                  context
+                      .read<UserManagementCubit>()
+                      .usersModel!
+                      .data![index]
+                      .id)
+          ? SizedBox.shrink()
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                InkWell(
+                    onTap: () {
+                      selectedIndex == 0
+                          ? context.pushNamed(
+                              Routes.editUserScreen,
+                              arguments: context
+                                  .read<UserManagementCubit>()
+                                  .usersModel!
+                                  .data![index]
+                                  .id,
+                            )
+                          : showCustomDialog(
+                              context, "Are you Sure to restore this user ?",
+                              () {
+                              context
+                                  .read<UserManagementCubit>()
+                                  .restoreDeletedUser(
+                                    context
+                                        .read<UserManagementCubit>()
+                                        .deletedListModel!
+                                        .data![index]
+                                        .id!,
+                                  );
+                              context.pop();
+                            });
+                    },
+                    child: Icon(
+                      selectedIndex == 0
+                          ? Icons.mode_edit_outlined
+                          : Icons.replay_outlined,
+                      color: AppColor.thirdColor,
+                    )),
+                horizontalSpace(10),
+                InkWell(
+                    onTap: () {
+                      selectedIndex == 0
+                          ? showCustomDialog(
+                              context, S.of(context).deleteMessage, () {
+                              context.read<UserManagementCubit>().userDelete(
+                                  context
+                                      .read<UserManagementCubit>()
+                                      .usersModel!
+                                      .data![index]
+                                      .id!);
+                              context.pop();
+                            })
+                          : showCustomDialog(context, "Forced Delete this user",
+                              () {
+                              context
+                                  .read<UserManagementCubit>()
+                                  .forcedDeletedUser(context
+                                      .read<UserManagementCubit>()
+                                      .deletedListModel!
+                                      .data![index]
+                                      .id!);
+                              context.pop();
+                            });
+                    },
+                    child: Icon(
+                      IconBroken.delete,
+                      color: AppColor.thirdColor,
+                    )),
+              ],
+            )
     ],
   );
 }

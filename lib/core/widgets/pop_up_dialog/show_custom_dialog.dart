@@ -7,7 +7,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
-void showCustomDialog(BuildContext context, String text) {
+void showCustomDialog(BuildContext context, String text, Function? pressed) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -49,7 +49,11 @@ void showCustomDialog(BuildContext context, String text) {
                   DefaultElevatedButton(
                       name: S.of(context).yesButtton,
                       textStyles: TextStyles.font14WhiteMedium,
-                      onPressed: () {},
+                      onPressed: () {
+                        {
+                          pressed!();
+                        }
+                      },
                       color: AppColor.primaryColor,
                       height: 44,
                       width: 127),

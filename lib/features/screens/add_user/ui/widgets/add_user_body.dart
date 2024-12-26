@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
@@ -39,7 +40,7 @@ class _AddUserBodyState extends State<AddUserBody> {
       appBar: AppBar(
         title: Text(
           S.of(context).addUserTitle,
-          style: TextStyles.font24PrimsemiBold,
+          style: TextStyles.font16BlackSemiBold,
         ),
         centerTitle: true,
         leading: customBackButton(context),
@@ -48,7 +49,7 @@ class _AddUserBodyState extends State<AddUserBody> {
         listener: (context, state) {
           if (state is AddUserSuccessState) {
             toast(text: state.userCreateModel.message!, color: Colors.blue);
-            context.pop();
+            context.pushNamedAndRemoveLastTwo(Routes.userManagmentScreen);
           }
           if (state is AddUserErrorState) {
             toast(text: state.error, color: Colors.red);
@@ -105,6 +106,60 @@ class _AddUserBodyState extends State<AddUserBody> {
                       ),
                     ),
                     verticalSpace(35),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                S.of(context).addUserText1,
+                                style: TextStyles.font16BlackRegular,
+                              ),
+                              AddUserTextFormField(
+                                controller: context
+                                    .read<AddUserCubit>()
+                                    .firstNameController,
+                                obscureText: false,
+                                readOnly: false,
+                                keyboardType: TextInputType.text,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return S.of(context).validationFirstName;
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        horizontalSpace(10),
+                        Expanded(
+                            child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              S.of(context).addUserText2,
+                              style: TextStyles.font16BlackRegular,
+                            ),
+                            AddUserTextFormField(
+                              controller: context
+                                  .read<AddUserCubit>()
+                                  .lastNameController,
+                              obscureText: false,
+                              readOnly: false,
+                              keyboardType: TextInputType.text,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return S.of(context).validationLastName;
+                                }
+                              },
+                            ),
+                          ],
+                        )),
+                      ],
+                    ),
+                    verticalSpace(10),
                     Text(
                       S.of(context).addUserText5,
                       style: TextStyles.font16BlackRegular,
@@ -123,40 +178,6 @@ class _AddUserBodyState extends State<AddUserBody> {
                     ),
                     verticalSpace(10),
                     Text(
-                      S.of(context).addUserText1,
-                      style: TextStyles.font16BlackRegular,
-                    ),
-                    AddUserTextFormField(
-                      controller:
-                          context.read<AddUserCubit>().firstNameController,
-                      obscureText: false,
-                      readOnly: false,
-                      keyboardType: TextInputType.text,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return S.of(context).validationFirstName;
-                        }
-                      },
-                    ),
-                    verticalSpace(15),
-                    Text(
-                      S.of(context).addUserText2,
-                      style: TextStyles.font16BlackRegular,
-                    ),
-                    AddUserTextFormField(
-                      controller:
-                          context.read<AddUserCubit>().lastNameController,
-                      obscureText: false,
-                      readOnly: false,
-                      keyboardType: TextInputType.text,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return S.of(context).validationLastName;
-                        }
-                      },
-                    ),
-                    verticalSpace(15),
-                    Text(
                       S.of(context).addUserText3,
                       style: TextStyles.font16BlackRegular,
                     ),
@@ -171,7 +192,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                         }
                       },
                     ),
-                    verticalSpace(15),
+                    verticalSpace(10),
                     Text(
                       S.of(context).addUserText10,
                       style: TextStyles.font16BlackRegular,
@@ -184,6 +205,193 @@ class _AddUserBodyState extends State<AddUserBody> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return S.of(context).validationPhoneNumber;
+                        }
+                      },
+                    ),
+                    verticalSpace(10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                S.of(context).addUserText12,
+                                style: TextStyles.font16BlackRegular,
+                              ),
+                              DropdownList(
+                                onPressed: (selectedValue) {
+                                  context
+                                      .read<AddUserCubit>()
+                                      .countryController
+                                      .text = selectedValue;
+                                },
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return S.of(context).validationCountry;
+                                  }
+                                  return null;
+                                },
+                                title: 'Country',
+                                items: context
+                                            .read<AddUserCubit>()
+                                            .nationalityModel
+                                            ?.data
+                                            ?.isEmpty ??
+                                        true
+                                    ? ['No countries']
+                                    : context
+                                            .read<AddUserCubit>()
+                                            .nationalityModel
+                                            ?.data
+                                            ?.map((e) => e.name ?? 'Unknown')
+                                            .toList() ??
+                                        [],
+                              ),
+                            ],
+                          ),
+                        ),
+                        horizontalSpace(10),
+                        Expanded(
+                            child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              S.of(context).addUserText9,
+                              style: TextStyles.font16BlackRegular,
+                            ),
+                            DropdownList(
+                              onPressed: (selectedValue) {
+                                final items = ['Male', 'Female'];
+                                final selectedIndex =
+                                    items.indexOf(selectedValue);
+                                if (selectedIndex != -1) {
+                                  context
+                                      .read<AddUserCubit>()
+                                      .genderController
+                                      .text = selectedIndex.toString();
+                                }
+                              },
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return S.of(context).validationGender;
+                                }
+                                return null;
+                              },
+                              title: 'Gender',
+                              items: ['Male', 'Female'],
+                            ),
+                          ],
+                        )),
+                      ],
+                    ),
+                    verticalSpace(15),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                S.of(context).addUserText8,
+                                style: TextStyles.font16BlackRegular,
+                              ),
+                              DropdownList(
+                                onPressed: (selectedValue) {
+                                  context
+                                      .read<AddUserCubit>()
+                                      .nationalityController
+                                      .text = selectedValue;
+                                },
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return S.of(context).validationNationality;
+                                  }
+                                  return null;
+                                },
+                                title: 'Nationality',
+                                items: context
+                                            .read<AddUserCubit>()
+                                            .nationalityModel
+                                            ?.data
+                                            ?.isEmpty ??
+                                        true
+                                    ? ['No nationalities']
+                                    : context
+                                            .read<AddUserCubit>()
+                                            .nationalityModel
+                                            ?.data
+                                            ?.map((e) => e.name ?? 'Unknown')
+                                            .toList() ??
+                                        [],
+                              ),
+                            ],
+                          ),
+                        ),
+                        horizontalSpace(10),
+                        Expanded(
+                            child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              S.of(context).addUserText4,
+                              style: TextStyles.font16BlackRegular,
+                            ),
+                            AddUserTextFormField(
+                              controller:
+                                  context.read<AddUserCubit>().birthController,
+                              obscureText: false,
+                              readOnly: true,
+                              suffixIcon: Icons.calendar_today,
+                              suffixPressed: () async {
+                                DateTime? pickedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime
+                                      .now(), // This disables any date before today
+                                  lastDate: DateTime(
+                                      3025), // Set this to any future date
+                                );
+                                if (pickedDate != null) {
+                                  // Format date in the form "yyyy-MM-dd"
+                                  String formattedDate =
+                                      DateFormat('yyyy-MM-dd')
+                                          .format(pickedDate);
+                                  setState(() {
+                                    context
+                                        .read<AddUserCubit>()
+                                        .birthController
+                                        .text = formattedDate;
+                                  });
+                                }
+                              },
+                              keyboardType: TextInputType.none,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return S.of(context).validationBirthdate;
+                                }
+                              },
+                            ),
+                          ],
+                        )),
+                      ],
+                    ),
+                    verticalSpace(15),
+                    Text(
+                      S.of(context).addUserText7,
+                      style: TextStyles.font16BlackRegular,
+                    ),
+                    AddUserTextFormField(
+                      controller:
+                          context.read<AddUserCubit>().idNumberController,
+                      obscureText: false,
+                      readOnly: false,
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return S.of(context).validationIdNumber;
                         }
                       },
                     ),
@@ -226,125 +434,6 @@ class _AddUserBodyState extends State<AddUserBody> {
                     ),
                     verticalSpace(10),
                     Text(
-                      S.of(context).addUserText4,
-                      style: TextStyles.font16BlackRegular,
-                    ),
-                    AddUserTextFormField(
-                      controller: context.read<AddUserCubit>().birthController,
-                      obscureText: false,
-                      readOnly: true,
-                      suffixIcon: Icons.calendar_today,
-                      suffixPressed: () async {
-                        DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime
-                              .now(), // This disables any date before today
-                          lastDate:
-                              DateTime(3025), // Set this to any future date
-                        );
-                        if (pickedDate != null) {
-                          // Format date in the form "yyyy-MM-dd"
-                          String formattedDate =
-                              DateFormat('yyyy-MM-dd').format(pickedDate);
-                          setState(() {
-                            context.read<AddUserCubit>().birthController.text =
-                                formattedDate;
-                          });
-                        }
-                      },
-                      keyboardType: TextInputType.none,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return S.of(context).validationPhoneNumber;
-                        }
-                      },
-                    ),
-                    verticalSpace(10),
-                    Text(
-                      S.of(context).addUserText7,
-                      style: TextStyles.font16BlackRegular,
-                    ),
-                    AddUserTextFormField(
-                      controller:
-                          context.read<AddUserCubit>().idNumberController,
-                      obscureText: false,
-                      readOnly: false,
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return S.of(context).validationIdNumber;
-                        }
-                      },
-                    ),
-                    verticalSpace(10),
-                    Text(
-                      S.of(context).addUserText8,
-                      style: TextStyles.font16BlackRegular,
-                    ),
-                    DropdownList(
-                      onPressed: (selectedValue) {
-                        context
-                            .read<AddUserCubit>()
-                            .nationalityController
-                            .text = selectedValue;
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return S.of(context).validationNationality;
-                        }
-                        return null;
-                      },
-                      title: 'Nationality',
-                      items: context
-                                  .read<AddUserCubit>()
-                                  .nationalityModel
-                                  ?.data
-                                  ?.isEmpty ??
-                              true
-                          ? ['No nationalities available']
-                          : context
-                                  .read<AddUserCubit>()
-                                  .nationalityModel
-                                  ?.data
-                                  ?.map((e) => e.name ?? 'Unknown')
-                                  .toList() ??
-                              [],
-                    ),
-                    verticalSpace(10),
-                    Text(
-                      S.of(context).addUserText12,
-                      style: TextStyles.font16BlackRegular,
-                    ),
-                    DropdownList(
-                      onPressed: (selectedValue) {
-                        context.read<AddUserCubit>().countryController.text =
-                            selectedValue;
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return S.of(context).validationCountry;
-                        }
-                        return null;
-                      },
-                      title: 'Country',
-                      items: context
-                                  .read<AddUserCubit>()
-                                  .nationalityModel
-                                  ?.data
-                                  ?.isEmpty ??
-                              true
-                          ? ['No countriess available']
-                          : context
-                                  .read<AddUserCubit>()
-                                  .nationalityModel
-                                  ?.data
-                                  ?.map((e) => e.name ?? 'Unknown')
-                                  .toList() ??
-                              [],
-                    ),
-                    verticalSpace(10),
-                    Text(
                       S.of(context).addUserText13,
                       style: TextStyles.font16BlackRegular,
                     ),
@@ -378,7 +467,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                                   ?.data
                                   ?.isEmpty ??
                               true
-                          ? ['No countriess available']
+                          ? ['No roles available']
                           : context
                                   .read<AddUserCubit>()
                                   .roleModel
@@ -435,29 +524,6 @@ class _AddUserBodyState extends State<AddUserBody> {
                     ),
                     verticalSpace(10),
                     Text(
-                      S.of(context).addUserText9,
-                      style: TextStyles.font16BlackRegular,
-                    ),
-                    DropdownList(
-                      onPressed: (selectedValue) {
-                        final items = ['Male', 'Female'];
-                        final selectedIndex = items.indexOf(selectedValue);
-                        if (selectedIndex != -1) {
-                          context.read<AddUserCubit>().genderController.text =
-                              selectedIndex.toString();
-                        }
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return S.of(context).validationGender;
-                        }
-                        return null;
-                      },
-                      title: 'Gender',
-                      items: ['Male', 'Female'],
-                    ),
-                    verticalSpace(10),
-                    Text(
                       S.of(context).addUserText15,
                       style: TextStyles.font16BlackRegular,
                     ),
@@ -502,23 +568,14 @@ class _AddUserBodyState extends State<AddUserBody> {
                                   .toList() ??
                               [],
                     ),
-                    verticalSpace(35),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        DefaultElevatedButton(
-                            name: S.of(context).addAnotherButton,
-                            onPressed: () {},
-                            color: AppColor.thirdColor,
-                            height: 52,
-                            width: 158,
-                            textStyles: TextStyles.font20Whitesemimedium),
-                        state is AddUserLoadingState
-                            ? const Center(
-                                child: CircularProgressIndicator(
-                                    color: AppColor.primaryColor),
-                              )
-                            : DefaultElevatedButton(
+                    verticalSpace(20),
+                    state is AddUserLoadingState
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                                color: AppColor.primaryColor),
+                          )
+                        : Center(
+                            child: DefaultElevatedButton(
                                 name: S.of(context).saveButtton,
                                 onPressed: () {
                                   if (context
@@ -530,11 +587,10 @@ class _AddUserBodyState extends State<AddUserBody> {
                                   }
                                 },
                                 color: AppColor.primaryColor,
-                                height: 52,
-                                width: 158,
+                                height: 47,
+                                width: double.infinity,
                                 textStyles: TextStyles.font20Whitesemimedium),
-                      ],
-                    ),
+                          ),
                     verticalSpace(30),
                   ],
                 ),

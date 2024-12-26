@@ -120,4 +120,18 @@ class DioHelper {
       throw Exception(error.message);
     }
   }
+
+  /// DELETE request
+  static Future<Response?> deleteData({
+    required String url,
+    Map<String, dynamic>? query,
+    required Map<String, dynamic> data,
+  }) async {
+    try {
+      return await dio!.delete(url, queryParameters: query, data: data);
+    } on DioException catch (e) {
+      final error = ApiErrorHandler.handle(e);
+      throw Exception(error.message);
+    }
+  }
 }

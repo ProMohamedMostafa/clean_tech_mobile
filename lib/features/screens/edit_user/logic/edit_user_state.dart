@@ -1,5 +1,5 @@
 import 'package:smart_cleaning_application/features/screens/edit_user/data/model/edit_model.dart';
-import 'package:smart_cleaning_application/features/screens/user_details/data/model/user_model.dart';
+import 'package:smart_cleaning_application/features/screens/user_managment/data/model/user_model.dart';
 
 abstract class EditUserState {}
 

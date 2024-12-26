@@ -72,7 +72,7 @@ class _DropdownListState extends State<DropdownList> {
                           Text(
                             selectedValue ?? 'Choose ${widget.title}',
                             style: TextStyle(
-                              fontSize: 16.sp,
+                              fontSize: 11.sp,
                               color: selectedValue != null
                                   ? Colors.black
                                   : Colors.grey,
@@ -131,7 +131,9 @@ class _DropdownListState extends State<DropdownList> {
                         const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                     child: Text(
                       state.errorText!,
-                      style: TextStyle(color: Color(0xFFB3261E), fontSize: 12.sp),
+                      overflow: TextOverflow.ellipsis,
+                      style:
+                          TextStyle(color: Color(0xFFB3261E), fontSize: 12.sp),
                     ),
                   ),
               ],

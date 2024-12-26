@@ -36,7 +36,7 @@ class _LoginBodyState extends State<LoginBody> {
                 ),
                 verticalSpace(36),
                 const EmailAndPassword(),
-                             ],
+              ],
             ),
           ),
         )));

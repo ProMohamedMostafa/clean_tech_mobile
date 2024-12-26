@@ -5,7 +5,7 @@ import 'package:smart_cleaning_application/core/networking/api_constants/api_con
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/edit_user/data/model/edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/edit_user/logic/edit_user_state.dart';
-import 'package:smart_cleaning_application/features/screens/user_details/data/model/user_model.dart';
+import 'package:smart_cleaning_application/features/screens/user_managment/data/model/user_model.dart';
 
 class EditUserCubit extends Cubit<EditUserState> {
   EditUserCubit() : super(EditUserInitialState());
@@ -27,7 +27,6 @@ class EditUserCubit extends Cubit<EditUserState> {
   TextEditingController managerIdNumberController = TextEditingController();
   TextEditingController genderController = TextEditingController();
   TextEditingController providerIdController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
 
   // Future<void> updateUser() async {
   //   emit(EditUserLoadingState());
@@ -61,24 +60,45 @@ class EditUserCubit extends Cubit<EditUserState> {
   //   }
   // }
   EditModel? editModel;
-  editUser({int? id}) async {
+  editUser(int? id) async {
     emit(EditUserLoadingState());
     Map<String, dynamic> formDataMap = {
       "id": id,
-      "userName": userNameController.text,
-      "firstName": firstNameController.text,
-      "lastName": lastNameController.text,
-      "email": emailController.text,
-      "phoneNumber": phoneController.text,
+      "userName": userNameController.text.isEmpty
+          ? userModel!.data!.userName
+          : userNameController.text,
+      "firstName": firstNameController.text.isEmpty
+          ? userModel!.data!.firstName
+          : firstNameController.text,
+      "lastName": lastNameController.text.isEmpty
+          ? userModel!.data!.lastName
+          : lastNameController.text,
+      "email": emailController.text.isEmpty
+          ? userModel!.data!.email
+          : emailController.text,
+      "phoneNumber": phoneController.text.isEmpty
+          ? userModel!.data!.phoneNumber
+          : phoneController.text,
       "image": null,
-      "birthdate": birthController.text,
-      "iDNumber": idNumberController.text,
-      "nationalityName": nationalityController.text,
-      "countryName": countryController.text,
-      "role": roleController.text,
-      "managerId": managerIdNumberController.text,
-      "gender": genderController.text,
-      "providerId": providerIdController.text,
+      "birthdate": birthController.text.isEmpty
+          ? userModel!.data!.birthdate
+          : birthController.text,
+      "iDNumber": idNumberController.text.isEmpty
+          ? userModel!.data!.idNumber
+          : idNumberController.text,
+      "nationalityName": nationalityController.text.isEmpty
+          ? userModel!.data!.nationalityName
+          : nationalityController.text,
+      "countryName": countryController.text.isEmpty
+          ? userModel!.data!.countryName
+          : countryController.text,
+      "role": roleController.text.isEmpty ? 1 : roleController.text,
+      "managerId": null,
+      "gender": genderController.text.isEmpty
+          ? userModel!.data!.gender
+          : genderController.text,
+      "providerId":
+          providerIdController.text.isEmpty ? 1 : providerIdController.text,
     };
 
     FormData formData = FormData.fromMap(formDataMap);

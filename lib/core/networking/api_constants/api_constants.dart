@@ -8,4 +8,5 @@ class ApiConstants {
   static const allUsersUrl = "users";
   static const allProvidersUrl = "providers";
   static const editUserUrl = "users/edit";
+  static const deleteUserListUrl = "users/deleted/index";
 }
