@@ -4,6 +4,13 @@ import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/features/layout/main_layout/logic/bottom_navbar_cubit.dart';
 import 'package:smart_cleaning_application/features/layout/main_layout/ui/screen/main_layout.dart';
 import 'package:smart_cleaning_application/features/layout/splash/splash_screen.dart';
+import 'package:smart_cleaning_application/features/screens/add_organizations/logic/add_organization_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/add_organizations/ui/screen/add_organization_screen.dart';
+import 'package:smart_cleaning_application/features/screens/add_organizations/ui/widgets/add_building_screen.dart';
+import 'package:smart_cleaning_application/features/screens/add_organizations/ui/widgets/add_city_screen.dart';
+import 'package:smart_cleaning_application/features/screens/add_organizations/ui/widgets/add_floor_screen.dart';
+import 'package:smart_cleaning_application/features/screens/add_organizations/ui/widgets/add_organization_screen.dart';
+import 'package:smart_cleaning_application/features/screens/add_organizations/ui/widgets/add_point_screen.dart';
 import 'package:smart_cleaning_application/features/screens/add_user/logic/add_user_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/add_user/ui/screen/add_user_screen.dart';
 import 'package:smart_cleaning_application/features/screens/analytics/ui/screen/analytics_screen.dart';
@@ -146,6 +153,48 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (context) => ChangePasswordCubit(),
             child: const ChangePasswordScreen(),
+          ),
+        );
+      case Routes.addOrganizationScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => AddOrganizationCubit(),
+            child: const AddOrganizationScreen(),
+          ),
+        );
+      case Routes.addCityScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => AddOrganizationCubit(),
+            child: const AddCityScreen(),
+          ),
+        );
+      case Routes.addOrganizationDetailsScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => AddOrganizationCubit(),
+            child: const AddOrganizationDetailsScreen(),
+          ),
+        );
+      case Routes.addBuildingScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => AddOrganizationCubit(),
+            child: const AddBuildingScreen(),
+          ),
+        );
+      case Routes.addFloorScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => AddOrganizationCubit(),
+            child: const AddFloorScreen(),
+          ),
+        );
+      case Routes.addPointScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => AddOrganizationCubit(),
+            child: const AddPointScreen(),
           ),
         );
       default:

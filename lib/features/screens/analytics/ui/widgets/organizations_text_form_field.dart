@@ -9,6 +9,7 @@ class OrganizationsTextFormField extends StatelessWidget {
   final TextInputType keyboardType;
   final IconData? suffixIcon;
   final VoidCallback? onTap;
+
   final String? Function(String?)? validator;
   final FocusNode? focusNode;
   final String? errorMsg;
@@ -19,23 +20,22 @@ class OrganizationsTextFormField extends StatelessWidget {
   final Function? onSubmitted;
   final bool readOnly;
 
-  const OrganizationsTextFormField({
-    super.key,
-    required this.controller,
-    required this.hintText,
-    required this.keyboardType,
-    this.suffixIcon,
-    this.onTap,
-    this.validator,
-    this.focusNode,
-    this.errorMsg,
-    this.onChanged,
-    this.suffixPressed,
-    this.perfix,
-    this.inputFormatters,
-    this.onSubmitted,
-    required this.readOnly,
-  });
+  const OrganizationsTextFormField(
+      {super.key,
+      required this.controller,
+      required this.hintText,
+      required this.keyboardType,
+      this.suffixIcon,
+      this.onTap,
+      this.validator,
+      this.focusNode,
+      this.errorMsg,
+      this.onChanged,
+      this.suffixPressed,
+      this.perfix,
+      this.inputFormatters,
+      this.onSubmitted,
+      required this.readOnly});
 
   @override
   Widget build(BuildContext context) {
@@ -59,15 +59,7 @@ class OrganizationsTextFormField extends StatelessWidget {
       maxLines: null,
       style: TextStyle(color: Colors.black, fontSize: 14.sp),
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.only(top: 15),
-        prefixIcon: IconButton(
-          icon: Icon(
-            Icons.search,
-            color: Colors.grey,
-          ),
-          onPressed: null,
-        ),
-        isDense: false,
+        isDense: true,
         suffixIcon: suffixIcon != null
             ? IconButton(
                 onPressed: () {
@@ -87,12 +79,12 @@ class OrganizationsTextFormField extends StatelessWidget {
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.r),
             borderSide: BorderSide(
-              color: AppColor.secondaryColor,
+              color: AppColor.primaryColor,
             )),
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.r),
             borderSide: BorderSide(
-              color: AppColor.secondaryColor,
+              color: AppColor.primaryColor,
             )),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.r),

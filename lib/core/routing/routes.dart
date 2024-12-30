@@ -17,4 +17,16 @@ class Routes {
   static const String editUserScreen = '/editUserScreen';
   static const String settingsScreen = '/settingsScreen';
   static const String changepasswordScreen = '/changepasswordScreen';
+
+
+  static const String addOrganizationScreen = '/addOrganizationScreen';
+  static const String addCityScreen = '/addCityScreen';
+  static const String addOrganizationDetailsScreen = '/addOrganizationDetailsScreen';
+  static const String addBuildingScreen = '/addBuildingScreen';
+  static const String addFloorScreen = '/addFloorScreen';
+  static const String addPointScreen = '/addPointScreen';
+
+
+
+  
 }

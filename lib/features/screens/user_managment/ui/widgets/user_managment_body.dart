@@ -52,16 +52,14 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
             toast(text: state.message, color: Colors.blue);
             context.read<UserManagementCubit>().getAllUsersInUserManage();
             context.read<UserManagementCubit>().getAllDeletedUser();
-          }
-           else if (state is ForceDeleteUsersSuccessState ||
+          } else if (state is ForceDeleteUsersSuccessState ||
               state is UserDeleteInDetailsSuccessState) {
             context.read<UserManagementCubit>().getAllUsersInUserManage();
             context.read<UserManagementCubit>().getAllDeletedUser();
           }
         },
         builder: (context, state) {
-          if (state is AllUsersLoadingState &&
-              state is DeletedUsersLoadingState) {
+          if (state is DeletedUsersLoadingState) {
             return Center(
               child: CircularProgressIndicator(
                 color: AppColor.primaryColor,

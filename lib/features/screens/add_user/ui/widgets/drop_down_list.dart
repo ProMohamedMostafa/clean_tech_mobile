@@ -75,13 +75,14 @@ class _DropdownListState extends State<DropdownList> {
                               fontSize: 11.sp,
                               color: selectedValue != null
                                   ? Colors.black
-                                  : Colors.grey,
+                                  :  AppColor.thirdColor,
                             ),
                           ),
                           Icon(
                             IconBroken.arrowDown2,
-                            color:
-                                isClicked ? AppColor.primaryColor : Colors.grey,
+                            color: isClicked
+                                ? AppColor.primaryColor
+                                : AppColor.thirdColor,
                           ),
                         ],
                       ),

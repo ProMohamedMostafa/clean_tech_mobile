@@ -9,4 +9,13 @@ class ApiConstants {
   static const allProvidersUrl = "providers";
   static const editUserUrl = "users/edit";
   static const deleteUserListUrl = "users/deleted/index";
+
+  static const createAreaUrl = "areas/create";
+  static const cityUrl = "cities";
+  static const createCityUrl = "cities/create";
+  static const organizationUrl = "organizations";
+  static const createOrganizationUrl = "organizations/create";
+  static const createBuildingUrl = "buildings/create";
+  static const createFloorUrl = "floors/create";
+  static const createPointUrl = "points/create";
 }

@@ -7,10 +7,10 @@ import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/organizations/logic/organizations_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/organizations/ui/widgets/details_bottom_dialog.dart';
-import 'package:smart_cleaning_application/features/screens/organizations/ui/widgets/edit_bottom_dialog.dart';
-import 'package:smart_cleaning_application/features/screens/organizations/ui/widgets/filter_search.dart';
-import 'package:smart_cleaning_application/features/screens/organizations/ui/widgets/organizations_text_form_field.dart';
+import 'package:smart_cleaning_application/features/screens/analytics/ui/widgets/details_bottom_dialog.dart';
+import 'package:smart_cleaning_application/features/screens/add_organizations/ui/widgets/add_area_dialog.dart';
+import 'package:smart_cleaning_application/features/screens/analytics/ui/widgets/filter_search.dart';
+import 'package:smart_cleaning_application/features/screens/analytics/ui/widgets/organizations_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/user_managment/logic/user_mangement_cubit.dart';
 
 Widget organizationsDetails(OrganizationsCubit cubit, BuildContext context) {
@@ -117,8 +117,8 @@ Widget organizationsDetails(OrganizationsCubit cubit, BuildContext context) {
               )),
           IconButton(
               onPressed: () {
-                EditBottomDialog().showBottomDialog(
-                    context, context.read<OrganizationsCubit>());
+                // EditBottomDialog().showBottomDialog(
+                //     context, context.read<OrganizationsCubit>());
               },
               icon: Icon(
                 Icons.mode_edit_outlined,

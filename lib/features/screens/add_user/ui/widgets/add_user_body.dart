@@ -488,8 +488,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                             .usersModel
                             ?.data
                             ?.firstWhere(
-                              (manager) => manager.userName == selectedValue,
-                            )
+                                (manager) => manager.userName == selectedValue)
                             .id
                             ?.toString();
 
