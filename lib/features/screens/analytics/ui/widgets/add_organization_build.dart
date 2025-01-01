@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/features/screens/organizations/logic/organizations_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/organization/organizations/logic/organizations_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/analytics/ui/widgets/organizations_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/analytics/ui/widgets/step_progress_indicator.dart';
 

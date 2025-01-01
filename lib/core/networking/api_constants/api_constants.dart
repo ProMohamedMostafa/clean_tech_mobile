@@ -8,14 +8,22 @@ class ApiConstants {
   static const allUsersUrl = "users";
   static const allProvidersUrl = "providers";
   static const editUserUrl = "users/edit";
+  static const areaEditUrl = "areas/edit";
+  static const cityEditUrl = "cities/edit";
+  static const organizationEditUrl = "organizations/edit";
   static const deleteUserListUrl = "users/deleted/index";
 
   static const createAreaUrl = "areas/create";
-  static const cityUrl = "cities";
   static const createCityUrl = "cities/create";
-  static const organizationUrl = "organizations";
   static const createOrganizationUrl = "organizations/create";
   static const createBuildingUrl = "buildings/create";
   static const createFloorUrl = "floors/create";
   static const createPointUrl = "points/create";
+
+  static const areaUrl = "areas";
+  static const cityUrl = "cities";
+  static const organizationUrl = "organizations";
+  static const buildingUrl = "buildings";
+  static const floorUrl = "floors";
+  static const pointUrl = "points";
 }

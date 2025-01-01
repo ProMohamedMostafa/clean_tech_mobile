@@ -18,15 +18,23 @@ class Routes {
   static const String settingsScreen = '/settingsScreen';
   static const String changepasswordScreen = '/changepasswordScreen';
 
-
   static const String addOrganizationScreen = '/addOrganizationScreen';
+  static const String addAreaScreen = '/addAreaScreen';
   static const String addCityScreen = '/addCityScreen';
-  static const String addOrganizationDetailsScreen = '/addOrganizationDetailsScreen';
+  static const String addOrganizationDetailsScreen =
+      '/addOrganizationDetailsScreen';
   static const String addBuildingScreen = '/addBuildingScreen';
   static const String addFloorScreen = '/addFloorScreen';
   static const String addPointScreen = '/addPointScreen';
 
+  static const String areaDetailsScreen = '/areaDetailsScreen';
+  static const String cityDetailsScreen = '/cityDetailsScreen';
+  static const String organizationDetailsScreen = '/organizationDetailsScreen';
+  static const String buildingDetailsScreen = '/buildingDetailsScreen';
+  static const String floorDetailsScreen = '/floorDetailsScreen';
+  static const String pointDetailsScreen = '/pointDetailsScreen';
 
-
-  
+  static const String editAreaScreen = '/editAreaScreen';
+  static const String editCityScreen = '/editCityScreen';
+  static const String editOrganizationScreen = '/editOrganizationScreen';
 }

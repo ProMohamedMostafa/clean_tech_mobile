@@ -4,15 +4,27 @@ import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/features/layout/main_layout/logic/bottom_navbar_cubit.dart';
 import 'package:smart_cleaning_application/features/layout/main_layout/ui/screen/main_layout.dart';
 import 'package:smart_cleaning_application/features/layout/splash/splash_screen.dart';
-import 'package:smart_cleaning_application/features/screens/add_organizations/logic/add_organization_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/add_organizations/ui/screen/add_organization_screen.dart';
-import 'package:smart_cleaning_application/features/screens/add_organizations/ui/widgets/add_building_screen.dart';
-import 'package:smart_cleaning_application/features/screens/add_organizations/ui/widgets/add_city_screen.dart';
-import 'package:smart_cleaning_application/features/screens/add_organizations/ui/widgets/add_floor_screen.dart';
-import 'package:smart_cleaning_application/features/screens/add_organizations/ui/widgets/add_organization_screen.dart';
-import 'package:smart_cleaning_application/features/screens/add_organizations/ui/widgets/add_point_screen.dart';
-import 'package:smart_cleaning_application/features/screens/add_user/logic/add_user_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/add_user/ui/screen/add_user_screen.dart';
+import 'package:smart_cleaning_application/features/screens/organization/add_organizations/logic/add_organization_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/organization/add_organizations/ui/screen/add_organization_screen.dart';
+import 'package:smart_cleaning_application/features/screens/organization/add_organizations/ui/widgets/add_area_screen.dart';
+import 'package:smart_cleaning_application/features/screens/organization/add_organizations/ui/widgets/add_building_screen.dart';
+import 'package:smart_cleaning_application/features/screens/organization/add_organizations/ui/widgets/add_city_screen.dart';
+import 'package:smart_cleaning_application/features/screens/organization/add_organizations/ui/widgets/add_floor_screen.dart';
+import 'package:smart_cleaning_application/features/screens/organization/add_organizations/ui/widgets/add_organization_screen.dart';
+import 'package:smart_cleaning_application/features/screens/organization/add_organizations/ui/widgets/add_point_screen.dart';
+import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_area/logic/edit_area_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_area/ui/screen/edit_area_screen.dart';
+import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_city/logic/edit_city_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_city/ui/screen/edit_city_screen.dart';
+import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_organization/logic/edit_organization_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_organization/ui/screen/edit_organization_screen.dart';
+import 'package:smart_cleaning_application/features/screens/organization/view_organizations/view_area_details/ui/Screen/view_organization_screen.dart';
+import 'package:smart_cleaning_application/features/screens/organization/view_organizations/view_building_details/ui/Screen/view_organization_screen.dart';
+import 'package:smart_cleaning_application/features/screens/organization/view_organizations/view_city_details/ui/Screen/view_organization_screen.dart';
+import 'package:smart_cleaning_application/features/screens/organization/view_organizations/view_floor_details/ui/Screen/view_organization_screen.dart';
+import 'package:smart_cleaning_application/features/screens/organization/view_organizations/view_organization_details/ui/Screen/view_organization_screen.dart';
+import 'package:smart_cleaning_application/features/screens/user/add_user/logic/add_user_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/user/add_user/ui/screen/add_user_screen.dart';
 import 'package:smart_cleaning_application/features/screens/analytics/ui/screen/analytics_screen.dart';
 import 'package:smart_cleaning_application/features/screens/auth/done_screen/ui/screen/done_screen.dart';
 import 'package:smart_cleaning_application/features/screens/auth/forgot_password/logic/forgot_password_cubit.dart';
@@ -25,17 +37,18 @@ import 'package:smart_cleaning_application/features/screens/auth/verify_account/
 import 'package:smart_cleaning_application/features/screens/calendar/calendar_screen.dart';
 import 'package:smart_cleaning_application/features/screens/change_password/logic/change_password_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/change_password/ui/screen/change_password_screen.dart';
-import 'package:smart_cleaning_application/features/screens/edit_user/logic/edit_user_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/edit_user/ui/screen/edit_user_screen.dart';
+import 'package:smart_cleaning_application/features/screens/user/edit_user/logic/edit_user_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/user/edit_user/ui/screen/edit_user_screen.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/screen/home_screen.dart';
 import 'package:smart_cleaning_application/features/screens/auth/login/ui/screen/login_screen.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/screen/integrations_screen.dart';
-import 'package:smart_cleaning_application/features/screens/organizations/logic/organizations_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/organizations/ui/screen/organizations_screen.dart';
+import 'package:smart_cleaning_application/features/screens/organization/organizations/logic/organizations_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/organization/organizations/ui/screen/organizations_screen.dart';
 import 'package:smart_cleaning_application/features/screens/settings/ui/screen/settings_screen.dart';
-import 'package:smart_cleaning_application/features/screens/user_details/ui/screen/user_details_screen.dart';
-import 'package:smart_cleaning_application/features/screens/user_managment/logic/user_mangement_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/user_managment/ui/screen/user_managment.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_details/ui/screen/user_details_screen.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_managment/ui/screen/user_managment.dart';
+import 'package:smart_cleaning_application/features/screens/organization/view_organizations/view_point_details/ui/Screen/view_organization_screen.dart';
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
@@ -162,6 +175,13 @@ class AppRouter {
             child: const AddOrganizationScreen(),
           ),
         );
+      case Routes.addAreaScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => AddOrganizationCubit(),
+            child: const AddAreaScreen(),
+          ),
+        );
       case Routes.addCityScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -195,6 +215,98 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (context) => AddOrganizationCubit(),
             child: const AddPointScreen(),
+          ),
+        );
+
+      case Routes.areaDetailsScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => OrganizationsCubit(),
+            child: AreaDetailsScreen(
+              id: id,
+            ),
+          ),
+        );
+      case Routes.cityDetailsScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => OrganizationsCubit(),
+            child: CityDetailsScreen(
+              id: id,
+            ),
+          ),
+        );
+      case Routes.organizationDetailsScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => OrganizationsCubit(),
+            child: OrganizationDetailsScreen(
+              id: id,
+            ),
+          ),
+        );
+      case Routes.buildingDetailsScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => OrganizationsCubit(),
+            child: BuildingDetailsScreen(
+              id: id,
+            ),
+          ),
+        );
+      case Routes.floorDetailsScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => OrganizationsCubit(),
+            child: FloorDetailsScreen(
+              id: id,
+            ),
+          ),
+        );
+      case Routes.pointDetailsScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => OrganizationsCubit(),
+            child: PointDetailsScreen(
+              id: id,
+            ),
+          ),
+        );
+
+      case Routes.editAreaScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => EditAreaCubit(),
+            child: EditAreaScreen(
+              id: id,
+            ),
+          ),
+        );
+      case Routes.editCityScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => EditCityCubit(),
+            child: EditCityScreen(
+              id: id,
+            ),
+          ),
+        );
+      case Routes.editOrganizationScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => EditOrganizationCubit(),
+            child: EditOrganizationScreen(
+              id: id,
+            ),
           ),
         );
       default:
