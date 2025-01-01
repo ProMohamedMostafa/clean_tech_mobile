@@ -155,4 +155,69 @@ class OrganizationsCubit extends Cubit<OrganizationsState> {
       emit(PointDetailsErrorState(error.toString()));
     });
   }
+
+  deleteArea(int id) {
+    emit(AreaDeleteLoadingState());
+    DioHelper.postData(url: 'areas/delete/$id', data: {'id': id}).then((value) {
+      final message = value?.data['message'] ?? "Deleted successfully";
+      emit(AreaDeleteSuccessState(message!));
+    }).catchError((error) {
+      emit(AreaDeleteErrorState(error.toString()));
+    });
+  }
+
+  deleteCity(int id) {
+    emit(CityDeleteLoadingState());
+    DioHelper.postData(url: 'cities/delete/$id', data: {'id': id})
+        .then((value) {
+      final message = value?.data['message'] ?? "Deleted successfully";
+      emit(CityDeleteSuccessState(message!));
+    }).catchError((error) {
+      emit(CityDeleteErrorState(error.toString()));
+    });
+  }
+
+  deleteOrganization(int id) {
+    emit(OrganizationDeleteLoadingState());
+    DioHelper.postData(url: 'organizations/delete/$id', data: {'id': id})
+        .then((value) {
+      final message = value?.data['message'] ?? "Deleted successfully";
+      emit(OrganizationDeleteSuccessState(message!));
+    }).catchError((error) {
+      emit(OrganizationDeleteErrorState(error.toString()));
+    });
+  }
+
+  deleteBuilding(int id) {
+    emit(BuildingDeleteLoadingState());
+    DioHelper.postData(url: 'buildings/delete/$id', data: {'id': id})
+        .then((value) {
+      final message = value?.data['message'] ?? "Deleted successfully";
+      emit(BuildingDeleteSuccessState(message!));
+    }).catchError((error) {
+      emit(BuildingDeleteErrorState(error.toString()));
+    });
+  }
+
+  deleteFloor(int id) {
+    emit(FloorDeleteLoadingState());
+    DioHelper.postData(url: 'floors/delete/$id', data: {'id': id})
+        .then((value) {
+      final message = value?.data['message'] ?? "Deleted successfully";
+      emit(FloorDeleteSuccessState(message!));
+    }).catchError((error) {
+      emit(FloorDeleteErrorState(error.toString()));
+    });
+  }
+
+  deletePoint(int id) {
+    emit(PointDeleteLoadingState());
+    DioHelper.postData(url: 'points/delete/$id', data: {'id': id})
+        .then((value) {
+      final message = value?.data['message'] ?? "Deleted successfully";
+      emit(PointDeleteSuccessState(message!));
+    }).catchError((error) {
+      emit(PointDeleteErrorState(error.toString()));
+    });
+  }
 }

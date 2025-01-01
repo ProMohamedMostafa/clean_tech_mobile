@@ -82,6 +82,47 @@ class _OrganizationsBodyState extends State<OrganizationsBody> {
           if (state is AreaErrorState) {
             toast(text: state.error, color: Colors.red);
           }
+          if (state is AreaDeleteSuccessState) {
+            toast(text: state.message, color: Colors.blue);
+            context.read<OrganizationsCubit>().getArea();
+          }
+          if (state is AreaDeleteSuccessState ||
+              state is CityDeleteSuccessState ||
+              state is OrganizationDeleteSuccessState ||
+              state is BuildingDeleteSuccessState ||
+              state is FloorDeleteSuccessState ||
+              state is PointDeleteSuccessState) {
+            String? message;
+
+            if (state is AreaDeleteSuccessState) {
+              message = state.message;
+            } else if (state is CityDeleteSuccessState) {
+              message = state.message;
+            } else if (state is OrganizationDeleteSuccessState) {
+              message = state.message;
+            } else if (state is BuildingDeleteSuccessState) {
+              message = state.message;
+            } else if (state is FloorDeleteSuccessState) {
+              message = state.message;
+            } else if (state is PointDeleteSuccessState) {
+              message = state.message;
+            }
+
+            if (message != null) {
+              toast(text: message, color: Colors.blue);
+            }
+            context.read<OrganizationsCubit>()
+              ..getArea()
+              ..getCity()
+              ..getOrganization()
+              ..getBuilding()
+              ..getFloor()
+              ..getPoint();
+          }
+
+          if (state is AreaDeleteErrorState) {
+            toast(text: state.error, color: Colors.red);
+          }
         },
         builder: (context, state) {
           final cubit = context.read<OrganizationsCubit>();
@@ -114,8 +155,8 @@ class _OrganizationsBodyState extends State<OrganizationsBody> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     verticalSpace(15),
-                    organizationsFilterAndDeleteBuild(
-                        context, context.read<OrganizationsCubit>()),
+                    organizationsFilterAndDeleteBuild(context,
+                        context.read<OrganizationsCubit>(), selectedIndex),
                     verticalSpace(15),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,

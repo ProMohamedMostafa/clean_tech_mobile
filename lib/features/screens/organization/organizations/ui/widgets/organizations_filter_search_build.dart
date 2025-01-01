@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/features/screens/analytics/ui/widgets/organizations_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/organization/organizations/logic/organizations_cubit.dart';
 
 Widget organizationsFilterAndDeleteBuild(
-    BuildContext context, OrganizationsCubit cubit) {
+    BuildContext context, OrganizationsCubit cubit, selectedIndex) {
   return SizedBox(
     height: 45.h,
     child: Row(
@@ -22,7 +24,10 @@ Widget organizationsFilterAndDeleteBuild(
         ),
         horizontalSpace(10),
         InkWell(
-          onTap: () {},
+          onTap: () {
+            context.pushNamed(Routes.deleteOrganizationScreen,
+                arguments: selectedIndex);
+          },
           child: Container(
             height: 52,
             width: 52,

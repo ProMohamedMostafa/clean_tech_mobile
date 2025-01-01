@@ -37,4 +37,14 @@ class Routes {
   static const String editAreaScreen = '/editAreaScreen';
   static const String editCityScreen = '/editCityScreen';
   static const String editOrganizationScreen = '/editOrganizationScreen';
+  static const String editBuildingScreen = '/editBuildingScreen';
+  static const String editFloorScreen = '/editFloorScreen';
+  static const String editPointScreen = '/editPointScreen';
+
+  static const String deleteOrganizationScreen = '/deleteOrganizationScreen';
+
+  
+
+
+
 }

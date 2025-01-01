@@ -87,7 +87,8 @@ class UserManagementCubit extends Cubit<UserManagementState> {
     emit(ForceDeleteUsersLoadingState());
     DioHelper.deleteData(url: 'users/forcedelete/$id', data: {'id': id})
         .then((value) {
-      emit(ForceDeleteUsersSuccessState());
+      final message = value?.data['message'] ?? "restored successfully";
+      emit(ForceDeleteUsersSuccessState(message));
     }).catchError((error) {
       emit(ForceDeleteUsersErrorState(error.toString()));
     });

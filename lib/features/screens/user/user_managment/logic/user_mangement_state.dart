@@ -77,7 +77,11 @@ class RestoreUsersErrorState extends UserManagementState {
 
 class ForceDeleteUsersLoadingState extends UserManagementState {}
 
-class ForceDeleteUsersSuccessState extends UserManagementState {}
+class ForceDeleteUsersSuccessState extends UserManagementState {
+   final String message;
+
+  ForceDeleteUsersSuccessState(this.message);
+}
 
 class ForceDeleteUsersErrorState extends UserManagementState {
   final String error;

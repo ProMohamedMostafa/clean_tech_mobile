@@ -28,9 +28,7 @@ class EditAreaBody extends StatefulWidget {
 class _EditAreaBodyState extends State<EditAreaBody> {
   @override
   void initState() {
-    context
-        .read<EditAreaCubit>()
-        .getAreaDetailsInEdit(widget.id);
+    context.read<EditAreaCubit>().getAreaDetailsInEdit(widget.id);
     context.read<EditAreaCubit>().getNationality();
     super.initState();
   }
@@ -47,9 +45,7 @@ class _EditAreaBodyState extends State<EditAreaBody> {
         child: BlocConsumer<EditAreaCubit, EditAreaState>(
           listener: (context, state) {
             if (state is EditAreaSuccessState) {
-              toast(
-                  text: state.editAreaModel.message!,
-                  color: Colors.blue);
+              toast(text: state.editAreaModel.message!, color: Colors.blue);
               context.pushNamedAndRemoveLastTwo(Routes.organizationsScreen);
             }
             if (state is EditAreaErrorState) {
@@ -67,8 +63,7 @@ class _EditAreaBodyState extends State<EditAreaBody> {
             }
 
             // Ensure data is non-null before building the UI
-            final areaDetails =
-                cubit.areaDetailsInEditModel?.data;
+            final areaDetails = cubit.areaDetailsInEditModel?.data;
 
             if (areaDetails == null) {
               // Handle case where data fetching fails
@@ -126,15 +121,12 @@ class _EditAreaBodyState extends State<EditAreaBody> {
                           context.read<EditAreaCubit>().getArea(value);
                         },
                         suffixIcon: IconBroken.arrowDown2,
-                        controller: context
-                            .read<EditAreaCubit>()
-                            .nationalityController,
+                        controller:
+                            context.read<EditAreaCubit>().nationalityController,
                         readOnly: false,
                         keyboardType: TextInputType.text,
                       ),
                       verticalSpace(15),
-                     
-                   
                       Text(
                         "Edit area",
                         style: TextStyles.font16BlackRegular,
@@ -145,9 +137,8 @@ class _EditAreaBodyState extends State<EditAreaBody> {
                             .areaDetailsInEditModel!
                             .data!
                             .name!,
-                        controller: context
-                            .read<EditAreaCubit>()
-                            .areaController,
+                        controller:
+                            context.read<EditAreaCubit>().areaController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -171,8 +162,7 @@ class _EditAreaBodyState extends State<EditAreaBody> {
                                     () {
                                   context
                                       .read<EditAreaCubit>()
-                                      .editArea(
-                                          widget.id);
+                                      .editArea(widget.id);
                                   context.pop();
                                 });
                               },

@@ -5,74 +5,78 @@ import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper
 import 'package:smart_cleaning_application/features/screens/organization/add_organizations/data/model/area_model.dart';
 import 'package:smart_cleaning_application/features/screens/organization/add_organizations/data/model/building_model.dart';
 import 'package:smart_cleaning_application/features/screens/organization/add_organizations/data/model/city_model.dart';
+import 'package:smart_cleaning_application/features/screens/organization/add_organizations/data/model/floor_organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/organization/add_organizations/data/model/nationality_model.dart';
 import 'package:smart_cleaning_application/features/screens/organization/add_organizations/data/model/organization_model.dart';
-import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_building/data/model/building_details_in_edit_model.dart';
-import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_building/data/model/edit_building_model.dart';
-import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_building/logic/edit_building_state.dart';
+import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_floor/data/model/edit_floor_model.dart';
+import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_floor/data/model/floor_details_in_edit_model.dart';
+import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_floor/logic/edit_floor_state.dart';
 
-class EditBuildingCubit extends Cubit<EditBuildingState> {
-  EditBuildingCubit() : super(EditBuildingInitialState());
+class EditFloorCubit extends Cubit<EditFloorState> {
+  EditFloorCubit() : super(EditFloorInitialState());
 
-  static EditBuildingCubit get(context) => BlocProvider.of(context);
+  static EditFloorCubit get(context) => BlocProvider.of(context);
   TextEditingController nationalityController = TextEditingController();
   TextEditingController areaController = TextEditingController();
   TextEditingController cityController = TextEditingController();
   TextEditingController organizationController = TextEditingController();
   TextEditingController buildingController = TextEditingController();
-  TextEditingController buildingNumberController = TextEditingController();
-  TextEditingController buildingDescriptionController = TextEditingController();
+  TextEditingController floorController = TextEditingController();
+  TextEditingController floorNumberController = TextEditingController();
+  TextEditingController floorDescriptionController = TextEditingController();
   TextEditingController managerNameController = TextEditingController();
   TextEditingController shiftsNameController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
-  BuildingEditModel? editBuildingModel;
-  editBuilding(int? id, cityId, areaId, organizationId) async {
-    emit(EditBuildingLoadingState());
+  FloorEditModel? editFloorModel;
+  editFloor(int? id, cityId, areaId, organizationId, buildingId) async {
+    emit(EditFloorLoadingState());
     try {
       final response =
-          await DioHelper.putData(url: ApiConstants.buildingEditUrl, data: {
+          await DioHelper.putData(url: ApiConstants.floorEditUrl, data: {
         "id": id,
-        "name": buildingController.text.isEmpty
-            ? buildingDetailsInEditModel!.data!.name
-            : buildingController.text,
-        "number": buildingNumberController.text.isEmpty
-            ? buildingDetailsInEditModel!.data!.number
-            : buildingNumberController.text,
-        "description": buildingDescriptionController.text.isEmpty
-            ? buildingDetailsInEditModel!.data!.description
-            : buildingDescriptionController.text,
+        "name": floorController.text.isEmpty
+            ? floorDetailsInEditModel!.data!.name
+            : floorController.text,
+        "number": floorNumberController.text.isEmpty
+            ? floorDetailsInEditModel!.data!.number
+            : floorNumberController.text,
+        "description": floorDescriptionController.text.isEmpty
+            ? floorDetailsInEditModel!.data!.description
+            : floorDescriptionController.text,
+        "buildingId": buildingController.text.isEmpty
+            ? floorDetailsInEditModel!.data!.buildingId
+            : buildingId,
         "organizationId": organizationController.text.isEmpty
-            ? buildingDetailsInEditModel!.data!.organizationId
+            ? floorDetailsInEditModel!.data!.organizationId
             : organizationId,
         "cityId": cityController.text.isEmpty
-            ? buildingDetailsInEditModel!.data!.cityId
+            ? floorDetailsInEditModel!.data!.cityId
             : cityId,
         "areaId": areaController.text.isEmpty
-            ? buildingDetailsInEditModel!.data!.areaId
+            ? floorDetailsInEditModel!.data!.areaId
             : areaId,
         "countryName": nationalityController.text.isEmpty
-            ? buildingDetailsInEditModel!.data!.countryName
+            ? floorDetailsInEditModel!.data!.countryName
             : nationalityController.text,
         "managerIds": null,
         "shiftsIds": null,
       });
-      editBuildingModel = BuildingEditModel.fromJson(response!.data);
-      emit(EditBuildingSuccessState(editBuildingModel!));
+      editFloorModel = FloorEditModel.fromJson(response!.data);
+      emit(EditFloorSuccessState(editFloorModel!));
     } catch (error) {
-      emit(EditBuildingErrorState(error.toString()));
+      emit(EditFloorErrorState(error.toString()));
     }
   }
 
-  BuildingDetailsInEditModel? buildingDetailsInEditModel;
-  getBuildingDetailsInEdit(int id) {
-    emit(GetBuildingDetailsLoadingState());
-    DioHelper.getData(url: 'buildings/$id').then((value) {
-      buildingDetailsInEditModel =
-          BuildingDetailsInEditModel.fromJson(value!.data);
-      emit(GetBuildingDetailsSuccessState(buildingDetailsInEditModel!));
+  FloorDetailsInEditModel? floorDetailsInEditModel;
+  getFloorDetailsInEdit(int id) {
+    emit(GetFloorDetailsLoadingState());
+    DioHelper.getData(url: 'floors/$id').then((value) {
+      floorDetailsInEditModel = FloorDetailsInEditModel.fromJson(value!.data);
+      emit(GetFloorDetailsSuccessState(floorDetailsInEditModel!));
     }).catchError((error) {
-      emit(GetBuildingDetailsErrorState(error.toString()));
+      emit(GetFloorDetailsErrorState(error.toString()));
     });
   }
 
@@ -121,13 +125,24 @@ class EditBuildingCubit extends Cubit<EditBuildingState> {
   }
 
   BuildingModel? buildingModel;
-  getBuilding(int id) {
+  getBuilding(int buildingId) {
     emit(GetBuildingLoadingState());
-    DioHelper.getData(url: 'buildings/organization/$id').then((value) {
+    DioHelper.getData(url: 'buildings/organization/$buildingId').then((value) {
       buildingModel = BuildingModel.fromJson(value!.data);
       emit(GetBuildingSuccessState(buildingModel!));
     }).catchError((error) {
       emit(GetBuildingErrorState(error.toString()));
+    });
+  }
+
+  FloorModel? floorModel;
+  getFloor(int id) {
+    emit(GetFloorLoadingState());
+    DioHelper.getData(url: 'floors/building/$id').then((value) {
+      floorModel = FloorModel.fromJson(value!.data);
+      emit(GetFloorSuccessState(floorModel!));
+    }).catchError((error) {
+      emit(GetFloorErrorState(error.toString()));
     });
   }
 }

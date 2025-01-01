@@ -212,3 +212,88 @@ class PointDetailsErrorState extends OrganizationsState {
   final String error;
   PointDetailsErrorState(this.error);
 }
+
+//******************************** */
+
+class AreaDeleteLoadingState extends OrganizationsState {}
+
+class AreaDeleteSuccessState extends OrganizationsState {
+  final String message;
+
+  AreaDeleteSuccessState(this.message);
+}
+
+class AreaDeleteErrorState extends OrganizationsState {
+  final String error;
+  AreaDeleteErrorState(this.error);
+}
+
+//******************************** */
+class CityDeleteLoadingState extends OrganizationsState {}
+
+class CityDeleteSuccessState extends OrganizationsState {
+  final String message;
+
+  CityDeleteSuccessState(this.message);
+}
+
+class CityDeleteErrorState extends OrganizationsState {
+  final String error;
+  CityDeleteErrorState(this.error);
+}
+
+//******************************** */
+class OrganizationDeleteLoadingState extends OrganizationsState {}
+
+class OrganizationDeleteSuccessState extends OrganizationsState {
+  final String message;
+
+  OrganizationDeleteSuccessState(this.message);
+}
+
+class OrganizationDeleteErrorState extends OrganizationsState {
+  final String error;
+  OrganizationDeleteErrorState(this.error);
+}
+
+//******************************** */
+class BuildingDeleteLoadingState extends OrganizationsState {}
+
+class BuildingDeleteSuccessState extends OrganizationsState {
+  final String message;
+
+  BuildingDeleteSuccessState(this.message);
+}
+
+class BuildingDeleteErrorState extends OrganizationsState {
+  final String error;
+  BuildingDeleteErrorState(this.error);
+}
+//******************************** */
+
+class FloorDeleteLoadingState extends OrganizationsState {}
+
+class FloorDeleteSuccessState extends OrganizationsState {
+  final String message;
+
+  FloorDeleteSuccessState(this.message);
+}
+
+class FloorDeleteErrorState extends OrganizationsState {
+  final String error;
+  FloorDeleteErrorState(this.error);
+}
+//******************************** */
+
+class PointDeleteLoadingState extends OrganizationsState {}
+
+class PointDeleteSuccessState extends OrganizationsState {
+  final String message;
+
+  PointDeleteSuccessState(this.message);
+}
+
+class PointDeleteErrorState extends OrganizationsState {
+  final String error;
+  PointDeleteErrorState(this.error);
+}

@@ -12,12 +12,20 @@ import 'package:smart_cleaning_application/features/screens/organization/add_org
 import 'package:smart_cleaning_application/features/screens/organization/add_organizations/ui/widgets/add_floor_screen.dart';
 import 'package:smart_cleaning_application/features/screens/organization/add_organizations/ui/widgets/add_organization_screen.dart';
 import 'package:smart_cleaning_application/features/screens/organization/add_organizations/ui/widgets/add_point_screen.dart';
+import 'package:smart_cleaning_application/features/screens/organization/delete_organizations/logic/delete_organization_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/organization/delete_organizations/ui/screen/delete_organization_screen.dart';
 import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_area/logic/edit_area_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_area/ui/screen/edit_area_screen.dart';
+import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_building/logic/edit_building_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_building/ui/screen/edit_building_screen.dart';
 import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_city/logic/edit_city_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_city/ui/screen/edit_city_screen.dart';
+import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_floor/logic/edit_floor_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_floor/ui/screen/edit_floor_screen.dart';
 import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_organization/logic/edit_organization_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_organization/ui/screen/edit_organization_screen.dart';
+import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_point/logic/edit_point_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_point/ui/screen/edit_point_screen.dart';
 import 'package:smart_cleaning_application/features/screens/organization/view_organizations/view_area_details/ui/Screen/view_organization_screen.dart';
 import 'package:smart_cleaning_application/features/screens/organization/view_organizations/view_building_details/ui/Screen/view_organization_screen.dart';
 import 'package:smart_cleaning_application/features/screens/organization/view_organizations/view_city_details/ui/Screen/view_organization_screen.dart';
@@ -306,6 +314,47 @@ class AppRouter {
             create: (context) => EditOrganizationCubit(),
             child: EditOrganizationScreen(
               id: id,
+            ),
+          ),
+        );
+      case Routes.editBuildingScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => EditBuildingCubit(),
+            child: EditBuildingScreen(
+              id: id,
+            ),
+          ),
+        );
+      case Routes.editFloorScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => EditFloorCubit(),
+            child: EditFloorScreen(
+              id: id,
+            ),
+          ),
+        );
+      case Routes.editPointScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => EditPointCubit(),
+            child: EditPointScreen(
+              id: id,
+            ),
+          ),
+        );
+
+      case Routes.deleteOrganizationScreen:
+        var selectedIndex = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => DeleteOrganizationsCubit(),
+            child: DeleteOrganizationScreen(
+              selectedIndex: selectedIndex,
             ),
           ),
         );

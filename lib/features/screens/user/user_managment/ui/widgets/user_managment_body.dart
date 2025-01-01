@@ -54,6 +54,12 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
             context.read<UserManagementCubit>().getAllDeletedUser();
           } else if (state is ForceDeleteUsersSuccessState ||
               state is UserDeleteInDetailsSuccessState) {
+            final message = (state is ForceDeleteUsersSuccessState)
+                ? state.message
+                : (state as UserDeleteInDetailsSuccessState)
+                    .deleteUserDetailsModel
+                    .message;
+            toast(text: message!, color: Colors.blue);
             context.read<UserManagementCubit>().getAllUsersInUserManage();
             context.read<UserManagementCubit>().getAllDeletedUser();
           }

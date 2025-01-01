@@ -11,6 +11,9 @@ class ApiConstants {
   static const areaEditUrl = "areas/edit";
   static const cityEditUrl = "cities/edit";
   static const organizationEditUrl = "organizations/edit";
+  static const buildingEditUrl = "buildings/edit";
+  static const floorEditUrl = "floors/edit";
+  static const pointEditUrl = "points/edit";
   static const deleteUserListUrl = "users/deleted/index";
 
   static const createAreaUrl = "areas/create";
@@ -26,4 +29,11 @@ class ApiConstants {
   static const buildingUrl = "buildings";
   static const floorUrl = "floors";
   static const pointUrl = "points";
+
+  static const allDeletedAreaList = '/areas/deleted/index';
+  static const allDeletedCityList = '/cities/deleted/index';
+  static const allDeletedOrganizationList = '/organizations/deleted/index';
+  static const allDeletedBuildingList = '/buildings/deleted/index';
+  static const allDeletedFloorList = '/floors/deleted/index';
+  static const allDeletedPointList = '/points/deleted/index';
 }

@@ -142,10 +142,10 @@ Widget organizationsListItemBuild(BuildContext context, selectedIndex, index) {
                             : selectedIndex == 2
                                 ? Routes.editOrganizationScreen
                                 : selectedIndex == 3
-                                    ? Routes.buildingDetailsScreen
+                                    ? Routes.editBuildingScreen
                                     : selectedIndex == 4
-                                        ? Routes.floorDetailsScreen
-                                        : Routes.pointDetailsScreen,
+                                        ? Routes.editFloorScreen
+                                        : Routes.editPointScreen,
                     arguments: selectedIndex == 0
                         ? context
                             .read<OrganizationsCubit>()
@@ -181,28 +181,6 @@ Widget organizationsListItemBuild(BuildContext context, selectedIndex, index) {
                                             .pointModel!
                                             .data![index]
                                             .id);
-                // context.pushNamed(
-                //   Routes.editOrganizationScreen,
-                //   arguments: context
-                //       .read<OrganizationsCubit>()
-                //       .organizationModel!
-                //       .data![index]
-                //       .id,
-                // );
-
-                // showCustomDialog(context, "Are you Sure to restore this user ?",
-                //     () {
-                //   // context
-                //   //     .read<OrganizationsCubit>()
-                //   //     .restoreDeletedUser(
-                //   //       context
-                //   //           .read<OrganizationsCubit>()
-                //   //           .deletedListModel!
-                //   //           .data![index]
-                //   //           .id!,
-                //   //     );
-                //   context.pop();
-                // });
               },
               child: Icon(
                 Icons.mode_edit_outlined,
@@ -212,24 +190,53 @@ Widget organizationsListItemBuild(BuildContext context, selectedIndex, index) {
           InkWell(
               onTap: () {
                 showCustomDialog(context, S.of(context).deleteMessage, () {
-                  // context.read<OrganizationsCubit>().userDelete(
-                  //     context
-                  //         .read<OrganizationsCubit>()
-                  //         .usersModel!
-                  //         .data![index]
-                  //         .id!);
+                  selectedIndex == 0
+                      ? context.read<OrganizationsCubit>().deleteArea(context
+                          .read<OrganizationsCubit>()
+                          .areaModel!
+                          .data![index]
+                          .id!)
+                      : selectedIndex == 1
+                          ? context.read<OrganizationsCubit>().deleteCity(
+                              context
+                                  .read<OrganizationsCubit>()
+                                  .cityModel!
+                                  .data![index]
+                                  .id!)
+                          : selectedIndex == 2
+                              ? context
+                                  .read<OrganizationsCubit>()
+                                  .deleteOrganization(context
+                                      .read<OrganizationsCubit>()
+                                      .organizationModel!
+                                      .data![index]
+                                      .id!)
+                              : selectedIndex == 3
+                                  ? context
+                                      .read<OrganizationsCubit>()
+                                      .deleteBuilding(context
+                                          .read<OrganizationsCubit>()
+                                          .buildingModel!
+                                          .data![index]
+                                          .id!)
+                                  : selectedIndex == 4
+                                      ? context
+                                          .read<OrganizationsCubit>()
+                                          .deleteFloor(context
+                                              .read<OrganizationsCubit>()
+                                              .floorModel!
+                                              .data![index]
+                                              .id!)
+                                      : context
+                                          .read<OrganizationsCubit>()
+                                          .deletePoint(context
+                                              .read<OrganizationsCubit>()
+                                              .pointModel!
+                                              .data![index]
+                                              .id!);
+
                   context.pop();
                 });
-                // : showCustomDialog(context, "Forced Delete this user", () {
-                //     // context
-                //     //     .read<OrganizationsCubit>()
-                //     //     .forcedDeletedUser(context
-                //     //         .read<OrganizationsCubit>()
-                //     //         .deletedListModel!
-                //     //         .data![index]
-                //     //         .id!);
-                //     context.pop();
-                //   });
               },
               child: Icon(
                 IconBroken.delete,

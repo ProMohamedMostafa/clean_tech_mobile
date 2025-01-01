@@ -5,74 +5,85 @@ import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper
 import 'package:smart_cleaning_application/features/screens/organization/add_organizations/data/model/area_model.dart';
 import 'package:smart_cleaning_application/features/screens/organization/add_organizations/data/model/building_model.dart';
 import 'package:smart_cleaning_application/features/screens/organization/add_organizations/data/model/city_model.dart';
+import 'package:smart_cleaning_application/features/screens/organization/add_organizations/data/model/floor_organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/organization/add_organizations/data/model/nationality_model.dart';
 import 'package:smart_cleaning_application/features/screens/organization/add_organizations/data/model/organization_model.dart';
-import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_building/data/model/building_details_in_edit_model.dart';
-import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_building/data/model/edit_building_model.dart';
-import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_building/logic/edit_building_state.dart';
+import 'package:smart_cleaning_application/features/screens/organization/add_organizations/data/model/points_model.dart';
 
-class EditBuildingCubit extends Cubit<EditBuildingState> {
-  EditBuildingCubit() : super(EditBuildingInitialState());
+import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_point/data/model/edit_point_model.dart';
+import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_point/data/model/point_details_in_edit_model.dart';
+import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_point/logic/edit_point_state.dart';
 
-  static EditBuildingCubit get(context) => BlocProvider.of(context);
+class EditPointCubit extends Cubit<EditPointState> {
+  EditPointCubit() : super(EditPointInitialState());
+
+  static EditPointCubit get(context) => BlocProvider.of(context);
   TextEditingController nationalityController = TextEditingController();
   TextEditingController areaController = TextEditingController();
   TextEditingController cityController = TextEditingController();
   TextEditingController organizationController = TextEditingController();
   TextEditingController buildingController = TextEditingController();
-  TextEditingController buildingNumberController = TextEditingController();
-  TextEditingController buildingDescriptionController = TextEditingController();
+  TextEditingController floorController = TextEditingController();
+  TextEditingController pointController = TextEditingController();
+  TextEditingController pointNumberController = TextEditingController();
+  TextEditingController pointDescriptionController = TextEditingController();
   TextEditingController managerNameController = TextEditingController();
   TextEditingController shiftsNameController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
-  BuildingEditModel? editBuildingModel;
-  editBuilding(int? id, cityId, areaId, organizationId) async {
-    emit(EditBuildingLoadingState());
+  PointEditModel? editPointModel;
+  editPoint(
+      int? id, cityId, areaId, organizationId, buildingId, floorId) async {
+    emit(EditPointLoadingState());
     try {
       final response =
-          await DioHelper.putData(url: ApiConstants.buildingEditUrl, data: {
+          await DioHelper.putData(url: ApiConstants.pointEditUrl, data: {
         "id": id,
-        "name": buildingController.text.isEmpty
-            ? buildingDetailsInEditModel!.data!.name
-            : buildingController.text,
-        "number": buildingNumberController.text.isEmpty
-            ? buildingDetailsInEditModel!.data!.number
-            : buildingNumberController.text,
-        "description": buildingDescriptionController.text.isEmpty
-            ? buildingDetailsInEditModel!.data!.description
-            : buildingDescriptionController.text,
+        "name": pointController.text.isEmpty
+            ? pointDetailsInEditModel!.data!.name
+            : pointController.text,
+        "number": pointNumberController.text.isEmpty
+            ? pointDetailsInEditModel!.data!.number
+            : pointNumberController.text,
+        "description": pointDescriptionController.text.isEmpty
+            ? pointDetailsInEditModel!.data!.description
+            : pointDescriptionController.text,
+        "floorId": floorController.text.isEmpty
+            ? pointDetailsInEditModel!.data!.floorId
+            : floorId,
+        "buildingId": buildingController.text.isEmpty
+            ? pointDetailsInEditModel!.data!.buildingId
+            : buildingId,
         "organizationId": organizationController.text.isEmpty
-            ? buildingDetailsInEditModel!.data!.organizationId
+            ? pointDetailsInEditModel!.data!.organizationId
             : organizationId,
         "cityId": cityController.text.isEmpty
-            ? buildingDetailsInEditModel!.data!.cityId
+            ? pointDetailsInEditModel!.data!.cityId
             : cityId,
         "areaId": areaController.text.isEmpty
-            ? buildingDetailsInEditModel!.data!.areaId
+            ? pointDetailsInEditModel!.data!.areaId
             : areaId,
         "countryName": nationalityController.text.isEmpty
-            ? buildingDetailsInEditModel!.data!.countryName
+            ? pointDetailsInEditModel!.data!.countryName
             : nationalityController.text,
         "managerIds": null,
         "shiftsIds": null,
       });
-      editBuildingModel = BuildingEditModel.fromJson(response!.data);
-      emit(EditBuildingSuccessState(editBuildingModel!));
+      editPointModel = PointEditModel.fromJson(response!.data);
+      emit(EditPointSuccessState(editPointModel!));
     } catch (error) {
-      emit(EditBuildingErrorState(error.toString()));
+      emit(EditPointErrorState(error.toString()));
     }
   }
 
-  BuildingDetailsInEditModel? buildingDetailsInEditModel;
-  getBuildingDetailsInEdit(int id) {
-    emit(GetBuildingDetailsLoadingState());
-    DioHelper.getData(url: 'buildings/$id').then((value) {
-      buildingDetailsInEditModel =
-          BuildingDetailsInEditModel.fromJson(value!.data);
-      emit(GetBuildingDetailsSuccessState(buildingDetailsInEditModel!));
+  PointDetailsInEditModel? pointDetailsInEditModel;
+  getPointDetailsInEdit(int id) {
+    emit(GetPointDetailsLoadingState());
+    DioHelper.getData(url: 'points/$id').then((value) {
+      pointDetailsInEditModel = PointDetailsInEditModel.fromJson(value!.data);
+      emit(GetPointDetailsSuccessState(pointDetailsInEditModel!));
     }).catchError((error) {
-      emit(GetBuildingDetailsErrorState(error.toString()));
+      emit(GetPointDetailsErrorState(error.toString()));
     });
   }
 
@@ -121,13 +132,35 @@ class EditBuildingCubit extends Cubit<EditBuildingState> {
   }
 
   BuildingModel? buildingModel;
-  getBuilding(int id) {
+  getBuilding(int buildingId) {
     emit(GetBuildingLoadingState());
-    DioHelper.getData(url: 'buildings/organization/$id').then((value) {
+    DioHelper.getData(url: 'buildings/organization/$buildingId').then((value) {
       buildingModel = BuildingModel.fromJson(value!.data);
       emit(GetBuildingSuccessState(buildingModel!));
     }).catchError((error) {
       emit(GetBuildingErrorState(error.toString()));
+    });
+  }
+
+  FloorModel? floorModel;
+  getFloor(int floorId) {
+    emit(GetFloorLoadingState());
+    DioHelper.getData(url: 'floors/building/$floorId').then((value) {
+      floorModel = FloorModel.fromJson(value!.data);
+      emit(GetFloorSuccessState(floorModel!));
+    }).catchError((error) {
+      emit(GetFloorErrorState(error.toString()));
+    });
+  }
+
+  PointsModel? pointsModel;
+  getPoints(int pointId) {
+    emit(GetPointLoadingState());
+    DioHelper.getData(url: 'points/floor/$pointId').then((value) {
+      pointsModel = PointsModel.fromJson(value!.data);
+      emit(GetPointSuccessState(pointsModel!));
+    }).catchError((error) {
+      emit(GetPointErrorState(error.toString()));
     });
   }
 }

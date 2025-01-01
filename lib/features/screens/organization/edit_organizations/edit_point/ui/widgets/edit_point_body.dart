@@ -11,28 +11,31 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
-import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_building/logic/edit_building_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_building/logic/edit_building_state.dart';
-import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_building/ui/widgets/edit_building_text_form_field.dart';
-import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_building/ui/widgets/edit_list_building_text_form_field.dart';
+import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_point/logic/edit_point_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_point/logic/edit_point_state.dart';
+import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_point/ui/widgets/edit_list_point_text_form_field.dart';
+import 'package:smart_cleaning_application/features/screens/organization/edit_organizations/edit_point/ui/widgets/edit_point_text_form_field.dart';
+
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
-class EditBuildingBody extends StatefulWidget {
+class EditPointBody extends StatefulWidget {
   final int id;
-  const EditBuildingBody({super.key, required this.id});
+  const EditPointBody({super.key, required this.id});
 
   @override
-  State<EditBuildingBody> createState() => _EditBuildingBodyState();
+  State<EditPointBody> createState() => _EditPointBodyState();
 }
 
-class _EditBuildingBodyState extends State<EditBuildingBody> {
+class _EditPointBodyState extends State<EditPointBody> {
   int? areaId;
   int? cityId;
   int? organizationId;
+  int? buildingId;
+  int? floorId;
   @override
   void initState() {
-    context.read<EditBuildingCubit>().getBuildingDetailsInEdit(widget.id);
-    context.read<EditBuildingCubit>().getNationality();
+    context.read<EditPointCubit>().getPointDetailsInEdit(widget.id);
+    context.read<EditPointCubit>().getNationality();
     super.initState();
   }
 
@@ -41,37 +44,35 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
     return Scaffold(
       appBar: AppBar(
         leading: customBackButton(context),
-        title: Text('Edit Building', style: TextStyles.font16BlackSemiBold),
+        title: Text('Edit Point', style: TextStyles.font16BlackSemiBold),
         centerTitle: true,
       ),
       body: SafeArea(
-        child: BlocConsumer<EditBuildingCubit, EditBuildingState>(
+        child: BlocConsumer<EditPointCubit, EditPointState>(
           listener: (context, state) {
-            if (state is EditBuildingSuccessState) {
-              toast(text: state.buildingEditModel.message!, color: Colors.blue);
+            if (state is EditPointSuccessState) {
+              toast(text: state.pointEditModel.message!, color: Colors.blue);
               context.pushNamedAndRemoveLastTwo(Routes.organizationsScreen);
             }
-            if (state is EditBuildingErrorState) {
+            if (state is EditPointErrorState) {
               toast(text: state.error, color: Colors.red);
             }
           },
           builder: (context, state) {
-            final cubit = context.read<EditBuildingCubit>();
-            if (state is GetBuildingDetailsLoadingState ||
-                cubit.buildingDetailsInEditModel == null) {
+            final cubit = context.read<EditPointCubit>();
+            if (state is GetPointDetailsLoadingState ||
+                cubit.pointDetailsInEditModel == null) {
               // Show loading indicator
               return const Center(
                 child: CircularProgressIndicator(color: AppColor.primaryColor),
               );
             }
 
-            // Ensure data is non-null before building the UI
-            final buildingDetails = cubit.buildingDetailsInEditModel?.data;
+            final pointDetails = cubit.pointDetailsInEditModel?.data;
 
-            if (buildingDetails == null) {
-              // Handle case where data fetching fails
+            if (pointDetails == null) {
               return const Center(
-                child: Text("Failed to load building details."),
+                child: Text("Failed to load point details."),
               );
             }
 
@@ -79,7 +80,7 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: SingleChildScrollView(
                 child: Form(
-                  key: context.read<EditBuildingCubit>().formKey,
+                  key: context.read<EditPointCubit>().formKey,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,21 +90,21 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                         S.of(context).addUserText12,
                         style: TextStyles.font16BlackRegular,
                       ),
-                      EditListBuildingTextFormField(
+                      EditListPointTextFormField(
                         hint: context
-                            .read<EditBuildingCubit>()
-                            .buildingDetailsInEditModel!
+                            .read<EditPointCubit>()
+                            .pointDetailsInEditModel!
                             .data!
                             .countryName!,
                         items: context
-                                    .read<EditBuildingCubit>()
+                                    .read<EditPointCubit>()
                                     .nationalityModel
                                     ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No country']
                             : context
-                                    .read<EditBuildingCubit>()
+                                    .read<EditPointCubit>()
                                     .nationalityModel
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
@@ -118,14 +119,14 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                         },
                         onChanged: (value) {
                           context
-                              .read<EditBuildingCubit>()
+                              .read<EditPointCubit>()
                               .nationalityController
                               .text = value!;
-                          context.read<EditBuildingCubit>().getArea(value);
+                          context.read<EditPointCubit>().getArea(value);
                         },
                         suffixIcon: IconBroken.arrowDown2,
                         controller: context
-                            .read<EditBuildingCubit>()
+                            .read<EditPointCubit>()
                             .nationalityController,
                         readOnly: false,
                         keyboardType: TextInputType.text,
@@ -135,21 +136,21 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                         "Area",
                         style: TextStyles.font16BlackRegular,
                       ),
-                      EditListBuildingTextFormField(
+                      EditListPointTextFormField(
                         hint: context
-                            .read<EditBuildingCubit>()
-                            .buildingDetailsInEditModel!
+                            .read<EditPointCubit>()
+                            .pointDetailsInEditModel!
                             .data!
                             .areaName!,
                         items: context
-                                    .read<EditBuildingCubit>()
+                                    .read<EditPointCubit>()
                                     .areaModel
                                     ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No areas']
                             : context
-                                    .read<EditBuildingCubit>()
+                                    .read<EditPointCubit>()
                                     .areaModel
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
@@ -164,24 +165,24 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                         },
                         onChanged: (value) {
                           final selectedArea = context
-                              .read<EditBuildingCubit>()
+                              .read<EditPointCubit>()
                               .areaModel
                               ?.data
                               ?.firstWhere((area) =>
                                   area.name ==
                                   context
-                                      .read<EditBuildingCubit>()
+                                      .read<EditPointCubit>()
                                       .areaController
                                       .text);
 
                           context
-                              .read<EditBuildingCubit>()
+                              .read<EditPointCubit>()
                               .getCity(selectedArea!.id!);
                           areaId = selectedArea.id!;
                         },
                         suffixIcon: IconBroken.arrowDown2,
                         controller:
-                            context.read<EditBuildingCubit>().areaController,
+                            context.read<EditPointCubit>().areaController,
                         readOnly: false,
                         keyboardType: TextInputType.text,
                       ),
@@ -190,21 +191,21 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                         "City",
                         style: TextStyles.font16BlackRegular,
                       ),
-                      EditListBuildingTextFormField(
+                      EditListPointTextFormField(
                         hint: context
-                            .read<EditBuildingCubit>()
-                            .buildingDetailsInEditModel!
+                            .read<EditPointCubit>()
+                            .pointDetailsInEditModel!
                             .data!
                             .cityName!,
                         items: context
-                                    .read<EditBuildingCubit>()
+                                    .read<EditPointCubit>()
                                     .cityModel
                                     ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No cities']
                             : context
-                                    .read<EditBuildingCubit>()
+                                    .read<EditPointCubit>()
                                     .cityModel
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
@@ -219,24 +220,24 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                         },
                         onChanged: (value) {
                           final selectedCity = context
-                              .read<EditBuildingCubit>()
+                              .read<EditPointCubit>()
                               .cityModel
                               ?.data
                               ?.firstWhere((city) =>
                                   city.name ==
                                   context
-                                      .read<EditBuildingCubit>()
+                                      .read<EditPointCubit>()
                                       .cityController
                                       .text);
 
                           context
-                              .read<EditBuildingCubit>()
+                              .read<EditPointCubit>()
                               .getOrganization(selectedCity!.id!);
                           cityId = selectedCity.id!;
                         },
                         suffixIcon: IconBroken.arrowDown2,
                         controller:
-                            context.read<EditBuildingCubit>().cityController,
+                            context.read<EditPointCubit>().cityController,
                         readOnly: false,
                         keyboardType: TextInputType.text,
                       ),
@@ -245,21 +246,21 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                         "Organization",
                         style: TextStyles.font16BlackRegular,
                       ),
-                      EditListBuildingTextFormField(
+                      EditListPointTextFormField(
                         hint: context
-                            .read<EditBuildingCubit>()
-                            .buildingDetailsInEditModel!
+                            .read<EditPointCubit>()
+                            .pointDetailsInEditModel!
                             .data!
                             .organizationName!,
                         items: context
-                                    .read<EditBuildingCubit>()
+                                    .read<EditPointCubit>()
                                     .organizationModel
                                     ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No organizations']
                             : context
-                                    .read<EditBuildingCubit>()
+                                    .read<EditPointCubit>()
                                     .organizationModel
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
@@ -274,75 +275,184 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                         },
                         onChanged: (value) {
                           final selectedOrganization = context
-                              .read<EditBuildingCubit>()
+                              .read<EditPointCubit>()
                               .organizationModel
                               ?.data
                               ?.firstWhere((organization) =>
                                   organization.name ==
                                   context
-                                      .read<EditBuildingCubit>()
+                                      .read<EditPointCubit>()
                                       .organizationController
                                       .text);
 
                           context
-                              .read<EditBuildingCubit>()
+                              .read<EditPointCubit>()
                               .getBuilding(selectedOrganization!.id!);
                           organizationId = selectedOrganization.id!;
                         },
                         suffixIcon: IconBroken.arrowDown2,
                         controller: context
-                            .read<EditBuildingCubit>()
+                            .read<EditPointCubit>()
                             .organizationController,
                         readOnly: false,
                         keyboardType: TextInputType.text,
                       ),
                       verticalSpace(15),
                       Text(
-                        "Edit building Name",
+                        "Building",
                         style: TextStyles.font16BlackRegular,
                       ),
-                      EditBuildingTextField(
+                      EditListPointTextFormField(
                         hint: context
-                            .read<EditBuildingCubit>()
-                            .buildingDetailsInEditModel!
+                            .read<EditPointCubit>()
+                            .pointDetailsInEditModel!
                             .data!
-                            .name!,
-                        controller: context
-                            .read<EditBuildingCubit>()
-                            .buildingController,
-                        keyboardType: TextInputType.text,
+                            .buildingName!,
+                        items: context
+                                    .read<EditPointCubit>()
+                                    .buildingModel
+                                    ?.data
+                                    ?.isEmpty ??
+                                true
+                            ? ['No building']
+                            : context
+                                    .read<EditPointCubit>()
+                                    .buildingModel
+                                    ?.data
+                                    ?.map((e) => e.name ?? 'Unknown')
+                                    .toList() ??
+                                [],
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null ||
+                              value.isEmpty ||
+                              value == 'No building') {
                             return "Building is required";
                           }
                         },
+                        onChanged: (value) {
+                          final selectedBuilding = context
+                              .read<EditPointCubit>()
+                              .buildingModel
+                              ?.data
+                              ?.firstWhere((building) =>
+                                  building.name ==
+                                  context
+                                      .read<EditPointCubit>()
+                                      .buildingController
+                                      .text);
+
+                          context
+                              .read<EditPointCubit>()
+                              .getFloor(selectedBuilding!.id!);
+                          buildingId = selectedBuilding.id!;
+                        },
+                        suffixIcon: IconBroken.arrowDown2,
+                        controller:
+                            context.read<EditPointCubit>().buildingController,
+                        readOnly: false,
+                        keyboardType: TextInputType.text,
+                      ),
+                      verticalSpace(15),
+                      Text(
+                        "Floor",
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      EditListPointTextFormField(
+                        hint: context
+                            .read<EditPointCubit>()
+                            .pointDetailsInEditModel!
+                            .data!
+                            .floorName!,
+                        items: context
+                                    .read<EditPointCubit>()
+                                    .floorModel
+                                    ?.data
+                                    ?.isEmpty ??
+                                true
+                            ? ['No floor']
+                            : context
+                                    .read<EditPointCubit>()
+                                    .floorModel
+                                    ?.data
+                                    ?.map((e) => e.name ?? 'Unknown')
+                                    .toList() ??
+                                [],
+                        validator: (value) {
+                          if (value == null ||
+                              value.isEmpty ||
+                              value == 'No floor') {
+                            return "Floor is required";
+                          }
+                        },
+                        onChanged: (value) {
+                          final selectedFloor = context
+                              .read<EditPointCubit>()
+                              .floorModel
+                              ?.data
+                              ?.firstWhere((floor) =>
+                                  floor.name ==
+                                  context
+                                      .read<EditPointCubit>()
+                                      .floorController
+                                      .text);
+
+                          context
+                              .read<EditPointCubit>()
+                              .getPoints(selectedFloor!.id!);
+                          floorId = selectedFloor.id!;
+                        },
+                        suffixIcon: IconBroken.arrowDown2,
+                        controller:
+                            context.read<EditPointCubit>().floorController,
+                        readOnly: false,
+                        keyboardType: TextInputType.text,
+                      ),
+                      verticalSpace(15),
+                      Text(
+                        "Edit Point Name",
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      EditPointTextField(
+                        hint: context
+                            .read<EditPointCubit>()
+                            .pointDetailsInEditModel!
+                            .data!
+                            .name!,
+                        controller:
+                            context.read<EditPointCubit>().pointController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Point is required";
+                          }
+                        },
                         obscureText: false,
                       ),
                       verticalSpace(15),
                       Text(
-                        "Add building Number",
+                        "Add point Number",
                         style: TextStyles.font16BlackRegular,
                       ),
-                      EditBuildingTextField(
+                      EditPointTextField(
                         hint: context
-                            .read<EditBuildingCubit>()
-                            .buildingDetailsInEditModel!
+                            .read<EditPointCubit>()
+                            .pointDetailsInEditModel!
                             .data!
                             .number!,
                         controller: context
-                            .read<EditBuildingCubit>()
-                            .buildingNumberController,
+                            .read<EditPointCubit>()
+                            .pointNumberController,
                         obscureText: false,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Building number is required";
+                            return "Point number is required";
                           }
                         },
                       ),
                       verticalSpace(15),
                       Text(
-                        "Add building description",
+                        "Add point description",
                         style: TextStyles.font16BlackRegular,
                       ),
                       SizedBox(
@@ -350,8 +460,8 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                         width: double.infinity,
                         child: TextFormField(
                           controller: context
-                              .read<EditBuildingCubit>()
-                              .buildingDescriptionController,
+                              .read<EditPointCubit>()
+                              .pointDescriptionController,
                           textAlignVertical: TextAlignVertical.top,
                           textAlign: TextAlign.start,
                           keyboardType: TextInputType.multiline,
@@ -359,15 +469,15 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                           expands: true,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return "Building description is required";
+                              return "Point description is required";
                             }
                             return null;
                           },
                           decoration: InputDecoration(
                               contentPadding: const EdgeInsets.all(5),
                               hintText: context
-                                  .read<EditBuildingCubit>()
-                                  .buildingDetailsInEditModel!
+                                  .read<EditPointCubit>()
+                                  .pointDetailsInEditModel!
                                   .data!
                                   .description!,
                               hintStyle: TextStyle(
@@ -379,7 +489,7 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                         ),
                       ),
                       verticalSpace(15),
-                      state is EditBuildingLoadingState
+                      state is EditPointLoadingState
                           ? const Center(
                               child: CircularProgressIndicator(
                                   color: AppColor.primaryColor),
@@ -388,12 +498,15 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                               name: "Edit",
                               onPressed: () {
                                 showCustomDialog(context,
-                                    "Are you Sure you want save the edit of this building ?",
+                                    "Are you Sure you want save the edit of this Point ?",
                                     () {
-                                  context
-                                      .read<EditBuildingCubit>()
-                                      .editBuilding(widget.id, areaId, cityId,
-                                          organizationId);
+                                  context.read<EditPointCubit>().editPoint(
+                                      widget.id,
+                                      areaId,
+                                      cityId,
+                                      organizationId,
+                                      buildingId,
+                                      floorId);
                                   context.pop();
                                 });
                               },
