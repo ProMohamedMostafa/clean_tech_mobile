@@ -36,4 +36,9 @@ class ApiConstants {
   static const allDeletedBuildingList = '/buildings/deleted/index';
   static const allDeletedFloorList = '/floors/deleted/index';
   static const allDeletedPointList = '/points/deleted/index';
+
+  static const createShiftUrl = "shifts/create";
+  static const allShiftsUrl = "shifts";
+  static const editShiftsUrl = "shifts/edit";
+  static const allShiftsDeletedUrl = "shifts/deleted/index";
 }

@@ -18,11 +18,11 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
     children: [
       InkWell(
         onTap: () {
-          context.pushNamed(
-            Routes.userDetailsScreen,
-            arguments:
-                context.read<UserManagementCubit>().usersModel!.data![index].id,
-          );
+          // context.pushNamed(
+          //   Routes.userDetailsScreen,
+          //   arguments:
+          //       context.read<UserManagementCubit>().usersModel!.data![index].id,
+          // );
         },
         child: Row(
           children: [

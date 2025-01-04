@@ -40,6 +40,13 @@ class IntegrationsBody extends StatelessWidget {
                     Icons.location_city_outlined,
                   ),
                   buildIntegrationItem(
+                    () {
+                      context.pushNamed(Routes.shiftScreen);
+                    },
+                    "Shift",
+                    IconBroken.calendar,
+                  ),
+                  buildIntegrationItem(
                     () {},
                     S.of(context).integ3,
                     Icons.task_outlined,

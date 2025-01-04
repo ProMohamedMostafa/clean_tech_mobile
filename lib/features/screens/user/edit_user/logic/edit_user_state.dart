@@ -19,8 +19,6 @@ class EditUserErrorState extends EditUserState {
 
 //************************* */
 
-class UserInitialState extends EditUserState {}
-
 class UserLoadingState extends EditUserState {}
 
 class UserSuccessState extends EditUserState {

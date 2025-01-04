@@ -31,7 +31,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
   @override
   void initState() {
     context.read<UserManagementCubit>().getUserDetails(widget.id);
-    controller = TabController(length: 2, vsync: this);
+    controller = TabController(length: 3, vsync: this);
     controller.addListener(() {
       setState(() {});
     });
@@ -155,6 +155,17 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                                   fontSize: 16.sp),
                             ),
                           ),
+                          Tab(
+                            child: Text(
+                              "User Shifts",
+                              style: TextStyle(
+                                  color: controller.index == 2
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 16.sp),
+                            ),
+                          ),
                         ]),
                   ),
                   verticalSpace(20),
@@ -162,6 +173,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                     child: TabBarView(controller: controller, children: [
                       userDetails(),
                       locationUserDetails(),
+                      userShiftsDetails(),
                     ]),
                   ),
                   verticalSpace(15),
@@ -296,6 +308,77 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
             child: Divider(),
           ),
           rowDetailsBuild(context, 'Points', '6'),
+        ],
+      ),
+    );
+  }
+
+  Widget userShiftsDetails() {
+    // final userModel = context.read<UserManagementCubit>().userModel!;
+
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          rowDetailsBuild(context, "Name Shift", "Morning"),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(context, "Start Date", "1/12/2025"),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(context, "End Date", "20/12/2026"),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(context, "Start Time", "06:30 AM"),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(context, "End Time", "09:30 PM"),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(context, "Organization", "Ai cloud"),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(context, "Building", "Building 3"),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(context, "Floor", "2"),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(context, "Point", "meeting room"),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(context, "Manager", "Eng.Mohamed"),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(context, "Supervisor", "Mr.Amr"),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(context, "Cleaner", "Om yousef"),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
         ],
       ),
     );

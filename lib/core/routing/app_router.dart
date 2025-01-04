@@ -31,6 +31,13 @@ import 'package:smart_cleaning_application/features/screens/organization/view_or
 import 'package:smart_cleaning_application/features/screens/organization/view_organizations/view_city_details/ui/Screen/view_organization_screen.dart';
 import 'package:smart_cleaning_application/features/screens/organization/view_organizations/view_floor_details/ui/Screen/view_organization_screen.dart';
 import 'package:smart_cleaning_application/features/screens/organization/view_organizations/view_organization_details/ui/Screen/view_organization_screen.dart';
+import 'package:smart_cleaning_application/features/screens/shift/add_shift/logic/add_shift_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/shift/add_shift/ui/screen/add_shift_screen.dart';
+import 'package:smart_cleaning_application/features/screens/shift/edit_shift/logic/edit_shift_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/shift/edit_shift/ui/screen/edit_shift_screen.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shift_details/ui/screen/shift_details_screen.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shifts/logic/shift_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shifts/ui/screen/shift_screen.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/logic/add_user_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/ui/screen/add_user_screen.dart';
 import 'package:smart_cleaning_application/features/screens/analytics/ui/screen/analytics_screen.dart';
@@ -136,6 +143,13 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (context) => OrganizationsCubit(),
             child: const OrganizationsScreen(),
+          ),
+        );
+      case Routes.shiftScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => ShiftCubit(),
+            child: const ShiftScreen(),
           ),
         );
       case Routes.addUserScreen:
@@ -358,6 +372,35 @@ class AppRouter {
             ),
           ),
         );
+
+      case Routes.addShiftScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => AddShiftCubit(),
+            child: AddShiftScreen(),
+          ),
+        );
+      case Routes.shiftDetailsScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => ShiftCubit(),
+            child: ShiftDetailsScreen(
+              id: id,
+            ),
+          ),
+        );
+      case Routes.editShiftScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => EditShiftCubit(),
+            child: EditShiftScreen(
+              id: id,
+            ),
+          ),
+        );
+
       default:
         return null;
     }

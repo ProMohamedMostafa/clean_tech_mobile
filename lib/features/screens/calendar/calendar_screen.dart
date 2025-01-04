@@ -12,3 +12,20 @@ class CalendarScreen extends StatelessWidget {
     );
   }
 }
+  //   return SfCalendar(
+  //     view: CalendarView.week,
+  //     specialRegions: _getTimeRegions(),
+  //   );
+  // }
+
+  // List<TimeRegion> _getTimeRegions() {
+  //   final List<TimeRegion> regions = <TimeRegion>[];
+  //   regions.add(TimeRegion(
+  //       startTime: DateTime.now(),
+  //       endTime: DateTime.now().add(Duration(hours: 1)),
+  //       enablePointerInteraction: false,
+  //       color: Colors.grey.withOpacity(0.2),
+  //       text: 'Break'));
+
+  //   return regions;
+  // }
