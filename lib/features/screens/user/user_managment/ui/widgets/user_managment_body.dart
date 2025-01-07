@@ -128,7 +128,7 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
                                         children: [
                                           Text(
                                             index == 0
-                                                ? "${context.read<UserManagementCubit>().usersModel?.data?.length ?? 0}"
+                                                ? "${context.read<UserManagementCubit>().usersModel?.data?.users!.length ?? 0}"
                                                 : "${context.read<UserManagementCubit>().deletedListModel?.data?.length ?? 0}",
                                             style: TextStyle(
                                               fontSize: 13.sp,

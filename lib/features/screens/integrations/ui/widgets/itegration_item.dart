@@ -6,6 +6,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 
 Widget buildIntegrationItem(Function? onPressed, String title, IconData icon) {
   return InkWell(
+    borderRadius: BorderRadius.circular(16.r),
     onTap: () {
       if (onPressed != null) {
         onPressed();

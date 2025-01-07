@@ -12,6 +12,7 @@ class Routes {
   static const String integrationsScreen = '/integrationsScreen';
   static const String userManagmentScreen = '/userManagmentScreen';
   static const String organizationsScreen = '/organizationsScreen';
+    static const String assignScreen = '/assignScreen';
   static const String shiftScreen = '/shiftScreen';
   static const String addUserScreen = '/addUserScreen';
   static const String userDetailsScreen = '/userDetailsScreen';
@@ -47,4 +48,13 @@ class Routes {
   static const String addShiftScreen = '/addShiftScreen';
   static const String editShiftScreen = '/editShiftScreen';
   static const String shiftDetailsScreen = '/shiftDetailsScreen';
+
+
+
+  static const String taskManagementScreen = '/taskManagementScreen';
+  static const String addTaskScreen = '/addTaskScreen';
+
+
+
+
 }

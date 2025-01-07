@@ -30,7 +30,7 @@ class UserManagementCubit extends Cubit<UserManagementState> {
   UsersModel? usersModel;
   getAllUsersInUserManage() {
     emit(AllUsersLoadingState());
-    DioHelper.getData(url: ApiConstants.allUsersUrl).then((value) {
+    DioHelper.getData(url: "users/pagination").then((value) {
       usersModel = UsersModel.fromJson(value!.data);
       deletedListModel;
       emit(AllUsersSuccessState(usersModel!));

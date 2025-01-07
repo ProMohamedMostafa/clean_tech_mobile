@@ -1,8 +1,8 @@
+import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/manager_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/nationality_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/role_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/user_create.dart';
-import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/users_model.dart';
 
 abstract class AddUserState {}
 
@@ -22,7 +22,20 @@ class AddUserErrorState extends AddUserState {
 }
 
 //**************************** */
+class AddProviderLoadingState extends AddUserState {}
 
+class AddProviderSuccessState extends AddUserState {
+  final String message;
+
+  AddProviderSuccessState(this.message);
+}
+
+class AddProviderErrorState extends AddUserState {
+  final String error;
+  AddProviderErrorState(this.error);
+}
+
+//**************************** */
 class GetNationalityLoadingState extends AddUserState {}
 
 class GetNationalitySuccessState extends AddUserState {
@@ -53,17 +66,17 @@ class RoleErrorState extends AddUserState {
 
 //**************************** */
 
-class AllUsersLoadingState extends AddUserState {}
+class ManagerLoadingState extends AddUserState {}
 
-class AllUsersSuccessState extends AddUserState {
-  final UsersModel usermodel;
+class  ManagerSuccessState extends AddUserState {
+  final ManagerModel managerModel;
 
-  AllUsersSuccessState(this.usermodel);
+   ManagerSuccessState(this.managerModel);
 }
 
-class AllUsersErrorState extends AddUserState {
+class  ManagerErrorState extends AddUserState {
   final String error;
-  AllUsersErrorState(this.error);
+   ManagerErrorState(this.error);
 }
 //**************************** */
 

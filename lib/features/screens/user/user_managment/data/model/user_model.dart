@@ -85,7 +85,7 @@ class Data {
     idNumber = json['idNumber'];
     nationalityName = json['nationalityName'];
     countryName = json['countryName'];
-    providerName = json['providerName'];
+    providerName = json['providerName'] ?? "providerName";
     gender = json['gender'];
     id = json['id'];
     createdAt = json['createdAt'];

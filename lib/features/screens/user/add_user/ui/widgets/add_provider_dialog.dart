@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
-import 'package:smart_cleaning_application/features/screens/organization/add_organizations/logic/add_organization_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/organization/add_organizations/ui/widgets/organization_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/organization/add_organizations/ui/widgets/add_organization_text_form_field.dart';
-import 'package:smart_cleaning_application/generated/l10n.dart';
+import 'package:smart_cleaning_application/features/screens/user/add_user/logic/add_user_cubit.dart';
 
-class AddAreaBottomDialog {
-  void showBottomDialog(BuildContext context, AddOrganizationCubit cubit) {
+class AddProviderBottomDialog {
+  void showBottomDialog(BuildContext context, AddUserCubit cubit) {
     showGeneralDialog(
       barrierLabel: "showGeneralDialog",
       barrierDismissible: true,
@@ -36,7 +33,7 @@ class AddAreaBottomDialog {
     );
   }
 
-  Widget _buildDialogContent(BuildContext context, AddOrganizationCubit cubit) {
+  Widget _buildDialogContent(BuildContext context, AddUserCubit cubit) {
     return Container(
       width: double.maxFinite,
       clipBehavior: Clip.antiAlias,
@@ -73,12 +70,12 @@ class AddAreaBottomDialog {
 
   Widget _buildContinueText() {
     return Text(
-      'Add Area',
+      'Add Provider',
       style: TextStyles.font20BlacksemiBold,
     );
   }
 
-  Widget _buildDetailsField(BuildContext context, AddOrganizationCubit cubit) {
+  Widget _buildDetailsField(BuildContext context, AddUserCubit cubit) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Form(
@@ -87,40 +84,13 @@ class AddAreaBottomDialog {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              S.of(context).addUserText12,
-              style: TextStyles.font16BlackRegular,
-            ),
-            OrganizationTextFormField(
-              hint: "Select country",
-              items: cubit.nationalityModel?.data?.isEmpty ?? true
-                  ? ['No country']
-                  : cubit.nationalityModel?.data
-                          ?.map((e) => e.name ?? 'Unknown')
-                          .toList() ??
-                      [],
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return S.of(context).validationNationality;
-                }
-              },
-              suffixIcon: IconBroken.arrowDown2,
-              controller: cubit.nationalityController,
-              readOnly: false,
-              keyboardType: TextInputType.text,
-            ),
-            verticalSpace(15),
-            Text(
-              "Add area",
-              style: TextStyles.font16BlackRegular,
-            ),
             AddOrganizationTextField(
-              controller: cubit.addAreaController,
+              controller: cubit.providerController,
               obscureText: false,
               keyboardType: TextInputType.text,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return "Area is required";
+                  return "Provider is required";
                 }
               },
             ),
@@ -131,8 +101,7 @@ class AddAreaBottomDialog {
     );
   }
 
-  Widget _buildContinueButton(
-      BuildContext context, AddOrganizationCubit cubit) {
+  Widget _buildContinueButton(BuildContext context, AddUserCubit cubit) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -150,7 +119,8 @@ class AddAreaBottomDialog {
           name: "Add",
           onPressed: () {
             if (cubit.formAddKey.currentState!.validate()) {
-              cubit.createArea(cubit.nationalityController.text);
+              cubit.addProvider();
+              Navigator.of(context, rootNavigator: true).pop();
             }
           },
           color: AppColor.primaryColor,

@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
+import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/manager_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/nationality_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/role_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/user_create.dart';
-import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/logic/add_user_state.dart';
 
 class AddUserCubit extends Cubit<AddUserState> {
@@ -30,7 +30,9 @@ class AddUserCubit extends Cubit<AddUserState> {
   TextEditingController managerIdNumberController = TextEditingController();
   TextEditingController genderController = TextEditingController();
   TextEditingController providerIdController = TextEditingController();
+  TextEditingController providerController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  final formAddKey = GlobalKey<FormState>();
 
   UserCreateModel? userCreateModel;
   addUser() async {
@@ -65,6 +67,18 @@ class AddUserCubit extends Cubit<AddUserState> {
     }
   }
 
+  addProvider() {
+    emit(AddProviderLoadingState());
+    DioHelper.postData(url: ApiConstants.userCreateProviderUrl, data: {
+      "name": providerController.text,
+    }).then((value) {
+      final message = value?.data['message'] ?? "Created Successfully";
+      emit(AddProviderSuccessState(message!));
+    }).catchError((error) {
+      emit(AddProviderErrorState(error.toString()));
+    });
+  }
+
   NationalityModel? nationalityModel;
   getNationality() {
     emit(GetNationalityLoadingState());
@@ -87,19 +101,19 @@ class AddUserCubit extends Cubit<AddUserState> {
     });
   }
 
-  UsersModel? usersModel;
-  getAllUsers() {
-    emit(AllUsersLoadingState());
-    DioHelper.getData(url: ApiConstants.allUsersUrl).then((value) {
-      usersModel = UsersModel.fromJson(value!.data);
-      emit(AllUsersSuccessState(usersModel!));
+  ManagerModel? managerModel;
+  getManagers() {
+    emit(ManagerLoadingState());
+    DioHelper.getData(url: "users/role/2").then((value) {
+      managerModel = ManagerModel.fromJson(value!.data);
+      emit(ManagerSuccessState(managerModel!));
     }).catchError((error) {
-      emit(AllUsersErrorState(error.toString()));
+      emit(ManagerErrorState(error.toString()));
     });
   }
 
   ProvidersModel? providersModel;
-  getAllProviders() {
+  getProviders() {
     emit(AllProvidersLoadingState());
     DioHelper.getData(url: ApiConstants.allProvidersUrl).then((value) {
       providersModel = ProvidersModel.fromJson(value!.data);

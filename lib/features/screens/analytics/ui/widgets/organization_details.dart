@@ -106,7 +106,8 @@ Widget organizationsDetails(OrganizationsCubit cubit, BuildContext context) {
                   context.read<UserManagementCubit>().userDelete(context
                       .read<UserManagementCubit>()
                       .usersModel!
-                      .data![1]
+                      .data!
+                      .users![1]
                       .id!);
                 });
               },

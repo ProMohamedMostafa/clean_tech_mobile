@@ -38,6 +38,10 @@ import 'package:smart_cleaning_application/features/screens/shift/edit_shift/ui/
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/ui/screen/shift_details_screen.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts/logic/shift_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts/ui/screen/shift_screen.dart';
+import 'package:smart_cleaning_application/features/screens/task/add_task/logic/add_task_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/task/add_task/ui/screen/add_task_screen.dart';
+import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/task/task_management/ui/screen/task_managment_screen.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/logic/add_user_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/ui/screen/add_user_screen.dart';
 import 'package:smart_cleaning_application/features/screens/analytics/ui/screen/analytics_screen.dart';
@@ -398,6 +402,27 @@ class AppRouter {
             child: EditShiftScreen(
               id: id,
             ),
+          ),
+        );
+      case Routes.taskManagementScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => TaskManagementCubit(),
+            child: TaskManagementScreen(),
+          ),
+        );
+      case Routes.addTaskScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => AddTaskCubit(),
+            child: AddTaskScreen(),
+          ),
+        );
+        case Routes.assignScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => AssignCubit(),
+            child: AssignScreen(),
           ),
         );
 

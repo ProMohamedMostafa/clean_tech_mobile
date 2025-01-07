@@ -75,7 +75,7 @@ class _DropdownListState extends State<DropdownList> {
                               fontSize: 11.sp,
                               color: selectedValue != null
                                   ? Colors.black
-                                  :  AppColor.thirdColor,
+                                  : AppColor.thirdColor,
                             ),
                           ),
                           Icon(
@@ -153,7 +153,9 @@ class _DropdownListState extends State<DropdownList> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   verticalSpace(5),
-                  Text(item, style: TextStyle(fontSize: 16.sp)),
+                  Text(item,
+                      style: TextStyle(fontSize: 16.sp),
+                      overflow: TextOverflow.ellipsis),
                   if (items.last != item)
                     Divider(
                       color: Colors.grey.shade400,

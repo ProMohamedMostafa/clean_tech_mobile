@@ -18,11 +18,15 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
     children: [
       InkWell(
         onTap: () {
-          // context.pushNamed(
-          //   Routes.userDetailsScreen,
-          //   arguments:
-          //       context.read<UserManagementCubit>().usersModel!.data![index].id,
-          // );
+          context.pushNamed(
+            Routes.userDetailsScreen,
+            arguments: context
+                .read<UserManagementCubit>()
+                .usersModel!
+                .data!
+                .users![index]
+                .id,
+          );
         },
         child: Row(
           children: [
@@ -43,7 +47,8 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                       ? context
                           .read<UserManagementCubit>()
                           .usersModel!
-                          .data![index]
+                          .data!
+                          .users![index]
                           .userName!
                       : context
                           .read<UserManagementCubit>()
@@ -57,7 +62,8 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                       ? context
                           .read<UserManagementCubit>()
                           .usersModel!
-                          .data![index]
+                          .data!
+                          .users![index]
                           .email!
                       : context
                           .read<UserManagementCubit>()
@@ -77,7 +83,8 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                   context
                       .read<UserManagementCubit>()
                       .usersModel!
-                      .data![index]
+                      .data!
+                      .users![index]
                       .id)
           ? SizedBox.shrink()
           : Row(
@@ -91,7 +98,8 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                               arguments: context
                                   .read<UserManagementCubit>()
                                   .usersModel!
-                                  .data![index]
+                                  .data!
+                                  .users![index]
                                   .id,
                             )
                           : showCustomDialog(
@@ -125,7 +133,8 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                                   context
                                       .read<UserManagementCubit>()
                                       .usersModel!
-                                      .data![index]
+                                      .data!
+                                      .users![index]
                                       .id!);
                               context.pop();
                             })

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
+import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
@@ -12,6 +13,7 @@ import 'package:smart_cleaning_application/core/widgets/default_button/default_e
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/logic/add_user_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/logic/add_user_state.dart';
+import 'package:smart_cleaning_application/features/screens/user/add_user/ui/widgets/add_provider_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/ui/widgets/add_user_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/ui/widgets/drop_down_list.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
@@ -29,8 +31,8 @@ class _AddUserBodyState extends State<AddUserBody> {
     context.read<AddUserCubit>()
       ..getNationality()
       ..getRole()
-      ..getAllUsers()
-      ..getAllProviders();
+      ..getManagers()
+      ..getProviders();
     super.initState();
   }
 
@@ -52,6 +54,13 @@ class _AddUserBodyState extends State<AddUserBody> {
             context.pushNamedAndRemoveLastTwo(Routes.userManagmentScreen);
           }
           if (state is AddUserErrorState) {
+            toast(text: state.error, color: Colors.red);
+          }
+          if (state is AddProviderSuccessState) {
+            toast(text: state.message, color: Colors.blue);
+            context.read<AddUserCubit>().getProviders();
+          }
+          if (state is AddProviderErrorState) {
             toast(text: state.error, color: Colors.red);
           }
         },
@@ -485,9 +494,9 @@ class _AddUserBodyState extends State<AddUserBody> {
                       onPressed: (selectedValue) {
                         final selectedId = context
                             .read<AddUserCubit>()
-                            .usersModel
-                            ?.data
-                            ?.firstWhere(
+                            .managerModel
+                            ?.data!
+                            .firstWhere(
                                 (manager) => manager.userName == selectedValue)
                             .id
                             ?.toString();
@@ -508,16 +517,16 @@ class _AddUserBodyState extends State<AddUserBody> {
                       title: 'Manager',
                       items: context
                                   .read<AddUserCubit>()
-                                  .usersModel
-                                  ?.data
-                                  ?.isEmpty ??
+                                  .managerModel
+                                  ?.data!
+                                  .isEmpty ??
                               true
                           ? ['No Managers available']
                           : context
                                   .read<AddUserCubit>()
-                                  .usersModel
-                                  ?.data
-                                  ?.map((e) => e.userName ?? 'Unknown')
+                                  .managerModel
+                                  ?.data!
+                                  .map((e) => e.userName ?? 'Unknown')
                                   .toList() ??
                               [],
                     ),
@@ -526,47 +535,77 @@ class _AddUserBodyState extends State<AddUserBody> {
                       S.of(context).addUserText15,
                       style: TextStyles.font16BlackRegular,
                     ),
-                    DropdownList(
-                      onPressed: (selectedValue) {
-                        final selectedId = context
-                            .read<AddUserCubit>()
-                            .providersModel
-                            ?.data
-                            ?.firstWhere(
-                              (provider) => provider.name == selectedValue,
-                            )
-                            .id
-                            ?.toString();
+                    SizedBox(
+                        height: 47.h,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: DropdownList(
+                                onPressed: (selectedValue) {
+                                  final selectedId = context
+                                      .read<AddUserCubit>()
+                                      .providersModel
+                                      ?.data
+                                      ?.firstWhere(
+                                        (provider) =>
+                                            provider.name == selectedValue,
+                                      )
+                                      .id
+                                      ?.toString();
 
-                        if (selectedId != null) {
-                          context
-                              .read<AddUserCubit>()
-                              .providerIdController
-                              .text = selectedId;
-                        }
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return S.of(context).validationProvider;
-                        }
-                        return null;
-                      },
-                      title: 'Provider',
-                      items: context
-                                  .read<AddUserCubit>()
-                                  .providersModel
-                                  ?.data
-                                  ?.isEmpty ??
-                              true
-                          ? ['No Providers available']
-                          : context
-                                  .read<AddUserCubit>()
-                                  .providersModel
-                                  ?.data
-                                  ?.map((e) => e.name ?? 'Unknown')
-                                  .toList() ??
-                              [],
-                    ),
+                                  if (selectedId != null) {
+                                    context
+                                        .read<AddUserCubit>()
+                                        .providerIdController
+                                        .text = selectedId;
+                                  }
+                                },
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return S.of(context).validationProvider;
+                                  }
+                                  return null;
+                                },
+                                title: 'Provider',
+                                items: context
+                                            .read<AddUserCubit>()
+                                            .providersModel
+                                            ?.data
+                                            ?.isEmpty ??
+                                        true
+                                    ? ['No Providers available']
+                                    : context
+                                            .read<AddUserCubit>()
+                                            .providersModel
+                                            ?.data
+                                            ?.map((e) => e.name ?? 'Unknown')
+                                            .toList() ??
+                                        [],
+                              ),
+                            ),
+                            horizontalSpace(10),
+                            InkWell(
+                              onTap: () {
+                                AddProviderBottomDialog().showBottomDialog(
+                                    context, context.read<AddUserCubit>());
+                              },
+                              child: Container(
+                                height: 52,
+                                width: 52,
+                                decoration: BoxDecoration(
+                                  color: AppColor.primaryColor,
+                                  borderRadius: BorderRadius.circular(10.r),
+                                ),
+                                child: Icon(
+                                  IconBroken.plus,
+                                  color: Colors.white,
+                                  size: 25.sp,
+                                ),
+                              ),
+                            ),
+                          ],
+                        )),
                     verticalSpace(20),
                     state is AddUserLoadingState
                         ? const Center(

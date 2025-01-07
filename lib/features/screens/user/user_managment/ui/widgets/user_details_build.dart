@@ -6,7 +6,7 @@ import 'package:smart_cleaning_application/features/screens/user/user_managment/
 
 Widget userDetailsBuild(BuildContext context, int selectedIndex) {
   final usersData = selectedIndex == 0
-      ? context.read<UserManagementCubit>().usersModel?.data
+      ? context.read<UserManagementCubit>().usersModel?.data!.users
       : context.read<UserManagementCubit>().deletedListModel?.data;
 
   if (usersData == null || usersData.isEmpty) {

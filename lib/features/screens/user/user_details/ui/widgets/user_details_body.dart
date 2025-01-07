@@ -135,35 +135,35 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                         tabs: [
                           Tab(
                             child: Text(
-                              "User Data",
+                              "Data",
                               style: TextStyle(
                                   color: controller.index == 0
                                       ? Colors.white
                                       : Colors.black,
                                   fontWeight: FontWeight.w400,
-                                  fontSize: 16.sp),
+                                  fontSize: 14.sp),
                             ),
                           ),
                           Tab(
                             child: Text(
-                              "User Location",
+                              "Location",
                               style: TextStyle(
                                   color: controller.index == 1
                                       ? Colors.white
                                       : Colors.black,
                                   fontWeight: FontWeight.w400,
-                                  fontSize: 16.sp),
+                                  fontSize: 14.sp),
                             ),
                           ),
                           Tab(
                             child: Text(
-                              "User Shifts",
+                              "Shifts",
                               style: TextStyle(
                                   color: controller.index == 2
                                       ? Colors.white
                                       : Colors.black,
                                   fontWeight: FontWeight.w400,
-                                  fontSize: 16.sp),
+                                  fontSize: 14.sp),
                             ),
                           ),
                         ]),
@@ -270,6 +270,10 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
           ),
           rowDetailsBuild(context, S.of(context).addUserText15,
               userModel.data!.providerName!),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
         ],
       ),
     );
@@ -308,6 +312,10 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
             child: Divider(),
           ),
           rowDetailsBuild(context, 'Points', '6'),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
         ],
       ),
     );

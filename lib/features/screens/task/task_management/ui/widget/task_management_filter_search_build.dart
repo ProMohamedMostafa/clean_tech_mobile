@@ -1,32 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
-import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
-import 'package:smart_cleaning_application/features/screens/analytics/ui/widgets/organizations_text_form_field.dart';
-import 'package:smart_cleaning_application/features/screens/organization/organizations/logic/organizations_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/task/task_management/ui/widget/task_management_text_form_field.dart';
 
-Widget organizationsFilterAndDeleteBuild(
-    BuildContext context, OrganizationsCubit cubit, selectedIndex) {
+Widget taskManagementFilterAndDeleteBuild(
+    BuildContext context, TaskManagementCubit cubit, selectedIndex) {
   return SizedBox(
     height: 45.h,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Expanded(
-          child: OrganizationsTextFormField(
+          child: TaskManagementTextFormField(
               controller: cubit.searchController,
-              hintText: 'Find organization',
+              hintText: 'Find task',
               keyboardType: TextInputType.text,
               readOnly: false),
         ),
         horizontalSpace(10),
         InkWell(
           onTap: () {
-            context.pushNamed(Routes.deleteOrganizationScreen,
-                arguments: selectedIndex);
+            // context.pushNamed(Routes.deleteOrganizationScreen,
+            //     arguments: selectedIndex);
           },
           child: Container(
             height: 52,
