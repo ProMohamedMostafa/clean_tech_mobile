@@ -4,6 +4,8 @@ import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/features/layout/main_layout/logic/bottom_navbar_cubit.dart';
 import 'package:smart_cleaning_application/features/layout/main_layout/ui/screen/main_layout.dart';
 import 'package:smart_cleaning_application/features/layout/splash/splash_screen.dart';
+import 'package:smart_cleaning_application/features/screens/assign/logic/assign_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/assign/ui/screen/assign_screen.dart';
 import 'package:smart_cleaning_application/features/screens/organization/add_organizations/logic/add_organization_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/organization/add_organizations/ui/screen/add_organization_screen.dart';
 import 'package:smart_cleaning_application/features/screens/organization/add_organizations/ui/widgets/add_area_screen.dart';
