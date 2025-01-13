@@ -41,5 +41,8 @@ class ApiConstants {
   static const createShiftUrl = "shifts/create";
   static const allShiftsUrl = "shifts";
   static const editShiftsUrl = "shifts/edit";
+
   static const allShiftsDeletedUrl = "shifts/deleted/index";
+
+  static const createTaskUrl = "tasks/create";
 }

@@ -4,6 +4,7 @@ import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 
 class DefaultTextFormField extends StatelessWidget {
+  final bool onlyRead;
   final TextEditingController controller;
   final String hint;
   final TextInputType keyboardType;
@@ -21,11 +22,13 @@ class DefaultTextFormField extends StatelessWidget {
     this.suffixIcon,
     this.onChanged,
     this.suffixPressed,
+   required this.onlyRead,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      readOnly: onlyRead,
       controller: controller,
       keyboardType: keyboardType,
       textInputAction: TextInputAction.next,
@@ -54,7 +57,7 @@ class DefaultTextFormField extends StatelessWidget {
   OutlineInputBorder _buildBorder() {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(8.r),
-      borderSide: BorderSide(color: AppColor.thirdColor),
+      borderSide: BorderSide(color: Colors.grey),
     );
   }
 

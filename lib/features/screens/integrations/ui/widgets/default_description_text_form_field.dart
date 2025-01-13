@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 
 class DefaultDescriptionTextFormField extends StatelessWidget {
@@ -12,7 +11,7 @@ class DefaultDescriptionTextFormField extends StatelessWidget {
   const DefaultDescriptionTextFormField({
     super.key,
     required this.controller,
-     this.validator,
+    this.validator,
     this.onChanged,
     required this.hint,
   });
@@ -55,7 +54,7 @@ class DefaultDescriptionTextFormField extends StatelessWidget {
   OutlineInputBorder _buildBorder() {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(8.r),
-      borderSide: BorderSide(color: AppColor.thirdColor),
+      borderSide: BorderSide(color: Colors.grey),
     );
   }
 

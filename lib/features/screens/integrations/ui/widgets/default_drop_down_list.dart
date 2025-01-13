@@ -73,9 +73,9 @@ class _DefaultDropDownListState extends State<DefaultDropDownList> {
       decoration: InputDecoration(
         isDense: true,
         suffixIcon: widget.suffixIcon != null ? _buildSuffixIcon() : null,
-        border: _buildBorder(AppColor.thirdColor),
-        enabledBorder: _buildBorder(AppColor.thirdColor),
-        focusedBorder: _buildBorder(AppColor.thirdColor),
+        border: _buildBorder(Colors.grey),
+        enabledBorder: _buildBorder(Colors.grey),
+        focusedBorder: _buildBorder(Colors.grey),
         errorBorder: _buildBorder(Colors.red),
         fillColor: Colors.white,
         filled: true,

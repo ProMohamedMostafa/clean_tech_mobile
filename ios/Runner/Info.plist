@@ -50,5 +50,9 @@
     <string>en</string>
     <string>ar</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>request access to the camera</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>request access to the photo library</string>
 </dict>
 </plist>
