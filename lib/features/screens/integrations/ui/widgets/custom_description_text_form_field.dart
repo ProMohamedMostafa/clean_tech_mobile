@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 
-class DefaultDescriptionTextFormField extends StatelessWidget {
+class CustomDescriptionTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final String hint;
   final FormFieldValidator<String>? validator;
   final ValueChanged<String>? onChanged;
 
-  const DefaultDescriptionTextFormField({
+  const CustomDescriptionTextFormField({
     super.key,
     required this.controller,
     this.validator,

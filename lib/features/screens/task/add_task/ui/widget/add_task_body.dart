@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:multi_dropdown/multi_dropdown.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -15,9 +16,9 @@ import 'package:smart_cleaning_application/core/widgets/default_button/default_e
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_date_picker.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_time_picker.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/default_description_text_form_field.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/default_drop_down_list.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/default_text_form_field.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_description_text_form_field.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/logic/add_task_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/logic/add_task_state.dart';
 
@@ -36,6 +37,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
   int? buildingId;
   int? floorId;
   int? pointId;
+  int? parentId;
   bool _isFormSubmitted = false;
   int? isSelected;
   String? selectedPriority;
@@ -47,6 +49,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
   ];
   @override
   void initState() {
+    context.read<AddTaskCubit>().getAllTasks();
     context.read<AddTaskCubit>().getOrganization();
     context.read<AddTaskCubit>().getSupervisor();
     super.initState();
@@ -58,9 +61,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
         appBar: AppBar(
           title: Text(
             "Create Task",
-            style: TextStyles.font16BlackSemiBold,
           ),
-          centerTitle: true,
           leading: customBackButton(context),
         ),
         body: BlocConsumer<AddTaskCubit, AddTaskState>(
@@ -70,7 +71,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
               context.pushNamedAndRemoveLastTwo(Routes.taskManagementScreen);
             }
             if (state is AddTaskErrorState) {
-              toast(text: state.createTaskModel.error!, color: Colors.red);
+              toast(text: state.message, color: Colors.red);
             }
           },
           builder: (context, state) {
@@ -161,11 +162,58 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                           ),
                         verticalSpace(10),
                         Text(
+                          'Parent task',
+                          style: TextStyles.font16BlackRegular,
+                        ),
+                        verticalSpace(5),
+                        CustomDropDownList(
+                          hint: "Select parent task",
+                          items: context
+                                      .read<AddTaskCubit>()
+                                      .allTasksModel
+                                      ?.data
+                                      ?.data
+                                      ?.where((task) => task.createdBy != uId)
+                                      .toList()
+                                      .isEmpty ??
+                                  true
+                              ? ['No task']
+                              : context
+                                      .read<AddTaskCubit>()
+                                      .allTasksModel
+                                      ?.data
+                                      ?.data
+                                      ?.where((task) => task.createdBy != uId)
+                                      .map((e) => e.title ?? 'Unknown')
+                                      .toList() ??
+                                  [],
+                          onChanged: (value) {
+                            final selectedParentTask = context
+                                .read<AddTaskCubit>()
+                                .allTasksModel
+                                ?.data
+                                ?.data
+                                ?.firstWhere((task) =>
+                                    task.title ==
+                                    context
+                                        .read<AddTaskCubit>()
+                                        .parentTaskController
+                                        .text);
+                            parentId = selectedParentTask!.id!;
+                            context.read<AddTaskCubit>().getAllTasks();
+                          },
+                          suffixIcon: IconBroken.arrowDown2,
+                          controller:
+                              context.read<AddTaskCubit>().parentTaskController,
+                          keyboardType: TextInputType.text,
+                        ),
+                        verticalSpace(10),
+                        Text(
                           "Task Title",
                           style: TextStyles.font16BlackRegular,
                         ),
                         verticalSpace(5),
-                        DefaultTextFormField(
+                        CustomTextFormField(
                           onlyRead: false,
                           hint: "Enter task title",
                           controller:
@@ -195,7 +243,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                           ),
                         ),
                         verticalSpace(5),
-                        DefaultDropDownList(
+                        CustomDropDownList(
                           hint: "Select organizations",
                           items: context
                                       .read<AddTaskCubit>()
@@ -250,7 +298,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                           ),
                         ),
                         verticalSpace(5),
-                        DefaultDropDownList(
+                        CustomDropDownList(
                           hint: "Select building",
                           items: context
                                       .read<AddTaskCubit>()
@@ -305,7 +353,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                           ),
                         ),
                         verticalSpace(5),
-                        DefaultDropDownList(
+                        CustomDropDownList(
                           hint: "Select floor",
                           items: context
                                       .read<AddTaskCubit>()
@@ -360,7 +408,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                           ),
                         ),
                         verticalSpace(5),
-                        DefaultDropDownList(
+                        CustomDropDownList(
                           hint: "Select point",
                           items: context
                                       .read<AddTaskCubit>()
@@ -404,20 +452,24 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                           style: TextStyles.font16BlackRegular,
                         ),
                         verticalSpace(5),
-                        DefaultDropDownList(
+                        CustomDropDownList(
                           onChanged: (selectedValue) {
                             final items = [
                               'Pending',
-                              'In Progress',
-                              'Waiting For Approval',
                               'Completed',
-                              'Not Resolved',
-                              'Overdue'
+                              'Overdue',
                             ];
                             final selectedIndex = items.indexOf(selectedValue!);
                             if (selectedIndex != -1) {
-                              statusId = selectedIndex;
+                              if (selectedIndex == 1) {
+                                statusId = 3;
+                              } else if (selectedIndex == 2) {
+                                statusId = 6;
+                              } else {
+                                statusId = selectedIndex;
+                              }
                             }
+
                             context.read<AddTaskCubit>().statusController.text =
                                 selectedValue;
                           },
@@ -428,14 +480,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                             return null;
                           },
                           hint: 'status',
-                          items: [
-                            'Pending',
-                            'In Progress',
-                            'Waiting For Approval',
-                            'Completed',
-                            'Not Resolved',
-                            'Overdue'
-                          ],
+                          items: ['Pending', 'Completed', 'Overdue'],
                           suffixIcon: IconBroken.arrowDown2,
                           keyboardType: TextInputType.text,
                           controller:
@@ -454,7 +499,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                   style: TextStyles.font16BlackRegular,
                                 ),
                                 verticalSpace(5),
-                                DefaultTextFormField(
+                                CustomTextFormField(
                                   onlyRead: true,
                                   hint: "--/--/---",
                                   controller: context
@@ -494,7 +539,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                   style: TextStyles.font16BlackRegular,
                                 ),
                                 verticalSpace(5),
-                                DefaultTextFormField(
+                                CustomTextFormField(
                                   onlyRead: true,
                                   hint: "--/--/---",
                                   controller: context
@@ -539,7 +584,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                   style: TextStyles.font16BlackRegular,
                                 ),
                                 verticalSpace(5),
-                                DefaultTextFormField(
+                                CustomTextFormField(
                                   onlyRead: true,
                                   hint: '00:00 AM',
                                   controller: context
@@ -579,7 +624,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                   style: TextStyles.font16BlackRegular,
                                 ),
                                 verticalSpace(5),
-                                DefaultTextFormField(
+                                CustomTextFormField(
                                   onlyRead: true,
                                   hint: "09:30 PM",
                                   controller: context
@@ -613,7 +658,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                         ),
                         verticalSpace(10),
                         Text(
-                          'Supervisor',
+                          role == 'Manager' ? 'Supervisor' : 'Cleaner',
                           style: TextStyles.font16BlackRegular,
                         ),
                         verticalSpace(5),
@@ -630,7 +675,8 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                             spacing: 5,
                           ),
                           fieldDecoration: FieldDecoration(
-                            hintText: 'supervisor',
+                            hintText:
+                                role == 'Manager' ? 'supervisor' : 'cleaner',
                             hintStyle: TextStyle(
                                 fontSize: 12.sp, color: AppColor.thirdColor),
                             showClearIcon: false,
@@ -659,7 +705,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please select a supervisor';
+                              return 'Please select a ${role == 'Manager' ? 'supervisor' : 'cleaner'}';
                             }
                             return null;
                           },
@@ -675,7 +721,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                           style: TextStyles.font16BlackRegular,
                         ),
                         verticalSpace(5),
-                        DefaultDescriptionTextFormField(
+                        CustomDescriptionTextFormField(
                             controller: context
                                 .read<AddTaskCubit>()
                                 .descriptionController,
@@ -699,14 +745,14 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                   style: ElevatedButton.styleFrom(
                                       shape: const CircleBorder(),
                                       padding: const EdgeInsets.all(10),
-                                      backgroundColor: Colors.blue,
+                                      backgroundColor: AppColor.primaryColor,
                                       elevation: 4),
                                   child: const Icon(IconBroken.upload,
                                       color: Colors.white, size: 26),
                                 ),
                                 verticalSpace(8),
                                 Text(
-                                  'Upload photo',
+                                  'Upload file',
                                   style: TextStyles.font14BlackSemiBold,
                                 ),
                               ],
@@ -721,7 +767,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                   style: ElevatedButton.styleFrom(
                                       shape: const CircleBorder(),
                                       padding: const EdgeInsets.all(10),
-                                      backgroundColor: Colors.blue,
+                                      backgroundColor: AppColor.primaryColor,
                                       elevation: 4),
                                   child: const Icon(IconBroken.camera,
                                       color: Colors.white, size: 26),
@@ -775,7 +821,8 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                             buildingId,
                                             floorId,
                                             pointId,
-                                            selectedSupervisorIds);
+                                            selectedSupervisorIds,
+                                            parentId);
                                       }
                                     },
                                     color: AppColor.primaryColor,

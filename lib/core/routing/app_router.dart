@@ -42,8 +42,11 @@ import 'package:smart_cleaning_application/features/screens/shift/shifts/logic/s
 import 'package:smart_cleaning_application/features/screens/shift/shifts/ui/screen/shift_screen.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/logic/add_task_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/ui/screen/add_task_screen.dart';
+import 'package:smart_cleaning_application/features/screens/task/edit_task/logic/edit_task_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/task/edit_task/ui/screen/edit_task_screen.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/ui/screen/task_managment_screen.dart';
+import 'package:smart_cleaning_application/features/screens/task/view_task/ui/screen/task_details_screen.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/logic/add_user_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/ui/screen/add_user_screen.dart';
 import 'package:smart_cleaning_application/features/screens/analytics/ui/screen/analytics_screen.dart';
@@ -420,11 +423,32 @@ class AppRouter {
             child: AddTaskScreen(),
           ),
         );
-        case Routes.assignScreen:
+      case Routes.assignScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => AssignCubit(),
             child: AssignScreen(),
+          ),
+        );
+      case Routes.taskDetailsScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => TaskManagementCubit(),
+            child: TaskDetailsScreen(
+              id: id,
+            ),
+          ),
+        );
+
+      case Routes.editTaskScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => EditTaskCubit(),
+            child: EditTaskScreen(
+              id: id,
+            ),
           ),
         );
 

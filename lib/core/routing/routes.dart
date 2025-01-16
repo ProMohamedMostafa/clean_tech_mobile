@@ -51,4 +51,6 @@ class Routes {
 
   static const String taskManagementScreen = '/taskManagementScreen';
   static const String addTaskScreen = '/addTaskScreen';
+  static const String taskDetailsScreen = '/taskDetailsScreen';
+  static const String editTaskScreen = '/editTaskScreen';
 }

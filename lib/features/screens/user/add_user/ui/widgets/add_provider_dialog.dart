@@ -12,7 +12,7 @@ class AddProviderBottomDialog {
     showGeneralDialog(
       barrierLabel: "showGeneralDialog",
       barrierDismissible: true,
-      barrierColor: Colors.black.withOpacity(0.6),
+      barrierColor: Colors.black12,
       transitionDuration: const Duration(milliseconds: 400),
       context: context,
       pageBuilder: (context, _, __) {

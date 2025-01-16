@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 
-class DefaultDropDownList extends StatefulWidget {
+class CustomDropDownList extends StatefulWidget {
   final TextEditingController controller;
   final String hint;
   final TextInputType keyboardType;
@@ -12,7 +12,7 @@ class DefaultDropDownList extends StatefulWidget {
   final List<String> items;
   final FormFieldValidator<String>? validator;
 
-  const DefaultDropDownList({
+  const CustomDropDownList({
     super.key,
     required this.items,
     this.validator,
@@ -25,10 +25,10 @@ class DefaultDropDownList extends StatefulWidget {
   });
 
   @override
-  State<DefaultDropDownList> createState() => _DefaultDropDownListState();
+  State<CustomDropDownList> createState() => _CustomDropDownListState();
 }
 
-class _DefaultDropDownListState extends State<DefaultDropDownList> {
+class _CustomDropDownListState extends State<CustomDropDownList> {
   bool isClicked = false;
   String? selectedValue;
   List<String> filteredItems = [];

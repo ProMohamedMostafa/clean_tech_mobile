@@ -3,26 +3,28 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 
-class DefaultTextFormField extends StatelessWidget {
+class CustomTextFormField extends StatelessWidget {
   final bool onlyRead;
   final TextEditingController controller;
   final String hint;
   final TextInputType keyboardType;
   final IconData? suffixIcon;
+  final IconData? perfixIcon;
   final FormFieldValidator<String>? validator;
   final ValueChanged<String>? onChanged;
   final VoidCallback? suffixPressed;
 
-  const DefaultTextFormField({
+  const CustomTextFormField({
     super.key,
     required this.controller,
     required this.keyboardType,
     required this.hint,
     this.validator,
     this.suffixIcon,
+    this.perfixIcon,
     this.onChanged,
     this.suffixPressed,
-   required this.onlyRead,
+    required this.onlyRead,
   });
 
   @override
@@ -43,12 +45,13 @@ class DefaultTextFormField extends StatelessWidget {
     return InputDecoration(
       isDense: true,
       suffixIcon: _buildSuffixIcon(),
+      prefixIcon: _buildPerffixIcon(),
       border: _buildBorder(),
       enabledBorder: _buildBorder(),
       focusedBorder: _buildBorder(),
       errorBorder: _buildErrorBorder(),
       hintText: hint,
-      hintStyle: TextStyles.font14GreyRegular,
+      hintStyle: TextStyles.font12GreyRegular,
       fillColor: Colors.white,
       filled: true,
     );
@@ -57,7 +60,7 @@ class DefaultTextFormField extends StatelessWidget {
   OutlineInputBorder _buildBorder() {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(8.r),
-      borderSide: BorderSide(color: Colors.grey),
+      borderSide: BorderSide(color: AppColor.secondaryColor),
     );
   }
 
@@ -77,5 +80,10 @@ class DefaultTextFormField extends StatelessWidget {
         child: Icon(suffixIcon, color: AppColor.thirdColor),
       ),
     );
+  }
+
+  Widget? _buildPerffixIcon() {
+    if (perfixIcon == null) return null;
+    return Icon(perfixIcon, color: AppColor.thirdColor);
   }
 }

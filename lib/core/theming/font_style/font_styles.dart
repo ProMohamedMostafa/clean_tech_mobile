@@ -76,6 +76,11 @@ class TextStyles {
     fontWeight: FontWeightHelper.medium,
     color: Colors.black,
   );
+  static TextStyle font13greymedium = TextStyle(
+    fontSize: 13.sp,
+    fontWeight: FontWeightHelper.medium,
+    color: AppColor.thirdColor,
+  );
 
   static TextStyle font13Whitemedium = TextStyle(
     fontSize: 13.sp,

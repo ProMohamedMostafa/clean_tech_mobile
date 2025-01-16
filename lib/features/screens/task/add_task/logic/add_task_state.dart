@@ -3,7 +3,7 @@ import 'package:smart_cleaning_application/features/screens/integrations/data/mo
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
-import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/cleaner_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/all_tasks_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/create_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/supervisor_model.dart';
 
@@ -20,12 +20,25 @@ class AddTaskSuccessState extends AddTaskState {
 }
 
 class AddTaskErrorState extends AddTaskState {
-  final CreateTaskModel createTaskModel;
-  AddTaskErrorState(this.createTaskModel);
+  final String message;
+  AddTaskErrorState(this.message);
 }
 
 //**************************** */
 
+class GetAllTasksLoadingState extends AddTaskState {}
+
+class GetAllTasksSuccessState extends AddTaskState {
+  final AllTasksModel allTasksModel;
+
+  GetAllTasksSuccessState(this.allTasksModel);
+}
+
+class GetAllTasksErrorState extends AddTaskState {
+  final String error;
+  GetAllTasksErrorState(this.error);
+}
+//**************************************** */
 class GetOrganizationLoadingState extends AddTaskState {}
 
 class GetOrganizationSuccessState extends AddTaskState {
@@ -81,20 +94,6 @@ class GetPointsErrorState extends AddTaskState {
   GetPointsErrorState(this.error);
 }
 
-//**************************** */
-
-class GetCleanerLoadingState extends AddTaskState {}
-
-class GetCleanerSuccessState extends AddTaskState {
-  final CleanerModel cleanerModel;
-
-  GetCleanerSuccessState(this.cleanerModel);
-}
-
-class GetCleanerErrorState extends AddTaskState {
-  final String error;
-  GetCleanerErrorState(this.error);
-}
 
 //**************************** */
 

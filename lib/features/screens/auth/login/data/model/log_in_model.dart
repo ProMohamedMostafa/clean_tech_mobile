@@ -38,38 +38,46 @@ class LogInModel {
 }
 
 class Data {
-  String? token;
-  String? tokenExpires;
   int? id;
   String? firstName;
   String? lastName;
   String? email;
+  String? role;
+  String? settings;
+  String? token;
+  String? tokenExpires;
 
   Data(
-      {this.token,
-      this.tokenExpires,
-      this.id,
+      {this.id,
       this.firstName,
       this.lastName,
-      this.email});
+      this.email,
+      this.role,
+      this.settings,
+      this.token,
+      this.tokenExpires});
 
   Data.fromJson(Map<String, dynamic> json) {
-    token = json['token'];
-    tokenExpires = json['tokenExpires'];
     id = json['id'];
     firstName = json['firstName'];
     lastName = json['lastName'];
     email = json['email'];
+    role = json['role'];
+    settings = json['settings'];
+    token = json['token'];
+    tokenExpires = json['tokenExpires'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['token'] = token;
-    data['tokenExpires'] = tokenExpires;
     data['id'] = id;
     data['firstName'] = firstName;
     data['lastName'] = lastName;
     data['email'] = email;
+    data['role'] = role;
+    data['settings'] = settings;
+    data['token'] = token;
+    data['tokenExpires'] = tokenExpires;
     return data;
   }
 }

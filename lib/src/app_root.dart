@@ -41,7 +41,9 @@ class AppRoot extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30)),
                   ),
-                  appBarTheme: const AppBarTheme(
+                  appBarTheme: AppBarTheme(
+                      titleTextStyle: TextStyles.font16BlackSemiBold,
+                      centerTitle: true,
                       backgroundColor: Colors.white,
                       surfaceTintColor: Colors.white),
                   bottomNavigationBarTheme: BottomNavigationBarThemeData(

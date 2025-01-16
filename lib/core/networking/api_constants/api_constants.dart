@@ -45,4 +45,7 @@ class ApiConstants {
   static const allShiftsDeletedUrl = "shifts/deleted/index";
 
   static const createTaskUrl = "tasks/create";
+  static const allTasksUrl = "tasks";
+  static const changeTaskStatusUrl = "update-status";
+  static const editTaskUrl = "tasks/edit";
 }

@@ -12,6 +12,8 @@ import 'package:smart_cleaning_application/features/screens/settings/ui/widgets/
 import 'package:smart_cleaning_application/generated/l10n.dart';
 import 'package:smart_cleaning_application/src/app_cubit/app_cubit.dart';
 
+import '../../../../../core/helpers/cache_helper/cache_helper.dart';
+
 class SettingsBody extends StatefulWidget {
   const SettingsBody({super.key});
 
@@ -68,7 +70,12 @@ class _SettingsBodyState extends State<SettingsBody> {
                   }, S.of(context).settingTitle8, Icons.brightness_4_outlined,
                       isDark),
                   ListTile(
-                    onTap: () {},
+                    onTap: () {
+                      CacheHelper.clearAllSecuredData();
+                      CacheHelper.clearAllData();
+                      context.pushNamedAndRemoveUntil(Routes.loginScreen,
+                          predicate: (route) => false);
+                    },
                     leading: Transform.flip(
                       flipX: context.read<AppCubit>().isArabic() ? false : true,
                       child: Icon(

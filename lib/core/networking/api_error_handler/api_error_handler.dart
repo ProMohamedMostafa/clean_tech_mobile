@@ -21,8 +21,6 @@ class ApiErrorHandler {
         case DioExceptionType.badResponse:
           return _handleBadResponse(
               error.response?.data, error.response?.statusCode);
-        default:
-          return ApiErrorModel(message: 'Something went wrong');
       }
     } else {
       return ApiErrorModel(message: "Unknown error occurred");
@@ -86,9 +84,6 @@ class ApiErrorModel {
 
   ApiErrorModel({required this.message});
 }
-
-
-
 
 // static ApiErrorModel _handleBadResponse(
 //       dynamic responseData, int? statusCode) {

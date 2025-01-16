@@ -22,10 +22,11 @@ class LoginCubit extends Cubit<LoginStates> {
     DioHelper.postData(url: ApiConstants.loginUrl, data: {
       'emailOrUserName': emailController.text,
       'password': passwordController.text
-    }).then((value) {
+    }).then((value) async {
       logInModel = LogInModel.fromJson(value!.data);
-      saveUserToken(logInModel!.data?.token ?? '');
-      saveUserId(logInModel!.data?.id ?? 0);
+      await saveUserToken(logInModel!.data!.token!);
+      await saveUserId(logInModel!.data!.id!);
+      await saveRole(logInModel!.data!.role!);
       emit(LoginSuccessState(logInModel!));
     }).catchError((error) {
       emit(LoginErrorState(error.toString()));
@@ -40,6 +41,11 @@ class LoginCubit extends Cubit<LoginStates> {
   Future<void> saveUserId(int id) async {
     await CacheHelper.setData(key: SharedPrefKeys.userId, value: id);
     uId = await CacheHelper.getInt(SharedPrefKeys.userId);
+  }
+
+  Future<void> saveRole(String rolee) async {
+    await CacheHelper.setData(key: SharedPrefKeys.userRole, value: rolee);
+    role = await CacheHelper.getString(SharedPrefKeys.userRole);
   }
 
   IconData suffixIcon = Icons.visibility_outlined;

@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
-import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
-import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_state.dart';
+import 'package:smart_cleaning_application/features/screens/task/task_management/ui/widget/task_list_details_build.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/ui/widget/task_management_filter_search_build.dart';
+import 'package:easy_date_timeline/easy_date_timeline.dart';
+import 'package:intl/intl.dart';
 
 class TaskManagementBody extends StatefulWidget {
   const TaskManagementBody({super.key});
@@ -20,21 +22,20 @@ class TaskManagementBody extends StatefulWidget {
 }
 
 class _TaskManagementBodyState extends State<TaskManagementBody> {
+  DateTime selectedDate = DateTime.now();
   List<String> tapList = [
-    "New",
-    "In Progress",
-    "Not Resolved",
-    "Completed",
+    'All',
+    'Pending',
+    'In Progress',
+    'Not Approval',
+    'Rejected',
+    'Completed',
+    'Not Resolved',
+    'Overdue'
   ];
   @override
   void initState() {
-    // context.read<OrganizationsCubit>()
-    //   ..getArea()
-    //   ..getCity()
-    //   ..getOrganization()
-    //   ..getBuilding()
-    //   ..getFloor()
-    //   ..getPoint();
+    context.read<TaskManagementCubit>().getAllTasks(selectedDate);
 
     super.initState();
   }
@@ -44,36 +45,37 @@ class _TaskManagementBodyState extends State<TaskManagementBody> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text('Tasks'),
         leading: customBackButton(context),
-        title: Text('Tasks', style: TextStyles.font16BlackSemiBold),
-        centerTitle: true,
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 30),
-        child: SizedBox(
-          height: 50.h,
-          width: 50.w,
-          child: ElevatedButton(
-            onPressed: () {
-              context.pushNamed(Routes.addTaskScreen);
-            },
-            style: ElevatedButton.styleFrom(
-              padding: REdgeInsets.all(0),
-              backgroundColor: AppColor.primaryColor,
-              shape: CircleBorder(),
-              side: BorderSide(
-                color: AppColor.secondaryColor,
-                width: 1,
+      floatingActionButton: role == 'Cleaner'
+          ? SizedBox.shrink()
+          : Padding(
+              padding: const EdgeInsets.only(bottom: 30),
+              child: SizedBox(
+                height: 57.h,
+                width: 57.w,
+                child: ElevatedButton(
+                  onPressed: () {
+                    context.pushNamed(Routes.addTaskScreen);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: REdgeInsets.all(0),
+                    backgroundColor: AppColor.primaryColor,
+                    shape: CircleBorder(),
+                    side: BorderSide(
+                      color: AppColor.secondaryColor,
+                      width: 1,
+                    ),
+                  ),
+                  child: Icon(
+                    Icons.post_add_outlined,
+                    color: Colors.white,
+                    size: 30.sp,
+                  ),
+                ),
               ),
             ),
-            child: Icon(
-              IconBroken.plus,
-              color: Colors.white,
-              size: 26.sp,
-            ),
-          ),
-        ),
-      ),
       body: BlocConsumer<TaskManagementCubit, TaskManagementState>(
         listener: (context, state) {
           // if (state is AreaErrorState) {
@@ -120,123 +122,240 @@ class _TaskManagementBodyState extends State<TaskManagementBody> {
           // if (state is AreaDeleteErrorState) {
           //   toast(text: state.error, color: Colors.red);
           // }
+          //  if (state is AreaDeleteErrorState) {
+          //   toast(text: state.error, color: Colors.red);
+          // }
+
+          if (state is GetChangeTaskStatusSuccessState) {
+            context.read<TaskManagementCubit>().getAllTasks(selectedDate);
+          }
         },
         builder: (context, state) {
-          // final cubit = context.read<OrganizationsCubit>();
-          // if (state is AreaLoadingState ||
-          //     state is CityLoadingState ||
-          //     cubit.areaModel == null ||
-          //     cubit.cityModel == null) {
-          //   // Show loading indicator
-          //   return const Center(
-          //     child: CircularProgressIndicator(color: AppColor.primaryColor),
-          //   );
-          // }
-
-          // // Ensure data is non-null before building the UI
-          // final areaDetails = cubit.areaModel?.data;
-          // final cityDetails = cubit.cityModel?.data;
-
-          // if (areaDetails == null || cityDetails == null) {
-          //   // Handle case where data fetching fails
-          //   return const Center(
-          //     child: Text("Failed to load organization details."),
-          //   );
-          // }
+          // final cubit = context.read<TaskManagementCubit>();
 
           return SafeArea(
             child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    verticalSpace(15),
-                    taskManagementFilterAndDeleteBuild(context,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  verticalSpace(15),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: taskManagementFilterAndSearchBuild(context,
                         context.read<TaskManagementCubit>(), selectedIndex),
-                    verticalSpace(15),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: SizedBox(
-                        height: 45.h,
-                        child: ListView.separated(
-                          separatorBuilder: (context, index) {
-                            return horizontalSpace(10);
-                          },
-                          shrinkWrap: true,
-                          physics: BouncingScrollPhysics(),
-                          scrollDirection: Axis.horizontal,
-                          itemCount: tapList.length,
-                          itemBuilder: (context, index) {
-                            bool isSelected = selectedIndex == index;
+                  ),
+                  verticalSpace(15),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: timePicker(context),
+                  ),
+                  verticalSpace(15),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: taskCategories(),
+                    ),
+                  ),
+                  verticalSpace(15),
+                  // (state is GetAllTasksLoadingState ||
+                  //         state is GetPendingTasksLoadingState ||
+                  //         state is GetInProgressTasksLoadingState ||
+                  //         state is GetNotApprovableTasksLoadingState ||
+                  //         state is GetCompletedTasksLoadingState ||
+                  //         state is GetNotResolvedTasksLoadingState ||
+                  //         state is GetOverdueTasksLoadingState ||
+                  //         cubit.allTasksModel == null ||
+                  //         cubit.pendingModel == null ||
+                  //         cubit.inProgressModel == null ||
+                  //         cubit.notApprovableModel == null ||
+                  //         cubit.completedModel == null ||
+                  //         cubit.notResolvedModel == null ||
+                  //         cubit.overdueModel == null)
+                  //     ? Center(
+                  //         child: CircularProgressIndicator(
+                  //             color: AppColor.primaryColor),
+                  //       ):
+                  taskListDetailsBuild(context, selectedIndex!, selectedDate),
+                  verticalSpace(30)
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
 
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selectedIndex = index;
-                                });
-                              },
-                              child: Container(
-                                height: 45.h,
-                                width: 118.w,
-                                decoration: BoxDecoration(
-                                  color: isSelected
-                                      ? AppColor.primaryColor
-                                      : Colors.white,
-                                  borderRadius: BorderRadius.circular(8.r),
-                                  border: Border.all(
-                                    color: AppColor.secondaryColor,
-                                    width: 1,
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      index == 0
-                                          ? "${5}"
-                                          : index == 1
-                                              ? "${7}"
-                                              : index == 2
-                                                  ? "${3}"
-                                                  : "${5}",
-                                      style: TextStyle(
-                                        fontSize: 13.sp,
-                                        color: isSelected
-                                            ? Colors.white
-                                            : AppColor.primaryColor,
-                                      ),
-                                    ),
-                                    horizontalSpace(5),
-                                    Text(
-                                      tapList[index],
-                                      style: TextStyle(
-                                        fontSize: 13.sp,
-                                        color: isSelected
-                                            ? Colors.white
-                                            : AppColor.primaryColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    verticalSpace(10),
-                    Divider(
-                      color: Colors.grey[300],
-                    ),
-                    // organizationDetailsBuild(context, selectedIndex!),
-                  ],
+  Widget taskCategories() {
+    return SizedBox(
+      height: 40.h,
+      child: ListView.separated(
+        separatorBuilder: (context, index) {
+          return horizontalSpace(10);
+        },
+        shrinkWrap: true,
+        physics: BouncingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        itemCount: tapList.length,
+        itemBuilder: (context, index) {
+          bool isSelected = selectedIndex == index;
+
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                selectedIndex = index;
+                index == 0
+                    ? context
+                        .read<TaskManagementCubit>()
+                        .getAllTasks(selectedDate)
+                    : index == 1
+                        ? context
+                            .read<TaskManagementCubit>()
+                            .getPendingTasks(selectedDate)
+                        : index == 2
+                            ? context
+                                .read<TaskManagementCubit>()
+                                .getInProgressTasks(selectedDate)
+                            : index == 3
+                                ? context
+                                    .read<TaskManagementCubit>()
+                                    .getNotApprovableTasks(selectedDate)
+                                : index == 4
+                                    ? context
+                                        .read<TaskManagementCubit>()
+                                        .getRejectedTasks(selectedDate)
+                                    : index == 5
+                                        ? context
+                                            .read<TaskManagementCubit>()
+                                            .getCompletedTasks(selectedDate)
+                                        : index == 6
+                                            ? context
+                                                .read<TaskManagementCubit>()
+                                                .getNotResolvedTasks(
+                                                    selectedDate)
+                                            : context
+                                                .read<TaskManagementCubit>()
+                                                .getOverdueTasks(selectedDate);
+              });
+            },
+            child: Container(
+              height: 40.h,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                color: isSelected ? AppColor.primaryColor : Colors.white,
+                borderRadius: BorderRadius.circular(12.r),
+                border: Border.all(
+                  color: AppColor.secondaryColor,
+                  width: 1,
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  tapList[index],
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    color: isSelected ? Colors.white : AppColor.primaryColor,
+                  ),
                 ),
               ),
             ),
           );
         },
       ),
+    );
+  }
+
+  Widget timePicker(BuildContext context) {
+    return EasyDateTimeLinePicker.itemBuilder(
+      headerOptions: HeaderOptions(
+        headerType: HeaderType.none,
+      ),
+      firstDate: DateTime(2025, 1, 1),
+      lastDate: DateTime(3000, 3, 18),
+      focusedDate: selectedDate,
+      itemExtent: 69.0,
+      itemBuilder: (context, date, isSelected, isDisabled, isToday, onTap) {
+        String monthName = DateFormat.MMM().format(date);
+        String weekdayName = DateFormat.E().format(date);
+
+        return InkWell(
+          onTap: onTap,
+          child: Container(
+            width: 44.w,
+            height: 64.h,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(11),
+                border: Border.all(color: Colors.black12),
+                color: isSelected ? AppColor.primaryColor : Colors.white),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  monthName,
+                  style: TextStyle(
+                      color: isSelected ? Colors.white : Colors.black,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14.sp),
+                ),
+                Text(
+                  date.day.toString(),
+                  style: TextStyle(
+                      color: isSelected ? Colors.white : Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18.sp),
+                ),
+                Text(
+                  weekdayName,
+                  style: TextStyle(
+                      color: isSelected ? Colors.white : Colors.black,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14.sp),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+      onDateChange: (date) {
+        setState(() {
+          selectedDate = date;
+        });
+
+        switch (selectedIndex) {
+          case 0:
+            context.read<TaskManagementCubit>().getAllTasks(selectedDate);
+            break;
+          case 1:
+            context.read<TaskManagementCubit>().getPendingTasks(selectedDate);
+            break;
+          case 2:
+            context
+                .read<TaskManagementCubit>()
+                .getInProgressTasks(selectedDate);
+            break;
+          case 3:
+            context
+                .read<TaskManagementCubit>()
+                .getNotApprovableTasks(selectedDate);
+            break;
+          case 4:
+            context.read<TaskManagementCubit>().getRejectedTasks(selectedDate);
+            break;
+          case 5:
+            context.read<TaskManagementCubit>().getCompletedTasks(selectedDate);
+            break;
+          case 6:
+            context
+                .read<TaskManagementCubit>()
+                .getNotResolvedTasks(selectedDate);
+            break;
+          case 7:
+            context.read<TaskManagementCubit>().getOverdueTasks(selectedDate);
+            break;
+        }
+      },
     );
   }
 }
