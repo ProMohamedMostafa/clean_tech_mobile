@@ -1,4 +1,6 @@
 import 'package:image_picker/image_picker.dart';
+import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/delete_task_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/delete_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/all_tasks_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/change_task_status.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/completed_model.dart';
@@ -183,6 +185,64 @@ class GetChangeTaskStatusErrorState extends TaskManagementState {
   final String error;
   GetChangeTaskStatusErrorState(this.error);
 }
+//**************************************** */
+
+class TaskDeleteLoadingState extends TaskManagementState {}
+
+class TaskDeleteSuccessState extends TaskManagementState {
+  final DeleteTaskModel deleteTaskModel;
+
+  TaskDeleteSuccessState(this.deleteTaskModel);
+}
+
+class TaskDeleteErrorState extends TaskManagementState {
+  final String error;
+  TaskDeleteErrorState(this.error);
+}
+
+//***************** */
+
+class RestoreTaskLoadingState extends TaskManagementState {}
+
+class RestoreTaskSuccessState extends TaskManagementState {
+  final String message;
+
+  RestoreTaskSuccessState(this.message); 
+}
+
+class RestoreTaskErrorState extends TaskManagementState {
+  final String error;
+  RestoreTaskErrorState(this.error);
+}
+//***************** */
+
+class ForceDeleteTaskLoadingState extends TaskManagementState {}
+
+class ForceDeleteTaskSuccessState extends TaskManagementState {
+   final String message;
+
+  ForceDeleteTaskSuccessState(this.message);
+}
+
+class ForceDeleteTaskErrorState extends TaskManagementState {
+  final String error;
+  ForceDeleteTaskErrorState(this.error);
+}
+//**************************************** */
+
+class TaskDeleteListLoadingState extends TaskManagementState {}
+
+class TaskDeleteListSuccessState extends TaskManagementState {
+  final DeleteTaskListModel deleteTaskListModel;
+
+  TaskDeleteListSuccessState(this.deleteTaskListModel);
+}
+
+class TaskDeleteListErrorState extends TaskManagementState {
+  final String error;
+  TaskDeleteListErrorState(this.error);
+}
+
 
 //**************************************** */
 

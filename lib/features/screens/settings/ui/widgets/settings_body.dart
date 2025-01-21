@@ -37,7 +37,7 @@ class _SettingsBodyState extends State<SettingsBody> {
           children: [
             profileWidget(),
             verticalSpace(15),
-            Text('Mosad Selim', style: TextStyles.font20BlacksemiBold),
+            Text('Mosad Selim', style: TextStyles.font20PrimsemiBold),
             Text('Admin', style: TextStyles.font14GreyRegular),
             verticalSpace(25),
             Padding(

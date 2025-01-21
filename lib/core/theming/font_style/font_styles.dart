@@ -18,7 +18,7 @@ class TextStyles {
     fontWeight: FontWeightHelper.semiBold,
     color: Colors.white,
   );
-  static TextStyle font20BlacksemiBold = TextStyle(
+  static TextStyle font20PrimsemiBold = TextStyle(
     fontSize: 20.sp,
     fontWeight: FontWeightHelper.semiBold,
     color: AppColor.primaryColor,
@@ -26,7 +26,7 @@ class TextStyles {
   static TextStyle font20Blacksemimedium = TextStyle(
     fontSize: 20.sp,
     fontWeight: FontWeightHelper.medium,
-    color: AppColor.primaryColor,
+    color: Colors.black,
   );
   static TextStyle font20Whitesemimedium = TextStyle(
     fontSize: 20.sp,

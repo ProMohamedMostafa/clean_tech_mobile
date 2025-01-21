@@ -1,4 +1,4 @@
-class EditTaskModel {
+class AssignModel {
   int? statusCode;
   String? meta;
   bool? succeeded;
@@ -6,7 +6,7 @@ class EditTaskModel {
   String? error;
   String? data;
 
-  EditTaskModel(
+  AssignModel(
       {this.statusCode,
       this.meta,
       this.succeeded,
@@ -14,7 +14,7 @@ class EditTaskModel {
       this.error,
       this.data});
 
-  EditTaskModel.fromJson(Map<String, dynamic> json) {
+  AssignModel.fromJson(Map<String, dynamic> json) {
     statusCode = json['statusCode'];
     meta = json['meta'];
     succeeded = json['succeeded'];

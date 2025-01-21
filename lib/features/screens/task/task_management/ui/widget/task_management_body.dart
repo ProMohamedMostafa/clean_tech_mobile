@@ -7,6 +7,7 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
+import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_state.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/ui/widget/task_list_details_build.dart';
@@ -31,12 +32,13 @@ class _TaskManagementBodyState extends State<TaskManagementBody> {
     'Rejected',
     'Completed',
     'Not Resolved',
-    'Overdue'
+    'Overdue',
+    'Deleted'
   ];
   @override
   void initState() {
     context.read<TaskManagementCubit>().getAllTasks(selectedDate);
-
+    context.read<TaskManagementCubit>().getAllDeletedTasks();
     super.initState();
   }
 
@@ -78,56 +80,29 @@ class _TaskManagementBodyState extends State<TaskManagementBody> {
             ),
       body: BlocConsumer<TaskManagementCubit, TaskManagementState>(
         listener: (context, state) {
-          // if (state is AreaErrorState) {
-          //   toast(text: state.error, color: Colors.red);
-          // }
-          // if (state is AreaDeleteSuccessState) {
-          //   toast(text: state.message, color: Colors.blue);
-          //   context.read<OrganizationsCubit>().getArea();
-          // }
-          // if (state is AreaDeleteSuccessState ||
-          //     state is CityDeleteSuccessState ||
-          //     state is OrganizationDeleteSuccessState ||
-          //     state is BuildingDeleteSuccessState ||
-          //     state is FloorDeleteSuccessState ||
-          //     state is PointDeleteSuccessState) {
-          //   String? message;
-
-          //   if (state is AreaDeleteSuccessState) {
-          //     message = state.message;
-          //   } else if (state is CityDeleteSuccessState) {
-          //     message = state.message;
-          //   } else if (state is OrganizationDeleteSuccessState) {
-          //     message = state.message;
-          //   } else if (state is BuildingDeleteSuccessState) {
-          //     message = state.message;
-          //   } else if (state is FloorDeleteSuccessState) {
-          //     message = state.message;
-          //   } else if (state is PointDeleteSuccessState) {
-          //     message = state.message;
-          //   }
-
-          //   if (message != null) {
-          //     toast(text: message, color: Colors.blue);
-          //   }
-          //   context.read<OrganizationsCubit>()
-          //     ..getArea()
-          //     ..getCity()
-          //     ..getOrganization()
-          //     ..getBuilding()
-          //     ..getFloor()
-          //     ..getPoint();
-          // }
-
-          // if (state is AreaDeleteErrorState) {
-          //   toast(text: state.error, color: Colors.red);
-          // }
-          //  if (state is AreaDeleteErrorState) {
-          //   toast(text: state.error, color: Colors.red);
-          // }
-
-          if (state is GetChangeTaskStatusSuccessState) {
+          if (state is TaskDeleteSuccessState) {
+            toast(text: state.deleteTaskModel.message!, color: Colors.blue);
             context.read<TaskManagementCubit>().getAllTasks(selectedDate);
+          }
+
+          if (state is TaskDeleteErrorState) {
+            toast(text: state.error, color: Colors.red);
+          }
+          if (state is RestoreTaskSuccessState) {
+            toast(text: state.message, color: Colors.blue);
+            context.read<TaskManagementCubit>().getAllDeletedTasks();
+          }
+
+          if (state is RestoreTaskErrorState) {
+            toast(text: state.error, color: Colors.red);
+          }
+          if (state is ForceDeleteTaskSuccessState) {
+            toast(text: state.message, color: Colors.blue);
+            context.read<TaskManagementCubit>().getAllDeletedTasks();
+          }
+
+          if (state is ForceDeleteTaskErrorState) {
+            toast(text: state.error, color: Colors.red);
           }
         },
         builder: (context, state) {
@@ -234,9 +209,14 @@ class _TaskManagementBodyState extends State<TaskManagementBody> {
                                                 .read<TaskManagementCubit>()
                                                 .getNotResolvedTasks(
                                                     selectedDate)
-                                            : context
-                                                .read<TaskManagementCubit>()
-                                                .getOverdueTasks(selectedDate);
+                                            : index == 7
+                                                ? context
+                                                    .read<TaskManagementCubit>()
+                                                    .getOverdueTasks(
+                                                        selectedDate)
+                                                : context
+                                                    .read<TaskManagementCubit>()
+                                                    .getAllDeletedTasks();
               });
             },
             child: Container(
@@ -353,6 +333,9 @@ class _TaskManagementBodyState extends State<TaskManagementBody> {
             break;
           case 7:
             context.read<TaskManagementCubit>().getOverdueTasks(selectedDate);
+            break;
+          case 8:
+            context.read<TaskManagementCubit>().getAllDeletedTasks();
             break;
         }
       },

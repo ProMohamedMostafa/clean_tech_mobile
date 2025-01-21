@@ -4,10 +4,10 @@ import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/task/edit_task/logic/edit_task_cubit.dart';
 
 class UploadFilesBottomDialog {
-  void showBottomDialog(BuildContext context, TaskManagementCubit cubit) {
+  void showBottomDialog(BuildContext context, EditTaskCubit cubit) {
     showGeneralDialog(
       barrierLabel: "showGeneralDialog",
       barrierDismissible: true,
@@ -32,7 +32,7 @@ class UploadFilesBottomDialog {
     );
   }
 
-  Widget _buildDialogContent(BuildContext context, TaskManagementCubit cubit) {
+  Widget _buildDialogContent(BuildContext context, EditTaskCubit cubit) {
     return Container(
       width: double.maxFinite,
       clipBehavior: Clip.antiAlias,
@@ -73,7 +73,7 @@ class UploadFilesBottomDialog {
     );
   }
 
-  Widget _buildContinueButton(BuildContext context, TaskManagementCubit cubit) {
+  Widget _buildContinueButton(BuildContext context, EditTaskCubit cubit) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [

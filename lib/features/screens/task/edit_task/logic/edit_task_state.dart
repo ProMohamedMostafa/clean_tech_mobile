@@ -1,7 +1,9 @@
 import 'package:image_picker/image_picker.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/all_tasks_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/edit_task_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/users_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/task_details.dart';
+import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/task_files_model.dart';
 
 import '../../../integrations/data/models/building_model.dart';
 import '../../../integrations/data/models/floor_model.dart';
@@ -39,6 +41,37 @@ class GetTaskDetailsErrorState extends EditTaskState {
   final String error;
   GetTaskDetailsErrorState(this.error);
 }
+
+//**************************************** */
+
+class GetUsersTaskLoadingState extends EditTaskState {}
+
+class GetUsersTaskSuccessState extends EditTaskState {
+  final UsersTaskModel usersTaskModel;
+
+  GetUsersTaskSuccessState(this.usersTaskModel);
+}
+
+class GetUsersTaskErrorState extends EditTaskState {
+  final String error;
+  GetUsersTaskErrorState(this.error);
+}
+
+//**************************************** */
+
+class GetTaskFilesLoadingState extends EditTaskState {}
+
+class GetTaskFilesSuccessState extends EditTaskState {
+  final TaskFilesModel taskFilesModel;
+
+  GetTaskFilesSuccessState(this.taskFilesModel);
+}
+
+class GetTaskFilesErrorState extends EditTaskState {
+  final String error;
+  GetTaskFilesErrorState(this.error);
+}
+
 //***************************** */
 
 class GetAllTasksLoadingState extends EditTaskState {}
@@ -53,6 +86,7 @@ class GetAllTasksErrorState extends EditTaskState {
   final String error;
   GetAllTasksErrorState(this.error);
 }
+
 //**************************************** */
 class GetOrganizationLoadingState extends EditTaskState {}
 
@@ -109,7 +143,6 @@ class GetPointsErrorState extends EditTaskState {
   GetPointsErrorState(this.error);
 }
 
-
 //**************************** */
 
 class GetSupervisorLoadingState extends EditTaskState {}
@@ -124,6 +157,7 @@ class GetSupervisorErrorState extends EditTaskState {
   final String error;
   GetSupervisorErrorState(this.error);
 }
+
 class ImageSelectedState extends EditTaskState {
   final XFile image;
   ImageSelectedState(this.image);

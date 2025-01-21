@@ -71,7 +71,7 @@ class AddProviderBottomDialog {
   Widget _buildContinueText() {
     return Text(
       'Add Provider',
-      style: TextStyles.font20BlacksemiBold,
+      style: TextStyles.font20PrimsemiBold,
     );
   }
 

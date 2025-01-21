@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:multi_dropdown/multi_dropdown.dart';
+import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
@@ -19,7 +21,7 @@ import 'package:smart_cleaning_application/features/screens/integrations/ui/widg
 import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/supervisor_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/logic/edit_task_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/logic/edit_task_state.dart';
-
+import 'package:smart_cleaning_application/features/screens/task/edit_task/ui/widget/upload_files_dialog.dart';
 import '../../../../../../core/helpers/constants/constants.dart';
 
 class EditTaskBody extends StatefulWidget {
@@ -39,61 +41,76 @@ class _EditTaskBodyState extends State<EditTaskBody> {
   int? parentId;
   int? isSelected;
   String? selectedPriority;
-  final List<String> priority = ["High", "Medium", "Low"];
+  final List<String> priority = ["Low", "Medium", "High"];
   final List<Color> tasksColor = [
-    Colors.red,
-    Colors.orange,
     Colors.green,
+    Colors.orange,
+    Colors.red,
   ];
   @override
   void initState() {
-    context.read<EditTaskCubit>().getTaskDetails(widget.id);
-    context.read<EditTaskCubit>().getAllTasks();
-    context.read<EditTaskCubit>().getOrganization();
-    context.read<EditTaskCubit>().getSupervisor();
-
-    // Set initial selected priority based on the model
-    String initialPriority =
-        context.read<EditTaskCubit>().taskDetailsModel!.data!.priority!;
-    isSelected = priority.indexOf(initialPriority);
-    selectedPriority = initialPriority;
     super.initState();
+    final editTaskCubit = context.read<EditTaskCubit>();
+    editTaskCubit.getTaskDetails(widget.id);
+    editTaskCubit.getUsersTask(widget.id);
+    editTaskCubit.getTaskFiles(widget.id);
+    editTaskCubit.getAllTasks();
+    editTaskCubit.getOrganization();
+    editTaskCubit.getSupervisor();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(
-            "Edit Task",
-          ),
+          title: const Text("Edit Task"),
           leading: customBackButton(context),
         ),
         body: BlocConsumer<EditTaskCubit, EditTaskState>(
           listener: (context, state) {
             if (state is EditTaskSuccessState) {
-              // toast(text: state.editTaskModel.message!, color: Colors.blue);
-              // context.pushNamedAndRemoveLastTwo(Routes.taskManagementScreen);
+              toast(text: state.editTaskModel.message!, color: Colors.blue);
+              context.pushNamedAndRemoveLastTwo(Routes.taskManagementScreen);
             }
             if (state is EditTaskErrorState) {
               toast(text: state.message, color: Colors.red);
             }
           },
           builder: (context, state) {
-            var supervisorModel = context.read<EditTaskCubit>().supervisorModel;
-            var taskDetailsModel =
-                context.read<EditTaskCubit>().taskDetailsModel;
+            final editTaskCubit = context.read<EditTaskCubit>();
+            final supervisorModel = editTaskCubit.supervisorModel;
+            final taskDetailsModel = editTaskCubit.taskDetailsModel;
+            final usersTaskModel = editTaskCubit.usersTaskModel;
+            final organizationModel = editTaskCubit.organizationModel;
+            final taskFilesModel = editTaskCubit.taskFilesModel;
+            final allTasksModel = editTaskCubit.allTasksModel;
 
-            if (taskDetailsModel == null ||
+            if (state is GetAllTasksLoadingState ||
+                state is GetSupervisorLoadingState ||
+                state is GetUsersTaskLoadingState ||
+                state is GetTaskFilesLoadingState ||
+                state is GetTaskDetailsLoadingState ||
+                state is GetOrganizationLoadingState ||
+                taskDetailsModel == null ||
                 supervisorModel == null ||
-                supervisorModel.data == null) {
+                usersTaskModel == null ||
+                taskFilesModel == null ||
+                organizationModel == null ||
+                allTasksModel == null) {
               return Center(
-                  child: CircularProgressIndicator(
-                color: AppColor.primaryColor,
-              ));
+                child: CircularProgressIndicator(
+                  color: AppColor.primaryColor,
+                ),
+              );
             }
-
-            var items = supervisorModel.data!
+            if (selectedPriority == null &&
+                taskDetailsModel.data?.priority != null) {
+              selectedPriority = taskDetailsModel.data!.priority!;
+              isSelected = priority.contains(selectedPriority)
+                  ? priority.indexOf(selectedPriority!)
+                  : null;
+            }
+            final items = supervisorModel.data!
                 .map((supervisor) => DropdownItem(
                       label: supervisor.userName!,
                       value: supervisor,
@@ -759,68 +776,98 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                       .taskDetailsModel!
                                       .data!
                                       .description!),
-                              verticalSpace(10),
-                              Text(
-                                'Upload file',
-                                style: TextStyles.font16BlackRegular,
-                              ),
-                              verticalSpace(10),
+                              verticalSpace(5),
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          context
-                                              .read<EditTaskCubit>()
-                                              .galleryFile();
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                            shape: const CircleBorder(),
-                                            padding: const EdgeInsets.all(10),
-                                            backgroundColor:
-                                                AppColor.primaryColor,
-                                            elevation: 4),
-                                        child: const Icon(IconBroken.upload,
-                                            color: Colors.white, size: 26),
-                                      ),
-                                      verticalSpace(8),
-                                      Text(
-                                        'Upload file',
-                                        style: TextStyles.font14BlackSemiBold,
-                                      ),
-                                    ],
+                                  Text(
+                                    'Files',
+                                    style: TextStyles.font16BlackRegular,
                                   ),
-                                  Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          context
-                                              .read<EditTaskCubit>()
-                                              .cameraFile();
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                            shape: const CircleBorder(),
-                                            padding: const EdgeInsets.all(10),
-                                            backgroundColor:
-                                                AppColor.primaryColor,
-                                            elevation: 4),
-                                        child: const Icon(IconBroken.camera,
-                                            color: Colors.white, size: 26),
-                                      ),
-                                      verticalSpace(8),
-                                      Text(
-                                        'Take photo',
-                                        style: TextStyles.font14BlackSemiBold,
-                                      ),
-                                    ],
-                                  ),
+                                  verticalSpace(5),
+                                  IconButton(
+                                      onPressed: () {
+                                        UploadFilesBottomDialog()
+                                            .showBottomDialog(context,
+                                                context.read<EditTaskCubit>());
+                                      },
+                                      icon: Icon(
+                                        Icons.attach_file_rounded,
+                                        size: 20,
+                                      ))
                                 ],
                               ),
+                              if (context
+                                  .read<EditTaskCubit>()
+                                  .taskFilesModel!
+                                  .data!
+                                  .isNotEmpty)
+                                SizedBox(
+                                  height: 80,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: context
+                                        .read<EditTaskCubit>()
+                                        .taskFilesModel!
+                                        .data!
+                                        .length,
+                                    itemBuilder: (context, index) {
+                                      final file = context
+                                          .read<EditTaskCubit>()
+                                          .taskFilesModel!
+                                          .data![index];
+                                      return Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 5.h, horizontal: 10.w),
+                                        child: Container(
+                                          height: 70.h,
+                                          width: 70.w,
+                                          clipBehavior: Clip.hardEdge,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.black12,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(10.r),
+                                          ),
+                                          child: Image.network(
+                                            "http://10.0.2.2:7111${file.path}",
+                                            fit: BoxFit.cover,
+                                            loadingBuilder:
+                                                (BuildContext context,
+                                                    Widget child,
+                                                    ImageChunkEvent?
+                                                        loadingProgress) {
+                                              if (loadingProgress == null) {
+                                                return child;
+                                              }
+                                              return Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  value: loadingProgress
+                                                              .expectedTotalBytes !=
+                                                          null
+                                                      ? loadingProgress
+                                                              .cumulativeBytesLoaded /
+                                                          (loadingProgress
+                                                                  .expectedTotalBytes ??
+                                                              1)
+                                                      : null,
+                                                ),
+                                              );
+                                            },
+                                            errorBuilder:
+                                                (context, error, stackTrace) {
+                                              return Image.asset(
+                                                'assets/images/noImage.png',
+                                                fit: BoxFit.fill,
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
                               verticalSpace(20),
                               (state is ImageSelectedState ||
                                       state is CameraSelectedState)

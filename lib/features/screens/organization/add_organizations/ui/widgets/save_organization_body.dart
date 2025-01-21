@@ -10,9 +10,14 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/features/screens/organization/add_organizations/logic/add_organization_cubit.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
-class AddOrganizationBody extends StatelessWidget {
+class AddOrganizationBody extends StatefulWidget {
   const AddOrganizationBody({super.key});
 
+  @override
+  State<AddOrganizationBody> createState() => _AddOrganizationBodyState();
+}
+
+class _AddOrganizationBodyState extends State<AddOrganizationBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,12 +39,29 @@ class AddOrganizationBody extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                verticalSpace(35),
-                Text(
-                  S.of(context).addUserText12,
-                  style: TextStyles.font16BlackRegular,
-                ),
-                verticalSpace(10),
+  verticalSpace(35),
+                //  ListView.separated(
+                //             physics: NeverScrollableScrollPhysics(),
+                //             scrollDirection: Axis.horizontal,
+                //             itemCount: 3,
+                //             separatorBuilder: (context, index) {
+                //               return horizontalSpace(10);
+                //             },
+                //             itemBuilder: (context, index) {
+                              
+
+                //               return ListTile(
+                //                       leading: Icon(icon, color: AppColor.primaryColor),
+                //                       title: Text(title, style: TextStyles.font16PrimSemiBold),
+                //                       trailing: Icon(Icons.arrow_forward_ios, color: Colors.blue),
+                //                       onTap: () {
+                                       
+                //                       },
+                //                     );
+                //             },
+                //           ),
+              
+               
                 Text(
                   "Area",
                   style: TextStyles.font16BlackRegular,

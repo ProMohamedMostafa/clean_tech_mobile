@@ -5,7 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
+import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
@@ -56,7 +58,8 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
               ? SizedBox.shrink()
               : IconButton(
                   onPressed: () {
-                    // context.pushNamed(Routes.editUserScreen, arguments: widget.id);
+                    context.pushNamed(Routes.editTaskScreen,
+                        arguments: widget.id);
                   },
                   icon: Icon(
                     Icons.edit,
@@ -69,7 +72,6 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
           if (state is GetChangeTaskStatusSuccessState) {
             toast(
                 text: state.changeTaskStatusModel.message!, color: Colors.blue);
-            setState(() {});
             // context.pushNamedAndRemoveUntil(
             //   Routes.mainLayoutScreen,
             //   predicate: (route) => false,
@@ -114,13 +116,13 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      inProgressAction.timeDifferenceText!,
-                      style: TextStyles.font13greymedium,
-                    ),
-                  ),
+                  // Align(
+                  //   alignment: Alignment.centerRight,
+                  //   child: Text(
+                  //     inProgressAction.timeDifferenceText!,
+                  //     style: TextStyles.font13greymedium,
+                  //   ),
+                  // ),
                   verticalSpace(10),
                   Row(
                     children: [
@@ -323,43 +325,68 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                       .taskFilesModel!
                       .data!
                       .isNotEmpty)
-                    ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: context
-                          .read<TaskManagementCubit>()
-                          .taskFilesModel!
-                          .data!
-                          .length,
-                      itemBuilder: (context, index) {
-                        final file = context
+                    SizedBox(
+                      height: 80,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: context
                             .read<TaskManagementCubit>()
                             .taskFilesModel!
-                            .data![index];
-                        return Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 5.h, horizontal: 10.w),
-                          child: Container(
-                            height: 70.h,
-                            width: 70.w,
-                            clipBehavior: Clip.hardEdge,
-                            decoration: BoxDecoration(
-                              color: Colors.purple,
-                              borderRadius: BorderRadius.circular(10.r),
-                            ),
-                            child: Image.network(
-                              file.path!,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) =>
-                                  Center(
-                                child: Icon(
-                                  Icons.error,
-                                  color: Colors.red,
+                            .data!
+                            .length,
+                        itemBuilder: (context, index) {
+                          final file = context
+                              .read<TaskManagementCubit>()
+                              .taskFilesModel!
+                              .data![index];
+
+                          return Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 5.h, horizontal: 10.w),
+                            child: Container(
+                              height: 70.h,
+                              width: 70.w,
+                              clipBehavior: Clip.hardEdge,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.black12,
                                 ),
+                                borderRadius: BorderRadius.circular(10.r),
+                              ),
+                              child: Image.network(
+                                "http://10.0.2.2:7111${file.path}",
+                                fit: BoxFit.cover,
+                                loadingBuilder: (BuildContext context,
+                                    Widget child,
+                                    ImageChunkEvent? loadingProgress) {
+                                  if (loadingProgress == null) {
+                                    return child;
+                                  }
+                                  return Center(
+                                    child: CircularProgressIndicator(
+                                      value:
+                                          loadingProgress.expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  (loadingProgress
+                                                          .expectedTotalBytes ??
+                                                      1)
+                                              : null,
+                                    ),
+                                  );
+                                },
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Image.asset(
+                                    'assets/images/noImage.png',
+                                    fit: BoxFit.fill,
+                                  );
+                                },
                               ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
                   Divider(),
                   Text(
@@ -376,7 +403,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                               (task.files == null || task.files!.isEmpty))
                       ? Center(
                           child: Text(
-                            'There\'s no comments or images',
+                            'There\'s no comments',
                             style: TextStyles.font13Blackmedium,
                           ),
                         )
@@ -528,7 +555,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                         UploadFilesBottomDialog().showBottomDialog(
                             context, context.read<TaskManagementCubit>());
                       },
-                      hint: "write your comment",
+                      hint: "Write your comment",
                       onlyRead: false,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -538,7 +565,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                       },
                     ),
                   ),
-                  verticalSpace(20),
+                  verticalSpace(10),
                   (state is ImageSelectedState || state is CameraSelectedState)
                       ? Container(
                           height: 80,
@@ -555,6 +582,9 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                           ),
                         )
                       : const SizedBox.shrink(),
+                  if (state is ImageSelectedState ||
+                      state is CameraSelectedState)
+                    verticalSpace(20),
                   state is GetChangeTaskStatusLoadingState
                       ? const Center(
                           child: CircularProgressIndicator(

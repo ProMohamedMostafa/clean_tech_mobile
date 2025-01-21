@@ -8,6 +8,7 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/ui/widget/pop_up_dialog.dart';
 
@@ -70,12 +71,18 @@ Widget buildCardItem(BuildContext context, selectedIndex, index) {
         .data!
         .items![index]
         .priority!;
-  } else {
+  } else if (selectedIndex == 7) {
     taskPriority = context
         .read<TaskManagementCubit>()
         .overdueModel!
         .data!
         .items![index]
+        .priority!;
+  } else {
+    taskPriority = context
+        .read<TaskManagementCubit>()
+        .deleteTaskListModel!
+        .data![index]
         .priority!;
   }
 
@@ -229,13 +236,20 @@ Widget buildCardItem(BuildContext context, selectedIndex, index) {
                                                         .data!
                                                         .items![index]
                                                         .priority!
-                                                    : context
-                                                        .read<
-                                                            TaskManagementCubit>()
-                                                        .overdueModel!
-                                                        .data!
-                                                        .items![index]
-                                                        .priority!,
+                                                    : selectedIndex == 7
+                                                        ? context
+                                                            .read<
+                                                                TaskManagementCubit>()
+                                                            .overdueModel!
+                                                            .data!
+                                                            .items![index]
+                                                            .priority!
+                                                        : context
+                                                            .read<
+                                                                TaskManagementCubit>()
+                                                            .deleteTaskListModel!
+                                                            .data![index]
+                                                            .priority!,
                         style: TextStyles.font11WhiteSemiBold.copyWith(
                           color: priorityColorForTask,
                         ),
@@ -303,13 +317,20 @@ Widget buildCardItem(BuildContext context, selectedIndex, index) {
                                                         .data!
                                                         .items![index]
                                                         .status!
-                                                    : context
-                                                        .read<
-                                                            TaskManagementCubit>()
-                                                        .overdueModel!
-                                                        .data!
-                                                        .items![index]
-                                                        .status!,
+                                                    : selectedIndex == 7
+                                                        ? context
+                                                            .read<
+                                                                TaskManagementCubit>()
+                                                            .overdueModel!
+                                                            .data!
+                                                            .items![index]
+                                                            .status!
+                                                        : context
+                                                            .read<
+                                                                TaskManagementCubit>()
+                                                            .deleteTaskListModel!
+                                                            .data![index]
+                                                            .status!,
                         style: TextStyles.font11WhiteSemiBold
                             .copyWith(color: AppColor.primaryColor),
                       ),
@@ -318,75 +339,126 @@ Widget buildCardItem(BuildContext context, selectedIndex, index) {
                   Spacer(),
                   role == 'Cleaner'
                       ? SizedBox.shrink()
-                      : IconButton(
-                          onPressed: () {
-                            PopUpDialog.show(
-                                context: context,
-                                id: selectedIndex == 0
-                                    ? context
-                                        .read<TaskManagementCubit>()
-                                        .allTasksModel!
-                                        .data!
-                                        .data![index]
-                                        .id!
-                                    : selectedIndex == 1
-                                        ? context
-                                            .read<TaskManagementCubit>()
-                                            .pendingModel!
-                                            .data!
-                                            .items![index]
-                                            .id!
-                                        : selectedIndex == 2
-                                            ? context
-                                                .read<TaskManagementCubit>()
-                                                .inProgressModel!
-                                                .data!
-                                                .items![index]
-                                                .id!
-                                            : selectedIndex == 3
-                                                ? context
-                                                    .read<TaskManagementCubit>()
-                                                    .notApprovableModel!
-                                                    .data!
-                                                    .items![index]
-                                                    .id!
-                                                : selectedIndex == 4
-                                                    ? context
-                                                        .read<
-                                                            TaskManagementCubit>()
-                                                        .rejectedModel!
-                                                        .data!
-                                                        .items![index]
-                                                        .id!
-                                                    : selectedIndex == 5
-                                                        ? context
-                                                            .read<
-                                                                TaskManagementCubit>()
-                                                            .completedModel!
-                                                            .data!
-                                                            .items![index]
-                                                            .id!
-                                                        : selectedIndex == 6
-                                                            ? context
-                                                                .read<
-                                                                    TaskManagementCubit>()
-                                                                .notResolvedModel!
-                                                                .data!
-                                                                .items![index]
-                                                                .id!
-                                                            : context
-                                                                .read<
-                                                                    TaskManagementCubit>()
-                                                                .overdueModel!
-                                                                .data!
-                                                                .items![index]
-                                                                .id!);
-                          },
-                          icon: Icon(
-                            Icons.more_horiz_rounded,
-                            size: 22.sp,
-                          ),
-                        ),
+                      : selectedIndex == 8
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    showCustomDialog(context,
+                                        "Are you Sure to restore this task ?",
+                                        () {
+                                      context
+                                          .read<TaskManagementCubit>()
+                                          .restoreDeletedTask(context
+                                              .read<TaskManagementCubit>()
+                                              .deleteTaskListModel!
+                                              .data![index]
+                                              .id!);
+                                      context.pop();
+                                    });
+                                  },
+                                  child: Icon(
+                                    Icons.replay_outlined,
+                                    size: 26,
+                                    color: AppColor.thirdColor,
+                                  ),
+                                ),
+                                horizontalSpace(8),
+                                InkWell(
+                                  onTap: () {
+                                    showCustomDialog(
+                                        context, "Forced Delete this task", () {
+                                      context
+                                          .read<TaskManagementCubit>()
+                                          .restoreDeletedTask(context
+                                              .read<TaskManagementCubit>()
+                                              .deleteTaskListModel!
+                                              .data![index]
+                                              .id!);
+                                      context.pop();
+                                    });
+                                  },
+                                  child: Icon(
+                                    IconBroken.delete,
+                                    color: AppColor.thirdColor,
+                                  ),
+                                ),
+                                horizontalSpace(5),
+                              ],
+                            )
+                          : IconButton(
+                              onPressed: () {
+                                PopUpDialog.show(
+                                  context: context,
+                                  id: selectedIndex == 0
+                                      ? context
+                                          .read<TaskManagementCubit>()
+                                          .allTasksModel!
+                                          .data!
+                                          .data![index]
+                                          .id!
+                                      : selectedIndex == 1
+                                          ? context
+                                              .read<TaskManagementCubit>()
+                                              .pendingModel!
+                                              .data!
+                                              .items![index]
+                                              .id!
+                                          : selectedIndex == 2
+                                              ? context
+                                                  .read<TaskManagementCubit>()
+                                                  .inProgressModel!
+                                                  .data!
+                                                  .items![index]
+                                                  .id!
+                                              : selectedIndex == 3
+                                                  ? context
+                                                      .read<
+                                                          TaskManagementCubit>()
+                                                      .notApprovableModel!
+                                                      .data!
+                                                      .items![index]
+                                                      .id!
+                                                  : selectedIndex == 4
+                                                      ? context
+                                                          .read<
+                                                              TaskManagementCubit>()
+                                                          .rejectedModel!
+                                                          .data!
+                                                          .items![index]
+                                                          .id!
+                                                      : selectedIndex == 5
+                                                          ? context
+                                                              .read<
+                                                                  TaskManagementCubit>()
+                                                              .completedModel!
+                                                              .data!
+                                                              .items![index]
+                                                              .id!
+                                                          : selectedIndex == 6
+                                                              ? context
+                                                                  .read<
+                                                                      TaskManagementCubit>()
+                                                                  .notResolvedModel!
+                                                                  .data!
+                                                                  .items![index]
+                                                                  .id!
+                                                              : context
+                                                                  .read<
+                                                                      TaskManagementCubit>()
+                                                                  .overdueModel!
+                                                                  .data!
+                                                                  .items![index]
+                                                                  .id!,
+                                );
+                              },
+                              icon: Icon(
+                                Icons.more_horiz_rounded,
+                                size: 22.sp,
+                              ),
+                            ),
                 ],
               ),
               Text(
@@ -439,12 +511,18 @@ Widget buildCardItem(BuildContext context, selectedIndex, index) {
                                                 .data!
                                                 .items![index]
                                                 .title!
-                                            : context
-                                                .read<TaskManagementCubit>()
-                                                .overdueModel!
-                                                .data!
-                                                .items![index]
-                                                .title!,
+                                            : selectedIndex == 7
+                                                ? context
+                                                    .read<TaskManagementCubit>()
+                                                    .overdueModel!
+                                                    .data!
+                                                    .items![index]
+                                                    .title!
+                                                : context
+                                                    .read<TaskManagementCubit>()
+                                                    .deleteTaskListModel!
+                                                    .data![index]
+                                                    .title!,
                 style: TextStyles.font16BlackSemiBold,
               ),
               verticalSpace(10),
@@ -498,12 +576,18 @@ Widget buildCardItem(BuildContext context, selectedIndex, index) {
                                                 .data!
                                                 .items![index]
                                                 .description!
-                                            : context
-                                                .read<TaskManagementCubit>()
-                                                .overdueModel!
-                                                .data!
-                                                .items![index]
-                                                .description!,
+                                            : selectedIndex == 7
+                                                ? context
+                                                    .read<TaskManagementCubit>()
+                                                    .overdueModel!
+                                                    .data!
+                                                    .items![index]
+                                                    .description!
+                                                : context
+                                                    .read<TaskManagementCubit>()
+                                                    .deleteTaskListModel!
+                                                    .data![index]
+                                                    .description!,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
                 style: TextStyles.font11GreyMedium,
@@ -567,12 +651,20 @@ Widget buildCardItem(BuildContext context, selectedIndex, index) {
                                                     .data!
                                                     .items![index]
                                                     .startTime!
-                                                : context
-                                                    .read<TaskManagementCubit>()
-                                                    .overdueModel!
-                                                    .data!
-                                                    .items![index]
-                                                    .startTime!,
+                                                : selectedIndex == 7
+                                                    ? context
+                                                        .read<
+                                                            TaskManagementCubit>()
+                                                        .overdueModel!
+                                                        .data!
+                                                        .items![index]
+                                                        .startTime!
+                                                    : context
+                                                        .read<
+                                                            TaskManagementCubit>()
+                                                        .deleteTaskListModel!
+                                                        .data![index]
+                                                        .startTime!,
                     style: TextStyles.font11WhiteSemiBold
                         .copyWith(color: AppColor.primaryColor),
                   ),

@@ -10,9 +10,10 @@ import 'package:smart_cleaning_application/features/screens/task/add_task/data/m
 import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/gallary_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/supervisor_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/edit_task_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/users_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/logic/edit_task_state.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/task_details.dart';
-
+import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/task_files_model.dart';
 import '../../../integrations/data/models/building_model.dart';
 import '../../../integrations/data/models/floor_model.dart';
 import '../../../integrations/data/models/organization_model.dart';
@@ -37,7 +38,6 @@ class EditTaskCubit extends Cubit<EditTaskState> {
   TextEditingController parentTaskController = TextEditingController();
   final supervisorsController = MultiSelectController<SupervisorData>();
 
-
   EditTaskModel? editTaskModel;
   editTask(
     int id,
@@ -50,61 +50,77 @@ class EditTaskCubit extends Cubit<EditTaskState> {
     int? parentId,
   ) async {
     emit(EditTaskLoadingState());
- 
-    
-     
-    
-     
+    Map<String, dynamic> formDataMap = {
+      "id": id,
+      "ParentId": parentTaskController.text.isEmpty
+          ? taskDetailsModel!.data!.parentId
+          : parentId,
+      "Title": taskTitleController.text.isEmpty
+          ? taskDetailsModel!.data!.title
+          : taskTitleController.text,
+      "Description": descriptionController.text.isEmpty
+          ? taskDetailsModel!.data!.description
+          : descriptionController.text,
+      "Priority": priorityId ?? taskDetailsModel!.data!.priority,
+      "Status": statusId ?? taskDetailsModel!.data!.status,
+      "StartDate": startDateController.text.isEmpty
+          ? taskDetailsModel!.data!.startDate
+          : startDateController.text,
+      "EndDate": endDateController.text.isEmpty
+          ? taskDetailsModel!.data!.endDate
+          : endDateController.text,
+      "StartTime": startTimeController.text.isEmpty
+          ? taskDetailsModel!.data!.startTime
+          : startTimeController.text,
+      "EndTime": endTimeController.text.isEmpty
+          ? taskDetailsModel!.data!.endTime
+          : endTimeController.text,
+      "BuildingId": buildingController.text.isEmpty
+          ? taskDetailsModel!.data!.buildingId
+          : buildingId,
+      "FloorId": floorController.text.isEmpty
+          ? taskDetailsModel!.data!.floorId
+          : floorId,
+      "PointId": pointController.text.isEmpty
+          ? taskDetailsModel!.data!.pointId
+          : pointId,
+      "UsersIds": selectedSupervisorIds ??
+          usersTaskModel?.data?.map((user) => user.id ?? 0).toList() ??
+          [],
+      "Files": [],
+    };
 
-  
-   
-   
-    
+    FormData formData = FormData.fromMap(formDataMap);
     try {
-      final response =
-          await DioHelper.putData(url: ApiConstants.editTaskUrl, data: 
-          {
-        "id": id,
-        "ParentId": parentTaskController.text.isEmpty
-            ? taskDetailsModel!.data!.parentId
-            : parentId,
-        "Title": taskTitleController.text.isEmpty
-            ? taskDetailsModel!.data!.title
-            : taskTitleController.text,
-        "Description": descriptionController.text.isEmpty
-            ? taskDetailsModel!.data!.description
-            : descriptionController.text,
-        "Priority": priorityId ??
-             taskDetailsModel!.data!.priority
-            ,
-        "Status": statusController.text.isEmpty
-            ? taskDetailsModel!.data!.status
-            : statusId,
-        "StartDate": startDateController.text.isEmpty
-            ? taskDetailsModel!.data!.startDate
-            : startDateController.text,
-        "EndDate": endDateController.text.isEmpty
-            ? taskDetailsModel!.data!.endDate
-            : endDateController.text,
-        "BuildingId": buildingController.text.isEmpty
-            ? taskDetailsModel!.data!.buildingId
-            :  buildingId,
-        "FloorId": floorController.text.isEmpty
-            ? taskDetailsModel!.data!.floorId
-            : floorId,
-        "PointId": pointController.text.isEmpty
-            ? taskDetailsModel!.data!.pointId
-            : pointId,
-
-
-        // "UsersIds": selectedSupervisorIds ?? supervisorModel!.data![0].,
-        //   "Files": null,
-      });
-      // editTaskModel = EditTaskModel.fromJson(response!.data);
+      final response = await DioHelper.putData2(
+          url: ApiConstants.editTaskUrl, data: formData);
+      editTaskModel = EditTaskModel.fromJson(response!.data);
       emit(EditTaskSuccessState(editTaskModel!));
     } catch (error) {
       emit(EditTaskErrorState(error.toString()));
     }
+  }
+
+  TaskFilesModel? taskFilesModel;
+  getTaskFiles(int id) {
+    emit(GetTaskFilesLoadingState());
+    DioHelper.getData(url: "file/task/$id").then((value) {
+      taskFilesModel = TaskFilesModel.fromJson(value!.data);
+      emit(GetTaskFilesSuccessState(taskFilesModel!));
+    }).catchError((error) {
+      emit(GetTaskFilesErrorState(error.toString()));
+    });
+  }
+
+  UsersTaskModel? usersTaskModel;
+  getUsersTask(int id) {
+    emit(GetUsersTaskLoadingState());
+    DioHelper.getData(url: "assign/task/$id").then((value) {
+      usersTaskModel = UsersTaskModel.fromJson(value!.data);
+      emit(GetUsersTaskSuccessState(usersTaskModel!));
+    }).catchError((error) {
+      emit(GetUsersTaskErrorState(error.toString()));
+    });
   }
 
   TaskDetailsModel? taskDetailsModel;

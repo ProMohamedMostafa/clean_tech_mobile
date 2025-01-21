@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/gallary_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/delete_task_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/delete_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/all_tasks_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/change_task_status.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/completed_model.dart';
@@ -18,7 +20,6 @@ import 'package:smart_cleaning_application/features/screens/task/task_management
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/task_action_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/task_details.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/task_files_model.dart';
-
 import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_state.dart';
 
 class TaskManagementCubit extends Cubit<TaskManagementState> {
@@ -29,6 +30,50 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
   TextEditingController searchController = TextEditingController();
   TextEditingController commentController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+
+  DeleteTaskModel? deleteTaskModel;
+  taskDelete(int id) {
+    emit(TaskDeleteLoadingState());
+    DioHelper.postData(url: 'tasks/delete/$id', data: {'id': id}).then((value) {
+      deleteTaskModel = DeleteTaskModel.fromJson(value!.data);
+      emit(TaskDeleteSuccessState(deleteTaskModel!));
+    }).catchError((error) {
+      emit(TaskDeleteErrorState(error.toString()));
+    });
+  }
+
+  DeleteTaskListModel? deleteTaskListModel;
+  getAllDeletedTasks() {
+    emit(TaskDeleteListLoadingState());
+    DioHelper.getData(url: ApiConstants.getAllDeletedTasksUrl).then((value) {
+      deleteTaskListModel = DeleteTaskListModel.fromJson(value!.data);
+      emit(TaskDeleteListSuccessState(deleteTaskListModel!));
+    }).catchError((error) {
+      emit(TaskDeleteListErrorState(error.toString()));
+    });
+  }
+
+  restoreDeletedTask(int id) {
+    emit(RestoreTaskLoadingState());
+    DioHelper.postData(url: 'tasks/restore/$id', data: {'id': id})
+        .then((value) {
+      final message = value?.data['message'] ?? "restored successfully";
+      emit(RestoreTaskSuccessState(message));
+    }).catchError((error) {
+      emit(RestoreTaskErrorState(error.toString()));
+    });
+  }
+
+  forcedDeletedUser(int id) {
+    emit(ForceDeleteTaskLoadingState());
+    DioHelper.deleteData(url: 'tasks/forcedelete/$id', data: {'id': id})
+        .then((value) {
+      final message = value?.data['message'] ?? "restored successfully";
+      emit(ForceDeleteTaskSuccessState(message));
+    }).catchError((error) {
+      emit(ForceDeleteTaskErrorState(error.toString()));
+    });
+  }
 
   AllTasksModel? allTasksModel;
   getAllTasks(DateTime startDate) {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 
-class CustomDropDownList extends StatefulWidget {
+class AssignCustomDropDownList extends StatefulWidget {
   final TextEditingController controller;
   final String hint;
   final TextInputType keyboardType;
@@ -13,7 +13,7 @@ class CustomDropDownList extends StatefulWidget {
   final FormFieldValidator<String>? validator;
   final bool? isRead;
 
-  const CustomDropDownList({
+  const AssignCustomDropDownList({
     super.key,
     required this.items,
     this.validator,
@@ -27,10 +27,11 @@ class CustomDropDownList extends StatefulWidget {
   });
 
   @override
-  State<CustomDropDownList> createState() => _CustomDropDownListState();
+  State<AssignCustomDropDownList> createState() =>
+      _AssignCustomDropDownListState();
 }
 
-class _CustomDropDownListState extends State<CustomDropDownList> {
+class _AssignCustomDropDownListState extends State<AssignCustomDropDownList> {
   bool isClicked = false;
   String? selectedValue;
   List<String> filteredItems = [];
@@ -71,8 +72,8 @@ class _CustomDropDownListState extends State<CustomDropDownList> {
       textInputAction: TextInputAction.next,
       validator: widget.validator,
       onChanged: _onTextChanged,
-      style: TextStyle(color: Colors.black, fontSize: 14.sp),
-      readOnly: widget.isRead ?? false,
+      style: TextStyle(color: Colors.white, fontSize: 14.sp),
+      readOnly: widget.isRead ?? true,
       decoration: InputDecoration(
         isDense: true,
         suffixIcon: widget.suffixIcon != null ? _buildSuffixIcon() : null,
@@ -80,10 +81,10 @@ class _CustomDropDownListState extends State<CustomDropDownList> {
         enabledBorder: _buildBorder(Colors.grey),
         focusedBorder: _buildBorder(Colors.grey),
         errorBorder: _buildBorder(Colors.red),
-        fillColor: Colors.white,
+        fillColor: AppColor.secondaryColor,
         filled: true,
         hintText: widget.hint,
-        hintStyle: TextStyle(fontSize: 12.sp, color: AppColor.thirdColor),
+        hintStyle: TextStyle(fontSize: 12.sp, color: Colors.white),
       ),
     );
   }
@@ -95,7 +96,7 @@ class _CustomDropDownListState extends State<CustomDropDownList> {
         padding: const EdgeInsets.only(right: 9),
         child: Icon(
           widget.suffixIcon,
-          color: AppColor.thirdColor,
+          color: Colors.white,
           size: 23.sp,
         ),
       ),
@@ -186,6 +187,6 @@ class _CustomDropDownListState extends State<CustomDropDownList> {
       widget.controller.text = item;
       isClicked = false;
     });
-    widget.onChanged?.call(item); // Trigger callback
+    widget.onChanged?.call(item);
   }
 }

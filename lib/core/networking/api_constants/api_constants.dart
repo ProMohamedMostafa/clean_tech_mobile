@@ -48,4 +48,17 @@ class ApiConstants {
   static const allTasksUrl = "tasks";
   static const changeTaskStatusUrl = "update-status";
   static const editTaskUrl = "tasks/edit";
+  static const getAllDeletedTasksUrl = "tasks/deleted/index";
+
+  static const assignAreaUrl = "assign/area/manager";
+  static const assignCityUrl = "assign/city/manager";
+  static const assignOrganizationUrl = "assign/organization/manager";
+  static const assignBuildingUrl = "assign/building/manager";
+  static const assignFloorUrl = "assign/floor/manager";
+  static const assignPointUrl = "assign/point/manager";
+  static const assignShiftUrl = "assign/user/shift";
+  static const assignOrganizationShiftUrl = "assign/organization/shift";
+  static const assignBuildingShiftUrl = "assign/building/shift";
+  static const assignFloorShiftUrl = "assign/floor/shift";
+  static const assignPointShiftUrl = "assign/point/shift";
 }

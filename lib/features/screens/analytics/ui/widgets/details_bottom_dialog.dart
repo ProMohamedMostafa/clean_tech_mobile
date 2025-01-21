@@ -73,7 +73,7 @@ class DetailsBottomDialog {
   Widget _buildContinueText() {
     return Text(
       'Organization Details',
-      style: TextStyles.font20BlacksemiBold,
+      style: TextStyles.font20PrimsemiBold,
     );
   }
 

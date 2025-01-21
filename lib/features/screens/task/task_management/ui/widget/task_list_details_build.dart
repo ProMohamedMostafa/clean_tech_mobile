@@ -30,22 +30,27 @@ Widget taskListDetailsBuild(
                           ?.data!
                           .items!
                       : selectedIndex == 5
-                      ? context
-                          .read<TaskManagementCubit>()
-                          .completedModel
-                          ?.data!
-                          .items!
-                      : selectedIndex == 6
                           ? context
                               .read<TaskManagementCubit>()
-                              .notResolvedModel
+                              .completedModel
                               ?.data!
                               .items!
-                          : context
-                              .read<TaskManagementCubit>()
-                              .overdueModel
-                              ?.data!
-                              .items!;
+                          : selectedIndex == 6
+                              ? context
+                                  .read<TaskManagementCubit>()
+                                  .notResolvedModel
+                                  ?.data!
+                                  .items!
+                              : selectedIndex == 7
+                                  ? context
+                                      .read<TaskManagementCubit>()
+                                      .overdueModel
+                                      ?.data!
+                                      .items!
+                                  : context
+                                      .read<TaskManagementCubit>()
+                                      .deleteTaskListModel
+                                      ?.data!;
 
   if (tasksData == null || tasksData.isEmpty) {
     return Center(
