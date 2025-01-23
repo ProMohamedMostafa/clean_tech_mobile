@@ -1,7 +1,17 @@
-import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/users_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/delete_user_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/deleted_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_shift_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_task_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_work_location_details.dart';
+
+import '../../../integrations/data/models/building_model.dart';
+import '../../../integrations/data/models/floor_model.dart';
+import '../../../integrations/data/models/nationality_model.dart';
+import '../../../integrations/data/models/organization_model.dart';
+import '../../../integrations/data/models/points_model.dart';
+import '../../../integrations/data/models/role_model.dart';
+import '../../../integrations/data/models/users_model.dart';
 
 abstract class UserManagementState {}
 
@@ -47,6 +57,21 @@ class AllUsersErrorState extends UserManagementState {
 
 //***************** */
 
+// class FilterUsersLoadingState extends UserManagementState {}
+
+// class FilterUsersSuccessState extends UserManagementState {
+//   final UsersModel filterusersModel;
+
+//   FilterUsersSuccessState(this.filterusersModel);
+// }
+
+// class FilterUsersErrorState extends UserManagementState {
+//   final String error;
+//   FilterUsersErrorState(this.error);
+// }
+
+//***************** */
+
 class DeletedUsersLoadingState extends UserManagementState {}
 
 class DeletedUsersSuccessState extends UserManagementState {
@@ -66,7 +91,7 @@ class RestoreUsersLoadingState extends UserManagementState {}
 class RestoreUsersSuccessState extends UserManagementState {
   final String message;
 
-  RestoreUsersSuccessState(this.message); 
+  RestoreUsersSuccessState(this.message);
 }
 
 class RestoreUsersErrorState extends UserManagementState {
@@ -78,7 +103,7 @@ class RestoreUsersErrorState extends UserManagementState {
 class ForceDeleteUsersLoadingState extends UserManagementState {}
 
 class ForceDeleteUsersSuccessState extends UserManagementState {
-   final String message;
+  final String message;
 
   ForceDeleteUsersSuccessState(this.message);
 }
@@ -89,18 +114,61 @@ class ForceDeleteUsersErrorState extends UserManagementState {
 }
 //*********************** */
 
+class UserDetailsLoadingState extends UserManagementState {}
 
-class UserLoadingState extends UserManagementState {}
+class UserDetailsSuccessState extends UserManagementState {
+  final UserDetailsModel userDetailsModelModel;
 
-class UserSuccessState extends UserManagementState {
-  final UserModel userModel;
-
-  UserSuccessState(this.userModel);
+  UserDetailsSuccessState(this.userDetailsModelModel);
 }
 
-class UserErrorState extends UserManagementState {
+class UserDetailsErrorState extends UserManagementState {
   final String error;
-  UserErrorState(this.error);
+  UserDetailsErrorState(this.error);
+}
+//*********************** */
+
+class UserShiftDetailsLoadingState extends UserManagementState {}
+
+class UserShiftDetailsSuccessState extends UserManagementState {
+  final UserShiftDetailsModel userShiftDetailsModel;
+
+  UserShiftDetailsSuccessState(this.userShiftDetailsModel);
+}
+
+class UserShiftDetailsErrorState extends UserManagementState {
+  final String error;
+  UserShiftDetailsErrorState(this.error);
+}
+
+//*********************** */
+
+class UserWorkLocationDetailsLoadingState extends UserManagementState {}
+
+class UserWorkLocationDetailsSuccessState extends UserManagementState {
+  final UserWorkLocationDetailsModel userWorkLocationDetailsModel;
+
+  UserWorkLocationDetailsSuccessState(this.userWorkLocationDetailsModel);
+}
+
+class UserWorkLocationDetailsErrorState extends UserManagementState {
+  final String error;
+  UserWorkLocationDetailsErrorState(this.error);
+}
+
+//*********************** */
+
+class UserTaskDetailsLoadingState extends UserManagementState {}
+
+class UserTaskDetailsSuccessState extends UserManagementState {
+  final UserTaskDetailsModel userTaskDetailsModel;
+
+  UserTaskDetailsSuccessState(this.userTaskDetailsModel);
+}
+
+class UserTaskDetailsErrorState extends UserManagementState {
+  final String error;
+  UserTaskDetailsErrorState(this.error);
 }
 //****************** */
 
@@ -116,3 +184,92 @@ class UserDeleteInDetailsErrorState extends UserManagementState {
   final String error;
   UserDeleteInDetailsErrorState(this.error);
 }
+//****************************** */
+
+//**************************** */
+class GetNationalityLoadingState extends UserManagementState {}
+
+class GetNationalitySuccessState extends UserManagementState {
+  final NationalityModel nationalitymodel;
+
+  GetNationalitySuccessState(this.nationalitymodel);
+}
+
+class GetNationalityErrorState extends UserManagementState {
+  final String error;
+  GetNationalityErrorState(this.error);
+}
+
+//**************************** */
+
+class RoleLoadingState extends UserManagementState {}
+
+class RoleSuccessState extends UserManagementState {
+  final RoleModel rolemodel;
+
+  RoleSuccessState(this.rolemodel);
+}
+
+class RoleErrorState extends UserManagementState {
+  final String error;
+  RoleErrorState(this.error);
+}
+
+//**************************************** */
+class GetOrganizationLoadingState extends UserManagementState {}
+
+class GetOrganizationSuccessState extends UserManagementState {
+  final OrganizationModel organizationModel;
+
+  GetOrganizationSuccessState(this.organizationModel);
+}
+
+class GetOrganizationErrorState extends UserManagementState {
+  final String error;
+  GetOrganizationErrorState(this.error);
+}
+//**************************** */
+
+class GetBuildingLoadingState extends UserManagementState {}
+
+class GetBuildingSuccessState extends UserManagementState {
+  final BuildingModel buildingModel;
+
+  GetBuildingSuccessState(this.buildingModel);
+}
+
+class GetBuildingErrorState extends UserManagementState {
+  final String error;
+  GetBuildingErrorState(this.error);
+}
+//**************************** */
+
+class GetFloorLoadingState extends UserManagementState {}
+
+class GetFloorSuccessState extends UserManagementState {
+  final FloorModel floorModel;
+
+  GetFloorSuccessState(this.floorModel);
+}
+
+class GetFloorErrorState extends UserManagementState {
+  final String error;
+  GetFloorErrorState(this.error);
+}
+//**************************** */
+
+class GetPointsLoadingState extends UserManagementState {}
+
+class GetPointsSuccessState extends UserManagementState {
+  final PointsModel pointsModel;
+
+  GetPointsSuccessState(this.pointsModel);
+}
+
+class GetPointsErrorState extends UserManagementState {
+  final String error;
+  GetPointsErrorState(this.error);
+}
+
+
+//**************************** */

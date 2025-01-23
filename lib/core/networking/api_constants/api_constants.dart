@@ -7,7 +7,7 @@ class ApiConstants {
   static const countriesUrl = "countries";
   static const rolesUrl = "authorization/roles";
   static const allUsersUrl = "users";
-  static const allProvidersUrl = "providers";
+  static const allProvidersUrl = "providers/pagination";
   static const editUserUrl = "users/edit";
   static const areaEditUrl = "areas/edit";
   static const cityEditUrl = "cities/edit";
@@ -16,6 +16,7 @@ class ApiConstants {
   static const floorEditUrl = "floors/edit";
   static const pointEditUrl = "points/edit";
   static const deleteUserListUrl = "users/deleted/index";
+  static const deletedProvidersListUrl = "providers/deleted/index";
 
   static const createAreaUrl = "areas/create";
   static const createCityUrl = "cities/create";

@@ -5,7 +5,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
-import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/gallary_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/delete_task_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/delete_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/all_tasks_model.dart';
@@ -21,6 +20,8 @@ import 'package:smart_cleaning_application/features/screens/task/task_management
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/task_details.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/task_files_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_state.dart';
+
+import '../../../integrations/data/models/gallary_model.dart';
 
 class TaskManagementCubit extends Cubit<TaskManagementState> {
   TaskManagementCubit() : super(TaskManagementInitialState());

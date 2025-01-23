@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +12,9 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/gerate_save_pdf.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/shift_list_item_build.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/task_list_item_build.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/row_details_build.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_state.dart';
@@ -31,7 +35,11 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
   @override
   void initState() {
     context.read<UserManagementCubit>().getUserDetails(widget.id);
-    controller = TabController(length: 3, vsync: this);
+    context.read<UserManagementCubit>().getUserShiftDetails(widget.id);
+    context.read<UserManagementCubit>().getUserTaskDetails(widget.id);
+    context.read<UserManagementCubit>().getUserWorkLocationDetails(widget.id);
+
+    controller = TabController(length: 5, vsync: this);
     controller.addListener(() {
       setState(() {});
     });
@@ -56,6 +64,16 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
         leading: customBackButton(context),
         actions: [
           IconButton(
+            onPressed: () {
+              // generateAndSavePDF(context);
+            },
+            icon: Icon(
+              CupertinoIcons.tray_arrow_down,
+              color: Colors.red,
+              size: 22.sp,
+            ),
+          ),
+          IconButton(
               onPressed: () {
                 context.pushNamed(Routes.editUserScreen, arguments: widget.id);
               },
@@ -78,7 +96,10 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
           }
         },
         builder: (context, state) {
-          if (state is UserLoadingState) {
+          if (state is UserDetailsLoadingState ||
+              state is UserShiftDetailsLoadingState ||
+              state is UserTaskDetailsLoadingState ||
+              state is UserWorkLocationDetailsLoadingState) {
             return Center(
               child: CircularProgressIndicator(
                 color: AppColor.primaryColor,
@@ -94,8 +115,8 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                 children: [
                   Center(
                     child: Container(
-                      width: 100.w,
-                      height: 100.h,
+                      width: 90.w,
+                      height: 90.h,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
@@ -104,11 +125,45 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                         ),
                       ),
                       child: ClipOval(
-                        child: Image.asset(
-                          'assets/images/profile.png',
+                        child: Image.network(
+                          'http://10.0.2.2:7111${context.read<UserManagementCubit>().userDetailsModel?.data?.image ?? ''}',
                           fit: BoxFit.fill,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Image.asset(
+                              'assets/images/noImage.png',
+                              fit: BoxFit.fill,
+                            );
+                          },
                         ),
                       ),
+                    ),
+                  ),
+                  verticalSpace(5),
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: context
+                              .read<UserManagementCubit>()
+                              .userDetailsModel!
+                              .data!
+                              .userName!,
+                          style: TextStyles.font14GreyRegular,
+                        ),
+                        TextSpan(
+                          text: ' - ',
+                          style: TextStyles.font14GreyRegular,
+                        ),
+                        TextSpan(
+                          text: context
+                              .read<UserManagementCubit>()
+                              .userDetailsModel!
+                              .data!
+                              .role!,
+                          style: TextStyles.font14GreyRegular,
+                        ),
+                      ],
                     ),
                   ),
                   verticalSpace(25),
@@ -121,8 +176,8 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                           color: AppColor.secondaryColor,
                         )),
                     child: TabBar(
-                        tabAlignment: TabAlignment.fill,
-                        isScrollable: false,
+                        tabAlignment: TabAlignment.center,
+                        isScrollable: true,
                         indicatorSize: TabBarIndicatorSize.tab,
                         controller: controller,
                         dividerColor: Colors.transparent,
@@ -135,7 +190,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                         tabs: [
                           Tab(
                             child: Text(
-                              "Data",
+                              "User Details",
                               style: TextStyle(
                                   color: controller.index == 0
                                       ? Colors.white
@@ -146,7 +201,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                           ),
                           Tab(
                             child: Text(
-                              "Location",
+                              " Work Location",
                               style: TextStyle(
                                   color: controller.index == 1
                                       ? Colors.white
@@ -166,6 +221,28 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                                   fontSize: 14.sp),
                             ),
                           ),
+                          Tab(
+                            child: Text(
+                              "Tasks",
+                              style: TextStyle(
+                                  color: controller.index == 3
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14.sp),
+                            ),
+                          ),
+                          Tab(
+                            child: Text(
+                              "Attendance",
+                              style: TextStyle(
+                                  color: controller.index == 4
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14.sp),
+                            ),
+                          ),
                         ]),
                   ),
                   verticalSpace(20),
@@ -174,6 +251,8 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                       userDetails(),
                       locationUserDetails(),
                       userShiftsDetails(),
+                      userTasksDetails(),
+                      userAttendanceDetails()
                     ]),
                   ),
                   verticalSpace(15),
@@ -186,7 +265,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                                 context, S.of(context).deleteMessage, () {
                               context
                                   .read<UserManagementCubit>()
-                                  .userDeleteInDetails(widget.id);
+                                  .userDelete(widget.id);
                             });
                           },
                           color: AppColor.primaryColor,
@@ -203,7 +282,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
   }
 
   Widget userDetails() {
-    final userModel = context.read<UserManagementCubit>().userModel!;
+    final userModel = context.read<UserManagementCubit>().userDetailsModel!;
 
     return SingleChildScrollView(
       child: Column(
@@ -268,8 +347,19 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: Divider(),
           ),
+          rowDetailsBuild(context, 'Role', userModel.data!.role!),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
+          rowDetailsBuild(
+              context, 'Manager', userModel.data!.managerName ?? 'No Manager'),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(),
+          ),
           rowDetailsBuild(context, S.of(context).addUserText15,
-              userModel.data!.providerName!),
+              userModel.data!.providerName ?? 'No provider'),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: Divider(),
@@ -280,49 +370,97 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
   }
 
   Widget locationUserDetails() {
-    final userModel = context.read<UserManagementCubit>().userModel!;
-
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          rowDetailsBuild(context, S.of(context).addUserText12,
-              userModel.data!.countryName!),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(context, 'Area', 'Cairo'),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(context, 'City', 'Nasr city'),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(context, 'Orginasation', 'Ai Cloud'),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(context, 'Floor', '3'),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(context, 'Points', '6'),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-        ],
-      ),
-    );
+    final workLocationModel =
+        context.read<UserManagementCubit>().userWorkLocationDetailsModel!;
+    if (workLocationModel.data?.areas == null ||
+        workLocationModel.data!.areas!.isEmpty) {
+      return Center(
+        child: Text(
+          "There's no data",
+          style: TextStyles.font13Blackmedium,
+        ),
+      );
+    } else {
+      return ListView.separated(
+        physics: const BouncingScrollPhysics(),
+        scrollDirection: Axis.vertical,
+        itemCount: workLocationModel.data!.areas!.length,
+        separatorBuilder: (context, index) {
+          return verticalSpace(10);
+        },
+        itemBuilder: (context, index) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              // listWorkLocationItemBuild(context, index),
+            ],
+          );
+        },
+      );
+    }
   }
 
   Widget userShiftsDetails() {
-    // final userModel = context.read<UserManagementCubit>().userModel!;
+    final shiftModel =
+        context.read<UserManagementCubit>().userShiftDetailsModel!;
+    if (shiftModel.data!.shifts == null || shiftModel.data!.shifts!.isEmpty) {
+      return Center(
+        child: Text(
+          "There's no data",
+          style: TextStyles.font13Blackmedium,
+        ),
+      );
+    } else {
+      return ListView.separated(
+        physics: const BouncingScrollPhysics(),
+        scrollDirection: Axis.vertical,
+        itemCount: shiftModel.data!.shifts!.length,
+        separatorBuilder: (context, index) {
+          return verticalSpace(10);
+        },
+        itemBuilder: (context, index) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              listShiftItemBuild(context, index),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  Widget userTasksDetails() {
+    final taskModel = context.read<UserManagementCubit>().userTaskDetailsModel!;
+    if (taskModel.data!.data == null || taskModel.data!.data!.isEmpty) {
+      return Center(
+        child: Text(
+          "There's no data",
+          style: TextStyles.font13Blackmedium,
+        ),
+      );
+    } else {
+      return ListView.separated(
+        physics: const BouncingScrollPhysics(),
+        scrollDirection: Axis.vertical,
+        itemCount: taskModel.data!.data!.length,
+        separatorBuilder: (context, index) {
+          return verticalSpace(10);
+        },
+        itemBuilder: (context, index) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              buildTaskCardItem(context, index),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  Widget userAttendanceDetails() {
+    // final userModel = context.read<UserManagementCubit>().userDetailsModel!;
 
     return SingleChildScrollView(
       child: Column(

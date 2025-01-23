@@ -9,7 +9,7 @@ class CustomTextFormField extends StatelessWidget {
   final String hint;
   final TextInputType keyboardType;
   final IconData? suffixIcon;
-  final IconData? perfixIcon;
+  final Widget? perfixIcon;
   final FormFieldValidator<String>? validator;
   final ValueChanged<String>? onChanged;
   final VoidCallback? suffixPressed;
@@ -83,7 +83,6 @@ class CustomTextFormField extends StatelessWidget {
   }
 
   Widget? _buildPerffixIcon() {
-    if (perfixIcon == null) return null;
-    return Icon(perfixIcon, color: AppColor.thirdColor);
+    return perfixIcon; 
   }
 }

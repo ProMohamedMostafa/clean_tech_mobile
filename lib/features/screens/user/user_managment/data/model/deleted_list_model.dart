@@ -23,13 +23,13 @@ class DeletedListModel {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add( Data.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data =  <String, dynamic>{};
     data['statusCode'] = statusCode;
     data['meta'] = meta;
     data['succeeded'] = succeeded;
@@ -43,78 +43,42 @@ class DeletedListModel {
 }
 
 class Data {
+  int? id;
   String? userName;
   String? firstName;
   String? lastName;
+  String? role;
   String? email;
-  String? phoneNumber;
   String? image;
-  String? birthdate;
-  int? managerId;
-  String? idNumber;
-  String? nationalityName;
-  String? countryName;
-  String? providerName;
-  String? gender;
-  int? id;
-  String? createdAt;
-  String? updatedAt;
 
   Data(
-      {this.userName,
+      {this.id,
+      this.userName,
       this.firstName,
       this.lastName,
+      this.role,
       this.email,
-      this.phoneNumber,
-      this.image,
-      this.birthdate,
-      this.managerId,
-      this.idNumber,
-      this.nationalityName,
-      this.countryName,
-      this.providerName,
-      this.gender,
-      this.id,
-      this.createdAt,
-      this.updatedAt});
+      this.image});
 
   Data.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     userName = json['userName'];
     firstName = json['firstName'];
     lastName = json['lastName'];
+    role = json['role'];
     email = json['email'];
-    phoneNumber = json['phoneNumber'];
     image = json['image'];
-    birthdate = json['birthdate'];
-    managerId = json['managerId'];
-    idNumber = json['idNumber'];
-    nationalityName = json['nationalityName'];
-    countryName = json['countryName'];
-    providerName = json['providerName'];
-    gender = json['gender'];
-    id = json['id'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data =  <String, dynamic>{};
+    data['id'] = id;
     data['userName'] = userName;
     data['firstName'] = firstName;
     data['lastName'] = lastName;
+    data['role'] = role;
     data['email'] = email;
-    data['phoneNumber'] = phoneNumber;
     data['image'] = image;
-    data['birthdate'] = birthdate;
-    data['managerId'] = managerId;
-    data['idNumber'] = idNumber;
-    data['nationalityName'] = nationalityName;
-    data['countryName'] = countryName;
-    data['providerName'] = providerName;
-    data['gender'] = gender;
-    data['id'] = id;
-    data['createdAt'] = createdAt;
-    data['updatedAt'] = updatedAt;
     return data;
   }
 }

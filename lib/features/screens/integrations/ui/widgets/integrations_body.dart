@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
@@ -25,13 +26,15 @@ class IntegrationsBody extends StatelessWidget {
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 childAspectRatio: 1 / 1,
                 children: [
-                  buildIntegrationItem(
-                    () {
-                      context.pushNamed(Routes.userManagmentScreen);
-                    },
-                    S.of(context).integ1,
-                    IconBroken.addUser,
-                  ),
+                  role == 'Admin'
+                      ? buildIntegrationItem(
+                          () {
+                            context.pushNamed(Routes.userManagmentScreen);
+                          },
+                          S.of(context).integ1,
+                          IconBroken.addUser,
+                        )
+                      : SizedBox.shrink(),
                   buildIntegrationItem(
                     () {
                       context.pushNamed(Routes.organizationsScreen);

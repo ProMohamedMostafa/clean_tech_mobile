@@ -1,5 +1,5 @@
 import 'package:smart_cleaning_application/features/screens/assign/data/assign_model.dart';
-import 'package:smart_cleaning_application/features/screens/assign/data/role_user_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_user_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_model.dart';

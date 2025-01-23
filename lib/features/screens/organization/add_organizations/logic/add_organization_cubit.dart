@@ -10,7 +10,8 @@ import 'package:smart_cleaning_application/features/screens/organization/add_org
 import 'package:smart_cleaning_application/features/screens/organization/add_organizations/data/model/organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/organization/add_organizations/data/model/points_model.dart';
 import 'package:smart_cleaning_application/features/screens/organization/add_organizations/logic/add_organization_state.dart';
-import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/users_model.dart';
+
+import '../../../integrations/data/models/users_model.dart';
 
 class AddOrganizationCubit extends Cubit<AddOrganizationState> {
   AddOrganizationCubit() : super(AddOrganizationInitialState());

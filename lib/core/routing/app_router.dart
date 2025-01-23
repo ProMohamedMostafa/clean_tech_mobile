@@ -147,6 +147,7 @@ class AppRouter {
             child: const UserManagmentScreen(),
           ),
         );
+
       case Routes.organizationsScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -451,7 +452,6 @@ class AppRouter {
             ),
           ),
         );
-      
 
       default:
         return null;

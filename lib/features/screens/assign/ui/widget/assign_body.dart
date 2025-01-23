@@ -9,7 +9,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
-import 'package:smart_cleaning_application/features/screens/assign/data/role_user_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_user_model.dart';
 import 'package:smart_cleaning_application/features/screens/assign/logic/assign_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/assign/logic/assign_state.dart';
 import 'package:smart_cleaning_application/features/screens/assign/ui/widget/assign_custom_drop_down_list.dart';
@@ -162,7 +162,7 @@ class _AssignBodyState extends State<AssignBody> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Location',
+                            'Work Location',
                             style: TextStyles.font16BlackRegular,
                           ),
                           AssignCustomDropDownList(
@@ -1516,7 +1516,7 @@ class _AssignBodyState extends State<AssignBody> {
                           Divider(),
                           verticalSpace(10),
                           Text(
-                            'Location',
+                            'Work Location',
                             style: TextStyles.font16BlackRegular,
                           ),
                           AssignCustomDropDownList(
@@ -2000,18 +2000,18 @@ class _AssignBodyState extends State<AssignBody> {
                               style: TextStyles.font16BlackRegular,
                             ),
                             CustomDropDownList(
-                                onChanged: (selectedValue) {
-                                  final selectedArea = context
-                                      .read<AssignCubit>()
-                                      .areaModel
-                                      ?.data
-                                      ?.firstWhere(
-                                          (area) => area.name == selectedValue);
+                                // onChanged: (selectedValue) {
+                                //   final selectedArea = context
+                                //       .read<AssignCubit>()
+                                //       .areaModel
+                                //       ?.data
+                                //       ?.firstWhere(
+                                //           (area) => area.name == selectedValue);
 
-                                  context
-                                      .read<AssignCubit>()
-                                      .getCity(selectedArea!.id!);
-                                },
+                                //   context
+                                //       .read<AssignCubit>()
+                                //       .getCity(selectedArea!.id!);
+                                // },
                                 hint: 'Select Area',
                                 items: context
                                             .read<AssignCubit>()

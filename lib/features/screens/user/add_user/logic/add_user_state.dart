@@ -1,8 +1,11 @@
-import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/manager_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/nationality_model.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/all_deleted_providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/role_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/user_create.dart';
+import '../../../integrations/data/models/role_model.dart';
+import '../../../integrations/data/models/role_user_model.dart';
+import '../../../integrations/data/models/shift_model.dart';
 
 abstract class AddUserState {}
 
@@ -33,6 +36,48 @@ class AddProviderSuccessState extends AddUserState {
 class AddProviderErrorState extends AddUserState {
   final String error;
   AddProviderErrorState(this.error);
+}
+//***************** */
+
+class AllDeletedrovidersLoadingState extends AddUserState {}
+
+class AllDeletedrovidersSuccessState extends AddUserState {
+  final AllDeletedProvidersModel allDeletedProvidersModel;
+
+  AllDeletedrovidersSuccessState(this.allDeletedProvidersModel);
+}
+
+class AllDeletedrovidersErrorState extends AddUserState {
+  final String error;
+  AllDeletedrovidersErrorState(this.error);
+}
+
+//***************** */
+
+class DeletedProviderLoadingState extends AddUserState {}
+
+class DeletedProviderSuccessState extends AddUserState {
+  final String message;
+  DeletedProviderSuccessState(this.message);
+}
+
+class DeletedProviderErrorState extends AddUserState {
+  final String error;
+  DeletedProviderErrorState(this.error);
+}
+//***************** */
+
+class RestoreProviderLoadingState extends AddUserState {}
+
+class RestoreProviderSuccessState extends AddUserState {
+  final String message;
+
+  RestoreProviderSuccessState(this.message);
+}
+
+class RestoreProviderErrorState extends AddUserState {
+  final String error;
+  RestoreProviderErrorState(this.error);
 }
 
 //**************************** */
@@ -66,20 +111,6 @@ class RoleErrorState extends AddUserState {
 
 //**************************** */
 
-class ManagerLoadingState extends AddUserState {}
-
-class  ManagerSuccessState extends AddUserState {
-  final ManagerModel managerModel;
-
-   ManagerSuccessState(this.managerModel);
-}
-
-class  ManagerErrorState extends AddUserState {
-  final String error;
-   ManagerErrorState(this.error);
-}
-//**************************** */
-
 class AllProvidersLoadingState extends AddUserState {}
 
 class AllProvidersSuccessState extends AddUserState {
@@ -91,4 +122,42 @@ class AllProvidersSuccessState extends AddUserState {
 class AllProvidersErrorState extends AddUserState {
   final String error;
   AllProvidersErrorState(this.error);
+}
+//**************************** */
+
+class ShiftLoadingState extends AddUserState {}
+
+class ShiftSuccessState extends AddUserState {
+  final ShiftModel shiftModel;
+  ShiftSuccessState(this.shiftModel);
+}
+
+class ShiftErrorState extends AddUserState {
+  final String error;
+  ShiftErrorState(this.error);
+}
+
+//**************************** */
+
+class RoleUserLoadingState extends AddUserState {}
+
+class RoleUserSuccessState extends AddUserState {
+  final RoleUserModel roleUsermodel;
+
+  RoleUserSuccessState(this.roleUsermodel);
+}
+
+class RoleUserErrorState extends AddUserState {
+  final String error;
+  RoleUserErrorState(this.error);
+}
+
+//*************************** */
+
+class ChangeSuffixIconVisiabiltyState extends AddUserState {}
+
+//*************************** */
+class ImageSelectedState extends AddUserState {
+  final XFile image;
+  ImageSelectedState(this.image);
 }

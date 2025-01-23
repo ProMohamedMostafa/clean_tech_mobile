@@ -6,7 +6,6 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 
 class AddUserTextFormField extends StatelessWidget {
   final TextEditingController controller;
-
   final bool obscureText;
   final bool readOnly;
   final TextInputType keyboardType;
@@ -17,8 +16,10 @@ class AddUserTextFormField extends StatelessWidget {
   final String? errorMsg;
   final Function(String?)? onChanged;
   final Function? suffixPressed;
-  final Widget? perfix;
+  final Widget? prefix; // Changed to Widget?
+  final Widget? prefixIcon; // Optional prefixIcon as Widget?
   final List<TextInputFormatter>? inputFormatters;
+  final String? hint; // Optional hint
 
   const AddUserTextFormField({
     super.key,
@@ -32,8 +33,10 @@ class AddUserTextFormField extends StatelessWidget {
     this.errorMsg,
     this.onChanged,
     this.suffixPressed,
-    this.perfix,
+    this.prefix,
+    this.prefixIcon, // Optional parameter
     this.inputFormatters,
+    this.hint, // Optional parameter
     required this.readOnly,
   });
 
@@ -55,12 +58,12 @@ class AddUserTextFormField extends StatelessWidget {
       style: TextStyle(color: Colors.black, fontSize: 14.sp),
       decoration: InputDecoration(
         isDense: true,
+        hintText: hint,
+        hintStyle: TextStyles.font12GreyRegular,
         suffixIcon: suffixIcon != null
             ? IconButton(
                 onPressed: () {
-                  {
-                    suffixPressed!();
-                  }
+                  if (suffixPressed != null) suffixPressed!();
                 },
                 icon: Padding(
                   padding: const EdgeInsets.only(right: 5),
@@ -68,7 +71,8 @@ class AddUserTextFormField extends StatelessWidget {
                 ),
               )
             : null,
-        prefix: perfix,
+        prefix: prefix,
+        prefixIcon: prefixIcon, // Use the new prefixIcon widget
         prefixStyle: TextStyles.font16BlackRegular,
         border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.r),

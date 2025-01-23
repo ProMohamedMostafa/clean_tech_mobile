@@ -1,4 +1,4 @@
-class RoleModel {
+class AllDeletedProvidersModel {
   int? statusCode;
   String? meta;
   bool? succeeded;
@@ -6,7 +6,7 @@ class RoleModel {
   String? error;
   List<Data>? data;
 
-  RoleModel(
+  AllDeletedProvidersModel(
       {this.statusCode,
       this.meta,
       this.succeeded,
@@ -14,7 +14,7 @@ class RoleModel {
       this.error,
       this.data});
 
-  RoleModel.fromJson(Map<String, dynamic> json) {
+  AllDeletedProvidersModel.fromJson(Map<String, dynamic> json) {
     statusCode = json['statusCode'];
     meta = json['meta'];
     succeeded = json['succeeded'];
@@ -23,13 +23,13 @@ class RoleModel {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add( Data.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data =  <String, dynamic>{};
     data['statusCode'] = statusCode;
     data['meta'] = meta;
     data['succeeded'] = succeeded;

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
-import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_state.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/ui/widgets/adding_build.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/ui/widgets/filter_search_build.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/ui/widgets/user_details_build.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_managment/ui/widgets/user_details_list_build.dart';
 
 class UserManagmentBody extends StatefulWidget {
   const UserManagmentBody({super.key});
@@ -24,6 +24,9 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
   void initState() {
     context.read<UserManagementCubit>().getAllUsersInUserManage();
     context.read<UserManagementCubit>().getAllDeletedUser();
+    context.read<UserManagementCubit>().getNationality();
+    context.read<UserManagementCubit>().getOrganization();
+    context.read<UserManagementCubit>().getRole();
     super.initState();
   }
 
@@ -33,8 +36,35 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
     return Scaffold(
       appBar: AppBar(
         leading: customBackButton(context),
-        title: Text('User Management', style: TextStyles.font16BlackSemiBold),
-        centerTitle: true,
+        title: Text(
+          'User Management',
+        ),
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 30),
+        child: SizedBox(
+          height: 57.h,
+          width: 57.w,
+          child: ElevatedButton(
+            onPressed: () {
+              context.pushNamed(Routes.addUserScreen);
+            },
+            style: ElevatedButton.styleFrom(
+              padding: REdgeInsets.all(0),
+              backgroundColor: AppColor.primaryColor,
+              shape: CircleBorder(),
+              side: BorderSide(
+                color: AppColor.secondaryColor,
+                width: 1.w,
+              ),
+            ),
+            child: Icon(
+              Icons.person_add,
+              color: Colors.white,
+              size: 28.sp,
+            ),
+          ),
+        ),
       ),
       body: BlocConsumer<UserManagementCubit, UserManagementState>(
         listener: (context, state) {
@@ -63,10 +93,18 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
             context.read<UserManagementCubit>().getAllUsersInUserManage();
             context.read<UserManagementCubit>().getAllDeletedUser();
           }
+          if (state is RestoreUsersSuccessState) {
+            toast(text: state.message, color: Colors.blue);
+            context.read<UserManagementCubit>().getAllUsersInUserManage();
+            context.read<UserManagementCubit>().getAllDeletedUser();
+          }
         },
         builder: (context, state) {
           if (state is AllUsersLoadingState &&
-              state is DeletedUsersLoadingState) {
+              state is DeletedUsersLoadingState &&
+              state is GetNationalityLoadingState &&
+              state is GetOrganizationLoadingState &&
+              state is RoleLoadingState) {
             return Center(
               child: CircularProgressIndicator(
                 color: AppColor.primaryColor,
@@ -74,7 +112,10 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
             );
           }
           if (state is AllUsersSuccessState ||
-              state is DeletedUsersSuccessState) {
+              state is DeletedUsersSuccessState ||
+              state is GetNationalitySuccessState ||
+              state is GetOrganizationSuccessState ||
+              state is RoleSuccessState) {
             return SafeArea(
               child: SingleChildScrollView(
                 child: Padding(
@@ -86,19 +127,28 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
                       filterAndSearchBuild(
                           context, context.read<UserManagementCubit>()),
                       verticalSpace(15),
-                      SizedBox(
-                        height: 45.h,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 4,
-                              child: ListView.separated(
-                                separatorBuilder: (context, index) {
-                                  return horizontalSpace(10);
-                                },
-                                physics: NeverScrollableScrollPhysics(),
+                      Center(
+                        child: SizedBox(
+                          height: 45.h,
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              // Total available width
+                              double totalWidth = constraints.maxWidth;
+                              // Gap between the containers
+                              double gap = 10;
+                              // Width for each container
+                              double containerWidth = (totalWidth - gap) / 2;
+
+                              return ListView.separated(
                                 scrollDirection: Axis.horizontal,
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
                                 itemCount: 2,
+                                separatorBuilder: (context, index) {
+                                  return SizedBox(
+                                      width:
+                                          gap); // 10px gap between containers
+                                },
                                 itemBuilder: (context, index) {
                                   bool isSelected = selectedIndex == index;
 
@@ -110,7 +160,7 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
                                     },
                                     child: Container(
                                       height: 45.h,
-                                      width: 118.w,
+                                      width: containerWidth,
                                       decoration: BoxDecoration(
                                         color: isSelected
                                             ? AppColor.primaryColor
@@ -154,10 +204,9 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
                                     ),
                                   );
                                 },
-                              ),
-                            ),
-                            Expanded(flex: 1, child: addingBuild(context)),
-                          ],
+                              );
+                            },
+                          ),
                         ),
                       ),
                       verticalSpace(10),

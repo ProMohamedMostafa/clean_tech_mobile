@@ -1,5 +1,5 @@
 import 'package:smart_cleaning_application/features/screens/user/edit_user/data/model/edit_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_details_model.dart';
 
 abstract class EditUserState {}
 
@@ -22,9 +22,9 @@ class EditUserErrorState extends EditUserState {
 class UserLoadingState extends EditUserState {}
 
 class UserSuccessState extends EditUserState {
-  final UserModel userModel;
+  final UserDetailsModel userDetailsModelModel;
 
-  UserSuccessState(this.userModel);
+  UserSuccessState(this.userDetailsModelModel);
 }
 
 class UserErrorState extends EditUserState {

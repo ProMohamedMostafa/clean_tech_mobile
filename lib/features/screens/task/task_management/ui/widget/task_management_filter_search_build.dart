@@ -15,7 +15,7 @@ Widget taskManagementFilterAndSearchBuild(
       children: [
         Expanded(
           child: CustomTextFormField(
-              perfixIcon: IconBroken.search,
+              perfixIcon: Icon(IconBroken.search),
               controller: cubit.searchController,
               hint: 'Find task',
               keyboardType: TextInputType.text,

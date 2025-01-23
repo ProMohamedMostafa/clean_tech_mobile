@@ -2,11 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
-import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/users_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/delete_user_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/deleted_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_shift_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_task_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_work_location_details.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_state.dart';
+
+import '../../../integrations/data/models/building_model.dart';
+import '../../../integrations/data/models/floor_model.dart';
+import '../../../integrations/data/models/nationality_model.dart';
+import '../../../integrations/data/models/organization_model.dart';
+import '../../../integrations/data/models/points_model.dart';
+import '../../../integrations/data/models/role_model.dart';
+import '../../../integrations/data/models/users_model.dart';
 
 class UserManagementCubit extends Cubit<UserManagementState> {
   UserManagementCubit() : super(UserManagementInitialState());
@@ -14,39 +24,83 @@ class UserManagementCubit extends Cubit<UserManagementState> {
   static UserManagementCubit get(context) => BlocProvider.of(context);
 
   TextEditingController searchController = TextEditingController();
+  TextEditingController countryController = TextEditingController();
+  TextEditingController organizationController = TextEditingController();
+  TextEditingController buildingController = TextEditingController();
+  TextEditingController floorController = TextEditingController();
+  TextEditingController pointController = TextEditingController();
+  TextEditingController roleIdController = TextEditingController();
+  TextEditingController roleController = TextEditingController();
+
   final formKey = GlobalKey<FormState>();
 
-  UserModel? userModel;
+  UserDetailsModel? userDetailsModel;
   getUserDetails(int? id) {
-    emit(UserLoadingState());
+    emit(UserDetailsLoadingState());
     DioHelper.getData(url: 'users/$id').then((value) {
-      userModel = UserModel.fromJson(value!.data);
-      emit(UserSuccessState(userModel!));
+      userDetailsModel = UserDetailsModel.fromJson(value!.data);
+      emit(UserDetailsSuccessState(userDetailsModel!));
     }).catchError((error) {
-      emit(UserErrorState(error.toString()));
+      emit(UserDetailsErrorState(error.toString()));
+    });
+  }
+
+  UserWorkLocationDetailsModel? userWorkLocationDetailsModel;
+  getUserWorkLocationDetails(int? id) {
+    emit(UserWorkLocationDetailsLoadingState());
+    DioHelper.getData(url: 'users/level/$id').then((value) {
+      userWorkLocationDetailsModel =
+          UserWorkLocationDetailsModel.fromJson(value!.data);
+      emit(UserWorkLocationDetailsSuccessState(userWorkLocationDetailsModel!));
+    }).catchError((error) {
+      emit(UserWorkLocationDetailsErrorState(error.toString()));
+    });
+  }
+
+  UserShiftDetailsModel? userShiftDetailsModel;
+  getUserShiftDetails(int? id) {
+    emit(UserShiftDetailsLoadingState());
+    DioHelper.getData(url: 'user/shift/$id').then((value) {
+      userShiftDetailsModel = UserShiftDetailsModel.fromJson(value!.data);
+      emit(UserShiftDetailsSuccessState(userShiftDetailsModel!));
+    }).catchError((error) {
+      emit(UserShiftDetailsErrorState(error.toString()));
+    });
+  }
+
+  UserTaskDetailsModel? userTaskDetailsModel;
+  getUserTaskDetails(int? id) {
+    emit(UserTaskDetailsLoadingState());
+    DioHelper.getData(url: 'tasks/pagination', query: {'assignTo': id})
+        .then((value) {
+      userTaskDetailsModel = UserTaskDetailsModel.fromJson(value!.data);
+      emit(UserTaskDetailsSuccessState(userTaskDetailsModel!));
+    }).catchError((error) {
+      emit(UserTaskDetailsErrorState(error.toString()));
     });
   }
 
   UsersModel? usersModel;
-  getAllUsersInUserManage() {
+  getAllUsersInUserManage({
+    int? organizationId,
+    int? buildingId,
+    int? floorId,
+    int? pointId,
+  }) {
     emit(AllUsersLoadingState());
-    DioHelper.getData(url: "users/pagination").then((value) {
+    DioHelper.getData(url: "users/pagination", query: {
+      'country': countryController.text,
+      'organization': organizationId,
+      'building': buildingId,
+      'floor': floorId,
+      'point': pointId,
+      'role': roleIdController.text,
+      'search': searchController.text
+    }).then((value) {
       usersModel = UsersModel.fromJson(value!.data);
-      deletedListModel;
       emit(AllUsersSuccessState(usersModel!));
     }).catchError((error) {
       emit(AllUsersErrorState(error.toString()));
-    });
-  }
-
-  DeleteUserModel? deleteUserDetailsModel;
-  userDeleteInDetails(int id) {
-    emit(UserDeleteInDetailsLoadingState());
-    DioHelper.postData(url: 'users/delete/$id', data: {'id': id}).then((value) {
-      deleteUserDetailsModel = DeleteUserModel.fromJson(value!.data);
-      emit(UserDeleteInDetailsSuccessState(deleteUserDetailsModel!));
-    }).catchError((error) {
-      emit(UserDeleteInDetailsErrorState(error.toString()));
     });
   }
 
@@ -91,6 +145,72 @@ class UserManagementCubit extends Cubit<UserManagementState> {
       emit(ForceDeleteUsersSuccessState(message));
     }).catchError((error) {
       emit(ForceDeleteUsersErrorState(error.toString()));
+    });
+  }
+
+  NationalityModel? nationalityModel;
+  getNationality() {
+    emit(GetNationalityLoadingState());
+    DioHelper.getData(url: ApiConstants.countriesUrl).then((value) {
+      nationalityModel = NationalityModel.fromJson(value!.data);
+      emit(GetNationalitySuccessState(nationalityModel!));
+    }).catchError((error) {
+      emit(GetNationalityErrorState(error.toString()));
+    });
+  }
+
+  OrganizationModel? organizationModel;
+  getOrganization() {
+    emit(GetOrganizationLoadingState());
+    DioHelper.getData(url: ApiConstants.organizationUrl).then((value) {
+      organizationModel = OrganizationModel.fromJson(value!.data);
+      emit(GetOrganizationSuccessState(organizationModel!));
+    }).catchError((error) {
+      emit(GetOrganizationErrorState(error.toString()));
+    });
+  }
+
+  BuildingModel? buildingModel;
+  getBuilding(int id) {
+    emit(GetBuildingLoadingState());
+    DioHelper.getData(url: 'buildings/organization/$id').then((value) {
+      buildingModel = BuildingModel.fromJson(value!.data);
+      emit(GetBuildingSuccessState(buildingModel!));
+    }).catchError((error) {
+      emit(GetBuildingErrorState(error.toString()));
+    });
+  }
+
+  FloorModel? floorModel;
+  getFloor(int id) {
+    emit(GetFloorLoadingState());
+    DioHelper.getData(url: 'floors/building/$id').then((value) {
+      floorModel = FloorModel.fromJson(value!.data);
+      emit(GetFloorSuccessState(floorModel!));
+    }).catchError((error) {
+      emit(GetFloorErrorState(error.toString()));
+    });
+  }
+
+  PointsModel? pointsModel;
+  getPoints(int id) {
+    emit(GetPointsLoadingState());
+    DioHelper.getData(url: 'points/floor/$id').then((value) {
+      pointsModel = PointsModel.fromJson(value!.data);
+      emit(GetPointsSuccessState(pointsModel!));
+    }).catchError((error) {
+      emit(GetPointsErrorState(error.toString()));
+    });
+  }
+
+  RoleModel? roleModel;
+  getRole() {
+    emit(RoleLoadingState());
+    DioHelper.getData(url: ApiConstants.rolesUrl).then((value) {
+      roleModel = RoleModel.fromJson(value!.data);
+      emit(RoleSuccessState(roleModel!));
+    }).catchError((error) {
+      emit(RoleErrorState(error.toString()));
     });
   }
 }

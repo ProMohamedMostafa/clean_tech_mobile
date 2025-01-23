@@ -5,7 +5,7 @@ import 'package:smart_cleaning_application/core/networking/api_constants/api_con
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/user/edit_user/data/model/edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/edit_user/logic/edit_user_state.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_details_model.dart';
 
 class EditUserCubit extends Cubit<EditUserState> {
   EditUserCubit() : super(EditUserInitialState());
@@ -65,37 +65,37 @@ class EditUserCubit extends Cubit<EditUserState> {
     Map<String, dynamic> formDataMap = {
       "id": id,
       "userName": userNameController.text.isEmpty
-          ? userModel!.data!.userName
+          ? userDetailsModelModel!.data!.userName
           : userNameController.text,
       "firstName": firstNameController.text.isEmpty
-          ? userModel!.data!.firstName
+          ? userDetailsModelModel!.data!.firstName
           : firstNameController.text,
       "lastName": lastNameController.text.isEmpty
-          ? userModel!.data!.lastName
+          ? userDetailsModelModel!.data!.lastName
           : lastNameController.text,
       "email": emailController.text.isEmpty
-          ? userModel!.data!.email
+          ? userDetailsModelModel!.data!.email
           : emailController.text,
       "phoneNumber": phoneController.text.isEmpty
-          ? userModel!.data!.phoneNumber
+          ? userDetailsModelModel!.data!.phoneNumber
           : phoneController.text,
       "image": null,
       "birthdate": birthController.text.isEmpty
-          ? userModel!.data!.birthdate
+          ? userDetailsModelModel!.data!.birthdate
           : birthController.text,
       "iDNumber": idNumberController.text.isEmpty
-          ? userModel!.data!.idNumber
+          ? userDetailsModelModel!.data!.idNumber
           : idNumberController.text,
       "nationalityName": nationalityController.text.isEmpty
-          ? userModel!.data!.nationalityName
+          ? userDetailsModelModel!.data!.nationalityName
           : nationalityController.text,
       "countryName": countryController.text.isEmpty
-          ? userModel!.data!.countryName
+          ? userDetailsModelModel!.data!.countryName
           : countryController.text,
       "role": roleController.text.isEmpty ? 1 : roleController.text,
       "managerId": null,
       "gender": genderController.text.isEmpty
-          ? userModel!.data!.gender
+          ? userDetailsModelModel!.data!.gender
           : genderController.text,
       "providerId":
           providerIdController.text.isEmpty ? 1 : providerIdController.text,
@@ -112,12 +112,12 @@ class EditUserCubit extends Cubit<EditUserState> {
     }
   }
 
-  UserModel? userModel;
+  UserDetailsModel? userDetailsModelModel;
   getUserDetailsInEdit(int id) {
     emit(UserLoadingState());
     DioHelper.getData(url: 'users/$id').then((value) {
-      userModel = UserModel.fromJson(value!.data);
-      emit(UserSuccessState(userModel!));
+      userDetailsModelModel = UserDetailsModel.fromJson(value!.data);
+      emit(UserSuccessState(userDetailsModelModel!));
     }).catchError((error) {
       emit(UserErrorState(error.toString()));
     });

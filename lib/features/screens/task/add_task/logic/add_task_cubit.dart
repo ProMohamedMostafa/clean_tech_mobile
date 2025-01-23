@@ -7,7 +7,7 @@ import 'package:smart_cleaning_application/core/networking/api_constants/api_con
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/all_tasks_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/create_task_model.dart';
-import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/gallary_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/gallary_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/supervisor_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/logic/add_task_state.dart';
 

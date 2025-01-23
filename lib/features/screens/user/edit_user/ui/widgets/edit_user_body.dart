@@ -121,7 +121,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                         label: S.of(context).addUserText1,
                         hint: context
                             .read<EditUserCubit>()
-                            .userModel!
+                            .userDetailsModelModel!
                             .data!
                             .firstName!,
                       ),
@@ -136,7 +136,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                         label: S.of(context).addUserText2,
                         hint: context
                             .read<EditUserCubit>()
-                            .userModel!
+                            .userDetailsModelModel!
                             .data!
                             .lastName!,
                       ),
@@ -149,8 +149,11 @@ class _EditUserBodyState extends State<EditUserBody> {
                   obscureText: false,
                   keyboardType: TextInputType.text,
                   label: S.of(context).addUserText5,
-                  hint:
-                      context.read<EditUserCubit>().userModel!.data!.userName!,
+                  hint: context
+                      .read<EditUserCubit>()
+                      .userDetailsModelModel!
+                      .data!
+                      .userName!,
                 ),
                 verticalSpace(15),
                 EditUserTextField(
@@ -158,7 +161,11 @@ class _EditUserBodyState extends State<EditUserBody> {
                   obscureText: false,
                   keyboardType: TextInputType.emailAddress,
                   label: S.of(context).addUserText3,
-                  hint: context.read<EditUserCubit>().userModel!.data!.email!,
+                  hint: context
+                      .read<EditUserCubit>()
+                      .userDetailsModelModel!
+                      .data!
+                      .email!,
                 ),
                 verticalSpace(15),
                 EditUserTextField(
@@ -168,7 +175,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                   label: S.of(context).addUserText10,
                   hint: context
                       .read<EditUserCubit>()
-                      .userModel!
+                      .userDetailsModelModel!
                       .data!
                       .phoneNumber!,
                 ),
@@ -181,7 +188,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                           title: 'Country',
                           index: context
                               .read<EditUserCubit>()
-                              .userModel!
+                              .userDetailsModelModel!
                               .data!
                               .countryName!,
                           items: ['items', 'saas'],
@@ -198,7 +205,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                           title: 'Gender',
                           index: context
                               .read<EditUserCubit>()
-                              .userModel!
+                              .userDetailsModelModel!
                               .data!
                               .gender!,
                           items: ['items', 'saas'],
@@ -220,7 +227,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                           title: 'Nationality',
                           index: context
                               .read<EditUserCubit>()
-                              .userModel!
+                              .userDetailsModelModel!
                               .data!
                               .nationalityName!,
                           items: ['items', 'saas'],
@@ -265,7 +272,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                           label: S.of(context).addUserText4,
                           hint: context
                               .read<EditUserCubit>()
-                              .userModel!
+                              .userDetailsModelModel!
                               .data!
                               .birthdate!,
                         ),
@@ -279,15 +286,18 @@ class _EditUserBodyState extends State<EditUserBody> {
                   obscureText: false,
                   keyboardType: TextInputType.number,
                   label: S.of(context).addUserText7,
-                  hint:
-                      context.read<EditUserCubit>().userModel!.data!.idNumber!,
+                  hint: context
+                      .read<EditUserCubit>()
+                      .userDetailsModelModel!
+                      .data!
+                      .idNumber!,
                 ),
                 verticalSpace(9),
                 EditDropdownList(
                     title: 'Provider',
                     index: context
                         .read<EditUserCubit>()
-                        .userModel!
+                        .userDetailsModelModel!
                         .data!
                         .providerName!,
                     items: ['items', 'saas'],

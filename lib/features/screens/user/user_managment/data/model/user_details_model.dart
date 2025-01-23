@@ -1,4 +1,4 @@
-class UserModel {
+class UserDetailsModel {
   int? statusCode;
   String? meta;
   bool? succeeded;
@@ -6,7 +6,7 @@ class UserModel {
   String? error;
   Data? data;
 
-  UserModel(
+  UserDetailsModel(
       {this.statusCode,
       this.meta,
       this.succeeded,
@@ -14,7 +14,7 @@ class UserModel {
       this.error,
       this.data});
 
-  UserModel.fromJson(Map<String, dynamic> json) {
+  UserDetailsModel.fromJson(Map<String, dynamic> json) {
     statusCode = json['statusCode'];
     meta = json['meta'];
     succeeded = json['succeeded'];
@@ -38,6 +38,7 @@ class UserModel {
 }
 
 class Data {
+  int? id;
   String? userName;
   String? firstName;
   String? lastName;
@@ -46,17 +47,20 @@ class Data {
   String? image;
   String? birthdate;
   int? managerId;
+  String? managerName;
   String? idNumber;
   String? nationalityName;
   String? countryName;
+  String? providerId;
   String? providerName;
   String? gender;
-  int? id;
+  String? role;
   String? createdAt;
   String? updatedAt;
 
   Data(
-      {this.userName,
+      {this.id,
+      this.userName,
       this.firstName,
       this.lastName,
       this.email,
@@ -64,16 +68,19 @@ class Data {
       this.image,
       this.birthdate,
       this.managerId,
+      this.managerName,
       this.idNumber,
       this.nationalityName,
       this.countryName,
+      this.providerId,
       this.providerName,
       this.gender,
-      this.id,
+      this.role,
       this.createdAt,
       this.updatedAt});
 
   Data.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     userName = json['userName'];
     firstName = json['firstName'];
     lastName = json['lastName'];
@@ -82,18 +89,21 @@ class Data {
     image = json['image'];
     birthdate = json['birthdate'];
     managerId = json['managerId'];
+    managerName = json['managerName'];
     idNumber = json['idNumber'];
     nationalityName = json['nationalityName'];
     countryName = json['countryName'];
-    providerName = json['providerName'] ?? "providerName";
+    providerId = json['providerId'];
+    providerName = json['providerName'];
     gender = json['gender'];
-    id = json['id'];
+    role = json['role'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
     data['userName'] = userName;
     data['firstName'] = firstName;
     data['lastName'] = lastName;
@@ -102,12 +112,14 @@ class Data {
     data['image'] = image;
     data['birthdate'] = birthdate;
     data['managerId'] = managerId;
+    data['managerName'] = managerName;
     data['idNumber'] = idNumber;
     data['nationalityName'] = nationalityName;
     data['countryName'] = countryName;
+    data['providerId'] = providerId;
     data['providerName'] = providerName;
     data['gender'] = gender;
-    data['id'] = id;
+    data['role'] = role;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
     return data;

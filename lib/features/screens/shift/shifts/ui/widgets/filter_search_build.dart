@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/theming/colors/color.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts/logic/shift_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/ui/widgets/filter_search.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/ui/widgets/user_management_text_form_field.dart';
 
 Widget filterAndSearchBuild(BuildContext context, ShiftCubit cubit) {
   return SizedBox(
@@ -12,14 +13,35 @@ Widget filterAndSearchBuild(BuildContext context, ShiftCubit cubit) {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Expanded(
-          child: UserManagementTextFormField(
-              controller: cubit.searchController,
-              hintText: 'Find shift',
-              keyboardType: TextInputType.text,
-              readOnly: false),
+          child: CustomDropDownList(
+            perfixIcon: IconBroken.search,
+            controller: cubit.searchController,
+            hint: 'Find shift',
+            color: AppColor.secondaryColor,
+            keyboardType: TextInputType.text,
+            isRead: false,
+            items:
+                // cubit.usersModel?.data?.users?.isEmpty ?? true
+                //     ? ['No users available']
+                //     : cubit.usersModel?.data?.users
+                //             ?.map((e) => e.userName ?? 'Unknown')
+                //             .toList() ??
+                [],
+          ),
         ),
         horizontalSpace(10),
-        filterSearchUserManagmentBuild(),
+        Container(
+          height: 49,
+          width: 49,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.r),
+              border: Border.all(color: AppColor.secondaryColor)),
+          child: Icon(
+            Icons.tune,
+            color: AppColor.primaryColor,
+            size: 25.sp,
+          ),
+        ),
       ],
     ),
   );
