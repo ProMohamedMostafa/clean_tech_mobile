@@ -15,6 +15,7 @@ class CustomDropDownList extends StatefulWidget {
   final FormFieldValidator<String>? validator;
   final Function(String)? onPressed;
   final Color? color;
+  final String? label;
 
   const CustomDropDownList({
     super.key,
@@ -30,6 +31,7 @@ class CustomDropDownList extends StatefulWidget {
     this.onPressed,
     this.perfixIcon,
     this.color,
+    this.label,
   });
 
   @override
@@ -58,6 +60,7 @@ class _CustomDropDownListState extends State<CustomDropDownList> {
   @override
   Widget build(BuildContext context) {
     return Stack(
+      clipBehavior: Clip.none,
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -183,6 +186,23 @@ class _CustomDropDownListState extends State<CustomDropDownList> {
               ),
           ],
         ),
+        widget.label == null
+            ? SizedBox.shrink()
+            : Positioned(
+                top: -7,
+                left: 9,
+                child: Container(
+                  margin: EdgeInsets.zero,
+                  padding: EdgeInsets.only(left: 5, right: 5, top: 0),
+                  color: Colors.white,
+                  child: Text(
+                    '${widget.label}',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 10.sp,
+                        fontWeight: FontWeight.bold),
+                  ),
+                )),
       ],
     );
   }

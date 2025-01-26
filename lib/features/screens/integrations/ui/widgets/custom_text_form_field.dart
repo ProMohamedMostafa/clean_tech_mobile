@@ -83,6 +83,6 @@ class CustomTextFormField extends StatelessWidget {
   }
 
   Widget? _buildPerffixIcon() {
-    return perfixIcon; 
+    return perfixIcon;
   }
 }

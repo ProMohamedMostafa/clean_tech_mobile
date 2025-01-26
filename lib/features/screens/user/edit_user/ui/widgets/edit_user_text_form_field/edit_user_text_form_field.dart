@@ -40,8 +40,6 @@ class EditUserTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       inputFormatters: inputFormatters,
-      
-      
       controller: controller,
       obscureText: obscureText,
       keyboardType: keyboardType,
@@ -54,7 +52,7 @@ class EditUserTextField extends StatelessWidget {
         labelText: label,
         floatingLabelBehavior: FloatingLabelBehavior.always,
         labelStyle: TextStyles.font14BlackSemiBold,
-        isDense: false,
+        isDense: true,
         suffixIcon: suffixIcon != null
             ? IconButton(
                 onPressed: () {

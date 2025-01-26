@@ -1,5 +1,12 @@
+import 'package:image_picker/image_picker.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_user_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/edit_user/data/model/edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_shift_details_model.dart';
 
 abstract class EditUserState {}
 
@@ -22,12 +29,105 @@ class EditUserErrorState extends EditUserState {
 class UserLoadingState extends EditUserState {}
 
 class UserSuccessState extends EditUserState {
-  final UserDetailsModel userDetailsModelModel;
+  final UserDetailsModel userDetailsModel;
 
-  UserSuccessState(this.userDetailsModelModel);
+  UserSuccessState(this.userDetailsModel);
 }
 
 class UserErrorState extends EditUserState {
   final String error;
   UserErrorState(this.error);
+}
+//*********************** */
+
+class UserShiftDetailsLoadingState extends EditUserState {}
+
+class UserShiftDetailsSuccessState extends EditUserState {
+  final UserShiftDetailsModel userShiftDetailsModel;
+
+  UserShiftDetailsSuccessState(this.userShiftDetailsModel);
+}
+
+class UserShiftDetailsErrorState extends EditUserState {
+  final String error;
+  UserShiftDetailsErrorState(this.error);
+}
+
+//*************************** */
+class ImageSelectedState extends EditUserState {
+  final XFile image;
+  ImageSelectedState(this.image);
+}
+
+//**************************** */
+class GetNationalityLoadingState extends EditUserState {}
+
+class GetNationalitySuccessState extends EditUserState {
+  final NationalityModel nationalitymodel;
+
+  GetNationalitySuccessState(this.nationalitymodel);
+}
+
+class GetNationalityErrorState extends EditUserState {
+  final String error;
+  GetNationalityErrorState(this.error);
+}
+
+//**************************** */
+
+class RoleLoadingState extends EditUserState {}
+
+class RoleSuccessState extends EditUserState {
+  final RoleModel rolemodel;
+
+  RoleSuccessState(this.rolemodel);
+}
+
+class RoleErrorState extends EditUserState {
+  final String error;
+  RoleErrorState(this.error);
+}
+
+//**************************** */
+
+class AllProvidersLoadingState extends EditUserState {}
+
+class AllProvidersSuccessState extends EditUserState {
+  final ProvidersModel providersModel;
+
+  AllProvidersSuccessState(this.providersModel);
+}
+
+class AllProvidersErrorState extends EditUserState {
+  final String error;
+  AllProvidersErrorState(this.error);
+}
+
+//**************************** */
+
+class ShiftLoadingState extends EditUserState {}
+
+class ShiftSuccessState extends EditUserState {
+  final ShiftModel shiftModel;
+  ShiftSuccessState(this.shiftModel);
+}
+
+class ShiftErrorState extends EditUserState {
+  final String error;
+  ShiftErrorState(this.error);
+}
+
+//**************************** */
+
+class RoleUserLoadingState extends EditUserState {}
+
+class RoleUserSuccessState extends EditUserState {
+  final RoleUserModel roleUsermodel;
+
+  RoleUserSuccessState(this.roleUsermodel);
+}
+
+class RoleUserErrorState extends EditUserState {
+  final String error;
+  RoleUserErrorState(this.error);
 }

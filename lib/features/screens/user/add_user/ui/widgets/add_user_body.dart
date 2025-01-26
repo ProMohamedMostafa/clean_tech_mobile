@@ -97,7 +97,6 @@ class _AddUserBodyState extends State<AddUserBody> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    verticalSpace(15),
                     Center(
                       child: Stack(
                         children: [
@@ -620,7 +619,13 @@ class _AddUserBodyState extends State<AddUserBody> {
                                             .text ==
                                         '3')
                                     ? 'Manager'
-                                    : 'Supervisor',
+                                    : (context
+                                                .read<AddUserCubit>()
+                                                .roleIdController
+                                                .text ==
+                                            '4')
+                                        ? 'Supervisor'
+                                        : 'Users',
                             style: TextStyles.font16BlackRegular,
                           ),
                           TextSpan(
@@ -674,14 +679,51 @@ class _AddUserBodyState extends State<AddUserBody> {
                                       .text ==
                                   '3')
                               ? 'Manager'
-                              : 'Supervisor',
+                              : (context
+                                          .read<AddUserCubit>()
+                                          .roleIdController
+                                          .text ==
+                                      '4')
+                                  ? 'Supervisor'
+                                  : 'Users',
                       items: context
                                   .read<AddUserCubit>()
                                   .roleUserModel
                                   ?.data!
                                   .isEmpty ??
                               true
-                          ? ['No Managers available']
+                          ? [
+                              if (context
+                                          .read<AddUserCubit>()
+                                          .roleIdController
+                                          .text ==
+                                      '1' ||
+                                  context
+                                          .read<AddUserCubit>()
+                                          .roleIdController
+                                          .text ==
+                                      '2' ||
+                                  context
+                                          .read<AddUserCubit>()
+                                          .roleIdController
+                                          .text ==
+                                      '5')
+                                'No Admins available'
+                              else if (context
+                                      .read<AddUserCubit>()
+                                      .roleIdController
+                                      .text ==
+                                  '3')
+                                'No Managers available'
+                              else if (context
+                                      .read<AddUserCubit>()
+                                      .roleIdController
+                                      .text ==
+                                  '4')
+                                'No Supervisors available'
+                              else
+                                'No Users available'
+                            ]
                           : context
                                   .read<AddUserCubit>()
                                   .roleUserModel

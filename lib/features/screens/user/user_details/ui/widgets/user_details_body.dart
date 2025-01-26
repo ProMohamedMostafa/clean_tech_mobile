@@ -96,10 +96,17 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
           }
         },
         builder: (context, state) {
-          if (state is UserDetailsLoadingState ||
-              state is UserShiftDetailsLoadingState ||
-              state is UserTaskDetailsLoadingState ||
-              state is UserWorkLocationDetailsLoadingState) {
+          if (context.read<UserManagementCubit>().userDetailsModel?.data ==
+                  null ||
+              context.read<UserManagementCubit>().userShiftDetailsModel?.data ==
+                  null ||
+              context.read<UserManagementCubit>().userTaskDetailsModel?.data ==
+                  null ||
+              context
+                      .read<UserManagementCubit>()
+                      .userWorkLocationDetailsModel
+                      ?.data ==
+                  null) {
             return Center(
               child: CircularProgressIndicator(
                 color: AppColor.primaryColor,
@@ -108,7 +115,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
           }
           return SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -167,14 +174,9 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                     ),
                   ),
                   verticalSpace(25),
-                  Container(
-                    height: 40.h,
+                  SizedBox(
+                    height: 42.h,
                     width: double.infinity,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(5.r)),
-                        border: Border.all(
-                          color: AppColor.secondaryColor,
-                        )),
                     child: TabBar(
                         tabAlignment: TabAlignment.center,
                         isScrollable: true,
@@ -272,6 +274,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                           height: 48,
                           width: double.infinity,
                           textStyles: TextStyles.font20Whitesemimedium),
+                  verticalSpace(20),
                 ],
               ),
             ),
@@ -411,18 +414,38 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
         ),
       );
     } else {
-      return ListView.separated(
+      return ListView.builder(
         physics: const BouncingScrollPhysics(),
         scrollDirection: Axis.vertical,
         itemCount: shiftModel.data!.shifts!.length,
-        separatorBuilder: (context, index) {
-          return verticalSpace(10);
-        },
         itemBuilder: (context, index) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    "Shift Name",
+                    style: TextStyles.font11GreyMedium,
+                  ),
+                  Text(
+                    "Shift Time",
+                    style: TextStyles.font11GreyMedium,
+                  ),
+                  Text(
+                    "Shift Date",
+                    style: TextStyles.font11GreyMedium,
+                  ),
+                ],
+              ),
+              Divider(
+                color: Colors.grey[300],
+              ),
               listShiftItemBuild(context, index),
+              Divider(
+                color: Colors.grey[300],
+              ),
             ],
           );
         },

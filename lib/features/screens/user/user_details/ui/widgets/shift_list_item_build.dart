@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
-import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts/logic/shift_cubit.dart';
@@ -15,7 +14,7 @@ Widget listShiftItemBuild(BuildContext context, index) {
               context.read<ShiftCubit>().allShiftsModel!.data![index].id);
     },
     child: Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Text(
           context
@@ -26,7 +25,6 @@ Widget listShiftItemBuild(BuildContext context, index) {
               .name!,
           style: TextStyles.font14BlackSemiBold,
         ),
-        horizontalSpace(27),
         Text(
           context
               .read<UserManagementCubit>()
@@ -36,7 +34,6 @@ Widget listShiftItemBuild(BuildContext context, index) {
               .startTime!,
           style: TextStyles.font11BlackMedium,
         ),
-        horizontalSpace(30),
         Text(
           context
               .read<UserManagementCubit>()
