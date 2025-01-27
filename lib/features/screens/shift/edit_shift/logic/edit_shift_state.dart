@@ -1,7 +1,7 @@
-import 'package:smart_cleaning_application/features/screens/organization/add_organizations/data/model/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/organization/add_organizations/data/model/floor_organization_model.dart';
-import 'package:smart_cleaning_application/features/screens/organization/add_organizations/data/model/organization_model.dart';
-import 'package:smart_cleaning_application/features/screens/organization/add_organizations/data/model/points_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/points_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/edit_shift/data/model/edit_shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts/data/model/shift_details_model.dart';
 

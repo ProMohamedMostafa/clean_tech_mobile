@@ -14,6 +14,7 @@ Widget filterAndSearchBuild(BuildContext context, UserManagementCubit cubit) {
     children: [
       Expanded(
         child: CustomTextFormField(
+          color: AppColor.secondaryColor,
           perfixIcon: Icon(IconBroken.search),
           controller: cubit.searchController,
           hint: 'Find someone',
@@ -26,6 +27,7 @@ Widget filterAndSearchBuild(BuildContext context, UserManagementCubit cubit) {
       ),
       horizontalSpace(10),
       InkWell(
+        borderRadius: BorderRadius.circular(10.r),
         onTap: () {
           cubit.countryController.clear();
           cubit.organizationController.clear();

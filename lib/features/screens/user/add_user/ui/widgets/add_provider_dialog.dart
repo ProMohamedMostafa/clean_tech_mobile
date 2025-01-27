@@ -6,7 +6,7 @@ import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
-import 'package:smart_cleaning_application/features/screens/organization/add_organizations/ui/widgets/add_organization_text_form_field.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/logic/add_user_cubit.dart';
 
 class AddProviderBottomDialog {
@@ -92,14 +92,16 @@ class AddProviderBottomDialog {
         children: [
           Expanded(
             flex: 5,
-            child: AddOrganizationTextField(
+            child: CustomTextFormField(
               controller: cubit.providerController,
-              obscureText: false,
+              onlyRead: false,
+              hint: '',
               keyboardType: TextInputType.text,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return "Provider is required";
                 }
+                return null;
               },
             ),
           ),

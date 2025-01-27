@@ -505,10 +505,11 @@ class _EditUserBodyState extends State<EditUserBody> {
                                   '4')
                               ? 'Supervisor'
                               : context
-                                  .read<EditUserCubit>()
-                                  .userDetailsModel!
-                                  .data!
-                                  .managerName!,
+                                      .read<EditUserCubit>()
+                                      .userDetailsModel!
+                                      .data!
+                                      .managerName ??
+                                  'User',
                   onPressed: (selectedValue) {
                     final selectedId = context
                         .read<EditUserCubit>()
@@ -544,10 +545,11 @@ class _EditUserBodyState extends State<EditUserBody> {
                                   '4')
                               ? 'Supervisor'
                               : context
-                                  .read<EditUserCubit>()
-                                  .userDetailsModel!
-                                  .data!
-                                  .managerName!,
+                                      .read<EditUserCubit>()
+                                      .userDetailsModel!
+                                      .data!
+                                      .managerName ??
+                                  'user',
                   items: context
                               .read<EditUserCubit>()
                               .roleUserModel

@@ -13,6 +13,7 @@ class CustomTextFormField extends StatelessWidget {
   final FormFieldValidator<String>? validator;
   final ValueChanged<String>? onChanged;
   final VoidCallback? suffixPressed;
+  final Color? color;
 
   const CustomTextFormField({
     super.key,
@@ -25,6 +26,7 @@ class CustomTextFormField extends StatelessWidget {
     this.onChanged,
     this.suffixPressed,
     required this.onlyRead,
+    this.color,
   });
 
   @override
@@ -60,7 +62,9 @@ class CustomTextFormField extends StatelessWidget {
   OutlineInputBorder _buildBorder() {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(8.r),
-      borderSide: BorderSide(color: AppColor.secondaryColor),
+      borderSide: BorderSide(
+        color: color ?? AppColor.thirdColor,
+      ),
     );
   }
 

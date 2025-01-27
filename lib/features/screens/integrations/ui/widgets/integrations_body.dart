@@ -39,7 +39,7 @@ class IntegrationsBody extends StatelessWidget {
                     () {
                       context.pushNamed(Routes.organizationsScreen);
                     },
-                    S.of(context).integ2,
+                    'Work Location',
                     Icons.location_city_outlined,
                   ),
                   buildIntegrationItem(

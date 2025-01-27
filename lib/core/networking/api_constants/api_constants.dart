@@ -25,12 +25,12 @@ class ApiConstants {
   static const createFloorUrl = "floors/create";
   static const createPointUrl = "points/create";
 
-  static const areaUrl = "areas";
-  static const cityUrl = "cities";
-  static const organizationUrl = "organizations";
-  static const buildingUrl = "buildings";
-  static const floorUrl = "floors";
-  static const pointUrl = "points";
+  static const areaUrl = "areas/pagination";
+  static const cityUrl = "cities/pagination";
+  static const organizationUrl = "organizations/pagination";
+  static const buildingUrl = "buildings/pagination";
+  static const floorUrl = "floors/pagination";
+  static const pointUrl = "points/pagination";
 
   static const allDeletedAreaList = '/areas/deleted/index';
   static const allDeletedCityList = '/cities/deleted/index';

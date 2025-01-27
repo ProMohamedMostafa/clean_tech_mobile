@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
-import 'package:smart_cleaning_application/features/screens/organization/add_organizations/data/model/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/organization/add_organizations/data/model/floor_organization_model.dart';
-import 'package:smart_cleaning_application/features/screens/organization/add_organizations/data/model/organization_model.dart';
-import 'package:smart_cleaning_application/features/screens/organization/add_organizations/data/model/points_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/points_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/add_shift/data/model/create_shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/add_shift/logic/add_shift_state.dart';
 
