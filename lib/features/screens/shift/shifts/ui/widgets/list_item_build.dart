@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -14,14 +15,15 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
     onTap: () {
       context.pushNamed(Routes.shiftDetailsScreen,
           arguments:
-              context.read<ShiftCubit>().allShiftsModel!.data![index].id);
+              context.read<ShiftCubit>().allShiftsModel!.data!.shifts![index].id);
     },
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
+    child: ListTile(
+      contentPadding: EdgeInsets.zero,
+      minTileHeight: 50.h,
+      title: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
         Text(
           selectedIndex == 0
-              ? context.read<ShiftCubit>().allShiftsModel!.data![index].name!
+              ? context.read<ShiftCubit>().allShiftsModel!.data!.shifts![index].name!
               : context
                   .read<ShiftCubit>()
                   .allShiftsDeletedModel!
@@ -29,13 +31,13 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                   .name!,
           style: TextStyles.font14BlackSemiBold,
         ),
-        horizontalSpace(27),
+        Spacer(),
         Text(
           selectedIndex == 0
               ? context
                   .read<ShiftCubit>()
                   .allShiftsModel!
-                  .data![index]
+                  .data!.shifts![index]
                   .startTime!
               : context
                   .read<ShiftCubit>()
@@ -50,7 +52,7 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
               ? context
                   .read<ShiftCubit>()
                   .allShiftsModel!
-                  .data![index]
+                  .data!.shifts![index]
                   .startDate!
               : context
                   .read<ShiftCubit>()
@@ -59,64 +61,77 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                   .startDate!,
           style: TextStyles.font11BlackMedium,
         ),
-        horizontalSpace(20),
-        Spacer(),
-        InkWell(
-            onTap: () {
-              selectedIndex == 0
-                  ? context.pushNamed(
-                      Routes.editShiftScreen,
-                      arguments: context
-                          .read<ShiftCubit>()
-                          .allShiftsModel!
-                          .data![index]
-                          .id,
-                    )
-                  : showCustomDialog(
-                      context, "Are you Sure to restore this shift ?", () {
-                      context.read<ShiftCubit>().restoreDeletedShift(
-                            context
-                                .read<ShiftCubit>()
-                                .allShiftsDeletedModel!
-                                .data![index]
-                                .id!,
-                          );
-                      context.pop();
-                    });
-            },
-            child: Icon(
-              selectedIndex == 0
-                  ? Icons.mode_edit_outlined
-                  : Icons.replay_outlined,
-              color: AppColor.thirdColor,
-            )),
         horizontalSpace(10),
-        InkWell(
-            onTap: () {
-              selectedIndex == 0
-                  ? showCustomDialog(
-                      context, "Are you Sure to delete this shift ?", () {
-                      context.read<ShiftCubit>().shiftDelete(context
-                          .read<ShiftCubit>()
-                          .allShiftsModel!
-                          .data![index]
-                          .id!);
-                      context.pop();
-                    })
-                  : showCustomDialog(context, "Forced Delete this shift", () {
-                      context.read<ShiftCubit>().forcedDeletedShift(context
-                          .read<ShiftCubit>()
-                          .allShiftsDeletedModel!
-                          .data![index]
-                          .id!);
-                      context.pop();
-                    });
-            },
-            child: Icon(
-              IconBroken.delete,
-              color: AppColor.thirdColor,
-            )),
-      ],
+      ]),
+      trailing: SizedBox(
+        width: 80.w,
+        child: Row(
+          children: [
+            InkWell(
+                onTap: () {
+                  selectedIndex == 0
+                      ? context.pushNamed(
+                          Routes.editShiftScreen,
+                          arguments: context
+                              .read<ShiftCubit>()
+                              .allShiftsModel!
+                              .data!.shifts![index]
+                              .id,
+                        )
+                      : showCustomDialog(
+                          context, "Are you Sure to restore this shift ?", () {
+                          context.read<ShiftCubit>().restoreDeletedShift(
+                                context
+                                    .read<ShiftCubit>()
+                                    .allShiftsDeletedModel!
+                                    .data![index]
+                                    .id!,
+                              );
+                          context.pop();
+                        });
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: Icon(
+                    selectedIndex == 0
+                        ? Icons.mode_edit_outlined
+                        : Icons.replay_outlined,
+                    color: AppColor.thirdColor,
+                  ),
+                )),
+            horizontalSpace(10),
+            InkWell(
+                onTap: () {
+                  selectedIndex == 0
+                      ? showCustomDialog(
+                          context, "Are you Sure to delete this shift ?", () {
+                          context.read<ShiftCubit>().shiftDelete(context
+                              .read<ShiftCubit>()
+                              .allShiftsModel!
+                              .data!.shifts![index]
+                              .id!);
+                          context.pop();
+                        })
+                      : showCustomDialog(context, "Forced Delete this shift",
+                          () {
+                          context.read<ShiftCubit>().forcedDeletedShift(context
+                              .read<ShiftCubit>()
+                              .allShiftsDeletedModel!
+                              .data![index]
+                              .id!);
+                          context.pop();
+                        });
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: Icon(
+                    IconBroken.delete,
+                    color: AppColor.thirdColor,
+                  ),
+                )),
+          ],
+        ),
+      ),
     ),
   );
 }

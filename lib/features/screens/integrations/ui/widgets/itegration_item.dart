@@ -12,17 +12,26 @@ Widget buildIntegrationItem(Function? onPressed, String title, IconData icon) {
         onPressed();
       }
     },
-    child: Container(
-      decoration: BoxDecoration(
+    child: Card(
+      elevation: 4,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
           borderRadius: BorderRadius.circular(16.r),
-          border: Border.all(color: AppColor.primaryColor)),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, size: 30.sp, color: AppColor.primaryColor),
-          verticalSpace(10),
-          Text(title, style: TextStyles.font14GreyRegular),
-        ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(icon, size: 28.sp, color: AppColor.primaryColor),
+            verticalSpace(10),
+            Text(
+              title,
+              style: TextStyles.font13greymedium,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     ),
   );

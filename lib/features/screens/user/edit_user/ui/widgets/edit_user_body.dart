@@ -258,33 +258,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                         suffixIcon: IconBroken.arrowDown2,
                       ),
 
-                      // EditDropdownList(
-                      //     title: 'Country',
-                      //     index: context
-                      //         .read<EditUserCubit>()
-                      //         .userDetailsModel!
-                      //         .data!
-                      //         .countryName!,
-                      //     items: context
-                      //                 .read<EditUserCubit>()
-                      //                 .nationalityModel
-                      //                 ?.data
-                      //                 ?.isEmpty ??
-                      //             true
-                      //         ? ['No countries']
-                      //         : context
-                      //                 .read<EditUserCubit>()
-                      //                 .nationalityModel
-                      //                 ?.data
-                      //                 ?.map((e) => e.name ?? 'Unknown')
-                      //                 .toList() ??
-                      //             [],
-                      //     onPressed: (value) {
-                      //       context
-                      //           .read<EditUserCubit>()
-                      //           .countryController
-                      //           .text = value;
-                      //     }),
+                     
                     ),
                     horizontalSpace(10),
                     Expanded(

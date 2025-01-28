@@ -4,7 +4,11 @@ import 'package:smart_cleaning_application/core/networking/api_constants/api_con
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts/data/model/all_shifts_deleted_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts/data/model/all_shifts_model.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shifts/data/model/shift_buildings_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts/data/model/shift_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shifts/data/model/shift_floors_model.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shifts/data/model/shift_organizations_model.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shifts/data/model/shift_points_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts/logic/shift_state.dart';
 
 class ShiftCubit extends Cubit<ShiftState> {
@@ -26,12 +30,67 @@ class ShiftCubit extends Cubit<ShiftState> {
     });
   }
 
+  // ShiftUsersModel? shiftUsersModel;
+  // getShiftUsersDetails(int? id) {
+  //   emit(ShiftUsersDetailsLoadingState());
+  //   DioHelper.getData(url: 'user/shift/$id').then((value) {
+  //     shiftUsersModel = ShiftUsersModel.fromJson(value!.data);
+  //     emit(ShiftUsersDetailsSuccessState(shiftUsersModel!));
+  //   }).catchError((error) {
+  //     emit(ShiftUsersDetailsErrorState(error.toString()));
+  //   });
+  // }
+  ShiftOrganizationsModel? shiftOrganizationsModel;
+  getShiftOrganizations(int? id) {
+    emit(ShiftOrganizationsLoadingState());
+    DioHelper.getData(url: 'shift/point/$id').then((value) {
+      shiftOrganizationsModel = ShiftOrganizationsModel.fromJson(value!.data);
+      emit(ShiftOrganizationsSuccessState(shiftOrganizationsModel!));
+    }).catchError((error) {
+      emit(ShiftOrganizationsErrorState(error.toString()));
+    });
+  }
+
+  ShiftBuildingsModel? shiftBuildingsModel;
+  getShiftBuildings(int? id) {
+    emit(ShiftBuildingsLoadingState());
+    DioHelper.getData(url: 'shift/point/$id').then((value) {
+      shiftBuildingsModel = ShiftBuildingsModel.fromJson(value!.data);
+      emit(ShiftBuildingsSuccessState(shiftBuildingsModel!));
+    }).catchError((error) {
+      emit(ShiftBuildingsErrorState(error.toString()));
+    });
+  }
+
+  ShiftFloorsModel? shiftFloorsModel;
+  getShiftFloors(int? id) {
+    emit(ShiftFloorsLoadingState());
+    DioHelper.getData(url: 'shift/point/$id').then((value) {
+      shiftFloorsModel = ShiftFloorsModel.fromJson(value!.data);
+      emit(ShiftFloorsSuccessState(shiftFloorsModel!));
+    }).catchError((error) {
+      emit(ShiftFloorsErrorState(error.toString()));
+    });
+  }
+
+  ShiftPointsModel? shiftPointsModel;
+  getShiftPoints(int? id) {
+    emit(ShiftPointsLoadingState());
+    DioHelper.getData(url: 'shift/point/$id').then((value) {
+      shiftPointsModel = ShiftPointsModel.fromJson(value!.data);
+      emit(ShiftPointsSuccessState(shiftPointsModel!));
+    }).catchError((error) {
+      emit(ShiftPointsErrorState(error.toString()));
+    });
+  }
+
   AllShiftsModel? allShiftsModel;
   getAllShifts() {
     emit(ShiftLoadingState());
-    DioHelper.getData(url: ApiConstants.allShiftsUrl).then((value) {
+    DioHelper.getData(
+        url: ApiConstants.allShiftsUrl,
+        query: {'search': searchController.text}).then((value) {
       allShiftsModel = AllShiftsModel.fromJson(value!.data);
-      allShiftsModel;
       emit(ShiftSuccessState(allShiftsModel!));
     }).catchError((error) {
       emit(ShiftErrorState(error.toString()));

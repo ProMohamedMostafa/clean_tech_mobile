@@ -141,14 +141,14 @@ class _EditPointBodyState extends State<EditPointBody> {
                         items: context
                                     .read<EditPointCubit>()
                                     .areaModel
-                                    ?.data
+                                    ?.data?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No areas']
                             : context
                                     .read<EditPointCubit>()
                                     .areaModel
-                                    ?.data
+                                    ?.data?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
@@ -164,7 +164,7 @@ class _EditPointBodyState extends State<EditPointBody> {
                           final selectedArea = context
                               .read<EditPointCubit>()
                               .areaModel
-                              ?.data
+                              ?.data?.data
                               ?.firstWhere((area) =>
                                   area.name ==
                                   context

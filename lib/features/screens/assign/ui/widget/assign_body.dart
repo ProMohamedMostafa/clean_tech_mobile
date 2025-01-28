@@ -36,6 +36,7 @@ class _AssignBodyState extends State<AssignBody> {
   void initState() {
     context.read<AssignCubit>().getShifts();
     context.read<AssignCubit>().getRole();
+    context.read<AssignCubit>().getArea();
     super.initState();
   }
 
@@ -210,7 +211,7 @@ class _AssignBodyState extends State<AssignBody> {
                                   final selectedArea = context
                                       .read<AssignCubit>()
                                       .areaModel
-                                      ?.data
+                                   ?.data?.data
                                       ?.firstWhere(
                                           (area) => area.name == selectedValue);
 
@@ -220,14 +221,14 @@ class _AssignBodyState extends State<AssignBody> {
                                 items: context
                                             .read<AssignCubit>()
                                             .areaModel
-                                            ?.data
+                                         ?.data?.data
                                             ?.isEmpty ??
                                         true
                                     ? ['No area available']
                                     : context
                                             .read<AssignCubit>()
                                             .areaModel
-                                            ?.data
+                                         ?.data?.data
                                             ?.map((e) => e.name ?? 'Unknown')
                                             .toList() ??
                                         [],
@@ -246,7 +247,7 @@ class _AssignBodyState extends State<AssignBody> {
                                   final selectedArea = context
                                       .read<AssignCubit>()
                                       .areaModel
-                                      ?.data
+                                     ?.data?.data
                                       ?.firstWhere(
                                           (area) => area.name == selectedValue);
 
@@ -258,14 +259,14 @@ class _AssignBodyState extends State<AssignBody> {
                                 items: context
                                             .read<AssignCubit>()
                                             .areaModel
-                                            ?.data
+                                           ?.data?.data
                                             ?.isEmpty ??
                                         true
                                     ? ['No area available']
                                     : context
                                             .read<AssignCubit>()
                                             .areaModel
-                                            ?.data
+                                           ?.data?.data
                                             ?.map((e) => e.name ?? 'Unknown')
                                             .toList() ??
                                         [],
@@ -319,7 +320,7 @@ class _AssignBodyState extends State<AssignBody> {
                                   final selectedArea = context
                                       .read<AssignCubit>()
                                       .areaModel
-                                      ?.data
+                                       ?.data?.data
                                       ?.firstWhere(
                                           (area) => area.name == selectedValue);
 
@@ -331,14 +332,14 @@ class _AssignBodyState extends State<AssignBody> {
                                 items: context
                                             .read<AssignCubit>()
                                             .areaModel
-                                            ?.data
+                                             ?.data?.data
                                             ?.isEmpty ??
                                         true
                                     ? ['No area available']
                                     : context
                                             .read<AssignCubit>()
                                             .areaModel
-                                            ?.data
+                                             ?.data?.data
                                             ?.map((e) => e.name ?? 'Unknown')
                                             .toList() ??
                                         [],
@@ -430,7 +431,7 @@ class _AssignBodyState extends State<AssignBody> {
                                   final selectedArea = context
                                       .read<AssignCubit>()
                                       .areaModel
-                                      ?.data
+                                       ?.data?.data
                                       ?.firstWhere(
                                           (area) => area.name == selectedValue);
 
@@ -442,14 +443,14 @@ class _AssignBodyState extends State<AssignBody> {
                                 items: context
                                             .read<AssignCubit>()
                                             .areaModel
-                                            ?.data
+                                             ?.data?.data
                                             ?.isEmpty ??
                                         true
                                     ? ['No area available']
                                     : context
                                             .read<AssignCubit>()
                                             .areaModel
-                                            ?.data
+                                             ?.data?.data
                                             ?.map((e) => e.name ?? 'Unknown')
                                             .toList() ??
                                         [],
@@ -579,7 +580,7 @@ class _AssignBodyState extends State<AssignBody> {
                                   final selectedArea = context
                                       .read<AssignCubit>()
                                       .areaModel
-                                      ?.data
+                                      ?.data?.data
                                       ?.firstWhere(
                                           (area) => area.name == selectedValue);
 
@@ -591,14 +592,14 @@ class _AssignBodyState extends State<AssignBody> {
                                 items: context
                                             .read<AssignCubit>()
                                             .areaModel
-                                            ?.data
+                                            ?.data?.data
                                             ?.isEmpty ??
                                         true
                                     ? ['No area available']
                                     : context
                                             .read<AssignCubit>()
                                             .areaModel
-                                            ?.data
+                                            ?.data?.data
                                             ?.map((e) => e.name ?? 'Unknown')
                                             .toList() ??
                                         [],
@@ -764,7 +765,7 @@ class _AssignBodyState extends State<AssignBody> {
                                   final selectedArea = context
                                       .read<AssignCubit>()
                                       .areaModel
-                                      ?.data
+                                       ?.data?.data
                                       ?.firstWhere(
                                           (area) => area.name == selectedValue);
 
@@ -776,14 +777,14 @@ class _AssignBodyState extends State<AssignBody> {
                                 items: context
                                             .read<AssignCubit>()
                                             .areaModel
-                                            ?.data
+                                             ?.data?.data
                                             ?.isEmpty ??
                                         true
                                     ? ['No area available']
                                     : context
                                             .read<AssignCubit>()
                                             .areaModel
-                                            ?.data
+                                             ?.data?.data
                                             ?.map((e) => e.name ?? 'Unknown')
                                             .toList() ??
                                         [],
@@ -1559,7 +1560,7 @@ class _AssignBodyState extends State<AssignBody> {
                                   final selectedArea = context
                                       .read<AssignCubit>()
                                       .areaModel
-                                      ?.data
+                                      ?.data?.data
                                       ?.firstWhere(
                                           (area) => area.name == selectedValue);
 
@@ -1571,14 +1572,14 @@ class _AssignBodyState extends State<AssignBody> {
                                 items: context
                                             .read<AssignCubit>()
                                             .areaModel
-                                            ?.data
+                                         ?.data?.data
                                             ?.isEmpty ??
                                         true
                                     ? ['No area available']
                                     : context
                                             .read<AssignCubit>()
                                             .areaModel
-                                            ?.data
+                                          ?.data?.data
                                             ?.map((e) => e.name ?? 'Unknown')
                                             .toList() ??
                                         [],
@@ -1670,7 +1671,7 @@ class _AssignBodyState extends State<AssignBody> {
                                   final selectedArea = context
                                       .read<AssignCubit>()
                                       .areaModel
-                                      ?.data
+                                   ?.data?.data
                                       ?.firstWhere(
                                           (area) => area.name == selectedValue);
 
@@ -1682,14 +1683,14 @@ class _AssignBodyState extends State<AssignBody> {
                                 items: context
                                             .read<AssignCubit>()
                                             .areaModel
-                                            ?.data
+                                           ?.data?.data
                                             ?.isEmpty ??
                                         true
                                     ? ['No area available']
                                     : context
                                             .read<AssignCubit>()
                                             .areaModel
-                                            ?.data
+                                           ?.data?.data
                                             ?.map((e) => e.name ?? 'Unknown')
                                             .toList() ??
                                         [],
@@ -1819,7 +1820,7 @@ class _AssignBodyState extends State<AssignBody> {
                                   final selectedArea = context
                                       .read<AssignCubit>()
                                       .areaModel
-                                      ?.data
+                                      ?.data?.data
                                       ?.firstWhere(
                                           (area) => area.name == selectedValue);
 
@@ -1831,14 +1832,14 @@ class _AssignBodyState extends State<AssignBody> {
                                 items: context
                                             .read<AssignCubit>()
                                             .areaModel
-                                            ?.data
+                                            ?.data?.data
                                             ?.isEmpty ??
                                         true
                                     ? ['No area available']
                                     : context
                                             .read<AssignCubit>()
                                             .areaModel
-                                            ?.data
+                                            ?.data?.data
                                             ?.map((e) => e.name ?? 'Unknown')
                                             .toList() ??
                                         [],
@@ -2016,14 +2017,14 @@ class _AssignBodyState extends State<AssignBody> {
                                 items: context
                                             .read<AssignCubit>()
                                             .areaModel
-                                            ?.data
+                                           ?.data?.data
                                             ?.isEmpty ??
                                         true
                                     ? ['No area available']
                                     : context
                                             .read<AssignCubit>()
                                             .areaModel
-                                            ?.data
+                                           ?.data?.data
                                             ?.map((e) => e.name ?? 'Unknown')
                                             .toList() ??
                                         [],

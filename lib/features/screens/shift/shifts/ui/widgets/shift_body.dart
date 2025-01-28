@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
+import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts/logic/shift_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts/logic/shift_state.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shifts/ui/widgets/adding_build.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts/ui/widgets/filter_search_build.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts/ui/widgets/shift_list_details_build.dart';
 
@@ -35,18 +35,16 @@ class _ShiftBodyState extends State<ShiftBody> {
     return Scaffold(
         appBar: AppBar(
           leading: customBackButton(context),
-          title:
-              Text('Shift Management', style: TextStyles.font16BlackSemiBold),
-          centerTitle: true,
+          title: Text('Shift Management'),
         ),
         floatingActionButton: Padding(
           padding: const EdgeInsets.only(bottom: 30),
           child: SizedBox(
-            height: 50.h,
-            width: 50.w,
+            height: 57.h,
+            width: 57.w,
             child: ElevatedButton(
               onPressed: () {
-                // context.pushNamed(Routes.addOrganizationScreen);
+                context.pushNamed(Routes.addShiftScreen);
               },
               style: ElevatedButton.styleFrom(
                 padding: REdgeInsets.all(0),
@@ -54,13 +52,13 @@ class _ShiftBodyState extends State<ShiftBody> {
                 shape: CircleBorder(),
                 side: BorderSide(
                   color: AppColor.secondaryColor,
-                  width: 1,
+                  width: 1.w,
                 ),
               ),
               child: Icon(
-                IconBroken.calendar,
+                Icons.post_add_outlined,
                 color: Colors.white,
-                size: 26.sp,
+                size: 28.sp,
               ),
             ),
           ),
@@ -90,22 +88,13 @@ class _ShiftBodyState extends State<ShiftBody> {
           },
           builder: (context, state) {
             final cubit = context.read<ShiftCubit>();
-            if (state is ShiftLoadingState || cubit.allShiftsModel == null) {
-              // Show loading indicator
+            if (cubit.allShiftsModel == null ||
+                cubit.allShiftsDeletedModel == null) {
               return const Center(
                 child: CircularProgressIndicator(color: AppColor.primaryColor),
               );
             }
 
-            // Ensure data is non-null before building the UI
-            final allShifts = cubit.allShiftsModel?.data;
-
-            if (allShifts == null) {
-              // Handle case where data fetching fails
-              return const Center(
-                child: Text("Failed to load organization details."),
-              );
-            }
             return SafeArea(
               child: SingleChildScrollView(
                 child: Padding(
@@ -116,19 +105,28 @@ class _ShiftBodyState extends State<ShiftBody> {
                       verticalSpace(15),
                       filterAndSearchBuild(context, context.read<ShiftCubit>()),
                       verticalSpace(15),
-                      SizedBox(
-                        height: 45.h,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 4,
-                              child: ListView.separated(
-                                separatorBuilder: (context, index) {
-                                  return horizontalSpace(10);
-                                },
-                                physics: NeverScrollableScrollPhysics(),
+                      Center(
+                        child: SizedBox(
+                          height: 45.h,
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              // Total available width
+                              double totalWidth = constraints.maxWidth;
+                              // Gap between the containers
+                              double gap = 10;
+                              // Width for each container
+                              double containerWidth = (totalWidth - gap) / 2;
+
+                              return ListView.separated(
                                 scrollDirection: Axis.horizontal,
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
                                 itemCount: 2,
+                                separatorBuilder: (context, index) {
+                                  return SizedBox(
+                                      width:
+                                          gap); // 10px gap between containers
+                                },
                                 itemBuilder: (context, index) {
                                   bool isSelected = selectedIndex == index;
 
@@ -140,7 +138,7 @@ class _ShiftBodyState extends State<ShiftBody> {
                                     },
                                     child: Container(
                                       height: 45.h,
-                                      width: 118.w,
+                                      width: containerWidth,
                                       decoration: BoxDecoration(
                                         color: isSelected
                                             ? AppColor.primaryColor
@@ -158,7 +156,7 @@ class _ShiftBodyState extends State<ShiftBody> {
                                         children: [
                                           Text(
                                             index == 0
-                                                ? "${context.read<ShiftCubit>().allShiftsModel!.data?.length ?? 0}"
+                                                ? "${context.read<ShiftCubit>().allShiftsModel!.data?.shifts!.length ?? 0}"
                                                 : "${context.read<ShiftCubit>().allShiftsDeletedModel!.data?.length ?? 0}",
                                             style: TextStyle(
                                               fontSize: 13.sp,
@@ -184,39 +182,34 @@ class _ShiftBodyState extends State<ShiftBody> {
                                     ),
                                   );
                                 },
-                              ),
-                            ),
-                            Expanded(flex: 1, child: addingBuild(context)),
-                          ],
+                              );
+                            },
+                          ),
                         ),
                       ),
                       verticalSpace(10),
                       Divider(
                         color: Colors.grey[300],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Shift Name",
-                              style: TextStyles.font11GreyMedium,
-                            ),
-                            horizontalSpace(20),
-                            Text(
-                              "Shift Time",
-                              style: TextStyles.font11GreyMedium,
-                            ),
-                            horizontalSpace(20),
-                            Text(
-                              "Shift Date",
-                              style: TextStyles.font11GreyMedium,
-                            ),
-                            horizontalSpace(20),
-                            Spacer()
-                          ],
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Shift Name",
+                            style: TextStyles.font11GreyMedium,
+                          ),
+                          horizontalSpace(25),
+                          Text(
+                            "Shift Time",
+                            style: TextStyles.font11GreyMedium,
+                          ),
+                          horizontalSpace(25),
+                          Text(
+                            "Shift Date",
+                            style: TextStyles.font11GreyMedium,
+                          ),
+                          Spacer()
+                        ],
                       ),
                       Divider(
                         color: Colors.grey[300],

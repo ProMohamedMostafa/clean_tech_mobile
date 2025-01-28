@@ -139,13 +139,13 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
         CustomDropDownList(
           hint: "Select area",
           items:
-              context.read<AddOrganizationCubit>().areaModel?.data?.isEmpty ??
+              context.read<AddOrganizationCubit>().areaModel?.data?.data?.isEmpty ??
                       true
                   ? ['No area']
                   : context
                           .read<AddOrganizationCubit>()
                           .areaModel
-                          ?.data
+                           ?.data?.data
                           ?.map((e) => e.name ?? 'Unknown')
                           .toList() ??
                       [],
@@ -159,7 +159,7 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
             final selectedArea = context
                 .read<AddOrganizationCubit>()
                 .areaModel
-                ?.data
+                 ?.data?.data
                 ?.firstWhere((area) =>
                     area.name ==
                     context.read<AddOrganizationCubit>().areaController.text);

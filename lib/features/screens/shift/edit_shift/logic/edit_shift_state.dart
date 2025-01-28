@@ -1,9 +1,9 @@
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/points_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/edit_shift/data/model/edit_shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts/data/model/shift_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
 
 abstract class EditShiftState {}
 
@@ -34,18 +34,19 @@ class ShiftDetailsErrorState extends EditShiftState {
   ShiftDetailsErrorState(this.error);
 }
 
+
 //**************************** */
-class GetOrganizationsLoadingState extends EditShiftState {}
+class OrganizationLoadingState extends EditShiftState {}
 
-class GetOrganizationsSuccessState extends EditShiftState {
-  final OrganizationModel organizationModel;
+class OrganizationSuccessState extends EditShiftState {
+  final OrganizationListModel organizationListModel;
 
-  GetOrganizationsSuccessState(this.organizationModel);
+  OrganizationSuccessState(this.organizationListModel);
 }
 
-class GetOrganizationsErrorState extends EditShiftState {
+class OrganizationErrorState extends EditShiftState {
   final String error;
-  GetOrganizationsErrorState(this.error);
+  OrganizationErrorState(this.error);
 }
 //**************************** */
 

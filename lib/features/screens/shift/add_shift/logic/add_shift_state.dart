@@ -1,8 +1,8 @@
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/points_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/add_shift/data/model/create_shift_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
 
 abstract class AddShiftState {}
 
@@ -22,17 +22,17 @@ class AddShiftErrorState extends AddShiftState {
 }
 
 //**************************** */
-class GetOrganizationsLoadingState extends AddShiftState {}
+class OrganizationLoadingState extends AddShiftState {}
 
-class GetOrganizationsSuccessState extends AddShiftState {
-  final OrganizationModel organizationModel;
+class OrganizationSuccessState extends AddShiftState {
+  final OrganizationListModel organizationListModel;
 
-  GetOrganizationsSuccessState(this.organizationModel);
+  OrganizationSuccessState(this.organizationListModel);
 }
 
-class GetOrganizationsErrorState extends AddShiftState {
+class OrganizationErrorState extends AddShiftState {
   final String error;
-  GetOrganizationsErrorState(this.error);
+  OrganizationErrorState(this.error);
 }
 //**************************** */
 

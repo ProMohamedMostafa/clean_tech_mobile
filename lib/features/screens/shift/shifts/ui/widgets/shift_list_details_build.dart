@@ -6,7 +6,7 @@ import 'package:smart_cleaning_application/features/screens/shift/shifts/ui/widg
 
 Widget shiftListDetailsBuild(BuildContext context, int selectedIndex) {
   final shiftsData = selectedIndex == 0
-      ? context.read<ShiftCubit>().allShiftsModel?.data
+      ? context.read<ShiftCubit>().allShiftsModel?.data?.shifts
       : context.read<ShiftCubit>().allShiftsDeletedModel?.data;
 
   if (shiftsData == null || shiftsData.isEmpty) {

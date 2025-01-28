@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -13,10 +11,12 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_date_picker.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_time_picker.dart';
 import 'package:smart_cleaning_application/features/screens/shift/edit_shift/logic/edit_shift_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/shift/edit_shift/logic/edit_shift_state.dart';
-import 'package:smart_cleaning_application/features/screens/shift/edit_shift/ui/widget/edit_shift_drop_down_list.dart';
-import 'package:smart_cleaning_application/features/screens/shift/edit_shift/ui/widget/edit_shift_text_form_field.dart';
 
 class EditShiftBody extends StatefulWidget {
   final int id;
@@ -30,6 +30,7 @@ class _EditShiftBodyState extends State<EditShiftBody> {
   @override
   void initState() {
     context.read<EditShiftCubit>().getShiftDetails(widget.id);
+    context.read<EditShiftCubit>().getOrganization();
     super.initState();
   }
 
@@ -39,9 +40,7 @@ class _EditShiftBodyState extends State<EditShiftBody> {
         appBar: AppBar(
           title: Text(
             "Edit Shift",
-            style: TextStyles.font16BlackSemiBold,
           ),
-          centerTitle: true,
           leading: customBackButton(context),
         ),
         body: BlocConsumer<EditShiftCubit, EditShiftState>(
@@ -58,23 +57,12 @@ class _EditShiftBodyState extends State<EditShiftBody> {
           },
           builder: (context, state) {
             final cubit = context.read<EditShiftCubit>();
-            if (state is EditShiftLoadingState ||
-                cubit.shiftDetailsModel == null) {
-              // Show loading indicator
+            if (cubit.shiftDetailsModel == null) {
               return const Center(
                 child: CircularProgressIndicator(color: AppColor.primaryColor),
               );
             }
 
-            // Ensure data is non-null before building the UI
-            final shiftDetails = cubit.shiftDetailsModel?.data;
-
-            if (shiftDetails == null) {
-              // Handle case where data fetching fails
-              return const Center(
-                child: Text("Failed to load organization details."),
-              );
-            }
             return SafeArea(
                 child: SingleChildScrollView(
                     child: Form(
@@ -85,12 +73,13 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        verticalSpace(15),
                         Text(
                           "Shift Name",
                           style: TextStyles.font16BlackRegular,
                         ),
-                        EditShiftTextFormField(
+                        verticalSpace(5),
+                        CustomTextFormField(
+                          onlyRead: false,
                           hint: context
                               .read<EditShiftCubit>()
                               .shiftDetailsModel!
@@ -99,14 +88,7 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                           controller: context
                               .read<EditShiftCubit>()
                               .shiftNameController,
-                          obscureText: false,
-                          readOnly: false,
                           keyboardType: TextInputType.text,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Shift Name is Required";
-                            }
-                          },
                         ),
                         verticalSpace(10),
                         Row(
@@ -120,7 +102,9 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                                   "Start Date",
                                   style: TextStyles.font16BlackRegular,
                                 ),
-                                EditShiftTextFormField(
+                                verticalSpace(5),
+                                CustomTextFormField(
+                                  onlyRead: true,
                                   hint: context
                                       .read<EditShiftCubit>()
                                       .shiftDetailsModel!
@@ -129,29 +113,18 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                                   controller: context
                                       .read<EditShiftCubit>()
                                       .startDateController,
-                                  obscureText: false,
-                                  readOnly: true,
                                   suffixIcon: Icons.calendar_today,
                                   suffixPressed: () async {
-                                    DateTime? pickedDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime
-                                          .now(), // This disables any date before today
-                                      lastDate: DateTime(
-                                          3025), // Set this to any future date
-                                    );
-                                    if (pickedDate != null) {
-                                      // Format date in the form "yyyy-MM-dd"
-                                      String formattedDate =
-                                          DateFormat('yyyy-MM-dd')
-                                              .format(pickedDate);
-                                      setState(() {
-                                        context
-                                            .read<EditShiftCubit>()
-                                            .startDateController
-                                            .text = formattedDate;
-                                      });
+                                    final selectedDate =
+                                        await CustomDatePicker.show(
+                                            context: context);
+
+                                    if (selectedDate != null &&
+                                        context.mounted) {
+                                      context
+                                          .read<EditShiftCubit>()
+                                          .startDateController
+                                          .text = selectedDate;
                                     }
                                   },
                                   keyboardType: TextInputType.none,
@@ -159,6 +132,7 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                                     if (value == null || value.isEmpty) {
                                       return "Start date is required";
                                     }
+                                    return null;
                                   },
                                 ),
                               ],
@@ -172,7 +146,9 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                                   "End Date",
                                   style: TextStyles.font16BlackRegular,
                                 ),
-                                EditShiftTextFormField(
+                                verticalSpace(5),
+                                CustomTextFormField(
+                                  onlyRead: true,
                                   hint: context
                                       .read<EditShiftCubit>()
                                       .shiftDetailsModel!
@@ -181,29 +157,18 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                                   controller: context
                                       .read<EditShiftCubit>()
                                       .endDateController,
-                                  obscureText: false,
-                                  readOnly: true,
                                   suffixIcon: Icons.calendar_today,
                                   suffixPressed: () async {
-                                    DateTime? pickedDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime
-                                          .now(), // This disables any date before today
-                                      lastDate: DateTime(
-                                          3025), // Set this to any future date
-                                    );
-                                    if (pickedDate != null) {
-                                      // Format date in the form "yyyy-MM-dd"
-                                      String formattedDate =
-                                          DateFormat('yyyy-MM-dd')
-                                              .format(pickedDate);
-                                      setState(() {
-                                        context
-                                            .read<EditShiftCubit>()
-                                            .endDateController
-                                            .text = formattedDate;
-                                      });
+                                    final selectedDate =
+                                        await CustomDatePicker.show(
+                                            context: context);
+
+                                    if (selectedDate != null &&
+                                        context.mounted) {
+                                      context
+                                          .read<EditShiftCubit>()
+                                          .endDateController
+                                          .text = selectedDate;
                                     }
                                   },
                                   keyboardType: TextInputType.none,
@@ -211,13 +176,14 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                                     if (value == null || value.isEmpty) {
                                       return "Start date is required";
                                     }
+                                    return null;
                                   },
                                 ),
                               ],
                             )),
                           ],
                         ),
-                        verticalSpace(15),
+                        verticalSpace(10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -229,7 +195,9 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                                   "Start Time",
                                   style: TextStyles.font16BlackRegular,
                                 ),
-                                EditShiftTextFormField(
+                                verticalSpace(5),
+                                CustomTextFormField(
+                                  onlyRead: true,
                                   hint: context
                                       .read<EditShiftCubit>()
                                       .shiftDetailsModel!
@@ -238,156 +206,26 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                                   controller: context
                                       .read<EditShiftCubit>()
                                       .startTimeController,
-                                  obscureText: false,
-                                  readOnly: true,
                                   suffixIcon: Icons.timer_sharp,
                                   suffixPressed: () async {
-                                    showDialog(
-                                        context: context,
-                                        builder: (dialogContext) {
-                                          String startTime = DateFormat('HH:mm')
-                                              .format(DateTime.now());
+                                    final selectedTime =
+                                        await CustomTimePicker.show(
+                                            context: context);
 
-                                          return AlertDialog(
-                                              backgroundColor: Colors.white,
-                                              surfaceTintColor: Colors.white,
-                                              insetPadding: EdgeInsets.all(20),
-                                              contentPadding:
-                                                  const EdgeInsets.all(20),
-                                              clipBehavior:
-                                                  Clip.antiAliasWithSaveLayer,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              16.r))),
-                                              content: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  SizedBox(
-                                                      height: 140.h,
-                                                      width: 335.w,
-                                                      child:
-                                                          CupertinoDatePicker(
-                                                              mode:
-                                                                  CupertinoDatePickerMode
-                                                                      .time,
-                                                              initialDateTime:
-                                                                  DateTime
-                                                                      .now(),
-                                                              onDateTimeChanged:
-                                                                  (val) {
-                                                                setState(() {
-                                                                  startTime = DateFormat(
-                                                                          'HH:mm')
-                                                                      .format(
-                                                                          val);
-                                                                });
-                                                              })),
-                                                  verticalSpace(10),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceAround,
-                                                    children: [
-                                                      SizedBox(
-                                                          height: 48.h,
-                                                          width: 130.w,
-                                                          child: ElevatedButton(
-                                                              style:
-                                                                  ButtonStyle(
-                                                                side: WidgetStateProperty
-                                                                    .all(
-                                                                        BorderSide(
-                                                                  color: AppColor
-                                                                      .thirdColor,
-                                                                )),
-                                                                backgroundColor:
-                                                                    WidgetStateProperty
-                                                                        .all(Colors
-                                                                            .white),
-                                                                overlayColor:
-                                                                    WidgetStateProperty.all(
-                                                                        AppColor
-                                                                            .thirdColor),
-                                                                shape:
-                                                                    WidgetStateProperty
-                                                                        .all(
-                                                                  RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(
-                                                                      12.r,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                                elevation:
-                                                                    WidgetStateProperty
-                                                                        .all(1),
-                                                              ),
-                                                              onPressed: () {
-                                                                context.pop();
-                                                              },
-                                                              child: Text(
-                                                                "Cancel",
-                                                                style: TextStyles
-                                                                    .font14BlackSemiBold,
-                                                              ))),
-                                                      horizontalSpace(10),
-                                                      SizedBox(
-                                                          height: 48.h,
-                                                          width: 130.w,
-                                                          child: ElevatedButton(
-                                                              style:
-                                                                  ButtonStyle(
-                                                                backgroundColor:
-                                                                    WidgetStateProperty.all(
-                                                                        AppColor
-                                                                            .primaryColor),
-                                                                overlayColor:
-                                                                    WidgetStateProperty.all(
-                                                                        AppColor
-                                                                            .thirdColor),
-                                                                shape:
-                                                                    WidgetStateProperty
-                                                                        .all(
-                                                                  RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(
-                                                                      12.r,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                                elevation:
-                                                                    WidgetStateProperty
-                                                                        .all(1),
-                                                              ),
-                                                              onPressed: () {
-                                                                context
-                                                                    .read<
-                                                                        EditShiftCubit>()
-                                                                    .startTimeController
-                                                                    .text = startTime;
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              child: Text(
-                                                                "save",
-                                                                style: TextStyles
-                                                                    .font14WhiteMedium,
-                                                              ))),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ));
-                                        });
+                                    if (selectedTime != null &&
+                                        context.mounted) {
+                                      context
+                                          .read<EditShiftCubit>()
+                                          .startTimeController
+                                          .text = selectedTime;
+                                    }
                                   },
                                   keyboardType: TextInputType.none,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return "Start time is required";
                                     }
+                                    return null;
                                   },
                                 ),
                               ],
@@ -401,7 +239,9 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                                   "End Time",
                                   style: TextStyles.font16BlackRegular,
                                 ),
-                                EditShiftTextFormField(
+                                verticalSpace(5),
+                                CustomTextFormField(
+                                  onlyRead: true,
                                   hint: context
                                       .read<EditShiftCubit>()
                                       .shiftDetailsModel!
@@ -410,172 +250,44 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                                   controller: context
                                       .read<EditShiftCubit>()
                                       .endTimeController,
-                                  obscureText: false,
-                                  readOnly: true,
                                   suffixIcon: Icons.timer_sharp,
                                   suffixPressed: () async {
-                                    showDialog(
-                                        context: context,
-                                        builder: (dialogContext) {
-                                          String startTime = DateFormat('HH:mm')
-                                              .format(DateTime.now());
+                                    final selectedTime =
+                                        await CustomTimePicker.show(
+                                            context: context);
 
-                                          return AlertDialog(
-                                              backgroundColor: Colors.white,
-                                              surfaceTintColor: Colors.white,
-                                              insetPadding: EdgeInsets.all(20),
-                                              contentPadding:
-                                                  const EdgeInsets.all(20),
-                                              clipBehavior:
-                                                  Clip.antiAliasWithSaveLayer,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              16.r))),
-                                              content: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  SizedBox(
-                                                      height: 140.h,
-                                                      width: 335.w,
-                                                      child:
-                                                          CupertinoDatePicker(
-                                                              mode:
-                                                                  CupertinoDatePickerMode
-                                                                      .time,
-                                                              initialDateTime:
-                                                                  DateTime
-                                                                      .now(),
-                                                              onDateTimeChanged:
-                                                                  (val) {
-                                                                setState(() {
-                                                                  startTime = DateFormat(
-                                                                          'HH:mm')
-                                                                      .format(
-                                                                          val);
-                                                                });
-                                                              })),
-                                                  verticalSpace(10),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceAround,
-                                                    children: [
-                                                      SizedBox(
-                                                          height: 48.h,
-                                                          width: 130.w,
-                                                          child: ElevatedButton(
-                                                              style:
-                                                                  ButtonStyle(
-                                                                side: WidgetStateProperty
-                                                                    .all(
-                                                                        BorderSide(
-                                                                  color: AppColor
-                                                                      .thirdColor,
-                                                                )),
-                                                                backgroundColor:
-                                                                    WidgetStateProperty
-                                                                        .all(Colors
-                                                                            .white),
-                                                                overlayColor:
-                                                                    WidgetStateProperty.all(
-                                                                        AppColor
-                                                                            .thirdColor),
-                                                                shape:
-                                                                    WidgetStateProperty
-                                                                        .all(
-                                                                  RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(
-                                                                      12.r,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                                elevation:
-                                                                    WidgetStateProperty
-                                                                        .all(1),
-                                                              ),
-                                                              onPressed: () {
-                                                                context.pop();
-                                                              },
-                                                              child: Text(
-                                                                "Cancel",
-                                                                style: TextStyles
-                                                                    .font14BlackSemiBold,
-                                                              ))),
-                                                      horizontalSpace(10),
-                                                      SizedBox(
-                                                          height: 48.h,
-                                                          width: 130.w,
-                                                          child: ElevatedButton(
-                                                              style:
-                                                                  ButtonStyle(
-                                                                backgroundColor:
-                                                                    WidgetStateProperty.all(
-                                                                        AppColor
-                                                                            .primaryColor),
-                                                                overlayColor:
-                                                                    WidgetStateProperty.all(
-                                                                        AppColor
-                                                                            .thirdColor),
-                                                                shape:
-                                                                    WidgetStateProperty
-                                                                        .all(
-                                                                  RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(
-                                                                      12.r,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                                elevation:
-                                                                    WidgetStateProperty
-                                                                        .all(1),
-                                                              ),
-                                                              onPressed: () {
-                                                                context
-                                                                    .read<
-                                                                        EditShiftCubit>()
-                                                                    .endTimeController
-                                                                    .text = startTime;
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              child: Text(
-                                                                "save",
-                                                                style: TextStyles
-                                                                    .font14WhiteMedium,
-                                                              ))),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ));
-                                        });
+                                    if (selectedTime != null &&
+                                        context.mounted) {
+                                      context
+                                          .read<EditShiftCubit>()
+                                          .endTimeController
+                                          .text = selectedTime;
+                                    }
                                   },
                                   keyboardType: TextInputType.none,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return "Start date is required";
                                     }
+                                    return null;
                                   },
                                 ),
                               ],
                             )),
                           ],
                         ),
-                        verticalSpace(15),
+                        verticalSpace(10),
                         Text(
-                          "Organization",
+                          'Organization',
                           style: TextStyles.font16BlackRegular,
                         ),
-                        EditShiftDropDownList(
+                        verticalSpace(5),
+                        CustomDropDownList(
                           hint: "Select organizations",
                           items: context
                                       .read<EditShiftCubit>()
                                       .organizationModel
+                                      ?.data
                                       ?.data
                                       ?.isEmpty ??
                                   true
@@ -584,20 +296,15 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                                       .read<EditShiftCubit>()
                                       .organizationModel
                                       ?.data
+                                      ?.data
                                       ?.map((e) => e.name ?? 'Unknown')
                                       .toList() ??
                                   [],
-                          validator: (value) {
-                            if (value == null ||
-                                value.isEmpty ||
-                                value == 'No organizations') {
-                              return "Organizations is required";
-                            }
-                          },
-                          onChanged: (value) {
+                          onPressed: (value) {
                             final selectedOrganization = context
                                 .read<EditShiftCubit>()
                                 .organizationModel
+                                ?.data
                                 ?.data
                                 ?.firstWhere((organization) =>
                                     organization.name ==
@@ -609,20 +316,25 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                             context
                                 .read<EditShiftCubit>()
                                 .getBuilding(selectedOrganization!.id!);
+                            context
+                                .read<EditShiftCubit>()
+                                .organizationIdController
+                                .text = selectedOrganization.id!.toString();
                           },
                           suffixIcon: IconBroken.arrowDown2,
                           controller: context
                               .read<EditShiftCubit>()
                               .organizationController,
-                          readOnly: false,
+                          isRead: false,
                           keyboardType: TextInputType.text,
                         ),
                         verticalSpace(15),
                         Text(
-                          "Building",
+                          'Building',
                           style: TextStyles.font16BlackRegular,
                         ),
-                        EditShiftDropDownList(
+                        verticalSpace(5),
+                        CustomDropDownList(
                           hint: "Select building",
                           items: context
                                       .read<EditShiftCubit>()
@@ -638,14 +350,7 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                                       ?.map((e) => e.name ?? 'Unknown')
                                       .toList() ??
                                   [],
-                          validator: (value) {
-                            if (value == null ||
-                                value.isEmpty ||
-                                value == 'No building') {
-                              return "Building is required";
-                            }
-                          },
-                          onChanged: (value) {
+                          onPressed: (value) {
                             final selectedBuilding = context
                                 .read<EditShiftCubit>()
                                 .buildingModel
@@ -656,23 +361,27 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                                         .read<EditShiftCubit>()
                                         .buildingController
                                         .text);
-
                             context
                                 .read<EditShiftCubit>()
                                 .getFloor(selectedBuilding!.id!);
+                            context
+                                .read<EditShiftCubit>()
+                                .buildingIdController
+                                .text = selectedBuilding.id!.toString();
                           },
                           suffixIcon: IconBroken.arrowDown2,
                           controller:
                               context.read<EditShiftCubit>().buildingController,
-                          readOnly: false,
+                          isRead: false,
                           keyboardType: TextInputType.text,
                         ),
-                        verticalSpace(15),
+                        verticalSpace(10),
                         Text(
-                          "Floor",
+                          'Floor',
                           style: TextStyles.font16BlackRegular,
                         ),
-                        EditShiftDropDownList(
+                        verticalSpace(5),
+                        CustomDropDownList(
                           hint: "Select floor",
                           items: context
                                       .read<EditShiftCubit>()
@@ -688,14 +397,7 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                                       ?.map((e) => e.name ?? 'Unknown')
                                       .toList() ??
                                   [],
-                          validator: (value) {
-                            if (value == null ||
-                                value.isEmpty ||
-                                value == 'No floors') {
-                              return "Floor is required";
-                            }
-                          },
-                          onChanged: (value) {
+                          onPressed: (value) {
                             final selectedFloor = context
                                 .read<EditShiftCubit>()
                                 .floorModel
@@ -710,19 +412,24 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                             context
                                 .read<EditShiftCubit>()
                                 .getPoints(selectedFloor!.id!);
+                            context
+                                .read<EditShiftCubit>()
+                                .floorIdController
+                                .text = selectedFloor.id!.toString();
                           },
                           suffixIcon: IconBroken.arrowDown2,
                           controller:
                               context.read<EditShiftCubit>().floorController,
-                          readOnly: false,
+                          isRead: false,
                           keyboardType: TextInputType.text,
                         ),
-                        verticalSpace(15),
+                        verticalSpace(10),
                         Text(
-                          "Point",
+                          'Point',
                           style: TextStyles.font16BlackRegular,
                         ),
-                        EditShiftDropDownList(
+                        verticalSpace(5),
+                        CustomDropDownList(
                           hint: "Select point",
                           items: context
                                       .read<EditShiftCubit>()
@@ -738,14 +445,7 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                                       ?.map((e) => e.name ?? 'Unknown')
                                       .toList() ??
                                   [],
-                          validator: (value) {
-                            if (value == null ||
-                                value.isEmpty ||
-                                value == 'No point') {
-                              return "Point is required";
-                            }
-                          },
-                          onChanged: (value) {
+                          onPressed: (value) {
                             final selectedPoint = context
                                 .read<EditShiftCubit>()
                                 .pointModel
@@ -760,11 +460,15 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                             context
                                 .read<EditShiftCubit>()
                                 .getPoints(selectedPoint!.id!);
+                            context
+                                .read<EditShiftCubit>()
+                                .pointIdController
+                                .text = selectedPoint.id!.toString();
                           },
                           suffixIcon: IconBroken.arrowDown2,
                           controller:
                               context.read<EditShiftCubit>().buildingController,
-                          readOnly: false,
+                          isRead: false,
                           keyboardType: TextInputType.text,
                         ),
                         verticalSpace(20),

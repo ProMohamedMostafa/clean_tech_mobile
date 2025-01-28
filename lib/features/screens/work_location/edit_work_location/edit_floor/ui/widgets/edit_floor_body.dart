@@ -143,14 +143,14 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                         items: context
                                     .read<EditFloorCubit>()
                                     .areaModel
-                                    ?.data
+                                   ?.data?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No areas']
                             : context
                                     .read<EditFloorCubit>()
                                     .areaModel
-                                    ?.data
+                                   ?.data?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
@@ -166,7 +166,7 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                           final selectedArea = context
                               .read<EditFloorCubit>()
                               .areaModel
-                              ?.data
+                             ?.data?.data
                               ?.firstWhere((area) =>
                                   area.name ==
                                   context

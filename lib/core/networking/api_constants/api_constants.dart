@@ -40,7 +40,7 @@ class ApiConstants {
   static const allDeletedPointList = '/points/deleted/index';
 
   static const createShiftUrl = "shifts/create";
-  static const allShiftsUrl = "shifts";
+  static const allShiftsUrl = "shifts/pagination";
   static const editShiftsUrl = "shifts/edit";
 
   static const allShiftsDeletedUrl = "shifts/deleted/index";

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
@@ -10,40 +11,48 @@ Widget listShiftItemBuild(BuildContext context, index) {
   return InkWell(
     onTap: () {
       context.pushNamed(Routes.shiftDetailsScreen,
-          arguments:
-              context.read<ShiftCubit>().allShiftsModel!.data![index].id);
+          arguments: context
+              .read<ShiftCubit>()
+              .allShiftsModel!
+              .data!
+              .shifts![index]
+              .id);
     },
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Text(
-          context
-              .read<UserManagementCubit>()
-              .userShiftDetailsModel!
-              .data!
-              .shifts![index]
-              .name!,
-          style: TextStyles.font14BlackSemiBold,
-        ),
-        Text(
-          context
-              .read<UserManagementCubit>()
-              .userShiftDetailsModel!
-              .data!
-              .shifts![index]
-              .startTime!,
-          style: TextStyles.font11BlackMedium,
-        ),
-        Text(
-          context
-              .read<UserManagementCubit>()
-              .userShiftDetailsModel!
-              .data!
-              .shifts![index]
-              .startDate!,
-          style: TextStyles.font11BlackMedium,
-        ),
-      ],
+    child: ListTile(
+      contentPadding: EdgeInsets.zero,
+      minTileHeight: 50.h,
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Text(
+            context
+                .read<UserManagementCubit>()
+                .userShiftDetailsModel!
+                .data!
+                .shifts![index]
+                .name!,
+            style: TextStyles.font14BlackSemiBold,
+          ),
+          Text(
+            context
+                .read<UserManagementCubit>()
+                .userShiftDetailsModel!
+                .data!
+                .shifts![index]
+                .startTime!,
+            style: TextStyles.font11BlackMedium,
+          ),
+          Text(
+            context
+                .read<UserManagementCubit>()
+                .userShiftDetailsModel!
+                .data!
+                .shifts![index]
+                .startDate!,
+            style: TextStyles.font11BlackMedium,
+          ),
+        ],
+      ),
     ),
   );
 }

@@ -152,12 +152,14 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                                     .read<EditOrganizationCubit>()
                                     .areaModel
                                     ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No areas']
                             : context
                                     .read<EditOrganizationCubit>()
                                     .areaModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -174,6 +176,7 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                           final selectedArea = context
                               .read<EditOrganizationCubit>()
                               .areaModel
+                              ?.data
                               ?.data
                               ?.firstWhere((area) =>
                                   area.name ==

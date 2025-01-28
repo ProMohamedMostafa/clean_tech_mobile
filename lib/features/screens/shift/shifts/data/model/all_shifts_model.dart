@@ -1,88 +1,119 @@
 class AllShiftsModel {
   int? statusCode;
-  String? meta;
   bool? succeeded;
   String? message;
-  String? error;
-  List<Data>? data;
+  Data? data;
 
-  AllShiftsModel(
-      {this.statusCode,
-      this.meta,
-      this.succeeded,
-      this.message,
-      this.error,
-      this.data});
+  AllShiftsModel({
+    this.statusCode,
+    this.succeeded,
+    this.message,
+    this.data,
+  });
 
   AllShiftsModel.fromJson(Map<String, dynamic> json) {
     statusCode = json['statusCode'];
-    meta = json['meta'];
     succeeded = json['succeeded'];
     message = json['message'];
-    error = json['error'];
-    if (json['data'] != null) {
-      data = <Data>[];
-      json['data'].forEach((v) {
-        data!.add( Data.fromJson(v));
-      });
-    }
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
-    data['statusCode'] = statusCode;
-    data['meta'] = meta;
-    data['succeeded'] = succeeded;
-    data['message'] = message;
-    data['error'] = error;
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> result = {};
+    result['statusCode'] = statusCode;
+    result['succeeded'] = succeeded;
+    result['message'] = message;
+    if (data != null) {
+      result['data'] = data!.toJson();
     }
-    return data;
+    return result;
   }
 }
 
 class Data {
+  int? currentPage;
+  int? totalPages;
+  int? totalCount;
+  int? pageSize;
+  bool? hasPreviousPage;
+  bool? hasNextPage;
+  bool? succeeded;
+  List<Shift>? shifts;
+
+  Data({
+    this.currentPage,
+    this.totalPages,
+    this.totalCount,
+    this.pageSize,
+    this.hasPreviousPage,
+    this.hasNextPage,
+    this.succeeded,
+    this.shifts,
+  });
+
+  Data.fromJson(Map<String, dynamic> json) {
+    currentPage = json['currentPage'];
+    totalPages = json['totalPages'];
+    totalCount = json['totalCount'];
+    pageSize = json['pageSize'];
+    hasPreviousPage = json['hasPreviousPage'];
+    hasNextPage = json['hasNextPage'];
+    succeeded = json['succeeded'];
+    if (json['data'] != null) {
+      shifts = List<Shift>.from(json['data'].map((v) => Shift.fromJson(v)));
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> result = {};
+    result['currentPage'] = currentPage;
+    result['totalPages'] = totalPages;
+    result['totalCount'] = totalCount;
+    result['pageSize'] = pageSize;
+    result['hasPreviousPage'] = hasPreviousPage;
+    result['hasNextPage'] = hasNextPage;
+    result['succeeded'] = succeeded;
+    if (shifts != null) {
+      result['data'] = shifts!.map((v) => v.toJson()).toList();
+    }
+    return result;
+  }
+}
+
+class Shift {
   int? id;
   String? name;
   String? startDate;
   String? endDate;
   String? startTime;
   String? endTime;
-  String? createdAt;
-  String? updatedAt;
 
-  Data(
-      {this.id,
-      this.name,
-      this.startDate,
-      this.endDate,
-      this.startTime,
-      this.endTime,
-      this.createdAt,
-      this.updatedAt});
+  Shift({
+    this.id,
+    this.name,
+    this.startDate,
+    this.endDate,
+    this.startTime,
+    this.endTime,
+  });
 
-  Data.fromJson(Map<String, dynamic> json) {
+  Shift.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     startDate = json['startDate'];
     endDate = json['endDate'];
     startTime = json['startTime'];
     endTime = json['endTime'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['startDate'] = startDate;
-    data['endDate'] = endDate;
-    data['startTime'] = startTime;
-    data['endTime'] = endTime;
-    data['createdAt'] = createdAt;
-    data['updatedAt'] = updatedAt;
-    return data;
+    final Map<String, dynamic> result = {};
+    result['id'] = id;
+    result['name'] = name;
+    result['startDate'] = startDate;
+    result['endDate'] = endDate;
+    result['startTime'] = startTime;
+    result['endTime'] = endTime;
+    return result;
   }
 }

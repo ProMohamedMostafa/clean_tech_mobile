@@ -4,11 +4,11 @@ import 'package:smart_cleaning_application/core/networking/api_constants/api_con
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/points_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/edit_shift/data/model/edit_shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/edit_shift/logic/edit_shift_state.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts/data/model/shift_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
 
 class EditShiftCubit extends Cubit<EditShiftState> {
   EditShiftCubit() : super(EditShiftInitialState());
@@ -21,9 +21,13 @@ class EditShiftCubit extends Cubit<EditShiftState> {
   TextEditingController startTimeController = TextEditingController();
   TextEditingController endTimeController = TextEditingController();
   TextEditingController organizationController = TextEditingController();
+  TextEditingController organizationIdController = TextEditingController();
   TextEditingController buildingController = TextEditingController();
+  TextEditingController buildingIdController = TextEditingController();
   TextEditingController floorController = TextEditingController();
+  TextEditingController floorIdController = TextEditingController();
   TextEditingController pointController = TextEditingController();
+  TextEditingController pointIdController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   EditShiftDetailsModel? editShiftDetailsModel;
@@ -68,14 +72,14 @@ class EditShiftCubit extends Cubit<EditShiftState> {
     });
   }
 
-  OrganizationModel? organizationModel;
-  getOrganization(int cityId) {
-    emit(GetOrganizationsLoadingState());
-    DioHelper.getData(url: "organizations/city/$cityId").then((value) {
-      organizationModel = OrganizationModel.fromJson(value!.data);
-      emit(GetOrganizationsSuccessState(organizationModel!));
+  OrganizationListModel? organizationModel;
+  getOrganization() {
+    emit(OrganizationLoadingState());
+    DioHelper.getData(url: ApiConstants.organizationUrl).then((value) {
+      organizationModel = OrganizationListModel.fromJson(value!.data);
+      emit(OrganizationSuccessState(organizationModel!));
     }).catchError((error) {
-      emit(GetOrganizationsErrorState(error.toString()));
+      emit(OrganizationErrorState(error.toString()));
     });
   }
 
