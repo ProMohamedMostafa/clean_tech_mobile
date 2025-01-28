@@ -62,4 +62,6 @@ class ApiConstants {
   static const assignBuildingShiftUrl = "assign/building/shift";
   static const assignFloorShiftUrl = "assign/floor/shift";
   static const assignPointShiftUrl = "assign/point/shift";
+
+  static const hisotryUrl = "attendance/history";
 }

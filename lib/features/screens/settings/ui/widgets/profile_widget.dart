@@ -5,8 +5,8 @@ import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 Widget profileWidget() {
   return Center(
     child: Container(
-      width: 100.w,
-      height: 100.h,
+      width: 80.w,
+      height: 80.h,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(

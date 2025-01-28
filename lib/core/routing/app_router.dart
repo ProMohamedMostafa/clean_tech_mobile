@@ -6,6 +6,11 @@ import 'package:smart_cleaning_application/features/layout/main_layout/ui/screen
 import 'package:smart_cleaning_application/features/layout/splash/splash_screen.dart';
 import 'package:smart_cleaning_application/features/screens/assign/logic/assign_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/assign/ui/screen/assign_screen.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/logic/attendance_history_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/ui/screen/attendance_history_screen.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/logic/attendance_leaves_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/ui/screen/attendance_leaves_screen.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/ui/attendance_screen.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/logic/add_organization_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/screen/add_organization_screen.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/widgets/add_area_screen.dart';
@@ -452,6 +457,38 @@ class AppRouter {
             ),
           ),
         );
+
+      case Routes.attendanceScreen:
+        return MaterialPageRoute(
+          builder: (_) => AttendanceScreen(),
+        );
+
+      case Routes.historyScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => AttendanceHistoryCubit(),
+            child: AttendanceHistoryScreen(),
+          ),
+        );
+
+      case Routes.leavesScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => AttendanceLeavesCubit(),
+            child: AttendanceLeavesScreen(),
+          ),
+        );
+
+      // case Routes.historyDetailsScreen:
+      //   var id = settings.arguments as int;
+      //   return MaterialPageRoute(
+      //     builder: (_) => BlocProvider(
+      //       create: (context) => EditTaskCubit(),
+      //       child: EditTaskScreen(
+      //         id: id,
+      //       ),
+      //     ),
+      //   );
 
       default:
         return null;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -15,40 +16,38 @@ class IntegrationsBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<IntegrationItem> integrationItems = [
-      IntegrationItem(
-        onTap: () => context.pushNamed(Routes.userManagmentScreen),
-        label: S.of(context).integ1,
-        icon: IconBroken.addUser,
-      ),
+      if (role != 'Cleaner')
+        IntegrationItem(
+          onTap: () => context.pushNamed(Routes.userManagmentScreen),
+          label: S.of(context).integ1,
+          icon: IconBroken.addUser,
+        ),
       IntegrationItem(
         onTap: () => context.pushNamed(Routes.organizationsScreen),
         label: 'Work Location',
         icon: Icons.location_city_outlined,
       ),
-      IntegrationItem(
-        onTap: () => context.pushNamed(Routes.assignScreen),
-        label: "Assign",
-        icon: Icons.assignment,
-      ),
-      IntegrationItem(
-        onTap: () => context.pushNamed(Routes.shiftScreen),
-        label: "Shift",
-        icon: IconBroken.calendar,
-      ),
+      if (role == 'Admin')
+        IntegrationItem(
+          onTap: () => context.pushNamed(Routes.assignScreen),
+          label: "Assign",
+          icon: Icons.assignment,
+        ),
+      if (role == 'Admin')
+        IntegrationItem(
+          onTap: () => context.pushNamed(Routes.shiftScreen),
+          label: "Shift",
+          icon: IconBroken.calendar,
+        ),
       IntegrationItem(
         onTap: () => context.pushNamed(Routes.taskManagementScreen),
-        label: S.of(context).integ3,
+        label: 'Task',
         icon: Icons.task_outlined,
       ),
       IntegrationItem(
-        onTap: () {},
-        label: S.of(context).integ4,
-        icon: Icons.file_copy_outlined,
-      ),
-      IntegrationItem(
-        onTap: () => context.pushNamed(Routes.settingsScreen),
-        label: S.of(context).integ5,
-        icon: IconBroken.setting,
+        onTap: () => context.pushNamed(Routes.attendanceScreen),
+        label: "Attendance",
+        icon: Icons.perm_contact_cal_sharp,
       ),
     ];
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -84,7 +83,10 @@ class IntegrationsBody extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final item = integrationItems[index];
                         return buildIntegrationItem(
-                            item.onTap, item.label, item.icon);
+                          item.onTap,
+                          item.label,
+                          item.icon,
+                        );
                       },
                     ),
                   ),

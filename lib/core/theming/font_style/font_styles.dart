@@ -127,8 +127,9 @@ class TextStyles {
     fontWeight: FontWeightHelper.medium,
     color: Colors.black,
   );
-  static TextStyle font11light = TextStyle(
+  static TextStyle font11lightPrimary = TextStyle(
     fontSize: 11.sp,
     fontWeight: FontWeightHelper.light,
+    color: AppColor.primaryColor,
   );
 }

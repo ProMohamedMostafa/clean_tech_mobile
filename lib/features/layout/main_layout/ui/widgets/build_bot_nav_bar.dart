@@ -12,18 +12,12 @@ Widget buildBottomNavigationBar(BuildContext context) {
         BoxShadow(color: Colors.black12, blurRadius: 200),
       ],
     ),
-    child: ClipRRect(
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(20.r),
-        topRight: Radius.circular(20.r),
-      ),
-      child: BottomNavigationBar(
-        items: cubit.getBottomNavbarItems(context),
-        currentIndex: cubit.currentIndex,
-        onTap: (int index) {
-          cubit.changeBottomNavbar(index);
-        },
-      ),
+    child: BottomNavigationBar(
+      items: cubit.getBottomNavbarItems(context),
+      currentIndex: cubit.currentIndex,
+      onTap: (int index) {
+        cubit.changeBottomNavbar(index);
+      },
     ),
   );
 }
