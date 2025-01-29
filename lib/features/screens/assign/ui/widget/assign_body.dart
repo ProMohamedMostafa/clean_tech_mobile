@@ -210,8 +210,9 @@ class _AssignBodyState extends State<AssignBody> {
                                 onChanged: (selectedValue) {
                                   final selectedArea = context
                                       .read<AssignCubit>()
-                                      .areaModel
-                                   ?.data?.data
+                                      .allAreaModel
+                                      ?.data
+                                      ?.data
                                       ?.firstWhere(
                                           (area) => area.name == selectedValue);
 
@@ -220,15 +221,17 @@ class _AssignBodyState extends State<AssignBody> {
                                 hint: 'Select Area',
                                 items: context
                                             .read<AssignCubit>()
-                                            .areaModel
-                                         ?.data?.data
+                                            .allAreaModel
+                                            ?.data
+                                            ?.data
                                             ?.isEmpty ??
                                         true
                                     ? ['No area available']
                                     : context
                                             .read<AssignCubit>()
-                                            .areaModel
-                                         ?.data?.data
+                                            .allAreaModel
+                                            ?.data
+                                            ?.data
                                             ?.map((e) => e.name ?? 'Unknown')
                                             .toList() ??
                                         [],
@@ -246,8 +249,9 @@ class _AssignBodyState extends State<AssignBody> {
                                 onChanged: (selectedValue) {
                                   final selectedArea = context
                                       .read<AssignCubit>()
-                                      .areaModel
-                                     ?.data?.data
+                                      .allAreaModel
+                                      ?.data
+                                      ?.data
                                       ?.firstWhere(
                                           (area) => area.name == selectedValue);
 
@@ -258,15 +262,17 @@ class _AssignBodyState extends State<AssignBody> {
                                 hint: 'Select Area',
                                 items: context
                                             .read<AssignCubit>()
-                                            .areaModel
-                                           ?.data?.data
+                                            .allAreaModel
+                                            ?.data
+                                            ?.data
                                             ?.isEmpty ??
                                         true
                                     ? ['No area available']
                                     : context
                                             .read<AssignCubit>()
-                                            .areaModel
-                                           ?.data?.data
+                                            .allAreaModel
+                                            ?.data
+                                            ?.data
                                             ?.map((e) => e.name ?? 'Unknown')
                                             .toList() ??
                                         [],
@@ -319,8 +325,9 @@ class _AssignBodyState extends State<AssignBody> {
                                 onChanged: (selectedValue) {
                                   final selectedArea = context
                                       .read<AssignCubit>()
-                                      .areaModel
-                                       ?.data?.data
+                                      .allAreaModel
+                                      ?.data
+                                      ?.data
                                       ?.firstWhere(
                                           (area) => area.name == selectedValue);
 
@@ -331,15 +338,17 @@ class _AssignBodyState extends State<AssignBody> {
                                 hint: 'Select Area',
                                 items: context
                                             .read<AssignCubit>()
-                                            .areaModel
-                                             ?.data?.data
+                                            .allAreaModel
+                                            ?.data
+                                            ?.data
                                             ?.isEmpty ??
                                         true
                                     ? ['No area available']
                                     : context
                                             .read<AssignCubit>()
-                                            .areaModel
-                                             ?.data?.data
+                                            .allAreaModel
+                                            ?.data
+                                            ?.data
                                             ?.map((e) => e.name ?? 'Unknown')
                                             .toList() ??
                                         [],
@@ -430,8 +439,9 @@ class _AssignBodyState extends State<AssignBody> {
                                 onChanged: (selectedValue) {
                                   final selectedArea = context
                                       .read<AssignCubit>()
-                                      .areaModel
-                                       ?.data?.data
+                                      .allAreaModel
+                                      ?.data
+                                      ?.data
                                       ?.firstWhere(
                                           (area) => area.name == selectedValue);
 
@@ -442,15 +452,17 @@ class _AssignBodyState extends State<AssignBody> {
                                 hint: 'Select Area',
                                 items: context
                                             .read<AssignCubit>()
-                                            .areaModel
-                                             ?.data?.data
+                                            .allAreaModel
+                                            ?.data
+                                            ?.data
                                             ?.isEmpty ??
                                         true
                                     ? ['No area available']
                                     : context
                                             .read<AssignCubit>()
-                                            .areaModel
-                                             ?.data?.data
+                                            .allAreaModel
+                                            ?.data
+                                            ?.data
                                             ?.map((e) => e.name ?? 'Unknown')
                                             .toList() ??
                                         [],
@@ -579,8 +591,9 @@ class _AssignBodyState extends State<AssignBody> {
                                 onChanged: (selectedValue) {
                                   final selectedArea = context
                                       .read<AssignCubit>()
-                                      .areaModel
-                                      ?.data?.data
+                                      .allAreaModel
+                                      ?.data
+                                      ?.data
                                       ?.firstWhere(
                                           (area) => area.name == selectedValue);
 
@@ -591,15 +604,17 @@ class _AssignBodyState extends State<AssignBody> {
                                 hint: 'Select Area',
                                 items: context
                                             .read<AssignCubit>()
-                                            .areaModel
-                                            ?.data?.data
+                                            .allAreaModel
+                                            ?.data
+                                            ?.data
                                             ?.isEmpty ??
                                         true
                                     ? ['No area available']
                                     : context
                                             .read<AssignCubit>()
-                                            .areaModel
-                                            ?.data?.data
+                                            .allAreaModel
+                                            ?.data
+                                            ?.data
                                             ?.map((e) => e.name ?? 'Unknown')
                                             .toList() ??
                                         [],
@@ -764,8 +779,9 @@ class _AssignBodyState extends State<AssignBody> {
                                 onChanged: (selectedValue) {
                                   final selectedArea = context
                                       .read<AssignCubit>()
-                                      .areaModel
-                                       ?.data?.data
+                                      .allAreaModel
+                                      ?.data
+                                      ?.data
                                       ?.firstWhere(
                                           (area) => area.name == selectedValue);
 
@@ -776,15 +792,17 @@ class _AssignBodyState extends State<AssignBody> {
                                 hint: 'Select Area',
                                 items: context
                                             .read<AssignCubit>()
-                                            .areaModel
-                                             ?.data?.data
+                                            .allAreaModel
+                                            ?.data
+                                            ?.data
                                             ?.isEmpty ??
                                         true
                                     ? ['No area available']
                                     : context
                                             .read<AssignCubit>()
-                                            .areaModel
-                                             ?.data?.data
+                                            .allAreaModel
+                                            ?.data
+                                            ?.data
                                             ?.map((e) => e.name ?? 'Unknown')
                                             .toList() ??
                                         [],
@@ -1559,8 +1577,9 @@ class _AssignBodyState extends State<AssignBody> {
                                 onChanged: (selectedValue) {
                                   final selectedArea = context
                                       .read<AssignCubit>()
-                                      .areaModel
-                                      ?.data?.data
+                                      .allAreaModel
+                                      ?.data
+                                      ?.data
                                       ?.firstWhere(
                                           (area) => area.name == selectedValue);
 
@@ -1571,15 +1590,17 @@ class _AssignBodyState extends State<AssignBody> {
                                 hint: 'Select Area',
                                 items: context
                                             .read<AssignCubit>()
-                                            .areaModel
-                                         ?.data?.data
+                                            .allAreaModel
+                                            ?.data
+                                            ?.data
                                             ?.isEmpty ??
                                         true
                                     ? ['No area available']
                                     : context
                                             .read<AssignCubit>()
-                                            .areaModel
-                                          ?.data?.data
+                                            .allAreaModel
+                                            ?.data
+                                            ?.data
                                             ?.map((e) => e.name ?? 'Unknown')
                                             .toList() ??
                                         [],
@@ -1670,8 +1691,9 @@ class _AssignBodyState extends State<AssignBody> {
                                 onChanged: (selectedValue) {
                                   final selectedArea = context
                                       .read<AssignCubit>()
-                                      .areaModel
-                                   ?.data?.data
+                                      .allAreaModel
+                                      ?.data
+                                      ?.data
                                       ?.firstWhere(
                                           (area) => area.name == selectedValue);
 
@@ -1682,15 +1704,17 @@ class _AssignBodyState extends State<AssignBody> {
                                 hint: 'Select Area',
                                 items: context
                                             .read<AssignCubit>()
-                                            .areaModel
-                                           ?.data?.data
+                                            .allAreaModel
+                                            ?.data
+                                            ?.data
                                             ?.isEmpty ??
                                         true
                                     ? ['No area available']
                                     : context
                                             .read<AssignCubit>()
-                                            .areaModel
-                                           ?.data?.data
+                                            .allAreaModel
+                                            ?.data
+                                            ?.data
                                             ?.map((e) => e.name ?? 'Unknown')
                                             .toList() ??
                                         [],
@@ -1819,8 +1843,9 @@ class _AssignBodyState extends State<AssignBody> {
                                 onChanged: (selectedValue) {
                                   final selectedArea = context
                                       .read<AssignCubit>()
-                                      .areaModel
-                                      ?.data?.data
+                                      .allAreaModel
+                                      ?.data
+                                      ?.data
                                       ?.firstWhere(
                                           (area) => area.name == selectedValue);
 
@@ -1831,15 +1856,17 @@ class _AssignBodyState extends State<AssignBody> {
                                 hint: 'Select Area',
                                 items: context
                                             .read<AssignCubit>()
-                                            .areaModel
-                                            ?.data?.data
+                                            .allAreaModel
+                                            ?.data
+                                            ?.data
                                             ?.isEmpty ??
                                         true
                                     ? ['No area available']
                                     : context
                                             .read<AssignCubit>()
-                                            .areaModel
-                                            ?.data?.data
+                                            .allAreaModel
+                                            ?.data
+                                            ?.data
                                             ?.map((e) => e.name ?? 'Unknown')
                                             .toList() ??
                                         [],
@@ -2016,15 +2043,17 @@ class _AssignBodyState extends State<AssignBody> {
                                 hint: 'Select Area',
                                 items: context
                                             .read<AssignCubit>()
-                                            .areaModel
-                                           ?.data?.data
+                                            .allAreaModel
+                                            ?.data
+                                            ?.data
                                             ?.isEmpty ??
                                         true
                                     ? ['No area available']
                                     : context
                                             .read<AssignCubit>()
-                                            .areaModel
-                                           ?.data?.data
+                                            .allAreaModel
+                                            ?.data
+                                            ?.data
                                             ?.map((e) => e.name ?? 'Unknown')
                                             .toList() ??
                                         [],

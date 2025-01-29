@@ -43,12 +43,6 @@ class CustomFilterUserDialog {
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return S.of(context).validationCountry;
-                          }
-                          return null;
-                        },
                         hint: 'Select Country',
                         items: context
                                     .read<UserManagementCubit>()
@@ -79,22 +73,25 @@ class CustomFilterUserDialog {
                         hint: "Select organizations",
                         items: context
                                     .read<UserManagementCubit>()
-                                    .organizationModel
+                                    .allOrganizationModel
+                                    ?.data
                                     ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No organizations']
                             : context
                                     .read<UserManagementCubit>()
-                                    .organizationModel
+                                    .allOrganizationModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
-                        onChanged: (value) {
+                        onPressed: (value) {
                           final selectedOrganization = context
                               .read<UserManagementCubit>()
-                              .organizationModel
+                              .allOrganizationModel
+                              ?.data
                               ?.data
                               ?.firstWhere((organization) =>
                                   organization.name ==
@@ -135,7 +132,7 @@ class CustomFilterUserDialog {
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
-                        onChanged: (value) {
+                        onPressed: (value) {
                           final selectedBuilding = context
                               .read<UserManagementCubit>()
                               .buildingModel
@@ -179,7 +176,7 @@ class CustomFilterUserDialog {
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
-                        onChanged: (value) {
+                        onPressed: (value) {
                           final selectedFloor = context
                               .read<UserManagementCubit>()
                               .floorModel
@@ -250,32 +247,7 @@ class CustomFilterUserDialog {
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
-                        onPressed: (selectedValue) {
-                          final selectedId = context
-                              .read<UserManagementCubit>()
-                              .roleModel
-                              ?.data
-                              ?.firstWhere(
-                                (role) => role.name == selectedValue,
-                              )
-                              .id
-                              ?.toString();
-
-                          if (selectedId != null) {
-                            context
-                                .read<UserManagementCubit>()
-                                .roleIdController
-                                .text = selectedId;
-                          }
-                        },
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              value == 'No roles available') {
-                            return S.of(context).validationRole;
-                          }
-                          return null;
-                        },
+                       
                         hint: 'Select Role',
                         items: context
                                     .read<UserManagementCubit>()

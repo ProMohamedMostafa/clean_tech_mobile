@@ -51,10 +51,11 @@ class Data {
   String? idNumber;
   String? nationalityName;
   String? countryName;
-  String? providerId;
+  int? providerId;
   String? providerName;
   String? gender;
   String? role;
+  int? roleId;
   String? createdAt;
   String? updatedAt;
 
@@ -76,6 +77,7 @@ class Data {
       this.providerName,
       this.gender,
       this.role,
+      this.roleId,
       this.createdAt,
       this.updatedAt});
 
@@ -97,6 +99,7 @@ class Data {
     providerName = json['providerName'];
     gender = json['gender'];
     role = json['role'];
+    roleId = json['roleId'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
   }
@@ -120,6 +123,7 @@ class Data {
     data['providerName'] = providerName;
     data['gender'] = gender;
     data['role'] = role;
+    data['roleId'] = roleId;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
     return data;

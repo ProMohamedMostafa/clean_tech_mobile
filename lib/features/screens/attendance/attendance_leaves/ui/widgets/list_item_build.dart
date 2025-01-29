@@ -7,39 +7,18 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/logic/attendance_leaves_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/ui/widgets/pop_up_dialog.dart';
 
 Widget buildCardItem(BuildContext context, index) {
-  final List<String> status = ["Absent", "Late", "Present"];
-  final List<Color> statusColor = [
-    Colors.red,
-    Colors.orange,
-    Colors.green,
-  ];
-  String historystatus;
-  Color statusColorForTask;
-
-  //   // historystatus = context
-  //   //     .read<TaskManagementCubit>()
-  //   //     .allhistoryModel!
-  //   //     .data!
-  //   //     .data![index]
-  //   //     .status!;
-
-  // // Find the color based on the priority value
-  // if (status.contains(historystatus)) {
-  //   statusColorForTask = statusColor[status.indexOf(historystatus)];
-  // } else {
-  //   statusColorForTask = Colors.black;
-  // }
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 20),
     child: InkWell(
       onTap: () {
-        context.pushNamed(Routes.taskDetailsScreen,
+        context.pushNamed(Routes.leavesDetailsScreen,
             arguments: context
-                .read<TaskManagementCubit>()
-                .allTasksModel!
+                .read<AttendanceLeavesCubit>()
+                .attendanceLeavesModel!
                 .data!
                 .data![index]
                 .id!);
@@ -55,7 +34,7 @@ Widget buildCardItem(BuildContext context, index) {
             minHeight: 150.h,
           ),
           width: double.infinity,
-          padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
+          padding: EdgeInsets.fromLTRB(10, 0, 10, 5),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(11.r),
@@ -67,91 +46,87 @@ Widget buildCardItem(BuildContext context, index) {
             children: [
               Row(
                 children: [
-                  // Container(
-                  //   height: 23.h,
-                  //   margin: EdgeInsets.zero,
-                  //   padding: EdgeInsets.symmetric(horizontal: 5),
-                  //   decoration: BoxDecoration(
-                  //     color: statusColorForTask.withOpacity(0.2),
-                  //     borderRadius: BorderRadius.circular(4.r),
-                  //   ),
-                  //   child: Center(
-                  //     child: Text(
-                  //       context
-                  //           .read<TaskManagementCubit>()
-                  //           .allTasksModel!
-                  //           .data!
-                  //           .data![index]
-                  //           .priority!,
-                  //       style: TextStyles.font11WhiteSemiBold.copyWith(
-                  //         color: statusColorForTask,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
+                  Container(
+                    height: 23.h,
+                    margin: EdgeInsets.zero,
+                    padding: EdgeInsets.symmetric(horizontal: 5),
+                    decoration: BoxDecoration(
+                      color: Color(0xffF6DCDF),
+                      borderRadius: BorderRadius.circular(4.r),
+                    ),
+                    child: Center(
+                      child: Text(
+                        context
+                            .read<AttendanceLeavesCubit>()
+                            .attendanceLeavesModel!
+                            .data!
+                            .data![index]
+                            .type!,
+                        style: TextStyles.font11WhiteSemiBold.copyWith(
+                          color: Color(0xffD25260),
+                        ),
+                      ),
+                    ),
+                  ),
                   horizontalSpace(5),
                   Container(
                     height: 23.h,
                     margin: EdgeInsets.zero,
                     padding: EdgeInsets.symmetric(horizontal: 5),
                     decoration: BoxDecoration(
-                      color: Color(0xffA8ADA7),
+                      color: Colors.grey[300],
                       borderRadius: BorderRadius.circular(4.r),
                     ),
                     child: Center(
                       child: Text(
                         context
-                            .read<TaskManagementCubit>()
-                            .allTasksModel!
+                            .read<AttendanceLeavesCubit>()
+                            .attendanceLeavesModel!
                             .data!
                             .data![index]
-                            .status!,
+                            .userName!,
                         style: TextStyles.font11WhiteSemiBold
                             .copyWith(color: AppColor.primaryColor),
                       ),
                     ),
                   ),
                   Spacer(),
-                  Container(
-                    height: 23.h,
-                    margin: EdgeInsets.zero,
-                    padding: EdgeInsets.symmetric(horizontal: 5),
-                    decoration: BoxDecoration(
-                      color: Color(0xffA8ADA7),
-                      borderRadius: BorderRadius.circular(4.r),
-                    ),
-                    child: Center(
-                      child: Text(
-                        context
-                            .read<TaskManagementCubit>()
-                            .allTasksModel!
+                  IconButton(
+                    onPressed: () {
+                      PopUpDialog.show(
+                        context: context,
+                        id: context
+                            .read<AttendanceLeavesCubit>()
+                            .attendanceLeavesModel!
                             .data!
                             .data![index]
-                            .status!,
-                        style: TextStyles.font11WhiteSemiBold
-                            .copyWith(color: AppColor.primaryColor),
-                      ),
+                            .id!,
+                      );
+                    },
+                    icon: Icon(
+                      Icons.more_horiz_rounded,
+                      size: 22.sp,
                     ),
                   ),
                 ],
               ),
               Text(
                 context
-                    .read<TaskManagementCubit>()
-                    .allTasksModel!
+                    .read<AttendanceLeavesCubit>()
+                    .attendanceLeavesModel!
                     .data!
                     .data![index]
-                    .title!,
+                    .userName!,
                 style: TextStyles.font16BlackSemiBold,
               ),
               verticalSpace(10),
               Text(
                 context
-                    .read<TaskManagementCubit>()
-                    .allTasksModel!
+                    .read<AttendanceLeavesCubit>()
+                    .attendanceLeavesModel!
                     .data!
                     .data![index]
-                    .description!,
+                    .reason!,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
                 style: TextStyles.font11GreyMedium,
@@ -171,11 +146,11 @@ Widget buildCardItem(BuildContext context, index) {
                       children: [
                         TextSpan(
                           text: context
-                              .read<TaskManagementCubit>()
-                              .allTasksModel!
+                              .read<AttendanceLeavesCubit>()
+                              .attendanceLeavesModel!
                               .data!
                               .data![index]
-                              .startTime!,
+                              .startDate!,
                           style: TextStyles.font11WhiteSemiBold
                               .copyWith(color: AppColor.primaryColor),
                         ),
@@ -185,11 +160,11 @@ Widget buildCardItem(BuildContext context, index) {
                         ),
                         TextSpan(
                           text: context
-                              .read<TaskManagementCubit>()
-                              .allTasksModel!
+                              .read<AttendanceLeavesCubit>()
+                              .attendanceLeavesModel!
                               .data!
                               .data![index]
-                              .endTime!,
+                              .endDate!,
                           style: TextStyles.font11WhiteSemiBold
                               .copyWith(color: AppColor.primaryColor),
                         ),
@@ -203,7 +178,6 @@ Widget buildCardItem(BuildContext context, index) {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.blue,
-                      border: Border.all(color: Colors.white, width: 1.w),
                     ),
                   ),
                 ],

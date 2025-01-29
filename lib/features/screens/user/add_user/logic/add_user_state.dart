@@ -5,7 +5,6 @@ import 'package:smart_cleaning_application/features/screens/user/add_user/data/m
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/user_create.dart';
 import '../../../integrations/data/models/role_model.dart';
 import '../../../integrations/data/models/role_user_model.dart';
-import '../../../integrations/data/models/shift_model.dart';
 
 abstract class AddUserState {}
 
@@ -122,19 +121,6 @@ class AllProvidersSuccessState extends AddUserState {
 class AllProvidersErrorState extends AddUserState {
   final String error;
   AllProvidersErrorState(this.error);
-}
-//**************************** */
-
-class ShiftLoadingState extends AddUserState {}
-
-class ShiftSuccessState extends AddUserState {
-  final ShiftModel shiftModel;
-  ShiftSuccessState(this.shiftModel);
-}
-
-class ShiftErrorState extends AddUserState {
-  final String error;
-  ShiftErrorState(this.error);
 }
 
 //**************************** */

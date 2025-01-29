@@ -143,14 +143,14 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                         items: context
                                     .read<EditFloorCubit>()
                                     .areaModel
-                                   ?.data?.data
+                                   ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No areas']
                             : context
                                     .read<EditFloorCubit>()
                                     .areaModel
-                                   ?.data?.data
+                                   ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
@@ -166,7 +166,7 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                           final selectedArea = context
                               .read<EditFloorCubit>()
                               .areaModel
-                             ?.data?.data
+                             ?.data
                               ?.firstWhere((area) =>
                                   area.name ==
                                   context
@@ -198,15 +198,13 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                         items: context
                                     .read<EditFloorCubit>()
                                     .cityModel
-                                    ?.data
-                                    ?.isEmpty ??
+                                  ?.data?.isEmpty ??
                                 true
                             ? ['No cities']
                             : context
                                     .read<EditFloorCubit>()
                                     .cityModel
-                                    ?.data
-                                    ?.map((e) => e.name ?? 'Unknown')
+                             ?.data?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
                         validator: (value) {
@@ -221,8 +219,7 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                           final selectedCity = context
                               .read<EditFloorCubit>()
                               .cityModel
-                              ?.data
-                              ?.firstWhere((city) =>
+                           ?.data?.firstWhere((city) =>
                                   city.name ==
                                   context
                                       .read<EditFloorCubit>()

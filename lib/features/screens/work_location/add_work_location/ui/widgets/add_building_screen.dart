@@ -139,13 +139,13 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
         CustomDropDownList(
           hint: "Select area",
           items:
-              context.read<AddOrganizationCubit>().areaModel?.data?.data?.isEmpty ??
+              context.read<AddOrganizationCubit>().areaModel?.data?.isEmpty ??
                       true
                   ? ['No area']
                   : context
                           .read<AddOrganizationCubit>()
                           .areaModel
-                          ?.data?.data
+                          ?.data
                           ?.map((e) => e.name ?? 'Unknown')
                           .toList() ??
                       [],
@@ -159,7 +159,7 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
             final selectedArea = context
                 .read<AddOrganizationCubit>()
                 .areaModel
-                  ?.data?.data
+                ?.data
                 ?.firstWhere((area) =>
                     area.name ==
                     context.read<AddOrganizationCubit>().areaController.text);
@@ -300,10 +300,17 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
           style: TextStyles.font16BlackRegular,
         ),
         CustomDescriptionTextFormField(
-            controller: context
-                .read<AddOrganizationCubit>()
-                .buildingDiscriptionController,
-            hint: 'discription...'),
+          controller: context
+              .read<AddOrganizationCubit>()
+              .buildingDiscriptionController,
+          hint: 'discription...',
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return "Building description is required";
+            }
+            return null;
+          },
+        ),
         verticalSpace(10),
         context.read<AddOrganizationCubit>().allManagersModel?.data == null
             ? SizedBox.shrink()

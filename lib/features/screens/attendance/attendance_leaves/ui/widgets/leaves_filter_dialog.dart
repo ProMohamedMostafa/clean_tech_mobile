@@ -13,7 +13,7 @@ import 'package:smart_cleaning_application/features/screens/integrations/ui/widg
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
-class HistoryFilterDialog {
+class LeavesFilterDialog {
   static Future<String?> show({
     required BuildContext context,
   }) async {
@@ -162,10 +162,10 @@ class HistoryFilterDialog {
                         child: DefaultElevatedButton(
                             name: 'Done',
                             onPressed: () {
-                              // context
-                              //     .read<AttendanceLeavesCubit>()
-                              //     .getAllHistory();
-                              // context.pop();
+                              context
+                                  .read<AttendanceLeavesCubit>()
+                                  .getAllLeaves();
+                              context.pop();
                             },
                             color: AppColor.primaryColor,
                             height: 47,

@@ -4,6 +4,7 @@ import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/logic/attendance_leaves_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/ui/widgets/leaves_filter_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
 
 Widget attendanceLeavesFilterAndSearchBuild(
@@ -15,6 +16,7 @@ Widget attendanceLeavesFilterAndSearchBuild(
       children: [
         Expanded(
           child: CustomTextFormField(
+              color: AppColor.secondaryColor,
               perfixIcon: Icon(IconBroken.search),
               controller: cubit.searchController,
               hint: 'Find attendance leaves',
@@ -23,7 +25,17 @@ Widget attendanceLeavesFilterAndSearchBuild(
         ),
         horizontalSpace(10),
         InkWell(
-          onTap: () {},
+          onTap: () {
+            cubit.searchController.clear();
+            cubit.roleController.clear();
+            cubit.typeController.clear();
+            cubit.startDateController.clear();
+            cubit.endDateController.clear();
+
+            LeavesFilterDialog.show(
+              context: context,
+            );
+          },
           child: Container(
             height: 52,
             width: 52,

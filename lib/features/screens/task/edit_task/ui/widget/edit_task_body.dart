@@ -85,12 +85,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
             final taskFilesModel = editTaskCubit.taskFilesModel;
             final allTasksModel = editTaskCubit.allTasksModel;
 
-            if (state is GetAllTasksLoadingState ||
-                state is GetSupervisorLoadingState ||
-                state is GetUsersTaskLoadingState ||
-                state is GetTaskFilesLoadingState ||
-                state is GetTaskDetailsLoadingState ||
-                state is GetOrganizationLoadingState ||
+            if (
                 taskDetailsModel == null ||
                 supervisorModel == null ||
                 usersTaskModel == null ||

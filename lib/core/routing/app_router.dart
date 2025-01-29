@@ -6,10 +6,15 @@ import 'package:smart_cleaning_application/features/layout/main_layout/ui/screen
 import 'package:smart_cleaning_application/features/layout/splash/splash_screen.dart';
 import 'package:smart_cleaning_application/features/screens/assign/logic/assign_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/assign/ui/screen/assign_screen.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attedance_leaves_details/ui/screen/leaves_details_screen.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/logic/attendance_history_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/ui/screen/attendance_history_screen.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/logic/attendance_leaves_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/ui/screen/attendance_leaves_screen.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_add/logic/leaves_add_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_add/ui/screen/leaves_add_screen.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_edit/logic/leaves_edit_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_edit/ui/screen/leaves_edit_screen.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/ui/attendance_screen.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/logic/add_organization_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/screen/add_organization_screen.dart';
@@ -478,17 +483,33 @@ class AppRouter {
             child: AttendanceLeavesScreen(),
           ),
         );
-
-      // case Routes.historyDetailsScreen:
-      //   var id = settings.arguments as int;
-      //   return MaterialPageRoute(
-      //     builder: (_) => BlocProvider(
-      //       create: (context) => EditTaskCubit(),
-      //       child: EditTaskScreen(
-      //         id: id,
-      //       ),
-      //     ),
-      //   );
+      case Routes.createleavesScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => LeavesAddCubit(),
+            child: LeavesAddScreen(),
+          ),
+        );
+      case Routes.editleavesScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => LeavesEditCubit(),
+            child: LeavesEditScreen(
+              id: id,
+            ),
+          ),
+        );
+      case Routes.leavesDetailsScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => AttendanceLeavesCubit(),
+            child: LeavesDetailsScreen(
+              id: id,
+            ),
+          ),
+        );
 
       default:
         return null;

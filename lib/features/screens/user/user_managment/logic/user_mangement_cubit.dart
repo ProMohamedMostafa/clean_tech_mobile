@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/delete_user_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/deleted_list_model.dart';
@@ -13,7 +14,6 @@ import 'package:smart_cleaning_application/features/screens/user/user_managment/
 import '../../../integrations/data/models/building_model.dart';
 import '../../../integrations/data/models/floor_model.dart';
 import '../../../integrations/data/models/nationality_model.dart';
-import '../../../integrations/data/models/organization_model.dart';
 import '../../../integrations/data/models/points_model.dart';
 import '../../../integrations/data/models/role_model.dart';
 import '../../../integrations/data/models/users_model.dart';
@@ -29,7 +29,6 @@ class UserManagementCubit extends Cubit<UserManagementState> {
   TextEditingController buildingController = TextEditingController();
   TextEditingController floorController = TextEditingController();
   TextEditingController pointController = TextEditingController();
-  TextEditingController roleIdController = TextEditingController();
   TextEditingController roleController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
@@ -94,7 +93,7 @@ class UserManagementCubit extends Cubit<UserManagementState> {
       'building': buildingId,
       'floor': floorId,
       'point': pointId,
-      'role': roleIdController.text,
+      'role': roleController.text,
       'search': searchController.text
     }).then((value) {
       usersModel = UsersModel.fromJson(value!.data);
@@ -159,12 +158,12 @@ class UserManagementCubit extends Cubit<UserManagementState> {
     });
   }
 
-  OrganizationModel? organizationModel;
+  AllOrganizationModel? allOrganizationModel;
   getOrganization() {
     emit(GetOrganizationLoadingState());
     DioHelper.getData(url: ApiConstants.organizationUrl).then((value) {
-      organizationModel = OrganizationModel.fromJson(value!.data);
-      emit(GetOrganizationSuccessState(organizationModel!));
+      allOrganizationModel = AllOrganizationModel.fromJson(value!.data);
+      emit(GetOrganizationSuccessState(allOrganizationModel!));
     }).catchError((error) {
       emit(GetOrganizationErrorState(error.toString()));
     });

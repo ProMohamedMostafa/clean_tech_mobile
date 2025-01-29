@@ -179,7 +179,7 @@ class EditBuildingCubit extends Cubit<EditBuildingState> {
   AllManagersModel? allManagersModel;
   getManagers() {
     emit(AllManagersLoadingState());
-    DioHelper.getData(url: 'users/manager/1').then((value) {
+    DioHelper.getData(url: 'users/role/2').then((value) {
       allManagersModel = AllManagersModel.fromJson(value!.data);
       emit(AllManagersSuccessState(allManagersModel!));
     }).catchError((error) {
@@ -190,7 +190,7 @@ class EditBuildingCubit extends Cubit<EditBuildingState> {
   AllSupervisorsModel? allSupervisorsModel;
   getSupervisors() {
     emit(AllSupervisorsLoadingState());
-    DioHelper.getData(url: 'users/manager/2').then((value) {
+    DioHelper.getData(url: 'users/role/3').then((value) {
       allSupervisorsModel = AllSupervisorsModel.fromJson(value!.data);
       emit(AllSupervisorsSuccessState(allSupervisorsModel!));
     }).catchError((error) {
@@ -201,7 +201,7 @@ class EditBuildingCubit extends Cubit<EditBuildingState> {
   AllCleanersModel? allCleanersModel;
   getCleaners() {
     emit(AllCleanersLoadingState());
-    DioHelper.getData(url: 'users/manager/3').then((value) {
+    DioHelper.getData(url: 'users/role/4').then((value) {
       allCleanersModel = AllCleanersModel.fromJson(value!.data);
       emit(AllCleanersSuccessState(allCleanersModel!));
     }).catchError((error) {

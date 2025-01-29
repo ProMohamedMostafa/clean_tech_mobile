@@ -64,4 +64,8 @@ class ApiConstants {
   static const assignPointShiftUrl = "assign/point/shift";
 
   static const hisotryUrl = "attendance/history";
+  static const leavesUrl = "leaves/pagination";
+  static const leavesCreateUrl = "leaves/create";
+  static const leavesEditUrl = "leaves/edit";
+
 }

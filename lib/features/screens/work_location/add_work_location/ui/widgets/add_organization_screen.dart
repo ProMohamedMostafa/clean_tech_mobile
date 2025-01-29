@@ -139,13 +139,13 @@ class _AddOrganizationDetailsScreenState
         CustomDropDownList(
           hint: "Select area",
           items:
-              context.read<AddOrganizationCubit>().areaModel?.data?.data?.isEmpty ??
+              context.read<AddOrganizationCubit>().areaModel?.data?.isEmpty ??
                       true
                   ? ['No area']
                   : context
                           .read<AddOrganizationCubit>()
                           .areaModel
-                           ?.data?.data
+                           ?.data
                           ?.map((e) => e.name ?? 'Unknown')
                           .toList() ??
                       [],
@@ -159,7 +159,7 @@ class _AddOrganizationDetailsScreenState
             final selectedArea = context
                 .read<AddOrganizationCubit>()
                 .areaModel
-                ?.data?.data
+                ?.data
                 ?.firstWhere((area) =>
                     area.name ==
                     context.read<AddOrganizationCubit>().areaController.text);
@@ -184,8 +184,7 @@ class _AddOrganizationDetailsScreenState
                   : context
                           .read<AddOrganizationCubit>()
                           .cityModel
-                          ?.data
-                          ?.map((e) => e.name ?? 'Unknown')
+                         ?.data?.map((e) => e.name ?? 'Unknown')
                           .toList() ??
                       [],
           validator: (value) {
@@ -198,8 +197,7 @@ class _AddOrganizationDetailsScreenState
             final selectedCity = context
                 .read<AddOrganizationCubit>()
                 .cityModel
-                ?.data
-                ?.firstWhere((city) =>
+               ?.data?.firstWhere((city) =>
                     city.name ==
                     context.read<AddOrganizationCubit>().cityController.text);
             cityId = selectedCity!.id!;

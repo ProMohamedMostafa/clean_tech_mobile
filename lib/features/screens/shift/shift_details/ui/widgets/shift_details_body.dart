@@ -284,7 +284,7 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody> {
                                       .shiftDelete(widget.id);
                                 });
                               },
-                              color: AppColor.primaryColor,
+                              color: Colors.red,
                               height: 48,
                               width: double.infinity,
                               textStyles: TextStyles.font20Whitesemimedium),

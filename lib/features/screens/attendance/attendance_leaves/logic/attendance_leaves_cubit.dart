@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/data/models/attendance_leaves_model.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/logic/attendance_leaves_state.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_edit/data/models/leaves_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_model.dart';
 
 class AttendanceLeavesCubit extends Cubit<AttendanceLeavesState> {
@@ -14,30 +16,25 @@ class AttendanceLeavesCubit extends Cubit<AttendanceLeavesState> {
   TextEditingController roleController = TextEditingController();
   TextEditingController typeController = TextEditingController();
   TextEditingController typeIdController = TextEditingController();
-
   TextEditingController startDateController = TextEditingController();
   TextEditingController endDateController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
 
-
-
-  // AttendanceHistoryModel? attendanceHistoryModel;
-  // getAllHistory() {
-  //   emit(HistoryLoadingState());
-  //   DioHelper.getData(url: ApiConstants.hisotryUrl, query: {
-  //     'search': searchController.text,
-  //     'role': roleController.text,
-  //     'shift': shiftIdController.text,
-  //     'status': statusIdController.text,
-  //     'startDate': startDateController.text,
-  //     'endDate': endDateController.text
-  //   }).then((value) {
-  //     attendanceHistoryModel = AttendanceHistoryModel.fromJson(value!.data);
-  //     emit(HistorySuccessState(attendanceHistoryModel!));
-  //   }).catchError((error) {
-  //     emit(HistoryErrorState(error.toString()));
-  //   });
-  // }
+  AttendanceLeavesModel? attendanceLeavesModel;
+  getAllLeaves() {
+    emit(LeavesLoadingState());
+    DioHelper.getData(url: ApiConstants.leavesUrl, query: {
+      'search': searchController.text,
+      'role': roleController.text,
+      'type': typeIdController.text,
+      'startDate': startDateController.text,
+      'endDate': endDateController.text
+    }).then((value) {
+      attendanceLeavesModel = AttendanceLeavesModel.fromJson(value!.data);
+      emit(LeavesSuccessState(attendanceLeavesModel!));
+    }).catchError((error) {
+      emit(LeavesErrorState(error.toString()));
+    });
+  }
 
   RoleModel? roleModel;
   getRole() {
@@ -49,5 +46,29 @@ class AttendanceLeavesCubit extends Cubit<AttendanceLeavesState> {
       emit(RoleErrorState(error.toString()));
     });
   }
+
+  leavesDelete(int id) {
+    emit(LeavesDeleteLoadingState());
+    DioHelper.deleteData(url: 'leaves/delete/$id', data: {'id': id})
+        .then((value) {
+      final message = value?.data['message'] ?? "restored successfully";
+      emit(LeavesDeleteSuccessState(message!));
+    }).catchError((error) {
+      emit(LeavesDeleteErrorState(error.toString()));
+    });
+  }
+
+LeavesDetailsModel? leavesDetailsModel;
+  getLeavesDetails(int? id) {
+    emit(LeavesDetailsLoadingState());
+    DioHelper.getData(url: "leaves/$id").then((value) {
+      leavesDetailsModel = LeavesDetailsModel.fromJson(value!.data);
+      emit(LeavesDetailsSuccessState(leavesDetailsModel!));
+    }).catchError((error) {
+      emit(LeavesDetailsErrorState(error.toString()));
+    });
+  }
+
+  
 
 }

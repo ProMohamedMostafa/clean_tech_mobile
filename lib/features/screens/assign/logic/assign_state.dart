@@ -1,4 +1,5 @@
 import 'package:smart_cleaning_application/features/screens/assign/data/assign_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_area_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_user_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
@@ -73,9 +74,9 @@ class RoleUserErrorState extends AssignStates {
 class GetAreaLoadingState extends AssignStates {}
 
 class GetAreaSuccessState extends AssignStates {
-  final AreaModel areaModel;
+  final AllAreaModel allAreaModel;
 
-  GetAreaSuccessState(this.areaModel);
+  GetAreaSuccessState(this.allAreaModel);
 }
 
 class GetAreaErrorState extends AssignStates {

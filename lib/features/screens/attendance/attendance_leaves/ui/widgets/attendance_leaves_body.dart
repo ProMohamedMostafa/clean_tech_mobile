@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
+import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/logic/attendance_leaves_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/logic/attendance_leaves_state.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/ui/widgets/attendance_leaves_filter_search_build.dart';
@@ -16,53 +20,95 @@ class AttendanceLeavesBody extends StatefulWidget {
 }
 
 class _AttendanceLeavesBodyState extends State<AttendanceLeavesBody> {
-  //  @override
-  // void initState() {
-  //   context.read<AttendanceLeavesCubit>()
-  //     ..getAllHistory()
-  //     ..getRole();
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    context.read<AttendanceLeavesCubit>()
+      ..getAllLeaves()
+      ..getRole();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Leaves'),
-        leading: customBackButton(context),
-      ),
-      body: BlocConsumer<AttendanceLeavesCubit, AttendanceLeavesState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          //  if (context
-          //         .read<AttendanceLeavesCubit>()
-          //         .attendanceHistoryModel
-          //         ?.data ==
-          //     null) {
-          //   return Center(
-          //     child: CircularProgressIndicator(
-          //       color: AppColor.primaryColor,
-          //     ),
-          //   );
-          // }
-          return SafeArea(
-              child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                verticalSpace(15),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: attendanceLeavesFilterAndSearchBuild(
-                      context, context.read<AttendanceLeavesCubit>()),
+    return BlocConsumer<AttendanceLeavesCubit, AttendanceLeavesState>(
+      listener: (context, state) {
+        if (state is LeavesDeleteSuccessState) {
+          toast(text: state.message, color: Colors.blue);
+          context.read<AttendanceLeavesCubit>()
+            ..getAllLeaves()
+            ..getRole();
+        }
+        if (state is LeavesDeleteErrorState) {
+          toast(text: state.error, color: Colors.red);
+        }
+      },
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('Leaves'),
+            leading: customBackButton(context),
+          ),
+          floatingActionButton: Padding(
+            padding: const EdgeInsets.only(bottom: 30),
+            child: SizedBox(
+              height: 57.h,
+              width: 57.w,
+              child: ElevatedButton(
+                onPressed: () {
+                  context.pushNamed(Routes.createleavesScreen);
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: REdgeInsets.all(0),
+                  backgroundColor: AppColor.primaryColor,
+                  shape: CircleBorder(),
+                  side: BorderSide(
+                    color: AppColor.secondaryColor,
+                    width: 1.w,
+                  ),
                 ),
-                verticalSpace(15),
-                attendanceLeavesListDetailsBuild(context),
-                verticalSpace(30)
-              ],
+                child: Icon(
+                  Icons.assignment_add,
+                  color: Colors.white,
+                  size: 28.sp,
+                ),
+              ),
             ),
-          ));
-        },
-      ),
+          ),
+          body: BlocConsumer<AttendanceLeavesCubit, AttendanceLeavesState>(
+            listener: (context, state) {},
+            builder: (context, state) {
+              if (context
+                      .read<AttendanceLeavesCubit>()
+                      .attendanceLeavesModel
+                      ?.data ==
+                  null) {
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: AppColor.primaryColor,
+                  ),
+                );
+              }
+              return SafeArea(
+                  child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    verticalSpace(15),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: attendanceLeavesFilterAndSearchBuild(
+                          context, context.read<AttendanceLeavesCubit>()),
+                    ),
+                    verticalSpace(15),
+                    attendanceLeavesListDetailsBuild(context),
+                    verticalSpace(30)
+                  ],
+                ),
+              ));
+            },
+          ),
+        );
+      },
     );
   }
 }

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -20,7 +19,6 @@ import 'package:smart_cleaning_application/features/screens/user/add_user/logic/
 import 'package:smart_cleaning_application/features/screens/user/add_user/ui/widgets/add_provider_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/ui/widgets/add_user_text_form_field.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
-import '../../../../integrations/data/models/shift_model.dart';
 
 class AddUserBody extends StatefulWidget {
   const AddUserBody({super.key});
@@ -38,7 +36,7 @@ class _AddUserBodyState extends State<AddUserBody> {
       ..getRole()
       ..getProviders()
       ..getAllDeletedProviders()
-      ..getShifts();
+      ;
     super.initState();
   }
 
@@ -541,8 +539,6 @@ class _AddUserBodyState extends State<AddUserBody> {
                         int? managerId;
                         if (selectedRole!.id! == 1) {
                           managerId = 1;
-                        } else if (selectedRole.id! == 5) {
-                          managerId = 1;
                         } else {
                           managerId = selectedRole.id! - 1;
                         }
@@ -733,98 +729,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                               [],
                     ),
                     verticalSpace(10),
-                    context.read<AddUserCubit>().shiftModel?.data == null
-                        ? SizedBox.shrink()
-                        : RichText(
-                            textAlign: TextAlign.center,
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'Shift',
-                                  style: TextStyles.font16BlackRegular,
-                                ),
-                                TextSpan(
-                                  text: ' (Optional)',
-                                  style: TextStyles.font14GreyRegular,
-                                ),
-                              ],
-                            ),
-                          ),
-                    context.read<AddUserCubit>().shiftModel?.data == null
-                        ? SizedBox.shrink()
-                        : MultiDropdown<ShiftDetails>(
-                            items: context
-                                        .read<AddUserCubit>()
-                                        .shiftModel
-                                        ?.data
-                                        ?.data
-                                        ?.isEmpty ??
-                                    true
-                                ? [
-                                    DropdownItem(
-                                      label: 'No shifts available',
-                                      value: ShiftDetails(
-                                          id: null,
-                                          name: 'No shifts available'),
-                                    )
-                                  ]
-                                : context
-                                    .read<AddUserCubit>()
-                                    .shiftModel!
-                                    .data!
-                                    .data!
-                                    .map((shift) => DropdownItem(
-                                          label: shift.name!,
-                                          value: shift,
-                                        ))
-                                    .toList(),
-                            controller:
-                                context.read<AddUserCubit>().shiftController,
-                            enabled: true,
-                            chipDecoration: ChipDecoration(
-                              backgroundColor: Colors.grey[300],
-                              wrap: true,
-                              runSpacing: 5,
-                              spacing: 5,
-                            ),
-                            fieldDecoration: FieldDecoration(
-                              hintText: 'Select shift',
-                              suffixIcon: Icon(IconBroken.arrowDown2),
-                              hintStyle: TextStyle(
-                                  fontSize: 12.sp, color: AppColor.thirdColor),
-                              showClearIcon: false,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.r),
-                                borderSide:
-                                    const BorderSide(color: Colors.grey),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.r),
-                                borderSide: const BorderSide(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.r),
-                                borderSide: const BorderSide(
-                                  color: Colors.red,
-                                ),
-                              ),
-                            ),
-                            dropdownDecoration: const DropdownDecoration(
-                              maxHeight: 200,
-                            ),
-                            dropdownItemDecoration: DropdownItemDecoration(
-                              selectedIcon: const Icon(Icons.check_box,
-                                  color: Colors.blue),
-                            ),
-                            onSelectionChange: (selectedItems) {
-                              selectedShiftsIds = selectedItems
-                                  .map((item) => (item).id!)
-                                  .toList();
-                            },
-                          ),
-                    verticalSpace(10),
+                  
                     RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(

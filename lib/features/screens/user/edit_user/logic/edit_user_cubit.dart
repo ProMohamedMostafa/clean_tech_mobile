@@ -173,16 +173,7 @@ class EditUserCubit extends Cubit<EditUserState> {
     });
   }
 
-  ShiftModel? shiftModel;
-  getShifts() {
-    emit(ShiftLoadingState());
-    DioHelper.getData(url: 'shifts/pagination').then((value) {
-      shiftModel = ShiftModel.fromJson(value!.data);
-      emit(ShiftSuccessState(shiftModel!));
-    }).catchError((error) {
-      emit(ShiftErrorState(error.toString()));
-    });
-  }
+  
 
   GalleryModel? gellaryModel;
   XFile? image;

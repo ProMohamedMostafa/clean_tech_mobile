@@ -2,7 +2,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_user_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/edit_user/data/model/edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_details_model.dart';
@@ -103,19 +102,7 @@ class AllProvidersErrorState extends EditUserState {
   AllProvidersErrorState(this.error);
 }
 
-//**************************** */
 
-class ShiftLoadingState extends EditUserState {}
-
-class ShiftSuccessState extends EditUserState {
-  final ShiftModel shiftModel;
-  ShiftSuccessState(this.shiftModel);
-}
-
-class ShiftErrorState extends EditUserState {
-  final String error;
-  ShiftErrorState(this.error);
-}
 
 //**************************** */
 

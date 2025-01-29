@@ -1,3 +1,4 @@
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/delete_user_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/deleted_list_model.dart';
@@ -8,7 +9,6 @@ import 'package:smart_cleaning_application/features/screens/user/user_managment/
 import '../../../integrations/data/models/building_model.dart';
 import '../../../integrations/data/models/floor_model.dart';
 import '../../../integrations/data/models/nationality_model.dart';
-import '../../../integrations/data/models/organization_model.dart';
 import '../../../integrations/data/models/points_model.dart';
 import '../../../integrations/data/models/role_model.dart';
 import '../../../integrations/data/models/users_model.dart';
@@ -219,9 +219,9 @@ class RoleErrorState extends UserManagementState {
 class GetOrganizationLoadingState extends UserManagementState {}
 
 class GetOrganizationSuccessState extends UserManagementState {
-  final OrganizationModel organizationModel;
+  final AllOrganizationModel allOrganizationModel;
 
-  GetOrganizationSuccessState(this.organizationModel);
+  GetOrganizationSuccessState(this.allOrganizationModel);
 }
 
 class GetOrganizationErrorState extends UserManagementState {

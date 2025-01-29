@@ -143,14 +143,14 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                         items: context
                                     .read<EditBuildingCubit>()
                                     .areaModel
-                                    ?.data?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No areas']
                             : context
                                     .read<EditBuildingCubit>()
                                     .areaModel
-                                    ?.data?.data
+                                    ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
@@ -166,7 +166,7 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                           final selectedArea = context
                               .read<EditBuildingCubit>()
                               .areaModel
-                             ?.data?.data
+                             ?.data
                               ?.firstWhere((area) =>
                                   area.name ==
                                   context
@@ -205,8 +205,7 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                             : context
                                     .read<EditBuildingCubit>()
                                     .cityModel
-                                    ?.data
-                                    ?.map((e) => e.name ?? 'Unknown')
+                                 ?.data?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
                         validator: (value) {
@@ -221,8 +220,7 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                           final selectedCity = context
                               .read<EditBuildingCubit>()
                               .cityModel
-                              ?.data
-                              ?.firstWhere((city) =>
+                         ?.data?.firstWhere((city) =>
                                   city.name ==
                                   context
                                       .read<EditBuildingCubit>()

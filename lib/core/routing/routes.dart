@@ -56,6 +56,8 @@ class Routes {
 
   static const String attendanceScreen = '/attendanceScreen';
   static const String historyScreen = '/historyScreen';
-  static const String historyDetailsScreen = '/historyDetailsScreen';
+  static const String leavesDetailsScreen = '/leavesDetailsScreen';
   static const String leavesScreen = '/leavesScreen';
+  static const String createleavesScreen = '/createleavesScreen';
+  static const String editleavesScreen = '/editleavesScreen';
 }

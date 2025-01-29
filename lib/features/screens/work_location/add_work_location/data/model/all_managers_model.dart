@@ -23,13 +23,13 @@ class AllManagersModel {
     if (json['data'] != null) {
       data = <ManagersData>[];
       json['data'].forEach((v) {
-        data!.add( ManagersData.fromJson(v));
+        data!.add(ManagersData.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['statusCode'] = statusCode;
     data['meta'] = meta;
     data['succeeded'] = succeeded;
@@ -47,27 +47,22 @@ class ManagersData {
   String? userName;
   String? firstName;
   String? lastName;
-  String? role;
-  String? email;
-  String? image;
+  List<Shifts>? shifts;
 
   ManagersData(
-      {this.id,
-      this.userName,
-      this.firstName,
-      this.lastName,
-      this.role,
-      this.email,
-      this.image});
+      {this.id, this.userName, this.firstName, this.lastName, this.shifts});
 
   ManagersData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userName = json['userName'];
     firstName = json['firstName'];
     lastName = json['lastName'];
-    role = json['role'];
-    email = json['email'];
-    image = json['image'];
+    if (json['shifts'] != null) {
+      shifts = <Shifts>[];
+      json['shifts'].forEach((v) {
+        shifts!.add(Shifts.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -76,9 +71,46 @@ class ManagersData {
     data['userName'] = userName;
     data['firstName'] = firstName;
     data['lastName'] = lastName;
-    data['role'] = role;
-    data['email'] = email;
-    data['image'] = image;
+    if (shifts != null) {
+      data['shifts'] = shifts!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Shifts {
+  int? id;
+  String? name;
+  String? startDate;
+  String? endDate;
+  String? startTime;
+  String? endTime;
+
+  Shifts(
+      {this.id,
+      this.name,
+      this.startDate,
+      this.endDate,
+      this.startTime,
+      this.endTime});
+
+  Shifts.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    startDate = json['startDate'];
+    endDate = json['endDate'];
+    startTime = json['startTime'];
+    endTime = json['endTime'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['startDate'] = startDate;
+    data['endDate'] = endDate;
+    data['startTime'] = startTime;
+    data['endTime'] = endTime;
     return data;
   }
 }

@@ -4,6 +4,7 @@ import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/assign/data/assign_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_area_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_user_model.dart';
 import 'package:smart_cleaning_application/features/screens/assign/logic/assign_state.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_model.dart';
@@ -211,12 +212,12 @@ class AssignCubit extends Cubit<AssignStates> {
     });
   }
 
-  AreaModel? areaModel;
+  AllAreaModel? allAreaModel;
   getArea() {
     emit(GetAreaLoadingState());
     DioHelper.getData(url: ApiConstants.areaUrl).then((value) {
-      areaModel = AreaModel.fromJson(value!.data);
-      emit(GetAreaSuccessState(areaModel!));
+      allAreaModel = AllAreaModel.fromJson(value!.data);
+      emit(GetAreaSuccessState(allAreaModel!));
     }).catchError((error) {
       emit(GetAreaErrorState(error.toString()));
     });

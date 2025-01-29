@@ -133,17 +133,22 @@ class _AddCityScreenState extends State<AddCityScreen> {
         ),
         CustomDropDownList(
           hint: "Select area",
-          items:
-              context.read<AddOrganizationCubit>().areaModel  ?.data?.data?.isEmpty ??
-                      true
-                  ? ['No area']
-                  : context
-                          .read<AddOrganizationCubit>()
-                          .areaModel
-                           ?.data?.data
-                          ?.map((e) => e.name ?? 'Unknown')
-                          .toList() ??
-                      [],
+          items: context
+                      .read<AddOrganizationCubit>()
+                      .areaModel
+                      ?.data
+                  
+                      ?.isEmpty ??
+                  true
+              ? ['No area']
+              : context
+                      .read<AddOrganizationCubit>()
+                      .areaModel
+                      ?.data
+               
+                      ?.map((e) => e.name ?? 'Unknown')
+                      .toList() ??
+                  [],
           validator: (value) {
             if (value == null || value.isEmpty || value == "No area") {
               return "Area is required";
@@ -154,7 +159,8 @@ class _AddCityScreenState extends State<AddCityScreen> {
             final selectedArea = context
                 .read<AddOrganizationCubit>()
                 .areaModel
-                  ?.data?.data
+                ?.data
+          
                 ?.firstWhere((area) =>
                     area.name ==
                     context.read<AddOrganizationCubit>().areaController.text);

@@ -139,13 +139,13 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
         CustomDropDownList(
           hint: "Select area",
           items:
-              context.read<AddOrganizationCubit>().areaModel?.data?.data?.isEmpty ??
+              context.read<AddOrganizationCubit>().areaModel?.data?.isEmpty ??
                       true
                   ? ['No area']
                   : context
                           .read<AddOrganizationCubit>()
                           .areaModel
-                           ?.data?.data
+                          ?.data
                           ?.map((e) => e.name ?? 'Unknown')
                           .toList() ??
                       [],
@@ -159,7 +159,7 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
             final selectedArea = context
                 .read<AddOrganizationCubit>()
                 .areaModel
-                 ?.data?.data
+                ?.data
                 ?.firstWhere((area) =>
                     area.name ==
                     context.read<AddOrganizationCubit>().areaController.text);
@@ -346,9 +346,16 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
           style: TextStyles.font16BlackRegular,
         ),
         CustomDescriptionTextFormField(
-            controller:
-                context.read<AddOrganizationCubit>().floorDiscriptionController,
-            hint: 'discription...'),
+          controller:
+              context.read<AddOrganizationCubit>().floorDiscriptionController,
+          hint: 'discription...',
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return "floor description is required";
+            }
+            return null;
+          },
+        ),
         verticalSpace(10),
         context.read<AddOrganizationCubit>().allManagersModel?.data == null
             ? SizedBox.shrink()

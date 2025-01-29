@@ -100,129 +100,114 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
           }
         },
         builder: (context, state) {
-          if (state is AllUsersLoadingState &&
-              state is DeletedUsersLoadingState &&
-              state is GetNationalityLoadingState &&
-              state is GetOrganizationLoadingState &&
-              state is RoleLoadingState) {
+          if (context.read<UserManagementCubit>().usersModel == null &&
+              context.read<UserManagementCubit>().deletedListModel == null) {
             return Center(
               child: CircularProgressIndicator(
                 color: AppColor.primaryColor,
               ),
             );
           }
-          if (state is AllUsersSuccessState ||
-              state is DeletedUsersSuccessState ||
-              state is GetNationalitySuccessState ||
-              state is GetOrganizationSuccessState ||
-              state is RoleSuccessState) {
-            return SafeArea(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      verticalSpace(15),
-                      filterAndSearchBuild(
-                          context, context.read<UserManagementCubit>()),
-                      verticalSpace(15),
-                      Center(
-                        child: SizedBox(
-                          height: 45.h,
-                          child: LayoutBuilder(
-                            builder: (context, constraints) {
-                              // Total available width
-                              double totalWidth = constraints.maxWidth;
-                              // Gap between the containers
-                              double gap = 10;
-                              // Width for each container
-                              double containerWidth = (totalWidth - gap) / 2;
 
-                              return ListView.separated(
-                                scrollDirection: Axis.horizontal,
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: 2,
-                                separatorBuilder: (context, index) {
-                                  return SizedBox(
-                                      width:
-                                          gap); // 10px gap between containers
-                                },
-                                itemBuilder: (context, index) {
-                                  bool isSelected = selectedIndex == index;
+          return SafeArea(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    verticalSpace(15),
+                    filterAndSearchBuild(
+                        context, context.read<UserManagementCubit>()),
+                    verticalSpace(15),
+                    Center(
+                      child: SizedBox(
+                        height: 45.h,
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            // Total available width
+                            double totalWidth = constraints.maxWidth;
+                            // Gap between the containers
+                            double gap = 10;
+                            // Width for each container
+                            double containerWidth = (totalWidth - gap) / 2;
 
-                                  return GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        selectedIndex = index;
-                                      });
-                                    },
-                                    child: Container(
-                                      height: 45.h,
-                                      width: containerWidth,
-                                      decoration: BoxDecoration(
-                                        color: isSelected
-                                            ? AppColor.primaryColor
-                                            : Colors.white,
-                                        borderRadius:
-                                            BorderRadius.circular(8.r),
-                                        border: Border.all(
-                                          color: AppColor.secondaryColor,
-                                          width: 1,
-                                        ),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            index == 0
-                                                ? "${context.read<UserManagementCubit>().usersModel?.data?.users!.length ?? 0}"
-                                                : "${context.read<UserManagementCubit>().deletedListModel?.data?.length ?? 0}",
-                                            style: TextStyle(
-                                              fontSize: 13.sp,
-                                              color: isSelected
-                                                  ? Colors.white
-                                                  : AppColor.primaryColor,
-                                            ),
-                                          ),
-                                          SizedBox(width: 5),
-                                          Text(
-                                            index == 0
-                                                ? "Total Users"
-                                                : 'Deleted User',
-                                            style: TextStyle(
-                                              fontSize: 13.sp,
-                                              color: isSelected
-                                                  ? Colors.white
-                                                  : AppColor.primaryColor,
-                                            ),
-                                          ),
-                                        ],
+                            return ListView.separated(
+                              scrollDirection: Axis.horizontal,
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: 2,
+                              separatorBuilder: (context, index) {
+                                return SizedBox(
+                                    width: gap); // 10px gap between containers
+                              },
+                              itemBuilder: (context, index) {
+                                bool isSelected = selectedIndex == index;
+
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedIndex = index;
+                                    });
+                                  },
+                                  child: Container(
+                                    height: 45.h,
+                                    width: containerWidth,
+                                    decoration: BoxDecoration(
+                                      color: isSelected
+                                          ? AppColor.primaryColor
+                                          : Colors.white,
+                                      borderRadius: BorderRadius.circular(8.r),
+                                      border: Border.all(
+                                        color: AppColor.secondaryColor,
+                                        width: 1,
                                       ),
                                     ),
-                                  );
-                                },
-                              );
-                            },
-                          ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          index == 0
+                                              ? "${context.read<UserManagementCubit>().usersModel?.data?.users!.length ?? 0}"
+                                              : "${context.read<UserManagementCubit>().deletedListModel?.data?.length ?? 0}",
+                                          style: TextStyle(
+                                            fontSize: 13.sp,
+                                            color: isSelected
+                                                ? Colors.white
+                                                : AppColor.primaryColor,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Text(
+                                          index == 0
+                                              ? "Total Users"
+                                              : 'Deleted User',
+                                          style: TextStyle(
+                                            fontSize: 13.sp,
+                                            color: isSelected
+                                                ? Colors.white
+                                                : AppColor.primaryColor,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
                         ),
                       ),
-                      verticalSpace(10),
-                      Divider(
-                        color: Colors.grey[300],
-                      ),
-                      userDetailsBuild(context, selectedIndex!),
-                    ],
-                  ),
+                    ),
+                    verticalSpace(10),
+                    Divider(
+                      color: Colors.grey[300],
+                    ),
+                    userDetailsBuild(context, selectedIndex!),
+                  ],
                 ),
               ),
-            );
-          }
-          return Center(
-            child: CircularProgressIndicator(
-              color: AppColor.primaryColor,
             ),
           );
         },

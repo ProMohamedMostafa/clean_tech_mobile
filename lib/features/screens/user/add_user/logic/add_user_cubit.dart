@@ -183,17 +183,6 @@ class AddUserCubit extends Cubit<AddUserState> {
     });
   }
 
-  ShiftModel? shiftModel;
-  getShifts() {
-    emit(ShiftLoadingState());
-    DioHelper.getData(url: 'shifts/pagination').then((value) {
-      shiftModel = ShiftModel.fromJson(value!.data);
-      emit(ShiftSuccessState(shiftModel!));
-    }).catchError((error) {
-      emit(ShiftErrorState(error.toString()));
-    });
-  }
-
   IconData suffixIcon = Icons.visibility_outlined;
   bool ispassword = true;
   changeSuffixIconVisiability() {
