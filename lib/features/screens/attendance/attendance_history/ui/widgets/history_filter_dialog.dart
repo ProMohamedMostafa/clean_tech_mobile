@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -159,15 +160,35 @@ class HistoryFilterDialog {
                                     .startDateController,
                                 suffixIcon: Icons.calendar_today,
                                 suffixPressed: () async {
-                                  final selectedDate =
-                                      await CustomDatePicker.show(
-                                          context: context);
+                                  DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(1900),
+                                    lastDate: DateTime(3025),
+                                    builder:
+                                        (BuildContext context, Widget? child) {
+                                      return Theme(
+                                        data: Theme.of(context).copyWith(
+                                          dialogBackgroundColor: Colors.white,
+                                          colorScheme: ColorScheme.light(
+                                            primary: AppColor.primaryColor,
+                                            onPrimary: Colors.white,
+                                            onSurface: Colors.black,
+                                          ),
+                                        ),
+                                        child: child!,
+                                      );
+                                    },
+                                  );
+                                  if (pickedDate != null) {
+                                    String formattedDate =
+                                        DateFormat('yyyy-MM-dd')
+                                            .format(pickedDate);
 
-                                  if (selectedDate != null && context.mounted) {
                                     context
                                         .read<AttendanceHistoryCubit>()
                                         .startDateController
-                                        .text = selectedDate;
+                                        .text = formattedDate;
                                   }
                                 },
                                 keyboardType: TextInputType.none,

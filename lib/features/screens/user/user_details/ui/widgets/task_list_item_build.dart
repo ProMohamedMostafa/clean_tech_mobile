@@ -7,7 +7,6 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/ui/widget/pop_up_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
 
@@ -55,7 +54,7 @@ Widget buildTaskCardItem(BuildContext context, index) {
           minHeight: 150.h,
         ),
         width: double.infinity,
-        padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
+        padding: EdgeInsets.fromLTRB(10, 0, 10, 5),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(11.r),
@@ -112,53 +111,6 @@ Widget buildTaskCardItem(BuildContext context, index) {
                   ),
                 ),
                 Spacer(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        showCustomDialog(
-                            context, "Are you Sure to restore this task ?", () {
-                          context
-                              .read<UserManagementCubit>()
-                              .restoreDeletedUser(context
-                                  .read<UserManagementCubit>()
-                                  .deletedListModel!
-                                  .data![index]
-                                  .id!);
-                          context.pop();
-                        });
-                      },
-                      child: Icon(
-                        Icons.replay_outlined,
-                        size: 26,
-                        color: AppColor.thirdColor,
-                      ),
-                    ),
-                    horizontalSpace(8),
-                    InkWell(
-                      onTap: () {
-                        showCustomDialog(context, "Forced Delete this task",
-                            () {
-                          context
-                              .read<UserManagementCubit>()
-                              .restoreDeletedUser(context
-                                  .read<UserManagementCubit>()
-                                  .deletedListModel!
-                                  .data![index]
-                                  .id!);
-                          context.pop();
-                        });
-                      },
-                      child: Icon(
-                        IconBroken.delete,
-                        color: AppColor.thirdColor,
-                      ),
-                    ),
-                    horizontalSpace(5),
-                  ],
-                ),
                 IconButton(
                   onPressed: () {
                     PopUpDialog.show(
@@ -174,7 +126,7 @@ Widget buildTaskCardItem(BuildContext context, index) {
                     Icons.more_horiz_rounded,
                     size: 22.sp,
                   ),
-                ),
+                )
               ],
             ),
             Text(

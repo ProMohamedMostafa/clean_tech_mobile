@@ -4,7 +4,7 @@ class FloorModel {
   bool? succeeded;
   String? message;
   String? error;
-  List<Data>? data;
+  List<FloorData>? data;
 
   FloorModel(
       {this.statusCode,
@@ -21,9 +21,9 @@ class FloorModel {
     message = json['message'];
     error = json['error'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <FloorData>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(FloorData.fromJson(v));
       });
     }
   }
@@ -42,15 +42,15 @@ class FloorModel {
   }
 }
 
-class Data {
+class FloorData {
   String? name;
   int? id;
   String? createdAt;
   String? updatedAt;
 
-  Data({this.name, this.id, this.createdAt, this.updatedAt});
+  FloorData({this.name, this.id, this.createdAt, this.updatedAt});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  FloorData.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     id = json['id'];
     createdAt = json['createdAt'];

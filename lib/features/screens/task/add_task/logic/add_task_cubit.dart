@@ -5,6 +5,7 @@ import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/all_tasks_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/create_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/gallary_model.dart';
@@ -13,7 +14,6 @@ import 'package:smart_cleaning_application/features/screens/task/add_task/logic/
 
 import '../../../integrations/data/models/building_model.dart';
 import '../../../integrations/data/models/floor_model.dart';
-import '../../../integrations/data/models/organization_model.dart';
 import '../../../integrations/data/models/points_model.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -92,12 +92,12 @@ class AddTaskCubit extends Cubit<AddTaskState> {
     });
   }
 
-  OrganizationModel? organizationModel;
+  AllOrganizationModel? allOrganizationModel;
   getOrganization() {
     emit(GetOrganizationLoadingState());
     DioHelper.getData(url: ApiConstants.organizationUrl).then((value) {
-      organizationModel = OrganizationModel.fromJson(value!.data);
-      emit(GetOrganizationSuccessState(organizationModel!));
+      allOrganizationModel = AllOrganizationModel.fromJson(value!.data);
+      emit(GetOrganizationSuccessState(allOrganizationModel!));
     }).catchError((error) {
       emit(GetOrganizationErrorState(error.toString()));
     });

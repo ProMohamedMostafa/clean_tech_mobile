@@ -5,7 +5,6 @@ import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
-import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts/logic/shift_cubit.dart';
@@ -188,29 +187,6 @@ class _ShiftBodyState extends State<ShiftBody> {
                         ),
                       ),
                       verticalSpace(10),
-                      Divider(
-                        color: Colors.grey[300],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Shift Name",
-                            style: TextStyles.font11GreyMedium,
-                          ),
-                          horizontalSpace(25),
-                          Text(
-                            "Shift Time",
-                            style: TextStyles.font11GreyMedium,
-                          ),
-                          horizontalSpace(25),
-                          Text(
-                            "Shift Date",
-                            style: TextStyles.font11GreyMedium,
-                          ),
-                          Spacer()
-                        ],
-                      ),
                       Divider(
                         color: Colors.grey[300],
                       ),

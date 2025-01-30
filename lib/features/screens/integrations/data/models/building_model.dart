@@ -4,7 +4,7 @@ class BuildingModel {
   bool? succeeded;
   String? message;
   String? error;
-  List<Data>? data;
+  List<BuildingData>? data;
 
   BuildingModel(
       {this.statusCode,
@@ -21,9 +21,9 @@ class BuildingModel {
     message = json['message'];
     error = json['error'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <BuildingData>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(BuildingData.fromJson(v));
       });
     }
   }
@@ -42,15 +42,15 @@ class BuildingModel {
   }
 }
 
-class Data {
+class BuildingData {
   String? name;
   int? id;
   String? createdAt;
   String? updatedAt;
 
-  Data({this.name, this.id, this.createdAt, this.updatedAt});
+  BuildingData({this.name, this.id, this.createdAt, this.updatedAt});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  BuildingData.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     id = json['id'];
     createdAt = json['createdAt'];

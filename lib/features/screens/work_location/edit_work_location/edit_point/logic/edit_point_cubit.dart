@@ -45,7 +45,7 @@ class EditPointCubit extends Cubit<EditPointState> {
       List<int>? selectedManagersIds,
       List<int>? selectedSupervisorsIds,
       List<int>? selectedCleanersIds,
-      List<int>? shiftController) async {
+      List<int>? shifts) async {
     emit(EditPointLoadingState());
     try {
       final managersIds = selectedManagersIds?.isEmpty ?? true
@@ -75,7 +75,7 @@ class EditPointCubit extends Cubit<EditPointState> {
             ? pointDetailsInEditModel!.data!.floorId
             : floorIdController.text,
         "managersIds": [...?managersIds, ...?supervisorsIds, ...?cleanersIds],
-        "shiftsIds": shiftController ?? pointShiftsDetailsModel!.data!.shifts,
+        "shiftsIds": shifts?? pointShiftsDetailsModel!.data!.shifts,
       });
       editPointModel = PointEditModel.fromJson(response!.data);
       emit(EditPointSuccessState(editPointModel!));

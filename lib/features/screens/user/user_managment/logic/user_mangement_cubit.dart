@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/data/models/attendance_history_model.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/data/models/attendance_leaves_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/delete_user_model.dart';
@@ -150,7 +152,7 @@ class UserManagementCubit extends Cubit<UserManagementState> {
   NationalityModel? nationalityModel;
   getNationality() {
     emit(GetNationalityLoadingState());
-    DioHelper.getData(url: ApiConstants.countriesUrl).then((value) {
+    DioHelper.getData(url: 'countries/used/user').then((value) {
       nationalityModel = NationalityModel.fromJson(value!.data);
       emit(GetNationalitySuccessState(nationalityModel!));
     }).catchError((error) {
@@ -210,6 +212,38 @@ class UserManagementCubit extends Cubit<UserManagementState> {
       emit(RoleSuccessState(roleModel!));
     }).catchError((error) {
       emit(RoleErrorState(error.toString()));
+    });
+  }
+
+  AttendanceHistoryModel? attendanceHistoryModel;
+  getAllHistory(int id) {
+    emit(HistoryLoadingState());
+    DioHelper.getData(url: ApiConstants.hisotryUrl, query: {
+      'search': searchController.text,
+      'role': roleController.text,
+      'userId': id,
+      // 'status': statusIdController.text,
+      // 'startDate': startDateController.text,
+      // 'endDate': endDateController.text
+    }).then((value) {
+      attendanceHistoryModel = AttendanceHistoryModel.fromJson(value!.data);
+      emit(HistorySuccessState(attendanceHistoryModel!));
+    }).catchError((error) {
+      emit(HistoryErrorState(error.toString()));
+    });
+  }
+
+  AttendanceLeavesModel? attendanceLeavesModel;
+  getAllLeaves(int id) {
+    emit(LeavesLoadingState());
+    DioHelper.getData(url: ApiConstants.leavesUrl, query: {
+      'search': searchController.text,
+      'assignTo': id,
+    }).then((value) {
+      attendanceLeavesModel = AttendanceLeavesModel.fromJson(value!.data);
+      emit(LeavesSuccessState(attendanceLeavesModel!));
+    }).catchError((error) {
+      emit(LeavesErrorState(error.toString()));
     });
   }
 }

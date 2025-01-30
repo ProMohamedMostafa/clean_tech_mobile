@@ -485,7 +485,7 @@ class _AddShiftBodyState extends State<AddShiftBody> {
                           },
                           suffixIcon: IconBroken.arrowDown2,
                           controller:
-                              context.read<AddShiftCubit>().buildingController,
+                              context.read<AddShiftCubit>().pointController,
                           isRead: false,
                           keyboardType: TextInputType.text,
                         ),

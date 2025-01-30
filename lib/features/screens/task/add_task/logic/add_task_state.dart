@@ -1,8 +1,8 @@
 import 'package:image_picker/image_picker.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/points_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/all_tasks_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/create_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/supervisor_model.dart';
@@ -42,9 +42,9 @@ class GetAllTasksErrorState extends AddTaskState {
 class GetOrganizationLoadingState extends AddTaskState {}
 
 class GetOrganizationSuccessState extends AddTaskState {
-  final OrganizationModel organizationModel;
+  final AllOrganizationModel allOrganizationModel;
 
-  GetOrganizationSuccessState(this.organizationModel);
+  GetOrganizationSuccessState(this.allOrganizationModel);
 }
 
 class GetOrganizationErrorState extends AddTaskState {

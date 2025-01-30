@@ -4,7 +4,7 @@ class PointsModel {
   bool? succeeded;
   String? message;
   String? error;
-  List<Data>? data;
+  List<PointData>? data;
 
   PointsModel(
       {this.statusCode,
@@ -21,9 +21,9 @@ class PointsModel {
     message = json['message'];
     error = json['error'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <PointData>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(PointData.fromJson(v));
       });
     }
   }
@@ -42,15 +42,15 @@ class PointsModel {
   }
 }
 
-class Data {
+class PointData {
   String? name;
   int? id;
   String? createdAt;
   String? updatedAt;
 
-  Data({this.name, this.id, this.createdAt, this.updatedAt});
+  PointData({this.name, this.id, this.createdAt, this.updatedAt});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  PointData.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     id = json['id'];
     createdAt = json['createdAt'];

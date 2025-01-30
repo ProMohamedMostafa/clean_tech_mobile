@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
@@ -13,6 +14,8 @@ import 'package:smart_cleaning_application/core/widgets/default_button/default_e
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/attendance_list_item_build.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/leaves_list_item_build.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/shift_list_item_build.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/task_list_item_build.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
@@ -37,8 +40,10 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
     context.read<UserManagementCubit>().getUserShiftDetails(widget.id);
     context.read<UserManagementCubit>().getUserTaskDetails(widget.id);
     context.read<UserManagementCubit>().getUserWorkLocationDetails(widget.id);
+    context.read<UserManagementCubit>().getAllHistory(widget.id);
+    context.read<UserManagementCubit>().getAllLeaves(widget.id);
 
-    controller = TabController(length: 5, vsync: this);
+    controller = TabController(length: 6, vsync: this);
     controller.addListener(() {
       setState(() {});
     });
@@ -105,6 +110,8 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                       .read<UserManagementCubit>()
                       .userWorkLocationDetailsModel
                       ?.data ==
+                  null ||
+              context.read<UserManagementCubit>().attendanceLeavesModel?.data ==
                   null) {
             return Center(
               child: CircularProgressIndicator(
@@ -132,7 +139,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                       ),
                       child: ClipOval(
                         child: Image.network(
-                          'http://10.0.2.2:7111${context.read<UserManagementCubit>().userDetailsModel?.data?.image ?? ''}',
+                          '${ApiConstants.apiBaseUrl}${context.read<UserManagementCubit>().userDetailsModel!.data!.image}',
                           fit: BoxFit.fill,
                           errorBuilder: (context, error, stackTrace) {
                             return Image.asset(
@@ -244,6 +251,17 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                                   fontSize: 14.sp),
                             ),
                           ),
+                          Tab(
+                            child: Text(
+                              "Leaves",
+                              style: TextStyle(
+                                  color: controller.index == 5
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14.sp),
+                            ),
+                          ),
                         ]),
                   ),
                   verticalSpace(20),
@@ -253,7 +271,8 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                       locationUserDetails(),
                       userShiftsDetails(),
                       userTasksDetails(),
-                      userAttendanceDetails()
+                      userAttendanceDetails(),
+                      userLeavesDetails()
                     ]),
                   ),
                   verticalSpace(15),
@@ -413,41 +432,24 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
         ),
       );
     } else {
-      return ListView.builder(
-        physics: const BouncingScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        itemCount: shiftModel.data!.shifts!.length,
-        itemBuilder: (context, index) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(
-                    "Shift Name",
-                    style: TextStyles.font11GreyMedium,
-                  ),
-                  Text(
-                    "Shift Time",
-                    style: TextStyles.font11GreyMedium,
-                  ),
-                  Text(
-                    "Shift Date",
-                    style: TextStyles.font11GreyMedium,
-                  ),
-                ],
-              ),
-              Divider(
-                color: Colors.grey[300],
-              ),
-              listShiftItemBuild(context, index),
-              Divider(
-                color: Colors.grey[300],
-              ),
-            ],
-          );
-        },
+      return Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              itemCount: shiftModel.data!.shifts!.length,
+              itemBuilder: (context, index) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    listShiftItemBuild(context, index),
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
       );
     }
   }
@@ -461,94 +463,190 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
           style: TextStyles.font13Blackmedium,
         ),
       );
-    } else {
-      return ListView.separated(
-        physics: const BouncingScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        itemCount: taskModel.data!.data!.length,
-        separatorBuilder: (context, index) {
-          return verticalSpace(10);
-        },
-        itemBuilder: (context, index) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              buildTaskCardItem(context, index),
-            ],
-          );
-        },
-      );
     }
+    return Column(
+      children: [
+        Divider(),
+        verticalSpace(5),
+        SizedBox(
+          height: 45.h,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Filter',
+                style: TextStyles.font16BlackSemiBold,
+              ),
+              InkWell(
+                onTap: () {},
+                child: Container(
+                  height: 52,
+                  width: 52,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.r),
+                    border: Border.all(color: AppColor.secondaryColor),
+                  ),
+                  child: Icon(
+                    Icons.tune,
+                    color: AppColor.primaryColor,
+                    size: 25.sp,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        verticalSpace(10),
+        ListView.separated(
+          shrinkWrap: true,
+          physics: const BouncingScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          itemCount: taskModel.data!.data!.length,
+          separatorBuilder: (context, index) {
+            return verticalSpace(10);
+          },
+          itemBuilder: (context, index) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                buildTaskCardItem(context, index),
+              ],
+            );
+          },
+        )
+      ],
+    );
   }
 
   Widget userAttendanceDetails() {
-    // final userModel = context.read<UserManagementCubit>().userDetailsModel!;
+    final attendanceData =
+        context.read<UserManagementCubit>().attendanceHistoryModel?.data?.data;
 
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          rowDetailsBuild(context, "Name Shift", "Morning"),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
+    if (attendanceData == null || attendanceData.isEmpty) {
+      return Center(
+        child: Text(
+          "There's no data",
+          style: TextStyles.font13Blackmedium,
+        ),
+      );
+    }
+    return Column(
+      children: [
+        Divider(),
+        verticalSpace(5),
+        SizedBox(
+          height: 45.h,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Filter',
+                style: TextStyles.font16BlackSemiBold,
+              ),
+              InkWell(
+                onTap: () {},
+                child: Container(
+                  height: 52,
+                  width: 52,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.r),
+                    border: Border.all(color: AppColor.secondaryColor),
+                  ),
+                  child: Icon(
+                    Icons.tune,
+                    color: AppColor.primaryColor,
+                    size: 25.sp,
+                  ),
+                ),
+              ),
+            ],
           ),
-          rowDetailsBuild(context, "Start Date", "1/12/2025"),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
+        ),
+        verticalSpace(10),
+        ListView.separated(
+          shrinkWrap: true,
+          physics: const ClampingScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          itemCount: attendanceData.length,
+          separatorBuilder: (context, index) {
+            return verticalSpace(10);
+          },
+          itemBuilder: (context, index) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                buildAttendanceCardItem(context, index),
+              ],
+            );
+          },
+        )
+      ],
+    );
+  }
+
+  Widget userLeavesDetails() {
+    final attendanceData =
+        context.read<UserManagementCubit>().attendanceHistoryModel?.data?.data;
+
+    if (attendanceData == null || attendanceData.isEmpty) {
+      return Center(
+        child: Text(
+          "There's no data",
+          style: TextStyles.font13Blackmedium,
+        ),
+      );
+    }
+    return Column(
+      children: [
+        Divider(),
+        verticalSpace(5),
+        SizedBox(
+          height: 45.h,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Filter',
+                style: TextStyles.font16BlackSemiBold,
+              ),
+              InkWell(
+                onTap: () {},
+                child: Container(
+                  height: 52,
+                  width: 52,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.r),
+                    border: Border.all(color: AppColor.secondaryColor),
+                  ),
+                  child: Icon(
+                    Icons.tune,
+                    color: AppColor.primaryColor,
+                    size: 25.sp,
+                  ),
+                ),
+              ),
+            ],
           ),
-          rowDetailsBuild(context, "End Date", "20/12/2026"),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(context, "Start Time", "06:30 AM"),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(context, "End Time", "09:30 PM"),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(context, "Organization", "Ai cloud"),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(context, "Building", "Building 3"),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(context, "Floor", "2"),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(context, "Point", "meeting room"),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(context, "Manager", "Eng.Mohamed"),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(context, "Supervisor", "Mr.Amr"),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(context, "Cleaner", "Om yousef"),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-        ],
-      ),
+        ),
+        verticalSpace(10),
+        ListView.separated(
+          shrinkWrap: true,
+          physics: const ClampingScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          itemCount: attendanceData.length,
+          separatorBuilder: (context, index) {
+            return verticalSpace(10);
+          },
+          itemBuilder: (context, index) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                buildLeavesCardItem(context, index),
+              ],
+            );
+          },
+        )
+      ],
     );
   }
 }

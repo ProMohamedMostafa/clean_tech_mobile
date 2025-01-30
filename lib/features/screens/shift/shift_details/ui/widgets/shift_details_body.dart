@@ -25,10 +25,8 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody> {
   @override
   void initState() {
     context.read<ShiftCubit>().getShiftDetails(widget.id);
-    context.read<ShiftCubit>().getShiftOrganizations(widget.id);
-    context.read<ShiftCubit>().getShiftBuildings(widget.id);
-    context.read<ShiftCubit>().getShiftFloors(widget.id);
-    context.read<ShiftCubit>().getShiftPoints(widget.id);
+    context.read<ShiftCubit>().getShiftLevelDetails(widget.id);
+
     super.initState();
   }
 
@@ -63,7 +61,8 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody> {
         },
         builder: (context, state) {
           final cubit = context.read<ShiftCubit>();
-          if (cubit.shiftDetailsModel == null) {
+          if (cubit.shiftDetailsModel == null ||
+              cubit.shiftLevelDetailsModel == null ) {
             return const Center(
               child: CircularProgressIndicator(color: AppColor.primaryColor),
             );
@@ -149,16 +148,18 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody> {
                           ),
                           context
                                   .read<ShiftCubit>()
-                                  .shiftOrganizationsModel!
+                                  .shiftLevelDetailsModel!
                                   .data!
+                                  .organizations!
                                   .isEmpty
                               ? Text("No Organization")
                               : Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: context
                                       .read<ShiftCubit>()
-                                      .shiftOrganizationsModel!
+                                      .shiftLevelDetailsModel!
                                       .data!
+                                      .organizations!
                                       .map((organization) =>
                                           Text(organization.name ?? ""))
                                       .toList(),
@@ -178,16 +179,18 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody> {
                           ),
                           context
                                   .read<ShiftCubit>()
-                                  .shiftBuildingsModel!
+                                  .shiftLevelDetailsModel!
                                   .data!
+                                  .buildings!
                                   .isEmpty
                               ? Text("No Building")
                               : Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: context
                                       .read<ShiftCubit>()
-                                      .shiftBuildingsModel!
+                                      .shiftLevelDetailsModel!
                                       .data!
+                                      .buildings!
                                       .map((building) =>
                                           Text(building.name ?? ""))
                                       .toList(),
@@ -207,16 +210,18 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody> {
                           ),
                           context
                                   .read<ShiftCubit>()
-                                  .shiftFloorsModel!
+                                  .shiftLevelDetailsModel!
                                   .data!
+                                  .floors!
                                   .isEmpty
                               ? Text("No Floor")
                               : Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: context
                                       .read<ShiftCubit>()
-                                      .shiftFloorsModel!
+                                      .shiftLevelDetailsModel!
                                       .data!
+                                      .floors!
                                       .map((floor) => Text(floor.name ?? ""))
                                       .toList(),
                                 ),
@@ -235,36 +240,23 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody> {
                           ),
                           context
                                   .read<ShiftCubit>()
-                                  .shiftPointsModel!
+                                  .shiftLevelDetailsModel!
                                   .data!
+                                  .points!
                                   .isEmpty
                               ? Text("No Points")
                               : Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: context
                                       .read<ShiftCubit>()
-                                      .shiftPointsModel!
+                                      .shiftLevelDetailsModel!
                                       .data!
+                                      .points!
                                       .map((point) => Text(point.name ?? ""))
                                       .toList(),
                                 ),
                         ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Divider(),
-                      ),
-                      rowDetailsBuild(context, "Manager", "Eng.Mohamed"),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Divider(),
-                      ),
-                      rowDetailsBuild(context, "Supervisor", "Mr.Amr"),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Divider(),
-                      ),
-                      rowDetailsBuild(context, "Cleaner", "Om yousef"),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Divider(),

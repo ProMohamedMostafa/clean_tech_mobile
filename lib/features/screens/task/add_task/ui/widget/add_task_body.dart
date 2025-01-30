@@ -247,14 +247,16 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                           hint: "Select organizations",
                           items: context
                                       .read<AddTaskCubit>()
-                                      .organizationModel
+                                      .allOrganizationModel
+                                      ?.data
                                       ?.data
                                       ?.isEmpty ??
                                   true
                               ? ['No organizations']
                               : context
                                       .read<AddTaskCubit>()
-                                      .organizationModel
+                                      .allOrganizationModel
+                                      ?.data
                                       ?.data
                                       ?.map((e) => e.name ?? 'Unknown')
                                       .toList() ??
@@ -262,7 +264,8 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                           onChanged: (value) {
                             final selectedOrganization = context
                                 .read<AddTaskCubit>()
-                                .organizationModel
+                                .allOrganizationModel
+                                ?.data
                                 ?.data
                                 ?.firstWhere((organization) =>
                                     organization.name ==
@@ -703,12 +706,6 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                             selectedIcon:
                                 const Icon(Icons.check_box, color: Colors.blue),
                           ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please select a ${role == 'Manager' ? 'supervisor' : 'cleaner'}';
-                            }
-                            return null;
-                          },
                           onSelectionChange: (selectedItems) {
                             selectedSupervisorIds = selectedItems
                                 .map((item) => (item).id!)

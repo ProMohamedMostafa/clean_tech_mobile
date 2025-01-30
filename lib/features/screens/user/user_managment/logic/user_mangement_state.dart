@@ -1,3 +1,5 @@
+import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/data/models/attendance_history_model.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/data/models/attendance_leaves_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/delete_user_model.dart';
@@ -272,4 +274,30 @@ class GetPointsErrorState extends UserManagementState {
 }
 
 
-//**************************** */
+//********************** */
+class HistoryLoadingState extends UserManagementState {}
+
+class HistorySuccessState extends UserManagementState {
+  final AttendanceHistoryModel attendanceHistoryModel;
+
+  HistorySuccessState(this.attendanceHistoryModel);
+}
+
+class HistoryErrorState extends UserManagementState {
+  final String error;
+  HistoryErrorState(this.error);
+}
+
+//********************** */
+class LeavesLoadingState extends UserManagementState {}
+
+class LeavesSuccessState extends UserManagementState {
+  final AttendanceLeavesModel attendanceLeavesModel;
+
+  LeavesSuccessState(this.attendanceLeavesModel);
+}
+
+class LeavesErrorState extends UserManagementState {
+  final String error;
+  LeavesErrorState(this.error);
+}
