@@ -10,6 +10,7 @@ import 'package:smart_cleaning_application/features/screens/assign/logic/assign_
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
 import '../../integrations/data/models/building_model.dart';
 import '../../integrations/data/models/city_model.dart';
 import '../../integrations/data/models/floor_model.dart';
@@ -276,4 +277,17 @@ class AssignCubit extends Cubit<AssignStates> {
       emit(GetPointErrorState(error.toString()));
     });
   }
+
+ OrganizationListModel? organizationListModel;
+  getAllOrganization() {
+    emit(OrganizationAllLoadingState());
+    DioHelper.getData(
+        url: ApiConstants.organizationUrl).then((value) {
+      organizationListModel = OrganizationListModel.fromJson(value!.data);
+      emit(OrganizationAllSuccessState(organizationListModel!));
+    }).catchError((error) {
+      emit(OrganizationAllErrorState(error.toString()));
+    });
+  }
+
 }

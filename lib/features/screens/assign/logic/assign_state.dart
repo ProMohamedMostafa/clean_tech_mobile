@@ -4,6 +4,7 @@ import 'package:smart_cleaning_application/features/screens/integrations/data/mo
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
 
 import '../../integrations/data/models/building_model.dart';
 import '../../integrations/data/models/city_model.dart';
@@ -151,4 +152,18 @@ class GetPointSuccessState extends AssignStates {
 class GetPointErrorState extends AssignStates {
   final String error;
   GetPointErrorState(this.error);
+}
+//******************************** */
+
+class OrganizationAllLoadingState extends AssignStates {}
+
+class OrganizationAllSuccessState extends AssignStates {
+  final OrganizationListModel organizationListModel;
+
+  OrganizationAllSuccessState(this.organizationListModel);
+}
+
+class OrganizationAllErrorState extends AssignStates {
+  final String error;
+  OrganizationAllErrorState(this.error);
 }
