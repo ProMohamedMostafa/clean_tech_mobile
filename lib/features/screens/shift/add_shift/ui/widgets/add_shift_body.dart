@@ -313,7 +313,7 @@ class _AddShiftBodyState extends State<AddShiftBody> {
                           isRead: false,
                           keyboardType: TextInputType.text,
                         ),
-                        verticalSpace(15),
+                        verticalSpace(10),
                         RichText(
                           textAlign: TextAlign.center,
                           text: TextSpan(

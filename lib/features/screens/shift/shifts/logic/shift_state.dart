@@ -1,3 +1,9 @@
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_area_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/points_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts/data/model/all_shifts_deleted_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts/data/model/all_shifts_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts/data/model/shift_details_model.dart';
@@ -109,4 +115,88 @@ class ShiftLevelDetailsSuccessState extends ShiftState {
 class ShiftLevelDetailsErrorState extends ShiftState {
   final String error;
   ShiftLevelDetailsErrorState(this.error);
+}
+//**************************** */
+
+class GetAreaLoadingState extends ShiftState {}
+
+class GetAreaSuccessState extends ShiftState {
+  final AllAreaModel allAreaModel;
+
+  GetAreaSuccessState(this.allAreaModel);
+}
+
+class GetAreaErrorState extends ShiftState {
+  final String error;
+  GetAreaErrorState(this.error);
+}
+//**************************** */
+
+class GetCityLoadingState extends ShiftState {}
+
+class GetCitySuccessState extends ShiftState {
+  final CityModel cityModel;
+
+  GetCitySuccessState(this.cityModel);
+}
+
+class GetCityErrorState extends ShiftState {
+  final String error;
+  GetCityErrorState(this.error);
+}
+//**************************** */
+
+class GetOrganizationLoadingState extends ShiftState {}
+
+class GetOrganizationSuccessState extends ShiftState {
+  final OrganizationModel organizationModel;
+
+  GetOrganizationSuccessState(this.organizationModel);
+}
+
+class GetOrganizationErrorState extends ShiftState {
+  final String error;
+  GetOrganizationErrorState(this.error);
+}
+//**************************** */
+
+class GetBuildingLoadingState extends ShiftState {}
+
+class GetBuildingSuccessState extends ShiftState {
+  final BuildingModel buildingModel;
+
+  GetBuildingSuccessState(this.buildingModel);
+}
+
+class GetBuildingErrorState extends ShiftState {
+  final String error;
+  GetBuildingErrorState(this.error);
+}
+//**************************** */
+
+class GetFloorLoadingState extends ShiftState {}
+
+class GetFloorSuccessState extends ShiftState {
+  final FloorModel floorModel;
+
+  GetFloorSuccessState(this.floorModel);
+}
+
+class GetFloorErrorState extends ShiftState {
+  final String error;
+  GetFloorErrorState(this.error);
+}
+//**************************** */
+
+class GetPointLoadingState extends ShiftState {}
+
+class GetPointSuccessState extends ShiftState {
+  final PointsModel pointsModel;
+
+  GetPointSuccessState(this.pointsModel);
+}
+
+class GetPointErrorState extends ShiftState {
+  final String error;
+  GetPointErrorState(this.error);
 }

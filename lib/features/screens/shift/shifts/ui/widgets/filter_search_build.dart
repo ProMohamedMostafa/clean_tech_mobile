@@ -5,6 +5,7 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts/logic/shift_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shifts/ui/widgets/filter_dialog_.dart';
 
 Widget filterAndSearchBuild(BuildContext context, ShiftCubit cubit) {
   return Row(
@@ -35,9 +36,9 @@ Widget filterAndSearchBuild(BuildContext context, ShiftCubit cubit) {
           // cubit.buildingController.clear();
           // cubit.pointController.clear();
           // cubit.roleController.clear();
-          // CustomFilterUserDialog.show(
-          //   context: context,
-          // );
+          CustomFilterShiftDialog.show(
+            context: context,
+          );
         },
         child: Container(
           height: 49,

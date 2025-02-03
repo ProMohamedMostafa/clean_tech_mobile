@@ -39,7 +39,7 @@ class OrganizationsCubit extends Cubit<OrganizationsState> {
     emit(AreaLoadingState());
     DioHelper.getData(
         url: ApiConstants.areaUrl,
-        query: {"searchQuery": searchController.text}).then((value) {
+        query: {"search": searchController.text}).then((value) {
       areaModel = AreaListModel.fromJson(value!.data);
       emit(AreaSuccessState(areaModel!));
     }).catchError((error) {

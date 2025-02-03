@@ -18,6 +18,7 @@ import 'package:smart_cleaning_application/features/screens/user/user_details/ui
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/leaves_list_item_build.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/shift_list_item_build.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/task_list_item_build.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/work_location_list_item_build.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_state.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
@@ -393,8 +394,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
   Widget locationUserDetails() {
     final workLocationModel =
         context.read<UserManagementCubit>().userWorkLocationDetailsModel!;
-    if (workLocationModel.data?.areas == null ||
-        workLocationModel.data!.areas!.isEmpty) {
+    if (workLocationModel.data == null) {
       return Center(
         child: Text(
           "There's no data",
@@ -402,22 +402,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
         ),
       );
     } else {
-      return ListView.separated(
-        physics: const BouncingScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        itemCount: workLocationModel.data!.areas!.length,
-        separatorBuilder: (context, index) {
-          return verticalSpace(10);
-        },
-        itemBuilder: (context, index) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              // listWorkLocationItemBuild(context, index),
-            ],
-          );
-        },
-      );
+      return SingleChildScrollView(child: listWorkLocationItemBuild(context));
     }
   }
 

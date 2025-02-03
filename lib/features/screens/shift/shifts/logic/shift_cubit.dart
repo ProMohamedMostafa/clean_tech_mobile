@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_area_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/points_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts/data/model/all_shifts_deleted_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts/data/model/all_shifts_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts/data/model/shift_details_model.dart';
@@ -14,6 +20,20 @@ class ShiftCubit extends Cubit<ShiftState> {
   static ShiftCubit get(context) => BlocProvider.of(context);
 
   TextEditingController searchController = TextEditingController();
+  TextEditingController startDateController = TextEditingController();
+  TextEditingController endDateController = TextEditingController();
+  TextEditingController areaController = TextEditingController();
+  TextEditingController areaIdController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
+  TextEditingController cityIdController = TextEditingController();
+  TextEditingController organizationController = TextEditingController();
+  TextEditingController organizationIdController = TextEditingController();
+  TextEditingController buildingController = TextEditingController();
+  TextEditingController buildingIdController = TextEditingController();
+  TextEditingController floorController = TextEditingController();
+  TextEditingController floorIdController = TextEditingController();
+  TextEditingController pointController = TextEditingController();
+  TextEditingController pointIdController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   ShiftDetailsModel? shiftDetailsModel;
@@ -27,19 +47,7 @@ class ShiftCubit extends Cubit<ShiftState> {
     });
   }
 
-  // ShiftUsersModel? shiftUsersModel;
-  // getShiftUsersDetails(int? id) {
-  //   emit(ShiftUsersDetailsLoadingState());
-  //   DioHelper.getData(url: 'user/shift/$id').then((value) {
-  //     shiftUsersModel = ShiftUsersModel.fromJson(value!.data);
-  //     emit(ShiftUsersDetailsSuccessState(shiftUsersModel!));
-  //   }).catchError((error) {
-  //     emit(ShiftUsersDetailsErrorState(error.toString()));
-  //   });
-  // }
-
-
-    ShiftLevelDetailsModel? shiftLevelDetailsModel;
+  ShiftLevelDetailsModel? shiftLevelDetailsModel;
   getShiftLevelDetails(int? id) {
     emit(ShiftLevelDetailsLoadingState());
     DioHelper.getData(url: 'level/$id').then((value) {
@@ -50,13 +58,27 @@ class ShiftCubit extends Cubit<ShiftState> {
     });
   }
 
- 
   AllShiftsModel? allShiftsModel;
-  getAllShifts() {
+  getAllShifts({
+    int? areaId,
+    int? cityId,
+    int? organizationId,
+    int? buildingId,
+    int? floorId,
+    int? pointId,
+  }) {
     emit(ShiftLoadingState());
-    DioHelper.getData(
-        url: ApiConstants.allShiftsUrl,
-        query: {'search': searchController.text}).then((value) {
+    DioHelper.getData(url: ApiConstants.allShiftsUrl, query: {
+      'search': searchController.text,
+      'area': areaIdController.text,
+      'city': cityIdController.text,
+      'organization': organizationIdController.text,
+      'building': buildingIdController.text,
+      'floor': floorIdController.text,
+      'point': pointIdController.text,
+      'startDate': startDateController.text,
+      'endDate': endDateController.text
+    }).then((value) {
       allShiftsModel = AllShiftsModel.fromJson(value!.data);
       emit(ShiftSuccessState(allShiftsModel!));
     }).catchError((error) {
@@ -105,6 +127,73 @@ class ShiftCubit extends Cubit<ShiftState> {
       emit(ForceDeleteShiftSuccessState(message));
     }).catchError((error) {
       emit(ForceDeleteShiftErrorState(error.toString()));
+    });
+  }
+
+  AllAreaModel? allAreaModel;
+  getArea(String countryName) {
+    emit(GetAreaLoadingState());
+    DioHelper.getData(url: ApiConstants.areaUrl).then((value) {
+      allAreaModel = AllAreaModel.fromJson(value!.data);
+      emit(GetAreaSuccessState(allAreaModel!));
+    }).catchError((error) {
+      emit(GetAreaErrorState(error.toString()));
+    });
+  }
+
+  CityModel? cityModel;
+  getCity(int areaId) {
+    emit(GetCityLoadingState());
+    DioHelper.getData(url: "cities/area/$areaId").then((value) {
+      cityModel = CityModel.fromJson(value!.data);
+      emit(GetCitySuccessState(cityModel!));
+    }).catchError((error) {
+      emit(GetCityErrorState(error.toString()));
+    });
+  }
+
+  OrganizationModel? organizationModel;
+  getOrganization(int cityId) {
+    emit(GetOrganizationLoadingState());
+    DioHelper.getData(url: "organizations/city/$cityId").then((value) {
+      organizationModel = OrganizationModel.fromJson(value!.data);
+      emit(GetOrganizationSuccessState(organizationModel!));
+    }).catchError((error) {
+      emit(GetOrganizationErrorState(error.toString()));
+    });
+  }
+
+  BuildingModel? buildingModel;
+  getBuilding(int organizationId) {
+    emit(GetBuildingLoadingState());
+    DioHelper.getData(url: 'buildings/organization/$organizationId')
+        .then((value) {
+      buildingModel = BuildingModel.fromJson(value!.data);
+      emit(GetBuildingSuccessState(buildingModel!));
+    }).catchError((error) {
+      emit(GetBuildingErrorState(error.toString()));
+    });
+  }
+
+  FloorModel? floorModel;
+  getFloor(int buildingId) {
+    emit(GetFloorLoadingState());
+    DioHelper.getData(url: 'floors/building/$buildingId').then((value) {
+      floorModel = FloorModel.fromJson(value!.data);
+      emit(GetFloorSuccessState(floorModel!));
+    }).catchError((error) {
+      emit(GetFloorErrorState(error.toString()));
+    });
+  }
+
+  PointsModel? pointsModel;
+  getPoints(int pointId) {
+    emit(GetPointLoadingState());
+    DioHelper.getData(url: 'points/floor/$pointId').then((value) {
+      pointsModel = PointsModel.fromJson(value!.data);
+      emit(GetPointSuccessState(pointsModel!));
+    }).catchError((error) {
+      emit(GetPointErrorState(error.toString()));
     });
   }
 }

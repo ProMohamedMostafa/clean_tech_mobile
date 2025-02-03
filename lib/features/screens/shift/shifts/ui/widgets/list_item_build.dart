@@ -94,7 +94,6 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                         color: AppColor.thirdColor,
                       ),
                     )),
-                horizontalSpace(10),
                 InkWell(
                     onTap: () {
                       selectedIndex == 0
