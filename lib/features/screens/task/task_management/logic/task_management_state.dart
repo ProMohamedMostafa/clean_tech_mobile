@@ -1,4 +1,11 @@
 import 'package:image_picker/image_picker.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_area_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/points_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/delete_task_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/delete_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/all_tasks_model.dart';
@@ -268,4 +275,103 @@ class ImageSelectedState extends TaskManagementState {
 class CameraSelectedState extends TaskManagementState {
   final XFile image;
   CameraSelectedState(this.image);
+}
+//**************************** */
+
+class GetAreaLoadingState extends TaskManagementState {}
+
+class GetAreaSuccessState extends TaskManagementState {
+  final AllAreaModel allAreaModel;
+
+  GetAreaSuccessState(this.allAreaModel);
+}
+
+class GetAreaErrorState extends TaskManagementState {
+  final String error;
+  GetAreaErrorState(this.error);
+}
+//**************************** */
+
+class GetCityLoadingState extends TaskManagementState {}
+
+class GetCitySuccessState extends TaskManagementState {
+  final CityModel cityModel;
+
+  GetCitySuccessState(this.cityModel);
+}
+
+class GetCityErrorState extends TaskManagementState {
+  final String error;
+  GetCityErrorState(this.error);
+}
+//**************************** */
+
+class GetOrganizationLoadingState extends TaskManagementState {}
+
+class GetOrganizationSuccessState extends TaskManagementState {
+  final OrganizationModel organizationModel;
+
+  GetOrganizationSuccessState(this.organizationModel);
+}
+
+class GetOrganizationErrorState extends TaskManagementState {
+  final String error;
+  GetOrganizationErrorState(this.error);
+}
+//**************************** */
+
+class GetBuildingLoadingState extends TaskManagementState {}
+
+class GetBuildingSuccessState extends TaskManagementState {
+  final BuildingModel buildingModel;
+
+  GetBuildingSuccessState(this.buildingModel);
+}
+
+class GetBuildingErrorState extends TaskManagementState {
+  final String error;
+  GetBuildingErrorState(this.error);
+}
+//**************************** */
+
+class GetFloorLoadingState extends TaskManagementState {}
+
+class GetFloorSuccessState extends TaskManagementState {
+  final FloorModel floorModel;
+
+  GetFloorSuccessState(this.floorModel);
+}
+
+class GetFloorErrorState extends TaskManagementState {
+  final String error;
+  GetFloorErrorState(this.error);
+}
+//**************************** */
+
+class GetPointLoadingState extends TaskManagementState {}
+
+class GetPointSuccessState extends TaskManagementState {
+  final PointsModel pointsModel;
+
+  GetPointSuccessState(this.pointsModel);
+}
+
+class GetPointErrorState extends TaskManagementState {
+  final String error;
+  GetPointErrorState(this.error);
+}
+
+//***************** */
+
+class AllUsersLoadingState extends TaskManagementState {}
+
+class AllUsersSuccessState extends TaskManagementState {
+  final UsersModel usersModel;
+
+  AllUsersSuccessState(this.usersModel);
+}
+
+class AllUsersErrorState extends TaskManagementState {
+  final String error;
+  AllUsersErrorState(this.error);
 }

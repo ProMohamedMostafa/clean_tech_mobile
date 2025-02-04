@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
+import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
@@ -546,23 +547,39 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                   verticalSpace(5),
                   Form(
                     key: context.read<TaskManagementCubit>().formKey,
-                    child: CustomTextFormField(
-                      controller:
-                          context.read<TaskManagementCubit>().commentController,
-                      keyboardType: TextInputType.text,
-                      suffixIcon: Icons.attach_file_rounded,
-                      suffixPressed: () {
-                        UploadFilesBottomDialog().showBottomDialog(
-                            context, context.read<TaskManagementCubit>());
-                      },
-                      hint: "Write your comment",
-                      onlyRead: false,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Comment is Required";
-                        }
-                        return null;
-                      },
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: context
+                                .read<TaskManagementCubit>()
+                                .commentController,
+                            keyboardType: TextInputType.text,
+                            suffixIcon: Icons.attach_file_rounded,
+                            suffixPressed: () {
+                              UploadFilesBottomDialog().showBottomDialog(
+                                  context, context.read<TaskManagementCubit>());
+                            },
+                            hint: "Write your comment",
+                            onlyRead: false,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Comment is Required";
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {},
+                          child: Container(
+                            width: 40.w,
+                            height: 47.h,
+                            color: Colors.amber,
+                            child: Icon(IconBroken.send),
+                          ),
+                        )
+                      ],
                     ),
                   ),
                   verticalSpace(10),

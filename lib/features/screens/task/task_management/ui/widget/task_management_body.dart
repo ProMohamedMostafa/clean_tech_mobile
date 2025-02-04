@@ -37,7 +37,9 @@ class _TaskManagementBodyState extends State<TaskManagementBody> {
   ];
   @override
   void initState() {
-    context.read<TaskManagementCubit>().getAllTasks(selectedDate);
+    context.read<TaskManagementCubit>().getAllTasks(startDate: selectedDate);
+    context.read<TaskManagementCubit>().getArea();
+    context.read<TaskManagementCubit>().getAllUsers();
     context.read<TaskManagementCubit>().getAllDeletedTasks();
     super.initState();
   }
@@ -82,7 +84,7 @@ class _TaskManagementBodyState extends State<TaskManagementBody> {
         listener: (context, state) {
           if (state is TaskDeleteSuccessState) {
             toast(text: state.deleteTaskModel.message!, color: Colors.blue);
-            context.read<TaskManagementCubit>().getAllTasks(selectedDate);
+            context.read<TaskManagementCubit>().getAllTasks(startDate: selectedDate);
           }
 
           if (state is TaskDeleteErrorState) {
@@ -116,8 +118,11 @@ class _TaskManagementBodyState extends State<TaskManagementBody> {
                   verticalSpace(15),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: taskManagementFilterAndSearchBuild(context,
-                        context.read<TaskManagementCubit>(), selectedIndex),
+                    child: taskManagementFilterAndSearchBuild(
+                        context,
+                        context.read<TaskManagementCubit>(),
+                        selectedIndex,
+                        selectedDate),
                   ),
                   verticalSpace(15),
                   Padding(
@@ -183,7 +188,7 @@ class _TaskManagementBodyState extends State<TaskManagementBody> {
                 index == 0
                     ? context
                         .read<TaskManagementCubit>()
-                        .getAllTasks(selectedDate)
+                        .getAllTasks(startDate: selectedDate)
                     : index == 1
                         ? context
                             .read<TaskManagementCubit>()
@@ -305,7 +310,7 @@ class _TaskManagementBodyState extends State<TaskManagementBody> {
 
         switch (selectedIndex) {
           case 0:
-            context.read<TaskManagementCubit>().getAllTasks(selectedDate);
+            context.read<TaskManagementCubit>().getAllTasks(startDate: selectedDate);
             break;
           case 1:
             context.read<TaskManagementCubit>().getPendingTasks(selectedDate);

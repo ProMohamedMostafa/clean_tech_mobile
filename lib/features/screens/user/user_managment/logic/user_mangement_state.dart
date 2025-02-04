@@ -59,21 +59,6 @@ class AllUsersErrorState extends UserManagementState {
 
 //***************** */
 
-// class FilterUsersLoadingState extends UserManagementState {}
-
-// class FilterUsersSuccessState extends UserManagementState {
-//   final UsersModel filterusersModel;
-
-//   FilterUsersSuccessState(this.filterusersModel);
-// }
-
-// class FilterUsersErrorState extends UserManagementState {
-//   final String error;
-//   FilterUsersErrorState(this.error);
-// }
-
-//***************** */
-
 class DeletedUsersLoadingState extends UserManagementState {}
 
 class DeletedUsersSuccessState extends UserManagementState {

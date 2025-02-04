@@ -10,9 +10,10 @@ import 'package:smart_cleaning_application/core/widgets/default_button/default_e
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_date_picker.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shifts/logic/shift_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_time_picker.dart';
+import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_cubit.dart';
 
-class CustomFilterShiftDialog {
+class CustomFilterTaskDialog {
   static Future<String?> show({
     required BuildContext context,
   }) async {
@@ -25,6 +26,10 @@ class CustomFilterShiftDialog {
         int? buildingId;
         int? floorId;
         int? pointId;
+        int? statusId;
+        int? priorityId;
+        int? createdId;
+        int? assignToId;
         return Dialog(
             backgroundColor: Colors.white,
             surfaceTintColor: Colors.white,
@@ -41,6 +46,168 @@ class CustomFilterShiftDialog {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Text(
+                        'Created By',
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomDropDownList(
+                        hint: "Select user",
+                        items: context
+                                    .read<TaskManagementCubit>()
+                                    .usersModel
+                                    ?.data
+                                    ?.users
+                                    ?.isEmpty ??
+                                true
+                            ? ['No user']
+                            : context
+                                    .read<TaskManagementCubit>()
+                                    .usersModel
+                                    ?.data
+                                    ?.users
+                                    ?.where((e) => e.role != "Cleaner")
+                                    .map((e) => e.userName ?? 'Unknown')
+                                    .toList() ??
+                                [],
+                        onPressed: (value) {
+                          final selectedUser = context
+                              .read<TaskManagementCubit>()
+                              .usersModel
+                              ?.data
+                              ?.users
+                              ?.firstWhere((user) =>
+                                  user.userName ==
+                                  context
+                                      .read<TaskManagementCubit>()
+                                      .createdByController
+                                      .text);
+
+                          createdId = selectedUser!.id!;
+                        },
+                        suffixIcon: IconBroken.arrowDown2,
+                        controller: context
+                            .read<TaskManagementCubit>()
+                            .createdByController,
+                        keyboardType: TextInputType.text,
+                      ),
+                      verticalSpace(10),
+                      Text(
+                        'Assgin to',
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomDropDownList(
+                        hint: "Select user",
+                        items: context
+                                    .read<TaskManagementCubit>()
+                                    .usersModel
+                                    ?.data
+                                    ?.users
+                                    ?.isEmpty ??
+                                true
+                            ? ['No user']
+                            : context
+                                    .read<TaskManagementCubit>()
+                                    .usersModel
+                                    ?.data
+                                    ?.users
+                                    ?.where((e) => e.role != "Admin")
+                                    .map((e) => e.userName ?? 'Unknown')
+                                    .toList() ??
+                                [],
+                        onPressed: (value) {
+                          final selectedUser = context
+                              .read<TaskManagementCubit>()
+                              .usersModel
+                              ?.data
+                              ?.users
+                              ?.firstWhere((user) =>
+                                  user.userName ==
+                                  context
+                                      .read<TaskManagementCubit>()
+                                      .assignToController
+                                      .text);
+
+                          assignToId = selectedUser!.id!;
+                        },
+                        suffixIcon: IconBroken.arrowDown2,
+                        controller: context
+                            .read<TaskManagementCubit>()
+                            .assignToController,
+                        keyboardType: TextInputType.text,
+                      ),
+                      verticalSpace(10),
+                      Text(
+                        "Status",
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomDropDownList(
+                        onChanged: (selectedValue) {
+                          final items = [
+                            'Pending',
+                            'In Progress',
+                            'Not Approval',
+                            'Rejected',
+                            'Completed',
+                            'Not Resolved',
+                            'Overdue',
+                          ];
+                          final selectedIndex = items.indexOf(selectedValue!);
+                          statusId = selectedIndex;
+
+                          context
+                              .read<TaskManagementCubit>()
+                              .statusController
+                              .text = selectedValue;
+                        },
+                        hint: 'status',
+                        items: [
+                          'Pending',
+                          'In Progress',
+                          'Not Approval',
+                          'Rejected',
+                          'Completed',
+                          'Not Resolved',
+                          'Overdue',
+                        ],
+                        suffixIcon: IconBroken.arrowDown2,
+                        keyboardType: TextInputType.text,
+                        controller: context
+                            .read<TaskManagementCubit>()
+                            .statusController,
+                      ),
+                      verticalSpace(10),
+                      Text(
+                        "Priority",
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomDropDownList(
+                        onChanged: (selectedValue) {
+                          final items = [
+                            "Low",
+                            "Medium",
+                            "High",
+                          ];
+                          final selectedIndex = items.indexOf(selectedValue!);
+                          priorityId = selectedIndex;
+
+                          context
+                              .read<TaskManagementCubit>()
+                              .priorityController
+                              .text = selectedValue;
+                        },
+                        hint: 'priority',
+                        items: [
+                          "Low",
+                          "Medium",
+                          "High",
+                        ],
+                        suffixIcon: IconBroken.arrowDown2,
+                        keyboardType: TextInputType.text,
+                        controller: context
+                            .read<TaskManagementCubit>()
+                            .priorityController,
+                      ),
+                      verticalSpace(10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -57,7 +224,7 @@ class CustomFilterShiftDialog {
                                 onlyRead: true,
                                 hint: "--/--/---",
                                 controller: context
-                                    .read<ShiftCubit>()
+                                    .read<TaskManagementCubit>()
                                     .startDateController,
                                 suffixIcon: Icons.calendar_today,
                                 suffixPressed: () async {
@@ -67,7 +234,7 @@ class CustomFilterShiftDialog {
 
                                   if (selectedDate != null && context.mounted) {
                                     context
-                                        .read<ShiftCubit>()
+                                        .read<TaskManagementCubit>()
                                         .startDateController
                                         .text = selectedDate;
                                   }
@@ -90,7 +257,7 @@ class CustomFilterShiftDialog {
                                 onlyRead: true,
                                 hint: "--/--/---",
                                 controller: context
-                                    .read<ShiftCubit>()
+                                    .read<TaskManagementCubit>()
                                     .endDateController,
                                 suffixIcon: Icons.calendar_today,
                                 suffixPressed: () async {
@@ -100,9 +267,80 @@ class CustomFilterShiftDialog {
 
                                   if (selectedDate != null && context.mounted) {
                                     context
-                                        .read<ShiftCubit>()
+                                        .read<TaskManagementCubit>()
                                         .endDateController
                                         .text = selectedDate;
+                                  }
+                                },
+                                keyboardType: TextInputType.none,
+                              ),
+                            ],
+                          )),
+                        ],
+                      ),
+                      verticalSpace(10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Start Time",
+                                style: TextStyles.font16BlackRegular,
+                              ),
+                              verticalSpace(5),
+                              CustomTextFormField(
+                                onlyRead: true,
+                                hint: '00:00 AM',
+                                controller: context
+                                    .read<TaskManagementCubit>()
+                                    .startTimeController,
+                                suffixIcon: Icons.timer_sharp,
+                                suffixPressed: () async {
+                                  final selectedTime =
+                                      await CustomTimePicker.show(
+                                          context: context);
+
+                                  if (selectedTime != null && context.mounted) {
+                                    context
+                                        .read<TaskManagementCubit>()
+                                        .startTimeController
+                                        .text = selectedTime;
+                                  }
+                                },
+                                keyboardType: TextInputType.none,
+                              ),
+                            ],
+                          )),
+                          horizontalSpace(10),
+                          Expanded(
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "End Time",
+                                style: TextStyles.font16BlackRegular,
+                              ),
+                              verticalSpace(5),
+                              CustomTextFormField(
+                                onlyRead: true,
+                                hint: "09:30 PM",
+                                controller: context
+                                    .read<TaskManagementCubit>()
+                                    .endTimeController,
+                                suffixIcon: Icons.timer_sharp,
+                                suffixPressed: () async {
+                                  final selectedTime =
+                                      await CustomTimePicker.show(
+                                          context: context);
+
+                                  if (selectedTime != null && context.mounted) {
+                                    context
+                                        .read<TaskManagementCubit>()
+                                        .endTimeController
+                                        .text = selectedTime;
                                   }
                                 },
                                 keyboardType: TextInputType.none,
@@ -119,7 +357,7 @@ class CustomFilterShiftDialog {
                       CustomDropDownList(
                         hint: "Select area",
                         items: context
-                                    .read<ShiftCubit>()
+                                    .read<TaskManagementCubit>()
                                     .allAreaModel
                                     ?.data
                                     ?.data
@@ -127,7 +365,7 @@ class CustomFilterShiftDialog {
                                 true
                             ? ['No organizations']
                             : context
-                                    .read<ShiftCubit>()
+                                    .read<TaskManagementCubit>()
                                     .allAreaModel
                                     ?.data
                                     ?.data
@@ -136,23 +374,25 @@ class CustomFilterShiftDialog {
                                 [],
                         onPressed: (value) {
                           final selectedArea = context
-                              .read<ShiftCubit>()
+                              .read<TaskManagementCubit>()
                               .allAreaModel
                               ?.data
                               ?.data
                               ?.firstWhere((area) =>
                                   area.name ==
                                   context
-                                      .read<ShiftCubit>()
+                                      .read<TaskManagementCubit>()
                                       .areaController
                                       .text);
 
-                          context.read<ShiftCubit>().getCity(selectedArea!.id!);
+                          context
+                              .read<TaskManagementCubit>()
+                              .getCity(selectedArea!.id!);
                           areaId = selectedArea.id!;
                         },
                         suffixIcon: IconBroken.arrowDown2,
                         controller:
-                            context.read<ShiftCubit>().areaController,
+                            context.read<TaskManagementCubit>().areaController,
                         keyboardType: TextInputType.text,
                       ),
                       verticalSpace(10),
@@ -163,14 +403,14 @@ class CustomFilterShiftDialog {
                       CustomDropDownList(
                         hint: "Select city",
                         items: context
-                                    .read<ShiftCubit>()
+                                    .read<TaskManagementCubit>()
                                     .cityModel
                                     ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No cities']
                             : context
-                                    .read<ShiftCubit>()
+                                    .read<TaskManagementCubit>()
                                     .cityModel
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
@@ -178,22 +418,23 @@ class CustomFilterShiftDialog {
                                 [],
                         onPressed: (value) {
                           final selectedCity = context
-                              .read<ShiftCubit>()
+                              .read<TaskManagementCubit>()
                               .cityModel
                               ?.data
                               ?.firstWhere((city) =>
                                   city.name ==
                                   context
-                                      .read<ShiftCubit>()
+                                      .read<TaskManagementCubit>()
                                       .cityController
                                       .text);
                           context
-                              .read<ShiftCubit>()
+                              .read<TaskManagementCubit>()
                               .getOrganization(selectedCity!.id!);
                           cityId = selectedCity.id!;
                         },
                         suffixIcon: IconBroken.arrowDown2,
-                        controller: context.read<ShiftCubit>().cityController,
+                        controller:
+                            context.read<TaskManagementCubit>().cityController,
                         isRead: false,
                         keyboardType: TextInputType.text,
                       ),
@@ -205,14 +446,14 @@ class CustomFilterShiftDialog {
                       CustomDropDownList(
                         hint: "Select organizations",
                         items: context
-                                    .read<ShiftCubit>()
+                                    .read<TaskManagementCubit>()
                                     .organizationModel
                                     ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No organizations']
                             : context
-                                    .read<ShiftCubit>()
+                                    .read<TaskManagementCubit>()
                                     .organizationModel
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
@@ -220,24 +461,25 @@ class CustomFilterShiftDialog {
                                 [],
                         onPressed: (value) {
                           final selectedOrganization = context
-                              .read<ShiftCubit>()
+                              .read<TaskManagementCubit>()
                               .organizationModel
                               ?.data
                               ?.firstWhere((organization) =>
                                   organization.name ==
                                   context
-                                      .read<ShiftCubit>()
+                                      .read<TaskManagementCubit>()
                                       .organizationController
                                       .text);
 
                           context
-                              .read<ShiftCubit>()
+                              .read<TaskManagementCubit>()
                               .getBuilding(selectedOrganization!.id!);
                           organizationId = selectedOrganization.id!;
                         },
                         suffixIcon: IconBroken.arrowDown2,
-                        controller:
-                            context.read<ShiftCubit>().organizationController,
+                        controller: context
+                            .read<TaskManagementCubit>()
+                            .organizationController,
                         keyboardType: TextInputType.text,
                       ),
                       verticalSpace(10),
@@ -248,14 +490,14 @@ class CustomFilterShiftDialog {
                       CustomDropDownList(
                         hint: "Select building",
                         items: context
-                                    .read<ShiftCubit>()
+                                    .read<TaskManagementCubit>()
                                     .buildingModel
                                     ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No building']
                             : context
-                                    .read<ShiftCubit>()
+                                    .read<TaskManagementCubit>()
                                     .buildingModel
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
@@ -263,24 +505,25 @@ class CustomFilterShiftDialog {
                                 [],
                         onPressed: (value) {
                           final selectedBuilding = context
-                              .read<ShiftCubit>()
+                              .read<TaskManagementCubit>()
                               .buildingModel
                               ?.data
                               ?.firstWhere((building) =>
                                   building.name ==
                                   context
-                                      .read<ShiftCubit>()
+                                      .read<TaskManagementCubit>()
                                       .buildingController
                                       .text);
 
                           context
-                              .read<ShiftCubit>()
+                              .read<TaskManagementCubit>()
                               .getFloor(selectedBuilding!.id!);
                           buildingId = selectedBuilding.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
-                        controller:
-                            context.read<ShiftCubit>().buildingController,
+                        controller: context
+                            .read<TaskManagementCubit>()
+                            .buildingController,
                         keyboardType: TextInputType.text,
                       ),
                       verticalSpace(10),
@@ -291,14 +534,14 @@ class CustomFilterShiftDialog {
                       CustomDropDownList(
                         hint: "Select floor",
                         items: context
-                                    .read<ShiftCubit>()
+                                    .read<TaskManagementCubit>()
                                     .floorModel
                                     ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No floors']
                             : context
-                                    .read<ShiftCubit>()
+                                    .read<TaskManagementCubit>()
                                     .floorModel
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
@@ -306,23 +549,24 @@ class CustomFilterShiftDialog {
                                 [],
                         onPressed: (value) {
                           final selectedFloor = context
-                              .read<ShiftCubit>()
+                              .read<TaskManagementCubit>()
                               .floorModel
                               ?.data
                               ?.firstWhere((floor) =>
                                   floor.name ==
                                   context
-                                      .read<ShiftCubit>()
+                                      .read<TaskManagementCubit>()
                                       .floorController
                                       .text);
 
                           context
-                              .read<ShiftCubit>()
+                              .read<TaskManagementCubit>()
                               .getPoints(selectedFloor!.id!);
                           floorId = selectedFloor.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
-                        controller: context.read<ShiftCubit>().floorController,
+                        controller:
+                            context.read<TaskManagementCubit>().floorController,
                         keyboardType: TextInputType.text,
                       ),
                       verticalSpace(10),
@@ -333,14 +577,14 @@ class CustomFilterShiftDialog {
                       CustomDropDownList(
                         hint: "Select point",
                         items: context
-                                    .read<ShiftCubit>()
+                                    .read<TaskManagementCubit>()
                                     .pointsModel
                                     ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No point']
                             : context
-                                    .read<ShiftCubit>()
+                                    .read<TaskManagementCubit>()
                                     .pointsModel
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
@@ -348,23 +592,24 @@ class CustomFilterShiftDialog {
                                 [],
                         onPressed: (value) {
                           final selectedPoint = context
-                              .read<ShiftCubit>()
+                              .read<TaskManagementCubit>()
                               .pointsModel
                               ?.data
                               ?.firstWhere((point) =>
                                   point.name ==
                                   context
-                                      .read<ShiftCubit>()
+                                      .read<TaskManagementCubit>()
                                       .pointController
                                       .text);
 
                           context
-                              .read<ShiftCubit>()
+                              .read<TaskManagementCubit>()
                               .getPoints(selectedPoint!.id!);
                           pointId = selectedPoint.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
-                        controller: context.read<ShiftCubit>().pointController,
+                        controller:
+                            context.read<TaskManagementCubit>().pointController,
                         keyboardType: TextInputType.text,
                       ),
                       verticalSpace(20),
@@ -372,7 +617,20 @@ class CustomFilterShiftDialog {
                         child: DefaultElevatedButton(
                             name: 'Done',
                             onPressed: () {
-                              context.read<ShiftCubit>().getAllShifts(
+                              final String startDateText = context
+                                  .read<TaskManagementCubit>()
+                                  .startDateController
+                                  .text;
+                              final DateTime startDate =
+                                  startDateText.isNotEmpty
+                                      ? DateTime.parse(startDateText)
+                                      : DateTime.now();
+                              context.read<TaskManagementCubit>().getAllTasks(
+                                    startDate: startDate,
+                                    assignTo: assignToId,
+                                    createdBy: createdId,
+                                    priority: priorityId,
+                                    status: statusId,
                                     areaId: areaId,
                                     cityId: cityId,
                                     organizationId: organizationId,
@@ -387,7 +645,6 @@ class CustomFilterShiftDialog {
                             width: double.infinity,
                             textStyles: TextStyles.font20Whitesemimedium),
                       ),
-                      verticalSpace(30),
                     ],
                   ),
                 ),

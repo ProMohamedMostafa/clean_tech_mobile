@@ -23,17 +23,11 @@ class ShiftCubit extends Cubit<ShiftState> {
   TextEditingController startDateController = TextEditingController();
   TextEditingController endDateController = TextEditingController();
   TextEditingController areaController = TextEditingController();
-  TextEditingController areaIdController = TextEditingController();
   TextEditingController cityController = TextEditingController();
-  TextEditingController cityIdController = TextEditingController();
   TextEditingController organizationController = TextEditingController();
-  TextEditingController organizationIdController = TextEditingController();
   TextEditingController buildingController = TextEditingController();
-  TextEditingController buildingIdController = TextEditingController();
   TextEditingController floorController = TextEditingController();
-  TextEditingController floorIdController = TextEditingController();
   TextEditingController pointController = TextEditingController();
-  TextEditingController pointIdController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   ShiftDetailsModel? shiftDetailsModel;
@@ -70,12 +64,12 @@ class ShiftCubit extends Cubit<ShiftState> {
     emit(ShiftLoadingState());
     DioHelper.getData(url: ApiConstants.allShiftsUrl, query: {
       'search': searchController.text,
-      'area': areaIdController.text,
-      'city': cityIdController.text,
-      'organization': organizationIdController.text,
-      'building': buildingIdController.text,
-      'floor': floorIdController.text,
-      'point': pointIdController.text,
+      'area': areaId,
+      'city': cityId,
+      'organization': organizationId,
+      'building': buildingId,
+      'floor': floorId,
+      'point': pointId,
       'startDate': startDateController.text,
       'endDate': endDateController.text
     }).then((value) {
@@ -131,7 +125,7 @@ class ShiftCubit extends Cubit<ShiftState> {
   }
 
   AllAreaModel? allAreaModel;
-  getArea(String countryName) {
+  getArea() {
     emit(GetAreaLoadingState());
     DioHelper.getData(url: ApiConstants.areaUrl).then((value) {
       allAreaModel = AllAreaModel.fromJson(value!.data);

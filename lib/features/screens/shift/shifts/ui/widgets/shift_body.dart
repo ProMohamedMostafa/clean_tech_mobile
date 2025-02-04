@@ -23,6 +23,7 @@ class _ShiftBodyState extends State<ShiftBody> {
   @override
   void initState() {
     context.read<ShiftCubit>().getAllShifts();
+    context.read<ShiftCubit>().getArea();
     context.read<ShiftCubit>().getAllDeletedShifts();
     super.initState();
   }
