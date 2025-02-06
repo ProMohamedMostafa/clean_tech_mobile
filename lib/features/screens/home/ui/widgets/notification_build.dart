@@ -14,7 +14,7 @@ Widget notificationBuild(BuildContext context) {
         child: Icon(
           IconBroken.notification,
           size: 27.sp,
-          color: Colors.white,
+          color: Colors.black,
         ),
       ),
       // if (unreadCount > 0)
