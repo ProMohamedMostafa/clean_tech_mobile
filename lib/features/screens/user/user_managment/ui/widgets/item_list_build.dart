@@ -5,6 +5,7 @@ import 'package:smart_cleaning_application/core/helpers/constants/constants.dart
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
@@ -28,28 +29,29 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
     child: ListTile(
       contentPadding: EdgeInsets.zero,
       minTileHeight: 60.h,
-      leading: Container(
+      leading:
+          //  Container(
+          //   height: 40.h,
+          //   width: 40.w,
+          //   decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.amber),
+          // ),
+
+          Container(
         height: 40.h,
         width: 40.w,
-        decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.amber),
+        decoration: BoxDecoration(shape: BoxShape.circle),
+        clipBehavior: Clip.hardEdge,
+        child: Image.network(
+          '${ApiConstants.apiBaseUrl}${context.read<UserManagementCubit>().usersModel!.data!.users![index].image}',
+          fit: BoxFit.fill,
+          errorBuilder: (context, error, stackTrace) {
+            return Image.asset(
+              'assets/images/noImage.png',
+              fit: BoxFit.fill,
+            );
+          },
+        ),
       ),
-
-      //  Container(
-      //   height: 40.h,
-      //   width: 40.w,
-      //   decoration: BoxDecoration(shape: BoxShape.circle),
-      //   clipBehavior: Clip.hardEdge,
-      //   child: Image.network(
-      //     'https://10.0.2.2:7111.com${context.read<UserManagementCubit>().usersModel!.data!.users![index].image}',
-      //     fit: BoxFit.fill,
-      //     errorBuilder: (context, error, stackTrace) {
-      //       return Image.asset(
-      //         'assets/images/noImage.png',
-      //         fit: BoxFit.fill,
-      //       );
-      //     },
-      //   ),
-      // ),
       title: Text(
         selectedIndex == 0
             ? context

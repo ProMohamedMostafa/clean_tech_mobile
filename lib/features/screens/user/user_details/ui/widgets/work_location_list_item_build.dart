@@ -15,7 +15,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
           .userWorkLocationDetailsModel!
           .data!
           .areas!
-          .isNotEmpty)
+          .isNotEmpty) ...[
         Card(
           elevation: 1,
           margin: EdgeInsets.zero,
@@ -53,7 +53,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                     ),
                   ],
                 ),
-                verticalSpace(15),
+                verticalSpace(10),
                 ListView.separated(
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
@@ -110,13 +110,14 @@ Widget listWorkLocationItemBuild(BuildContext context) {
             ),
           ),
         ),
-      verticalSpace(15),
+        verticalSpace(10),
+      ],
       if (context
           .read<UserManagementCubit>()
           .userWorkLocationDetailsModel!
           .data!
           .cities!
-          .isNotEmpty)
+          .isNotEmpty) ...[
         Card(
           elevation: 1,
           margin: EdgeInsets.zero,
@@ -154,7 +155,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                     ),
                   ],
                 ),
-                verticalSpace(15),
+                verticalSpace(10),
                 ListView.separated(
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
@@ -211,13 +212,14 @@ Widget listWorkLocationItemBuild(BuildContext context) {
             ),
           ),
         ),
-      verticalSpace(15),
+        verticalSpace(10),
+      ],
       if (context
           .read<UserManagementCubit>()
           .userWorkLocationDetailsModel!
           .data!
           .organizations!
-          .isNotEmpty)
+          .isNotEmpty) ...[
         Card(
           elevation: 1,
           margin: EdgeInsets.zero,
@@ -255,7 +257,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                     ),
                   ],
                 ),
-                verticalSpace(15),
+                verticalSpace(10),
                 ListView.separated(
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
@@ -312,13 +314,14 @@ Widget listWorkLocationItemBuild(BuildContext context) {
             ),
           ),
         ),
-      verticalSpace(15),
+        verticalSpace(10),
+      ],
       if (context
           .read<UserManagementCubit>()
           .userWorkLocationDetailsModel!
           .data!
           .buildings!
-          .isNotEmpty)
+          .isNotEmpty) ...[
         Card(
           elevation: 1,
           margin: EdgeInsets.zero,
@@ -356,7 +359,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                     ),
                   ],
                 ),
-                verticalSpace(15),
+                verticalSpace(10),
                 ListView.separated(
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
@@ -413,13 +416,14 @@ Widget listWorkLocationItemBuild(BuildContext context) {
             ),
           ),
         ),
-      verticalSpace(15),
+        verticalSpace(10),
+      ],
       if (context
           .read<UserManagementCubit>()
           .userWorkLocationDetailsModel!
           .data!
           .floors!
-          .isNotEmpty)
+          .isNotEmpty) ...[
         Card(
           elevation: 1,
           margin: EdgeInsets.zero,
@@ -457,7 +461,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                     ),
                   ],
                 ),
-                verticalSpace(15),
+                verticalSpace(10),
                 ListView.separated(
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
@@ -514,13 +518,14 @@ Widget listWorkLocationItemBuild(BuildContext context) {
             ),
           ),
         ),
-      verticalSpace(15),
+        verticalSpace(10),
+      ],
       if (context
           .read<UserManagementCubit>()
           .userWorkLocationDetailsModel!
           .data!
           .points!
-          .isNotEmpty)
+          .isNotEmpty) ...[
         Card(
           elevation: 1,
           margin: EdgeInsets.zero,
@@ -558,7 +563,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                     ),
                   ],
                 ),
-                verticalSpace(15),
+                verticalSpace(10),
                 ListView.separated(
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
@@ -615,190 +620,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
             ),
           ),
         ),
+      ]
     ],
   );
-  // Row(
-  //   mainAxisAlignment: MainAxisAlignment.start,
-  //   children: [
-  //     Row(
-  //       children: [
-  //         horizontalSpace(10),
-  //         Column(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           mainAxisAlignment: MainAxisAlignment.start,
-  //           children: [
-  //             Text(
-  //               selectedIndex == 0
-  //                   ? context
-  //                       .read<UserManagementCubit>().userWorkLocationDetailsModel.data.areas[]
-  //                       .areaModel!
-  //                       .data![index]
-  //                       .name!
-  //                   : selectedIndex == 1
-  //                       ? context
-  //                           .read<OrganizationsCubit>()
-  //                           .cityModel!
-  //                           .data![index]
-  //                           .name!
-  //                       : selectedIndex == 2
-  //                           ? context
-  //                               .read<OrganizationsCubit>()
-  //                               .organizationModel!
-  //                               .data![index]
-  //                               .name!
-  //                           : selectedIndex == 3
-  //                               ? context
-  //                                   .read<OrganizationsCubit>()
-  //                                   .buildingModel!
-  //                                   .data![index]
-  //                                   .name!
-  //                               : selectedIndex == 4
-  //                                   ? context
-  //                                       .read<OrganizationsCubit>()
-  //                                       .floorModel!
-  //                                       .data![index]
-  //                                       .name!
-  //                                   : context
-  //                                       .read<OrganizationsCubit>()
-  //                                       .pointModel!
-  //                                       .data![index]
-  //                                       .name!,
-  //               style: TextStyles.font14BlackSemiBold,
-  //             ),
-  //             Text(
-  //               selectedIndex == 0
-  //                   ? "${context.read<OrganizationsCubit>().areaModel!.data![index].countryName}"
-  //                   : selectedIndex == 1
-  //                       ? "${context.read<OrganizationsCubit>().cityModel!.data![index].areaName}"
-  //                       : selectedIndex == 2
-  //                           ? "${context.read<OrganizationsCubit>().organizationModel!.data![index].cityName}"
-  //                           : selectedIndex == 3
-  //                               ? "${context.read<OrganizationsCubit>().buildingModel!.data![index].organizationName}"
-  //                               : selectedIndex == 4
-  //                                   ? "${context.read<OrganizationsCubit>().floorModel!.data![index].buildingName}"
-  //                                   : "${context.read<OrganizationsCubit>().pointModel!.data![index].floorName}",
-  //               style: TextStyles.font12GreyRegular,
-  //             ),
-  //           ],
-  //         ),
-  //       ],
-  //     ),
-  // Spacer(),
-  // Row(
-  //   mainAxisAlignment: MainAxisAlignment.end,
-  //   children: [
-  //     InkWell(
-  //         onTap: () {
-  //           context.pushNamed(
-  //               selectedIndex == 0
-  //                   ? Routes.editAreaScreen
-  //                   : selectedIndex == 1
-  //                       ? Routes.editCityScreen
-  //                       : selectedIndex == 2
-  //                           ? Routes.editOrganizationScreen
-  //                           : selectedIndex == 3
-  //                               ? Routes.editBuildingScreen
-  //                               : selectedIndex == 4
-  //                                   ? Routes.editFloorScreen
-  //                                   : Routes.editPointScreen,
-  //               arguments: selectedIndex == 0
-  //                   ? context
-  //                       .read<OrganizationsCubit>()
-  //                       .areaModel!
-  //                       .data![index]
-  //                       .id
-  //                   : selectedIndex == 1
-  //                       ? context
-  //                           .read<OrganizationsCubit>()
-  //                           .cityModel!
-  //                           .data![index]
-  //                           .id
-  //                       : selectedIndex == 2
-  //                           ? context
-  //                               .read<OrganizationsCubit>()
-  //                               .organizationModel!
-  //                               .data![index]
-  //                               .id
-  //                           : selectedIndex == 3
-  //                               ? context
-  //                                   .read<OrganizationsCubit>()
-  //                                   .buildingModel!
-  //                                   .data![index]
-  //                                   .id
-  //                               : selectedIndex == 4
-  //                                   ? context
-  //                                       .read<OrganizationsCubit>()
-  //                                       .floorModel!
-  //                                       .data![index]
-  //                                       .id
-  //                                   : context
-  //                                       .read<OrganizationsCubit>()
-  //                                       .pointModel!
-  //                                       .data![index]
-  //                                       .id);
-  //         },
-  //         child: Icon(
-  //           Icons.mode_edit_outlined,
-  //           color: AppColor.thirdColor,
-  //         )),
-  //     horizontalSpace(10),
-  //     InkWell(
-  //         onTap: () {
-  //           showCustomDialog(context, S.of(context).deleteMessage, () {
-  //             selectedIndex == 0
-  //                 ? context.read<OrganizationsCubit>().deleteArea(context
-  //                     .read<OrganizationsCubit>()
-  //                     .areaModel!
-  //                     .data![index]
-  //                     .id!)
-  //                 : selectedIndex == 1
-  //                     ? context.read<OrganizationsCubit>().deleteCity(
-  //                         context
-  //                             .read<OrganizationsCubit>()
-  //                             .cityModel!
-  //                             .data![index]
-  //                             .id!)
-  //                     : selectedIndex == 2
-  //                         ? context
-  //                             .read<OrganizationsCubit>()
-  //                             .deleteOrganization(context
-  //                                 .read<OrganizationsCubit>()
-  //                                 .organizationModel!
-  //                                 .data![index]
-  //                                 .id!)
-  //                         : selectedIndex == 3
-  //                             ? context
-  //                                 .read<OrganizationsCubit>()
-  //                                 .deleteBuilding(context
-  //                                     .read<OrganizationsCubit>()
-  //                                     .buildingModel!
-  //                                     .data![index]
-  //                                     .id!)
-  //                             : selectedIndex == 4
-  //                                 ? context
-  //                                     .read<OrganizationsCubit>()
-  //                                     .deleteFloor(context
-  //                                         .read<OrganizationsCubit>()
-  //                                         .floorModel!
-  //                                         .data![index]
-  //                                         .id!)
-  //                                 : context
-  //                                     .read<OrganizationsCubit>()
-  //                                     .deletePoint(context
-  //                                         .read<OrganizationsCubit>()
-  //                                         .pointModel!
-  //                                         .data![index]
-  //                                         .id!);
-
-  //             context.pop();
-  //           });
-  //         },
-  //         child: Icon(
-  //           IconBroken.delete,
-  //           color: AppColor.thirdColor,
-  //         )),
-  //   ],
-  // )
-  // ],
-  // );
 }

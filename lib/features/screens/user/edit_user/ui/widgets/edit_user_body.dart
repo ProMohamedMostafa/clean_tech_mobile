@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
@@ -85,43 +86,24 @@ class _EditUserBodyState extends State<EditUserBody> {
                         width: 100.w,
                         height: 100.h,
                         decoration: BoxDecoration(
-                          color: Colors.amber,
                           shape: BoxShape.circle,
                           border: Border.all(
                             color: AppColor.primaryColor,
                             width: 3.w,
                           ),
                         ),
-                        // child:
-                        // ClipOval(
-                        //   child: context
-                        //               .read<EditUserCubit>()
-                        //               .userDetailsModel
-                        //               ?.data!
-                        //               .image !=
-                        //           null
-                        //       ? Image.network(
-                        //           context
-                        //               .read<EditUserCubit>()
-                        //               .userDetailsModel!
-                        //               .data!
-                        //               .image!,
-                        //           fit: BoxFit.fill,
-                        //         )
-                        //       : Image.file(
-                        //           File(context
-                        //               .read<EditUserCubit>()
-                        //               .image!
-                        //               .path),
-                        //           fit: BoxFit.fill,
-                        //           errorBuilder: (context, error, stackTrace) {
-                        //             return Image.asset(
-                        //               'assets/images/noImage.png',
-                        //               fit: BoxFit.fill,
-                        //             );
-                        //           },
-                        //         ),
-                        // ),
+                        child: ClipOval(
+                          child: Image.network(
+                            '${ApiConstants.apiBaseUrl}${context.read<EditUserCubit>().userDetailsModel!.data!.image}',
+                            fit: BoxFit.fill,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                'assets/images/noImage.png',
+                                fit: BoxFit.fill,
+                              );
+                            },
+                          ),
+                        ),
                       ),
                       Positioned(
                         bottom: 1,

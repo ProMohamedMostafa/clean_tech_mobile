@@ -4,6 +4,7 @@ class TaskDetailsModel {
   bool? succeeded;
   String? message;
   String? error;
+  String? businessErrorCode;
   Data? data;
 
   TaskDetailsModel(
@@ -12,6 +13,7 @@ class TaskDetailsModel {
       this.succeeded,
       this.message,
       this.error,
+      this.businessErrorCode,
       this.data});
 
   TaskDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -20,16 +22,18 @@ class TaskDetailsModel {
     succeeded = json['succeeded'];
     message = json['message'];
     error = json['error'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    businessErrorCode = json['businessErrorCode'];
+    data = json['data'] != null ?  Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data =  <String, dynamic>{};
     data['statusCode'] = statusCode;
     data['meta'] = meta;
     data['succeeded'] = succeeded;
     data['message'] = message;
     data['error'] = error;
+    data['businessErrorCode'] = businessErrorCode;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -43,6 +47,7 @@ class Data {
   String? description;
   String? priority;
   String? status;
+  int? statusId;
   String? startDate;
   String? endDate;
   String? startTime;
@@ -66,6 +71,7 @@ class Data {
       this.description,
       this.priority,
       this.status,
+      this.statusId,
       this.startDate,
       this.endDate,
       this.startTime,
@@ -89,6 +95,7 @@ class Data {
     description = json['description'];
     priority = json['priority'];
     status = json['status'];
+    statusId = json['statusId'];
     startDate = json['startDate'];
     endDate = json['endDate'];
     startTime = json['startTime'];
@@ -108,12 +115,13 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data =  <String, dynamic>{};
     data['id'] = id;
     data['title'] = title;
     data['description'] = description;
     data['priority'] = priority;
     data['status'] = status;
+    data['statusId'] = statusId;
     data['startDate'] = startDate;
     data['endDate'] = endDate;
     data['startTime'] = startTime;

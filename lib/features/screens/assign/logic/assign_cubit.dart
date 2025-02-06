@@ -278,16 +278,14 @@ class AssignCubit extends Cubit<AssignStates> {
     });
   }
 
- OrganizationListModel? organizationListModel;
+  OrganizationListModel? organizationListModel;
   getAllOrganization() {
     emit(OrganizationAllLoadingState());
-    DioHelper.getData(
-        url: ApiConstants.organizationUrl).then((value) {
+    DioHelper.getData(url: ApiConstants.organizationUrl).then((value) {
       organizationListModel = OrganizationListModel.fromJson(value!.data);
       emit(OrganizationAllSuccessState(organizationListModel!));
     }).catchError((error) {
       emit(OrganizationAllErrorState(error.toString()));
     });
   }
-
 }

@@ -9,20 +9,24 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/logic/attendance_history_cubit.dart';
 
 Widget buildCardItem(BuildContext context, index) {
-  String formatDuration(String duration) {
-    final durationParts =
-        duration.split(':'); // Split by colon (HH:MM:SS.FFFFFFF)
-    final hours = int.parse(durationParts[0]);
-    final minutes = int.parse(durationParts[1]);
-    final seconds =
-        double.parse(durationParts[2]).floor(); // Parse seconds and round down
+  String formatDuration(String? duration) {
+    if (duration == null || duration.isEmpty || !duration.contains(':')) {
+      return 'N/A';
+    }
+
+    final durationParts = duration.split(':');
+
+    if (durationParts.length < 2) {
+      return 'N/A';
+    }
+
+    final hours = int.tryParse(durationParts[0]) ?? 0;
+    final minutes = int.tryParse(durationParts[1]) ?? 0;
 
     if (hours > 0) {
-      return '$hours hr';
-    } else if (minutes > 0) {
-      return '$minutes min';
+      return '$hours hr ${minutes > 0 ? '$minutes min' : ''}';
     } else {
-      return '$seconds sec';
+      return '$minutes min';
     }
   }
 
@@ -226,14 +230,22 @@ Widget buildCardItem(BuildContext context, index) {
                             .copyWith(color: AppColor.primaryColor),
                       ),
                       TextSpan(
-                        text: DateFormat('HH:mm').format(
-                          DateTime.parse(context
-                              .read<AttendanceHistoryCubit>()
-                              .attendanceHistoryModel!
-                              .data!
-                              .data![index]
-                              .clockOut!),
-                        ),
+                        text: context
+                                    .read<AttendanceHistoryCubit>()
+                                    .attendanceHistoryModel
+                                    ?.data
+                                    ?.data?[index]
+                                    .clockOut !=
+                                null
+                            ? DateFormat('HH:mm').format(
+                                DateTime.parse(context
+                                    .read<AttendanceHistoryCubit>()
+                                    .attendanceHistoryModel!
+                                    .data!
+                                    .data![index]
+                                    .clockOut!),
+                              )
+                            : '  :  ',
                         style: TextStyles.font12GreyRegular
                             .copyWith(color: AppColor.primaryColor),
                       ),
@@ -257,7 +269,7 @@ Widget buildCardItem(BuildContext context, index) {
                               .attendanceHistoryModel!
                               .data!
                               .data![index]
-                              .duration!,
+                              .duration,
                         ),
                         style: TextStyles.font12GreyRegular,
                       ),

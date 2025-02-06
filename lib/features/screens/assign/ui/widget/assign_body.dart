@@ -351,7 +351,13 @@ class _AssignBodyState extends State<AssignBody> {
                                       .roleController,
                                   suffixIcon: IconBroken.arrowDown2,
                                   keyboardType: TextInputType.text),
-                              verticalSpace(10),
+                              context
+                                      .read<AssignCubit>()
+                                      .roleController
+                                      .text
+                                      .isEmpty
+                                  ? SizedBox.shrink()
+                                  : verticalSpace(10),
                               context
                                       .read<AssignCubit>()
                                       .roleController
@@ -644,6 +650,7 @@ class _AssignBodyState extends State<AssignBody> {
                                       context
                                           .read<AssignCubit>()
                                           .getCity(selectedArea!.id!);
+                                      selectedlocationId = selectedArea.id!;
                                     },
                                     hint: 'Select Area',
                                     items: context

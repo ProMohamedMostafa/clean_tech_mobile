@@ -1,3 +1,4 @@
+import 'package:image_picker/image_picker.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_add/data/models/attendance_leaves_add_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 
@@ -30,4 +31,9 @@ class AllUsersSuccessState extends LeavesAddState {
 class AllUsersErrorState extends LeavesAddState {
   final String error;
   AllUsersErrorState(this.error);
+}
+//*************************** */
+class ImageSelectedState extends LeavesAddState {
+  final XFile image;
+  ImageSelectedState(this.image);
 }

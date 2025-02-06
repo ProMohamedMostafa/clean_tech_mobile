@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
@@ -240,7 +244,88 @@ class _LeavesEditBodyState extends State<LeavesEditBody> {
                             .data!
                             .reason!,
                       ),
-                      verticalSpace(30),
+                      verticalSpace(10),
+                      Row(
+                        children: [
+                          Text(
+                            "File",
+                            style: TextStyles.font16BlackRegular,
+                          ),
+                          horizontalSpace(20),
+                          Builder(
+                            builder: (context) {
+                              if (context.read<LeavesEditCubit>().image?.path !=
+                                  null) {
+                                return Container(
+                                  height: 80,
+                                  width: 80,
+                                  clipBehavior: Clip.hardEdge,
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.circular(10.r)),
+                                  child: Image.file(
+                                    File(context
+                                        .read<LeavesEditCubit>()
+                                        .image!
+                                        .path),
+                                    fit: BoxFit.cover,
+                                  ),
+                                );
+                              } else if (context
+                                      .read<LeavesEditCubit>()
+                                      .leavesDetailsModel!
+                                      .data!
+                                      .file !=
+                                  null) {
+                                return Container(
+                                  height: 80,
+                                  width: 80,
+                                  clipBehavior: Clip.hardEdge,
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.circular(10.r)),
+                                  child: Image.network(
+                                    '${ApiConstants.apiBaseUrl}${context.read<LeavesEditCubit>().leavesDetailsModel!.data!.file}',
+                                    fit: BoxFit.fill,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Image.asset(
+                                        'assets/images/noImage.png',
+                                        fit: BoxFit.fill,
+                                      );
+                                    },
+                                  ),
+                                );
+                              } else {
+                                return Text("There's no file");
+                              }
+                            },
+                          ),
+                          Spacer(),
+                          Column(
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  context.read<LeavesEditCubit>().galleryFile();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    shape: const CircleBorder(),
+                                    padding: const EdgeInsets.all(10),
+                                    backgroundColor: AppColor.primaryColor,
+                                    elevation: 4),
+                                child: const Icon(IconBroken.upload,
+                                    color: Colors.white, size: 26),
+                              ),
+                              verticalSpace(8),
+                              Text(
+                                'Upload file',
+                                style: TextStyles.font14BlackSemiBold,
+                              ),
+                            ],
+                          ),
+                          horizontalSpace(20),
+                        ],
+                      ),
+                      verticalSpace(20),
                       state is LeavesEditLoadingState
                           ? const Center(
                               child: CircularProgressIndicator(
@@ -250,9 +335,13 @@ class _LeavesEditBodyState extends State<LeavesEditBody> {
                               child: DefaultElevatedButton(
                                   name: 'Edit',
                                   onPressed: () {
-                                    context
-                                        .read<LeavesEditCubit>()
-                                        .editLeaves(widget.id, typeId);
+                                    context.read<LeavesEditCubit>().editLeaves(
+                                        context
+                                            .read<LeavesEditCubit>()
+                                            .image
+                                            ?.path,
+                                        widget.id,
+                                        typeId);
                                   },
                                   color: AppColor.primaryColor,
                                   height: 47,

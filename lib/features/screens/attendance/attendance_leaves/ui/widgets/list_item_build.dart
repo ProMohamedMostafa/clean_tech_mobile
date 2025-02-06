@@ -146,11 +146,12 @@ Widget buildCardItem(BuildContext context, index) {
                       children: [
                         TextSpan(
                           text: context
-                              .read<AttendanceLeavesCubit>()
-                              .attendanceLeavesModel!
-                              .data!
-                              .data![index]
-                              .startDate!,
+                                  .read<AttendanceLeavesCubit>()
+                                  .attendanceLeavesModel!
+                                  .data!
+                                  .data![index]
+                                  .startDate ??
+                              '',
                           style: TextStyles.font11WhiteSemiBold
                               .copyWith(color: AppColor.primaryColor),
                         ),
@@ -160,11 +161,12 @@ Widget buildCardItem(BuildContext context, index) {
                         ),
                         TextSpan(
                           text: context
-                              .read<AttendanceLeavesCubit>()
-                              .attendanceLeavesModel!
-                              .data!
-                              .data![index]
-                              .endDate!,
+                                  .read<AttendanceLeavesCubit>()
+                                  .attendanceLeavesModel!
+                                  .data!
+                                  .data![index]
+                                  .endDate ??
+                              '',
                           style: TextStyles.font11WhiteSemiBold
                               .copyWith(color: AppColor.primaryColor),
                         ),

@@ -8,6 +8,7 @@ import 'package:smart_cleaning_application/core/helpers/constants/constants.dart
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
@@ -71,8 +72,14 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
       body: BlocConsumer<TaskManagementCubit, TaskManagementState>(
         listener: (context, state) {
           if (state is GetChangeTaskStatusSuccessState) {
+            context.read<TaskManagementCubit>().commentController.clear();
+            context.read<TaskManagementCubit>().image = null;
+
             toast(
                 text: state.changeTaskStatusModel.message!, color: Colors.blue);
+            context.read<TaskManagementCubit>().getTaskAction(widget.id);
+            context.read<TaskManagementCubit>().getTaskDetails(widget.id);
+            context.read<TaskManagementCubit>().getTaskFiles(widget.id);
             // context.pushNamedAndRemoveUntil(
             //   Routes.mainLayoutScreen,
             //   predicate: (route) => false,
@@ -355,28 +362,8 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                 borderRadius: BorderRadius.circular(10.r),
                               ),
                               child: Image.network(
-                                "http://10.0.2.2:7111${file.path}",
-                                fit: BoxFit.cover,
-                                loadingBuilder: (BuildContext context,
-                                    Widget child,
-                                    ImageChunkEvent? loadingProgress) {
-                                  if (loadingProgress == null) {
-                                    return child;
-                                  }
-                                  return Center(
-                                    child: CircularProgressIndicator(
-                                      value:
-                                          loadingProgress.expectedTotalBytes !=
-                                                  null
-                                              ? loadingProgress
-                                                      .cumulativeBytesLoaded /
-                                                  (loadingProgress
-                                                          .expectedTotalBytes ??
-                                                      1)
-                                              : null,
-                                    ),
-                                  );
-                                },
+                                '${ApiConstants.apiBaseUrl}${file.path}',
+                                fit: BoxFit.fill,
                                 errorBuilder: (context, error, stackTrace) {
                                   return Image.asset(
                                     'assets/images/noImage.png',
@@ -443,9 +430,21 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                       Container(
                                         width: 50.w,
                                         height: 50.h,
+                                        clipBehavior: Clip.hardEdge,
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: Colors.purple,
+                                        ),
+                                        child: Image.network(
+                                          '${ApiConstants.apiBaseUrl}${task.image}',
+                                          fit: BoxFit.fill,
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
+                                            return Image.asset(
+                                              'assets/images/noImage.png',
+                                              fit: BoxFit.fill,
+                                            );
+                                          },
                                         ),
                                       ),
                                       horizontalSpace(10),
@@ -498,11 +497,17 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                       border: Border.all(
                                                           color:
                                                               Colors.black12),
-                                                      image: DecorationImage(
-                                                        image: NetworkImage(
-                                                            "http://10.0.2.2:7111${file.path}"),
-                                                        fit: BoxFit.cover,
-                                                      ),
+                                                    ),
+                                                    child: Image.network(
+                                                      '${ApiConstants.apiBaseUrl}${task.files}',
+                                                      fit: BoxFit.fill,
+                                                      errorBuilder: (context,
+                                                          error, stackTrace) {
+                                                        return Image.asset(
+                                                          'assets/images/noImage.png',
+                                                          fit: BoxFit.fill,
+                                                        );
+                                                      },
                                                     ),
                                                   );
                                                 }).toList(),
@@ -548,40 +553,86 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                   Form(
                     key: context.read<TaskManagementCubit>().formKey,
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
-                          child: CustomTextFormField(
+                          child: TextFormField(
                             controller: context
                                 .read<TaskManagementCubit>()
                                 .commentController,
                             keyboardType: TextInputType.text,
-                            suffixIcon: Icons.attach_file_rounded,
-                            suffixPressed: () {
-                              UploadFilesBottomDialog().showBottomDialog(
-                                  context, context.read<TaskManagementCubit>());
-                            },
-                            hint: "Write your comment",
-                            onlyRead: false,
+                            decoration: InputDecoration(
+                              isDense: true,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(8.r),
+                                  bottomLeft: Radius.circular(8.r),
+                                ),
+                                borderSide: BorderSide(
+                                  color: AppColor.thirdColor,
+                                ),
+                              ),
+                              hintText: 'write your comment',
+                              helperStyle: TextStyles.font12GreyRegular,
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  UploadFilesBottomDialog().showBottomDialog(
+                                      context,
+                                      context.read<TaskManagementCubit>());
+                                },
+                                icon: Icon(Icons.attach_file_rounded,
+                                    color: AppColor.thirdColor),
+                              ),
+                            ),
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Comment is Required";
+                              final cubit = context.read<TaskManagementCubit>();
+
+                              if ((value == null || value.trim().isEmpty) &&
+                                  (cubit.image == null)) {
+                                return "Comment or Image is required";
                               }
                               return null;
                             },
                           ),
                         ),
-                        InkWell(
-                          onTap: () {},
-                          child: Container(
-                            width: 40.w,
-                            height: 47.h,
-                            color: Colors.amber,
-                            child: Icon(IconBroken.send),
+                        Container(
+                          width: 50.w,
+                          height: 47.h,
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(8.r),
+                              bottomRight: Radius.circular(8.r),
+                            ),
                           ),
+                          child: MaterialButton(
+                              padding: EdgeInsets.zero,
+                              onPressed: () {
+                                if (context
+                                    .read<TaskManagementCubit>()
+                                    .formKey
+                                    .currentState!
+                                    .validate()) {
+                                  final taskCubit =
+                                      context.read<TaskManagementCubit>();
+                                  final imagePath = taskCubit.image?.path ?? "";
+
+                                  taskCubit.addComment(
+                                    imagePath,
+                                    widget.id,
+                                    taskCubit.taskDetailsModel!.data!.statusId!,
+                                  );
+                                }
+                              },
+                              child: Icon(
+                                IconBroken.send,
+                                color: Colors.white,
+                              )),
                         )
                       ],
                     ),
                   ),
+
                   verticalSpace(10),
                   (state is ImageSelectedState || state is CameraSelectedState)
                       ? Container(
@@ -599,9 +650,8 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                           ),
                         )
                       : const SizedBox.shrink(),
-                  if (state is ImageSelectedState ||
-                      state is CameraSelectedState)
-                    verticalSpace(20),
+
+                  verticalSpace(20),
                   state is GetChangeTaskStatusLoadingState
                       ? const Center(
                           child: CircularProgressIndicator(
@@ -665,18 +715,11 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                     DefaultElevatedButton(
                                                       name: "NotResolved",
                                                       onPressed: () {
-                                                        if (context
+                                                        context
                                                             .read<
                                                                 TaskManagementCubit>()
-                                                            .formKey
-                                                            .currentState!
-                                                            .validate()) {
-                                                          context
-                                                              .read<
-                                                                  TaskManagementCubit>()
-                                                              .changeTaskStatus(
-                                                                  widget.id, 5);
-                                                        }
+                                                            .changeTaskStatus(
+                                                                widget.id, 5);
                                                       },
                                                       color: AppColor
                                                           .secondaryColor,
@@ -733,19 +776,12 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                         DefaultElevatedButton(
                                                           name: "NotResolved",
                                                           onPressed: () {
-                                                            if (context
+                                                            context
                                                                 .read<
                                                                     TaskManagementCubit>()
-                                                                .formKey
-                                                                .currentState!
-                                                                .validate()) {
-                                                              context
-                                                                  .read<
-                                                                      TaskManagementCubit>()
-                                                                  .changeTaskStatus(
-                                                                      widget.id,
-                                                                      5);
-                                                            }
+                                                                .changeTaskStatus(
+                                                                    widget.id,
+                                                                    5);
                                                           },
                                                           color: AppColor
                                                               .secondaryColor,

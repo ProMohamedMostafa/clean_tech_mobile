@@ -262,8 +262,6 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
     Map<String, dynamic> formDataMap = {
       "TaskId": taskId,
       "Status": statusIndex,
-      "Comment": commentController.text,
-      "Files": null,
     };
     FormData formData = FormData.fromMap(formDataMap);
     try {
@@ -271,6 +269,35 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
           url: ApiConstants.changeTaskStatusUrl, data: formData);
       changeTaskStatusModel = ChangeTaskStatusModel.fromJson(response!.data);
       emit(GetChangeTaskStatusSuccessState(changeTaskStatusModel!));
+    } catch (error) {
+      emit(GetChangeTaskStatusErrorState(error.toString()));
+    }
+  }
+
+  ChangeTaskStatusModel? changeTaskStatusCommentModel;
+  addComment(String image, int taskId, int statusIndex) async {
+    MultipartFile? imageFile;
+    if (image.isNotEmpty) {
+      imageFile = await MultipartFile.fromFile(
+        image,
+        filename: image.split('/').last,
+      );
+    }
+    emit(GetChangeTaskStatusLoadingState());
+    Map<String, dynamic> formDataMap = {
+      "TaskId": taskId,
+      "Status": statusIndex,
+      "Comment": commentController.text,
+      "Files": imageFile,
+    };
+    FormData formData = FormData.fromMap(formDataMap);
+    try {
+      final response = await DioHelper.postData2(
+          url: ApiConstants.changeTaskStatusUrl, data: formData);
+      changeTaskStatusCommentModel =
+          ChangeTaskStatusModel.fromJson(response!.data);
+
+      emit(GetChangeTaskStatusSuccessState(changeTaskStatusCommentModel!));
     } catch (error) {
       emit(GetChangeTaskStatusErrorState(error.toString()));
     }

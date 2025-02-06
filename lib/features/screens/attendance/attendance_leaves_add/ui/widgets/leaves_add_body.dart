@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -243,6 +246,46 @@ class _LeavesAddBodyState extends State<LeavesAddBody> {
                           return null;
                         },
                       ),
+                      verticalSpace(10),
+                      Center(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            context.read<LeavesAddCubit>().galleryFile();
+                          },
+                          style: ElevatedButton.styleFrom(
+                              shape: const CircleBorder(),
+                              padding: const EdgeInsets.all(10),
+                              backgroundColor: AppColor.primaryColor,
+                              elevation: 4),
+                          child: const Icon(IconBroken.upload,
+                              color: Colors.white, size: 26),
+                        ),
+                      ),
+                      verticalSpace(8),
+                      Center(
+                        child: Text(
+                          'Upload file',
+                          style: TextStyles.font14BlackSemiBold,
+                        ),
+                      ),
+                      verticalSpace(20),
+                      if (state is ImageSelectedState) ...[
+                        Text(
+                          "File",
+                          style: TextStyles.font16BlackRegular,
+                        ),
+                        Container(
+                          height: 80,
+                          width: 80,
+                          clipBehavior: Clip.hardEdge,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r)),
+                          child: Image.file(
+                            File(context.read<LeavesAddCubit>().image!.path),
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      ],
                       verticalSpace(20),
                       state is LeavesAddLoadingState
                           ? const Center(
@@ -260,7 +303,12 @@ class _LeavesAddBodyState extends State<LeavesAddBody> {
                                         .validate()) {
                                       context
                                           .read<LeavesAddCubit>()
-                                          .createLeaves(typeId!);
+                                          .createLeaves(
+                                              context
+                                                  .read<LeavesAddCubit>()
+                                                  .image
+                                                  ?.path,
+                                              typeId!);
                                     }
                                   },
                                   color: AppColor.primaryColor,

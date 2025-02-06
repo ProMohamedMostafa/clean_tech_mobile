@@ -420,10 +420,13 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
       return Column(
         children: [
           Expanded(
-            child: ListView.builder(
+            child: ListView.separated(
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.vertical,
               itemCount: shiftModel.data!.shifts!.length,
+              separatorBuilder: (context, index) {
+                return verticalSpace(10);
+              },
               itemBuilder: (context, index) {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -571,7 +574,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
 
   Widget userLeavesDetails() {
     final attendanceData =
-        context.read<UserManagementCubit>().attendanceHistoryModel?.data?.data;
+        context.read<UserManagementCubit>().attendanceLeavesModel?.data?.data;
 
     if (attendanceData == null || attendanceData.isEmpty) {
       return Center(

@@ -1,10 +1,13 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_edit/data/models/leaves_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_edit/data/models/leaves_edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_edit/logic/leaves_edit_state.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/gallary_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 
 class LeavesEditCubit extends Cubit<LeavesEditState> {
@@ -22,11 +25,17 @@ class LeavesEditCubit extends Cubit<LeavesEditState> {
   final formKey = GlobalKey<FormState>();
 
   AttendanceLeavesEditModel? attendanceLeavesEditModel;
-  editLeaves(int id,typeId) async {
+  editLeaves(String? image,int id,typeId) async {
     emit(LeavesEditLoadingState());
-    try {
-      final response =
-          await DioHelper.putData(url: ApiConstants.leavesEditUrl, data: {
+MultipartFile? imageFile;
+    if (image != null && image.isNotEmpty) {
+      imageFile = await MultipartFile.fromFile(
+        image,
+        filename: image.split('/').last,
+      );
+    }
+
+      Map<String, dynamic> formDataMap = {
         "id": id,
         "userId": employeeController.text.isNotEmpty
             ? employeeIdController.text
@@ -43,7 +52,13 @@ class LeavesEditCubit extends Cubit<LeavesEditState> {
         "reason": discriptionController.text.isNotEmpty
             ? discriptionController.text
             : leavesDetailsModel!.data!.reason,
-      });
+            "File": leavesDetailsModel!.data!.file ?? imageFile
+      };
+
+    FormData formData = FormData.fromMap(formDataMap);
+    try {
+      final response =
+          await DioHelper.putData2(url: ApiConstants.leavesEditUrl, data: formData);
       attendanceLeavesEditModel =
           AttendanceLeavesEditModel.fromJson(response!.data);
       emit(LeavesEditSuccessState(attendanceLeavesEditModel!));
@@ -78,4 +93,18 @@ class LeavesEditCubit extends Cubit<LeavesEditState> {
       emit(AllUsersErrorState(error.toString()));
     });
   }
+
+GalleryModel? gellaryModel;
+  XFile? image;
+  Future<void> galleryFile() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? selectedImage =
+        await picker.pickImage(source: ImageSource.gallery);
+
+    if (selectedImage != null) {
+      image = selectedImage;
+      emit(ImageSelectedState(image!));
+    }
+  }
+
 }

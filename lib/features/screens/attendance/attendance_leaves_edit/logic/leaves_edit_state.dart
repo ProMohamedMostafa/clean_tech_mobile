@@ -1,3 +1,4 @@
+import 'package:image_picker/image_picker.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_edit/data/models/leaves_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_edit/data/models/leaves_edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
@@ -46,4 +47,9 @@ class LeavesDetailsSuccessState extends LeavesEditState {
 class LeavesDetailsErrorState extends LeavesEditState {
   final String error;
   LeavesDetailsErrorState(this.error);
+}
+//*************************** */
+class ImageSelectedState extends LeavesEditState {
+  final XFile image;
+  ImageSelectedState(this.image);
 }
