@@ -10,8 +10,8 @@ import 'package:smart_cleaning_application/core/widgets/default_button/default_e
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/organizations_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/organizations_states.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_states.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class CityDetailsScreenBody extends StatefulWidget {
@@ -25,8 +25,8 @@ class CityDetailsScreenBody extends StatefulWidget {
 class _CityDetailsScreenBodyState extends State<CityDetailsScreenBody> {
   @override
   void initState() {
-    context.read<OrganizationsCubit>().getCityDetails(widget.id);
-    context.read<OrganizationsCubit>().getCityManagersDetails(widget.id);
+    context.read<WorkLocationCubit>().getCityDetails(widget.id);
+    context.read<WorkLocationCubit>().getCityManagersDetails(widget.id);
 
     super.initState();
   }
@@ -52,20 +52,20 @@ class _CityDetailsScreenBodyState extends State<CityDetailsScreenBody> {
               ))
         ],
       ),
-      body: BlocConsumer<OrganizationsCubit, OrganizationsState>(
+      body: BlocConsumer<WorkLocationCubit, WorkLocationState>(
         listener: (context, state) {
           if (state is CityDeleteSuccessState) {
             toast(text: state.message, color: Colors.blue);
-            context.pushNamedAndRemoveLastTwo(Routes.organizationsScreen);
+            context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen);
           }
           if (state is CityDeleteErrorState) {
             toast(text: state.error, color: Colors.red);
           }
         },
         builder: (context, state) {
-          return (context.read<OrganizationsCubit>().cityManagersDetailsModel ==
+          return (context.read<WorkLocationCubit>().cityManagersDetailsModel ==
                       null ||
-                  context.read<OrganizationsCubit>().cityDetailsModel == null)
+                  context.read<WorkLocationCubit>().cityDetailsModel == null)
               ? Center(
                   child: CircularProgressIndicator(
                   color: AppColor.primaryColor,
@@ -77,12 +77,11 @@ class _CityDetailsScreenBodyState extends State<CityDetailsScreenBody> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                       
                         rowDetailsBuild(
                             context,
                             "Country Name",
                             context
-                                .read<OrganizationsCubit>()
+                                .read<WorkLocationCubit>()
                                 .cityDetailsModel!
                                 .data!
                                 .countryName!),
@@ -94,7 +93,7 @@ class _CityDetailsScreenBodyState extends State<CityDetailsScreenBody> {
                             context,
                             "Area Name",
                             context
-                                .read<OrganizationsCubit>()
+                                .read<WorkLocationCubit>()
                                 .cityDetailsModel!
                                 .data!
                                 .areaName!),
@@ -106,7 +105,7 @@ class _CityDetailsScreenBodyState extends State<CityDetailsScreenBody> {
                             context,
                             "City Name",
                             context
-                                .read<OrganizationsCubit>()
+                                .read<WorkLocationCubit>()
                                 .cityDetailsModel!
                                 .data!
                                 .name!),
@@ -122,7 +121,7 @@ class _CityDetailsScreenBodyState extends State<CityDetailsScreenBody> {
                               style: TextStyles.font14GreyRegular,
                             ),
                             context
-                                    .read<OrganizationsCubit>()
+                                    .read<WorkLocationCubit>()
                                     .cityManagersDetailsModel!
                                     .data!
                                     .managers!
@@ -131,7 +130,7 @@ class _CityDetailsScreenBodyState extends State<CityDetailsScreenBody> {
                                 : Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: context
-                                        .read<OrganizationsCubit>()
+                                        .read<WorkLocationCubit>()
                                         .cityManagersDetailsModel!
                                         .data!
                                         .managers!
@@ -153,7 +152,7 @@ class _CityDetailsScreenBodyState extends State<CityDetailsScreenBody> {
                               style: TextStyles.font14GreyRegular,
                             ),
                             context
-                                    .read<OrganizationsCubit>()
+                                    .read<WorkLocationCubit>()
                                     .cityManagersDetailsModel!
                                     .data!
                                     .supervisors!
@@ -163,7 +162,7 @@ class _CityDetailsScreenBodyState extends State<CityDetailsScreenBody> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: context
-                                        .read<OrganizationsCubit>()
+                                        .read<WorkLocationCubit>()
                                         .cityManagersDetailsModel!
                                         .data!
                                         .supervisors!
@@ -185,7 +184,7 @@ class _CityDetailsScreenBodyState extends State<CityDetailsScreenBody> {
                               style: TextStyles.font14GreyRegular,
                             ),
                             context
-                                    .read<OrganizationsCubit>()
+                                    .read<WorkLocationCubit>()
                                     .cityManagersDetailsModel!
                                     .data!
                                     .cleaners!
@@ -195,7 +194,7 @@ class _CityDetailsScreenBodyState extends State<CityDetailsScreenBody> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: context
-                                        .read<OrganizationsCubit>()
+                                        .read<WorkLocationCubit>()
                                         .cityManagersDetailsModel!
                                         .data!
                                         .cleaners!
@@ -210,25 +209,25 @@ class _CityDetailsScreenBodyState extends State<CityDetailsScreenBody> {
                           child: Divider(),
                         ),
                         verticalSpace(15),
-                     state is   CityDeleteLoadingState
-                       ? Center(
-                  child: CircularProgressIndicator(
-                  color: AppColor.primaryColor,
-                ))
-              :  DefaultElevatedButton(
-                            name: S.of(context).deleteButton,
-                            onPressed: () {
-                              showCustomDialog(
-                                  context, S.of(context).deleteMessage, () {
-                                context
-                                    .read<OrganizationsCubit>()
-                                    .deleteCity(widget.id);
-                              });
-                            },
-                            color: AppColor.primaryColor,
-                            height: 48,
-                            width: double.infinity,
-                            textStyles: TextStyles.font20Whitesemimedium),
+                        state is CityDeleteLoadingState
+                            ? Center(
+                                child: CircularProgressIndicator(
+                                color: AppColor.primaryColor,
+                              ))
+                            : DefaultElevatedButton(
+                                name: S.of(context).deleteButton,
+                                onPressed: () {
+                                  showCustomDialog(
+                                      context, S.of(context).deleteMessage, () {
+                                    context
+                                        .read<WorkLocationCubit>()
+                                        .deleteCity(widget.id);
+                                  });
+                                },
+                                color: AppColor.primaryColor,
+                                height: 48,
+                                width: double.infinity,
+                                textStyles: TextStyles.font20Whitesemimedium),
                       ],
                     ),
                   ),

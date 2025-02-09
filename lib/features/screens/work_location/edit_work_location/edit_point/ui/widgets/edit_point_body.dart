@@ -62,7 +62,7 @@ class _EditPointBodyState extends State<EditPointBody> {
           listener: (context, state) {
             if (state is EditPointSuccessState) {
               toast(text: state.pointEditModel.message!, color: Colors.blue);
-              context.pushNamedAndRemoveLastTwo(Routes.organizationsScreen);
+              context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen);
             }
             if (state is EditPointErrorState) {
               toast(text: state.error, color: Colors.red);

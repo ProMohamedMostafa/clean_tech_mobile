@@ -58,7 +58,7 @@ class _EditAreaBodyState extends State<EditAreaBody> {
           listener: (context, state) {
             if (state is EditAreaSuccessState) {
               toast(text: state.editAreaModel.message!, color: Colors.blue);
-              context.pushNamedAndRemoveLastTwo(Routes.organizationsScreen);
+              context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen);
             }
             if (state is EditAreaErrorState) {
               toast(text: state.error, color: Colors.red);

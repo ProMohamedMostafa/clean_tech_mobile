@@ -25,7 +25,6 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
     context.read<UserManagementCubit>().getAllUsersInUserManage();
     context.read<UserManagementCubit>().getAllDeletedUser();
     context.read<UserManagementCubit>().getNationality();
-    context.read<UserManagementCubit>().getOrganization();
     context.read<UserManagementCubit>().getRole();
     super.initState();
   }
@@ -178,7 +177,7 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
                                                 : AppColor.primaryColor,
                                           ),
                                         ),
-                                        SizedBox(width: 5),
+                                        horizontalSpace(5),
                                         Text(
                                           index == 0
                                               ? "Total Users"

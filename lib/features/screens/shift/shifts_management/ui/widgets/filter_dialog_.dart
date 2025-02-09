@@ -7,11 +7,12 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_date_picker.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
-import 'package:smart_cleaning_application/generated/l10n.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shifts_management/logic/shift_cubit.dart';
 
-class CustomFilterUserDialog {
+class CustomFilterShiftDialog {
   static Future<String?> show({
     required BuildContext context,
   }) async {
@@ -40,38 +41,75 @@ class CustomFilterUserDialog {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        S.of(context).addUserText12,
-                        style: TextStyles.font16BlackRegular,
-                      ),
-                      CustomDropDownList(
-                        hint: 'Select Country',
-                        items: context
-                                    .read<UserManagementCubit>()
-                                    .nationalityModel
-                                    ?.data
-                                    ?.isEmpty ??
-                                true
-                            ? ['No countries']
-                            : context
-                                    .read<UserManagementCubit>()
-                                    .nationalityModel
-                                    ?.data
-                                    ?.map((e) => e.name ?? 'Unknown')
-                                    .toList() ??
-                                [],
-                        onPressed: (value) {
-                          context.read<UserManagementCubit>().getArea(context
-                              .read<UserManagementCubit>()
-                              .countryController
-                              .text
-                              .toString());
-                        },
-                        controller: context
-                            .read<UserManagementCubit>()
-                            .countryController,
-                        keyboardType: TextInputType.text,
-                        suffixIcon: IconBroken.arrowDown2,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Start Date",
+                                style: TextStyles.font16BlackRegular,
+                              ),
+                              verticalSpace(5),
+                              CustomTextFormField(
+                                onlyRead: true,
+                                hint: "--/--/---",
+                                controller: context
+                                    .read<ShiftCubit>()
+                                    .startDateController,
+                                suffixIcon: Icons.calendar_today,
+                                suffixPressed: () async {
+                                  final selectedDate =
+                                      await CustomDatePicker.show(
+                                          context: context);
+
+                                  if (selectedDate != null && context.mounted) {
+                                    context
+                                        .read<ShiftCubit>()
+                                        .startDateController
+                                        .text = selectedDate;
+                                  }
+                                },
+                                keyboardType: TextInputType.none,
+                              ),
+                            ],
+                          )),
+                          horizontalSpace(10),
+                          Expanded(
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "End Date",
+                                style: TextStyles.font16BlackRegular,
+                              ),
+                              verticalSpace(5),
+                              CustomTextFormField(
+                                onlyRead: true,
+                                hint: "--/--/---",
+                                controller: context
+                                    .read<ShiftCubit>()
+                                    .endDateController,
+                                suffixIcon: Icons.calendar_today,
+                                suffixPressed: () async {
+                                  final selectedDate =
+                                      await CustomDatePicker.show(
+                                          context: context);
+
+                                  if (selectedDate != null && context.mounted) {
+                                    context
+                                        .read<ShiftCubit>()
+                                        .endDateController
+                                        .text = selectedDate;
+                                  }
+                                },
+                                keyboardType: TextInputType.none,
+                              ),
+                            ],
+                          )),
+                        ],
                       ),
                       verticalSpace(10),
                       Text(
@@ -81,57 +119,58 @@ class CustomFilterUserDialog {
                       CustomDropDownList(
                         hint: "Select area",
                         items: context
-                                    .read<UserManagementCubit>()
-                                    .areaModel
+                                    .read<ShiftCubit>()
+                                    .allAreaModel
+                                    ?.data
                                     ?.data
                                     ?.isEmpty ??
                                 true
-                            ? ['No Areas']
+                            ? ['No organizations']
                             : context
-                                    .read<UserManagementCubit>()
-                                    .areaModel
+                                    .read<ShiftCubit>()
+                                    .allAreaModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
                         onPressed: (value) {
                           final selectedArea = context
-                              .read<UserManagementCubit>()
-                              .areaModel
+                              .read<ShiftCubit>()
+                              .allAreaModel
+                              ?.data
                               ?.data
                               ?.firstWhere((area) =>
                                   area.name ==
                                   context
-                                      .read<UserManagementCubit>()
+                                      .read<ShiftCubit>()
                                       .areaController
                                       .text);
 
-                          context
-                              .read<UserManagementCubit>()
-                              .getCity(selectedArea!.id!);
+                          context.read<ShiftCubit>().getCity(selectedArea!.id!);
                           areaId = selectedArea.id!;
                         },
                         suffixIcon: IconBroken.arrowDown2,
                         controller:
-                            context.read<UserManagementCubit>().areaController,
+                            context.read<ShiftCubit>().areaController,
                         keyboardType: TextInputType.text,
                       ),
                       verticalSpace(10),
                       Text(
-                        'City',
+                        "City",
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
-                        hint: "Select cities",
+                        hint: "Select city",
                         items: context
-                                    .read<UserManagementCubit>()
+                                    .read<ShiftCubit>()
                                     .cityModel
                                     ?.data
                                     ?.isEmpty ??
                                 true
-                            ? ['No Cities']
+                            ? ['No cities']
                             : context
-                                    .read<UserManagementCubit>()
+                                    .read<ShiftCubit>()
                                     .cityModel
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
@@ -139,24 +178,23 @@ class CustomFilterUserDialog {
                                 [],
                         onPressed: (value) {
                           final selectedCity = context
-                              .read<UserManagementCubit>()
+                              .read<ShiftCubit>()
                               .cityModel
                               ?.data
                               ?.firstWhere((city) =>
                                   city.name ==
                                   context
-                                      .read<UserManagementCubit>()
+                                      .read<ShiftCubit>()
                                       .cityController
                                       .text);
-
                           context
-                              .read<UserManagementCubit>()
+                              .read<ShiftCubit>()
                               .getOrganization(selectedCity!.id!);
                           cityId = selectedCity.id!;
                         },
                         suffixIcon: IconBroken.arrowDown2,
-                        controller:
-                            context.read<UserManagementCubit>().cityController,
+                        controller: context.read<ShiftCubit>().cityController,
+                        isRead: false,
                         keyboardType: TextInputType.text,
                       ),
                       verticalSpace(10),
@@ -167,14 +205,14 @@ class CustomFilterUserDialog {
                       CustomDropDownList(
                         hint: "Select organizations",
                         items: context
-                                    .read<UserManagementCubit>()
+                                    .read<ShiftCubit>()
                                     .organizationModel
                                     ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No organizations']
                             : context
-                                    .read<UserManagementCubit>()
+                                    .read<ShiftCubit>()
                                     .organizationModel
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
@@ -182,25 +220,24 @@ class CustomFilterUserDialog {
                                 [],
                         onPressed: (value) {
                           final selectedOrganization = context
-                              .read<UserManagementCubit>()
+                              .read<ShiftCubit>()
                               .organizationModel
                               ?.data
                               ?.firstWhere((organization) =>
                                   organization.name ==
                                   context
-                                      .read<UserManagementCubit>()
+                                      .read<ShiftCubit>()
                                       .organizationController
                                       .text);
 
                           context
-                              .read<UserManagementCubit>()
+                              .read<ShiftCubit>()
                               .getBuilding(selectedOrganization!.id!);
                           organizationId = selectedOrganization.id!;
                         },
                         suffixIcon: IconBroken.arrowDown2,
-                        controller: context
-                            .read<UserManagementCubit>()
-                            .organizationController,
+                        controller:
+                            context.read<ShiftCubit>().organizationController,
                         keyboardType: TextInputType.text,
                       ),
                       verticalSpace(10),
@@ -211,14 +248,14 @@ class CustomFilterUserDialog {
                       CustomDropDownList(
                         hint: "Select building",
                         items: context
-                                    .read<UserManagementCubit>()
+                                    .read<ShiftCubit>()
                                     .buildingModel
                                     ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No building']
                             : context
-                                    .read<UserManagementCubit>()
+                                    .read<ShiftCubit>()
                                     .buildingModel
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
@@ -226,25 +263,24 @@ class CustomFilterUserDialog {
                                 [],
                         onPressed: (value) {
                           final selectedBuilding = context
-                              .read<UserManagementCubit>()
+                              .read<ShiftCubit>()
                               .buildingModel
                               ?.data
                               ?.firstWhere((building) =>
                                   building.name ==
                                   context
-                                      .read<UserManagementCubit>()
+                                      .read<ShiftCubit>()
                                       .buildingController
                                       .text);
 
                           context
-                              .read<UserManagementCubit>()
+                              .read<ShiftCubit>()
                               .getFloor(selectedBuilding!.id!);
                           buildingId = selectedBuilding.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
-                        controller: context
-                            .read<UserManagementCubit>()
-                            .buildingController,
+                        controller:
+                            context.read<ShiftCubit>().buildingController,
                         keyboardType: TextInputType.text,
                       ),
                       verticalSpace(10),
@@ -255,14 +291,14 @@ class CustomFilterUserDialog {
                       CustomDropDownList(
                         hint: "Select floor",
                         items: context
-                                    .read<UserManagementCubit>()
+                                    .read<ShiftCubit>()
                                     .floorModel
                                     ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No floors']
                             : context
-                                    .read<UserManagementCubit>()
+                                    .read<ShiftCubit>()
                                     .floorModel
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
@@ -270,24 +306,23 @@ class CustomFilterUserDialog {
                                 [],
                         onPressed: (value) {
                           final selectedFloor = context
-                              .read<UserManagementCubit>()
+                              .read<ShiftCubit>()
                               .floorModel
                               ?.data
                               ?.firstWhere((floor) =>
                                   floor.name ==
                                   context
-                                      .read<UserManagementCubit>()
+                                      .read<ShiftCubit>()
                                       .floorController
                                       .text);
 
                           context
-                              .read<UserManagementCubit>()
+                              .read<ShiftCubit>()
                               .getPoints(selectedFloor!.id!);
                           floorId = selectedFloor.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
-                        controller:
-                            context.read<UserManagementCubit>().floorController,
+                        controller: context.read<ShiftCubit>().floorController,
                         keyboardType: TextInputType.text,
                       ),
                       verticalSpace(10),
@@ -298,75 +333,46 @@ class CustomFilterUserDialog {
                       CustomDropDownList(
                         hint: "Select point",
                         items: context
-                                    .read<UserManagementCubit>()
+                                    .read<ShiftCubit>()
                                     .pointsModel
                                     ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No point']
                             : context
-                                    .read<UserManagementCubit>()
+                                    .read<ShiftCubit>()
                                     .pointsModel
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
-                        onChanged: (value) {
+                        onPressed: (value) {
                           final selectedPoint = context
-                              .read<UserManagementCubit>()
+                              .read<ShiftCubit>()
                               .pointsModel
                               ?.data
                               ?.firstWhere((point) =>
                                   point.name ==
                                   context
-                                      .read<UserManagementCubit>()
+                                      .read<ShiftCubit>()
                                       .pointController
                                       .text);
 
                           context
-                              .read<UserManagementCubit>()
+                              .read<ShiftCubit>()
                               .getPoints(selectedPoint!.id!);
                           pointId = selectedPoint.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
-                        controller:
-                            context.read<UserManagementCubit>().pointController,
+                        controller: context.read<ShiftCubit>().pointController,
                         keyboardType: TextInputType.text,
-                      ),
-                      verticalSpace(10),
-                      Text(
-                        S.of(context).addUserText13,
-                        style: TextStyles.font16BlackRegular,
-                      ),
-                      CustomDropDownList(
-                        hint: 'Select Role',
-                        items: context
-                                    .read<UserManagementCubit>()
-                                    .roleModel
-                                    ?.data
-                                    ?.isEmpty ??
-                                true
-                            ? ['No roles available']
-                            : context
-                                    .read<UserManagementCubit>()
-                                    .roleModel
-                                    ?.data
-                                    ?.map((e) => e.name ?? 'Unknown')
-                                    .toList() ??
-                                [],
-                        controller:
-                            context.read<UserManagementCubit>().roleController,
-                        keyboardType: TextInputType.text,
-                        suffixIcon: IconBroken.arrowDown2,
                       ),
                       verticalSpace(20),
                       Center(
                         child: DefaultElevatedButton(
                             name: 'Done',
                             onPressed: () {
-                              context
-                                  .read<UserManagementCubit>()
-                                  .getAllUsersInUserManage(
+                              context.read<ShiftCubit>().getAllShifts(
                                     areaId: areaId,
                                     cityId: cityId,
                                     organizationId: organizationId,

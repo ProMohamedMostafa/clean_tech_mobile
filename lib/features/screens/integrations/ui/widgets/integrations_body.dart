@@ -21,7 +21,7 @@ class IntegrationsBody extends StatelessWidget {
           icon: IconBroken.addUser,
         ),
       IntegrationItem(
-        onTap: () => context.pushNamed(Routes.organizationsScreen),
+        onTap: () => context.pushNamed(Routes.chooseViewWorkLocationScreen),
         label: 'Work Location',
         icon: Icons.location_city_outlined,
       ),

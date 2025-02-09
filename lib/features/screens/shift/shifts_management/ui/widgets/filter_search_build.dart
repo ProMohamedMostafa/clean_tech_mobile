@@ -4,10 +4,10 @@ import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/ui/widgets/filter_dialog_.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shifts_management/logic/shift_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shifts_management/ui/widgets/filter_dialog_.dart';
 
-Widget filterAndSearchBuild(BuildContext context, UserManagementCubit cubit) {
+Widget filterAndSearchBuild(BuildContext context, ShiftCubit cubit) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.start,
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -17,11 +17,11 @@ Widget filterAndSearchBuild(BuildContext context, UserManagementCubit cubit) {
           color: AppColor.secondaryColor,
           perfixIcon: Icon(IconBroken.search),
           controller: cubit.searchController,
-          hint: 'Find someone',
+          hint: 'Find shift',
           keyboardType: TextInputType.text,
           onlyRead: false,
           onChanged: (searchedCharacter) {
-            cubit.getAllUsersInUserManage();
+            cubit.getAllShifts();
           },
         ),
       ),
@@ -29,19 +29,19 @@ Widget filterAndSearchBuild(BuildContext context, UserManagementCubit cubit) {
       InkWell(
         borderRadius: BorderRadius.circular(10.r),
         onTap: () {
-          cubit.countryController.clear();
-          cubit.organizationController.clear();
-          cubit.buildingController.clear();
-          cubit.floorController.clear();
-          cubit.buildingController.clear();
-          cubit.pointController.clear();
-          cubit.roleController.clear();
-          CustomFilterUserDialog.show(
+          // cubit.countryController.clear();
+          // cubit.organizationController.clear();
+          // cubit.buildingController.clear();
+          // cubit.floorController.clear();
+          // cubit.buildingController.clear();
+          // cubit.pointController.clear();
+          // cubit.roleController.clear();
+          CustomFilterShiftDialog.show(
             context: context,
           );
         },
         child: Container(
-         height: 49.h,
+       height: 49.h,
           width: 49.w,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.r),

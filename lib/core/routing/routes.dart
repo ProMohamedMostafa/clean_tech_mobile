@@ -11,7 +11,7 @@ class Routes {
   static const String calendarScreen = '/calendarScreen';
   static const String integrationsScreen = '/integrationsScreen';
   static const String userManagmentScreen = '/userManagmentScreen';
-  static const String organizationsScreen = '/organizationsScreen';
+  static const String workLocationScreen = '/organizationsScreen';
   static const String assignScreen = '/assignScreen';
   static const String shiftScreen = '/shiftScreen';
   static const String addUserScreen = '/addUserScreen';
@@ -20,7 +20,8 @@ class Routes {
   static const String settingsScreen = '/settingsScreen';
   static const String changepasswordScreen = '/changepasswordScreen';
 
-  static const String addOrganizationScreen = '/addOrganizationScreen';
+  static const String chooseViewWorkLocationScreen =
+      '/chooseViewWorkLocationScreen';
   static const String addAreaScreen = '/addAreaScreen';
   static const String addCityScreen = '/addCityScreen';
   static const String addOrganizationDetailsScreen =
@@ -42,8 +43,6 @@ class Routes {
   static const String editBuildingScreen = '/editBuildingScreen';
   static const String editFloorScreen = '/editFloorScreen';
   static const String editPointScreen = '/editPointScreen';
-
-  static const String deleteOrganizationScreen = '/deleteOrganizationScreen';
 
   static const String addShiftScreen = '/addShiftScreen';
   static const String editShiftScreen = '/editShiftScreen';

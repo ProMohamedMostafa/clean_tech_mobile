@@ -10,8 +10,8 @@ import 'package:smart_cleaning_application/core/widgets/default_button/default_e
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/organizations_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/organizations_states.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_states.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class OrganizationDetailsScreenBody extends StatefulWidget {
@@ -27,11 +27,9 @@ class _OrganizationDetailsScreenBodyState
     extends State<OrganizationDetailsScreenBody> {
   @override
   void initState() {
-    context.read<OrganizationsCubit>().getOrganizationDetails(widget.id);
-    context.read<OrganizationsCubit>().getOrganizationShiftsDetails(widget.id);
-    context
-        .read<OrganizationsCubit>()
-        .getOrganizationManagersDetails(widget.id);
+    context.read<WorkLocationCubit>().getOrganizationDetails(widget.id);
+    context.read<WorkLocationCubit>().getOrganizationShiftsDetails(widget.id);
+    context.read<WorkLocationCubit>().getOrganizationManagersDetails(widget.id);
     super.initState();
   }
 
@@ -57,27 +55,25 @@ class _OrganizationDetailsScreenBodyState
               ))
         ],
       ),
-      body: BlocConsumer<OrganizationsCubit, OrganizationsState>(
+      body: BlocConsumer<WorkLocationCubit, WorkLocationState>(
         listener: (context, state) {
           if (state is OrganizationDeleteSuccessState) {
             toast(text: state.message, color: Colors.blue);
-            context.pushNamedAndRemoveLastTwo(Routes.organizationsScreen);
+            context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen);
           }
           if (state is OrganizationDeleteErrorState) {
             toast(text: state.error, color: Colors.red);
           }
         },
         builder: (context, state) {
-          return (context
-                          .read<OrganizationsCubit>()
-                          .organizationDetailsModel ==
+          return (context.read<WorkLocationCubit>().organizationDetailsModel ==
                       null ||
                   context
-                          .read<OrganizationsCubit>()
+                          .read<WorkLocationCubit>()
                           .organizationShiftsDetailsModel ==
                       null ||
                   context
-                          .read<OrganizationsCubit>()
+                          .read<WorkLocationCubit>()
                           .organizationManagersDetailsModel ==
                       null)
               ? Center(
@@ -91,12 +87,11 @@ class _OrganizationDetailsScreenBodyState
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                      
                         rowDetailsBuild(
                             context,
                             "Country Name",
                             context
-                                .read<OrganizationsCubit>()
+                                .read<WorkLocationCubit>()
                                 .organizationDetailsModel!
                                 .data!
                                 .countryName!),
@@ -108,7 +103,7 @@ class _OrganizationDetailsScreenBodyState
                             context,
                             "Area Name",
                             context
-                                .read<OrganizationsCubit>()
+                                .read<WorkLocationCubit>()
                                 .organizationDetailsModel!
                                 .data!
                                 .areaName!),
@@ -120,7 +115,7 @@ class _OrganizationDetailsScreenBodyState
                             context,
                             "City Name",
                             context
-                                .read<OrganizationsCubit>()
+                                .read<WorkLocationCubit>()
                                 .organizationDetailsModel!
                                 .data!
                                 .cityName!),
@@ -132,7 +127,7 @@ class _OrganizationDetailsScreenBodyState
                             context,
                             "Organization Name",
                             context
-                                .read<OrganizationsCubit>()
+                                .read<WorkLocationCubit>()
                                 .organizationDetailsModel!
                                 .data!
                                 .name!),
@@ -148,7 +143,7 @@ class _OrganizationDetailsScreenBodyState
                               style: TextStyles.font14GreyRegular,
                             ),
                             context
-                                    .read<OrganizationsCubit>()
+                                    .read<WorkLocationCubit>()
                                     .organizationManagersDetailsModel!
                                     .data!
                                     .managers!
@@ -157,7 +152,7 @@ class _OrganizationDetailsScreenBodyState
                                 : Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: context
-                                        .read<OrganizationsCubit>()
+                                        .read<WorkLocationCubit>()
                                         .organizationManagersDetailsModel!
                                         .data!
                                         .managers!
@@ -179,7 +174,7 @@ class _OrganizationDetailsScreenBodyState
                               style: TextStyles.font14GreyRegular,
                             ),
                             context
-                                    .read<OrganizationsCubit>()
+                                    .read<WorkLocationCubit>()
                                     .organizationManagersDetailsModel!
                                     .data!
                                     .supervisors!
@@ -189,7 +184,7 @@ class _OrganizationDetailsScreenBodyState
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: context
-                                        .read<OrganizationsCubit>()
+                                        .read<WorkLocationCubit>()
                                         .organizationManagersDetailsModel!
                                         .data!
                                         .supervisors!
@@ -211,7 +206,7 @@ class _OrganizationDetailsScreenBodyState
                               style: TextStyles.font14GreyRegular,
                             ),
                             context
-                                    .read<OrganizationsCubit>()
+                                    .read<WorkLocationCubit>()
                                     .organizationManagersDetailsModel!
                                     .data!
                                     .cleaners!
@@ -221,7 +216,7 @@ class _OrganizationDetailsScreenBodyState
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: context
-                                        .read<OrganizationsCubit>()
+                                        .read<WorkLocationCubit>()
                                         .organizationManagersDetailsModel!
                                         .data!
                                         .cleaners!
@@ -243,7 +238,7 @@ class _OrganizationDetailsScreenBodyState
                               style: TextStyles.font14GreyRegular,
                             ),
                             context
-                                    .read<OrganizationsCubit>()
+                                    .read<WorkLocationCubit>()
                                     .organizationShiftsDetailsModel!
                                     .data!
                                     .shifts!
@@ -253,7 +248,7 @@ class _OrganizationDetailsScreenBodyState
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: context
-                                        .read<OrganizationsCubit>()
+                                        .read<WorkLocationCubit>()
                                         .organizationShiftsDetailsModel!
                                         .data!
                                         .shifts!
@@ -279,7 +274,7 @@ class _OrganizationDetailsScreenBodyState
                                   showCustomDialog(
                                       context, S.of(context).deleteMessage, () {
                                     context
-                                        .read<OrganizationsCubit>()
+                                        .read<WorkLocationCubit>()
                                         .deleteOrganization(widget.id);
                                   });
                                 },

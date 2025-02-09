@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/organizations_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/analytics/ui/widgets/organizations_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/analytics/ui/widgets/step_progress_indicator.dart';
 
@@ -40,7 +40,7 @@ Widget addOrganizationBuild(BuildContext context) {
         ),
         verticalSpace(30),
         OrganizationsTextFormField(
-            controller: context.read<OrganizationsCubit>().searchController,
+            controller: context.read<WorkLocationCubit>().searchController,
             hintText: 'Choose Country',
             suffixIcon: Icons.arrow_forward_ios_rounded,
             keyboardType: TextInputType.text,

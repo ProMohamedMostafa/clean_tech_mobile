@@ -70,7 +70,7 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
               toast(
                   text: state.editOrganizationModel.message!,
                   color: Colors.blue);
-              context.pushNamedAndRemoveLastTwo(Routes.organizationsScreen);
+              context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen);
             }
             if (state is EditOrganizationErrorState) {
               toast(text: state.error, color: Colors.red);
@@ -152,7 +152,6 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                                     .read<EditOrganizationCubit>()
                                     .areaModel
                                     ?.data
-                                 
                                     ?.isEmpty ??
                                 true
                             ? ['No areas']
@@ -160,7 +159,6 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                                     .read<EditOrganizationCubit>()
                                     .areaModel
                                     ?.data
-                              
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
@@ -177,7 +175,6 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                               .read<EditOrganizationCubit>()
                               .areaModel
                               ?.data
-                        
                               ?.firstWhere((area) =>
                                   area.name ==
                                   context
@@ -210,13 +207,15 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                         items: context
                                     .read<EditOrganizationCubit>()
                                     .cityModel
-                                ?.data?.isEmpty ??
+                                    ?.data
+                                    ?.isEmpty ??
                                 true
                             ? ['No cities']
                             : context
                                     .read<EditOrganizationCubit>()
                                     .cityModel
-                                  ?.data?.map((e) => e.name ?? 'Unknown')
+                                    ?.data
+                                    ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
                         validator: (value) {
@@ -231,7 +230,8 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                           final selectedCity = context
                               .read<EditOrganizationCubit>()
                               .cityModel
-                           ?.data?.firstWhere((city) =>
+                              ?.data
+                              ?.firstWhere((city) =>
                                   city.name ==
                                   context
                                       .read<EditOrganizationCubit>()

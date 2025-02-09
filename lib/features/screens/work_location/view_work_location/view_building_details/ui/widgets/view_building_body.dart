@@ -10,8 +10,8 @@ import 'package:smart_cleaning_application/core/widgets/default_button/default_e
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/organizations_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/organizations_states.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_states.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class BuildingDetailsScreenBody extends StatefulWidget {
@@ -26,9 +26,9 @@ class BuildingDetailsScreenBody extends StatefulWidget {
 class _BuildingDetailsScreenBodyState extends State<BuildingDetailsScreenBody> {
   @override
   void initState() {
-    context.read<OrganizationsCubit>().getBuildingDetails(widget.id);
-    context.read<OrganizationsCubit>().getBuildingManagersDetails(widget.id);
-    context.read<OrganizationsCubit>().getBuildingShiftsDetails(widget.id);
+    context.read<WorkLocationCubit>().getBuildingDetails(widget.id);
+    context.read<WorkLocationCubit>().getBuildingManagersDetails(widget.id);
+    context.read<WorkLocationCubit>().getBuildingShiftsDetails(widget.id);
 
     super.initState();
   }
@@ -53,7 +53,7 @@ class _BuildingDetailsScreenBodyState extends State<BuildingDetailsScreenBody> {
               ))
         ],
       ),
-      body: BlocConsumer<OrganizationsCubit, OrganizationsState>(
+      body: BlocConsumer<WorkLocationCubit, WorkLocationState>(
         listener: (context, state) {
           if (state is BuildingDeleteSuccessState) {
             toast(text: state.message, color: Colors.blue);
@@ -64,14 +64,14 @@ class _BuildingDetailsScreenBodyState extends State<BuildingDetailsScreenBody> {
           }
         },
         builder: (context, state) {
-          return (context.read<OrganizationsCubit>().buildingDetailsModel ==
+          return (context.read<WorkLocationCubit>().buildingDetailsModel ==
                       null ||
                   context
-                          .read<OrganizationsCubit>()
+                          .read<WorkLocationCubit>()
                           .buildingManagersDetailsModel ==
                       null ||
                   context
-                          .read<OrganizationsCubit>()
+                          .read<WorkLocationCubit>()
                           .buildingShiftsDetailsModel ==
                       null)
               ? Center(
@@ -90,7 +90,7 @@ class _BuildingDetailsScreenBodyState extends State<BuildingDetailsScreenBody> {
                             context,
                             "Country Name",
                             context
-                                .read<OrganizationsCubit>()
+                                .read<WorkLocationCubit>()
                                 .buildingDetailsModel!
                                 .data!
                                 .countryName!,
@@ -103,7 +103,7 @@ class _BuildingDetailsScreenBodyState extends State<BuildingDetailsScreenBody> {
                               context,
                               "Area Name",
                               context
-                                  .read<OrganizationsCubit>()
+                                  .read<WorkLocationCubit>()
                                   .buildingDetailsModel!
                                   .data!
                                   .areaName!),
@@ -115,7 +115,7 @@ class _BuildingDetailsScreenBodyState extends State<BuildingDetailsScreenBody> {
                               context,
                               "City Name",
                               context
-                                  .read<OrganizationsCubit>()
+                                  .read<WorkLocationCubit>()
                                   .buildingDetailsModel!
                                   .data!
                                   .cityName!),
@@ -127,7 +127,7 @@ class _BuildingDetailsScreenBodyState extends State<BuildingDetailsScreenBody> {
                               context,
                               "Organization Name",
                               context
-                                  .read<OrganizationsCubit>()
+                                  .read<WorkLocationCubit>()
                                   .buildingDetailsModel!
                                   .data!
                                   .organizationName!),
@@ -139,7 +139,7 @@ class _BuildingDetailsScreenBodyState extends State<BuildingDetailsScreenBody> {
                               context,
                               "Building Name",
                               context
-                                  .read<OrganizationsCubit>()
+                                  .read<WorkLocationCubit>()
                                   .buildingDetailsModel!
                                   .data!
                                   .name!),
@@ -151,7 +151,7 @@ class _BuildingDetailsScreenBodyState extends State<BuildingDetailsScreenBody> {
                               context,
                               "Building Number",
                               context
-                                  .read<OrganizationsCubit>()
+                                  .read<WorkLocationCubit>()
                                   .buildingDetailsModel!
                                   .data!
                                   .number!),
@@ -163,7 +163,7 @@ class _BuildingDetailsScreenBodyState extends State<BuildingDetailsScreenBody> {
                             context,
                             "Building description",
                             context
-                                .read<OrganizationsCubit>()
+                                .read<WorkLocationCubit>()
                                 .buildingDetailsModel!
                                 .data!
                                 .description!,
@@ -180,7 +180,7 @@ class _BuildingDetailsScreenBodyState extends State<BuildingDetailsScreenBody> {
                                 style: TextStyles.font14GreyRegular,
                               ),
                               context
-                                      .read<OrganizationsCubit>()
+                                      .read<WorkLocationCubit>()
                                       .buildingManagersDetailsModel!
                                       .data!
                                       .managers!
@@ -190,7 +190,7 @@ class _BuildingDetailsScreenBodyState extends State<BuildingDetailsScreenBody> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
                                       children: context
-                                          .read<OrganizationsCubit>()
+                                          .read<WorkLocationCubit>()
                                           .buildingManagersDetailsModel!
                                           .data!
                                           .managers!
@@ -212,7 +212,7 @@ class _BuildingDetailsScreenBodyState extends State<BuildingDetailsScreenBody> {
                                 style: TextStyles.font14GreyRegular,
                               ),
                               context
-                                      .read<OrganizationsCubit>()
+                                      .read<WorkLocationCubit>()
                                       .buildingManagersDetailsModel!
                                       .data!
                                       .supervisors!
@@ -222,7 +222,7 @@ class _BuildingDetailsScreenBodyState extends State<BuildingDetailsScreenBody> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: context
-                                          .read<OrganizationsCubit>()
+                                          .read<WorkLocationCubit>()
                                           .buildingManagersDetailsModel!
                                           .data!
                                           .supervisors!
@@ -244,7 +244,7 @@ class _BuildingDetailsScreenBodyState extends State<BuildingDetailsScreenBody> {
                                 style: TextStyles.font14GreyRegular,
                               ),
                               context
-                                      .read<OrganizationsCubit>()
+                                      .read<WorkLocationCubit>()
                                       .buildingManagersDetailsModel!
                                       .data!
                                       .cleaners!
@@ -254,7 +254,7 @@ class _BuildingDetailsScreenBodyState extends State<BuildingDetailsScreenBody> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: context
-                                          .read<OrganizationsCubit>()
+                                          .read<WorkLocationCubit>()
                                           .buildingManagersDetailsModel!
                                           .data!
                                           .cleaners!
@@ -276,7 +276,7 @@ class _BuildingDetailsScreenBodyState extends State<BuildingDetailsScreenBody> {
                                 style: TextStyles.font14GreyRegular,
                               ),
                               context
-                                      .read<OrganizationsCubit>()
+                                      .read<WorkLocationCubit>()
                                       .buildingShiftsDetailsModel!
                                       .data!
                                       .shifts!
@@ -286,7 +286,7 @@ class _BuildingDetailsScreenBodyState extends State<BuildingDetailsScreenBody> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: context
-                                          .read<OrganizationsCubit>()
+                                          .read<WorkLocationCubit>()
                                           .buildingShiftsDetailsModel!
                                           .data!
                                           .shifts!
@@ -313,7 +313,7 @@ class _BuildingDetailsScreenBodyState extends State<BuildingDetailsScreenBody> {
                                         context, S.of(context).deleteMessage,
                                         () {
                                       context
-                                          .read<OrganizationsCubit>()
+                                          .read<WorkLocationCubit>()
                                           .deleteBuilding(widget.id);
                                     });
                                   },

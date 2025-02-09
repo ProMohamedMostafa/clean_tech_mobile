@@ -10,8 +10,8 @@ import 'package:smart_cleaning_application/core/widgets/default_button/default_e
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/organizations_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/organizations_states.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_states.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class PointDetailsScreenBody extends StatefulWidget {
@@ -25,9 +25,9 @@ class PointDetailsScreenBody extends StatefulWidget {
 class _PointDetailsScreenBodyState extends State<PointDetailsScreenBody> {
   @override
   void initState() {
-    context.read<OrganizationsCubit>().getPointDetails(widget.id);
-    context.read<OrganizationsCubit>().getPointManagersDetails(widget.id);
-    context.read<OrganizationsCubit>().getPointShiftsDetails(widget.id);
+    context.read<WorkLocationCubit>().getPointDetails(widget.id);
+    context.read<WorkLocationCubit>().getPointManagersDetails(widget.id);
+    context.read<WorkLocationCubit>().getPointShiftsDetails(widget.id);
 
     super.initState();
   }
@@ -53,24 +53,21 @@ class _PointDetailsScreenBodyState extends State<PointDetailsScreenBody> {
               ))
         ],
       ),
-      body: BlocConsumer<OrganizationsCubit, OrganizationsState>(
+      body: BlocConsumer<WorkLocationCubit, WorkLocationState>(
         listener: (context, state) {
           if (state is PointDeleteSuccessState) {
             toast(text: state.message, color: Colors.blue);
-            context.pushNamedAndRemoveLastTwo(Routes.organizationsScreen);
+            context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen);
           }
           if (state is PointDeleteErrorState) {
             toast(text: state.error, color: Colors.red);
           }
         },
         builder: (context, state) {
-          return (context.read<OrganizationsCubit>().pointDetailsModel ==
+          return (context.read<WorkLocationCubit>().pointDetailsModel == null ||
+                  context.read<WorkLocationCubit>().pointManagersDetailsModel ==
                       null ||
-                  context
-                          .read<OrganizationsCubit>()
-                          .pointManagersDetailsModel ==
-                      null ||
-                  context.read<OrganizationsCubit>().pointShiftsDetailsModel ==
+                  context.read<WorkLocationCubit>().pointShiftsDetailsModel ==
                       null)
               ? Center(
                   child: CircularProgressIndicator(
@@ -84,12 +81,11 @@ class _PointDetailsScreenBodyState extends State<PointDetailsScreenBody> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                       
                           rowDetailsBuild(
                               context,
                               "Country Name",
                               context
-                                  .read<OrganizationsCubit>()
+                                  .read<WorkLocationCubit>()
                                   .pointDetailsModel!
                                   .data!
                                   .countryName!),
@@ -101,7 +97,7 @@ class _PointDetailsScreenBodyState extends State<PointDetailsScreenBody> {
                               context,
                               "Area Name",
                               context
-                                  .read<OrganizationsCubit>()
+                                  .read<WorkLocationCubit>()
                                   .pointDetailsModel!
                                   .data!
                                   .areaName!),
@@ -113,7 +109,7 @@ class _PointDetailsScreenBodyState extends State<PointDetailsScreenBody> {
                               context,
                               "City Name",
                               context
-                                  .read<OrganizationsCubit>()
+                                  .read<WorkLocationCubit>()
                                   .pointDetailsModel!
                                   .data!
                                   .cityName!),
@@ -125,7 +121,7 @@ class _PointDetailsScreenBodyState extends State<PointDetailsScreenBody> {
                               context,
                               "Organization Name",
                               context
-                                  .read<OrganizationsCubit>()
+                                  .read<WorkLocationCubit>()
                                   .pointDetailsModel!
                                   .data!
                                   .organizationName!),
@@ -137,7 +133,7 @@ class _PointDetailsScreenBodyState extends State<PointDetailsScreenBody> {
                               context,
                               "Building Name",
                               context
-                                  .read<OrganizationsCubit>()
+                                  .read<WorkLocationCubit>()
                                   .pointDetailsModel!
                                   .data!
                                   .buildingName!),
@@ -149,7 +145,7 @@ class _PointDetailsScreenBodyState extends State<PointDetailsScreenBody> {
                               context,
                               "Floor Name",
                               context
-                                  .read<OrganizationsCubit>()
+                                  .read<WorkLocationCubit>()
                                   .pointDetailsModel!
                                   .data!
                                   .floorName!),
@@ -161,7 +157,7 @@ class _PointDetailsScreenBodyState extends State<PointDetailsScreenBody> {
                               context,
                               "Point Name",
                               context
-                                  .read<OrganizationsCubit>()
+                                  .read<WorkLocationCubit>()
                                   .pointDetailsModel!
                                   .data!
                                   .name!),
@@ -173,7 +169,7 @@ class _PointDetailsScreenBodyState extends State<PointDetailsScreenBody> {
                               context,
                               "Point Number",
                               context
-                                  .read<OrganizationsCubit>()
+                                  .read<WorkLocationCubit>()
                                   .pointDetailsModel!
                                   .data!
                                   .number!),
@@ -185,7 +181,7 @@ class _PointDetailsScreenBodyState extends State<PointDetailsScreenBody> {
                               context,
                               "Point description",
                               context
-                                  .read<OrganizationsCubit>()
+                                  .read<WorkLocationCubit>()
                                   .pointDetailsModel!
                                   .data!
                                   .description!),
@@ -201,7 +197,7 @@ class _PointDetailsScreenBodyState extends State<PointDetailsScreenBody> {
                                 style: TextStyles.font14GreyRegular,
                               ),
                               context
-                                      .read<OrganizationsCubit>()
+                                      .read<WorkLocationCubit>()
                                       .pointManagersDetailsModel!
                                       .data!
                                       .managers!
@@ -211,7 +207,7 @@ class _PointDetailsScreenBodyState extends State<PointDetailsScreenBody> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
                                       children: context
-                                          .read<OrganizationsCubit>()
+                                          .read<WorkLocationCubit>()
                                           .pointManagersDetailsModel!
                                           .data!
                                           .managers!
@@ -233,7 +229,7 @@ class _PointDetailsScreenBodyState extends State<PointDetailsScreenBody> {
                                 style: TextStyles.font14GreyRegular,
                               ),
                               context
-                                      .read<OrganizationsCubit>()
+                                      .read<WorkLocationCubit>()
                                       .pointManagersDetailsModel!
                                       .data!
                                       .supervisors!
@@ -243,7 +239,7 @@ class _PointDetailsScreenBodyState extends State<PointDetailsScreenBody> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: context
-                                          .read<OrganizationsCubit>()
+                                          .read<WorkLocationCubit>()
                                           .pointManagersDetailsModel!
                                           .data!
                                           .supervisors!
@@ -265,7 +261,7 @@ class _PointDetailsScreenBodyState extends State<PointDetailsScreenBody> {
                                 style: TextStyles.font14GreyRegular,
                               ),
                               context
-                                      .read<OrganizationsCubit>()
+                                      .read<WorkLocationCubit>()
                                       .pointManagersDetailsModel!
                                       .data!
                                       .cleaners!
@@ -275,7 +271,7 @@ class _PointDetailsScreenBodyState extends State<PointDetailsScreenBody> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: context
-                                          .read<OrganizationsCubit>()
+                                          .read<WorkLocationCubit>()
                                           .pointManagersDetailsModel!
                                           .data!
                                           .cleaners!
@@ -297,7 +293,7 @@ class _PointDetailsScreenBodyState extends State<PointDetailsScreenBody> {
                                 style: TextStyles.font14GreyRegular,
                               ),
                               context
-                                      .read<OrganizationsCubit>()
+                                      .read<WorkLocationCubit>()
                                       .pointShiftsDetailsModel!
                                       .data!
                                       .shifts!
@@ -307,7 +303,7 @@ class _PointDetailsScreenBodyState extends State<PointDetailsScreenBody> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: context
-                                          .read<OrganizationsCubit>()
+                                          .read<WorkLocationCubit>()
                                           .pointShiftsDetailsModel!
                                           .data!
                                           .shifts!
@@ -334,7 +330,7 @@ class _PointDetailsScreenBodyState extends State<PointDetailsScreenBody> {
                                         context, S.of(context).deleteMessage,
                                         () {
                                       context
-                                          .read<OrganizationsCubit>()
+                                          .read<WorkLocationCubit>()
                                           .deletePoint(widget.id);
                                     });
                                   },

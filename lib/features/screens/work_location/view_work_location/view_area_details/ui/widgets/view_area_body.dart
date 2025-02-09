@@ -10,13 +10,14 @@ import 'package:smart_cleaning_application/core/widgets/default_button/default_e
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/organizations_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/organizations_states.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_states.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class AreaDetailsScreenBody extends StatefulWidget {
+  final int selectedIndex;
   final int id;
-  const AreaDetailsScreenBody({super.key, required this.id});
+  const AreaDetailsScreenBody({super.key, required this.id, required this.selectedIndex});
 
   @override
   State<AreaDetailsScreenBody> createState() => _AreaDetailsScreenBodyState();
@@ -25,8 +26,8 @@ class AreaDetailsScreenBody extends StatefulWidget {
 class _AreaDetailsScreenBodyState extends State<AreaDetailsScreenBody> {
   @override
   void initState() {
-    context.read<OrganizationsCubit>().getAreaDetails(widget.id);
-    context.read<OrganizationsCubit>().getAreaManagersDetails(widget.id);
+    context.read<WorkLocationCubit>().getAreaDetails(widget.id);
+    context.read<WorkLocationCubit>().getAreaManagersDetails(widget.id);
     super.initState();
   }
 
@@ -51,20 +52,20 @@ class _AreaDetailsScreenBodyState extends State<AreaDetailsScreenBody> {
               ))
         ],
       ),
-      body: BlocConsumer<OrganizationsCubit, OrganizationsState>(
+      body: BlocConsumer<WorkLocationCubit, WorkLocationState>(
         listener: (context, state) {
           if (state is AreaDeleteSuccessState) {
             toast(text: state.message, color: Colors.blue);
-            context.pushNamedAndRemoveLastTwo(Routes.organizationsScreen);
+            context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen);
           }
           if (state is AreaDeleteErrorState) {
             toast(text: state.error, color: Colors.red);
           }
         },
         builder: (context, state) {
-          return (context.read<OrganizationsCubit>().areaManagersDetailsModel ==
+          return (context.read<WorkLocationCubit>().areaManagersDetailsModel ==
                       null ||
-                  context.read<OrganizationsCubit>().areaDetailsModel == null)
+                  context.read<WorkLocationCubit>().areaDetailsModel == null)
               ? Center(
                   child: CircularProgressIndicator(
                   color: AppColor.primaryColor,
@@ -80,7 +81,7 @@ class _AreaDetailsScreenBodyState extends State<AreaDetailsScreenBody> {
                             context,
                             "Country Name",
                             context
-                                .read<OrganizationsCubit>()
+                                .read<WorkLocationCubit>()
                                 .areaDetailsModel!
                                 .data!
                                 .countryName!),
@@ -92,7 +93,7 @@ class _AreaDetailsScreenBodyState extends State<AreaDetailsScreenBody> {
                             context,
                             "Area Name",
                             context
-                                .read<OrganizationsCubit>()
+                                .read<WorkLocationCubit>()
                                 .areaDetailsModel!
                                 .data!
                                 .name!),
@@ -108,7 +109,7 @@ class _AreaDetailsScreenBodyState extends State<AreaDetailsScreenBody> {
                               style: TextStyles.font14GreyRegular,
                             ),
                             context
-                                    .read<OrganizationsCubit>()
+                                    .read<WorkLocationCubit>()
                                     .areaManagersDetailsModel!
                                     .data!
                                     .managers!
@@ -117,7 +118,7 @@ class _AreaDetailsScreenBodyState extends State<AreaDetailsScreenBody> {
                                 : Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: context
-                                        .read<OrganizationsCubit>()
+                                        .read<WorkLocationCubit>()
                                         .areaManagersDetailsModel!
                                         .data!
                                         .managers!
@@ -139,7 +140,7 @@ class _AreaDetailsScreenBodyState extends State<AreaDetailsScreenBody> {
                               style: TextStyles.font14GreyRegular,
                             ),
                             context
-                                    .read<OrganizationsCubit>()
+                                    .read<WorkLocationCubit>()
                                     .areaManagersDetailsModel!
                                     .data!
                                     .supervisors!
@@ -149,7 +150,7 @@ class _AreaDetailsScreenBodyState extends State<AreaDetailsScreenBody> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: context
-                                        .read<OrganizationsCubit>()
+                                        .read<WorkLocationCubit>()
                                         .areaManagersDetailsModel!
                                         .data!
                                         .supervisors!
@@ -171,7 +172,7 @@ class _AreaDetailsScreenBodyState extends State<AreaDetailsScreenBody> {
                               style: TextStyles.font14GreyRegular,
                             ),
                             context
-                                    .read<OrganizationsCubit>()
+                                    .read<WorkLocationCubit>()
                                     .areaManagersDetailsModel!
                                     .data!
                                     .cleaners!
@@ -181,7 +182,7 @@ class _AreaDetailsScreenBodyState extends State<AreaDetailsScreenBody> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: context
-                                        .read<OrganizationsCubit>()
+                                        .read<WorkLocationCubit>()
                                         .areaManagersDetailsModel!
                                         .data!
                                         .cleaners!
@@ -207,7 +208,7 @@ class _AreaDetailsScreenBodyState extends State<AreaDetailsScreenBody> {
                                   showCustomDialog(
                                       context, S.of(context).deleteMessage, () {
                                     context
-                                        .read<OrganizationsCubit>()
+                                        .read<WorkLocationCubit>()
                                         .deleteArea(widget.id);
                                   });
                                 },

@@ -4,10 +4,11 @@ import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/ui/widgets/filter_dialog_.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/ui/widgets/filter_dialog_.dart';
 
-Widget filterAndSearchBuild(BuildContext context, UserManagementCubit cubit) {
+Widget organizationsFilterAndDeleteBuild(
+    BuildContext context, WorkLocationCubit cubit, selectedIndex) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.start,
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -17,11 +18,21 @@ Widget filterAndSearchBuild(BuildContext context, UserManagementCubit cubit) {
           color: AppColor.secondaryColor,
           perfixIcon: Icon(IconBroken.search),
           controller: cubit.searchController,
-          hint: 'Find someone',
+          hint: 'Find work location',
           keyboardType: TextInputType.text,
           onlyRead: false,
           onChanged: (searchedCharacter) {
-            cubit.getAllUsersInUserManage();
+            selectedIndex == 0
+                ? cubit.getArea()
+                : selectedIndex == 1
+                    ? cubit.getCity()
+                    : selectedIndex == 2
+                        ? cubit.getOrganization()
+                        : selectedIndex == 3
+                            ? cubit.getBuilding()
+                            : selectedIndex == 4
+                                ? cubit.getFloor()
+                                : cubit.getPoint();
           },
         ),
       ),
@@ -35,13 +46,14 @@ Widget filterAndSearchBuild(BuildContext context, UserManagementCubit cubit) {
           cubit.floorController.clear();
           cubit.buildingController.clear();
           cubit.pointController.clear();
-          cubit.roleController.clear();
-          CustomFilterUserDialog.show(
+       
+          CustomFilterWorkLocationDialog.show(
             context: context,
+            selectedIndex: selectedIndex
           );
         },
         child: Container(
-         height: 49.h,
+          height: 49.h,
           width: 49.w,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.r),

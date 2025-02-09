@@ -4,7 +4,9 @@ import 'package:smart_cleaning_application/core/networking/api_constants/api_con
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/data/models/attendance_history_model.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/data/models/attendance_leaves_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/delete_user_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/deleted_list_model.dart';
@@ -27,6 +29,8 @@ class UserManagementCubit extends Cubit<UserManagementState> {
 
   TextEditingController searchController = TextEditingController();
   TextEditingController countryController = TextEditingController();
+  TextEditingController areaController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
   TextEditingController organizationController = TextEditingController();
   TextEditingController buildingController = TextEditingController();
   TextEditingController floorController = TextEditingController();
@@ -83,6 +87,8 @@ class UserManagementCubit extends Cubit<UserManagementState> {
 
   UsersModel? usersModel;
   getAllUsersInUserManage({
+    int? areaId,
+    int? cityId,
     int? organizationId,
     int? buildingId,
     int? floorId,
@@ -91,6 +97,8 @@ class UserManagementCubit extends Cubit<UserManagementState> {
     emit(AllUsersLoadingState());
     DioHelper.getData(url: "users/pagination", query: {
       'country': countryController.text,
+      'area': areaId,
+      'city': cityId,
       'organization': organizationId,
       'building': buildingId,
       'floor': floorId,
@@ -160,12 +168,34 @@ class UserManagementCubit extends Cubit<UserManagementState> {
     });
   }
 
-  AllOrganizationModel? allOrganizationModel;
-  getOrganization() {
+  AreaModel? areaModel;
+  getArea(String countryName) {
+    emit(GetAreaLoadingState());
+    DioHelper.getData(url: "areas/country/$countryName").then((value) {
+      areaModel = AreaModel.fromJson(value!.data);
+      emit(GetAreaSuccessState(areaModel!));
+    }).catchError((error) {
+      emit(GetAreaErrorState(error.toString()));
+    });
+  }
+
+  CityModel? cityModel;
+  getCity(int areaId) {
+    emit(GetCityLoadingState());
+    DioHelper.getData(url: "cities/area/$areaId").then((value) {
+      cityModel = CityModel.fromJson(value!.data);
+      emit(GetCitySuccessState(cityModel!));
+    }).catchError((error) {
+      emit(GetCityErrorState(error.toString()));
+    });
+  }
+
+  OrganizationModel? organizationModel;
+  getOrganization(int cityId) {
     emit(GetOrganizationLoadingState());
-    DioHelper.getData(url: ApiConstants.organizationUrl).then((value) {
-      allOrganizationModel = AllOrganizationModel.fromJson(value!.data);
-      emit(GetOrganizationSuccessState(allOrganizationModel!));
+    DioHelper.getData(url: "organizations/city/$cityId").then((value) {
+      organizationModel = OrganizationModel.fromJson(value!.data);
+      emit(GetOrganizationSuccessState(organizationModel!));
     }).catchError((error) {
       emit(GetOrganizationErrorState(error.toString()));
     });

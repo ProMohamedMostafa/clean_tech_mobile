@@ -1,6 +1,8 @@
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/data/models/attendance_history_model.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/data/models/attendance_leaves_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/delete_user_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/deleted_list_model.dart';
@@ -171,7 +173,6 @@ class UserDeleteInDetailsErrorState extends UserManagementState {
   final String error;
   UserDeleteInDetailsErrorState(this.error);
 }
-//****************************** */
 
 //**************************** */
 class GetNationalityLoadingState extends UserManagementState {}
@@ -202,13 +203,40 @@ class RoleErrorState extends UserManagementState {
   RoleErrorState(this.error);
 }
 
-//**************************************** */
+//**************************** */
+
+class GetAreaLoadingState extends UserManagementState {}
+
+class GetAreaSuccessState extends UserManagementState {
+  final AreaModel areaModel;
+
+  GetAreaSuccessState(this.areaModel);
+}
+
+class GetAreaErrorState extends UserManagementState {
+  final String error;
+  GetAreaErrorState(this.error);
+}
+//**************************** */
+
+class GetCityLoadingState extends UserManagementState {}
+
+class GetCitySuccessState extends UserManagementState {
+  final CityModel cityModel;
+
+  GetCitySuccessState(this.cityModel);
+}
+
+class GetCityErrorState extends UserManagementState {
+  final String error;
+  GetCityErrorState(this.error);
+}
 class GetOrganizationLoadingState extends UserManagementState {}
 
 class GetOrganizationSuccessState extends UserManagementState {
-  final AllOrganizationModel allOrganizationModel;
+  final OrganizationModel organizationModel;
 
-  GetOrganizationSuccessState(this.allOrganizationModel);
+  GetOrganizationSuccessState(this.organizationModel);
 }
 
 class GetOrganizationErrorState extends UserManagementState {

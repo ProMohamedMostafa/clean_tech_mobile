@@ -57,7 +57,7 @@ class _EditCityBodyState extends State<EditCityBody> {
           listener: (context, state) {
             if (state is EditCitySuccessState) {
               toast(text: state.editCityModel.message!, color: Colors.blue);
-              context.pushNamedAndRemoveLastTwo(Routes.organizationsScreen);
+              context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen);
             }
             if (state is EditCityErrorState) {
               toast(text: state.error, color: Colors.red);
@@ -140,14 +140,14 @@ class _EditCityBodyState extends State<EditCityBody> {
                         items: context
                                     .read<EditCityCubit>()
                                     .areaModel
-                                     ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No areas']
                             : context
                                     .read<EditCityCubit>()
                                     .areaModel
-                                     ?.data
+                                    ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
@@ -163,7 +163,7 @@ class _EditCityBodyState extends State<EditCityBody> {
                           final selectedArea = context
                               .read<EditCityCubit>()
                               .areaModel
-                               ?.data
+                              ?.data
                               ?.firstWhere((area) =>
                                   area.name ==
                                   context

@@ -17,15 +17,13 @@ import 'package:smart_cleaning_application/features/screens/attendance/attendanc
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_edit/ui/screen/leaves_edit_screen.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/ui/attendance_screen.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/logic/add_organization_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/screen/add_organization_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/widgets/add_area_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/widgets/add_building_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/widgets/add_city_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/widgets/add_floor_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/widgets/add_organization_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/widgets/add_point_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/delete_work_location/logic/delete_organization_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/delete_work_location/ui/screen/delete_organization_screen.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/screens/add_area_screen.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/screens/add_building_screen.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/screens/add_city_screen.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/screens/add_floor_screen.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/screens/add_organization_screen.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/screens/add_point_screen.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/choose_view_work_location/choose_view_work_location.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_area/logic/edit_area_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_area/ui/screen/edit_area_screen.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_building/logic/edit_building_cubit.dart';
@@ -48,8 +46,8 @@ import 'package:smart_cleaning_application/features/screens/shift/add_shift/ui/s
 import 'package:smart_cleaning_application/features/screens/shift/edit_shift/logic/edit_shift_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/shift/edit_shift/ui/screen/edit_shift_screen.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/ui/screen/shift_details_screen.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shifts/logic/shift_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shifts/ui/screen/shift_screen.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shifts_management/logic/shift_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shifts_management/ui/screen/shift_screen.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/logic/add_task_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/ui/screen/add_task_screen.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/logic/edit_task_cubit.dart';
@@ -76,8 +74,8 @@ import 'package:smart_cleaning_application/features/screens/user/edit_user/ui/sc
 import 'package:smart_cleaning_application/features/screens/home/ui/screen/home_screen.dart';
 import 'package:smart_cleaning_application/features/screens/auth/login/ui/screen/login_screen.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/screen/integrations_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/organizations_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/ui/screen/organizations_screen.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/ui/screen/work_location_screen.dart';
 import 'package:smart_cleaning_application/features/screens/settings/ui/screen/settings_screen.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/screen/user_details_screen.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
@@ -158,11 +156,19 @@ class AppRouter {
           ),
         );
 
-      case Routes.organizationsScreen:
+      case Routes.chooseViewWorkLocationScreen:
+        return MaterialPageRoute(
+          builder: (_) => const ChooseViewWorkLocation(),
+        );
+
+      case Routes.workLocationScreen:
+        var selectedIndex = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => OrganizationsCubit(),
-            child: const OrganizationsScreen(),
+            create: (context) => WorkLocationCubit(),
+            child: WorkLocationScreen(
+              selectedIndex: selectedIndex,
+            ),
           ),
         );
       case Routes.shiftScreen:
@@ -210,13 +216,7 @@ class AppRouter {
             child: const ChangePasswordScreen(),
           ),
         );
-      case Routes.addOrganizationScreen:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => AddOrganizationCubit(),
-            child: const AddOrganizationScreen(),
-          ),
-        );
+
       case Routes.addAreaScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -262,11 +262,13 @@ class AppRouter {
 
       case Routes.areaDetailsScreen:
         var id = settings.arguments as int;
+        var selectedindex = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => OrganizationsCubit(),
+            create: (context) => WorkLocationCubit(),
             child: AreaDetailsScreen(
               id: id,
+              selectedIndex:selectedindex
             ),
           ),
         );
@@ -274,7 +276,7 @@ class AppRouter {
         var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => OrganizationsCubit(),
+            create: (context) => WorkLocationCubit(),
             child: CityDetailsScreen(
               id: id,
             ),
@@ -284,7 +286,7 @@ class AppRouter {
         var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => OrganizationsCubit(),
+            create: (context) => WorkLocationCubit(),
             child: OrganizationDetailsScreen(
               id: id,
             ),
@@ -294,7 +296,7 @@ class AppRouter {
         var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => OrganizationsCubit(),
+            create: (context) => WorkLocationCubit(),
             child: BuildingDetailsScreen(
               id: id,
             ),
@@ -304,7 +306,7 @@ class AppRouter {
         var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => OrganizationsCubit(),
+            create: (context) => WorkLocationCubit(),
             child: FloorDetailsScreen(
               id: id,
             ),
@@ -314,7 +316,7 @@ class AppRouter {
         var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => OrganizationsCubit(),
+            create: (context) => WorkLocationCubit(),
             child: PointDetailsScreen(
               id: id,
             ),
@@ -382,16 +384,16 @@ class AppRouter {
           ),
         );
 
-      case Routes.deleteOrganizationScreen:
-        var selectedIndex = settings.arguments as int;
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => DeleteOrganizationsCubit(),
-            child: DeleteOrganizationScreen(
-              selectedIndex: selectedIndex,
-            ),
-          ),
-        );
+      // case Routes.deleteOrganizationScreen:
+      //   var selectedIndex = settings.arguments as int;
+      //   return MaterialPageRoute(
+      //     builder: (_) => BlocProvider(
+      //       create: (context) => DeleteOrganizationsCubit(),
+      //       child: DeleteOrganizationScreen(
+      //         selectedIndex: selectedIndex,
+      //       ),
+      //     ),
+      //   );
 
       case Routes.addShiftScreen:
         return MaterialPageRoute(

@@ -9,8 +9,8 @@ import 'package:smart_cleaning_application/core/widgets/default_button/default_e
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shifts/logic/shift_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shifts/logic/shift_state.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shifts_management/logic/shift_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shifts_management/logic/shift_state.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class ShiftDetailsBody extends StatefulWidget {

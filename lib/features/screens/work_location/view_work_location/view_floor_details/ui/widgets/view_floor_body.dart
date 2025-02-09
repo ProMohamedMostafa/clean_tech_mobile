@@ -10,8 +10,8 @@ import 'package:smart_cleaning_application/core/widgets/default_button/default_e
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/organizations_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/organizations_states.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_states.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class FloorDetailsScreenBody extends StatefulWidget {
@@ -25,9 +25,9 @@ class FloorDetailsScreenBody extends StatefulWidget {
 class _FloorDetailsScreenBodyState extends State<FloorDetailsScreenBody> {
   @override
   void initState() {
-    context.read<OrganizationsCubit>().getFloorDetails(widget.id);
-    context.read<OrganizationsCubit>().getFloorManagersDetails(widget.id);
-    context.read<OrganizationsCubit>().getFloorShiftsDetails(widget.id);
+    context.read<WorkLocationCubit>().getFloorDetails(widget.id);
+    context.read<WorkLocationCubit>().getFloorManagersDetails(widget.id);
+    context.read<WorkLocationCubit>().getFloorShiftsDetails(widget.id);
 
     super.initState();
   }
@@ -53,24 +53,21 @@ class _FloorDetailsScreenBodyState extends State<FloorDetailsScreenBody> {
               ))
         ],
       ),
-      body: BlocConsumer<OrganizationsCubit, OrganizationsState>(
+      body: BlocConsumer<WorkLocationCubit, WorkLocationState>(
         listener: (context, state) {
           if (state is FloorDeleteSuccessState) {
             toast(text: state.message, color: Colors.blue);
-            context.pushNamedAndRemoveLastTwo(Routes.organizationsScreen);
+            context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen);
           }
           if (state is FloorDeleteErrorState) {
             toast(text: state.error, color: Colors.red);
           }
         },
         builder: (context, state) {
-          return (context.read<OrganizationsCubit>().floorDetailsModel ==
+          return (context.read<WorkLocationCubit>().floorDetailsModel == null ||
+                  context.read<WorkLocationCubit>().floorManagersDetailsModel ==
                       null ||
-                  context
-                          .read<OrganizationsCubit>()
-                          .floorManagersDetailsModel ==
-                      null ||
-                  context.read<OrganizationsCubit>().floorShiftsDetailsModel ==
+                  context.read<WorkLocationCubit>().floorShiftsDetailsModel ==
                       null)
               ? Center(
                   child: CircularProgressIndicator(
@@ -84,12 +81,11 @@ class _FloorDetailsScreenBodyState extends State<FloorDetailsScreenBody> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                         
                           rowDetailsBuild(
                               context,
                               "Country Name",
                               context
-                                  .read<OrganizationsCubit>()
+                                  .read<WorkLocationCubit>()
                                   .floorDetailsModel!
                                   .data!
                                   .countryName!),
@@ -101,7 +97,7 @@ class _FloorDetailsScreenBodyState extends State<FloorDetailsScreenBody> {
                               context,
                               "Area Name",
                               context
-                                  .read<OrganizationsCubit>()
+                                  .read<WorkLocationCubit>()
                                   .floorDetailsModel!
                                   .data!
                                   .areaName!),
@@ -113,7 +109,7 @@ class _FloorDetailsScreenBodyState extends State<FloorDetailsScreenBody> {
                               context,
                               "City Name",
                               context
-                                  .read<OrganizationsCubit>()
+                                  .read<WorkLocationCubit>()
                                   .floorDetailsModel!
                                   .data!
                                   .cityName!),
@@ -125,7 +121,7 @@ class _FloorDetailsScreenBodyState extends State<FloorDetailsScreenBody> {
                               context,
                               "Organization Name",
                               context
-                                  .read<OrganizationsCubit>()
+                                  .read<WorkLocationCubit>()
                                   .floorDetailsModel!
                                   .data!
                                   .organizationName!),
@@ -137,7 +133,7 @@ class _FloorDetailsScreenBodyState extends State<FloorDetailsScreenBody> {
                               context,
                               "Building Name",
                               context
-                                  .read<OrganizationsCubit>()
+                                  .read<WorkLocationCubit>()
                                   .floorDetailsModel!
                                   .data!
                                   .buildingName!),
@@ -149,7 +145,7 @@ class _FloorDetailsScreenBodyState extends State<FloorDetailsScreenBody> {
                               context,
                               "Floor Name",
                               context
-                                  .read<OrganizationsCubit>()
+                                  .read<WorkLocationCubit>()
                                   .floorDetailsModel!
                                   .data!
                                   .name!),
@@ -161,7 +157,7 @@ class _FloorDetailsScreenBodyState extends State<FloorDetailsScreenBody> {
                               context,
                               "Floor Number",
                               context
-                                  .read<OrganizationsCubit>()
+                                  .read<WorkLocationCubit>()
                                   .floorDetailsModel!
                                   .data!
                                   .number!),
@@ -173,7 +169,7 @@ class _FloorDetailsScreenBodyState extends State<FloorDetailsScreenBody> {
                               context,
                               "Floor description",
                               context
-                                  .read<OrganizationsCubit>()
+                                  .read<WorkLocationCubit>()
                                   .floorDetailsModel!
                                   .data!
                                   .description!),
@@ -189,7 +185,7 @@ class _FloorDetailsScreenBodyState extends State<FloorDetailsScreenBody> {
                                 style: TextStyles.font14GreyRegular,
                               ),
                               context
-                                      .read<OrganizationsCubit>()
+                                      .read<WorkLocationCubit>()
                                       .floorManagersDetailsModel!
                                       .data!
                                       .managers!
@@ -199,7 +195,7 @@ class _FloorDetailsScreenBodyState extends State<FloorDetailsScreenBody> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
                                       children: context
-                                          .read<OrganizationsCubit>()
+                                          .read<WorkLocationCubit>()
                                           .floorManagersDetailsModel!
                                           .data!
                                           .managers!
@@ -221,7 +217,7 @@ class _FloorDetailsScreenBodyState extends State<FloorDetailsScreenBody> {
                                 style: TextStyles.font14GreyRegular,
                               ),
                               context
-                                      .read<OrganizationsCubit>()
+                                      .read<WorkLocationCubit>()
                                       .floorManagersDetailsModel!
                                       .data!
                                       .supervisors!
@@ -231,7 +227,7 @@ class _FloorDetailsScreenBodyState extends State<FloorDetailsScreenBody> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: context
-                                          .read<OrganizationsCubit>()
+                                          .read<WorkLocationCubit>()
                                           .floorManagersDetailsModel!
                                           .data!
                                           .supervisors!
@@ -253,7 +249,7 @@ class _FloorDetailsScreenBodyState extends State<FloorDetailsScreenBody> {
                                 style: TextStyles.font14GreyRegular,
                               ),
                               context
-                                      .read<OrganizationsCubit>()
+                                      .read<WorkLocationCubit>()
                                       .floorManagersDetailsModel!
                                       .data!
                                       .cleaners!
@@ -263,7 +259,7 @@ class _FloorDetailsScreenBodyState extends State<FloorDetailsScreenBody> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: context
-                                          .read<OrganizationsCubit>()
+                                          .read<WorkLocationCubit>()
                                           .floorManagersDetailsModel!
                                           .data!
                                           .cleaners!
@@ -285,7 +281,7 @@ class _FloorDetailsScreenBodyState extends State<FloorDetailsScreenBody> {
                                 style: TextStyles.font14GreyRegular,
                               ),
                               context
-                                      .read<OrganizationsCubit>()
+                                      .read<WorkLocationCubit>()
                                       .floorShiftsDetailsModel!
                                       .data!
                                       .shifts!
@@ -295,7 +291,7 @@ class _FloorDetailsScreenBodyState extends State<FloorDetailsScreenBody> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: context
-                                          .read<OrganizationsCubit>()
+                                          .read<WorkLocationCubit>()
                                           .floorShiftsDetailsModel!
                                           .data!
                                           .shifts!
@@ -322,7 +318,7 @@ class _FloorDetailsScreenBodyState extends State<FloorDetailsScreenBody> {
                                         context, S.of(context).deleteMessage,
                                         () {
                                       context
-                                          .read<OrganizationsCubit>()
+                                          .read<WorkLocationCubit>()
                                           .deleteFloor(widget.id);
                                     });
                                   },

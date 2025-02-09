@@ -64,7 +64,7 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
           listener: (context, state) {
             if (state is EditBuildingSuccessState) {
               toast(text: state.buildingEditModel.message!, color: Colors.blue);
-              context.pushNamedAndRemoveLastTwo(Routes.organizationsScreen);
+              context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen);
             }
             if (state is EditBuildingErrorState) {
               toast(text: state.error, color: Colors.red);
@@ -166,7 +166,7 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                           final selectedArea = context
                               .read<EditBuildingCubit>()
                               .areaModel
-                             ?.data
+                              ?.data
                               ?.firstWhere((area) =>
                                   area.name ==
                                   context
@@ -205,7 +205,8 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                             : context
                                     .read<EditBuildingCubit>()
                                     .cityModel
-                                 ?.data?.map((e) => e.name ?? 'Unknown')
+                                    ?.data
+                                    ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
                         validator: (value) {
@@ -220,7 +221,8 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                           final selectedCity = context
                               .read<EditBuildingCubit>()
                               .cityModel
-                         ?.data?.firstWhere((city) =>
+                              ?.data
+                              ?.firstWhere((city) =>
                                   city.name ==
                                   context
                                       .read<EditBuildingCubit>()
