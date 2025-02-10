@@ -10,62 +10,62 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
 
-Widget organizationsListItemBuild(BuildContext context, selectedIndex, index) {
+Widget organizationsListItemBuild(
+    BuildContext context, int selectedIndex, index) {
   return InkWell(
     onTap: () {
-      context.pushNamed(
-          selectedIndex == 0
-              ? Routes.areaDetailsScreen
-              : selectedIndex == 1
-                  ? Routes.cityDetailsScreen
-                  : selectedIndex == 2
-                      ? Routes.organizationDetailsScreen
-                      : selectedIndex == 3
-                          ? Routes.buildingDetailsScreen
-                          : selectedIndex == 4
-                              ? Routes.floorDetailsScreen
-                              : Routes.pointDetailsScreen,
-          arguments: selectedIndex == 0
-              ? context
-                  .read<WorkLocationCubit>()
-                  .areaModel!
-                  .data!
-                  .areas![index]
-                  .id
-              : selectedIndex == 1
-                  ? context
-                      .read<WorkLocationCubit>()
-                      .cityModel!
-                      .data!
-                      .data![index]
-                      .id
-                  : selectedIndex == 2
-                      ? context
-                          .read<WorkLocationCubit>()
-                          .organizationModel!
-                          .data!
-                          .data![index]
-                          .id
-                      : selectedIndex == 3
-                          ? context
-                              .read<WorkLocationCubit>()
-                              .buildingModel!
-                              .data!
-                              .data![index]
-                              .id
-                          : selectedIndex == 4
-                              ? context
-                                  .read<WorkLocationCubit>()
-                                  .floorModel!
-                                  .data!
-                                  .data![index]
-                                  .id
-                              : context
-                                  .read<WorkLocationCubit>()
-                                  .pointModel!
-                                  .data!
-                                  .data![index]
-                                  .id);
+      context.pushNamed(Routes.workLocationDetailsScreen, arguments: {
+        'id': selectedIndex == 0
+            ? context
+                .read<WorkLocationCubit>()
+                .areaModel!
+                .data!
+                .areas![index]
+                .id!
+                .toInt()
+            : selectedIndex == 1
+                ? context
+                    .read<WorkLocationCubit>()
+                    .cityModel!
+                    .data!
+                    .data![index]
+                    .id!
+                    .toInt()
+                : selectedIndex == 2
+                    ? context
+                        .read<WorkLocationCubit>()
+                        .organizationModel!
+                        .data!
+                        .data![index]
+                        .id!
+                        .toInt()
+                    : selectedIndex == 3
+                        ? context
+                            .read<WorkLocationCubit>()
+                            .buildingModel!
+                            .data!
+                            .data![index]
+                            .id!
+                            .toInt()
+                        : selectedIndex == 4
+                            ? context
+                                .read<WorkLocationCubit>()
+                                .floorModel!
+                                .data!
+                                .data![index]
+                                .id!
+                                .toInt()
+                            : context
+                                .read<WorkLocationCubit>()
+                                .pointModel!
+                                .data!
+                                .data![index]
+                                .id!
+                                .toInt(),
+        'selectedIndex': selectedIndex
+      });
+
+      
     },
     child: Card(
       elevation: 1,

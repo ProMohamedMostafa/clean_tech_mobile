@@ -30,6 +30,9 @@ class Routes {
   static const String addFloorScreen = '/addFloorScreen';
   static const String addPointScreen = '/addPointScreen';
 
+  static const String workLocationDetailsScreen = '/workLocationDetailsScreen';
+
+  
   static const String areaDetailsScreen = '/areaDetailsScreen';
   static const String cityDetailsScreen = '/cityDetailsScreen';
   static const String organizationDetailsScreen = '/organizationDetailsScreen';

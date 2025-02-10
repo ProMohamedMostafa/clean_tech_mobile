@@ -36,6 +36,7 @@ import 'package:smart_cleaning_application/features/screens/work_location/edit_w
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_organization/ui/screen/edit_organization_screen.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_point/logic/edit_point_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_point/ui/screen/edit_point_screen.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view%20_body/work_location_body.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_area_details/ui/Screen/view_organization_screen.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_building_details/ui/Screen/view_organization_screen.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_city_details/ui/Screen/view_organization_screen.dart';
@@ -259,17 +260,24 @@ class AppRouter {
             child: const AddPointScreen(),
           ),
         );
-
+      case Routes.workLocationDetailsScreen:
+        final args = settings.arguments as Map<String, int>;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => WorkLocationCubit(),
+            child: WorkLocationDetailsBody(
+              id: args['id']!,
+              selectedIndex: args['selectedIndex']!,
+            ),
+          ),
+        );
       case Routes.areaDetailsScreen:
         var id = settings.arguments as int;
         var selectedindex = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => WorkLocationCubit(),
-            child: AreaDetailsScreen(
-              id: id,
-              selectedIndex:selectedindex
-            ),
+            child: AreaDetailsScreen(id: id, selectedIndex: selectedindex),
           ),
         );
       case Routes.cityDetailsScreen:
