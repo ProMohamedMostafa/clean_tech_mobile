@@ -16,8 +16,8 @@ import 'package:smart_cleaning_application/features/screens/work_location/add_wo
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_point/data/model/edit_point_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_point/data/model/point_details_in_edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_point/logic/edit_point_state.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_point_details/data/model/point_managers_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_point_details/data/model/point_shifts_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/point_managers_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/point_shifts_details_model.dart';
 
 class EditPointCubit extends Cubit<EditPointState> {
   EditPointCubit() : super(EditPointInitialState());

@@ -15,8 +15,8 @@ import 'package:smart_cleaning_application/features/screens/work_location/add_wo
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_floor/data/model/edit_floor_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_floor/data/model/floor_details_in_edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_floor/logic/edit_floor_state.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_floor_details/data/model/floor_managers_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_floor_details/data/model/floor_shifts_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/floor_managers_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/floor_shifts_details_model.dart';
 
 class EditFloorCubit extends Cubit<EditFloorState> {
   EditFloorCubit() : super(EditFloorInitialState());

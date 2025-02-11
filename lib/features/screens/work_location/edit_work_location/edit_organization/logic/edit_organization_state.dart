@@ -8,8 +8,8 @@ import 'package:smart_cleaning_application/features/screens/work_location/add_wo
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_organization/data/model/edit_organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_organization/data/model/organization_details_in_edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_organization_details/data/model/organization_managers_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_organization_details/data/model/organization_shifts_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/organization_managers_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/organization_shifts_details_model.dart';
 
 abstract class EditOrganizationState {}
 

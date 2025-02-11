@@ -17,7 +17,7 @@ Widget buildLeavesCardItem(BuildContext context, index) {
               .read<UserManagementCubit>()
               .attendanceLeavesModel!
               .data!
-              .data![index]
+              .leaves![index]
               .id!);
     },
     child: Card(
@@ -57,7 +57,7 @@ Widget buildLeavesCardItem(BuildContext context, index) {
                           .read<UserManagementCubit>()
                           .attendanceLeavesModel!
                           .data!
-                          .data![index]
+                          .leaves![index]
                           .type!,
                       style: TextStyles.font11WhiteSemiBold.copyWith(
                         color: Color(0xffD25260),
@@ -80,7 +80,7 @@ Widget buildLeavesCardItem(BuildContext context, index) {
                           .read<UserManagementCubit>()
                           .attendanceLeavesModel!
                           .data!
-                          .data![index]
+                          .leaves![index]
                           .userName!,
                       style: TextStyles.font11WhiteSemiBold
                           .copyWith(color: AppColor.primaryColor),
@@ -112,7 +112,7 @@ Widget buildLeavesCardItem(BuildContext context, index) {
                   .read<UserManagementCubit>()
                   .attendanceLeavesModel!
                   .data!
-                  .data![index]
+                  .leaves![index]
                   .userName!,
               style: TextStyles.font16BlackSemiBold,
             ),
@@ -122,7 +122,7 @@ Widget buildLeavesCardItem(BuildContext context, index) {
                   .read<UserManagementCubit>()
                   .attendanceLeavesModel!
                   .data!
-                  .data![index]
+                  .leaves![index]
                   .reason!,
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
@@ -146,7 +146,7 @@ Widget buildLeavesCardItem(BuildContext context, index) {
                                 .read<UserManagementCubit>()
                                 .attendanceLeavesModel!
                                 .data!
-                                .data![index]
+                                .leaves![index]
                                 .startDate ??
                             '',
                         style: TextStyles.font11WhiteSemiBold
@@ -161,7 +161,7 @@ Widget buildLeavesCardItem(BuildContext context, index) {
                                 .read<UserManagementCubit>()
                                 .attendanceLeavesModel!
                                 .data!
-                                .data![index]
+                                .leaves![index]
                                 .endDate ??
                             '',
                         style: TextStyles.font11WhiteSemiBold

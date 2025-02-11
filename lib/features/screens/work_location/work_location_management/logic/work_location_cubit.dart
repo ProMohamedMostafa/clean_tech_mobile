@@ -12,17 +12,17 @@ import 'package:smart_cleaning_application/features/screens/integrations/data/mo
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/points_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/all_tasks_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_area_details/data/model/area_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_area_details/data/model/area_managers_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_building_details/data/model/building_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_building_details/data/model/building_managers_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_building_details/data/model/building_shifts_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_city_details/data/model/city_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_city_details/data/model/city_managers_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_floor_details/data/model/floor_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_floor_details/data/model/floor_managers_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_floor_details/data/model/floor_shifts_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_organization_details/data/model/organization_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/area_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/area_managers_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/building_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/building_managers_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/building_shifts_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/city_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/city_managers_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/floor_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/floor_managers_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/floor_shifts_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/organization_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_tree_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
@@ -38,11 +38,11 @@ import 'package:smart_cleaning_application/features/screens/work_location/work_l
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/point_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_states.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_organization_details/data/model/organization_managers_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_organization_details/data/model/organization_shifts_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_point_details/data/model/point_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_point_details/data/model/point_managers_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_point_details/data/model/point_shifts_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/organization_managers_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/organization_shifts_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/point_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/point_managers_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/point_shifts_details_model.dart';
 
 class WorkLocationCubit extends Cubit<WorkLocationState> {
   WorkLocationCubit() : super(OrganizationsInitialState());
@@ -704,10 +704,75 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
   }
 
 //********************** */
-  AllTasksModel? allPointTasksModel;
-  getPointTasks(
-    int? pointId,
+  AllTasksModel? allareaTasksModel;
+  getareaTasks(
+    int? areaId,
   ) {
+    emit(GetAllTasksLoadingState());
+    DioHelper.getData(url: "tasks/pagination", query: {
+      'area': areaId,
+    }).then((value) {
+      allareaTasksModel = AllTasksModel.fromJson(value!.data);
+      emit(GetAllTasksSuccessState(allareaTasksModel!));
+    }).catchError((error) {
+      emit(GetAllTasksErrorState(error.toString()));
+    });
+  }
+
+  AllTasksModel? allcityTasksModel;
+  getcityTasks(int? cityId) {
+    emit(GetAllTasksLoadingState());
+    DioHelper.getData(url: "tasks/pagination", query: {
+      'city': cityId,
+    }).then((value) {
+      allcityTasksModel = AllTasksModel.fromJson(value!.data);
+      emit(GetAllTasksSuccessState(allcityTasksModel!));
+    }).catchError((error) {
+      emit(GetAllTasksErrorState(error.toString()));
+    });
+  }
+
+  AllTasksModel? allorganizationTasksModel;
+  getorganizationTasks(int? organizationId) {
+    emit(GetAllTasksLoadingState());
+    DioHelper.getData(url: "tasks/pagination", query: {
+      'organization': organizationId,
+    }).then((value) {
+      allorganizationTasksModel = AllTasksModel.fromJson(value!.data);
+      emit(GetAllTasksSuccessState(allorganizationTasksModel!));
+    }).catchError((error) {
+      emit(GetAllTasksErrorState(error.toString()));
+    });
+  }
+
+  AllTasksModel? allbuildingTasksModel;
+  getbuildingTasks(int? buildingId) {
+    emit(GetAllTasksLoadingState());
+    DioHelper.getData(url: "tasks/pagination", query: {
+      'building': buildingId,
+    }).then((value) {
+      allbuildingTasksModel = AllTasksModel.fromJson(value!.data);
+      emit(GetAllTasksSuccessState(allbuildingTasksModel!));
+    }).catchError((error) {
+      emit(GetAllTasksErrorState(error.toString()));
+    });
+  }
+
+  AllTasksModel? allfloorTasksModel;
+  getfloorTasks(int? floorId) {
+    emit(GetAllTasksLoadingState());
+    DioHelper.getData(url: "tasks/pagination", query: {
+      'floor': floorId,
+    }).then((value) {
+      allfloorTasksModel = AllTasksModel.fromJson(value!.data);
+      emit(GetAllTasksSuccessState(allfloorTasksModel!));
+    }).catchError((error) {
+      emit(GetAllTasksErrorState(error.toString()));
+    });
+  }
+
+  AllTasksModel? allPointTasksModel;
+  getPointTasks(int? pointId) {
     emit(GetAllTasksLoadingState());
     DioHelper.getData(url: "tasks/pagination", query: {
       'point': pointId,
@@ -720,6 +785,77 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
   }
 
 //*********************** */
+
+  AttendanceHistoryModel? attendanceHistoryAreaModel;
+  getAttendanceHistoryArea(int id) {
+    emit(AttendanceHistoryAreaLoadingState());
+    DioHelper.getData(url: ApiConstants.hisotryUrl, query: {
+      'areaId': id,
+    }).then((value) {
+      attendanceHistoryAreaModel = AttendanceHistoryModel.fromJson(value!.data);
+      emit(AttendanceHistoryAreaSuccessState(attendanceHistoryAreaModel!));
+    }).catchError((error) {
+      emit(AttendanceHistoryAreaErrorState(error.toString()));
+    });
+  }
+
+  AttendanceHistoryModel? attendanceHistoryCityModel;
+  getAttendanceHistoryCity(int id) {
+    emit(AttendanceHistoryCityLoadingState());
+    DioHelper.getData(url: ApiConstants.hisotryUrl, query: {
+      'cityId': id,
+    }).then((value) {
+      attendanceHistoryCityModel = AttendanceHistoryModel.fromJson(value!.data);
+      emit(AttendanceHistoryCitySuccessState(attendanceHistoryCityModel!));
+    }).catchError((error) {
+      emit(AttendanceHistoryCityErrorState(error.toString()));
+    });
+  }
+
+  AttendanceHistoryModel? attendanceHistoryOrganizationModel;
+  getAttendanceHistoryOrganization(int id) {
+    emit(AttendanceHistoryOrganizationLoadingState());
+    DioHelper.getData(url: ApiConstants.hisotryUrl, query: {
+      'buildingId': id,
+    }).then((value) {
+      attendanceHistoryOrganizationModel =
+          AttendanceHistoryModel.fromJson(value!.data);
+      emit(AttendanceHistoryOrganizationSuccessState(
+          attendanceHistoryOrganizationModel!));
+    }).catchError((error) {
+      emit(AttendanceHistoryOrganizationErrorState(error.toString()));
+    });
+  }
+
+  AttendanceHistoryModel? attendanceHistoryBuildingModel;
+  getAttendanceHistoryBuilding(int id) {
+    emit(AttendanceHistoryBuildingLoadingState());
+    DioHelper.getData(url: ApiConstants.hisotryUrl, query: {
+      'buildingId': id,
+    }).then((value) {
+      attendanceHistoryBuildingModel =
+          AttendanceHistoryModel.fromJson(value!.data);
+      emit(AttendanceHistoryBuildingSuccessState(
+          attendanceHistoryBuildingModel!));
+    }).catchError((error) {
+      emit(AttendanceHistoryBuildingErrorState(error.toString()));
+    });
+  }
+
+  AttendanceHistoryModel? attendanceHistoryFloorModel;
+  getAttendanceHistoryFloor(int id) {
+    emit(AttendanceHistoryFloorLoadingState());
+    DioHelper.getData(url: ApiConstants.hisotryUrl, query: {
+      'floorId': id,
+    }).then((value) {
+      attendanceHistoryFloorModel =
+          AttendanceHistoryModel.fromJson(value!.data);
+      emit(AttendanceHistoryFloorSuccessState(attendanceHistoryFloorModel!));
+    }).catchError((error) {
+      emit(AttendanceHistoryFloorErrorState(error.toString()));
+    });
+  }
+
   AttendanceHistoryModel? attendanceHistoryPointModel;
   getAttendanceHistoryPoint(int id) {
     emit(AttendanceHistoryPointLoadingState());
@@ -735,6 +871,74 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
   }
 
 //*********************************** */
+
+  AttendanceLeavesModel? attendanceLeavesAreaModel;
+  getAllLeavesArea(int id) {
+    emit(LeavesLoadingState());
+    DioHelper.getData(url: ApiConstants.leavesUrl, query: {
+      'area': id,
+    }).then((value) {
+      attendanceLeavesAreaModel = AttendanceLeavesModel.fromJson(value!.data);
+      emit(LeavesSuccessState(attendanceLeavesAreaModel!));
+    }).catchError((error) {
+      emit(LeavesErrorState(error.toString()));
+    });
+  }
+
+  AttendanceLeavesModel? attendanceLeavesCityModel;
+  getAllLeavesCity(int id) {
+    emit(LeavesLoadingState());
+    DioHelper.getData(url: ApiConstants.leavesUrl, query: {
+      'city': id,
+    }).then((value) {
+      attendanceLeavesCityModel = AttendanceLeavesModel.fromJson(value!.data);
+      emit(LeavesSuccessState(attendanceLeavesCityModel!));
+    }).catchError((error) {
+      emit(LeavesErrorState(error.toString()));
+    });
+  }
+
+  AttendanceLeavesModel? attendanceLeavesOrganizationModel;
+  getAllLeavesOrganization(int id) {
+    emit(LeavesLoadingState());
+    DioHelper.getData(url: ApiConstants.leavesUrl, query: {
+      'organization': id,
+    }).then((value) {
+      attendanceLeavesOrganizationModel =
+          AttendanceLeavesModel.fromJson(value!.data);
+      emit(LeavesSuccessState(attendanceLeavesOrganizationModel!));
+    }).catchError((error) {
+      emit(LeavesErrorState(error.toString()));
+    });
+  }
+
+  AttendanceLeavesModel? attendanceLeavesBuildingModel;
+  getAllLeavesBuilding(int id) {
+    emit(LeavesLoadingState());
+    DioHelper.getData(url: ApiConstants.leavesUrl, query: {
+      'building': id,
+    }).then((value) {
+      attendanceLeavesBuildingModel =
+          AttendanceLeavesModel.fromJson(value!.data);
+      emit(LeavesSuccessState(attendanceLeavesBuildingModel!));
+    }).catchError((error) {
+      emit(LeavesErrorState(error.toString()));
+    });
+  }
+
+  AttendanceLeavesModel? attendanceLeavesFloorModel;
+  getAllLeavesFloor(int id) {
+    emit(LeavesLoadingState());
+    DioHelper.getData(url: ApiConstants.leavesUrl, query: {
+      'floor': id,
+    }).then((value) {
+      attendanceLeavesFloorModel = AttendanceLeavesModel.fromJson(value!.data);
+      emit(LeavesSuccessState(attendanceLeavesFloorModel!));
+    }).catchError((error) {
+      emit(LeavesErrorState(error.toString()));
+    });
+  }
+
   AttendanceLeavesModel? attendanceLeavesPointModel;
   getAllLeavesPoint(int id) {
     emit(LeavesLoadingState());

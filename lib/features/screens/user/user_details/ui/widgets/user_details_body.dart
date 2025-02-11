@@ -574,7 +574,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
 
   Widget userLeavesDetails() {
     final attendanceData =
-        context.read<UserManagementCubit>().attendanceLeavesModel?.data?.data;
+        context.read<UserManagementCubit>().attendanceLeavesModel?.data?.leaves;
 
     if (attendanceData == null || attendanceData.isEmpty) {
       return Center(

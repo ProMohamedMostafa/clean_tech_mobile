@@ -14,8 +14,8 @@ import 'package:smart_cleaning_application/features/screens/work_location/add_wo
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_building/data/model/building_details_in_edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_building/data/model/edit_building_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_building/logic/edit_building_state.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_building_details/data/model/building_managers_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_building_details/data/model/building_shifts_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/building_managers_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/building_shifts_details_model.dart';
 
 class EditBuildingCubit extends Cubit<EditBuildingState> {
   EditBuildingCubit() : super(EditBuildingInitialState());

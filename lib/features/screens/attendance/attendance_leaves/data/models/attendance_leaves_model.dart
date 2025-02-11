@@ -4,7 +4,8 @@ class AttendanceLeavesModel {
   bool? succeeded;
   String? message;
   dynamic error;
-  AttendanceData? data;
+  dynamic businessErrorCode;
+  AttendanceLeavesData? data;
 
   AttendanceLeavesModel({
     this.statusCode,
@@ -12,6 +13,7 @@ class AttendanceLeavesModel {
     this.succeeded,
     this.message,
     this.error,
+    this.businessErrorCode,
     this.data,
   });
 
@@ -21,24 +23,24 @@ class AttendanceLeavesModel {
     succeeded = json['succeeded'];
     message = json['message'];
     error = json['error'];
-    data = json['data'] != null ? AttendanceData.fromJson(json['data']) : null;
+    businessErrorCode = json['businessErrorCode'];
+    data = json['data'] != null ? AttendanceLeavesData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-    data['statusCode'] = statusCode;
-    data['meta'] = meta;
-    data['succeeded'] = succeeded;
-    data['message'] = message;
-    data['error'] = error;
-    if (this.data != null) {
-      data['data'] = this.data!.toJson();
-    }
-    return data;
+    return {
+      'statusCode': statusCode,
+      'meta': meta,
+      'succeeded': succeeded,
+      'message': message,
+      'error': error,
+      'businessErrorCode': businessErrorCode,
+      'data': data?.toJson(),
+    };
   }
 }
 
-class AttendanceData {
+class AttendanceLeavesData {
   int? currentPage;
   int? totalPages;
   int? totalCount;
@@ -47,9 +49,9 @@ class AttendanceData {
   bool? hasPreviousPage;
   bool? hasNextPage;
   bool? succeeded;
-  List<LeaveData>? data;
+  List<LeaveRecord>? leaves;
 
-  AttendanceData({
+  AttendanceLeavesData({
     this.currentPage,
     this.totalPages,
     this.totalCount,
@@ -58,10 +60,10 @@ class AttendanceData {
     this.hasPreviousPage,
     this.hasNextPage,
     this.succeeded,
-    this.data,
+    this.leaves,
   });
 
-  AttendanceData.fromJson(Map<String, dynamic> json) {
+  AttendanceLeavesData.fromJson(Map<String, dynamic> json) {
     currentPage = json['currentPage'];
     totalPages = json['totalPages'];
     totalCount = json['totalCount'];
@@ -71,30 +73,29 @@ class AttendanceData {
     hasNextPage = json['hasNextPage'];
     succeeded = json['succeeded'];
     if (json['data'] != null) {
-      data = (json['data'] as List).map((v) => LeaveData.fromJson(v)).toList();
+      leaves = (json['data'] as List).map((v) => LeaveRecord.fromJson(v)).toList();
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-    data['currentPage'] = currentPage;
-    data['totalPages'] = totalPages;
-    data['totalCount'] = totalCount;
-    data['meta'] = meta;
-    data['pageSize'] = pageSize;
-    data['hasPreviousPage'] = hasPreviousPage;
-    data['hasNextPage'] = hasNextPage;
-    data['succeeded'] = succeeded;
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
-    }
-    return data;
+    return {
+      'currentPage': currentPage,
+      'totalPages': totalPages,
+      'totalCount': totalCount,
+      'meta': meta,
+      'pageSize': pageSize,
+      'hasPreviousPage': hasPreviousPage,
+      'hasNextPage': hasNextPage,
+      'succeeded': succeeded,
+      'data': leaves?.map((v) => v.toJson()).toList(),
+    };
   }
 }
 
-class LeaveData {
+class LeaveRecord {
   int? id;
   int? userId;
+  String? role;
   String? userName;
   String? firstName;
   String? lastName;
@@ -102,10 +103,12 @@ class LeaveData {
   String? endDate;
   String? reason;
   String? type;
+  String? file;
 
-  LeaveData({
+  LeaveRecord({
     this.id,
     this.userId,
+    this.role,
     this.userName,
     this.firstName,
     this.lastName,
@@ -113,11 +116,13 @@ class LeaveData {
     this.endDate,
     this.reason,
     this.type,
+    this.file,
   });
 
-  LeaveData.fromJson(Map<String, dynamic> json) {
+  LeaveRecord.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['userId'];
+    role = json['role'];
     userName = json['userName'];
     firstName = json['firstName'];
     lastName = json['lastName'];
@@ -125,19 +130,22 @@ class LeaveData {
     endDate = json['endDate'];
     reason = json['reason'];
     type = json['type'];
+    file = json['file'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-    data['id'] = id;
-    data['userId'] = userId;
-    data['userName'] = userName;
-    data['firstName'] = firstName;
-    data['lastName'] = lastName;
-    data['startDate'] = startDate;
-    data['endDate'] = endDate;
-    data['reason'] = reason;
-    data['type'] = type;
-    return data;
+    return {
+      'id': id,
+      'userId': userId,
+      'role': role,
+      'userName': userName,
+      'firstName': firstName,
+      'lastName': lastName,
+      'startDate': startDate,
+      'endDate': endDate,
+      'reason': reason,
+      'type': type,
+      'file': file,
+    };
   }
 }

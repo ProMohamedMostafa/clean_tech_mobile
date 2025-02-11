@@ -9,7 +9,7 @@ Widget attendanceLeavesListDetailsBuild(
     BuildContext context) {
   
 final attendanceData =
-      context.read<AttendanceLeavesCubit>().attendanceLeavesModel?.data!.data;
+      context.read<AttendanceLeavesCubit>().attendanceLeavesModel?.data!.leaves;
 
   if (attendanceData == null || attendanceData.isEmpty) {
     return Center(

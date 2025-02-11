@@ -13,26 +13,29 @@ import 'package:smart_cleaning_application/core/widgets/default_button/default_e
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view%20_body/widgets/attendance_list_item_build.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view%20_body/widgets/leaves_list_item_build.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view%20_body/widgets/shift_list_item_build.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view%20_body/widgets/task_list_item_build.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/ui/widgets/attendance_list_item_build.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/ui/widgets/cleaner_item_list_build.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/ui/widgets/manager_item_list_build.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/ui/widgets/leaves_list_item_build.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/ui/widgets/shift_list_item_build.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/ui/widgets/supervisor_item_list_build.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/ui/widgets/task_list_item_build.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_states.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
-class WorkLocationDetailsBody extends StatefulWidget {
+class WorkLocationDetailsScreen extends StatefulWidget {
   final int selectedIndex;
   final int id;
-  const WorkLocationDetailsBody(
+  const WorkLocationDetailsScreen(
       {super.key, required this.id, required this.selectedIndex});
 
   @override
-  State<WorkLocationDetailsBody> createState() =>
-      _WorkLocationDetailsBodyState();
+  State<WorkLocationDetailsScreen> createState() =>
+      _WorkLocationDetailsScreenState();
 }
 
-class _WorkLocationDetailsBodyState extends State<WorkLocationDetailsBody>
+class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
     with TickerProviderStateMixin {
   late TabController controller;
   bool descTextShowFlag = false;
@@ -43,12 +46,18 @@ class _WorkLocationDetailsBodyState extends State<WorkLocationDetailsBody>
     if (widget.selectedIndex == 0) {
       context.read<WorkLocationCubit>().getAreaDetails(widget.id);
       context.read<WorkLocationCubit>().getAreaManagersDetails(widget.id);
-      context.read<WorkLocationCubit>().getAreatree(widget.id);
+      context.read<WorkLocationCubit>().getareaTasks(widget.id);
+      context.read<WorkLocationCubit>().getAttendanceHistoryArea(widget.id);
+      context.read<WorkLocationCubit>().getAllLeavesArea(widget.id);
+      // context.read<WorkLocationCubit>().getAreatree(widget.id);
     }
     if (widget.selectedIndex == 1) {
       context.read<WorkLocationCubit>().getCityDetails(widget.id);
       context.read<WorkLocationCubit>().getCityManagersDetails(widget.id);
-      context.read<WorkLocationCubit>().getCitytree(widget.id);
+      context.read<WorkLocationCubit>().getcityTasks(widget.id);
+      context.read<WorkLocationCubit>().getAttendanceHistoryCity(widget.id);
+      context.read<WorkLocationCubit>().getAllLeavesCity(widget.id);
+      // context.read<WorkLocationCubit>().getCitytree(widget.id);
     }
     if (widget.selectedIndex == 2) {
       context.read<WorkLocationCubit>().getOrganizationDetails(widget.id);
@@ -56,16 +65,27 @@ class _WorkLocationDetailsBodyState extends State<WorkLocationDetailsBody>
       context
           .read<WorkLocationCubit>()
           .getOrganizationManagersDetails(widget.id);
+      context.read<WorkLocationCubit>().getorganizationTasks(widget.id);
+      context
+          .read<WorkLocationCubit>()
+          .getAttendanceHistoryOrganization(widget.id);
+      context.read<WorkLocationCubit>().getAllLeavesOrganization(widget.id);
     }
     if (widget.selectedIndex == 3) {
       context.read<WorkLocationCubit>().getBuildingDetails(widget.id);
       context.read<WorkLocationCubit>().getBuildingManagersDetails(widget.id);
       context.read<WorkLocationCubit>().getBuildingShiftsDetails(widget.id);
+      context.read<WorkLocationCubit>().getbuildingTasks(widget.id);
+      context.read<WorkLocationCubit>().getAttendanceHistoryBuilding(widget.id);
+      context.read<WorkLocationCubit>().getAllLeavesBuilding(widget.id);
     }
     if (widget.selectedIndex == 4) {
       context.read<WorkLocationCubit>().getFloorDetails(widget.id);
       context.read<WorkLocationCubit>().getFloorManagersDetails(widget.id);
       context.read<WorkLocationCubit>().getFloorShiftsDetails(widget.id);
+      context.read<WorkLocationCubit>().getfloorTasks(widget.id);
+      context.read<WorkLocationCubit>().getAttendanceHistoryFloor(widget.id);
+      context.read<WorkLocationCubit>().getAllLeavesFloor(widget.id);
     }
     if (widget.selectedIndex == 5) {
       context.read<WorkLocationCubit>().getPointDetails(widget.id);
@@ -76,7 +96,7 @@ class _WorkLocationDetailsBodyState extends State<WorkLocationDetailsBody>
       context.read<WorkLocationCubit>().getAllLeavesPoint(widget.id);
     }
 
-    controller = TabController(length: 6, vsync: this);
+    controller = TabController(length: 8, vsync: this);
     controller.addListener(() {
       setState(() {});
     });
@@ -247,40 +267,27 @@ class _WorkLocationDetailsBodyState extends State<WorkLocationDetailsBody>
         },
         builder: (context, state) {
           if ((widget.selectedIndex == 0 &&
-                  (context.read<WorkLocationCubit>().areaManagersDetailsModel == null ||
-                      context.read<WorkLocationCubit>().areaDetailsModel ==
-                          null ||
-                      context.read<WorkLocationCubit>().areaTreeModel ==
-                          null)) ||
+                  (context
+                          .read<WorkLocationCubit>()
+                          .areaManagersDetailsModel ==
+                      null)) ||
               (widget.selectedIndex == 1 &&
-                  (context.read<WorkLocationCubit>().cityManagersDetailsModel == null ||
-                      context.read<WorkLocationCubit>().cityDetailsModel ==
-                          null)) ||
+                  (context
+                          .read<WorkLocationCubit>()
+                          .cityManagersDetailsModel ==
+                      null)) ||
               (widget.selectedIndex == 2 &&
-                  (context.read<WorkLocationCubit>().organizationDetailsModel == null ||
-                      context.read<WorkLocationCubit>().organizationShiftsDetailsModel ==
-                          null ||
-                      context
-                              .read<WorkLocationCubit>()
-                              .organizationManagersDetailsModel ==
-                          null)) ||
+                  (context.read<WorkLocationCubit>().organizationDetailsModel ==
+                      null)) ||
               (widget.selectedIndex == 3 &&
-                  (context.read<WorkLocationCubit>().buildingDetailsModel == null ||
-                      context.read<WorkLocationCubit>().buildingManagersDetailsModel ==
-                          null ||
-                      context.read<WorkLocationCubit>().buildingShiftsDetailsModel ==
-                          null)) ||
+                  (context.read<WorkLocationCubit>().buildingDetailsModel ==
+                      null)) ||
               (widget.selectedIndex == 4 &&
-                  (context.read<WorkLocationCubit>().floorDetailsModel == null ||
-                      context.read<WorkLocationCubit>().floorManagersDetailsModel ==
-                          null ||
-                      context.read<WorkLocationCubit>().floorShiftsDetailsModel ==
-                          null)) ||
+                  (context.read<WorkLocationCubit>().floorDetailsModel ==
+                      null)) ||
               (widget.selectedIndex == 5 &&
-                  (context.read<WorkLocationCubit>().pointDetailsModel == null ||
-                      context.read<WorkLocationCubit>().pointManagersDetailsModel ==
-                          null ||
-                      context.read<WorkLocationCubit>().pointShiftsDetailsModel == null))) {
+                  (context.read<WorkLocationCubit>().pointDetailsModel ==
+                      null))) {
             return const Center(
               child: CircularProgressIndicator(
                 color: AppColor.primaryColor,
@@ -338,7 +345,7 @@ class _WorkLocationDetailsBodyState extends State<WorkLocationDetailsBody>
                           ),
                           Tab(
                             child: Text(
-                              "Shifts",
+                              "Supervisors",
                               style: TextStyle(
                                   color: controller.index == 2
                                       ? Colors.white
@@ -349,7 +356,7 @@ class _WorkLocationDetailsBodyState extends State<WorkLocationDetailsBody>
                           ),
                           Tab(
                             child: Text(
-                              "Tasks",
+                              "Cleaners",
                               style: TextStyle(
                                   color: controller.index == 3
                                       ? Colors.white
@@ -360,7 +367,7 @@ class _WorkLocationDetailsBodyState extends State<WorkLocationDetailsBody>
                           ),
                           Tab(
                             child: Text(
-                              "Attendance",
+                              "Shifts",
                               style: TextStyle(
                                   color: controller.index == 4
                                       ? Colors.white
@@ -371,9 +378,31 @@ class _WorkLocationDetailsBodyState extends State<WorkLocationDetailsBody>
                           ),
                           Tab(
                             child: Text(
-                              "Leaves",
+                              "Tasks",
                               style: TextStyle(
                                   color: controller.index == 5
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14.sp),
+                            ),
+                          ),
+                          Tab(
+                            child: Text(
+                              "Attendance",
+                              style: TextStyle(
+                                  color: controller.index == 6
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14.sp),
+                            ),
+                          ),
+                          Tab(
+                            child: Text(
+                              "Leaves",
+                              style: TextStyle(
+                                  color: controller.index == 7
                                       ? Colors.white
                                       : Colors.black,
                                   fontWeight: FontWeight.w400,
@@ -386,7 +415,9 @@ class _WorkLocationDetailsBodyState extends State<WorkLocationDetailsBody>
                   Expanded(
                     child: TabBarView(controller: controller, children: [
                       locationDetails(),
-                      userDetails(),
+                      managerDetails(),
+                      supervisorDetails(),
+                      cleanerDetails(),
                       shiftsDetails(),
                       tasksDetails(),
                       attendanceDetails(),
@@ -709,10 +740,44 @@ class _WorkLocationDetailsBodyState extends State<WorkLocationDetailsBody>
     // }
   }
 
-  Widget userDetails() {
-    final shiftModel =
-        context.read<WorkLocationCubit>().pointShiftsDetailsModel!;
-    if (shiftModel.data!.shifts == null || shiftModel.data!.shifts!.isEmpty) {
+  Widget managerDetails() {
+    final managersData = widget.selectedIndex == 0
+        ? context
+            .read<WorkLocationCubit>()
+            .areaManagersDetailsModel!
+            .data!
+            .managers
+        : widget.selectedIndex == 1
+            ? context
+                .read<WorkLocationCubit>()
+                .cityManagersDetailsModel!
+                .data!
+                .managers
+            : widget.selectedIndex == 2
+                ? context
+                    .read<WorkLocationCubit>()
+                    .organizationManagersDetailsModel!
+                    .data!
+                    .managers
+                : widget.selectedIndex == 3
+                    ? context
+                        .read<WorkLocationCubit>()
+                        .buildingManagersDetailsModel!
+                        .data!
+                        .managers
+                    : widget.selectedIndex == 4
+                        ? context
+                            .read<WorkLocationCubit>()
+                            .buildingManagersDetailsModel!
+                            .data!
+                            .managers
+                        : context
+                            .read<WorkLocationCubit>()
+                            .pointManagersDetailsModel!
+                            .data!
+                            .managers;
+
+    if (managersData == null || managersData.isEmpty) {
       return Center(
         child: Text(
           "There's no data",
@@ -720,35 +785,192 @@ class _WorkLocationDetailsBodyState extends State<WorkLocationDetailsBody>
         ),
       );
     } else {
-      return Column(
-        children: [
-          Expanded(
-            child: ListView.separated(
-              physics: const BouncingScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              itemCount: shiftModel.data!.shifts!.length,
-              separatorBuilder: (context, index) {
-                return verticalSpace(10);
-              },
-              itemBuilder: (context, index) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    listShiftItemBuild(context, index),
-                  ],
-                );
-              },
-            ),
-          ),
-        ],
+      return ListView.builder(
+        shrinkWrap: true,
+        physics: const ClampingScrollPhysics(),
+        scrollDirection: Axis.vertical,
+        itemCount: managersData.length,
+        itemBuilder: (context, index) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              managerListItemBuild(context, index, widget.selectedIndex),
+              Divider(
+                color: Colors.grey[300],
+                height: 0.1,
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  Widget supervisorDetails() {
+    final supervisorsData = widget.selectedIndex == 0
+        ? context
+            .read<WorkLocationCubit>()
+            .areaManagersDetailsModel!
+            .data!
+            .supervisors
+        : widget.selectedIndex == 1
+            ? context
+                .read<WorkLocationCubit>()
+                .cityManagersDetailsModel!
+                .data!
+                .supervisors
+            : widget.selectedIndex == 2
+                ? context
+                    .read<WorkLocationCubit>()
+                    .organizationManagersDetailsModel!
+                    .data!
+                    .supervisors
+                : widget.selectedIndex == 3
+                    ? context
+                        .read<WorkLocationCubit>()
+                        .buildingManagersDetailsModel!
+                        .data!
+                        .supervisors
+                    : widget.selectedIndex == 4
+                        ? context
+                            .read<WorkLocationCubit>()
+                            .buildingManagersDetailsModel!
+                            .data!
+                            .supervisors
+                        : context
+                            .read<WorkLocationCubit>()
+                            .pointManagersDetailsModel!
+                            .data!
+                            .supervisors;
+
+    if (supervisorsData == null || supervisorsData.isEmpty) {
+      return Center(
+        child: Text(
+          "There's no data",
+          style: TextStyles.font13Blackmedium,
+        ),
+      );
+    } else {
+      return ListView.builder(
+        shrinkWrap: true,
+        physics: const ClampingScrollPhysics(),
+        scrollDirection: Axis.vertical,
+        itemCount: supervisorsData.length,
+        itemBuilder: (context, index) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              supervisorListItemBuild(context, index, widget.selectedIndex),
+              Divider(
+                color: Colors.grey[300],
+                height: 0.1,
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  Widget cleanerDetails() {
+    final cleanersData = widget.selectedIndex == 0
+        ? context
+            .read<WorkLocationCubit>()
+            .areaManagersDetailsModel!
+            .data!
+            .cleaners
+        : widget.selectedIndex == 1
+            ? context
+                .read<WorkLocationCubit>()
+                .cityManagersDetailsModel!
+                .data!
+                .cleaners
+            : widget.selectedIndex == 2
+                ? context
+                    .read<WorkLocationCubit>()
+                    .organizationManagersDetailsModel!
+                    .data!
+                    .cleaners
+                : widget.selectedIndex == 3
+                    ? context
+                        .read<WorkLocationCubit>()
+                        .buildingManagersDetailsModel!
+                        .data!
+                        .cleaners
+                    : widget.selectedIndex == 4
+                        ? context
+                            .read<WorkLocationCubit>()
+                            .buildingManagersDetailsModel!
+                            .data!
+                            .cleaners
+                        : context
+                            .read<WorkLocationCubit>()
+                            .pointManagersDetailsModel!
+                            .data!
+                            .cleaners;
+
+    if (cleanersData == null || cleanersData.isEmpty) {
+      return Center(
+        child: Text(
+          "There's no data",
+          style: TextStyles.font13Blackmedium,
+        ),
+      );
+    } else {
+      return ListView.builder(
+        shrinkWrap: true,
+        physics: const ClampingScrollPhysics(),
+        scrollDirection: Axis.vertical,
+        itemCount: cleanersData.length,
+        itemBuilder: (context, index) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              cleanerListItemBuild(context, index, widget.selectedIndex),
+              Divider(
+                color: Colors.grey[300],
+                height: 0.1,
+              ),
+            ],
+          );
+        },
       );
     }
   }
 
   Widget shiftsDetails() {
-    final shiftModel =
-        context.read<WorkLocationCubit>().pointShiftsDetailsModel!;
-    if (shiftModel.data!.shifts == null || shiftModel.data!.shifts!.isEmpty) {
+    final shiftModel = widget.selectedIndex == 0
+        ? null
+        : widget.selectedIndex == 1
+            ? null
+            : widget.selectedIndex == 2
+                ? context
+                    .read<WorkLocationCubit>()
+                    .organizationShiftsDetailsModel!
+                    .data!
+                    .shifts
+                : widget.selectedIndex == 3
+                    ? context
+                        .read<WorkLocationCubit>()
+                        .buildingShiftsDetailsModel!
+                        .data!
+                        .shifts
+                    : widget.selectedIndex == 4
+                        ? context
+                            .read<WorkLocationCubit>()
+                            .floorShiftsDetailsModel!
+                            .data!
+                            .shifts
+                        : context
+                            .read<WorkLocationCubit>()
+                            .pointShiftsDetailsModel!
+                            .data!
+                            .shifts;
+
+    if (shiftModel == null || shiftModel.isEmpty) {
       return Center(
         child: Text(
           "There's no data",
@@ -762,7 +984,7 @@ class _WorkLocationDetailsBodyState extends State<WorkLocationDetailsBody>
             child: ListView.separated(
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.vertical,
-              itemCount: shiftModel.data!.shifts!.length,
+              itemCount: shiftModel.length,
               separatorBuilder: (context, index) {
                 return verticalSpace(10);
               },
@@ -770,7 +992,7 @@ class _WorkLocationDetailsBodyState extends State<WorkLocationDetailsBody>
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    listShiftItemBuild(context, index),
+                    listShiftItemBuild(context, index, widget.selectedIndex),
                   ],
                 );
               },
@@ -782,8 +1004,19 @@ class _WorkLocationDetailsBodyState extends State<WorkLocationDetailsBody>
   }
 
   Widget tasksDetails() {
-    final taskModel = context.read<WorkLocationCubit>().allPointTasksModel!;
-    if (taskModel.data!.data == null || taskModel.data!.data!.isEmpty) {
+    final taskModel = widget.selectedIndex == 0
+        ? context.read<WorkLocationCubit>().allareaTasksModel
+        : widget.selectedIndex == 1
+            ? context.read<WorkLocationCubit>().allcityTasksModel
+            : widget.selectedIndex == 2
+                ? context.read<WorkLocationCubit>().allorganizationTasksModel
+                : widget.selectedIndex == 3
+                    ? context.read<WorkLocationCubit>().allbuildingTasksModel
+                    : widget.selectedIndex == 4
+                        ? context.read<WorkLocationCubit>().allfloorTasksModel
+                        : context.read<WorkLocationCubit>().allPointTasksModel;
+
+    if (taskModel?.data?.data == null || taskModel!.data!.data!.isEmpty) {
       return Center(
         child: Text(
           "There's no data",
@@ -791,31 +1024,96 @@ class _WorkLocationDetailsBodyState extends State<WorkLocationDetailsBody>
         ),
       );
     }
-    return ListView.separated(
-      shrinkWrap: true,
-      physics: const BouncingScrollPhysics(),
-      scrollDirection: Axis.vertical,
-      itemCount: taskModel.data!.data!.length,
-      separatorBuilder: (context, index) {
-        return verticalSpace(10);
-      },
-      itemBuilder: (context, index) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            buildTaskCardItem(context, index),
-          ],
-        );
-      },
+    return Column(
+      children: [
+        Divider(),
+        verticalSpace(5),
+        SizedBox(
+          height: 45.h,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Filter',
+                style: TextStyles.font16BlackSemiBold,
+              ),
+              InkWell(
+                onTap: () {},
+                child: Container(
+                  height: 52,
+                  width: 52,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.r),
+                    border: Border.all(color: AppColor.secondaryColor),
+                  ),
+                  child: Icon(
+                    Icons.tune,
+                    color: AppColor.primaryColor,
+                    size: 25.sp,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        verticalSpace(10),
+        ListView.separated(
+          shrinkWrap: true,
+          physics: const BouncingScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          itemCount: taskModel.data!.data!.length,
+          separatorBuilder: (context, index) {
+            return verticalSpace(10);
+          },
+          itemBuilder: (context, index) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                buildTaskCardItem(context, index, widget.selectedIndex),
+              ],
+            );
+          },
+        ),
+      ],
     );
   }
 
   Widget attendanceDetails() {
-    final attendanceData = context
-        .read<WorkLocationCubit>()
-        .attendanceHistoryPointModel
-        ?.data
-        ?.data;
+    final attendanceData = widget.selectedIndex == 0
+        ? context
+            .read<WorkLocationCubit>()
+            .attendanceHistoryAreaModel
+            ?.data
+            ?.data
+        : widget.selectedIndex == 1
+            ? context
+                .read<WorkLocationCubit>()
+                .attendanceHistoryCityModel
+                ?.data
+                ?.data
+            : widget.selectedIndex == 2
+                ? context
+                    .read<WorkLocationCubit>()
+                    .attendanceHistoryOrganizationModel
+                    ?.data
+                    ?.data
+                : widget.selectedIndex == 3
+                    ? context
+                        .read<WorkLocationCubit>()
+                        .attendanceHistoryBuildingModel
+                        ?.data
+                        ?.data
+                    : widget.selectedIndex == 4
+                        ? context
+                            .read<WorkLocationCubit>()
+                            .attendanceHistoryFloorModel
+                            ?.data
+                            ?.data
+                        : context
+                            .read<WorkLocationCubit>()
+                            .attendanceHistoryPointModel
+                            ?.data
+                            ?.data;
 
     if (attendanceData == null || attendanceData.isEmpty) {
       return Center(
@@ -870,7 +1168,7 @@ class _WorkLocationDetailsBodyState extends State<WorkLocationDetailsBody>
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                buildAttendanceCardItem(context, index),
+                buildAttendanceCardItem(context, index, widget.selectedIndex),
               ],
             );
           },
@@ -880,11 +1178,41 @@ class _WorkLocationDetailsBodyState extends State<WorkLocationDetailsBody>
   }
 
   Widget leavesDetails() {
-    final attendanceData = context
-        .read<WorkLocationCubit>()
-        .attendanceLeavesPointModel
-        ?.data
-        ?.data;
+    final attendanceData = widget.selectedIndex == 0
+        ? context
+            .read<WorkLocationCubit>()
+            .attendanceLeavesAreaModel
+            ?.data
+            ?.leaves
+        : widget.selectedIndex == 1
+            ? context
+                .read<WorkLocationCubit>()
+                .attendanceLeavesCityModel
+                ?.data
+                ?.leaves
+            : widget.selectedIndex == 2
+                ? context
+                    .read<WorkLocationCubit>()
+                    .attendanceLeavesOrganizationModel
+                    ?.data
+                    ?.leaves
+                : widget.selectedIndex == 3
+                    ? context
+                        .read<WorkLocationCubit>()
+                        .attendanceLeavesBuildingModel
+                        ?.data
+                        ?.leaves
+                    : widget.selectedIndex == 4
+                        ? context
+                            .read<WorkLocationCubit>()
+                            .attendanceLeavesFloorModel
+                            ?.data
+                            ?.leaves
+                        : context
+                            .read<WorkLocationCubit>()
+                            .attendanceLeavesPointModel
+                            ?.data
+                            ?.leaves;
 
     if (attendanceData == null || attendanceData.isEmpty) {
       return Center(
@@ -939,7 +1267,7 @@ class _WorkLocationDetailsBodyState extends State<WorkLocationDetailsBody>
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                buildLeavesCardItem(context, index),
+                buildLeavesCardItem(context, index, widget.selectedIndex),
               ],
             );
           },

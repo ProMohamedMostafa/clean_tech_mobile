@@ -6,7 +6,7 @@ import 'package:smart_cleaning_application/features/screens/work_location/add_wo
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_supervisors_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_city/data/model/city_details_in_edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_city/data/model/edit_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_city_details/data/model/city_managers_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/city_managers_details_model.dart';
 
 abstract class EditCityState {}
 

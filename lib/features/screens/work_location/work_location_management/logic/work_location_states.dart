@@ -7,17 +7,17 @@ import 'package:smart_cleaning_application/features/screens/integrations/data/mo
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/points_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/all_tasks_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_area_details/data/model/area_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_area_details/data/model/area_managers_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_building_details/data/model/building_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_building_details/data/model/building_managers_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_building_details/data/model/building_shifts_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_city_details/data/model/city_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_city_details/data/model/city_managers_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_floor_details/data/model/floor_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_floor_details/data/model/floor_managers_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_floor_details/data/model/floor_shifts_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_organization_details/data/model/organization_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/area_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/area_managers_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/building_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/building_managers_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/building_shifts_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/city_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/city_managers_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/floor_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/floor_managers_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/floor_shifts_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/organization_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_tree_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
@@ -32,11 +32,11 @@ import 'package:smart_cleaning_application/features/screens/work_location/work_l
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/point_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_organization_details/data/model/organization_managers_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_organization_details/data/model/organization_shifts_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_point_details/data/model/point_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_point_details/data/model/point_managers_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/view_point_details/data/model/point_shifts_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/organization_managers_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/organization_shifts_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/point_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/point_managers_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/point_shifts_details_model.dart';
 
 import '../../../integrations/data/models/city_model.dart';
 
@@ -869,6 +869,80 @@ class GetAllTasksErrorState extends WorkLocationState {
 }
 
 //********************** */
+
+class AttendanceHistoryAreaLoadingState extends WorkLocationState {}
+
+class AttendanceHistoryAreaSuccessState extends WorkLocationState {
+  final AttendanceHistoryModel attendanceHistoryArea;
+
+  AttendanceHistoryAreaSuccessState(this.attendanceHistoryArea);
+}
+
+class AttendanceHistoryAreaErrorState extends WorkLocationState {
+  final String error;
+  AttendanceHistoryAreaErrorState(this.error);
+}
+
+//********************** */
+class AttendanceHistoryCityLoadingState extends WorkLocationState {}
+
+class AttendanceHistoryCitySuccessState extends WorkLocationState {
+  final AttendanceHistoryModel attendanceHistoryCity;
+
+  AttendanceHistoryCitySuccessState(this.attendanceHistoryCity);
+}
+
+class AttendanceHistoryCityErrorState extends WorkLocationState {
+  final String error;
+  AttendanceHistoryCityErrorState(this.error);
+}
+
+//********************** */
+
+class AttendanceHistoryOrganizationLoadingState extends WorkLocationState {}
+
+class AttendanceHistoryOrganizationSuccessState extends WorkLocationState {
+  final AttendanceHistoryModel attendanceHistoryOrganization;
+
+  AttendanceHistoryOrganizationSuccessState(this.attendanceHistoryOrganization);
+}
+
+class AttendanceHistoryOrganizationErrorState extends WorkLocationState {
+  final String error;
+  AttendanceHistoryOrganizationErrorState(this.error);
+}
+
+//********************** */
+class AttendanceHistoryBuildingLoadingState extends WorkLocationState {}
+
+class AttendanceHistoryBuildingSuccessState extends WorkLocationState {
+  final AttendanceHistoryModel attendanceHistoryBuilding;
+
+  AttendanceHistoryBuildingSuccessState(this.attendanceHistoryBuilding);
+}
+
+class AttendanceHistoryBuildingErrorState extends WorkLocationState {
+  final String error;
+  AttendanceHistoryBuildingErrorState(this.error);
+}
+
+//********************** */
+
+class AttendanceHistoryFloorLoadingState extends WorkLocationState {}
+
+class AttendanceHistoryFloorSuccessState extends WorkLocationState {
+  final AttendanceHistoryModel attendanceHistoryFloor;
+
+  AttendanceHistoryFloorSuccessState(this.attendanceHistoryFloor);
+}
+
+class AttendanceHistoryFloorErrorState extends WorkLocationState {
+  final String error;
+  AttendanceHistoryFloorErrorState(this.error);
+}
+
+//********************** */
+
 class AttendanceHistoryPointLoadingState extends WorkLocationState {}
 
 class AttendanceHistoryPointSuccessState extends WorkLocationState {
