@@ -11,7 +11,7 @@ import 'package:smart_cleaning_application/features/screens/shift/shifts_managem
 import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
 
 Widget listShiftItemBuild(BuildContext context, index) {
-  return InkWell(
+  return InkWell(borderRadius: BorderRadius.circular(11.r),
     onTap: () {
       context.pushNamed(Routes.shiftDetailsScreen,
           arguments: context

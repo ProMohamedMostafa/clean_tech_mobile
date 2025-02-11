@@ -13,6 +13,7 @@ import 'package:smart_cleaning_application/features/screens/work_location/work_l
 Widget organizationsListItemBuild(
     BuildContext context, int selectedIndex, index) {
   return InkWell(
+    borderRadius: BorderRadius.circular(11.r),
     onTap: () {
       context.pushNamed(Routes.workLocationDetailsScreen, arguments: {
         'id': selectedIndex == 0
@@ -64,8 +65,6 @@ Widget organizationsListItemBuild(
                                 .toInt(),
         'selectedIndex': selectedIndex
       });
-
-      
     },
     child: Card(
       elevation: 1,

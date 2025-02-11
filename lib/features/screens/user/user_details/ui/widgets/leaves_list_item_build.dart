@@ -10,7 +10,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
 
 Widget buildLeavesCardItem(BuildContext context, index) {
-  return InkWell(
+  return InkWell(borderRadius: BorderRadius.circular(11.r),
     onTap: () {
       context.pushNamed(Routes.leavesDetailsScreen,
           arguments: context

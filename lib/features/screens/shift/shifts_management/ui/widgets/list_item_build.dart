@@ -12,6 +12,7 @@ import 'package:smart_cleaning_application/features/screens/shift/shifts_managem
 
 Widget listItemBuild(BuildContext context, selectedIndex, index) {
   return InkWell(
+    borderRadius: BorderRadius.circular(11.r),
     onTap: () {
       context.pushNamed(Routes.shiftDetailsScreen,
           arguments: context

@@ -33,7 +33,7 @@ Widget buildTaskCardItem(BuildContext context, index) {
   } else {
     priorityColorForTask = Colors.black;
   }
-  return InkWell(
+  return InkWell(borderRadius: BorderRadius.circular(11.r),
     onTap: () {
       context.pushNamed(Routes.taskDetailsScreen,
           arguments: context

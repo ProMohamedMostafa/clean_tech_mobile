@@ -10,7 +10,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
 
 Widget listShiftItemBuild(BuildContext context, index, selectedIndex) {
-  return InkWell(
+  return InkWell(borderRadius: BorderRadius.circular(11.r),
     onTap: () {
       context.pushNamed(Routes.shiftDetailsScreen,
           arguments: selectedIndex == 2
