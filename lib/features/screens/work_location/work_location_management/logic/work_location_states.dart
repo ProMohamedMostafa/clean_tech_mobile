@@ -21,6 +21,7 @@ import 'package:smart_cleaning_application/features/screens/work_location/view_w
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_tree_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_tree_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_tree_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/deleted_area_list_model.dart';
@@ -30,7 +31,9 @@ import 'package:smart_cleaning_application/features/screens/work_location/work_l
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/deleted_organization_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/deleted_point_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_tree_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_tree_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/point_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/organization_managers_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/organization_shifts_details_model.dart';
@@ -853,6 +856,50 @@ class CityTreeErrorState extends WorkLocationState {
   CityTreeErrorState(this.error);
 }
 
+//**************************** */
+
+class OrganizationTreeLoadingState extends WorkLocationState {}
+
+class OrganizationTreeSuccessState extends WorkLocationState {
+  final OrganizationTreeModel organizationTreeModel;
+
+  OrganizationTreeSuccessState(this.organizationTreeModel);
+}
+
+class OrganizationTreeErrorState extends WorkLocationState {
+  final String error;
+  OrganizationTreeErrorState(this.error);
+}
+
+//**************************** */
+
+class BuildingTreeLoadingState extends WorkLocationState {}
+
+class BuildingTreeSuccessState extends WorkLocationState {
+  final BuildingTreeModel buildingTreeModel;
+
+  BuildingTreeSuccessState(this.buildingTreeModel);
+}
+
+class BuildingTreeErrorState extends WorkLocationState {
+  final String error;
+  BuildingTreeErrorState(this.error);
+}
+
+//**************************** */
+
+class FloorTreeLoadingState extends WorkLocationState {}
+
+class FloorTreeSuccessState extends WorkLocationState {
+  final FloorTreeModel floorTreeModel;
+
+  FloorTreeSuccessState(this.floorTreeModel);
+}
+
+class FloorTreeErrorState extends WorkLocationState {
+  final String error;
+  FloorTreeErrorState(this.error);
+}
 //**************************************** */
 
 class GetAllTasksLoadingState extends WorkLocationState {}

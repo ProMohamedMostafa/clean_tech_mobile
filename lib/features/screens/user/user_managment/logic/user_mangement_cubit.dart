@@ -28,6 +28,15 @@ class UserManagementCubit extends Cubit<UserManagementState> {
   static UserManagementCubit get(context) => BlocProvider.of(context);
 
   TextEditingController searchController = TextEditingController();
+
+  TextEditingController createdByController = TextEditingController();
+  TextEditingController assignToController = TextEditingController();
+  TextEditingController statusController = TextEditingController();
+  TextEditingController priorityController = TextEditingController();
+  TextEditingController startDateController = TextEditingController();
+  TextEditingController endDateController = TextEditingController();
+  TextEditingController startTimeController = TextEditingController();
+  TextEditingController endTimeController = TextEditingController();
   TextEditingController countryController = TextEditingController();
   TextEditingController areaController = TextEditingController();
   TextEditingController cityController = TextEditingController();
@@ -74,10 +83,36 @@ class UserManagementCubit extends Cubit<UserManagementState> {
   }
 
   UserTaskDetailsModel? userTaskDetailsModel;
-  getUserTaskDetails(int? id) {
+  getUserTaskDetails(
+    int? id,
+    // DateTime? startDate,
+    // int? createdBy,
+    // int? status,
+    // int? priority,
+    // int? areaId,
+    // int? cityId,
+    // int? organizationId,
+    // int? buildingId,
+    // int? floorId,
+    // int? pointId,
+  ) {
     emit(UserTaskDetailsLoadingState());
-    DioHelper.getData(url: 'tasks/pagination', query: {'assignTo': id})
-        .then((value) {
+    DioHelper.getData(url: 'tasks/pagination', query: {
+      'assignTo': id,
+      // 'startDate': DateFormat('yyyy-MM-dd').format(startDate!),
+      // 'endDate': endDateController.text,
+      // 'startTime': startTimeController.text,
+      // 'endTime': endTimeController.text,
+      // 'created': createdBy,
+      // 'status': status,
+      // 'priority': priority,
+      // 'area': areaId,
+      // 'city': cityId,
+      // 'organization': organizationId,
+      // 'building': buildingId,
+      // 'floor': floorId,
+      // 'point': pointId,
+    }).then((value) {
       userTaskDetailsModel = UserTaskDetailsModel.fromJson(value!.data);
       emit(UserTaskDetailsSuccessState(userTaskDetailsModel!));
     }).catchError((error) {

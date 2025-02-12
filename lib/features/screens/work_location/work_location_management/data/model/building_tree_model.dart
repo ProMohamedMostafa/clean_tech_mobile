@@ -1,4 +1,4 @@
-class CityTreeModel {
+class BuildingTreeModel {
   int? statusCode;
   String? meta;
   bool? succeeded;
@@ -7,7 +7,7 @@ class CityTreeModel {
   String? businessErrorCode;
   Data? data;
 
-  CityTreeModel(
+  BuildingTreeModel(
       {this.statusCode,
       this.meta,
       this.succeeded,
@@ -16,7 +16,7 @@ class CityTreeModel {
       this.businessErrorCode,
       this.data});
 
-  CityTreeModel.fromJson(Map<String, dynamic> json) {
+  BuildingTreeModel.fromJson(Map<String, dynamic> json) {
     statusCode = json['statusCode'];
     meta = json['meta'];
     succeeded = json['succeeded'];
@@ -45,75 +45,11 @@ class Data {
   int? id;
   String? name;
   String? previousName;
-  List<Organizations>? organizations;
-
-  Data({this.id, this.name, this.previousName, this.organizations});
-
-  Data.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    previousName = json['previousName'];
-    if (json['organizations'] != null) {
-      organizations = <Organizations>[];
-      json['organizations'].forEach((v) {
-        organizations!.add(Organizations.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['previousName'] = previousName;
-    if (organizations != null) {
-      data['organizations'] = organizations!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class Organizations {
-  int? id;
-  String? name;
-  String? previousName;
-  List<Buildings>? buildings;
-
-  Organizations({this.id, this.name, this.previousName, this.buildings});
-
-  Organizations.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    previousName = json['previousName'];
-    if (json['buildings'] != null) {
-      buildings = <Buildings>[];
-      json['buildings'].forEach((v) {
-        buildings!.add(Buildings.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['previousName'] = previousName;
-    if (buildings != null) {
-      data['buildings'] = buildings!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class Buildings {
-  int? id;
-  String? name;
-  String? previousName;
   List<Floors>? floors;
 
-  Buildings({this.id, this.name, this.previousName, this.floors});
+  Data({this.id, this.name, this.previousName, this.floors});
 
-  Buildings.fromJson(Map<String, dynamic> json) {
+  Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     previousName = json['previousName'];

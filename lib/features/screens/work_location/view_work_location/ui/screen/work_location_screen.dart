@@ -20,6 +20,11 @@ import 'package:smart_cleaning_application/features/screens/work_location/view_w
 import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/ui/widgets/shift_list_item_build.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/ui/widgets/supervisor_item_list_build.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/ui/widgets/task_list_item_build.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_tree_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_tree_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_tree_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_tree_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_tree_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_states.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
@@ -49,7 +54,7 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
       context.read<WorkLocationCubit>().getareaTasks(widget.id);
       context.read<WorkLocationCubit>().getAttendanceHistoryArea(widget.id);
       context.read<WorkLocationCubit>().getAllLeavesArea(widget.id);
-      // context.read<WorkLocationCubit>().getAreatree(widget.id);
+      context.read<WorkLocationCubit>().getAreatree(widget.id);
     }
     if (widget.selectedIndex == 1) {
       context.read<WorkLocationCubit>().getCityDetails(widget.id);
@@ -57,7 +62,7 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
       context.read<WorkLocationCubit>().getcityTasks(widget.id);
       context.read<WorkLocationCubit>().getAttendanceHistoryCity(widget.id);
       context.read<WorkLocationCubit>().getAllLeavesCity(widget.id);
-      // context.read<WorkLocationCubit>().getCitytree(widget.id);
+      context.read<WorkLocationCubit>().getCitytree(widget.id);
     }
     if (widget.selectedIndex == 2) {
       context.read<WorkLocationCubit>().getOrganizationDetails(widget.id);
@@ -70,6 +75,7 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
           .read<WorkLocationCubit>()
           .getAttendanceHistoryOrganization(widget.id);
       context.read<WorkLocationCubit>().getAllLeavesOrganization(widget.id);
+      context.read<WorkLocationCubit>().getOrganizationtree(widget.id);
     }
     if (widget.selectedIndex == 3) {
       context.read<WorkLocationCubit>().getBuildingDetails(widget.id);
@@ -78,6 +84,7 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
       context.read<WorkLocationCubit>().getbuildingTasks(widget.id);
       context.read<WorkLocationCubit>().getAttendanceHistoryBuilding(widget.id);
       context.read<WorkLocationCubit>().getAllLeavesBuilding(widget.id);
+      context.read<WorkLocationCubit>().getBuildingtree(widget.id);
     }
     if (widget.selectedIndex == 4) {
       context.read<WorkLocationCubit>().getFloorDetails(widget.id);
@@ -86,6 +93,7 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
       context.read<WorkLocationCubit>().getfloorTasks(widget.id);
       context.read<WorkLocationCubit>().getAttendanceHistoryFloor(widget.id);
       context.read<WorkLocationCubit>().getAllLeavesFloor(widget.id);
+      context.read<WorkLocationCubit>().getFloortree(widget.id);
     }
     if (widget.selectedIndex == 5) {
       context.read<WorkLocationCubit>().getPointDetails(widget.id);
@@ -109,94 +117,293 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
     super.dispose();
   }
 
-  // List<Map<String, String>> getCountsFromModel(AreaTreeModel model) {
-  //   List<Map<String, String>> counts = [];
+  List<Map<String, String>> getAreaCountsFromModel(AreaTreeModel model) {
+    List<Map<String, String>> counts = [];
 
-  //   if (model.data != null) {
-  //     int cityCount = model.data!.cities?.length ?? 0;
-  //     if (cityCount > 0) {
-  //       counts.add({"count": "$cityCount", "title": "City"});
-  //     }
+    if (model.data != null) {
+      int cityCount = model.data!.cities?.length ?? 0;
+      if (cityCount > 0) {
+        counts.add({"count": "$cityCount", "title": "City"});
+      }
 
-  //     int organizationCount = model.data!.cities
-  //             ?.expand((city) => city.organizations ?? [])
-  //             .length ??
-  //         0;
-  //     if (organizationCount > 0) {
-  //       counts.add({"count": "$organizationCount", "title": "Organization"});
-  //     }
+      int organizationCount = model.data!.cities
+              ?.expand((city) => city.organizations ?? [])
+              .length ??
+          0;
+      if (organizationCount > 0) {
+        counts.add({"count": "$organizationCount", "title": "Organization"});
+      }
 
-  //     int buildingCount = model.data!.cities
-  //             ?.expand((city) => city.organizations ?? [])
-  //             .expand((org) => org.buildings ?? [])
-  //             .length ??
-  //         0;
-  //     if (buildingCount > 0) {
-  //       counts.add({"count": "$buildingCount", "title": "Building"});
-  //     }
+      int buildingCount = model.data!.cities
+              ?.expand((city) => city.organizations ?? [])
+              .expand((org) => org.buildings ?? [])
+              .length ??
+          0;
+      if (buildingCount > 0) {
+        counts.add({"count": "$buildingCount", "title": "Building"});
+      }
 
-  //     int floorCount = model.data!.cities
-  //             ?.expand((city) => city.organizations ?? [])
-  //             .expand((org) => org.buildings ?? [])
-  //             .expand((building) => building.floors ?? [])
-  //             .length ??
-  //         0;
-  //     if (floorCount > 0) {
-  //       counts.add({"count": "$floorCount", "title": "Floor"});
-  //     }
+      int floorCount = model.data!.cities
+              ?.expand((city) => city.organizations ?? [])
+              .expand((org) => org.buildings ?? [])
+              .expand((building) => building.floors ?? [])
+              .length ??
+          0;
+      if (floorCount > 0) {
+        counts.add({"count": "$floorCount", "title": "Floor"});
+      }
 
-  //     int pointCount = model.data!.cities
-  //             ?.expand((city) => city.organizations ?? [])
-  //             .expand((org) => org.buildings ?? [])
-  //             .expand((building) => building.floors ?? [])
-  //             .expand((floor) => floor.points ?? [])
-  //             .length ??
-  //         0;
-  //     if (pointCount > 0) {
-  //       counts.add({"count": "$pointCount", "title": "Point"});
-  //     }
-  //   }
+      int pointCount = model.data!.cities
+              ?.expand((city) => city.organizations ?? [])
+              .expand((org) => org.buildings ?? [])
+              .expand((building) => building.floors ?? [])
+              .expand((floor) => floor.points ?? [])
+              .length ??
+          0;
+      if (pointCount > 0) {
+        counts.add({"count": "$pointCount", "title": "Point"});
+      }
+    }
 
-  //   return counts;
-  // }
+    return counts;
+  }
 
-  // List<dynamic> getFilteredList(WorkLocationCubit cubit, int selectedIndex) {
-  //   final areaTreeModel = cubit.areaTreeModel;
-  //   if (areaTreeModel == null || areaTreeModel.data == null) return [];
+  List<Map<String, String>> getCityCountsFromModel(CityTreeModel model) {
+    List<Map<String, String>> counts = [];
 
-  //   switch (selectedIndex) {
-  //     case 0: // City
-  //       return areaTreeModel.data!.cities ?? [];
-  //     case 1: // Organization
-  //       return areaTreeModel.data!.cities
-  //               ?.expand((city) => city.organizations ?? [])
-  //               .toList() ??
-  //           [];
-  //     case 2: // Building
-  //       return areaTreeModel.data!.cities
-  //               ?.expand((city) => city.organizations ?? [])
-  //               .expand((org) => org.buildings ?? [])
-  //               .toList() ??
-  //           [];
-  //     case 3: // Floor
-  //       return areaTreeModel.data!.cities
-  //               ?.expand((city) => city.organizations ?? [])
-  //               .expand((org) => org.buildings ?? [])
-  //               .expand((building) => building.floors ?? [])
-  //               .toList() ??
-  //           [];
-  //     case 4: // Point
-  //       return areaTreeModel.data!.cities
-  //               ?.expand((city) => city.organizations ?? [])
-  //               .expand((org) => org.buildings ?? [])
-  //               .expand((building) => building.floors ?? [])
-  //               .expand((floor) => floor.points ?? [])
-  //               .toList() ??
-  //           [];
-  //     default:
-  //       return [];
-  //   }
-  // }
+    if (model.data != null) {
+      // Organization Count
+      int organizationCount = model.data!.organizations?.length ?? 0;
+      if (organizationCount > 0) {
+        counts.add({"count": "$organizationCount", "title": "Organization"});
+      }
+
+      // Building Count
+      int buildingCount = model.data!.organizations
+              ?.expand((org) => org.buildings ?? [])
+              .length ??
+          0;
+      if (buildingCount > 0) {
+        counts.add({"count": "$buildingCount", "title": "Building"});
+      }
+
+      // Floor Count
+      int floorCount = model.data!.organizations
+              ?.expand((org) => org.buildings ?? [])
+              .expand((building) => building.floors ?? [])
+              .length ??
+          0;
+      if (floorCount > 0) {
+        counts.add({"count": "$floorCount", "title": "Floor"});
+      }
+
+      // Points Count
+      int pointCount = model.data!.organizations
+              ?.expand((org) => org.buildings ?? [])
+              .expand((building) => building.floors ?? [])
+              .expand((floor) => floor.points ?? [])
+              .length ??
+          0;
+      if (pointCount > 0) {
+        counts.add({"count": "$pointCount", "title": "Point"});
+      }
+    }
+
+    return counts;
+  }
+
+  List<Map<String, String>> getOrganizationCountsFromModel(
+      OrganizationTreeModel model) {
+    List<Map<String, String>> counts = [];
+
+    if (model.data != null) {
+      int buildingCount = model.data!.buildings?.length ?? 0;
+      if (buildingCount > 0) {
+        counts.add({"count": "$buildingCount", "title": "Building"});
+      }
+
+      int floorCount = model.data!.buildings
+              ?.expand((building) => building.floors ?? [])
+              .length ??
+          0;
+      if (floorCount > 0) {
+        counts.add({"count": "$floorCount", "title": "Floor"});
+      }
+
+      int pointCount = model.data!.buildings
+              ?.expand((building) => building.floors ?? [])
+              .expand((floor) => floor.points ?? [])
+              .length ??
+          0;
+      if (pointCount > 0) {
+        counts.add({"count": "$pointCount", "title": "Point"});
+      }
+    }
+
+    return counts;
+  }
+
+  List<Map<String, String>> getBuildingCountsFromModel(
+      BuildingTreeModel model) {
+    List<Map<String, String>> counts = [];
+
+    if (model.data != null) {
+      // Floor Count
+      int floorCount = model.data!.floors?.length ?? 0;
+      if (floorCount > 0) {
+        counts.add({"count": "$floorCount", "title": "Floor"});
+      }
+
+      // Points Count
+      int pointCount =
+          model.data!.floors?.expand((floor) => floor.points ?? []).length ?? 0;
+      if (pointCount > 0) {
+        counts.add({"count": "$pointCount", "title": "Point"});
+      }
+    }
+
+    return counts;
+  }
+
+  List<Map<String, String>> getFloorCountsFromModel(FloorTreeModel model) {
+    List<Map<String, String>> counts = [];
+
+    if (model.data != null) {
+      int pointCount = model.data!.points?.length ?? 0;
+      if (pointCount > 0) {
+        counts.add({"count": "$pointCount", "title": "Point"});
+      }
+    }
+
+    return counts;
+  }
+
+  List<dynamic> getAreaFilteredList(
+      WorkLocationCubit cubit, int selectedIndex) {
+    final areaTreeModel = cubit.areaTreeModel;
+    if (areaTreeModel == null || areaTreeModel.data == null) return [];
+
+    switch (selectedIndex) {
+      case 0: // City
+        return areaTreeModel.data!.cities ?? [];
+      case 1: // Organization
+        return areaTreeModel.data!.cities
+                ?.expand((city) => city.organizations ?? [])
+                .toList() ??
+            [];
+      case 2: // Building
+        return areaTreeModel.data!.cities
+                ?.expand((city) => city.organizations ?? [])
+                .expand((org) => org.buildings ?? [])
+                .toList() ??
+            [];
+      case 3: // Floor
+        return areaTreeModel.data!.cities
+                ?.expand((city) => city.organizations ?? [])
+                .expand((org) => org.buildings ?? [])
+                .expand((building) => building.floors ?? [])
+                .toList() ??
+            [];
+      case 4: // Point
+        return areaTreeModel.data!.cities
+                ?.expand((city) => city.organizations ?? [])
+                .expand((org) => org.buildings ?? [])
+                .expand((building) => building.floors ?? [])
+                .expand((floor) => floor.points ?? [])
+                .toList() ??
+            [];
+      default:
+        return [];
+    }
+  }
+
+  List<dynamic> getCityFilteredList(
+      WorkLocationCubit cubit, int selectedIndex) {
+    final cityTreeModel =
+        cubit.cityTreeModel; // Ensure you're using the correct model
+    if (cityTreeModel == null || cityTreeModel.data == null) return [];
+
+    switch (selectedIndex) {
+      case 0: // Organization
+        return cityTreeModel.data!.organizations ?? [];
+      case 1: // Building
+        return cityTreeModel.data!.organizations
+                ?.expand((org) => org.buildings ?? [])
+                .toList() ??
+            [];
+      case 2: // Floor
+        return cityTreeModel.data!.organizations
+                ?.expand((org) => org.buildings ?? [])
+                .expand((building) => building.floors ?? [])
+                .toList() ??
+            [];
+      case 3: // Point
+        return cityTreeModel.data!.organizations
+                ?.expand((org) => org.buildings ?? [])
+                .expand((building) => building.floors ?? [])
+                .expand((floor) => floor.points ?? [])
+                .toList() ??
+            [];
+      default:
+        return [];
+    }
+  }
+
+  List<dynamic> getOrganizationFilteredList(
+      WorkLocationCubit cubit, int selectedIndex) {
+    final organizationTreeModel = cubit.organizationTreeModel;
+    if (organizationTreeModel == null || organizationTreeModel.data == null)
+      return [];
+
+    switch (selectedIndex) {
+      case 0: // Building
+        return organizationTreeModel.data!.buildings ?? [];
+      case 1: // Floor
+        return organizationTreeModel.data!.buildings
+                ?.expand((building) => building.floors ?? [])
+                .toList() ??
+            [];
+      case 2: // Point
+        return organizationTreeModel.data!.buildings
+                ?.expand((building) => building.floors ?? [])
+                .expand((floor) => floor.points ?? [])
+                .toList() ??
+            [];
+      default:
+        return [];
+    }
+  }
+
+  List<dynamic> getBuildingFilteredList(
+      WorkLocationCubit cubit, int selectedIndex) {
+    final buildingTreeModel = cubit.buildingTreeModel;
+    if (buildingTreeModel == null || buildingTreeModel.data == null) return [];
+
+    switch (selectedIndex) {
+      case 0: // Floor
+        return buildingTreeModel.data!.floors ?? [];
+      case 1: // Point
+        return buildingTreeModel.data!.floors
+                ?.expand((floor) => floor.points ?? [])
+                .toList() ??
+            [];
+      default:
+        return [];
+    }
+  }
+
+  List<dynamic> getFloorFilteredList(
+      WorkLocationCubit cubit, int selectedIndex) {
+    final floorTreeModel = cubit.floorTreeModel;
+    if (floorTreeModel == null || floorTreeModel.data == null) return [];
+
+    switch (selectedIndex) {
+      case 0: // Points
+        return floorTreeModel.data!.points ?? [];
+      default:
+        return [];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -267,24 +474,36 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
         },
         builder: (context, state) {
           if ((widget.selectedIndex == 0 &&
-                  (context
-                          .read<WorkLocationCubit>()
-                          .areaManagersDetailsModel ==
-                      null)) ||
+                  (context.read<WorkLocationCubit>().areaManagersDetailsModel ==
+                          null ||
+                      context
+                              .read<WorkLocationCubit>()
+                              .areaTreeModel ==
+                          null)) ||
               (widget.selectedIndex == 1 &&
-                  (context
-                          .read<WorkLocationCubit>()
-                          .cityManagersDetailsModel ==
-                      null)) ||
+                  (context.read<WorkLocationCubit>().cityManagersDetailsModel ==
+                          null ||
+                      context
+                              .read<WorkLocationCubit>()
+                              .cityTreeModel ==
+                          null)) ||
               (widget.selectedIndex == 2 &&
                   (context.read<WorkLocationCubit>().organizationDetailsModel ==
-                      null)) ||
+                          null ||
+                      context
+                              .read<WorkLocationCubit>()
+                              .organizationTreeModel ==
+                          null)) ||
               (widget.selectedIndex == 3 &&
                   (context.read<WorkLocationCubit>().buildingDetailsModel ==
-                      null)) ||
+                          null ||
+                      context.read<WorkLocationCubit>().buildingTreeModel ==
+                          null)) ||
               (widget.selectedIndex == 4 &&
                   (context.read<WorkLocationCubit>().floorDetailsModel ==
-                      null)) ||
+                          null ||
+                      context.read<WorkLocationCubit>().floorTreeModel ==
+                          null)) ||
               (widget.selectedIndex == 5 &&
                   (context.read<WorkLocationCubit>().pointDetailsModel ==
                       null))) {
@@ -472,10 +691,40 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
   }
 
   Widget locationDetails() {
-    // List<Map<String, String>> items =
-    //     getCountsFromModel(context.read<WorkLocationCubit>().areaTreeModel!);
-    // List<dynamic> filteredList =
-    //     getFilteredList(context.read<WorkLocationCubit>(), selectedIndex);
+    final workLocationCubit = context.read<WorkLocationCubit>();
+
+    List<Map<String, String>> items;
+    List<dynamic> filteredList;
+
+    switch (widget.selectedIndex) {
+      case 0:
+        items = getAreaCountsFromModel(workLocationCubit.areaTreeModel!);
+        filteredList = getAreaFilteredList(workLocationCubit, selectedIndex);
+        break;
+      case 1:
+        items = getCityCountsFromModel(workLocationCubit.cityTreeModel!);
+        filteredList = getCityFilteredList(workLocationCubit, selectedIndex);
+        break;
+      case 2:
+        items = getOrganizationCountsFromModel(
+            workLocationCubit.organizationTreeModel!);
+        filteredList =
+            getOrganizationFilteredList(workLocationCubit, selectedIndex);
+        break;
+      case 3:
+        items =
+            getBuildingCountsFromModel(workLocationCubit.buildingTreeModel!);
+        filteredList =
+            getBuildingFilteredList(workLocationCubit, selectedIndex);
+        break;
+      case 4:
+        items = getFloorCountsFromModel(workLocationCubit.floorTreeModel!);
+        filteredList = getFloorFilteredList(workLocationCubit, selectedIndex);
+        break;
+      default:
+        items = [];
+        filteredList = [];
+    }
     final workLocationDetailsModel;
 
     switch (widget.selectedIndex) {
@@ -614,130 +863,122 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
             ),
             Divider(),
           ],
-          // SizedBox(
-          //   height: 40.h,
-          //   child: ListView.builder(
-          //     scrollDirection: Axis.horizontal,
-          //     itemCount: items.length,
-          //     itemBuilder: (context, index) {
-          //       bool isSelected = index == selectedIndex;
-          //       return GestureDetector(
-          //         onTap: () {
-          //           setState(() {
-          //             selectedIndex = index;
-          //           });
-          //         },
-          //         child: IntrinsicWidth(
-          //           child: Padding(
-          //             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          //             child: Column(
-          //               mainAxisAlignment: MainAxisAlignment.center,
-          //               children: [
-          //                 Text(
-          //                   "${items[index]['count']} ${items[index]['title']}",
-          //                   style: TextStyle(
-          //                       color: isSelected
-          //                           ? AppColor.primaryColor
-          //                           : Colors.black,
-          //                       fontWeight: FontWeight.normal,
-          //                       fontSize: 11.sp),
-          //                 ),
-          //                 if (isSelected)
-          //                   Container(
-          //                     margin: EdgeInsets.only(top: 4),
-          //                     height: 2.h,
-          //                     color: AppColor.primaryColor,
-          //                   ),
-          //               ],
-          //             ),
-          //           ),
-          //         ),
-          //       );
-          //     },
-          //   ),
-          // ),
-          // ListView.separated(
-          //   shrinkWrap: true,
-          //   physics: const ClampingScrollPhysics(),
-          //   scrollDirection: Axis.vertical,
-          //   itemCount: filteredList.length,
-          //   separatorBuilder: (context, index) {
-          //     return verticalSpace(10);
-          //   },
-          //   itemBuilder: (context, index) {
-          //     return Column(
-          //       mainAxisSize: MainAxisSize.min,
-          //       mainAxisAlignment: MainAxisAlignment.center,
-          //       children: [
-          //         InkWell(
-          //           onTap: () {
-          //             context.pushNamed(Routes.workLocationDetailsScreen,
-          //                 arguments: {
-          //                   'id': context
-          //                       .read<WorkLocationCubit>()
-          //                       .areaTreeModel!
-          //                       .data!
-          //                       .cities![index]
-          //                       .id!
-          //                       .toInt(),
-          //                   'selectedIndex': selectedIndex
-          //                 });
-          //           },
-          //           child: Card(
-          //             elevation: 1,
-          //             margin: EdgeInsets.zero,
-          //             color: Colors.white,
-          //             shape: RoundedRectangleBorder(
-          //                 borderRadius: BorderRadius.circular(11.r),
-          //                 side: BorderSide(color: AppColor.secondaryColor)),
-          //             child: ListTile(
-          //               contentPadding: EdgeInsets.symmetric(horizontal: 20),
-          //               minTileHeight: 72.h,
-          //               // leading:
-          //               // Icon(
-          //               //   selectedIndex == 0
-          //               //       ? Icons.location_city
-          //               //       : selectedIndex == 1
-          //               //           ? Icons.business
-          //               //           : selectedIndex == 2
-          //               //               ? Icons.house
-          //               //               : selectedIndex == 3
-          //               //                   ? Icons.stairs
-          //               //                   : Icons.place,
-          //               //   color: AppColor.thirdColor,
-          //               // ),
-          //               title: Text(
-          //                 filteredList[index].name ?? '',
-          //                 style: TextStyles.font14BlackSemiBold,
-          //               ),
-          //               subtitle: Text(
-          //                 '',
-          //                 style: TextStyles.font12GreyRegular,
-          //               ),
-          //               trailing: Icon(
-          //                 Icons.arrow_forward_ios_rounded,
-          //                 color: AppColor.thirdColor,
-          //               ),
-          //             ),
-          //           ),
-          //         )
-          //       ],
-          //     );
-          //   },
-          // )
+          SizedBox(
+            height: 40.h,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: items.length,
+              itemBuilder: (context, index) {
+                bool isSelected = index == selectedIndex;
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedIndex = index;
+                    });
+                  },
+                  child: IntrinsicWidth(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "${items[index]['count']} ${items[index]['title']}",
+                            style: TextStyle(
+                                color: isSelected
+                                    ? AppColor.primaryColor
+                                    : Colors.black,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 11.sp),
+                          ),
+                          if (isSelected)
+                            Container(
+                              margin: EdgeInsets.only(top: 4),
+                              height: 2.h,
+                              color: AppColor.primaryColor,
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const ClampingScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            itemCount: filteredList.length,
+            separatorBuilder: (context, index) {
+              return verticalSpace(10);
+            },
+            itemBuilder: (context, index) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      context.pushNamed(Routes.workLocationDetailsScreen,
+                          arguments: {
+                            'id': context
+                                .read<WorkLocationCubit>()
+                                .areaTreeModel!
+                                .data!
+                                .cities![index]
+                                .id!
+                                .toInt(),
+                            'selectedIndex': selectedIndex
+                          });
+                    },
+                    child: Card(
+                      elevation: 1,
+                      margin: EdgeInsets.zero,
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(11.r),
+                          side: BorderSide(color: AppColor.secondaryColor)),
+                      child: ListTile(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                        minTileHeight: 72.h,
+                        // leading:
+                        // Icon(
+                        //   selectedIndex == 0
+                        //       ? Icons.location_city
+                        //       : selectedIndex == 1
+                        //           ? Icons.business
+                        //           : selectedIndex == 2
+                        //               ? Icons.house
+                        //               : selectedIndex == 3
+                        //                   ? Icons.stairs
+                        //                   : Icons.place,
+                        //   color: AppColor.thirdColor,
+                        // ),
+                        title: Text(
+                          filteredList[index].name ?? '',
+                          style: TextStyles.font14BlackSemiBold,
+                        ),
+                        subtitle: Text(
+                          items[selectedIndex]['title'] == "Point"
+                              ? filteredList[index].floorName
+                              : filteredList[index].previousName ?? '',
+                          style: TextStyles.font12GreyRegular,
+                        ),
+                        trailing: Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          color: AppColor.thirdColor,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              );
+            },
+          )
         ],
       ),
     );
-    // if (workLocationModel.data == null) {
-    //   return Center(
-    //     child: Text(
-    //       "There's no data",
-    //       style: TextStyles.font13Blackmedium,
-    //     ),
-    //   );
-    // } else {
-    //   return SingleChildScrollView(child: listWorkLocationItemBuild(context));
-    // }
   }
 
   Widget managerDetails() {
@@ -768,7 +1009,7 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                     : widget.selectedIndex == 4
                         ? context
                             .read<WorkLocationCubit>()
-                            .buildingManagersDetailsModel!
+                            .floorManagersDetailsModel!
                             .data!
                             .managers
                         : context
@@ -835,7 +1076,7 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                     : widget.selectedIndex == 4
                         ? context
                             .read<WorkLocationCubit>()
-                            .buildingManagersDetailsModel!
+                            .floorManagersDetailsModel!
                             .data!
                             .supervisors
                         : context
@@ -902,7 +1143,7 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                     : widget.selectedIndex == 4
                         ? context
                             .read<WorkLocationCubit>()
-                            .buildingManagersDetailsModel!
+                            .floorManagersDetailsModel!
                             .data!
                             .cleaners
                         : context

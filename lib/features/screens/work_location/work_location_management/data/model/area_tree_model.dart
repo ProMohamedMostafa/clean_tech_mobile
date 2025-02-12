@@ -44,13 +44,15 @@ class AreaTreeModel {
 class Data {
   int? id;
   String? name;
+  String? previousName;
   List<Cities>? cities;
 
-  Data({this.id, this.name, this.cities});
+  Data({this.id, this.name, this.previousName, this.cities});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
+    previousName = json['previousName'];
     if (json['cities'] != null) {
       cities = <Cities>[];
       json['cities'].forEach((v) {
@@ -63,6 +65,7 @@ class Data {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
+    data['previousName'] = previousName;
     if (cities != null) {
       data['cities'] = cities!.map((v) => v.toJson()).toList();
     }
@@ -73,13 +76,15 @@ class Data {
 class Cities {
   int? id;
   String? name;
+  String? previousName;
   List<Organizations>? organizations;
 
-  Cities({this.id, this.name, this.organizations});
+  Cities({this.id, this.name, this.previousName, this.organizations});
 
   Cities.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
+    previousName = json['previousName'];
     if (json['organizations'] != null) {
       organizations = <Organizations>[];
       json['organizations'].forEach((v) {
@@ -92,6 +97,7 @@ class Cities {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
+    data['previousName'] = previousName;
     if (organizations != null) {
       data['organizations'] = organizations!.map((v) => v.toJson()).toList();
     }
@@ -102,13 +108,15 @@ class Cities {
 class Organizations {
   int? id;
   String? name;
+  String? previousName;
   List<Buildings>? buildings;
 
-  Organizations({this.id, this.name, this.buildings});
+  Organizations({this.id, this.name, this.previousName, this.buildings});
 
   Organizations.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
+    previousName = json['previousName'];
     if (json['buildings'] != null) {
       buildings = <Buildings>[];
       json['buildings'].forEach((v) {
@@ -121,6 +129,7 @@ class Organizations {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
+    data['previousName'] = previousName;
     if (buildings != null) {
       data['buildings'] = buildings!.map((v) => v.toJson()).toList();
     }
@@ -131,13 +140,15 @@ class Organizations {
 class Buildings {
   int? id;
   String? name;
+  String? previousName;
   List<Floors>? floors;
 
-  Buildings({this.id, this.name, this.floors});
+  Buildings({this.id, this.name, this.previousName, this.floors});
 
   Buildings.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
+    previousName = json['previousName'];
     if (json['floors'] != null) {
       floors = <Floors>[];
       json['floors'].forEach((v) {
@@ -150,6 +161,7 @@ class Buildings {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
+    data['previousName'] = previousName;
     if (floors != null) {
       data['floors'] = floors!.map((v) => v.toJson()).toList();
     }
@@ -160,13 +172,15 @@ class Buildings {
 class Floors {
   int? id;
   String? name;
+  String? previousName;
   List<Points>? points;
 
-  Floors({this.id, this.name, this.points});
+  Floors({this.id, this.name, this.previousName, this.points});
 
   Floors.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
+    previousName = json['previousName'];
     if (json['points'] != null) {
       points = <Points>[];
       json['points'].forEach((v) {
@@ -179,6 +193,7 @@ class Floors {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
+    data['previousName'] = previousName;
     if (points != null) {
       data['points'] = points!.map((v) => v.toJson()).toList();
     }
