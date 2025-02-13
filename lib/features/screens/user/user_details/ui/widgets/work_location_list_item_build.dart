@@ -27,7 +27,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
               minHeight: 100.h,
             ),
             width: double.infinity,
-            padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
+            padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(11.r),
@@ -53,7 +53,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                     ),
                   ],
                 ),
-                verticalSpace(10),
+                verticalSpace(20),
                 ListView.separated(
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
@@ -71,36 +71,38 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              'Country',
-                              style: TextStyles.font14BlackSemiBold,
+                        InkWell(
+                          onTap: () {},
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(10, 8, 8, 8),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5.r),
+                                border:
+                                    Border.all(color: AppColor.secondaryColor)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  context
+                                      .read<UserManagementCubit>()
+                                      .userWorkLocationDetailsModel!
+                                      .data!
+                                      .areas![index]
+                                      .name!,
+                                  style: TextStyles.font14BlackSemiBold,
+                                ),
+                                Text(
+                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data!.areas![index].countryName!})",
+                                  style: TextStyles.font12GreyRegular,
+                                ),
+                                Spacer(),
+                                Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  color: Colors.blue,
+                                )
+                              ],
                             ),
-                            Text(
-                              context
-                                  .read<UserManagementCubit>()
-                                  .userWorkLocationDetailsModel!
-                                  .data!
-                                  .areas![index]
-                                  .countryName!,
-                              style: TextStyles.font12GreyRegular,
-                            ),
-                            Text(
-                              'Area',
-                              style: TextStyles.font14BlackSemiBold,
-                            ),
-                            Text(
-                              context
-                                  .read<UserManagementCubit>()
-                                  .userWorkLocationDetailsModel!
-                                  .data!
-                                  .areas![index]
-                                  .name!,
-                              style: TextStyles.font12GreyRegular,
-                            ),
-                          ],
+                          ),
                         ),
                       ],
                     );
@@ -129,7 +131,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
               minHeight: 100.h,
             ),
             width: double.infinity,
-            padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
+            padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(11.r),
@@ -155,7 +157,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                     ),
                   ],
                 ),
-                verticalSpace(10),
+                verticalSpace(20),
                 ListView.separated(
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
@@ -173,36 +175,38 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              'Area',
-                              style: TextStyles.font14BlackSemiBold,
+                        InkWell(
+                          onTap: () {},
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(10, 8, 8, 8),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5.r),
+                                border:
+                                    Border.all(color: AppColor.secondaryColor)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  context
+                                      .read<UserManagementCubit>()
+                                      .userWorkLocationDetailsModel!
+                                      .data!
+                                      .cities![index]
+                                      .name!,
+                                  style: TextStyles.font14BlackSemiBold,
+                                ),
+                                Text(
+                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data!.cities![index].areaName!})",
+                                  style: TextStyles.font12GreyRegular,
+                                ),
+                                Spacer(),
+                                Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  color: Colors.blue,
+                                )
+                              ],
                             ),
-                            Text(
-                              context
-                                  .read<UserManagementCubit>()
-                                  .userWorkLocationDetailsModel!
-                                  .data!
-                                  .cities![index]
-                                  .areaName!,
-                              style: TextStyles.font12GreyRegular,
-                            ),
-                            Text(
-                              'City',
-                              style: TextStyles.font14BlackSemiBold,
-                            ),
-                            Text(
-                              context
-                                  .read<UserManagementCubit>()
-                                  .userWorkLocationDetailsModel!
-                                  .data!
-                                  .cities![index]
-                                  .name!,
-                              style: TextStyles.font12GreyRegular,
-                            ),
-                          ],
+                          ),
                         ),
                       ],
                     );
@@ -231,7 +235,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
               minHeight: 100.h,
             ),
             width: double.infinity,
-            padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
+            padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(11.r),
@@ -257,7 +261,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                     ),
                   ],
                 ),
-                verticalSpace(10),
+                verticalSpace(20),
                 ListView.separated(
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
@@ -275,36 +279,38 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              'City',
-                              style: TextStyles.font14BlackSemiBold,
+                        InkWell(
+                          onTap: () {},
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(10, 8, 8, 8),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5.r),
+                                border:
+                                    Border.all(color: AppColor.secondaryColor)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  context
+                                      .read<UserManagementCubit>()
+                                      .userWorkLocationDetailsModel!
+                                      .data!
+                                      .organizations![index]
+                                      .name!,
+                                  style: TextStyles.font14BlackSemiBold,
+                                ),
+                                Text(
+                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data!.organizations![index].cityName!})",
+                                  style: TextStyles.font12GreyRegular,
+                                ),
+                                Spacer(),
+                                Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  color: Colors.blue,
+                                )
+                              ],
                             ),
-                            Text(
-                              context
-                                  .read<UserManagementCubit>()
-                                  .userWorkLocationDetailsModel!
-                                  .data!
-                                  .organizations![index]
-                                  .cityName!,
-                              style: TextStyles.font12GreyRegular,
-                            ),
-                            Text(
-                              'Organization',
-                              style: TextStyles.font14BlackSemiBold,
-                            ),
-                            Text(
-                              context
-                                  .read<UserManagementCubit>()
-                                  .userWorkLocationDetailsModel!
-                                  .data!
-                                  .organizations![index]
-                                  .name!,
-                              style: TextStyles.font12GreyRegular,
-                            ),
-                          ],
+                          ),
                         ),
                       ],
                     );
@@ -333,7 +339,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
               minHeight: 100.h,
             ),
             width: double.infinity,
-            padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
+            padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(11.r),
@@ -359,7 +365,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                     ),
                   ],
                 ),
-                verticalSpace(10),
+                verticalSpace(20),
                 ListView.separated(
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
@@ -377,36 +383,38 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              'Organization',
-                              style: TextStyles.font14BlackSemiBold,
+                        InkWell(
+                          onTap: () {},
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(10, 8, 8, 8),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5.r),
+                                border:
+                                    Border.all(color: AppColor.secondaryColor)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  context
+                                      .read<UserManagementCubit>()
+                                      .userWorkLocationDetailsModel!
+                                      .data!
+                                      .buildings![index]
+                                      .name!,
+                                  style: TextStyles.font14BlackSemiBold,
+                                ),
+                                Text(
+                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data!.buildings![index].organizationName!})",
+                                  style: TextStyles.font12GreyRegular,
+                                ),
+                                Spacer(),
+                                Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  color: Colors.blue,
+                                )
+                              ],
                             ),
-                            Text(
-                              context
-                                  .read<UserManagementCubit>()
-                                  .userWorkLocationDetailsModel!
-                                  .data!
-                                  .buildings![index]
-                                  .organizationName!,
-                              style: TextStyles.font12GreyRegular,
-                            ),
-                            Text(
-                              'Building',
-                              style: TextStyles.font14BlackSemiBold,
-                            ),
-                            Text(
-                              context
-                                  .read<UserManagementCubit>()
-                                  .userWorkLocationDetailsModel!
-                                  .data!
-                                  .buildings![index]
-                                  .name!,
-                              style: TextStyles.font12GreyRegular,
-                            ),
-                          ],
+                          ),
                         ),
                       ],
                     );
@@ -435,7 +443,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
               minHeight: 100.h,
             ),
             width: double.infinity,
-            padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
+            padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(11.r),
@@ -461,7 +469,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                     ),
                   ],
                 ),
-                verticalSpace(10),
+                verticalSpace(20),
                 ListView.separated(
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
@@ -479,36 +487,38 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              'Building',
-                              style: TextStyles.font14BlackSemiBold,
+                        InkWell(
+                          onTap: () {},
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(10, 8, 8, 8),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5.r),
+                                border:
+                                    Border.all(color: AppColor.secondaryColor)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  context
+                                      .read<UserManagementCubit>()
+                                      .userWorkLocationDetailsModel!
+                                      .data!
+                                      .floors![index]
+                                      .name!,
+                                  style: TextStyles.font14BlackSemiBold,
+                                ),
+                                Text(
+                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data!.floors![index].buildingName!})",
+                                  style: TextStyles.font12GreyRegular,
+                                ),
+                                Spacer(),
+                                Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  color: Colors.blue,
+                                )
+                              ],
                             ),
-                            Text(
-                              context
-                                  .read<UserManagementCubit>()
-                                  .userWorkLocationDetailsModel!
-                                  .data!
-                                  .floors![index]
-                                  .buildingName!,
-                              style: TextStyles.font12GreyRegular,
-                            ),
-                            Text(
-                              'Floor',
-                              style: TextStyles.font14BlackSemiBold,
-                            ),
-                            Text(
-                              context
-                                  .read<UserManagementCubit>()
-                                  .userWorkLocationDetailsModel!
-                                  .data!
-                                  .floors![index]
-                                  .name!,
-                              style: TextStyles.font12GreyRegular,
-                            ),
-                          ],
+                          ),
                         ),
                       ],
                     );
@@ -537,7 +547,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
               minHeight: 100.h,
             ),
             width: double.infinity,
-            padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
+            padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(11.r),
@@ -563,7 +573,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                     ),
                   ],
                 ),
-                verticalSpace(10),
+                verticalSpace(20),
                 ListView.separated(
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
@@ -581,36 +591,38 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              'Floor',
-                              style: TextStyles.font14BlackSemiBold,
+                        InkWell(
+                          onTap: () {},
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(10, 8, 8, 8),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5.r),
+                                border:
+                                    Border.all(color: AppColor.secondaryColor)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  context
+                                      .read<UserManagementCubit>()
+                                      .userWorkLocationDetailsModel!
+                                      .data!
+                                      .points![index]
+                                      .name!,
+                                  style: TextStyles.font14BlackSemiBold,
+                                ),
+                                Text(
+                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data!.points![index].floorName!})",
+                                  style: TextStyles.font12GreyRegular,
+                                ),
+                                Spacer(),
+                                Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  color: Colors.blue,
+                                )
+                              ],
                             ),
-                            Text(
-                              context
-                                  .read<UserManagementCubit>()
-                                  .userWorkLocationDetailsModel!
-                                  .data!
-                                  .points![index]
-                                  .floorName!,
-                              style: TextStyles.font12GreyRegular,
-                            ),
-                            Text(
-                              'Point',
-                              style: TextStyles.font14BlackSemiBold,
-                            ),
-                            Text(
-                              context
-                                  .read<UserManagementCubit>()
-                                  .userWorkLocationDetailsModel!
-                                  .data!
-                                  .points![index]
-                                  .name!,
-                              style: TextStyles.font12GreyRegular,
-                            ),
-                          ],
+                          ),
                         ),
                       ],
                     );

@@ -38,7 +38,7 @@ class AddTaskCubit extends Cubit<AddTaskState> {
   final formKey = GlobalKey<FormState>();
 
   CreateTaskModel? createTaskModel;
-  addTask(int priorityId, int? statusId, int? buildingId, int? floorId,
+  addTask(int? priorityId, int? statusId, int? buildingId, int? floorId,
       int? pointId, List<int>? selectedSupervisorIds, int? parentId) async {
     emit(AddTaskLoadingState());
     Map<String, dynamic> formDataMap = {
@@ -51,8 +51,8 @@ class AddTaskCubit extends Cubit<AddTaskState> {
       "EndDate": endDateController.text,
       "StartTime": startTimeController.text,
       "EndTime": endTimeController.text,
-      "BuildingId": buildingId,
-      "FloorId": floorId,
+      "BuildingId": pointId != null || floorId != null ? null : buildingId,
+      "FloorId": pointId != null ? null : floorId,
       "PointId": pointId,
       "CreatedBy": uId,
       "UsersIds": selectedSupervisorIds,

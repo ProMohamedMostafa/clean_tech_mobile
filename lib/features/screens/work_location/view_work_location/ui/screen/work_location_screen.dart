@@ -1265,57 +1265,59 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
         ),
       );
     }
-    return Column(
-      children: [
-        Divider(),
-        verticalSpace(5),
-        SizedBox(
-          height: 45.h,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Filter',
-                style: TextStyles.font16BlackSemiBold,
-              ),
-              InkWell(
-                onTap: () {},
-                child: Container(
-                  height: 52,
-                  width: 52,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.r),
-                    border: Border.all(color: AppColor.secondaryColor),
-                  ),
-                  child: Icon(
-                    Icons.tune,
-                    color: AppColor.primaryColor,
-                    size: 25.sp,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Divider(),
+          verticalSpace(5),
+          SizedBox(
+            height: 45.h,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Filter',
+                  style: TextStyles.font16BlackSemiBold,
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    height: 52,
+                    width: 52,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.r),
+                      border: Border.all(color: AppColor.secondaryColor),
+                    ),
+                    child: Icon(
+                      Icons.tune,
+                      color: AppColor.primaryColor,
+                      size: 25.sp,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-        verticalSpace(10),
-        ListView.separated(
-          shrinkWrap: true,
-          physics: const BouncingScrollPhysics(),
-          scrollDirection: Axis.vertical,
-          itemCount: taskModel.data!.data!.length,
-          separatorBuilder: (context, index) {
-            return verticalSpace(10);
-          },
-          itemBuilder: (context, index) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                buildTaskCardItem(context, index, widget.selectedIndex),
               ],
-            );
-          },
-        ),
-      ],
+            ),
+          ),
+          verticalSpace(10),
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const BouncingScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            itemCount: taskModel.data!.data!.length,
+            separatorBuilder: (context, index) {
+              return verticalSpace(10);
+            },
+            itemBuilder: (context, index) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  buildTaskCardItem(context, index, widget.selectedIndex),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 
@@ -1364,57 +1366,59 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
         ),
       );
     }
-    return Column(
-      children: [
-        Divider(),
-        verticalSpace(5),
-        SizedBox(
-          height: 45.h,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Filter',
-                style: TextStyles.font16BlackSemiBold,
-              ),
-              InkWell(
-                onTap: () {},
-                child: Container(
-                  height: 52,
-                  width: 52,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.r),
-                    border: Border.all(color: AppColor.secondaryColor),
-                  ),
-                  child: Icon(
-                    Icons.tune,
-                    color: AppColor.primaryColor,
-                    size: 25.sp,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Divider(),
+          verticalSpace(5),
+          SizedBox(
+            height: 45.h,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Filter',
+                  style: TextStyles.font16BlackSemiBold,
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    height: 52,
+                    width: 52,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.r),
+                      border: Border.all(color: AppColor.secondaryColor),
+                    ),
+                    child: Icon(
+                      Icons.tune,
+                      color: AppColor.primaryColor,
+                      size: 25.sp,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-        verticalSpace(10),
-        ListView.separated(
-          shrinkWrap: true,
-          physics: const ClampingScrollPhysics(),
-          scrollDirection: Axis.vertical,
-          itemCount: attendanceData.length,
-          separatorBuilder: (context, index) {
-            return verticalSpace(10);
-          },
-          itemBuilder: (context, index) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                buildAttendanceCardItem(context, index, widget.selectedIndex),
               ],
-            );
-          },
-        )
-      ],
+            ),
+          ),
+          verticalSpace(10),
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const ClampingScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            itemCount: attendanceData.length,
+            separatorBuilder: (context, index) {
+              return verticalSpace(10);
+            },
+            itemBuilder: (context, index) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  buildAttendanceCardItem(context, index, widget.selectedIndex),
+                ],
+              );
+            },
+          )
+        ],
+      ),
     );
   }
 
@@ -1463,57 +1467,59 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
         ),
       );
     }
-    return Column(
-      children: [
-        Divider(),
-        verticalSpace(5),
-        SizedBox(
-          height: 45.h,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Filter',
-                style: TextStyles.font16BlackSemiBold,
-              ),
-              InkWell(
-                onTap: () {},
-                child: Container(
-                  height: 52,
-                  width: 52,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.r),
-                    border: Border.all(color: AppColor.secondaryColor),
-                  ),
-                  child: Icon(
-                    Icons.tune,
-                    color: AppColor.primaryColor,
-                    size: 25.sp,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Divider(),
+          verticalSpace(5),
+          SizedBox(
+            height: 45.h,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Filter',
+                  style: TextStyles.font16BlackSemiBold,
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    height: 52,
+                    width: 52,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.r),
+                      border: Border.all(color: AppColor.secondaryColor),
+                    ),
+                    child: Icon(
+                      Icons.tune,
+                      color: AppColor.primaryColor,
+                      size: 25.sp,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-        verticalSpace(10),
-        ListView.separated(
-          shrinkWrap: true,
-          physics: const ClampingScrollPhysics(),
-          scrollDirection: Axis.vertical,
-          itemCount: attendanceData.length,
-          separatorBuilder: (context, index) {
-            return verticalSpace(10);
-          },
-          itemBuilder: (context, index) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                buildLeavesCardItem(context, index, widget.selectedIndex),
               ],
-            );
-          },
-        )
-      ],
+            ),
+          ),
+          verticalSpace(10),
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const ClampingScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            itemCount: attendanceData.length,
+            separatorBuilder: (context, index) {
+              return verticalSpace(10);
+            },
+            itemBuilder: (context, index) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  buildLeavesCardItem(context, index, widget.selectedIndex),
+                ],
+              );
+            },
+          )
+        ],
+      ),
     );
   }
 }

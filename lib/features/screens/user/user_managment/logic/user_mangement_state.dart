@@ -1,12 +1,16 @@
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/data/models/attendance_history_model.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/data/models/attendance_leaves_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_area_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/delete_user_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/deleted_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_shift_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_status_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_task_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_work_location_details.dart';
 
@@ -313,4 +317,67 @@ class LeavesSuccessState extends UserManagementState {
 class LeavesErrorState extends UserManagementState {
   final String error;
   LeavesErrorState(this.error);
+}
+
+//********************************* */
+
+
+class GetAllAreaLoadingState extends UserManagementState {}
+
+class GetAllAreaSuccessState extends UserManagementState {
+  final AllAreaModel allAreaModel;
+
+  GetAllAreaSuccessState(this.allAreaModel);
+}
+
+class GetAllAreaErrorState extends UserManagementState {
+  final String error;
+  GetAllAreaErrorState(this.error);
+}
+
+
+
+//********************************* */
+
+
+class UserStatusLoadingState extends UserManagementState {}
+
+class UserStatusSuccessState extends UserManagementState {
+  final UserStatusModel userStatusModel;
+
+  UserStatusSuccessState(this.userStatusModel);
+}
+
+class UserStatusErrorState extends UserManagementState {
+  final String error;
+  UserStatusErrorState(this.error);
+}
+
+//*************************************** */
+
+class AllProvidersLoadingState extends UserManagementState {}
+
+class AllProvidersSuccessState extends UserManagementState {
+  final ProvidersModel providersModel;
+
+  AllProvidersSuccessState(this.providersModel);
+}
+
+class AllProvidersErrorState extends UserManagementState {
+  final String error;
+  AllProvidersErrorState(this.error);
+}
+
+//**************************** */
+
+class ShiftLoadingState extends UserManagementState {}
+
+class ShiftSuccessState extends UserManagementState {
+  final ShiftModel shiftModel;
+  ShiftSuccessState(this.shiftModel);
+}
+
+class ShiftErrorState extends UserManagementState {
+  final String error;
+  ShiftErrorState(this.error);
 }

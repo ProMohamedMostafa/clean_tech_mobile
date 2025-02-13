@@ -38,6 +38,9 @@ class EditUserCubit extends Cubit<EditUserState> {
   TextEditingController genderIdController = TextEditingController();
   TextEditingController providerController = TextEditingController();
   TextEditingController providerIdController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController passwordConfirmationController =
+      TextEditingController();
   final shiftController = MultiSelectController<ShiftDetails>();
 
   EditModel? editModel;
@@ -74,6 +77,8 @@ class EditUserCubit extends Cubit<EditUserState> {
       "iDNumber": idNumberController.text.isEmpty
           ? userDetailsModel!.data!.idNumber
           : idNumberController.text,
+      "Password": passwordController.text,
+      "PasswordConfirmation": passwordConfirmationController.text,
       "nationalityName": nationalityController.text.isEmpty
           ? userDetailsModel!.data!.nationalityName
           : nationalityController.text,
@@ -173,8 +178,6 @@ class EditUserCubit extends Cubit<EditUserState> {
     });
   }
 
-  
-
   GalleryModel? gellaryModel;
   XFile? image;
   Future<void> galleryFile() async {
@@ -186,5 +189,15 @@ class EditUserCubit extends Cubit<EditUserState> {
       image = selectedImage;
       emit(ImageSelectedState(image!));
     }
+  }
+
+
+   IconData suffixIcon = Icons.visibility_outlined;
+  bool ispassword = true;
+  changeSuffixIconVisiability() {
+    ispassword = !ispassword;
+    suffixIcon =
+        ispassword ? Icons.visibility_outlined : Icons.visibility_off_outlined;
+    emit(ChangeSuffixIconVisiabiltyState());
   }
 }

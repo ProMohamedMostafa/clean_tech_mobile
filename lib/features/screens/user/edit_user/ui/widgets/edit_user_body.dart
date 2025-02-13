@@ -200,6 +200,32 @@ class _EditUserBodyState extends State<EditUserBody> {
                       .phoneNumber!,
                 ),
                 verticalSpace(15),
+                EditUserTextField(
+                  controller: context.read<EditUserCubit>().passwordController,
+                  keyboardType: TextInputType.text,
+                  suffixIcon: context.read<EditUserCubit>().suffixIcon,
+                  suffixPressed: () {
+                    context.read<EditUserCubit>().changeSuffixIconVisiability();
+                  },
+                  obscureText: context.read<EditUserCubit>().ispassword,
+                  label: 'Password Confirm',
+                  hint: '',
+                ),
+                verticalSpace(15),
+                EditUserTextField(
+                  controller: context
+                      .read<EditUserCubit>()
+                      .passwordConfirmationController,
+                  suffixIcon: context.read<EditUserCubit>().suffixIcon,
+                  suffixPressed: () {
+                    context.read<EditUserCubit>().changeSuffixIconVisiability();
+                  },
+                  obscureText: context.read<EditUserCubit>().ispassword,
+                  keyboardType: TextInputType.text,
+                  label: 'Password',
+                  hint: '',
+                ),
+                verticalSpace(15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

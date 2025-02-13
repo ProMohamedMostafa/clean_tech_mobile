@@ -11,12 +11,10 @@ import 'package:smart_cleaning_application/features/screens/integrations/ui/widg
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_time_picker.dart';
-import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
 
 class CustomFilterTaskDialog {
-  static Future<String?> show(
-      {required BuildContext context, selectedIndex}) async {
+  static Future<String?> show({required BuildContext context, id}) async {
     return await showDialog(
       context: context,
       builder: (dialogContext) {
@@ -29,6 +27,7 @@ class CustomFilterTaskDialog {
         int? statusId;
         int? priorityId;
         int? createdId;
+        int? providerId;
         return Dialog(
             backgroundColor: Colors.white,
             surfaceTintColor: Colors.white,
@@ -312,14 +311,16 @@ class CustomFilterTaskDialog {
                         hint: "Select area",
                         items: context
                                     .read<UserManagementCubit>()
-                                    .areaModel
+                                    .allAreaModel
+                                    ?.data
                                     ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No organizations']
                             : context
                                     .read<UserManagementCubit>()
-                                    .areaModel
+                                    .allAreaModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -327,7 +328,8 @@ class CustomFilterTaskDialog {
                         onPressed: (value) {
                           final selectedArea = context
                               .read<UserManagementCubit>()
-                              .areaModel
+                              .allAreaModel
+                              ?.data
                               ?.data
                               ?.firstWhere((area) =>
                                   area.name ==
@@ -563,33 +565,70 @@ class CustomFilterTaskDialog {
                             context.read<UserManagementCubit>().pointController,
                         keyboardType: TextInputType.text,
                       ),
+                      verticalSpace(10),
+                      Text(
+                        'Provider',
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomDropDownList(
+                        hint: 'Select Provider',
+                        items: context
+                                    .read<UserManagementCubit>()
+                                    .providersModel
+                                    ?.data
+                                    ?.data
+                                    ?.isEmpty ??
+                                true
+                            ? ['No providers available']
+                            : context
+                                    .read<UserManagementCubit>()
+                                    .providersModel
+                                    ?.data
+                                    ?.data
+                                    ?.map((e) => e.name ?? 'Unknown')
+                                    .toList() ??
+                                [],
+                        onPressed: (value) {
+                          final selectedProvider = context
+                              .read<UserManagementCubit>()
+                              .pointsModel
+                              ?.data
+                              ?.firstWhere((provider) =>
+                                  provider.name ==
+                                  context
+                                      .read<UserManagementCubit>()
+                                      .providerController
+                                      .text);
+
+                          context
+                              .read<UserManagementCubit>()
+                              .getPoints(selectedProvider!.id!);
+                          providerId = selectedProvider.id;
+                        },
+                        controller: context
+                            .read<UserManagementCubit>()
+                            .providerController,
+                        keyboardType: TextInputType.text,
+                        suffixIcon: IconBroken.arrowDown2,
+                      ),
                       verticalSpace(20),
                       Center(
                         child: DefaultElevatedButton(
                             name: 'Done',
                             onPressed: () {
-                              final String startDateText = context
-                                  .read<UserManagementCubit>()
-                                  .startDateController
-                                  .text;
-                              final DateTime startDate =
-                                  startDateText.isNotEmpty
-                                      ? DateTime.parse(startDateText)
-                                      : DateTime.now();
                               context
                                   .read<UserManagementCubit>()
-                                  .getUserTaskDetails(
-                                      // startDate: startDate,
-                                      // createdBy: createdId,
-                                      // priority: priorityId,
-                                      // status: statusId,
-                                      // areaId: areaId,
-                                      // cityId: cityId,
-                                      // organizationId: organizationId,
-                                      // buildingId: buildingId,
-                                      // floorId: floorId,
-                                      // pointId: pointId,
-                                      selectedIndex);
+                                  .getUserTaskDetails(id,
+                                      createdBy: createdId,
+                                      priority: priorityId,
+                                      status: statusId,
+                                      areaId: areaId,
+                                      cityId: cityId,
+                                      organizationId: organizationId,
+                                      buildingId: buildingId,
+                                      floorId: floorId,
+                                      pointId: pointId,
+                                      providerId: providerId);
                               context.pop();
                             },
                             color: AppColor.primaryColor,

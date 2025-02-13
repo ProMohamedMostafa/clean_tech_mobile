@@ -9,14 +9,14 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
 
 Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
-  String formatDuration(String? duration) {
+   String formatDuration(String? duration) {
     if (duration == null || duration.isEmpty) {
-      return "N/A"; // Return a fallback message if duration is null or empty
+      return "    ";
     }
 
     final durationParts = duration.split(':');
     if (durationParts.length != 3) {
-      return "Invalid Format"; // Return an error message if format is incorrect
+      return "Invalid Format";
     }
 
     try {
@@ -32,9 +32,21 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
         return '$seconds sec';
       }
     } catch (e) {
-      return "Invalid Data"; // Catch unexpected errors
+      return "Invalid Data";
     }
   }
+
+  String formatTime(String? time) {
+    if (time == null || time.isEmpty) return " ";
+    try {
+      DateTime parsedTime = DateTime.parse(time);
+      return DateFormat('HH:mm').format(parsedTime);
+    } catch (e) {
+      return "Invalid Time";
+    }
+  }
+
+  
 
   final List<String> status = ["Absent", "Late", "Present"];
   final List<Color> statusColor = [
@@ -468,8 +480,8 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: DateFormat('HH:mm').format(
-                        DateTime.parse(selectedIndex == 0
+                      text: 
+                        formatTime(selectedIndex == 0
                             ? context
                                     .read<WorkLocationCubit>()
                                     .attendanceHistoryAreaModel!
@@ -515,7 +527,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                                     .data!
                                                     .data![index]
                                                     .clockIn ??
-                                                ''),
+                                                ''
                       ),
                       style: TextStyles.font12GreyRegular
                           .copyWith(color: AppColor.primaryColor),
@@ -526,23 +538,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                           .copyWith(color: AppColor.primaryColor),
                     ),
                     TextSpan(
-                      text: DateFormat('HH:mm').format(
-                        // context
-                        //                 .read<WorkLocationCubit>()
-                        //                 .attendanceHistoryPointModel!
-                        //                 .data!
-                        //                 .data![index]
-                        //                 .clockOut !=
-                        //             null &&
-                        //         context
-                        //             .read<WorkLocationCubit>()
-                        //             .attendanceHistoryPointModel!
-                        //             .data!
-                        //             .data![index]
-                        //             .clockOut!
-                        //             .isNotEmpty
-                        //     ?
-                        DateTime.parse(selectedIndex == 0
+                      text: formatTime(selectedIndex == 0
                             ? context
                                     .read<WorkLocationCubit>()
                                     .attendanceHistoryAreaModel!
@@ -589,7 +585,6 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                                     .data![index]
                                                     .clockOut ??
                                                 ''),
-                      ),
                       style: TextStyles.font12GreyRegular
                           .copyWith(color: AppColor.primaryColor),
                     ),

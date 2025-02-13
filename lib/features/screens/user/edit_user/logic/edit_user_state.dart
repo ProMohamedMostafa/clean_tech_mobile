@@ -118,3 +118,6 @@ class RoleUserErrorState extends EditUserState {
   final String error;
   RoleUserErrorState(this.error);
 }
+//*************************** */
+
+class ChangeSuffixIconVisiabiltyState extends EditUserState {}

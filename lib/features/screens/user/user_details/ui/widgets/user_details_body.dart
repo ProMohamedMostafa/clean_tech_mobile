@@ -15,6 +15,8 @@ import 'package:smart_cleaning_application/core/widgets/default_toast/default_to
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/attendance_list_item_build.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/filter_attendance_dialog.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/filter_task_dialog_.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/leaves_list_item_build.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/shift_list_item_build.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/task_list_item_build.dart';
@@ -43,6 +45,9 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
     context.read<UserManagementCubit>().getUserWorkLocationDetails(widget.id);
     context.read<UserManagementCubit>().getAllHistory(widget.id);
     context.read<UserManagementCubit>().getAllLeaves(widget.id);
+    context.read<UserManagementCubit>().getUserStatus(widget.id);
+    context.read<UserManagementCubit>().getAllArea();
+    context.read<UserManagementCubit>().getProviders();
 
     controller = TabController(length: 6, vsync: this);
     controller.addListener(() {
@@ -101,8 +106,10 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
           }
         },
         builder: (context, state) {
-          if (context.read<UserManagementCubit>().userDetailsModel?.data ==
-                  null ||
+          if ((context.read<UserManagementCubit>().userDetailsModel?.data ==
+                      null &&
+                  context.read<UserManagementCubit>().userStatusModel?.data ==
+                      null) ||
               context.read<UserManagementCubit>().userShiftDetailsModel?.data ==
                   null ||
               context.read<UserManagementCubit>().userTaskDetailsModel?.data ==
@@ -128,59 +135,74 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Center(
-                    child: Container(
-                      width: 90.w,
-                      height: 90.h,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: AppColor.primaryColor,
-                          width: 3.w,
-                        ),
-                      ),
-                      child: ClipOval(
-                        child: Image.network(
-                          '${ApiConstants.apiBaseUrl}${context.read<UserManagementCubit>().userDetailsModel!.data!.image}',
-                          fit: BoxFit.fill,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Image.asset(
-                              'assets/images/noImage.png',
-                              fit: BoxFit.fill,
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                  verticalSpace(5),
-                  RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
+                    child: Stack(
                       children: [
-                        TextSpan(
-                          text: context
-                              .read<UserManagementCubit>()
-                              .userDetailsModel!
-                              .data!
-                              .userName!,
-                          style: TextStyles.font14GreyRegular,
+                        Container(
+                          width: 80.w,
+                          height: 80.h,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                          ),
+                          child: ClipOval(
+                            child: Image.network(
+                              '${ApiConstants.apiBaseUrl}${context.read<UserManagementCubit>().userDetailsModel!.data!.image}',
+                              fit: BoxFit.fill,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                  'assets/images/noImage.png',
+                                  fit: BoxFit.fill,
+                                );
+                              },
+                            ),
+                          ),
                         ),
-                        TextSpan(
-                          text: ' - ',
-                          style: TextStyles.font14GreyRegular,
-                        ),
-                        TextSpan(
-                          text: context
-                              .read<UserManagementCubit>()
-                              .userDetailsModel!
-                              .data!
-                              .role!,
-                          style: TextStyles.font14GreyRegular,
-                        ),
+                        Positioned(
+                          bottom: 1,
+                          right: 10,
+                          child: InkWell(
+                            onTap: () {
+                              // context.read<EditUserCubit>().galleryFile();
+                            },
+                            child: Container(
+                              width: 15.w,
+                              height: 15.h,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: context
+                                              .read<UserManagementCubit>()
+                                              .userStatusModel!
+                                              .data!
+                                              .status ==
+                                          'not working'
+                                      ? Colors.red
+                                      : Colors.green,
+                                  border: Border.all(
+                                      color: Colors.white, width: 2.w)),
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ),
-                  verticalSpace(25),
+                  verticalSpace(5),
+                  Text(
+                    context
+                        .read<UserManagementCubit>()
+                        .userDetailsModel!
+                        .data!
+                        .userName!,
+                    style: TextStyles.font14BlackSemiBold,
+                  ),
+                  verticalSpace(5),
+                  Text(
+                    context
+                        .read<UserManagementCubit>()
+                        .userDetailsModel!
+                        .data!
+                        .role!,
+                    style: TextStyles.font11GreyMedium,
+                  ),
+                  verticalSpace(15),
                   SizedBox(
                     height: 42.h,
                     width: double.infinity,
@@ -394,16 +416,21 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
   Widget locationUserDetails() {
     final workLocationModel =
         context.read<UserManagementCubit>().userWorkLocationDetailsModel!;
-    if (workLocationModel.data == null) {
+    if (workLocationModel.data == null ||
+        (workLocationModel.data!.areas!.isEmpty &&
+            workLocationModel.data!.cities!.isEmpty &&
+            workLocationModel.data!.organizations!.isEmpty &&
+            workLocationModel.data!.buildings!.isEmpty &&
+            workLocationModel.data!.floors!.isEmpty &&
+            workLocationModel.data!.points!.isEmpty)) {
       return Center(
         child: Text(
           "There's no data",
           style: TextStyles.font13Blackmedium,
         ),
       );
-    } else {
-      return SingleChildScrollView(child: listWorkLocationItemBuild(context));
     }
+    return SingleChildScrollView(child: listWorkLocationItemBuild(context));
   }
 
   Widget userShiftsDetails() {
@@ -467,10 +494,60 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                   style: TextStyles.font16BlackSemiBold,
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    context
+                        .read<UserManagementCubit>()
+                        .createdByController
+                        .clear();
+                    context
+                        .read<UserManagementCubit>()
+                        .assignToController
+                        .clear();
+                    context
+                        .read<UserManagementCubit>()
+                        .statusController
+                        .clear();
+                    context
+                        .read<UserManagementCubit>()
+                        .startDateController
+                        .clear();
+                    context
+                        .read<UserManagementCubit>()
+                        .endDateController
+                        .clear();
+                    context
+                        .read<UserManagementCubit>()
+                        .priorityController
+                        .clear();
+                    context.read<UserManagementCubit>().roleController.clear();
+
+                    context
+                        .read<UserManagementCubit>()
+                        .startTimeController
+                        .clear();
+                    context
+                        .read<UserManagementCubit>()
+                        .endTimeController
+                        .clear();
+                    context.read<UserManagementCubit>().areaController.clear();
+                    context.read<UserManagementCubit>().cityController.clear();
+                    context
+                        .read<UserManagementCubit>()
+                        .organizationController
+                        .clear();
+                    context
+                        .read<UserManagementCubit>()
+                        .buildingController
+                        .clear();
+                    context.read<UserManagementCubit>().floorController.clear();
+                    context.read<UserManagementCubit>().pointController.clear();
+
+                    CustomFilterTaskDialog.show(
+                        context: context, id: widget.id);
+                  },
                   child: Container(
-                    height: 52,
-                    width: 52,
+                    height: 49.h,
+                    width: 49.w,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8.r),
                       border: Border.all(color: AppColor.secondaryColor),
@@ -520,57 +597,60 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
         ),
       );
     }
-    return Column(
-      children: [
-        Divider(),
-        verticalSpace(5),
-        SizedBox(
-          height: 45.h,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Filter',
-                style: TextStyles.font16BlackSemiBold,
-              ),
-              InkWell(
-                onTap: () {},
-                child: Container(
-                  height: 52,
-                  width: 52,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.r),
-                    border: Border.all(color: AppColor.secondaryColor),
-                  ),
-                  child: Icon(
-                    Icons.tune,
-                    color: AppColor.primaryColor,
-                    size: 25.sp,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Divider(),
+          verticalSpace(5),
+          SizedBox(
+            height: 45.h,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Filter',
+                  style: TextStyles.font16BlackSemiBold,
+                ),
+                InkWell(
+                  onTap: () {CustomFilterAttedanceDialog.show(
+                        context: context, id: widget.id);},
+                  child: Container(
+                    height: 52,
+                    width: 52,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.r),
+                      border: Border.all(color: AppColor.secondaryColor),
+                    ),
+                    child: Icon(
+                      Icons.tune,
+                      color: AppColor.primaryColor,
+                      size: 25.sp,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-        verticalSpace(10),
-        ListView.separated(
-          shrinkWrap: true,
-          physics: const ClampingScrollPhysics(),
-          scrollDirection: Axis.vertical,
-          itemCount: attendanceData.length,
-          separatorBuilder: (context, index) {
-            return verticalSpace(10);
-          },
-          itemBuilder: (context, index) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                buildAttendanceCardItem(context, index),
               ],
-            );
-          },
-        )
-      ],
+            ),
+          ),
+          verticalSpace(10),
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const ClampingScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            itemCount: attendanceData.length,
+            separatorBuilder: (context, index) {
+              return verticalSpace(10);
+            },
+            itemBuilder: (context, index) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  buildAttendanceCardItem(context, index),
+                ],
+              );
+            },
+          )
+        ],
+      ),
     );
   }
 
@@ -586,57 +666,59 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
         ),
       );
     }
-    return Column(
-      children: [
-        Divider(),
-        verticalSpace(5),
-        SizedBox(
-          height: 45.h,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Filter',
-                style: TextStyles.font16BlackSemiBold,
-              ),
-              InkWell(
-                onTap: () {},
-                child: Container(
-                  height: 52,
-                  width: 52,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.r),
-                    border: Border.all(color: AppColor.secondaryColor),
-                  ),
-                  child: Icon(
-                    Icons.tune,
-                    color: AppColor.primaryColor,
-                    size: 25.sp,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Divider(),
+          verticalSpace(5),
+          SizedBox(
+            height: 45.h,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Filter',
+                  style: TextStyles.font16BlackSemiBold,
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    height: 52,
+                    width: 52,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.r),
+                      border: Border.all(color: AppColor.secondaryColor),
+                    ),
+                    child: Icon(
+                      Icons.tune,
+                      color: AppColor.primaryColor,
+                      size: 25.sp,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-        verticalSpace(10),
-        ListView.separated(
-          shrinkWrap: true,
-          physics: const ClampingScrollPhysics(),
-          scrollDirection: Axis.vertical,
-          itemCount: attendanceData.length,
-          separatorBuilder: (context, index) {
-            return verticalSpace(10);
-          },
-          itemBuilder: (context, index) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                buildLeavesCardItem(context, index),
               ],
-            );
-          },
-        )
-      ],
+            ),
+          ),
+          verticalSpace(10),
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const ClampingScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            itemCount: attendanceData.length,
+            separatorBuilder: (context, index) {
+              return verticalSpace(10);
+            },
+            itemBuilder: (context, index) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  buildLeavesCardItem(context, index),
+                ],
+              );
+            },
+          )
+        ],
+      ),
     );
   }
 }

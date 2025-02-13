@@ -36,12 +36,13 @@ Widget filterAndSearchBuild(BuildContext context, UserManagementCubit cubit) {
           cubit.buildingController.clear();
           cubit.pointController.clear();
           cubit.roleController.clear();
+          cubit.providerController.clear();
           CustomFilterUserDialog.show(
             context: context,
           );
         },
         child: Container(
-         height: 49.h,
+          height: 49.h,
           width: 49.w,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.r),

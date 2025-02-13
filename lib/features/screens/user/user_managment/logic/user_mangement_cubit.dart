@@ -4,13 +4,17 @@ import 'package:smart_cleaning_application/core/networking/api_constants/api_con
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/data/models/attendance_history_model.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/data/models/attendance_leaves_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_area_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/delete_user_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/deleted_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_shift_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_status_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_task_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_work_location_details.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_state.dart';
@@ -32,6 +36,8 @@ class UserManagementCubit extends Cubit<UserManagementState> {
   TextEditingController createdByController = TextEditingController();
   TextEditingController assignToController = TextEditingController();
   TextEditingController statusController = TextEditingController();
+  TextEditingController shiftController = TextEditingController();
+  TextEditingController shiftIdController = TextEditingController();
   TextEditingController priorityController = TextEditingController();
   TextEditingController startDateController = TextEditingController();
   TextEditingController endDateController = TextEditingController();
@@ -45,6 +51,7 @@ class UserManagementCubit extends Cubit<UserManagementState> {
   TextEditingController floorController = TextEditingController();
   TextEditingController pointController = TextEditingController();
   TextEditingController roleController = TextEditingController();
+  TextEditingController providerController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
@@ -56,6 +63,18 @@ class UserManagementCubit extends Cubit<UserManagementState> {
       emit(UserDetailsSuccessState(userDetailsModel!));
     }).catchError((error) {
       emit(UserDetailsErrorState(error.toString()));
+    });
+  }
+
+  UserStatusModel? userStatusModel;
+  getUserStatus(int? id) {
+    emit(UserStatusLoadingState());
+    DioHelper.getData(url: 'attendance/status', query: {'userId': id})
+        .then((value) {
+      userStatusModel = UserStatusModel.fromJson(value!.data);
+      emit(UserStatusSuccessState(userStatusModel!));
+    }).catchError((error) {
+      emit(UserStatusErrorState(error.toString()));
     });
   }
 
@@ -84,34 +103,34 @@ class UserManagementCubit extends Cubit<UserManagementState> {
 
   UserTaskDetailsModel? userTaskDetailsModel;
   getUserTaskDetails(
-    int? id,
-    // DateTime? startDate,
-    // int? createdBy,
-    // int? status,
-    // int? priority,
-    // int? areaId,
-    // int? cityId,
-    // int? organizationId,
-    // int? buildingId,
-    // int? floorId,
-    // int? pointId,
-  ) {
+    int? id, {
+    int? createdBy,
+    int? status,
+    int? priority,
+    int? areaId,
+    int? cityId,
+    int? organizationId,
+    int? buildingId,
+    int? floorId,
+    int? pointId,
+    int? providerId,
+  }) {
     emit(UserTaskDetailsLoadingState());
     DioHelper.getData(url: 'tasks/pagination', query: {
       'assignTo': id,
-      // 'startDate': DateFormat('yyyy-MM-dd').format(startDate!),
-      // 'endDate': endDateController.text,
-      // 'startTime': startTimeController.text,
-      // 'endTime': endTimeController.text,
-      // 'created': createdBy,
-      // 'status': status,
-      // 'priority': priority,
-      // 'area': areaId,
-      // 'city': cityId,
-      // 'organization': organizationId,
-      // 'building': buildingId,
-      // 'floor': floorId,
-      // 'point': pointId,
+      'startDate': startTimeController.text,
+      'endDate': endDateController.text,
+      'startTime': startTimeController.text,
+      'endTime': endTimeController.text,
+      'created': createdBy,
+      'status': status,
+      'priority': priority,
+      'area': areaId,
+      'city': cityId,
+      'organization': organizationId,
+      'building': buildingId,
+      'floor': floorId,
+      'point': pointId,
     }).then((value) {
       userTaskDetailsModel = UserTaskDetailsModel.fromJson(value!.data);
       emit(UserTaskDetailsSuccessState(userTaskDetailsModel!));
@@ -121,14 +140,14 @@ class UserManagementCubit extends Cubit<UserManagementState> {
   }
 
   UsersModel? usersModel;
-  getAllUsersInUserManage({
-    int? areaId,
-    int? cityId,
-    int? organizationId,
-    int? buildingId,
-    int? floorId,
-    int? pointId,
-  }) {
+  getAllUsersInUserManage(
+      {int? areaId,
+      int? cityId,
+      int? organizationId,
+      int? buildingId,
+      int? floorId,
+      int? pointId,
+      int? providerId}) {
     emit(AllUsersLoadingState());
     DioHelper.getData(url: "users/pagination", query: {
       'country': countryController.text,
@@ -139,7 +158,8 @@ class UserManagementCubit extends Cubit<UserManagementState> {
       'floor': floorId,
       'point': pointId,
       'role': roleController.text,
-      'search': searchController.text
+      'search': searchController.text,
+      'provider': providerId,
     }).then((value) {
       usersModel = UsersModel.fromJson(value!.data);
       emit(AllUsersSuccessState(usersModel!));
@@ -280,16 +300,45 @@ class UserManagementCubit extends Cubit<UserManagementState> {
     });
   }
 
+  AllAreaModel? allAreaModel;
+  getAllArea() {
+    emit(GetAllAreaLoadingState());
+    DioHelper.getData(url: ApiConstants.areaUrl).then((value) {
+      allAreaModel = AllAreaModel.fromJson(value!.data);
+      emit(GetAllAreaSuccessState(allAreaModel!));
+    }).catchError((error) {
+      emit(GetAllAreaErrorState(error.toString()));
+    });
+  }
+
   AttendanceHistoryModel? attendanceHistoryModel;
-  getAllHistory(int id) {
+  getAllHistory(
+    int? id, {
+    int? status,
+    int? priority,
+    int? areaId,
+    int? cityId,
+    int? organizationId,
+    int? buildingId,
+    int? floorId,
+    int? pointId,
+    int? providerId,
+  }) {
     emit(HistoryLoadingState());
     DioHelper.getData(url: ApiConstants.hisotryUrl, query: {
-      'search': searchController.text,
-      'role': roleController.text,
       'userId': id,
-      // 'status': statusIdController.text,
-      // 'startDate': startDateController.text,
-      // 'endDate': endDateController.text
+      'role': roleController.text,
+      'shift': shiftIdController.text,
+      'startDate': startDateController.text,
+      'endDate': endDateController.text,
+      'status': status,
+      'priority': priority,
+      'area': areaId,
+      'city': cityId,
+      'organization': organizationId,
+      'building': buildingId,
+      'floor': floorId,
+      'point': pointId,
     }).then((value) {
       attendanceHistoryModel = AttendanceHistoryModel.fromJson(value!.data);
       emit(HistorySuccessState(attendanceHistoryModel!));
@@ -309,6 +358,28 @@ class UserManagementCubit extends Cubit<UserManagementState> {
       emit(LeavesSuccessState(attendanceLeavesModel!));
     }).catchError((error) {
       emit(LeavesErrorState(error.toString()));
+    });
+  }
+
+  ProvidersModel? providersModel;
+  getProviders() {
+    emit(AllProvidersLoadingState());
+    DioHelper.getData(url: ApiConstants.allProvidersUrl).then((value) {
+      providersModel = ProvidersModel.fromJson(value!.data);
+      emit(AllProvidersSuccessState(providersModel!));
+    }).catchError((error) {
+      emit(AllProvidersErrorState(error.toString()));
+    });
+  }
+
+  ShiftModel? shiftModel;
+  getShifts() {
+    emit(ShiftLoadingState());
+    DioHelper.getData(url: 'shifts/pagination').then((value) {
+      shiftModel = ShiftModel.fromJson(value!.data);
+      emit(ShiftSuccessState(shiftModel!));
+    }).catchError((error) {
+      emit(ShiftErrorState(error.toString()));
     });
   }
 }

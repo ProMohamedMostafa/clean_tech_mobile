@@ -39,9 +39,13 @@ class _AddTaskBodyState extends State<AddTaskBody> {
   int? pointId;
   int? parentId;
   bool _isFormSubmitted = false;
-  int? isSelected;
-  String? selectedPriority;
-  final List<String> priority = ["High", "Medium", "Low"];
+  int? selectedPriority;
+  final Map<String, int> priorityMap = {
+    "High": 2,
+    "Medium": 1,
+    "Low": 0,
+  };
+
   final List<Color> tasksColor = [
     Colors.red,
     Colors.orange,
@@ -111,7 +115,12 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                           color: Colors.white,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: List.generate(priority.length, (index) {
+                            children:
+                                List.generate(priorityMap.length, (index) {
+                              String priorityName =
+                                  priorityMap.keys.elementAt(index);
+                              int priorityValue =
+                                  priorityMap.values.elementAt(index);
                               return Expanded(
                                 child: Padding(
                                   padding:
@@ -119,15 +128,14 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                   child: InkWell(
                                     onTap: () {
                                       setState(() {
-                                        isSelected = index;
-                                        selectedPriority = priority[index];
+                                        selectedPriority = priorityValue;
                                       });
                                     },
                                     child: Container(
                                       height: 40.h,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(8),
-                                        color: isSelected == index
+                                        color: selectedPriority == priorityValue
                                             ? tasksColor[index].withOpacity(0.2)
                                             : Colors.white,
                                         border: Border.all(
@@ -135,7 +143,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                       ),
                                       child: Center(
                                         child: Text(
-                                          priority[index],
+                                          priorityName,
                                           style:
                                               TextStyles.font14Redbold.copyWith(
                                             color: tasksColor[index],
@@ -813,7 +821,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                           .currentState!
                                           .validate()) {
                                         context.read<AddTaskCubit>().addTask(
-                                            isSelected!,
+                                            selectedPriority,
                                             statusId,
                                             buildingId,
                                             floorId,

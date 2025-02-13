@@ -9,18 +9,40 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
 
 Widget buildAttendanceCardItem(BuildContext context, index) {
-  String formatDuration(String duration) {
-    final durationParts = duration.split(':');
-    final hours = int.parse(durationParts[0]);
-    final minutes = int.parse(durationParts[1]);
-    final seconds = double.parse(durationParts[2]).floor();
+  String formatDuration(String? duration) {
+    if (duration == null || duration.isEmpty) {
+      return "    ";
+    }
 
-    if (hours > 0) {
-      return '$hours hr';
-    } else if (minutes > 0) {
-      return '$minutes min';
-    } else {
-      return '$seconds sec';
+    final durationParts = duration.split(':');
+    if (durationParts.length != 3) {
+      return "Invalid Format";
+    }
+
+    try {
+      final hours = int.tryParse(durationParts[0]) ?? 0;
+      final minutes = int.tryParse(durationParts[1]) ?? 0;
+      final seconds = double.tryParse(durationParts[2])?.floor() ?? 0;
+
+      if (hours > 0) {
+        return '$hours hr';
+      } else if (minutes > 0) {
+        return '$minutes min';
+      } else {
+        return '$seconds sec';
+      }
+    } catch (e) {
+      return "Invalid Data";
+    }
+  }
+
+  String formatTime(String? time) {
+    if (time == null || time.isEmpty) return " ";
+    try {
+      DateTime parsedTime = DateTime.parse(time);
+      return DateFormat('HH:mm').format(parsedTime);
+    } catch (e) {
+      return "Invalid Time";
     }
   }
 
@@ -176,15 +198,13 @@ Widget buildAttendanceCardItem(BuildContext context, index) {
                       .copyWith(color: AppColor.thirdColor),
                 ),
                 TextSpan(
-                  text:
-                      DateFormat('hh:mm a').format(DateFormat('HH:mm:ss').parse(
-                    context
-                        .read<UserManagementCubit>()
-                        .attendanceHistoryModel!
-                        .data!
-                        .data![index]
-                        .shiftEnd!,
-                  )),
+                  text: context
+                          .read<UserManagementCubit>()
+                          .attendanceHistoryModel!
+                          .data!
+                          .data![index]
+                          .shiftEnd ??
+                      '',
                   style: TextStyles.font11WhiteSemiBold
                       .copyWith(color: AppColor.thirdColor),
                 ),
@@ -205,14 +225,13 @@ Widget buildAttendanceCardItem(BuildContext context, index) {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: DateFormat('HH:mm').format(
-                        DateTime.parse(context
-                            .read<UserManagementCubit>()
-                            .attendanceHistoryModel!
-                            .data!
-                            .data![index]
-                            .clockIn!),
-                      ),
+                      text: formatTime(context
+                              .read<UserManagementCubit>()
+                              .attendanceHistoryModel!
+                              .data!
+                              .data![index]
+                              .clockIn ??
+                          ''),
                       style: TextStyles.font12GreyRegular
                           .copyWith(color: AppColor.primaryColor),
                     ),
@@ -222,14 +241,13 @@ Widget buildAttendanceCardItem(BuildContext context, index) {
                           .copyWith(color: AppColor.primaryColor),
                     ),
                     TextSpan(
-                      text: DateFormat('HH:mm').format(
-                        DateTime.parse(context
-                            .read<UserManagementCubit>()
-                            .attendanceHistoryModel!
-                            .data!
-                            .data![index]
-                            .clockOut!),
-                      ),
+                      text: formatTime(context
+                              .read<UserManagementCubit>()
+                              .attendanceHistoryModel!
+                              .data!
+                              .data![index]
+                              .clockOut ??
+                          ''),
                       style: TextStyles.font12GreyRegular
                           .copyWith(color: AppColor.primaryColor),
                     ),
@@ -249,11 +267,12 @@ Widget buildAttendanceCardItem(BuildContext context, index) {
                     TextSpan(
                       text: formatDuration(
                         context
-                            .read<UserManagementCubit>()
-                            .attendanceHistoryModel!
-                            .data!
-                            .data![index]
-                            .duration!,
+                                .read<UserManagementCubit>()
+                                .attendanceHistoryModel!
+                                .data!
+                                .data![index]
+                                .duration ??
+                            '',
                       ),
                       style: TextStyles.font12GreyRegular,
                     ),

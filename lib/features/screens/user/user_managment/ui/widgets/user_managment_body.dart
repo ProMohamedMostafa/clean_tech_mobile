@@ -26,6 +26,7 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
     context.read<UserManagementCubit>().getAllDeletedUser();
     context.read<UserManagementCubit>().getNationality();
     context.read<UserManagementCubit>().getRole();
+    context.read<UserManagementCubit>().getProviders();
     super.initState();
   }
 

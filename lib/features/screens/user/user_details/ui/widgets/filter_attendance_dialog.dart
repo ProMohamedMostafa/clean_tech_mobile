@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_date_picker.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
-class CustomFilterUserDialog {
-  static Future<String?> show({
-    required BuildContext context,
-  }) async {
+class CustomFilterAttedanceDialog {
+  static Future<String?> show({required BuildContext context, id}) async {
     return await showDialog(
       context: context,
       builder: (dialogContext) {
@@ -24,7 +25,8 @@ class CustomFilterUserDialog {
         int? buildingId;
         int? floorId;
         int? pointId;
-        int ? providerId;
+        int? statusId;
+        int? providerId;
         return Dialog(
             backgroundColor: Colors.white,
             surfaceTintColor: Colors.white,
@@ -42,95 +44,207 @@ class CustomFilterUserDialog {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        S.of(context).addUserText12,
+                        S.of(context).addUserText13,
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
-                        hint: 'Select Country',
+                        hint: 'Select Role',
                         items: context
                                     .read<UserManagementCubit>()
-                                    .nationalityModel
+                                    .roleModel
                                     ?.data
                                     ?.isEmpty ??
                                 true
-                            ? ['No countries']
+                            ? ['No roles available']
                             : context
                                     .read<UserManagementCubit>()
-                                    .nationalityModel
+                                    .roleModel
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
-                        onPressed: (value) {
-                          context.read<UserManagementCubit>().getArea(context
-                              .read<UserManagementCubit>()
-                              .countryController
-                              .text
-                              .toString());
+                        controller:
+                            context.read<UserManagementCubit>().roleController,
+                        keyboardType: TextInputType.text,
+                        suffixIcon: IconBroken.arrowDown2,
+                      ),
+                      verticalSpace(10),
+                      Text(
+                        'Status',
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomDropDownList(
+                        onPressed: (selectedValue) {
+                          final items = [
+                            'Late',
+                            'Present',
+                            'Completed',
+                            'Absent'
+                          ];
+                          final selectedIndex = items.indexOf(selectedValue);
+                          if (selectedIndex != -1) {
+                            statusId = selectedIndex;
+                          }
                         },
+                        hint: 'Select status',
+                        items: ['Late', 'Present', 'Completed', 'Absent'],
                         controller: context
                             .read<UserManagementCubit>()
-                            .countryController,
+                            .statusController,
                         keyboardType: TextInputType.text,
                         suffixIcon: IconBroken.arrowDown2,
                       ),
                       verticalSpace(10),
                       Text(
-                        'Area',
+                        'Shift',
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
-                        hint: "Select area",
+                        onPressed: (selectedValue) {
+                          final selectedId = context
+                              .read<UserManagementCubit>()
+                              .shiftModel
+                              ?.data
+                              ?.data!
+                              .firstWhere(
+                                  (shift) => shift.name == selectedValue)
+                              .id
+                              ?.toString();
+
+                          if (selectedId != null) {
+                            context
+                                .read<UserManagementCubit>()
+                                .shiftIdController
+                                .text = selectedId;
+                          }
+                        },
+                        hint: 'Select shift',
                         items: context
                                     .read<UserManagementCubit>()
-                                    .areaModel
+                                    .shiftModel
+                                    ?.data
                                     ?.data
                                     ?.isEmpty ??
                                 true
-                            ? ['No Areas']
+                            ? ['No shift available']
                             : context
                                     .read<UserManagementCubit>()
-                                    .areaModel
+                                    .shiftModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
-                        onPressed: (value) {
-                          final selectedArea = context
-                              .read<UserManagementCubit>()
-                              .areaModel
-                              ?.data
-                              ?.firstWhere((area) =>
-                                  area.name ==
-                                  context
-                                      .read<UserManagementCubit>()
-                                      .areaController
-                                      .text);
-
-                          context
-                              .read<UserManagementCubit>()
-                              .getCity(selectedArea!.id!);
-                          areaId = selectedArea.id!;
-                        },
-                        suffixIcon: IconBroken.arrowDown2,
                         controller:
-                            context.read<UserManagementCubit>().areaController,
+                            context.read<UserManagementCubit>().shiftController,
                         keyboardType: TextInputType.text,
+                        suffixIcon: IconBroken.arrowDown2,
+                      ),
+                      verticalSpace(10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Start Date",
+                                style: TextStyles.font16BlackRegular,
+                              ),
+                              verticalSpace(5),
+                              CustomTextFormField(
+                                onlyRead: true,
+                                hint: "--/--/---",
+                                controller: context
+                                    .read<UserManagementCubit>()
+                                    .startDateController,
+                                suffixIcon: Icons.calendar_today,
+                                suffixPressed: () async {
+                                  DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(1900),
+                                    lastDate: DateTime(3025),
+                                    builder:
+                                        (BuildContext context, Widget? child) {
+                                      return Theme(
+                                        data: Theme.of(context).copyWith(
+                                          dialogBackgroundColor: Colors.white,
+                                          colorScheme: ColorScheme.light(
+                                            primary: AppColor.primaryColor,
+                                            onPrimary: Colors.white,
+                                            onSurface: Colors.black,
+                                          ),
+                                        ),
+                                        child: child!,
+                                      );
+                                    },
+                                  );
+                                  if (pickedDate != null) {
+                                    String formattedDate =
+                                        DateFormat('yyyy-MM-dd')
+                                            .format(pickedDate);
+
+                                    context
+                                        .read<UserManagementCubit>()
+                                        .startDateController
+                                        .text = formattedDate;
+                                  }
+                                },
+                                keyboardType: TextInputType.none,
+                              ),
+                            ],
+                          )),
+                          horizontalSpace(10),
+                          Expanded(
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "End Date",
+                                style: TextStyles.font16BlackRegular,
+                              ),
+                              verticalSpace(5),
+                              CustomTextFormField(
+                                onlyRead: true,
+                                hint: "--/--/---",
+                                controller: context
+                                    .read<UserManagementCubit>()
+                                    .endDateController,
+                                suffixIcon: Icons.calendar_today,
+                                suffixPressed: () async {
+                                  final selectedDate =
+                                      await CustomDatePicker.show(
+                                          context: context);
+
+                                  if (selectedDate != null && context.mounted) {
+                                    context
+                                        .read<UserManagementCubit>()
+                                        .endDateController
+                                        .text = selectedDate;
+                                  }
+                                },
+                                keyboardType: TextInputType.none,
+                              ),
+                            ],
+                          )),
+                        ],
                       ),
                       verticalSpace(10),
                       Text(
-                        'City',
+                        "City",
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
-                        hint: "Select cities",
+                        hint: "Select city",
                         items: context
                                     .read<UserManagementCubit>()
                                     .cityModel
                                     ?.data
                                     ?.isEmpty ??
                                 true
-                            ? ['No Cities']
+                            ? ['No cities']
                             : context
                                     .read<UserManagementCubit>()
                                     .cityModel
@@ -149,7 +263,6 @@ class CustomFilterUserDialog {
                                       .read<UserManagementCubit>()
                                       .cityController
                                       .text);
-
                           context
                               .read<UserManagementCubit>()
                               .getOrganization(selectedCity!.id!);
@@ -158,6 +271,7 @@ class CustomFilterUserDialog {
                         suffixIcon: IconBroken.arrowDown2,
                         controller:
                             context.read<UserManagementCubit>().cityController,
+                        isRead: false,
                         keyboardType: TextInputType.text,
                       ),
                       verticalSpace(10),
@@ -380,56 +494,28 @@ class CustomFilterUserDialog {
                         keyboardType: TextInputType.text,
                         suffixIcon: IconBroken.arrowDown2,
                       ),
-                      verticalSpace(10),
-                      Text(
-                        S.of(context).addUserText13,
-                        style: TextStyles.font16BlackRegular,
-                      ),
-                      CustomDropDownList(
-                        hint: 'Select Role',
-                        items: context
-                                    .read<UserManagementCubit>()
-                                    .roleModel
-                                    ?.data
-                                    ?.isEmpty ??
-                                true
-                            ? ['No roles available']
-                            : context
-                                    .read<UserManagementCubit>()
-                                    .roleModel
-                                    ?.data
-                                    ?.map((e) => e.name ?? 'Unknown')
-                                    .toList() ??
-                                [],
-                        controller:
-                            context.read<UserManagementCubit>().roleController,
-                        keyboardType: TextInputType.text,
-                        suffixIcon: IconBroken.arrowDown2,
-                      ),
-                      verticalSpace(20),
+                      verticalSpace(30),
                       Center(
                         child: DefaultElevatedButton(
                             name: 'Done',
                             onPressed: () {
-                              context
-                                  .read<UserManagementCubit>()
-                                  .getAllUsersInUserManage(
-                                    areaId: areaId,
-                                    cityId: cityId,
-                                    organizationId: organizationId,
-                                    buildingId: buildingId,
-                                    floorId: floorId,
-                                    pointId: pointId,
-                                    providerId:providerId
-                                  );
-                              context.pop();
+                              // context.read<UserManagementCubit>().getAllHistory(
+                              //     id,
+                              //     status: statusId,
+                              //     areaId: areaId,
+                              //     cityId: cityId,
+                              //     organizationId: organizationId,
+                              //     buildingId: buildingId,
+                              //     floorId: floorId,
+                              //     pointId: pointId,
+                              //     providerId: providerId);
+                              // context.pop();
                             },
                             color: AppColor.primaryColor,
                             height: 47,
                             width: double.infinity,
                             textStyles: TextStyles.font20Whitesemimedium),
                       ),
-                      verticalSpace(30),
                     ],
                   ),
                 ),
