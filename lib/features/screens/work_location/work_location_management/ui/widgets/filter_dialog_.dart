@@ -113,22 +113,35 @@ class CustomFilterWorkLocationDialog {
                                           .toList() ??
                                       [],
                           onPressed: (value) {
-                            final selectedArea = context
-                                .read<WorkLocationCubit>()
-                                .areaModel
-                                ?.data
-                                ?.areas
-                                ?.firstWhere((area) =>
-                                    area.name ==
-                                    context
-                                        .read<WorkLocationCubit>()
-                                        .areaController
-                                        .text);
+                            final selectedArea = selectedIndex == 1
+                                ? context
+                                    .read<WorkLocationCubit>()
+                                    .areasModel
+                                    ?.data
+                                    ?.firstWhere((area) =>
+                                        area.name ==
+                                        context
+                                            .read<WorkLocationCubit>()
+                                            .areaController
+                                            .text)
+                                    .id
+                                : context
+                                    .read<WorkLocationCubit>()
+                                    .areaModel
+                                    ?.data
+                                    ?.areas
+                                    ?.firstWhere((area) =>
+                                        area.name ==
+                                        context
+                                            .read<WorkLocationCubit>()
+                                            .areaController
+                                            .text)
+                                    .id;
 
                             context
                                 .read<WorkLocationCubit>()
-                                .getCityy(selectedArea!.id!);
-                            areaId = selectedArea.id!;
+                                .getCityy(selectedArea!);
+                            areaId = selectedArea;
                           },
                           suffixIcon: IconBroken.arrowDown2,
                           controller:
@@ -176,22 +189,35 @@ class CustomFilterWorkLocationDialog {
                                           .toList() ??
                                       [],
                           onPressed: (value) {
-                            final selectedCity = context
-                                .read<WorkLocationCubit>()
-                                .cityModel
-                                ?.data
-                                ?.data
-                                ?.firstWhere((city) =>
-                                    city.name ==
-                                    context
-                                        .read<WorkLocationCubit>()
-                                        .cityController
-                                        .text);
+                            final selectedCity = selectedIndex == 2
+                                ? context
+                                    .read<WorkLocationCubit>()
+                                    .cityyModel
+                                    ?.data
+                                    ?.firstWhere((city) =>
+                                        city.name ==
+                                        context
+                                            .read<WorkLocationCubit>()
+                                            .cityController
+                                            .text)
+                                    .id
+                                : context
+                                    .read<WorkLocationCubit>()
+                                    .cityModel
+                                    ?.data
+                                    ?.data
+                                    ?.firstWhere((city) =>
+                                        city.name ==
+                                        context
+                                            .read<WorkLocationCubit>()
+                                            .cityController
+                                            .text)
+                                    .id;
 
                             context
                                 .read<WorkLocationCubit>()
-                                .getOrganizations(selectedCity!.id!);
-                            cityId = selectedCity.id!;
+                                .getOrganizations(selectedCity!);
+                            cityId = selectedCity;
                           },
                           suffixIcon: IconBroken.arrowDown2,
                           controller:
@@ -239,22 +265,35 @@ class CustomFilterWorkLocationDialog {
                                           .toList() ??
                                       [],
                           onPressed: (value) {
-                            final selectedOrganization = context
-                                .read<WorkLocationCubit>()
-                                .organizationModel
-                                ?.data
-                                ?.data
-                                ?.firstWhere((organization) =>
-                                    organization.name ==
-                                    context
-                                        .read<WorkLocationCubit>()
-                                        .organizationController
-                                        .text);
+                            final selectedOrganization = selectedIndex == 3
+                                ? context
+                                    .read<WorkLocationCubit>()
+                                    .organizationsModel
+                                    ?.data
+                                    ?.firstWhere((organization) =>
+                                        organization.name ==
+                                        context
+                                            .read<WorkLocationCubit>()
+                                            .organizationController
+                                            .text)
+                                    .id
+                                : context
+                                    .read<WorkLocationCubit>()
+                                    .organizationModel
+                                    ?.data
+                                    ?.data
+                                    ?.firstWhere((organization) =>
+                                        organization.name ==
+                                        context
+                                            .read<WorkLocationCubit>()
+                                            .organizationController
+                                            .text)
+                                    .id;
 
                             context
                                 .read<WorkLocationCubit>()
-                                .getBuildings(selectedOrganization!.id!);
-                            organizationId = selectedOrganization.id!;
+                                .getBuildings(selectedOrganization!);
+                            organizationId = selectedOrganization;
                           },
                           suffixIcon: IconBroken.arrowDown2,
                           controller: context
@@ -303,22 +342,35 @@ class CustomFilterWorkLocationDialog {
                                           .toList() ??
                                       [],
                           onPressed: (value) {
-                            final selectedBuilding = context
-                                .read<WorkLocationCubit>()
-                                .buildingModel
-                                ?.data
-                                ?.data
-                                ?.firstWhere((building) =>
-                                    building.name ==
-                                    context
-                                        .read<WorkLocationCubit>()
-                                        .buildingController
-                                        .text);
+                            final selectedBuilding = selectedIndex == 4
+                                ? context
+                                    .read<WorkLocationCubit>()
+                                    .buildingsModel
+                                    ?.data
+                                    ?.firstWhere((building) =>
+                                        building.name ==
+                                        context
+                                            .read<WorkLocationCubit>()
+                                            .buildingController
+                                            .text)
+                                    .id
+                                : context
+                                    .read<WorkLocationCubit>()
+                                    .buildingModel
+                                    ?.data
+                                    ?.data
+                                    ?.firstWhere((building) =>
+                                        building.name ==
+                                        context
+                                            .read<WorkLocationCubit>()
+                                            .buildingController
+                                            .text)
+                                    .id;
 
                             context
                                 .read<WorkLocationCubit>()
-                                .getFloors(selectedBuilding!.id!);
-                            buildingId = selectedBuilding.id;
+                                .getFloors(selectedBuilding!);
+                            buildingId = selectedBuilding;
                           },
                           suffixIcon: IconBroken.arrowDown2,
                           controller: context

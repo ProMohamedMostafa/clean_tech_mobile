@@ -13,6 +13,7 @@ import 'package:smart_cleaning_application/features/screens/shift/shifts_managem
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/shift_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/shift_level_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/logic/shift_state.dart';
+import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
 
 class ShiftCubit extends Cubit<ShiftState> {
   ShiftCubit() : super(ShiftInitialState());
@@ -22,12 +23,15 @@ class ShiftCubit extends Cubit<ShiftState> {
   TextEditingController searchController = TextEditingController();
   TextEditingController startDateController = TextEditingController();
   TextEditingController endDateController = TextEditingController();
+  TextEditingController startTimeController = TextEditingController();
+  TextEditingController endTimeController = TextEditingController();
   TextEditingController areaController = TextEditingController();
   TextEditingController cityController = TextEditingController();
   TextEditingController organizationController = TextEditingController();
   TextEditingController buildingController = TextEditingController();
   TextEditingController floorController = TextEditingController();
   TextEditingController pointController = TextEditingController();
+  TextEditingController providerController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   ShiftDetailsModel? shiftDetailsModel;
@@ -60,6 +64,7 @@ class ShiftCubit extends Cubit<ShiftState> {
     int? buildingId,
     int? floorId,
     int? pointId,
+    int? providerId,
   }) {
     emit(ShiftLoadingState());
     DioHelper.getData(url: ApiConstants.allShiftsUrl, query: {
@@ -71,7 +76,10 @@ class ShiftCubit extends Cubit<ShiftState> {
       'floor': floorId,
       'point': pointId,
       'startDate': startDateController.text,
-      'endDate': endDateController.text
+      'endDate': endDateController.text,
+      'startTime': startTimeController.text,
+      'endTime': endTimeController.text,
+      'provider': providerId
     }).then((value) {
       allShiftsModel = AllShiftsModel.fromJson(value!.data);
       emit(ShiftSuccessState(allShiftsModel!));
@@ -188,6 +196,17 @@ class ShiftCubit extends Cubit<ShiftState> {
       emit(GetPointSuccessState(pointsModel!));
     }).catchError((error) {
       emit(GetPointErrorState(error.toString()));
+    });
+  }
+
+  ProvidersModel? providersModel;
+  getProviders() {
+    emit(AllProvidersLoadingState());
+    DioHelper.getData(url: ApiConstants.allProvidersUrl).then((value) {
+      providersModel = ProvidersModel.fromJson(value!.data);
+      emit(AllProvidersSuccessState(providersModel!));
+    }).catchError((error) {
+      emit(AllProvidersErrorState(error.toString()));
     });
   }
 }

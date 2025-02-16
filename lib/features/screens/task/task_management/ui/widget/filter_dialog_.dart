@@ -30,6 +30,7 @@ class CustomFilterTaskDialog {
         int? priorityId;
         int? createdId;
         int? assignToId;
+         int? providerId;
         return Dialog(
             backgroundColor: Colors.white,
             surfaceTintColor: Colors.white,
@@ -612,6 +613,52 @@ class CustomFilterTaskDialog {
                             context.read<TaskManagementCubit>().pointController,
                         keyboardType: TextInputType.text,
                       ),
+                    
+                          verticalSpace(10),
+                      Text(
+                        'Provider',
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomDropDownList(
+                        hint: 'Select Provider',
+                        items: context
+                                    .read<TaskManagementCubit>()
+                                    .providersModel
+                                    ?.data
+                                    ?.data
+                                    ?.isEmpty ??
+                                true
+                            ? ['No providers available']
+                            : context
+                                    .read<TaskManagementCubit>()
+                                    .providersModel
+                                    ?.data
+                                    ?.data
+                                    ?.map((e) => e.name ?? 'Unknown')
+                                    .toList() ??
+                                [],
+                        onPressed: (value) {
+                          final selectedProvider = context
+                              .read<TaskManagementCubit>()
+                              .providersModel
+                              ?.data
+                              ?.data
+                              ?.firstWhere((provider) =>
+                                  provider.name ==
+                                  context
+                                      .read<TaskManagementCubit>()
+                                      .providerController
+                                      .text);
+
+                          providerId = selectedProvider!.id;
+                        },
+                        controller: context
+                            .read<TaskManagementCubit>()
+                            .providerController,
+                        keyboardType: TextInputType.text,
+                        suffixIcon: IconBroken.arrowDown2,
+                      ),
+                      
                       verticalSpace(20),
                       Center(
                         child: DefaultElevatedButton(
@@ -637,6 +684,7 @@ class CustomFilterTaskDialog {
                                     buildingId: buildingId,
                                     floorId: floorId,
                                     pointId: pointId,
+                                        providerId: providerId,
                                   );
                               context.pop();
                             },

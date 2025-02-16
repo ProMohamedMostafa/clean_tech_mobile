@@ -32,7 +32,6 @@ class UserManagementCubit extends Cubit<UserManagementState> {
   static UserManagementCubit get(context) => BlocProvider.of(context);
 
   TextEditingController searchController = TextEditingController();
-
   TextEditingController createdByController = TextEditingController();
   TextEditingController assignToController = TextEditingController();
   TextEditingController statusController = TextEditingController();
@@ -52,6 +51,8 @@ class UserManagementCubit extends Cubit<UserManagementState> {
   TextEditingController pointController = TextEditingController();
   TextEditingController roleController = TextEditingController();
   TextEditingController providerController = TextEditingController();
+  TextEditingController typeController = TextEditingController();
+  TextEditingController typeIdController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
@@ -315,7 +316,6 @@ class UserManagementCubit extends Cubit<UserManagementState> {
   getAllHistory(
     int? id, {
     int? status,
-    int? priority,
     int? areaId,
     int? cityId,
     int? organizationId,
@@ -323,22 +323,24 @@ class UserManagementCubit extends Cubit<UserManagementState> {
     int? floorId,
     int? pointId,
     int? providerId,
+    int? shiftId,
   }) {
     emit(HistoryLoadingState());
     DioHelper.getData(url: ApiConstants.hisotryUrl, query: {
       'userId': id,
+      'history': false,
       'role': roleController.text,
-      'shift': shiftIdController.text,
+      'shift': shiftId,
       'startDate': startDateController.text,
       'endDate': endDateController.text,
       'status': status,
-      'priority': priority,
-      'area': areaId,
-      'city': cityId,
-      'organization': organizationId,
-      'building': buildingId,
-      'floor': floorId,
-      'point': pointId,
+      'areaId': areaId,
+      'cityId': cityId,
+      'organizationId': organizationId,
+      'buildingId': buildingId,
+      'floorId': floorId,
+      'pointId': pointId,
+      'providerId': providerId
     }).then((value) {
       attendanceHistoryModel = AttendanceHistoryModel.fromJson(value!.data);
       emit(HistorySuccessState(attendanceHistoryModel!));
@@ -348,11 +350,31 @@ class UserManagementCubit extends Cubit<UserManagementState> {
   }
 
   AttendanceLeavesModel? attendanceLeavesModel;
-  getAllLeaves(int id) {
+  getAllLeaves(
+    int? id, {
+    int? areaId,
+    int? cityId,
+    int? organizationId,
+    int? buildingId,
+    int? floorId,
+    int? pointId,
+    int? providerId,
+  }) {
     emit(LeavesLoadingState());
     DioHelper.getData(url: ApiConstants.leavesUrl, query: {
-      'search': searchController.text,
       'assignTo': id,
+      'history': false,
+      'role': roleController.text,
+      'startDate': startDateController.text,
+      'endDate': endDateController.text,
+      'type': typeIdController.text,
+      'area': areaId,
+      'city': cityId,
+      'organization': organizationId,
+      'building': buildingId,
+      'floor': floorId,
+      'point': pointId,
+      'provider': providerId
     }).then((value) {
       attendanceLeavesModel = AttendanceLeavesModel.fromJson(value!.data);
       emit(LeavesSuccessState(attendanceLeavesModel!));

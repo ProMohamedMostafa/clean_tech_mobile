@@ -27,6 +27,7 @@ import 'package:smart_cleaning_application/features/screens/task/task_management
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/task_details.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/task_files_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_state.dart';
+import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
 
 import '../../../integrations/data/models/gallary_model.dart';
 
@@ -51,6 +52,7 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
   TextEditingController floorController = TextEditingController();
   TextEditingController pointController = TextEditingController();
   TextEditingController commentController = TextEditingController();
+  TextEditingController providerController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   DeleteTaskModel? deleteTaskModel;
@@ -98,19 +100,19 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
   }
 
   AllTasksModel? allTasksModel;
-  getAllTasks({
-    DateTime? startDate,
-    int? createdBy,
-    int? assignTo,
-    int? status,
-    int? priority,
-    int? areaId,
-    int? cityId,
-    int? organizationId,
-    int? buildingId,
-    int? floorId,
-    int? pointId,
-  }) {
+  getAllTasks(
+      {DateTime? startDate,
+      int? createdBy,
+      int? assignTo,
+      int? status,
+      int? priority,
+      int? areaId,
+      int? cityId,
+      int? organizationId,
+      int? buildingId,
+      int? floorId,
+      int? pointId,
+      int? providerId}) {
     emit(GetAllTasksLoadingState());
     DioHelper.getData(url: "tasks/pagination", query: {
       'search': searchController.text,
@@ -122,6 +124,7 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
       'assignTo': assignTo,
       'status': status,
       'priority': priority,
+      'provider': providerId,
       'area': areaId,
       'city': cityId,
       'organization': organizationId,
@@ -403,6 +406,17 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
       emit(GetPointSuccessState(pointsModel!));
     }).catchError((error) {
       emit(GetPointErrorState(error.toString()));
+    });
+  }
+
+  ProvidersModel? providersModel;
+  getProviders() {
+    emit(AllProvidersLoadingState());
+    DioHelper.getData(url: ApiConstants.allProvidersUrl).then((value) {
+      providersModel = ProvidersModel.fromJson(value!.data);
+      emit(AllProvidersSuccessState(providersModel!));
+    }).catchError((error) {
+      emit(AllProvidersErrorState(error.toString()));
     });
   }
 

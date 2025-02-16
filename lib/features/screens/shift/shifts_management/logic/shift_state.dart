@@ -9,6 +9,7 @@ import 'package:smart_cleaning_application/features/screens/shift/shifts_managem
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/shift_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/shift_level_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/shift_users_details.dart';
+import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
 
 abstract class ShiftState {}
 
@@ -199,4 +200,18 @@ class GetPointSuccessState extends ShiftState {
 class GetPointErrorState extends ShiftState {
   final String error;
   GetPointErrorState(this.error);
+}
+//*************************************** */
+
+class AllProvidersLoadingState extends ShiftState {}
+
+class AllProvidersSuccessState extends ShiftState {
+  final ProvidersModel providersModel;
+
+  AllProvidersSuccessState(this.providersModel);
+}
+
+class AllProvidersErrorState extends ShiftState {
+  final String error;
+  AllProvidersErrorState(this.error);
 }

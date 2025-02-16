@@ -10,6 +10,7 @@ import 'package:smart_cleaning_application/core/widgets/default_button/default_e
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_date_picker.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_time_picker.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/logic/shift_cubit.dart';
 
 class CustomFilterShiftDialog {
@@ -25,6 +26,7 @@ class CustomFilterShiftDialog {
         int? buildingId;
         int? floorId;
         int? pointId;
+        int? providerId;
         return Dialog(
             backgroundColor: Colors.white,
             surfaceTintColor: Colors.white,
@@ -112,6 +114,89 @@ class CustomFilterShiftDialog {
                         ],
                       ),
                       verticalSpace(10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Start Time",
+                                style: TextStyles.font16BlackRegular,
+                              ),
+                              verticalSpace(5),
+                              CustomTextFormField(
+                                onlyRead: true,
+                                hint: '00:00 AM',
+                                controller: context
+                                    .read<ShiftCubit>()
+                                    .startTimeController,
+                                suffixIcon: Icons.timer_sharp,
+                                suffixPressed: () async {
+                                  final selectedTime =
+                                      await CustomTimePicker.show(
+                                          context: context);
+
+                                  if (selectedTime != null && context.mounted) {
+                                    context
+                                        .read<ShiftCubit>()
+                                        .startTimeController
+                                        .text = selectedTime;
+                                  }
+                                },
+                                keyboardType: TextInputType.none,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Start time is required";
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ],
+                          )),
+                          horizontalSpace(10),
+                          Expanded(
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "End Time",
+                                style: TextStyles.font16BlackRegular,
+                              ),
+                              verticalSpace(5),
+                              CustomTextFormField(
+                                onlyRead: true,
+                                hint: "09:30 PM",
+                                controller: context
+                                    .read<ShiftCubit>()
+                                    .endTimeController,
+                                suffixIcon: Icons.timer_sharp,
+                                suffixPressed: () async {
+                                  final selectedTime =
+                                      await CustomTimePicker.show(
+                                          context: context);
+
+                                  if (selectedTime != null && context.mounted) {
+                                    context
+                                        .read<ShiftCubit>()
+                                        .endTimeController
+                                        .text = selectedTime;
+                                  }
+                                },
+                                keyboardType: TextInputType.none,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Start date is required";
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ],
+                          )),
+                        ],
+                      ),
+                      verticalSpace(10),
                       Text(
                         'Area',
                         style: TextStyles.font16BlackRegular,
@@ -151,8 +236,7 @@ class CustomFilterShiftDialog {
                           areaId = selectedArea.id!;
                         },
                         suffixIcon: IconBroken.arrowDown2,
-                        controller:
-                            context.read<ShiftCubit>().areaController,
+                        controller: context.read<ShiftCubit>().areaController,
                         keyboardType: TextInputType.text,
                       ),
                       verticalSpace(10),
@@ -367,6 +451,49 @@ class CustomFilterShiftDialog {
                         controller: context.read<ShiftCubit>().pointController,
                         keyboardType: TextInputType.text,
                       ),
+                      verticalSpace(10),
+                      Text(
+                        'Provider',
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomDropDownList(
+                        hint: 'Select Provider',
+                        items: context
+                                    .read<ShiftCubit>()
+                                    .providersModel
+                                    ?.data
+                                    ?.data
+                                    ?.isEmpty ??
+                                true
+                            ? ['No providers available']
+                            : context
+                                    .read<ShiftCubit>()
+                                    .providersModel
+                                    ?.data
+                                    ?.data
+                                    ?.map((e) => e.name ?? 'Unknown')
+                                    .toList() ??
+                                [],
+                        onPressed: (value) {
+                          final selectedProvider = context
+                              .read<ShiftCubit>()
+                              .providersModel
+                              ?.data
+                              ?.data
+                              ?.firstWhere((provider) =>
+                                  provider.name ==
+                                  context
+                                      .read<ShiftCubit>()
+                                      .providerController
+                                      .text);
+
+                          providerId = selectedProvider!.id;
+                        },
+                        controller:
+                            context.read<ShiftCubit>().providerController,
+                        keyboardType: TextInputType.text,
+                        suffixIcon: IconBroken.arrowDown2,
+                      ),
                       verticalSpace(20),
                       Center(
                         child: DefaultElevatedButton(
@@ -379,6 +506,7 @@ class CustomFilterShiftDialog {
                                     buildingId: buildingId,
                                     floorId: floorId,
                                     pointId: pointId,
+                                    providerId: providerId,
                                   );
                               context.pop();
                             },
@@ -387,7 +515,7 @@ class CustomFilterShiftDialog {
                             width: double.infinity,
                             textStyles: TextStyles.font20Whitesemimedium),
                       ),
-                      verticalSpace(30),
+                      verticalSpace(20),
                     ],
                   ),
                 ),

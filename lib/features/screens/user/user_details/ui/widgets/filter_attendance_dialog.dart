@@ -27,6 +27,7 @@ class CustomFilterAttedanceDialog {
         int? pointId;
         int? statusId;
         int? providerId;
+        int? shiftId;
         return Dialog(
             backgroundColor: Colors.white,
             surfaceTintColor: Colors.white,
@@ -107,15 +108,10 @@ class CustomFilterAttedanceDialog {
                               ?.data
                               ?.data!
                               .firstWhere(
-                                  (shift) => shift.name == selectedValue)
-                              .id
-                              ?.toString();
+                                  (shift) => shift.name == selectedValue);
 
                           if (selectedId != null) {
-                            context
-                                .read<UserManagementCubit>()
-                                .shiftIdController
-                                .text = selectedId;
+                            shiftId = selectedId.id;
                           }
                         },
                         hint: 'Select shift',
@@ -233,6 +229,52 @@ class CustomFilterAttedanceDialog {
                       ),
                       verticalSpace(10),
                       Text(
+                        'Area',
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomDropDownList(
+                        hint: "Select area",
+                        items: context
+                                    .read<UserManagementCubit>()
+                                    .allAreaModel
+                                    ?.data
+                                    ?.data
+                                    ?.isEmpty ??
+                                true
+                            ? ['No organizations']
+                            : context
+                                    .read<UserManagementCubit>()
+                                    .allAreaModel
+                                    ?.data
+                                    ?.data
+                                    ?.map((e) => e.name ?? 'Unknown')
+                                    .toList() ??
+                                [],
+                        onPressed: (value) {
+                          final selectedArea = context
+                              .read<UserManagementCubit>()
+                              .allAreaModel
+                              ?.data
+                              ?.data
+                              ?.firstWhere((area) =>
+                                  area.name ==
+                                  context
+                                      .read<UserManagementCubit>()
+                                      .areaController
+                                      .text);
+
+                          context
+                              .read<UserManagementCubit>()
+                              .getCity(selectedArea!.id!);
+                          areaId = selectedArea.id;
+                        },
+                        suffixIcon: IconBroken.arrowDown2,
+                        controller:
+                            context.read<UserManagementCubit>().areaController,
+                        keyboardType: TextInputType.text,
+                      ),
+                      verticalSpace(10),
+                      Text(
                         "City",
                         style: TextStyles.font16BlackRegular,
                       ),
@@ -266,7 +308,7 @@ class CustomFilterAttedanceDialog {
                           context
                               .read<UserManagementCubit>()
                               .getOrganization(selectedCity!.id!);
-                          cityId = selectedCity.id!;
+                          cityId = selectedCity.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
                         controller:
@@ -310,7 +352,7 @@ class CustomFilterAttedanceDialog {
                           context
                               .read<UserManagementCubit>()
                               .getBuilding(selectedOrganization!.id!);
-                          organizationId = selectedOrganization.id!;
+                          organizationId = selectedOrganization.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
                         controller: context
@@ -474,7 +516,8 @@ class CustomFilterAttedanceDialog {
                         onPressed: (value) {
                           final selectedProvider = context
                               .read<UserManagementCubit>()
-                              .pointsModel
+                              .providersModel
+                              ?.data
                               ?.data
                               ?.firstWhere((provider) =>
                                   provider.name ==
@@ -483,10 +526,7 @@ class CustomFilterAttedanceDialog {
                                       .providerController
                                       .text);
 
-                          context
-                              .read<UserManagementCubit>()
-                              .getPoints(selectedProvider!.id!);
-                          providerId = selectedProvider.id;
+                          providerId = selectedProvider!.id;
                         },
                         controller: context
                             .read<UserManagementCubit>()
@@ -499,17 +539,20 @@ class CustomFilterAttedanceDialog {
                         child: DefaultElevatedButton(
                             name: 'Done',
                             onPressed: () {
-                              // context.read<UserManagementCubit>().getAllHistory(
-                              //     id,
-                              //     status: statusId,
-                              //     areaId: areaId,
-                              //     cityId: cityId,
-                              //     organizationId: organizationId,
-                              //     buildingId: buildingId,
-                              //     floorId: floorId,
-                              //     pointId: pointId,
-                              //     providerId: providerId);
-                              // context.pop();
+                              context.read<UserManagementCubit>().getAllHistory(
+                                    id,
+                                    status: statusId,
+                                    areaId: areaId,
+                                    cityId: cityId,
+                                    organizationId: organizationId,
+                                    buildingId: buildingId,
+                                    floorId: floorId,
+                                    pointId: pointId,
+                                    providerId: providerId,
+                                    shiftId: shiftId,
+                                  );
+
+                              context.pop();
                             },
                             color: AppColor.primaryColor,
                             height: 47,

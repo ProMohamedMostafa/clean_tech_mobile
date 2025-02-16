@@ -18,10 +18,11 @@ class AttendanceHistoryBody extends StatefulWidget {
 class _AttendanceHistoryBodyState extends State<AttendanceHistoryBody> {
   @override
   void initState() {
-    context.read<AttendanceHistoryCubit>()
-      ..getAllHistory()
-      ..getRole()
-      ..getShifts();
+    context.read<AttendanceHistoryCubit>().getAllHistory();
+    context.read<AttendanceHistoryCubit>().getAllArea();
+    context.read<AttendanceHistoryCubit>().getProviders();
+    context.read<AttendanceHistoryCubit>().getRole();
+    context.read<AttendanceHistoryCubit>().getShifts();
     super.initState();
   }
 

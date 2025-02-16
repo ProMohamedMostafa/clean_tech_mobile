@@ -20,6 +20,7 @@ import 'package:smart_cleaning_application/features/screens/task/task_management
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/task_action_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/task_details.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/task_files_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
 
 abstract class TaskManagementState {}
 
@@ -374,4 +375,19 @@ class AllUsersSuccessState extends TaskManagementState {
 class AllUsersErrorState extends TaskManagementState {
   final String error;
   AllUsersErrorState(this.error);
+}
+
+//*************************************** */
+
+class AllProvidersLoadingState extends TaskManagementState {}
+
+class AllProvidersSuccessState extends TaskManagementState {
+  final ProvidersModel providersModel;
+
+  AllProvidersSuccessState(this.providersModel);
+}
+
+class AllProvidersErrorState extends TaskManagementState {
+  final String error;
+  AllProvidersErrorState(this.error);
 }

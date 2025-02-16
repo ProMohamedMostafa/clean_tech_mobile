@@ -25,6 +25,7 @@ class _ShiftBodyState extends State<ShiftBody> {
     context.read<ShiftCubit>().getAllShifts();
     context.read<ShiftCubit>().getArea();
     context.read<ShiftCubit>().getAllDeletedShifts();
+    context.read<ShiftCubit>().getProviders();
     super.initState();
   }
 

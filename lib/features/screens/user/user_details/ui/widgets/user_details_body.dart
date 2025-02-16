@@ -16,6 +16,7 @@ import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custo
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/attendance_list_item_build.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/filter_attendance_dialog.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/filter_leaves_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/filter_task_dialog_.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/leaves_list_item_build.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/shift_list_item_build.dart';
@@ -48,6 +49,8 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
     context.read<UserManagementCubit>().getUserStatus(widget.id);
     context.read<UserManagementCubit>().getAllArea();
     context.read<UserManagementCubit>().getProviders();
+    context.read<UserManagementCubit>().getRole();
+    context.read<UserManagementCubit>().getShifts();
 
     controller = TabController(length: 6, vsync: this);
     controller.addListener(() {
@@ -612,8 +615,10 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                   style: TextStyles.font16BlackSemiBold,
                 ),
                 InkWell(
-                  onTap: () {CustomFilterAttedanceDialog.show(
-                        context: context, id: widget.id);},
+                  onTap: () {
+                    CustomFilterAttedanceDialog.show(
+                        context: context, id: widget.id);
+                  },
                   child: Container(
                     height: 52,
                     width: 52,
@@ -681,7 +686,10 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                   style: TextStyles.font16BlackSemiBold,
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    CustomFilterLeavesDialog.show(
+                        context: context, id: widget.id);
+                  },
                   child: Container(
                     height: 52,
                     width: 52,

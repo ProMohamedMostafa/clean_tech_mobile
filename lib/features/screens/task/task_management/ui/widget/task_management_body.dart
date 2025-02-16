@@ -41,6 +41,7 @@ class _TaskManagementBodyState extends State<TaskManagementBody> {
     context.read<TaskManagementCubit>().getArea();
     context.read<TaskManagementCubit>().getAllUsers();
     context.read<TaskManagementCubit>().getAllDeletedTasks();
+    context.read<TaskManagementCubit>().getProviders();
     super.initState();
   }
 
@@ -84,7 +85,9 @@ class _TaskManagementBodyState extends State<TaskManagementBody> {
         listener: (context, state) {
           if (state is TaskDeleteSuccessState) {
             toast(text: state.deleteTaskModel.message!, color: Colors.blue);
-            context.read<TaskManagementCubit>().getAllTasks(startDate: selectedDate);
+            context
+                .read<TaskManagementCubit>()
+                .getAllTasks(startDate: selectedDate);
           }
 
           if (state is TaskDeleteErrorState) {
@@ -310,7 +313,9 @@ class _TaskManagementBodyState extends State<TaskManagementBody> {
 
         switch (selectedIndex) {
           case 0:
-            context.read<TaskManagementCubit>().getAllTasks(startDate: selectedDate);
+            context
+                .read<TaskManagementCubit>()
+                .getAllTasks(startDate: selectedDate);
             break;
           case 1:
             context.read<TaskManagementCubit>().getPendingTasks(selectedDate);
