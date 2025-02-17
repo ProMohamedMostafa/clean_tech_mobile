@@ -7,7 +7,6 @@ class Routes {
   static const String doneScreen = '/doneScreen';
   static const String mainLayoutScreen = '/mainLayoutScreen';
   static const String homeScreen = '/homeScreen';
-  static const String analyticasScreen = '/analyticasScreen';
   static const String calendarScreen = '/calendarScreen';
   static const String integrationsScreen = '/integrationsScreen';
   static const String userManagmentScreen = '/userManagmentScreen';
@@ -19,6 +18,8 @@ class Routes {
   static const String editUserScreen = '/editUserScreen';
   static const String settingsScreen = '/settingsScreen';
   static const String changepasswordScreen = '/changepasswordScreen';
+  static const String technicalSupportScreen = '/technicalSupportScreen';
+  static const String languageScreen = '/languageScreen';
 
   static const String chooseViewWorkLocationScreen =
       '/chooseViewWorkLocationScreen';
@@ -32,7 +33,6 @@ class Routes {
 
   static const String workLocationDetailsScreen = '/workLocationDetailsScreen';
 
-  
   static const String areaDetailsScreen = '/areaDetailsScreen';
   static const String cityDetailsScreen = '/cityDetailsScreen';
   static const String organizationDetailsScreen = '/organizationDetailsScreen';

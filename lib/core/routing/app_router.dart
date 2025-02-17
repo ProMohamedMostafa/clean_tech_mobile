@@ -16,6 +16,9 @@ import 'package:smart_cleaning_application/features/screens/attendance/attendanc
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_edit/logic/leaves_edit_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_edit/ui/screen/leaves_edit_screen.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/ui/attendance_screen.dart';
+import 'package:smart_cleaning_application/features/screens/languages/ui/screen/languages_screen.dart';
+import 'package:smart_cleaning_application/features/screens/settings/logic/settings_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/technical_support/ui/screen/technical_support_screen.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/logic/add_organization_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/screens/add_area_screen.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/screens/add_building_screen.dart';
@@ -53,7 +56,6 @@ import 'package:smart_cleaning_application/features/screens/task/task_management
 import 'package:smart_cleaning_application/features/screens/task/view_task/ui/screen/task_details_screen.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/logic/add_user_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/ui/screen/add_user_screen.dart';
-import 'package:smart_cleaning_application/features/screens/analytics/ui/screen/analytics_screen.dart';
 import 'package:smart_cleaning_application/features/screens/auth/done_screen/ui/screen/done_screen.dart';
 import 'package:smart_cleaning_application/features/screens/auth/forgot_password/logic/forgot_password_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/auth/forgot_password/ui/screen/forgot_password.dart';
@@ -131,9 +133,12 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => const HomeScreen(),
         );
-      case Routes.analyticasScreen:
+      case Routes.settingsScreen:
         return MaterialPageRoute(
-          builder: (_) => const AnalyticsScreen(),
+          builder: (_) => BlocProvider(
+            create: (context) => SettingsCubit(),
+            child: const SettingsScreen(),
+          ),
         );
       case Routes.calendarScreen:
         return MaterialPageRoute(
@@ -142,6 +147,14 @@ class AppRouter {
       case Routes.integrationsScreen:
         return MaterialPageRoute(
           builder: (_) => const IntegrationsScreen(),
+        );
+         case Routes.technicalSupportScreen:
+        return MaterialPageRoute(
+          builder: (_) => const TechnicalSupportScreen(),
+        );
+          case Routes.languageScreen:
+        return MaterialPageRoute(
+          builder: (_) => const LanguagesScreen(),
         );
       case Routes.userManagmentScreen:
         return MaterialPageRoute(
@@ -200,10 +213,7 @@ class AppRouter {
             ),
           ),
         );
-      case Routes.settingsScreen:
-        return MaterialPageRoute(
-          builder: (_) => const SettingsScreen(),
-        );
+
       case Routes.changepasswordScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(

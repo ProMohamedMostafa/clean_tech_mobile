@@ -11,6 +11,7 @@ class ChangePasswordBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text("Change Password"),
         leading: customBackButton(context),
       ),
       body: SafeArea(
@@ -22,15 +23,10 @@ class ChangePasswordBody extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Change Password",
-                style: TextStyles.font24PrimsemiBold,
+                "Please, setup a new password for your account",
+                style: TextStyles.font14GreyRegular,
               ),
               verticalSpace(20),
-              Text(
-                "Please, setup a new password for your account",
-                style: TextStyles.font20Greysemimedium,
-              ),
-              verticalSpace(30),
               ChangeToNewPasswordBody(),
             ],
           ),

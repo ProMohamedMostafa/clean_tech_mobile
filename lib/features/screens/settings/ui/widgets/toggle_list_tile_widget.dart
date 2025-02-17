@@ -8,12 +8,10 @@ Widget toggleListTile(
   return ListTile(
     leading: Icon(
       icon,
-      color: AppColor.primaryColor,
+      color: Colors.black,
     ),
-    title: Text(
-      title,
-      style: TextStyles.font14Primarybold
-    ),
+    title: Text(title,
+        style: TextStyles.font14GreyRegular.copyWith(color: Colors.black)),
     trailing: GestureDetector(
       onTap: () {
         if (onPressed != null) {
@@ -26,7 +24,7 @@ Widget toggleListTile(
         width: 50.w,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30.r),
-          color: isSwitched ? AppColor.primaryColor : AppColor.secondaryColor,
+          color: isSwitched ? Colors.grey[400] : AppColor.primaryColor,
         ),
         child: Stack(
           children: <Widget>[

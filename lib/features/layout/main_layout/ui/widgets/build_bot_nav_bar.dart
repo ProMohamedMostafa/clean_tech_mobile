@@ -9,7 +9,7 @@ Widget buildBottomNavigationBar(BuildContext context) {
     height: 60.h,
     decoration: const BoxDecoration(
       boxShadow: [
-        BoxShadow(color: Colors.black12, blurRadius: 200),
+        BoxShadow(color: Colors.black12, blurRadius: 2),
       ],
     ),
     child: BottomNavigationBar(

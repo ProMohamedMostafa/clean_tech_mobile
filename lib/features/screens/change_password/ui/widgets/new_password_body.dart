@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/regx_validations/regx_validations.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
-import 'package:smart_cleaning_application/core/widgets/default_text_form_field/default_text_form_field.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/features/screens/change_password/logic/change_password_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/change_password/logic/change_password_state.dart';
 import 'package:smart_cleaning_application/features/screens/change_password/ui/widgets/password_validation.dart';
+import 'package:smart_cleaning_application/features/screens/user/add_user/ui/widgets/add_user_text_form_field.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class ChangeToNewPasswordBody extends StatefulWidget {
@@ -68,53 +69,67 @@ class _ChangeToNewPasswordBodyState extends State<ChangeToNewPasswordBody> {
         return Form(
           key: context.read<ChangePasswordCubit>().formKey,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              DefaultTextField(
-                  keyboardType: TextInputType.visiblePassword,
-                  controller:
-                      context.read<ChangePasswordCubit>().oldPasswordController,
-                  suffixIcon: context.read<ChangePasswordCubit>().suffixIcon,
-                  suffixPressed: () {
-                    context
-                        .read<ChangePasswordCubit>()
-                        .changeSuffixIconVisiability();
-                  },
-                  obscureText: context.read<ChangePasswordCubit>().ispassword,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return S.of(context).validationPassword;
-                    }
-                  },
-                  label: "Old Password"),
-              verticalSpace(12),
-              DefaultTextField(
-                  label: S.of(context).setPassTextField1,
-                  keyboardType: TextInputType.text,
-                  controller:
-                      context.read<ChangePasswordCubit>().passwordController,
-                  suffixIcon: context.read<ChangePasswordCubit>().suffixIcon,
-                  suffixPressed: () {
-                    context
-                        .read<ChangePasswordCubit>()
-                        .changeSuffixIconVisiability();
-                  },
-                  obscureText: context.read<ChangePasswordCubit>().ispassword,
-                  onChanged: (value) {
-                    if (value!.isNotEmpty) {
-                      isShow = true;
-                    } else {
-                      isShow = false;
-                    }
-                  },
-                  validator: (value) {
-                    if (value == null ||
-                        value.isEmpty ||
-                        !RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~`)\%\-(_+=;:,.<>/?"[{\]}\|^]).{8,}$')
-                            .hasMatch(value)) {
-                      return S.of(context).validationPassword;
-                    }
-                  }),
-              verticalSpace(12),
+              Text(
+                'Old Password',
+                style: TextStyles.font16BlackRegular,
+              ),
+              verticalSpace(5),
+              AddUserTextFormField(
+                keyboardType: TextInputType.visiblePassword,
+                controller:
+                    context.read<ChangePasswordCubit>().oldPasswordController,
+                suffixIcon: context.read<ChangePasswordCubit>().suffixIcon,
+                suffixPressed: () {
+                  context
+                      .read<ChangePasswordCubit>()
+                      .changeSuffixIconVisiability();
+                },
+                obscureText: context.read<ChangePasswordCubit>().ispassword,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return S.of(context).validationPassword;
+                  }
+                },
+                readOnly: false,
+              ),
+              verticalSpace(10),
+              Text(
+                'New Password',
+                style: TextStyles.font16BlackRegular,
+              ),
+              verticalSpace(5),
+              AddUserTextFormField(
+                keyboardType: TextInputType.text,
+                controller:
+                    context.read<ChangePasswordCubit>().passwordController,
+                suffixIcon: context.read<ChangePasswordCubit>().suffixIcon,
+                suffixPressed: () {
+                  context
+                      .read<ChangePasswordCubit>()
+                      .changeSuffixIconVisiability();
+                },
+                obscureText: context.read<ChangePasswordCubit>().ispassword,
+                onChanged: (value) {
+                  if (value!.isNotEmpty) {
+                    isShow = true;
+                  } else {
+                    isShow = false;
+                  }
+                },
+                validator: (value) {
+                  if (value == null ||
+                      value.isEmpty ||
+                      !RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~`)\%\-(_+=;:,.<>/?"[{\]}\|^]).{8,}$')
+                          .hasMatch(value)) {
+                    return S.of(context).validationPassword;
+                  }
+                },
+                readOnly: false,
+              ),
+              verticalSpace(10),
               if (isShow == true)
                 ChangePasswordValidations(
                   hasLowerCase: hasLowercase,
@@ -124,8 +139,12 @@ class _ChangeToNewPasswordBodyState extends State<ChangeToNewPasswordBody> {
                   hasMinLength: hasMinLength,
                 ),
               if (isShow == true) verticalSpace(12),
-              DefaultTextField(
-                label: S.of(context).setPassTextField2,
+              Text(
+                'Confirm Password',
+                style: TextStyles.font16BlackRegular,
+              ),
+              verticalSpace(5),
+              AddUserTextFormField(
                 keyboardType: TextInputType.text,
                 controller: context
                     .read<ChangePasswordCubit>()
@@ -149,12 +168,13 @@ class _ChangeToNewPasswordBodyState extends State<ChangeToNewPasswordBody> {
                     return S.of(context).validationRepeatPassword;
                   }
                 },
+                readOnly: false,
               ),
-              verticalSpace(40),
+              verticalSpace(30),
               DefaultElevatedButton(
-                width: 310,
-                height: 50,
-                name: S.of(context).setButton,
+                width: double.infinity,
+                height: 48.h,
+                name: 'Change Password',
                 color: AppColor.primaryColor,
                 textStyles: TextStyles.font16WhiteSemiBold,
                 onPressed: () {

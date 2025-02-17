@@ -1,31 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class CalendarScreen extends StatelessWidget {
   const CalendarScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text("Calendar Screen"),
+//     return Scaffold(
+//       body: Center(
+//         child: Text("Calendar Screen"),
+//       ),
+//     );
+//   }
+// }
+    return SafeArea(
+      child: SfCalendar(
+        view: CalendarView.week,
+        specialRegions: _getTimeRegions(),
       ),
     );
   }
+
+  List<TimeRegion> _getTimeRegions() {
+    final List<TimeRegion> regions = <TimeRegion>[];
+    regions.add(TimeRegion(
+        startTime: DateTime.now(),
+        endTime: DateTime.now().add(Duration(hours: 1)),
+        enablePointerInteraction: false,
+        color: Colors.grey.withOpacity(0.2),
+        text: 'Break'));
+
+    return regions;
+  }
 }
-  //   return SfCalendar(
-  //     view: CalendarView.week,
-  //     specialRegions: _getTimeRegions(),
-  //   );
-  // }
-
-  // List<TimeRegion> _getTimeRegions() {
-  //   final List<TimeRegion> regions = <TimeRegion>[];
-  //   regions.add(TimeRegion(
-  //       startTime: DateTime.now(),
-  //       endTime: DateTime.now().add(Duration(hours: 1)),
-  //       enablePointerInteraction: false,
-  //       color: Colors.grey.withOpacity(0.2),
-  //       text: 'Break'));
-
-  //   return regions;
-  // }

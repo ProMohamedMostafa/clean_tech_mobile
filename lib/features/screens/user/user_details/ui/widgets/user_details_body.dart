@@ -188,13 +188,27 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                     ),
                   ),
                   verticalSpace(5),
-                  Text(
-                    context
-                        .read<UserManagementCubit>()
-                        .userDetailsModel!
-                        .data!
-                        .userName!,
-                    style: TextStyles.font14BlackSemiBold,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        context
+                            .read<UserManagementCubit>()
+                            .userDetailsModel!
+                            .data!
+                            .firstName!,
+                        style: TextStyles.font16BlackSemiBold,
+                      ),
+                      horizontalSpace(5),
+                      Text(
+                        context
+                            .read<UserManagementCubit>()
+                            .userDetailsModel!
+                            .data!
+                            .lastName!,
+                        style: TextStyles.font16BlackSemiBold,
+                      ),
+                    ],
                   ),
                   verticalSpace(5),
                   Text(

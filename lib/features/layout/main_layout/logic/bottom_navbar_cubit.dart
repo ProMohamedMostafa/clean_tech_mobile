@@ -5,6 +5,7 @@ import 'package:smart_cleaning_application/features/layout/main_layout/logic/bot
 import 'package:smart_cleaning_application/features/screens/calendar/calendar_screen.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/screen/home_screen.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/screen/integrations_screen.dart';
+import 'package:smart_cleaning_application/features/screens/settings/logic/settings_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/settings/ui/screen/settings_screen.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
@@ -20,7 +21,10 @@ class BottomNavbarCubit extends Cubit<BottomNavbarStates> {
     const HomeScreen(),
     const IntegrationsScreen(),
     const CalendarScreen(),
-    const SettingsScreen()
+    BlocProvider(
+      create: (context) => SettingsCubit(),
+      child: const SettingsScreen(),
+    )
   ];
 
   List<BottomNavigationBarItem> getBottomNavbarItems(BuildContext context) {
