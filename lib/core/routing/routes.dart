@@ -20,6 +20,8 @@ class Routes {
   static const String changepasswordScreen = '/changepasswordScreen';
   static const String technicalSupportScreen = '/technicalSupportScreen';
   static const String languageScreen = '/languageScreen';
+  static const String profileScreen = '/profileScreen';
+  static const String editProfileScreen = '/editProfileScreen';
 
   static const String chooseViewWorkLocationScreen =
       '/chooseViewWorkLocationScreen';

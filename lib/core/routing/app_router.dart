@@ -16,7 +16,11 @@ import 'package:smart_cleaning_application/features/screens/attendance/attendanc
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_edit/logic/leaves_edit_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_edit/ui/screen/leaves_edit_screen.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/ui/attendance_screen.dart';
+import 'package:smart_cleaning_application/features/screens/edit_profile/logic/edit_profile_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/edit_profile/ui/screen/edit_profile_screen.dart';
 import 'package:smart_cleaning_application/features/screens/languages/ui/screen/languages_screen.dart';
+import 'package:smart_cleaning_application/features/screens/profile/logic/profile_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/profile/ui/screen/profile_screen.dart';
 import 'package:smart_cleaning_application/features/screens/settings/logic/settings_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/technical_support/ui/screen/technical_support_screen.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/logic/add_organization_cubit.dart';
@@ -142,19 +146,39 @@ class AppRouter {
         );
       case Routes.calendarScreen:
         return MaterialPageRoute(
-          builder: (_) => const CalendarScreen(),
+          builder: (_) => BlocProvider(
+            create: (context) => TaskManagementCubit(),
+            child: const CalendarScreen(),
+          ),
         );
       case Routes.integrationsScreen:
         return MaterialPageRoute(
           builder: (_) => const IntegrationsScreen(),
         );
-         case Routes.technicalSupportScreen:
+      case Routes.languageScreen:
+        return MaterialPageRoute(
+          builder: (_) => const LanguagesScreen(),
+        );
+      case Routes.technicalSupportScreen:
         return MaterialPageRoute(
           builder: (_) => const TechnicalSupportScreen(),
         );
-          case Routes.languageScreen:
+      case Routes.profileScreen:
         return MaterialPageRoute(
-          builder: (_) => const LanguagesScreen(),
+          builder: (_) => BlocProvider(
+            create: (context) => ProfileCubit(),
+            child: const ProfileScreen(),
+          ),
+        );
+      case Routes.editProfileScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => EditProfileCubit(),
+            child: EditProfileScreen(
+              id: id,
+            ),
+          ),
         );
       case Routes.userManagmentScreen:
         return MaterialPageRoute(

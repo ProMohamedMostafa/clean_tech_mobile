@@ -7,6 +7,7 @@ import 'package:smart_cleaning_application/features/screens/home/ui/screen/home_
 import 'package:smart_cleaning_application/features/screens/integrations/ui/screen/integrations_screen.dart';
 import 'package:smart_cleaning_application/features/screens/settings/logic/settings_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/settings/ui/screen/settings_screen.dart';
+import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_cubit.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class BottomNavbarCubit extends Cubit<BottomNavbarStates> {
@@ -20,7 +21,10 @@ class BottomNavbarCubit extends Cubit<BottomNavbarStates> {
   List<Widget> bottomNavbarScreens = [
     const HomeScreen(),
     const IntegrationsScreen(),
-    const CalendarScreen(),
+    BlocProvider(
+      create: (context) => TaskManagementCubit()..getAllTasks(),
+      child: const CalendarScreen(),
+    ),
     BlocProvider(
       create: (context) => SettingsCubit(),
       child: const SettingsScreen(),

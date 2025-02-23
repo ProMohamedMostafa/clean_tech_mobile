@@ -37,9 +37,9 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_screenutil: ^5.9.3
-  bloc: ^8.1.4
+  bloc: ^9.0.0
   fluttertoast: ^8.2.8
-  flutter_bloc: ^8.1.6
+  flutter_bloc: ^9.0.0
   dio: ^5.7.0
   pretty_dio_logger: ^1.4.0
   shared_preferences: ^2.3.3
@@ -51,6 +51,8 @@ dependencies:
   multi_dropdown: ^3.0.1
   easy_date_timeline: ^2.0.6
   syncfusion_flutter_calendar: ^28.2.5
+  url_launcher: ^6.3.1
+  share_plus: ^10.1.4
 
 dev_dependencies:
   flutter_test:

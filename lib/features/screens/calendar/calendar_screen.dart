@@ -6,17 +6,15 @@ class CalendarScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Center(
-//         child: Text("Calendar Screen"),
-//       ),
-//     );
-//   }
-// }
-    return SafeArea(
-      child: SfCalendar(
-        view: CalendarView.week,
-        specialRegions: _getTimeRegions(),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Calendar"),
+      ),
+      body: SafeArea(
+        child: SfCalendar(
+          view: CalendarView.week,
+          specialRegions: _getTimeRegions(),
+        ),
       ),
     );
   }
@@ -28,7 +26,7 @@ class CalendarScreen extends StatelessWidget {
         endTime: DateTime.now().add(Duration(hours: 1)),
         enablePointerInteraction: false,
         color: Colors.grey.withOpacity(0.2),
-        text: 'Break'));
+        text: 'Task'));
 
     return regions;
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -565,52 +566,54 @@ class CustomFilterTaskDialog {
                             context.read<UserManagementCubit>().pointController,
                         keyboardType: TextInputType.text,
                       ),
-                      verticalSpace(10),
-                      Text(
-                        'Provider',
-                        style: TextStyles.font16BlackRegular,
-                      ),
-                      CustomDropDownList(
-                        hint: 'Select Provider',
-                        items: context
-                                    .read<UserManagementCubit>()
-                                    .providersModel
-                                    ?.data
-                                    ?.data
-                                    ?.isEmpty ??
-                                true
-                            ? ['No providers available']
-                            : context
-                                    .read<UserManagementCubit>()
-                                    .providersModel
-                                    ?.data
-                                    ?.data
-                                    ?.map((e) => e.name ?? 'Unknown')
-                                    .toList() ??
-                                [],
-                        onPressed: (value) {
-                          final selectedProvider = context
-                              .read<UserManagementCubit>()
-                              .pointsModel
-                              ?.data
-                              ?.firstWhere((provider) =>
-                                  provider.name ==
-                                  context
+                      if (role == 'Admin') ...[
+                        verticalSpace(10),
+                        Text(
+                          'Provider',
+                          style: TextStyles.font16BlackRegular,
+                        ),
+                        CustomDropDownList(
+                          hint: 'Select Provider',
+                          items: context
                                       .read<UserManagementCubit>()
-                                      .providerController
-                                      .text);
+                                      .providersModel
+                                      ?.data
+                                      ?.data
+                                      ?.isEmpty ??
+                                  true
+                              ? ['No providers available']
+                              : context
+                                      .read<UserManagementCubit>()
+                                      .providersModel
+                                      ?.data
+                                      ?.data
+                                      ?.map((e) => e.name ?? 'Unknown')
+                                      .toList() ??
+                                  [],
+                          onPressed: (value) {
+                            final selectedProvider = context
+                                .read<UserManagementCubit>()
+                                .pointsModel
+                                ?.data
+                                ?.firstWhere((provider) =>
+                                    provider.name ==
+                                    context
+                                        .read<UserManagementCubit>()
+                                        .providerController
+                                        .text);
 
-                          context
+                            context
+                                .read<UserManagementCubit>()
+                                .getPoints(selectedProvider!.id!);
+                            providerId = selectedProvider.id;
+                          },
+                          controller: context
                               .read<UserManagementCubit>()
-                              .getPoints(selectedProvider!.id!);
-                          providerId = selectedProvider.id;
-                        },
-                        controller: context
-                            .read<UserManagementCubit>()
-                            .providerController,
-                        keyboardType: TextInputType.text,
-                        suffixIcon: IconBroken.arrowDown2,
-                      ),
+                              .providerController,
+                          keyboardType: TextInputType.text,
+                          suffixIcon: IconBroken.arrowDown2,
+                        ),
+                      ],
                       verticalSpace(20),
                       Center(
                         child: DefaultElevatedButton(

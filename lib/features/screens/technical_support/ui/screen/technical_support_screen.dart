@@ -13,6 +13,7 @@ import 'package:smart_cleaning_application/features/screens/integrations/ui/widg
 import 'package:smart_cleaning_application/features/screens/technical_support/logic/technical_support_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/technical_support/logic/technical_support_state.dart';
 import 'package:smart_cleaning_application/features/screens/technical_support/ui/widgets/upload_files_dialog.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TechnicalSupportScreen extends StatefulWidget {
   const TechnicalSupportScreen({super.key});
@@ -43,7 +44,17 @@ class _TechnicalSupportScreenState extends State<TechnicalSupportScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     InkWell(
-                      onTap: () {},
+                      onTap: () async {
+                        String phoneNum = '01060056199';
+                        var url = 'tel:$phoneNum';
+                        // ignore: deprecated_member_use
+                        if (await canLaunch(url)) {
+                          // ignore: deprecated_member_use
+                          await launch(url);
+                        } else {
+                          throw 'Could not launch $url';
+                        }
+                      },
                       child: ListTile(
                         dense: true,
                         contentPadding: EdgeInsets.fromLTRB(0, 0, 5, 0),

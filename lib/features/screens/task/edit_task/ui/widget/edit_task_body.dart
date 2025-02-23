@@ -55,7 +55,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
     editTaskCubit.getUsersTask(widget.id);
     editTaskCubit.getTaskFiles(widget.id);
     editTaskCubit.getAllTasks();
-    editTaskCubit.getOrganization();
+    // editTaskCubit.getOrganization();
     editTaskCubit.getSupervisor();
   }
 
@@ -81,16 +81,15 @@ class _EditTaskBodyState extends State<EditTaskBody> {
             final supervisorModel = editTaskCubit.supervisorModel;
             final taskDetailsModel = editTaskCubit.taskDetailsModel;
             final usersTaskModel = editTaskCubit.usersTaskModel;
-            final organizationModel = editTaskCubit.organizationModel;
+            // final organizationModel = editTaskCubit.organizationModel;
             final taskFilesModel = editTaskCubit.taskFilesModel;
             final allTasksModel = editTaskCubit.allTasksModel;
 
-            if (
-                taskDetailsModel == null ||
+            if (taskDetailsModel == null ||
                 supervisorModel == null ||
                 usersTaskModel == null ||
                 taskFilesModel == null ||
-                organizationModel == null ||
+                // organizationModel == null ||
                 allTasksModel == null) {
               return Center(
                 child: CircularProgressIndicator(

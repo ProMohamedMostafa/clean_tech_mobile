@@ -702,6 +702,7 @@ class _AssignBodyState extends State<AssignBody> {
                                       context
                                           .read<AssignCubit>()
                                           .getOrganization(selectedCity!.id!);
+                                      selectedlocationId = selectedCity.id!;
                                     },
                                     hint: 'Select City',
                                     items: context
@@ -752,6 +753,8 @@ class _AssignBodyState extends State<AssignBody> {
                                               .read<AssignCubit>()
                                               .getBuilding(
                                                   selectedOrganization!.id!);
+                                          selectedlocationId =
+                                              selectedOrganization.id!;
                                         },
                                         hint: 'Select Organization',
                                         items: context
@@ -790,6 +793,8 @@ class _AssignBodyState extends State<AssignBody> {
                                               .read<AssignCubit>()
                                               .getBuilding(
                                                   selectedOrganization!.id!);
+                                          selectedlocationId =
+                                              selectedOrganization.id!;
                                         },
                                         hint: 'Select Organization',
                                         items: context
@@ -831,6 +836,7 @@ class _AssignBodyState extends State<AssignBody> {
                                       context
                                           .read<AssignCubit>()
                                           .getFloor(selectedBuilding!.id!);
+                                      selectedlocationId = selectedBuilding.id!;
                                     },
                                     hint: 'Select Building',
                                     items: context
@@ -872,6 +878,7 @@ class _AssignBodyState extends State<AssignBody> {
                                       context
                                           .read<AssignCubit>()
                                           .getPoints(selectedFloor!.id!);
+                                      selectedlocationId = selectedFloor.id!;
                                     },
                                     hint: 'Select Floor',
                                     items: context
@@ -994,20 +1001,20 @@ class _AssignBodyState extends State<AssignBody> {
                                     if ((selectedIndex == 1 &&
                                             selectedSecendIndex == 1) ||
                                         (selectedIndex == 2 &&
-                                            selectedSecendIndex == 2)) {
-                                      selectedLocation == 0
+                                            selectedSecendIndex == 1)) {
+                                      selectedLocation == 2
                                           ? context
                                               .read<AssignCubit>()
                                               .assignOrganizationShift(
                                                   selectedlocationId,
                                                   selectedShiftsIds)
-                                          : selectedLocation == 1
+                                          : selectedLocation == 3
                                               ? context
                                                   .read<AssignCubit>()
                                                   .assignBuildingShift(
                                                       selectedlocationId,
                                                       selectedShiftsIds)
-                                              : selectedLocation == 2
+                                              : selectedLocation == 4
                                                   ? context
                                                       .read<AssignCubit>()
                                                       .assignFloorShift(

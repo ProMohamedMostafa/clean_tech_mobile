@@ -29,14 +29,7 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
     child: ListTile(
       contentPadding: EdgeInsets.zero,
       minTileHeight: 60.h,
-      leading:
-          //  Container(
-          //   height: 40.h,
-          //   width: 40.w,
-          //   decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.amber),
-          // ),
-
-          Container(
+      leading: Container(
         height: 40.h,
         width: 40.w,
         decoration: BoxDecoration(shape: BoxShape.circle),
@@ -82,92 +75,94 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                 .email!,
         style: TextStyles.font12GreyRegular,
       ),
-      trailing: (selectedIndex == 0 &&
-              uId ==
-                  context
-                      .read<UserManagementCubit>()
-                      .usersModel!
-                      .data!
-                      .users![index]
-                      .id)
-          ? SizedBox.shrink()
-          : SizedBox(
-              width: 80.w,
-              child: Row(
-                children: [
-                  InkWell(
-                      onTap: () {
-                        selectedIndex == 0
-                            ? context.pushNamed(
-                                Routes.editUserScreen,
-                                arguments: context
-                                    .read<UserManagementCubit>()
-                                    .usersModel!
-                                    .data!
-                                    .users![index]
-                                    .id,
-                              )
-                            : showCustomDialog(
-                                context, "Are you Sure to restore this user ?",
-                                () {
-                                context
-                                    .read<UserManagementCubit>()
-                                    .restoreDeletedUser(
-                                      context
-                                          .read<UserManagementCubit>()
-                                          .deletedListModel!
-                                          .data![index]
-                                          .id!,
-                                    );
-                                context.pop();
-                              });
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: Icon(
-                          selectedIndex == 0
-                              ? Icons.mode_edit_outlined
-                              : Icons.replay_outlined,
-                          color: AppColor.thirdColor,
-                        ),
-                      )),
-                  horizontalSpace(10),
-                  InkWell(
-                      onTap: () {
-                        selectedIndex == 0
-                            ? showCustomDialog(
-                                context, S.of(context).deleteMessage, () {
-                                context.read<UserManagementCubit>().userDelete(
-                                    context
+      trailing: (role == 'Admin')
+          ? (selectedIndex == 0 &&
+                  uId ==
+                      context
+                          .read<UserManagementCubit>()
+                          .usersModel!
+                          .data!
+                          .users![index]
+                          .id)
+              ? SizedBox.shrink()
+              : SizedBox(
+                  width: 80.w,
+                  child: Row(
+                    children: [
+                      InkWell(
+                          onTap: () {
+                            selectedIndex == 0
+                                ? context.pushNamed(
+                                    Routes.editUserScreen,
+                                    arguments: context
                                         .read<UserManagementCubit>()
                                         .usersModel!
                                         .data!
                                         .users![index]
-                                        .id!);
-                                context.pop();
-                              })
-                            : showCustomDialog(
-                                context, "Forced Delete this user", () {
-                                context
-                                    .read<UserManagementCubit>()
-                                    .forcedDeletedUser(context
+                                        .id,
+                                  )
+                                : showCustomDialog(context,
+                                    "Are you Sure to restore this user ?", () {
+                                    context
                                         .read<UserManagementCubit>()
-                                        .deletedListModel!
-                                        .data![index]
-                                        .id!);
-                                context.pop();
-                              });
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: Icon(
-                          IconBroken.delete,
-                          color: AppColor.thirdColor,
-                        ),
-                      )),
-                ],
-              ),
-            ),
+                                        .restoreDeletedUser(
+                                          context
+                                              .read<UserManagementCubit>()
+                                              .deletedListModel!
+                                              .data![index]
+                                              .id!,
+                                        );
+                                    context.pop();
+                                  });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: Icon(
+                              selectedIndex == 0
+                                  ? Icons.mode_edit_outlined
+                                  : Icons.replay_outlined,
+                              color: AppColor.thirdColor,
+                            ),
+                          )),
+                      horizontalSpace(10),
+                      InkWell(
+                          onTap: () {
+                            selectedIndex == 0
+                                ? showCustomDialog(
+                                    context, S.of(context).deleteMessage, () {
+                                    context
+                                        .read<UserManagementCubit>()
+                                        .userDelete(context
+                                            .read<UserManagementCubit>()
+                                            .usersModel!
+                                            .data!
+                                            .users![index]
+                                            .id!);
+                                    context.pop();
+                                  })
+                                : showCustomDialog(
+                                    context, "Forced Delete this user", () {
+                                    context
+                                        .read<UserManagementCubit>()
+                                        .forcedDeletedUser(context
+                                            .read<UserManagementCubit>()
+                                            .deletedListModel!
+                                            .data![index]
+                                            .id!);
+                                    context.pop();
+                                  });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: Icon(
+                              IconBroken.delete,
+                              color: AppColor.thirdColor,
+                            ),
+                          )),
+                    ],
+                  ),
+                )
+          : SizedBox.shrink(),
     ),
   );
 }

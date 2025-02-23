@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
@@ -22,10 +23,17 @@ class ShiftBody extends StatefulWidget {
 class _ShiftBodyState extends State<ShiftBody> {
   @override
   void initState() {
-    context.read<ShiftCubit>().getAllShifts();
-    context.read<ShiftCubit>().getArea();
-    context.read<ShiftCubit>().getAllDeletedShifts();
-    context.read<ShiftCubit>().getProviders();
+    if (role == 'Admin') {
+      context.read<ShiftCubit>().getAllShifts();
+      context.read<ShiftCubit>().getArea();
+      context.read<ShiftCubit>().getAllDeletedShifts();
+      context.read<ShiftCubit>().getProviders();
+    }
+    if (role == 'Manager') {
+      context.read<ShiftCubit>().getAllShifts();
+      context.read<ShiftCubit>().getArea();
+    }
+
     super.initState();
   }
 
@@ -89,7 +97,7 @@ class _ShiftBodyState extends State<ShiftBody> {
           },
           builder: (context, state) {
             final cubit = context.read<ShiftCubit>();
-            if (cubit.allShiftsModel == null ||
+            if (cubit.allShiftsModel == null &&
                 cubit.allShiftsDeletedModel == null) {
               return const Center(
                 child: CircularProgressIndicator(color: AppColor.primaryColor),
@@ -106,86 +114,86 @@ class _ShiftBodyState extends State<ShiftBody> {
                       verticalSpace(15),
                       filterAndSearchBuild(context, context.read<ShiftCubit>()),
                       verticalSpace(15),
-                      Center(
-                        child: SizedBox(
-                          height: 45.h,
-                          child: LayoutBuilder(
-                            builder: (context, constraints) {
-                              // Total available width
-                              double totalWidth = constraints.maxWidth;
-                              // Gap between the containers
-                              double gap = 10;
-                              // Width for each container
-                              double containerWidth = (totalWidth - gap) / 2;
+                      SizedBox(
+                        height: 45.h,
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            // Total available width
+                            double totalWidth = constraints.maxWidth;
+                            // Gap between the containers
+                            double gap = 10;
+                            // Width for each container
+                            double containerWidth = (totalWidth - gap) / 2;
 
-                              return ListView.separated(
-                                scrollDirection: Axis.horizontal,
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: 2,
-                                separatorBuilder: (context, index) {
-                                  return SizedBox(
-                                      width:
-                                          gap); // 10px gap between containers
-                                },
-                                itemBuilder: (context, index) {
-                                  bool isSelected = selectedIndex == index;
+                            return ListView.separated(
+                              scrollDirection: Axis.horizontal,
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: role == 'Admin' ? 2 : 1,
+                              separatorBuilder: (context, index) {
+                                return SizedBox(
+                                    width: gap); // 10px gap between containers
+                              },
+                              itemBuilder: (context, index) {
+                                bool isSelected = selectedIndex == index;
 
-                                  return GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        selectedIndex = index;
-                                      });
-                                    },
-                                    child: Container(
-                                      height: 45.h,
-                                      width: containerWidth,
-                                      decoration: BoxDecoration(
-                                        color: isSelected
-                                            ? AppColor.primaryColor
-                                            : Colors.white,
-                                        borderRadius:
-                                            BorderRadius.circular(8.r),
-                                        border: Border.all(
-                                          color: AppColor.secondaryColor,
-                                          width: 1,
-                                        ),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            index == 0
-                                                ? "${context.read<ShiftCubit>().allShiftsModel!.data?.shifts!.length ?? 0}"
-                                                : "${context.read<ShiftCubit>().allShiftsDeletedModel!.data?.length ?? 0}",
-                                            style: TextStyle(
-                                              fontSize: 13.sp,
-                                              color: isSelected
-                                                  ? Colors.white
-                                                  : AppColor.primaryColor,
-                                            ),
-                                          ),
-                                          horizontalSpace(5),
-                                          Text(
-                                            index == 0
-                                                ? "Total Shift"
-                                                : 'Deleted Shift',
-                                            style: TextStyle(
-                                              fontSize: 13.sp,
-                                              color: isSelected
-                                                  ? Colors.white
-                                                  : AppColor.primaryColor,
-                                            ),
-                                          ),
-                                        ],
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedIndex = index;
+                                    });
+                                  },
+                                  child: Container(
+                                    height: 45.h,
+                                    width: containerWidth,
+                                    decoration: BoxDecoration(
+                                      color: isSelected
+                                          ? AppColor.primaryColor
+                                          : Colors.white,
+                                      borderRadius: BorderRadius.circular(8.r),
+                                      border: Border.all(
+                                        color: AppColor.secondaryColor,
+                                        width: 1,
                                       ),
                                     ),
-                                  );
-                                },
-                              );
-                            },
-                          ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          role == 'Admin'
+                                              ? index == 0
+                                                  ? "${context.read<ShiftCubit>().allShiftsModel!.data?.shifts!.length ?? 0}"
+                                                  : "${context.read<ShiftCubit>().allShiftsDeletedModel!.data?.length ?? 0}"
+                                              : "${context.read<ShiftCubit>().allShiftsModel!.data?.shifts!.length ?? 0}",
+                                          style: TextStyle(
+                                            fontSize: 13.sp,
+                                            color: isSelected
+                                                ? Colors.white
+                                                : AppColor.primaryColor,
+                                          ),
+                                        ),
+                                        horizontalSpace(5),
+                                        Text(
+                                          role == 'Admin'
+                                              ? index == 0
+                                                  ? "Total Shift"
+                                                  : 'Deleted Shift'
+                                              : "Total Shift",
+                                          style: TextStyle(
+                                            fontSize: 13.sp,
+                                            color: isSelected
+                                                ? Colors.white
+                                                : AppColor.primaryColor,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
                         ),
                       ),
                       verticalSpace(10),

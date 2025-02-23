@@ -1,4 +1,4 @@
-import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/settings/data/model/profile_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_status_model.dart';
 
 abstract class SettingsState {}
@@ -19,9 +19,9 @@ class SettingsErrorState extends SettingsState {
 class UserDetailsLoadingState extends SettingsState {}
 
 class UserDetailsSuccessState extends SettingsState {
-  final UserDetailsModel userDetailsModelModel;
+  final ProfileModel profileModel;
 
-  UserDetailsSuccessState(this.userDetailsModelModel);
+  UserDetailsSuccessState(this.profileModel);
 }
 
 class UserDetailsErrorState extends SettingsState {
@@ -43,4 +43,20 @@ class UserStatusSuccessState extends SettingsState {
 class UserStatusErrorState extends SettingsState {
   final String error;
   UserStatusErrorState(this.error);
+}
+
+//********************************* */
+
+
+class LogOutLoadingState extends SettingsState {}
+
+class LogOutSuccessState extends SettingsState {
+  final String messsage;
+
+  LogOutSuccessState(this.messsage);
+}
+
+class LogOutErrorState extends SettingsState {
+  final String error;
+ LogOutErrorState(this.error);
 }

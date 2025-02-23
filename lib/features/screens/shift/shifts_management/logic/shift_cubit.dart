@@ -79,7 +79,7 @@ class ShiftCubit extends Cubit<ShiftState> {
       'endDate': endDateController.text,
       'startTime': startTimeController.text,
       'endTime': endTimeController.text,
-      'provider': providerId
+      // 'provider': providerId
     }).then((value) {
       allShiftsModel = AllShiftsModel.fromJson(value!.data);
       emit(ShiftSuccessState(allShiftsModel!));

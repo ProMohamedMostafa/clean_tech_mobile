@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
@@ -22,11 +23,22 @@ class UserManagmentBody extends StatefulWidget {
 class _UserManagmentBodyState extends State<UserManagmentBody> {
   @override
   void initState() {
-    context.read<UserManagementCubit>().getAllUsersInUserManage();
-    context.read<UserManagementCubit>().getAllDeletedUser();
-    context.read<UserManagementCubit>().getNationality();
-    context.read<UserManagementCubit>().getRole();
-    context.read<UserManagementCubit>().getProviders();
+    if (role == 'Admin') {
+      context.read<UserManagementCubit>().getAllUsersInUserManage();
+      context.read<UserManagementCubit>().getAllDeletedUser();
+      context.read<UserManagementCubit>().getNationality();
+      context.read<UserManagementCubit>().getRole();
+      context.read<UserManagementCubit>().getProviders();
+    }
+    if (role == 'Manager') {
+      context.read<UserManagementCubit>().getAllUsersInUserManage();
+      context.read<UserManagementCubit>().getNationality();
+      context.read<UserManagementCubit>().getRole();
+    }
+ if (role == 'Supervisor') {
+      context.read<UserManagementCubit>().getAllUsersInUserManage();
+      context.read<UserManagementCubit>().getNationality();
+    }
     super.initState();
   }
 
@@ -120,84 +132,85 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
                     filterAndSearchBuild(
                         context, context.read<UserManagementCubit>()),
                     verticalSpace(15),
-                    Center(
-                      child: SizedBox(
-                        height: 45.h,
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            // Total available width
-                            double totalWidth = constraints.maxWidth;
-                            // Gap between the containers
-                            double gap = 10;
-                            // Width for each container
-                            double containerWidth = (totalWidth - gap) / 2;
+                    SizedBox(
+                      height: 45.h,
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          // Total available width
+                          double totalWidth = constraints.maxWidth;
+                          // Gap between the containers
+                          double gap = 10;
+                          // Width for each container
+                          double containerWidth = (totalWidth - gap) / 2;
 
-                            return ListView.separated(
-                              scrollDirection: Axis.horizontal,
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: 2,
-                              separatorBuilder: (context, index) {
-                                return SizedBox(
-                                    width: gap); // 10px gap between containers
-                              },
-                              itemBuilder: (context, index) {
-                                bool isSelected = selectedIndex == index;
+                          return ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: (role == 'Admin') ? 2 : 1,
+                            separatorBuilder: (context, index) {
+                              return SizedBox(
+                                  width: gap); // 10px gap between containers
+                            },
+                            itemBuilder: (context, index) {
+                              bool isSelected = selectedIndex == index;
 
-                                return GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      selectedIndex = index;
-                                    });
-                                  },
-                                  child: Container(
-                                    height: 45.h,
-                                    width: containerWidth,
-                                    decoration: BoxDecoration(
-                                      color: isSelected
-                                          ? AppColor.primaryColor
-                                          : Colors.white,
-                                      borderRadius: BorderRadius.circular(8.r),
-                                      border: Border.all(
-                                        color: AppColor.secondaryColor,
-                                        width: 1,
-                                      ),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          index == 0
-                                              ? "${context.read<UserManagementCubit>().usersModel?.data?.users!.length ?? 0}"
-                                              : "${context.read<UserManagementCubit>().deletedListModel?.data?.length ?? 0}",
-                                          style: TextStyle(
-                                            fontSize: 13.sp,
-                                            color: isSelected
-                                                ? Colors.white
-                                                : AppColor.primaryColor,
-                                          ),
-                                        ),
-                                        horizontalSpace(5),
-                                        Text(
-                                          index == 0
-                                              ? "Total Users"
-                                              : 'Deleted User',
-                                          style: TextStyle(
-                                            fontSize: 13.sp,
-                                            color: isSelected
-                                                ? Colors.white
-                                                : AppColor.primaryColor,
-                                          ),
-                                        ),
-                                      ],
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    selectedIndex = index;
+                                  });
+                                },
+                                child: Container(
+                                  height: 45.h,
+                                  width: containerWidth,
+                                  decoration: BoxDecoration(
+                                    color: isSelected
+                                        ? AppColor.primaryColor
+                                        : Colors.white,
+                                    borderRadius: BorderRadius.circular(8.r),
+                                    border: Border.all(
+                                      color: AppColor.secondaryColor,
+                                      width: 1,
                                     ),
                                   ),
-                                );
-                              },
-                            );
-                          },
-                        ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        (role == 'Admin')
+                                            ? index == 0
+                                                ? "${context.read<UserManagementCubit>().usersModel?.data?.users!.length ?? 0}"
+                                                : "${context.read<UserManagementCubit>().deletedListModel?.data?.length ?? 0}"
+                                            : "${context.read<UserManagementCubit>().usersModel?.data?.users!.length ?? 0}",
+                                        style: TextStyle(
+                                          fontSize: 13.sp,
+                                          color: isSelected
+                                              ? Colors.white
+                                              : AppColor.primaryColor,
+                                        ),
+                                      ),
+                                      horizontalSpace(5),
+                                      Text(
+                                        (role == 'Admin')
+                                            ? index == 0
+                                                ? "Total Users"
+                                                : 'Deleted User'
+                                            : "Total Users",
+                                        style: TextStyle(
+                                          fontSize: 13.sp,
+                                          color: isSelected
+                                              ? Colors.white
+                                              : AppColor.primaryColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
                       ),
                     ),
                     verticalSpace(10),

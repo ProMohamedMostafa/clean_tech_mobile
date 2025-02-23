@@ -46,6 +46,21 @@ class EditUserCubit extends Cubit<EditUserState> {
   EditModel? editModel;
   editUser(int? id, String? image, List<int>? selectedShiftsIds) async {
     emit(EditUserLoadingState());
+    int getRoleId(String role) {
+      switch (role.toLowerCase()) {
+        case 'admin':
+          return 1;
+        case 'manager':
+          return 2;
+        case 'supervisor':
+          return 3;
+        case 'cleaner':
+          return 4;
+        default:
+          return -1; // Handle unexpected roles
+      }
+    }
+
     MultipartFile? imageFile;
     if (image != null && image.isNotEmpty) {
       imageFile = await MultipartFile.fromFile(
@@ -86,13 +101,13 @@ class EditUserCubit extends Cubit<EditUserState> {
           ? userDetailsModel!.data!.countryName
           : countryController.text,
       "role": roleController.text.isEmpty
-          ? userDetailsModel!.data!.role
+          ? getRoleId(userDetailsModel!.data!.role!)
           : roleIdController.text,
       "managerId": managerIdController.text.isEmpty
           ? userDetailsModel!.data!.managerId
           : managerIdController.text,
       "gender": genderController.text.isEmpty
-          ? userDetailsModel!.data!.gender
+          ? (userDetailsModel!.data!.gender == "Male" ? "0" : "1")
           : genderIdController.text,
       "providerId": providerController.text.isEmpty
           ? userDetailsModel!.data!.providerId
@@ -191,8 +206,7 @@ class EditUserCubit extends Cubit<EditUserState> {
     }
   }
 
-
-   IconData suffixIcon = Icons.visibility_outlined;
+  IconData suffixIcon = Icons.visibility_outlined;
   bool ispassword = true;
   changeSuffixIconVisiability() {
     ispassword = !ispassword;

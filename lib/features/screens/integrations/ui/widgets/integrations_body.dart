@@ -31,7 +31,7 @@ class IntegrationsBody extends StatelessWidget {
           label: "Assign",
           icon: Icons.assignment,
         ),
-      if (role == 'Admin')
+      if (role != 'Cleaner')
         IntegrationItem(
           onTap: () => context.pushNamed(Routes.shiftScreen),
           label: "Shift",

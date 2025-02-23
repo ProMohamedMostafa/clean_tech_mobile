@@ -40,17 +40,32 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
 
   @override
   void initState() {
-    context.read<UserManagementCubit>().getUserDetails(widget.id);
-    context.read<UserManagementCubit>().getUserShiftDetails(widget.id);
-    context.read<UserManagementCubit>().getUserTaskDetails(widget.id);
-    context.read<UserManagementCubit>().getUserWorkLocationDetails(widget.id);
-    context.read<UserManagementCubit>().getAllHistory(widget.id);
-    context.read<UserManagementCubit>().getAllLeaves(widget.id);
-    context.read<UserManagementCubit>().getUserStatus(widget.id);
-    context.read<UserManagementCubit>().getAllArea();
-    context.read<UserManagementCubit>().getProviders();
-    context.read<UserManagementCubit>().getRole();
-    context.read<UserManagementCubit>().getShifts();
+    if (role == 'Admin') {
+      context.read<UserManagementCubit>().getUserDetails(widget.id);
+      context.read<UserManagementCubit>().getUserShiftDetails(widget.id);
+      context.read<UserManagementCubit>().getUserTaskDetails(widget.id);
+      context.read<UserManagementCubit>().getUserWorkLocationDetails(widget.id);
+      context.read<UserManagementCubit>().getAllHistory(widget.id);
+      context.read<UserManagementCubit>().getAllLeaves(widget.id);
+      context.read<UserManagementCubit>().getUserStatus(widget.id);
+      context.read<UserManagementCubit>().getAllArea();
+      context.read<UserManagementCubit>().getProviders();
+      context.read<UserManagementCubit>().getRole();
+      context.read<UserManagementCubit>().getShifts();
+    }
+
+    if (role == 'Manager') {
+      context.read<UserManagementCubit>().getUserDetails(widget.id);
+      context.read<UserManagementCubit>().getUserShiftDetails(widget.id);
+      context.read<UserManagementCubit>().getUserTaskDetails(widget.id);
+      context.read<UserManagementCubit>().getUserWorkLocationDetails(widget.id);
+      context.read<UserManagementCubit>().getAllHistory(widget.id);
+      context.read<UserManagementCubit>().getAllLeaves(widget.id);
+      context.read<UserManagementCubit>().getUserStatus(widget.id);
+      context.read<UserManagementCubit>().getAllArea();
+      context.read<UserManagementCubit>().getRole();
+      context.read<UserManagementCubit>().getShifts();
+    }
 
     controller = TabController(length: 6, vsync: this);
     controller.addListener(() {

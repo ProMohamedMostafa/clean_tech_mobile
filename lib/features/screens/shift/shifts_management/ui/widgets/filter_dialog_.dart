@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -451,49 +452,51 @@ class CustomFilterShiftDialog {
                         controller: context.read<ShiftCubit>().pointController,
                         keyboardType: TextInputType.text,
                       ),
-                      verticalSpace(10),
-                      Text(
-                        'Provider',
-                        style: TextStyles.font16BlackRegular,
-                      ),
-                      CustomDropDownList(
-                        hint: 'Select Provider',
-                        items: context
-                                    .read<ShiftCubit>()
-                                    .providersModel
-                                    ?.data
-                                    ?.data
-                                    ?.isEmpty ??
-                                true
-                            ? ['No providers available']
-                            : context
-                                    .read<ShiftCubit>()
-                                    .providersModel
-                                    ?.data
-                                    ?.data
-                                    ?.map((e) => e.name ?? 'Unknown')
-                                    .toList() ??
-                                [],
-                        onPressed: (value) {
-                          final selectedProvider = context
-                              .read<ShiftCubit>()
-                              .providersModel
-                              ?.data
-                              ?.data
-                              ?.firstWhere((provider) =>
-                                  provider.name ==
-                                  context
+                      if (role == 'Admin') ...[
+                        verticalSpace(10),
+                        Text(
+                          'Provider',
+                          style: TextStyles.font16BlackRegular,
+                        ),
+                        CustomDropDownList(
+                          hint: 'Select Provider',
+                          items: context
                                       .read<ShiftCubit>()
-                                      .providerController
-                                      .text);
+                                      .providersModel
+                                      ?.data
+                                      ?.data
+                                      ?.isEmpty ??
+                                  true
+                              ? ['No providers available']
+                              : context
+                                      .read<ShiftCubit>()
+                                      .providersModel
+                                      ?.data
+                                      ?.data
+                                      ?.map((e) => e.name ?? 'Unknown')
+                                      .toList() ??
+                                  [],
+                          onPressed: (value) {
+                            final selectedProvider = context
+                                .read<ShiftCubit>()
+                                .providersModel
+                                ?.data
+                                ?.data
+                                ?.firstWhere((provider) =>
+                                    provider.name ==
+                                    context
+                                        .read<ShiftCubit>()
+                                        .providerController
+                                        .text);
 
-                          providerId = selectedProvider!.id;
-                        },
-                        controller:
-                            context.read<ShiftCubit>().providerController,
-                        keyboardType: TextInputType.text,
-                        suffixIcon: IconBroken.arrowDown2,
-                      ),
+                            providerId = selectedProvider!.id;
+                          },
+                          controller:
+                              context.read<ShiftCubit>().providerController,
+                          keyboardType: TextInputType.text,
+                          suffixIcon: IconBroken.arrowDown2,
+                        ),
+                      ],
                       verticalSpace(20),
                       Center(
                         child: DefaultElevatedButton(

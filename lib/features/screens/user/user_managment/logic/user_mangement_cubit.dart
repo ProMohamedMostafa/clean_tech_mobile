@@ -404,4 +404,5 @@ class UserManagementCubit extends Cubit<UserManagementState> {
       emit(ShiftErrorState(error.toString()));
     });
   }
+
 }

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
+import 'package:smart_cleaning_application/src/app_cubit/app_cubit.dart';
+import 'package:smart_cleaning_application/src/app_cubit/app_states.dart';
 
 class LanguagesScreen extends StatefulWidget {
   const LanguagesScreen({super.key});
@@ -13,7 +15,31 @@ class LanguagesScreen extends StatefulWidget {
 }
 
 class _LanguagesScreenState extends State<LanguagesScreen> {
-  var ischecked = [true, false, false];
+  List<bool> isChecked = [false, false, false]; // Default selection
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeLanguage();
+  }
+
+  // Initialize the language selection based on saved language
+  Future<void> _initializeLanguage() async {
+    // Get the saved language code
+    final savedLanguage = await LanguageCacheHelper().getCachedLanguageCode();
+
+    // Update the `isChecked` list based on the saved language
+    setState(() {
+      if (savedLanguage == 'en') {
+        isChecked = [true, false, false];
+      } else if (savedLanguage == 'ar') {
+        isChecked = [false, true, false];
+      } else if (savedLanguage == 'ur') {
+        isChecked = [false, false, true];
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,119 +47,78 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
         title: Text('Language'),
         leading: customBackButton(context),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            InkWell(
-              onTap: () {
-                setState(() {
-                  ischecked[0] = true;
-                  ischecked[1] = false;
-                  ischecked[2] = false;
-                });
-              },
-              child: ListTile(
-                dense: true,
-                contentPadding: EdgeInsets.symmetric(horizontal: 5),
-                leading: Text(
-                  'English',
-                  style: TextStyles.font16BlackSemiBold,
+      body: BlocBuilder<AppCubit, AppStates>(
+        builder: (context, state) {
+          var appCubit = AppCubit.get(context);
+
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      isChecked = [true, false, false];
+                    });
+                    appCubit.changeLanguage('en');
+                  },
+                  child: _buildLanguageItem('English', isChecked[0]),
                 ),
-                trailing: Container(
-                  width: 22.w,
-                  height: 22.h,
-                  decoration: BoxDecoration(
-                    color: ischecked[0]
-                        ? Colors.transparent
-                        : AppColor.primaryColor.withOpacity(0.4),
-                    borderRadius: BorderRadius.circular(25.r),
-                    border: Border.all(
-                      color: ischecked[0]
-                          ? AppColor.primaryColor
-                          : AppColor.primaryColor.withOpacity(0.4),
-                      width: ischecked[0] ? 6.w : 2.w,
-                    ),
-                  ),
+                Divider(),
+                Text(
+                  'Others',
+                  style: TextStyles.font16PrimSemiBold
+                      .copyWith(color: Colors.black),
                 ),
-              ),
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      isChecked = [false, true, false];
+                    });
+                    appCubit.changeLanguage('ar');
+                  },
+                  child: _buildLanguageItem('العربية', isChecked[1]),
+                ),
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      isChecked = [false, false, true];
+                    });
+                    appCubit.changeLanguage('ur');
+                  },
+                  child: _buildLanguageItem('Urdu', isChecked[2]),
+                ),
+              ],
             ),
-            Divider(),
-            verticalSpace(5),
-            Text(
-              'Others',
-              style:
-                  TextStyles.font16PrimSemiBold.copyWith(color: Colors.black),
-            ),
-            InkWell(
-              onTap: () {
-                setState(() {
-                  ischecked[1] = true;
-                  ischecked[0] = false;
-                  ischecked[2] = false;
-                });
-              },
-              child: ListTile(
-                dense: true,
-                contentPadding: EdgeInsets.symmetric(horizontal: 5),
-                leading: Text(
-                  'العربية',
-                  style: TextStyles.font16BlackSemiBold,
-                ),
-                trailing: Container(
-                  width: 22.w,
-                  height: 22.h,
-                  decoration: BoxDecoration(
-                    color: ischecked[1]
-                        ? Colors.transparent
-                        : AppColor.primaryColor.withOpacity(0.4),
-                    borderRadius: BorderRadius.circular(25.r),
-                    border: Border.all(
-                      color: ischecked[1]
-                          ? AppColor.primaryColor
-                          : AppColor.primaryColor.withOpacity(0.4),
-                      width: ischecked[1] ? 6.w : 2.w,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                setState(() {
-                  ischecked[0] = false;
-                  ischecked[2] = true;
-                  ischecked[1] = false;
-                });
-              },
-              child: ListTile(
-                dense: true,
-                contentPadding: EdgeInsets.symmetric(horizontal: 5),
-                leading: Text(
-                  'Ordo',
-                  style: TextStyles.font16BlackSemiBold,
-                ),
-                trailing: Container(
-                  width: 22.w,
-                  height: 22.h,
-                  decoration: BoxDecoration(
-                    color: ischecked[2]
-                        ? Colors.transparent
-                        : AppColor.primaryColor.withOpacity(0.4),
-                    borderRadius: BorderRadius.circular(25.r),
-                    border: Border.all(
-                      color: ischecked[2]
-                          ? AppColor.primaryColor
-                          : AppColor.primaryColor.withOpacity(0.4),
-                      width: ischecked[2] ? 6.w : 2.w,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildLanguageItem(String language, bool isSelected) {
+    return ListTile(
+      dense: true,
+      contentPadding: EdgeInsets.symmetric(horizontal: 5),
+      leading: Text(
+        language,
+        style: TextStyles.font16BlackSemiBold,
+      ),
+      trailing: Container(
+        width: 22.w,
+        height: 22.h,
+        decoration: BoxDecoration(
+          color: isSelected
+              ? Colors.transparent
+              : AppColor.primaryColor.withOpacity(0.4),
+          borderRadius: BorderRadius.circular(25.r),
+          border: Border.all(
+            color: isSelected
+                ? AppColor.primaryColor
+                : AppColor.primaryColor.withOpacity(0.4),
+            width: isSelected ? 6.w : 2.w,
+          ),
         ),
       ),
     );

@@ -381,3 +381,4 @@ class ShiftErrorState extends UserManagementState {
   final String error;
   ShiftErrorState(this.error);
 }
+

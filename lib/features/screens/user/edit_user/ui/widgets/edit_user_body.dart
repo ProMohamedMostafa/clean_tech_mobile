@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -35,7 +37,7 @@ class _EditUserBodyState extends State<EditUserBody> {
   void initState() {
     context.read<EditUserCubit>().getUserDetailsInEdit(widget.id);
     context.read<EditUserCubit>().getUserShiftDetails(widget.id);
-    context.read<EditUserCubit>().getRoleUser(2);
+    context.read<EditUserCubit>().getRoleUser(widget.id);
     context.read<EditUserCubit>()
       ..getNationality()
       ..getRole()
@@ -89,20 +91,38 @@ class _EditUserBodyState extends State<EditUserBody> {
                           shape: BoxShape.circle,
                           border: Border.all(
                             color: AppColor.primaryColor,
-                            width: 3.w,
+                            width: 2.w,
                           ),
                         ),
                         child: ClipOval(
-                          child: Image.network(
-                            '${ApiConstants.apiBaseUrl}${context.read<EditUserCubit>().userDetailsModel!.data!.image}',
-                            fit: BoxFit.fill,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Image.asset(
-                                'assets/images/noImage.png',
-                                fit: BoxFit.fill,
-                              );
-                            },
-                          ),
+                          child: context
+                                  .read<EditUserCubit>()
+                                  .image!
+                                  .path
+                                  .isNotEmpty
+                              ? Image.file(
+                                  File(context
+                                      .read<EditUserCubit>()
+                                      .image!
+                                      .path),
+                                  fit: BoxFit.fill,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Image.asset(
+                                      'assets/images/noImage.png',
+                                      fit: BoxFit.fill,
+                                    );
+                                  },
+                                )
+                              : Image.network(
+                                  '${ApiConstants.apiBaseUrl}${context.read<EditUserCubit>().userDetailsModel!.data!.image}',
+                                  fit: BoxFit.fill,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Image.asset(
+                                      'assets/images/noImage.png',
+                                      fit: BoxFit.fill,
+                                    );
+                                  },
+                                ),
                         ),
                       ),
                       Positioned(
@@ -201,18 +221,6 @@ class _EditUserBodyState extends State<EditUserBody> {
                 ),
                 verticalSpace(15),
                 EditUserTextField(
-                  controller: context.read<EditUserCubit>().passwordController,
-                  keyboardType: TextInputType.text,
-                  suffixIcon: context.read<EditUserCubit>().suffixIcon,
-                  suffixPressed: () {
-                    context.read<EditUserCubit>().changeSuffixIconVisiability();
-                  },
-                  obscureText: context.read<EditUserCubit>().ispassword,
-                  label: 'Password Confirm',
-                  hint: '',
-                ),
-                verticalSpace(15),
-                EditUserTextField(
                   controller: context
                       .read<EditUserCubit>()
                       .passwordConfirmationController,
@@ -223,6 +231,18 @@ class _EditUserBodyState extends State<EditUserBody> {
                   obscureText: context.read<EditUserCubit>().ispassword,
                   keyboardType: TextInputType.text,
                   label: 'Password',
+                  hint: '',
+                ),
+                verticalSpace(15),
+                EditUserTextField(
+                  controller: context.read<EditUserCubit>().passwordController,
+                  keyboardType: TextInputType.text,
+                  suffixIcon: context.read<EditUserCubit>().suffixIcon,
+                  suffixPressed: () {
+                    context.read<EditUserCubit>().changeSuffixIconVisiability();
+                  },
+                  obscureText: context.read<EditUserCubit>().ispassword,
+                  label: 'Password Confirm',
                   hint: '',
                 ),
                 verticalSpace(15),
@@ -573,7 +593,6 @@ class _EditUserBodyState extends State<EditUserBody> {
                               .toList() ??
                           [],
                 ),
-                verticalSpace(15),
                 verticalSpace(15),
                 CustomDropDownList(
                   label: S.of(context).addUserText15,
