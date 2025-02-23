@@ -7,18 +7,18 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shifts_management/logic/shift_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
 
 Widget listShiftItemBuild(BuildContext context, index) {
-  return InkWell(borderRadius: BorderRadius.circular(11.r),
+  return InkWell(
+    borderRadius: BorderRadius.circular(11.r),
     onTap: () {
       context.pushNamed(Routes.shiftDetailsScreen,
           arguments: context
-              .read<ShiftCubit>()
-              .allShiftsModel!
+              .read<UserManagementCubit>()
+              .shiftModel!
               .data!
-              .shifts![index]
+              .data![index]
               .id);
     },
     child: Card(

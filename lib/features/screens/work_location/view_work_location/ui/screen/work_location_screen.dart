@@ -920,17 +920,187 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                 children: [
                   InkWell(
                     onTap: () {
-                      context.pushNamed(Routes.workLocationDetailsScreen,
-                          arguments: {
-                            'id': context
-                                .read<WorkLocationCubit>()
-                                .areaTreeModel!
-                                .data!
-                                .cities![index]
-                                .id!
-                                .toInt(),
-                            'selectedIndex': selectedIndex
-                          });
+                      if (widget.selectedIndex == 0) {
+                        context.pushNamed(Routes.workLocationDetailsScreen,
+                            arguments: items[selectedIndex]['title'] == 'City'
+                                ? {
+                                    'id': context
+                                        .read<WorkLocationCubit>()
+                                        .areaTreeModel!
+                                        .data!
+                                        .cities![index]
+                                        .id!
+                                        .toInt(),
+                                    'selectedIndex': 1
+                                  }
+                                : items[selectedIndex]['title'] ==
+                                        'Organization'
+                                    ? {
+                                        'id': context
+                                            .read<WorkLocationCubit>()
+                                            .areaTreeModel!
+                                            .data!
+                                            .cities![index]
+                                            .id!
+                                            .toInt(),
+                                        'selectedIndex': 2
+                                      }
+                                    : items[selectedIndex]['title'] ==
+                                            'Building'
+                                        ? {
+                                            'id': context
+                                                .read<WorkLocationCubit>()
+                                                .areaTreeModel!
+                                                .data!
+                                                .cities![index]
+                                                .id!
+                                                .toInt(),
+                                            'selectedIndex': 3
+                                          }
+                                        : items[selectedIndex]['title'] ==
+                                                'Floor'
+                                            ? {
+                                                'id': context
+                                                    .read<WorkLocationCubit>()
+                                                    .areaTreeModel!
+                                                    .data!
+                                                    .cities![index]
+                                                    .id!
+                                                    .toInt(),
+                                                'selectedIndex': 4
+                                              }
+                                            : {
+                                                'id': context
+                                                    .read<WorkLocationCubit>()
+                                                    .areaTreeModel!
+                                                    .data!
+                                                    .cities![index]
+                                                    .id!
+                                                    .toInt(),
+                                                'selectedIndex': 5
+                                              });
+                      }
+                      if (widget.selectedIndex == 1) {
+                        context.pushNamed(Routes.workLocationDetailsScreen,
+                            arguments: items[selectedIndex]['title'] ==
+                                    'Organization'
+                                ? {
+                                    'id': context
+                                        .read<WorkLocationCubit>()
+                                        .cityTreeModel!
+                                        .data!
+                                        .organizations![index]
+                                        .id!
+                                        .toInt(),
+                                    'selectedIndex': 2
+                                  }
+                                : items[selectedIndex]['title'] == 'Building'
+                                    ? {
+                                        'id': context
+                                            .read<WorkLocationCubit>()
+                                            .cityTreeModel!
+                                            .data!
+                                            .organizations![index]
+                                            .id!
+                                            .toInt(),
+                                        'selectedIndex': 3
+                                      }
+                                    : items[selectedIndex]['title'] == 'Floor'
+                                        ? {
+                                            'id': context
+                                                .read<WorkLocationCubit>()
+                                                .cityTreeModel!
+                                                .data!
+                                                .organizations![index]
+                                                .id!
+                                                .toInt(),
+                                            'selectedIndex': 4
+                                          }
+                                        : {
+                                            'id': context
+                                                .read<WorkLocationCubit>()
+                                                .cityTreeModel!
+                                                .data!
+                                                .organizations![index]
+                                                .id!
+                                                .toInt(),
+                                            'selectedIndex': 5
+                                          });
+                      }
+
+                      if (widget.selectedIndex == 2) {
+                        context.pushNamed(Routes.workLocationDetailsScreen,
+                            arguments:
+                                items[selectedIndex]['title'] == 'Building'
+                                    ? {
+                                        'id': context
+                                            .read<WorkLocationCubit>()
+                                            .organizationTreeModel!
+                                            .data!
+                                            .buildings![index]
+                                            .id!
+                                            .toInt(),
+                                        'selectedIndex': 3
+                                      }
+                                    : items[selectedIndex]['title'] == 'Floor'
+                                        ? {
+                                            'id': context
+                                                .read<WorkLocationCubit>()
+                                                .organizationTreeModel!
+                                                .data!
+                                                .buildings![index]
+                                                .id!
+                                                .toInt(),
+                                            'selectedIndex': 4
+                                          }
+                                        : {
+                                            'id': context
+                                                .read<WorkLocationCubit>()
+                                                .organizationTreeModel!
+                                                .data!
+                                                .buildings![index]
+                                                .id!
+                                                .toInt(),
+                                            'selectedIndex': 5
+                                          });
+                      }
+                      if (widget.selectedIndex == 3) {
+                        context.pushNamed(Routes.workLocationDetailsScreen,
+                            arguments: items[selectedIndex]['title'] == 'Floor'
+                                ? {
+                                    'id': context
+                                        .read<WorkLocationCubit>()
+                                        .buildingTreeModel!
+                                        .data!
+                                        .floors![index]
+                                        .id!
+                                        .toInt(),
+                                    'selectedIndex': 4
+                                  }
+                                : {
+                                    'id': context
+                                        .read<WorkLocationCubit>()
+                                        .buildingTreeModel!
+                                        .data!
+                                        .floors![index]
+                                        .id!
+                                        .toInt(),
+                                    'selectedIndex': 5
+                                  });
+                      }
+                      if (widget.selectedIndex == 4) {
+                        context.pushNamed(Routes.workLocationDetailsScreen,
+                            arguments: {
+                              'id': context
+                                  .read<WorkLocationCubit>()
+                                  .floorTreeModel!
+                                  .data!
+                                  .points![index]
+                                  .id!
+                                  .toInt(),
+                              'selectedIndex': 5
+                            });
+                      }
                     },
                     child: Card(
                       elevation: 1,

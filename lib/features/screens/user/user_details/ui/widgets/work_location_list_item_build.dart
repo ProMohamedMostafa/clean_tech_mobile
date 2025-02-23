@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
@@ -72,7 +74,19 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            context.pushNamed(Routes.workLocationDetailsScreen,
+                                arguments: {
+                                  'id': context
+                                      .read<UserManagementCubit>()
+                                      .userWorkLocationDetailsModel!
+                                      .data!
+                                      .areas![index]
+                                      .id!
+                                      .toInt(),
+                                  'selectedIndex': 0
+                                });
+                          },
                           child: Container(
                             padding: EdgeInsets.fromLTRB(10, 8, 8, 8),
                             decoration: BoxDecoration(
@@ -176,7 +190,19 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            context.pushNamed(Routes.workLocationDetailsScreen,
+                                arguments: {
+                                  'id': context
+                                      .read<UserManagementCubit>()
+                                      .userWorkLocationDetailsModel!
+                                      .data!
+                                      .cities![index]
+                                      .id!
+                                      .toInt(),
+                                  'selectedIndex': 1
+                                });
+                          },
                           child: Container(
                             padding: EdgeInsets.fromLTRB(10, 8, 8, 8),
                             decoration: BoxDecoration(
@@ -216,7 +242,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
             ),
           ),
         ),
-        verticalSpace(10),
+        verticalSpace(10)
       ],
       if (context
           .read<UserManagementCubit>()
@@ -280,7 +306,19 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            context.pushNamed(Routes.workLocationDetailsScreen,
+                                arguments: {
+                                  'id': context
+                                      .read<UserManagementCubit>()
+                                      .userWorkLocationDetailsModel!
+                                      .data!
+                                      .organizations![index]
+                                      .id!
+                                      .toInt(),
+                                  'selectedIndex': 2
+                                });
+                          },
                           child: Container(
                             padding: EdgeInsets.fromLTRB(10, 8, 8, 8),
                             decoration: BoxDecoration(
@@ -320,7 +358,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
             ),
           ),
         ),
-        verticalSpace(10),
+        verticalSpace(10)
       ],
       if (context
           .read<UserManagementCubit>()
@@ -384,7 +422,19 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            context.pushNamed(Routes.workLocationDetailsScreen,
+                                arguments: {
+                                  'id': context
+                                      .read<UserManagementCubit>()
+                                      .userWorkLocationDetailsModel!
+                                      .data!
+                                      .buildings![index]
+                                      .id!
+                                      .toInt(),
+                                  'selectedIndex': 3
+                                });
+                          },
                           child: Container(
                             padding: EdgeInsets.fromLTRB(10, 8, 8, 8),
                             decoration: BoxDecoration(
@@ -488,7 +538,19 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            context.pushNamed(Routes.workLocationDetailsScreen,
+                                arguments: {
+                                  'id': context
+                                      .read<UserManagementCubit>()
+                                      .userWorkLocationDetailsModel!
+                                      .data!
+                                      .floors![index]
+                                      .id!
+                                      .toInt(),
+                                  'selectedIndex': 4
+                                });
+                          },
                           child: Container(
                             padding: EdgeInsets.fromLTRB(10, 8, 8, 8),
                             decoration: BoxDecoration(
@@ -592,7 +654,19 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            context.pushNamed(Routes.workLocationDetailsScreen,
+                                arguments: {
+                                  'id': context
+                                      .read<UserManagementCubit>()
+                                      .userWorkLocationDetailsModel!
+                                      .data!
+                                      .points![index]
+                                      .id!
+                                      .toInt(),
+                                  'selectedIndex': 5
+                                });
+                          },
                           child: Container(
                             padding: EdgeInsets.fromLTRB(10, 8, 8, 8),
                             decoration: BoxDecoration(
