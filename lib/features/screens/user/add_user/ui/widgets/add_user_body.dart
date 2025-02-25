@@ -35,8 +35,7 @@ class _AddUserBodyState extends State<AddUserBody> {
       ..getNationality()
       ..getRole()
       ..getProviders()
-      ..getAllDeletedProviders()
-      ;
+      ..getAllDeletedProviders();
     super.initState();
   }
 
@@ -415,9 +414,11 @@ class _AddUserBodyState extends State<AddUserBody> {
                                 suffixPressed: () async {
                                   DateTime? pickedDate = await showDatePicker(
                                     context: context,
-                                    initialDate: DateTime.now(),
+                                    initialDate: DateTime.now()
+                                        .subtract(Duration(days: 18 * 365)),
                                     firstDate: DateTime(1900),
-                                    lastDate: DateTime(3025),
+                                    lastDate: DateTime.now()
+                                        .subtract(Duration(days: 18 * 365)),
                                     builder:
                                         (BuildContext context, Widget? child) {
                                       return Theme(
@@ -729,7 +730,6 @@ class _AddUserBodyState extends State<AddUserBody> {
                               [],
                     ),
                     verticalSpace(10),
-                  
                     RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(

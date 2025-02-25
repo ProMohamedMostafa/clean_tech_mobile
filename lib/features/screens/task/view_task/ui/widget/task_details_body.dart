@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,12 +14,11 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_state.dart';
 import 'package:smart_cleaning_application/features/screens/task/view_task/ui/widget/upload_files_dialog.dart';
 
-import '../../../../integrations/ui/widgets/row_details_build.dart';
 
 class TaskDetailsBody extends StatefulWidget {
   final int id;
@@ -104,8 +102,8 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
             return Center(child: Text("No data available"));
           }
 
-          final inProgressAction =
-              context.read<TaskManagementCubit>().taskActionModel!.data!.last;
+          // final inProgressAction =
+          //     context.read<TaskManagementCubit>().taskActionModel!.data!.last;
           String taskPriority = context
               .read<TaskManagementCubit>()
               .taskDetailsModel!
@@ -124,13 +122,40 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Align(
-                  //   alignment: Alignment.centerRight,
-                  //   child: Text(
-                  //     inProgressAction.timeDifferenceText!,
-                  //     style: TextStyles.font13greymedium,
-                  //   ),
-                  // ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: context
+                                        .read<TaskManagementCubit>()
+                                        .taskDetailsModel!
+                                        .data!
+                                        .duration ==
+                                    null
+                                ? 'Duration'
+                                : 'Total Time',
+                            style: TextStyles.font14BlackSemiBold,
+                          ),
+                          TextSpan(
+                            text: ' : ',
+                            style: TextStyles.font14BlackSemiBold,
+                          ),
+                          TextSpan(
+                            text: context
+                                    .read<TaskManagementCubit>()
+                                    .taskDetailsModel!
+                                    .data!
+                                    .duration ??
+                                'The task isn\'t complete yet.',
+                            style: TextStyles.font13greymedium,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                   verticalSpace(10),
                   Row(
                     children: [
@@ -632,7 +657,6 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                       ],
                     ),
                   ),
-
                   verticalSpace(10),
                   (state is ImageSelectedState || state is CameraSelectedState)
                       ? Container(
@@ -650,7 +674,6 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                           ),
                         )
                       : const SizedBox.shrink(),
-
                   verticalSpace(20),
                   state is GetChangeTaskStatusLoadingState
                       ? const Center(

@@ -27,6 +27,7 @@ class LoginCubit extends Cubit<LoginStates> {
       await saveUserToken(logInModel!.data!.token!);
       await saveUserId(logInModel!.data!.id!);
       await saveRole(logInModel!.data!.role!);
+      await saveOnBoarding('isOnBoarding');
       emit(LoginSuccessState(logInModel!));
     }).catchError((error) {
       emit(LoginErrorState(error.toString()));
@@ -46,6 +47,12 @@ class LoginCubit extends Cubit<LoginStates> {
   Future<void> saveRole(String rolee) async {
     await CacheHelper.setData(key: SharedPrefKeys.userRole, value: rolee);
     role = await CacheHelper.getString(SharedPrefKeys.userRole);
+  }
+
+  Future<void> saveOnBoarding(String onBoarding) async {
+    await CacheHelper.setData(
+        key: SharedPrefKeys.isOnBoarding, value: onBoarding);
+    isBoarding = await CacheHelper.getString(SharedPrefKeys.isOnBoarding);
   }
 
   IconData suffixIcon = Icons.visibility_outlined;

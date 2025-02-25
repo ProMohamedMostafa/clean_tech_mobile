@@ -26,7 +26,6 @@ class _EmailAndPasswordState extends State<EmailAndPassword> {
       listener: (context, state) {
         if (state is LoginSuccessState) {
           toast(text: state.loginmodel.message!, color: Colors.blue);
-
           context.pushNamedAndRemoveUntil(
             Routes.mainLayoutScreen,
             predicate: (route) => false,

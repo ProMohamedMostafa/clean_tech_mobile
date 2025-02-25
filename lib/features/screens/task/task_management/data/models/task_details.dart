@@ -23,11 +23,11 @@ class TaskDetailsModel {
     message = json['message'];
     error = json['error'];
     businessErrorCode = json['businessErrorCode'];
-    data = json['data'] != null ?  Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['statusCode'] = statusCode;
     data['meta'] = meta;
     data['succeeded'] = succeeded;
@@ -52,6 +52,7 @@ class Data {
   String? endDate;
   String? startTime;
   String? endTime;
+  String? currentlyReading;
   int? organizationId;
   String? organizationName;
   int? buildingId;
@@ -64,6 +65,8 @@ class Data {
   String? parentTitle;
   int? createdBy;
   String? createdName;
+  String? started;
+  String? duration;
 
   Data(
       {this.id,
@@ -76,6 +79,7 @@ class Data {
       this.endDate,
       this.startTime,
       this.endTime,
+      this.currentlyReading,
       this.organizationId,
       this.organizationName,
       this.buildingId,
@@ -87,7 +91,9 @@ class Data {
       this.parentId,
       this.parentTitle,
       this.createdBy,
-      this.createdName});
+      this.createdName,
+      this.started,
+      this.duration});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -100,6 +106,7 @@ class Data {
     endDate = json['endDate'];
     startTime = json['startTime'];
     endTime = json['endTime'];
+    currentlyReading = json['currentlyReading'];
     organizationId = json['organizationId'];
     organizationName = json['organizationName'];
     buildingId = json['buildingId'];
@@ -112,10 +119,12 @@ class Data {
     parentTitle = json['parentTitle'];
     createdBy = json['createdBy'];
     createdName = json['createdName'];
+    started = json['started'];
+    duration = json['duration'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['title'] = title;
     data['description'] = description;
@@ -126,6 +135,7 @@ class Data {
     data['endDate'] = endDate;
     data['startTime'] = startTime;
     data['endTime'] = endTime;
+    data['currentlyReading'] = currentlyReading;
     data['organizationId'] = organizationId;
     data['organizationName'] = organizationName;
     data['buildingId'] = buildingId;
@@ -138,6 +148,8 @@ class Data {
     data['parentTitle'] = parentTitle;
     data['createdBy'] = createdBy;
     data['createdName'] = createdName;
+    data['started'] = started;
+    data['duration'] = duration;
     return data;
   }
 }

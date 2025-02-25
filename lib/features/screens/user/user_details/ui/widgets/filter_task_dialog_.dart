@@ -184,6 +184,7 @@ class CustomFilterTaskDialog {
                                 suffixPressed: () async {
                                   final selectedDate =
                                       await CustomDatePicker.show(
+                                        
                                           context: context);
 
                                   if (selectedDate != null && context.mounted) {

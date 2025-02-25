@@ -313,28 +313,28 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
     DioHelper.getData(url: "action/task/$id").then((value) {
       taskActionModel = TaskActionModel.fromJson(value!.data);
 
-      // Calculate time differences and total times based on status
-      for (var action in taskActionModel!.data!) {
-        if (action.status == "In Progress") {
-          action.timeDifferenceText =
-              calculateTimeDifference(action.createdAt!, action.status!);
-        } else if (action.status == "Rejected") {
-          action.timeDifferenceText =
-              calculateTimeDifference(action.createdAt!, action.status!);
-        } else if (action.status == "Completed") {
-          action.timeDifferenceText =
-              calculateTotalElapsedTime(action.createdAt!);
-        } else if (action.status == "Waiting For Approval") {
-          action.timeDifferenceText =
-              calculateTotalElapsedTime(action.createdAt!);
-        } else if (action.status == "Pending") {
-          action.timeDifferenceText = "Task not start yet";
-        } else if (action.status == "Not Resolved") {
-          action.timeDifferenceText = "Task was stopped";
-        } else if (action.status == "Overdue") {
-          action.timeDifferenceText = "Task is Overdue";
-        }
-      }
+      // // Calculate time differences and total times based on status
+      // for (var action in taskActionModel!.data!) {
+      //   if (action.status == "In Progress") {
+      //     action.timeDifferenceText =
+      //         calculateTimeDifference(action.createdAt!, action.status!);
+      //   } else if (action.status == "Rejected") {
+      //     action.timeDifferenceText =
+      //         calculateTimeDifference(action.createdAt!, action.status!);
+      //   } else if (action.status == "Completed") {
+      //     action.timeDifferenceText =
+      //         calculateTotalElapsedTime(action.createdAt!);
+      //   } else if (action.status == "Waiting For Approval") {
+      //     action.timeDifferenceText =
+      //         calculateTotalElapsedTime(action.createdAt!);
+      //   } else if (action.status == "Pending") {
+      //     action.timeDifferenceText = "Task not start yet";
+      //   } else if (action.status == "Not Resolved") {
+      //     action.timeDifferenceText = "Task was stopped";
+      //   } else if (action.status == "Overdue") {
+      //     action.timeDifferenceText = "Task is Overdue";
+      //   }
+      // }
 
       emit(GetTaskActionSuccessState(taskActionModel!));
     }).catchError((error) {
@@ -431,43 +431,43 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
     });
   }
 
-  String calculateTimeDifference(String createdAt, String status) {
-    DateTime createdTime = DateTime.parse(createdAt);
-    Duration difference = DateTime.now().difference(createdTime);
+  // String calculateTimeDifference(String createdAt, String status) {
+  //   DateTime createdTime = DateTime.parse(createdAt);
+  //   Duration difference = DateTime.now().difference(createdTime);
 
-    int days = difference.inDays;
-    int hours = difference.inHours % 24;
-    int minutes = difference.inMinutes % 60;
+  //   int days = difference.inDays;
+  //   int hours = difference.inHours % 24;
+  //   int minutes = difference.inMinutes % 60;
 
-    String result = "Received";
-    if (days > 0) result += " $days day${days > 1 ? 's' : ''}";
-    if (hours > 0) result += " $hours hour${hours > 1 ? 's' : ''}";
-    if (minutes > 0) result += " $minutes minute${minutes > 1 ? 's' : ''}";
-    if (days == 0 && hours == 0 && minutes == 0) result += " just now";
+  //   String result = "Received";
+  //   if (days > 0) result += " $days day${days > 1 ? 's' : ''}";
+  //   if (hours > 0) result += " $hours hour${hours > 1 ? 's' : ''}";
+  //   if (minutes > 0) result += " $minutes minute${minutes > 1 ? 's' : ''}";
+  //   if (days == 0 && hours == 0 && minutes == 0) result += " just now";
 
-    return result.trim();
-  }
+  //   return result.trim();
+  // }
 
-  String calculateTotalElapsedTime(String completedAt) {
-    DateTime completedTime = DateTime.parse(completedAt);
+  // String calculateTotalElapsedTime(String completedAt) {
+  //   DateTime completedTime = DateTime.parse(completedAt);
 
-    var inProgressAction = taskActionModel!.data!
-        .firstWhere((action) => action.status == "In Progress");
+  //   var inProgressAction = taskActionModel!.data!
+  //       .firstWhere((action) => action.status == "In Progress");
 
-    DateTime inProgressTime = DateTime.parse(inProgressAction.createdAt!);
-    Duration difference = completedTime.difference(inProgressTime);
+  //   DateTime inProgressTime = DateTime.parse(inProgressAction.createdAt!);
+  //   Duration difference = completedTime.difference(inProgressTime);
 
-    int days = difference.inDays;
-    int hours = difference.inHours % 24;
-    int minutes = difference.inMinutes % 60;
+  //   int days = difference.inDays;
+  //   int hours = difference.inHours % 24;
+  //   int minutes = difference.inMinutes % 60;
 
-    String result = "Total time:";
-    if (days > 0) result += " $days day${days > 1 ? 's' : ''}";
-    if (hours > 0) result += " $hours hour${hours > 1 ? 's' : ''}";
-    if (minutes > 0) result += " $minutes minute${minutes > 1 ? 's' : ''}";
+  //   String result = "Total time:";
+  //   if (days > 0) result += " $days day${days > 1 ? 's' : ''}";
+  //   if (hours > 0) result += " $hours hour${hours > 1 ? 's' : ''}";
+  //   if (minutes > 0) result += " $minutes minute${minutes > 1 ? 's' : ''}";
 
-    return result.trim();
-  }
+  //   return result.trim();
+  // }
 
   GalleryModel? gellaryModel;
   XFile? image;
