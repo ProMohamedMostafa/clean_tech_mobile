@@ -66,7 +66,7 @@ class _EmailAndPasswordState extends State<EmailAndPassword> {
                       return S.of(context).validationPassword;
                     }
                   }),
-              verticalSpace(24),
+              verticalSpace(15),
               Align(
                 alignment: AlignmentDirectional.centerEnd,
                 child: InkWell(
@@ -75,11 +75,12 @@ class _EmailAndPasswordState extends State<EmailAndPassword> {
                   },
                   child: Text(
                     S.of(context).forgotPassButton,
-                    style: TextStyles.font13Blackmedium,
+                    style: TextStyles.font12GreyRegular
+                        .copyWith(color: AppColor.primaryColor),
                   ),
                 ),
               ),
-              verticalSpace(40),
+              verticalSpace(60),
               state is LoginLoadingState
                   ? const Center(
                       child: CircularProgressIndicator(

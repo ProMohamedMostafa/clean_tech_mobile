@@ -5,6 +5,8 @@ import 'package:smart_cleaning_application/features/screens/auth/verify_account/
 class VerifyAccountCubit extends Cubit<VerifyAccountState> {
   VerifyAccountCubit() : super(VerifyAccountInitialState());
   static VerifyAccountCubit get(context) => BlocProvider.of(context);
-  TextEditingController emailController = TextEditingController();
+
+  TextEditingController pinCodeController = TextEditingController();
+
   final formKey = GlobalKey<FormState>();
 }

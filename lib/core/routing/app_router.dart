@@ -18,6 +18,7 @@ import 'package:smart_cleaning_application/features/screens/attendance/attendanc
 import 'package:smart_cleaning_application/features/screens/attendance/ui/attendance_screen.dart';
 import 'package:smart_cleaning_application/features/screens/edit_profile/logic/edit_profile_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/edit_profile/ui/screen/edit_profile_screen.dart';
+import 'package:smart_cleaning_application/features/screens/home/logic/home_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/languages/ui/screen/languages_screen.dart';
 import 'package:smart_cleaning_application/features/screens/profile/logic/profile_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/profile/ui/screen/profile_screen.dart';
@@ -135,7 +136,10 @@ class AppRouter {
         );
       case Routes.homeScreen:
         return MaterialPageRoute(
-          builder: (_) => const HomeScreen(),
+          builder: (_) => BlocProvider(
+            create: (context) => HomeCubit(),
+            child: const HomeScreen(),
+          ),
         );
       case Routes.settingsScreen:
         return MaterialPageRoute(

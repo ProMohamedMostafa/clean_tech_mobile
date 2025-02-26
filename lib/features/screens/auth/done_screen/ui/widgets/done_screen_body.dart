@@ -36,8 +36,8 @@ class DoneScreenBody extends StatelessWidget {
           ),
           verticalSpace(40),
           DefaultElevatedButton(
-             width: 310,
-                  height: 50,
+            width: 310,
+            height: 50,
             name: S.of(context).donebutton,
             color: AppColor.primaryColor,
             textStyles: TextStyles.font16WhiteSemiBold,

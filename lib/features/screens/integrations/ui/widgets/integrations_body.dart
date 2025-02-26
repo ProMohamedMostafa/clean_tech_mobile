@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
-import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/itegration_item.dart';
@@ -18,51 +17,55 @@ class IntegrationsBody extends StatelessWidget {
         IntegrationItem(
           onTap: () => context.pushNamed(Routes.userManagmentScreen),
           label: S.of(context).integ1,
-          icon: IconBroken.addUser,
+          image: 'assets/images/user.png',
         ),
       IntegrationItem(
         onTap: () => context.pushNamed(Routes.chooseViewWorkLocationScreen),
         label: 'Work Location',
-        icon: Icons.location_city_outlined,
+        image: 'assets/images/location.png',
       ),
       if (role == 'Admin')
         IntegrationItem(
           onTap: () => context.pushNamed(Routes.assignScreen),
           label: "Assign",
-          icon: Icons.assignment,
+          image: 'assets/images/assign.png',
         ),
       if (role != 'Cleaner')
         IntegrationItem(
           onTap: () => context.pushNamed(Routes.shiftScreen),
           label: "Shift",
-          icon: IconBroken.calendar,
+          image: 'assets/images/shift.png',
         ),
       IntegrationItem(
         onTap: () => context.pushNamed(Routes.taskManagementScreen),
         label: 'Task',
-        icon: Icons.task_outlined,
+        image: 'assets/images/task.png',
       ),
       IntegrationItem(
         onTap: () => context.pushNamed(Routes.attendanceScreen),
         label: "Attendance",
-        icon: Icons.perm_contact_cal_sharp,
+        image: 'assets/images/attendance.png',
       ),
     ];
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Integrations"),
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 40),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              verticalSpace(100),
+              verticalSpace(30),
               Expanded(
                 child: GridView.builder(
                   physics: const BouncingScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    mainAxisSpacing: 16.h,
-                    crossAxisSpacing: 16.w,
+                    mainAxisSpacing: 24.h,
+                    crossAxisSpacing: 24.w,
                     childAspectRatio: 1,
                   ),
                   itemCount: integrationItems.length,
@@ -71,7 +74,7 @@ class IntegrationsBody extends StatelessWidget {
                     return buildIntegrationItem(
                       item.onTap,
                       item.label,
-                      item.icon,
+                      item.image,
                     );
                   },
                 ),
@@ -87,11 +90,11 @@ class IntegrationsBody extends StatelessWidget {
 class IntegrationItem {
   final VoidCallback onTap;
   final String label;
-  final IconData icon;
+  final String image;
 
   IntegrationItem({
     required this.onTap,
     required this.label,
-    required this.icon,
+    required this.image,
   });
 }

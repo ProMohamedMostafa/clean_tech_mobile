@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/features/layout/main_layout/logic/bottom_navbar_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/home/logic/home_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/notification_build.dart';
 
 Widget homeAppBar(BuildContext context) {
@@ -25,10 +27,17 @@ Widget homeAppBar(BuildContext context) {
                 ),
               ),
               child: ClipOval(
-                  child: Image.asset(
-                'assets/images/noImage.png',
-                fit: BoxFit.fill,
-              )),
+                child: Image.network(
+                  '${ApiConstants.apiBaseUrl}${context.read<HomeCubit>().profileModel!.data!.image}',
+                  fit: BoxFit.fill,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      'assets/images/noImage.png',
+                      fit: BoxFit.fill,
+                    );
+                  },
+                ),
+              ),
             ),
             horizontalSpace(5),
             InkWell(
@@ -39,12 +48,32 @@ Widget homeAppBar(BuildContext context) {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text(
-                    'Hey, Mosad..👋',
-                    style: TextStyles.font16BlackSemiBold,
+
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Hey, ',
+                          style: TextStyles.font16BlackSemiBold,
+                        ),
+                        TextSpan(
+                          text: context
+                              .read<HomeCubit>()
+                              .profileModel!
+                              .data!
+                              .firstName!,
+                          style: TextStyles.font16BlackSemiBold,
+                        ),
+                        TextSpan(
+                          text: '..👋',
+                          style: TextStyles.font16BlackSemiBold,
+                        ),
+                      ],
+                    ),
                   ),
                   Text(
-                    'Admin',
+                    context.read<HomeCubit>().profileModel!.data!.role!,
                     style: TextStyles.font11BlackMedium,
                   ),
                 ],
