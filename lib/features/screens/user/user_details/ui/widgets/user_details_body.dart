@@ -25,6 +25,7 @@ import 'package:smart_cleaning_application/features/screens/user/user_details/ui
 import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_state.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
+import 'package:photo_view/photo_view.dart';
 
 class UserDetailsBody extends StatefulWidget {
   final int id;
@@ -155,22 +156,53 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                   Center(
                     child: Stack(
                       children: [
-                        Container(
-                          width: 80.w,
-                          height: 80.h,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                          ),
-                          child: ClipOval(
-                            child: Image.network(
-                              '${ApiConstants.apiBaseUrl}${context.read<UserManagementCubit>().userDetailsModel!.data!.image}',
-                              fit: BoxFit.fill,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Image.asset(
-                                  'assets/images/noImage.png',
-                                  fit: BoxFit.fill,
-                                );
-                              },
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (contextt) => Scaffold(
+                                  appBar: AppBar(
+                                    leading: customBackButton(context),
+                                  ),
+                                  body: Center(
+                                    child: PhotoView(
+                                      imageProvider: NetworkImage(
+                                        '${ApiConstants.apiBaseUrl}${context.read<UserManagementCubit>().userDetailsModel!.data!.image}',
+                                      ),
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Image.asset(
+                                          'assets/images/noImage.png',
+                                          fit: BoxFit.fill,
+                                        );
+                                      },
+                                      backgroundDecoration: const BoxDecoration(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            width: 80.w,
+                            height: 80.h,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            child: ClipOval(
+                              child: Image.network(
+                                '${ApiConstants.apiBaseUrl}${context.read<UserManagementCubit>().userDetailsModel!.data!.image}',
+                                fit: BoxFit.fill,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Image.asset(
+                                    'assets/images/noImage.png',
+                                    fit: BoxFit.fill,
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         ),

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -135,22 +136,53 @@ class _ProfileScreenState extends State<ProfileScreen>
                   Center(
                     child: Stack(
                       children: [
-                        Container(
-                          width: 80.w,
-                          height: 80.h,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                          ),
-                          child: ClipOval(
-                            child: Image.network(
-                              '${ApiConstants.apiBaseUrl}${context.read<ProfileCubit>().profileModel!.data!.image}',
-                              fit: BoxFit.fill,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Image.asset(
-                                  'assets/images/noImage.png',
-                                  fit: BoxFit.fill,
-                                );
-                              },
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (contextt) => Scaffold(
+                                  appBar: AppBar(
+                                    leading: customBackButton(context),
+                                  ),
+                                  body: Center(
+                                    child: PhotoView(
+                                      imageProvider: NetworkImage(
+                                        '${ApiConstants.apiBaseUrl}${context.read<ProfileCubit>().profileModel!.data!.image}',
+                                      ),
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Image.asset(
+                                          'assets/images/noImage.png',
+                                          fit: BoxFit.fill,
+                                        );
+                                      },
+                                      backgroundDecoration: const BoxDecoration(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            width: 80.w,
+                            height: 80.h,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            child: ClipOval(
+                              child: Image.network(
+                                '${ApiConstants.apiBaseUrl}${context.read<ProfileCubit>().profileModel!.data!.image}',
+                                fit: BoxFit.fill,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Image.asset(
+                                    'assets/images/noImage.png',
+                                    fit: BoxFit.fill,
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         ),

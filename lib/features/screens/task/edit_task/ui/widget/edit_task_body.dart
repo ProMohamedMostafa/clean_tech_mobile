@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:multi_dropdown/multi_dropdown.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -865,19 +866,48 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                               verticalSpace(20),
                               (state is ImageSelectedState ||
                                       state is CameraSelectedState)
-                                  ? Container(
-                                      height: 80,
-                                      width: 80,
-                                      clipBehavior: Clip.hardEdge,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10.r)),
-                                      child: Image.file(
-                                        File(context
-                                            .read<EditTaskCubit>()
-                                            .image!
-                                            .path),
-                                        fit: BoxFit.cover,
+                                  ? GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (contextt) => Scaffold(
+                                              appBar: AppBar(
+                                                leading:
+                                                    customBackButton(context),
+                                              ),
+                                              body: Center(
+                                                child: PhotoView(
+                                                  imageProvider: FileImage(
+                                                    File(context
+                                                        .read<EditTaskCubit>()
+                                                        .image!
+                                                        .path),
+                                                  ),
+                                                  backgroundDecoration:
+                                                      const BoxDecoration(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        height: 80,
+                                        width: 80,
+                                        clipBehavior: Clip.hardEdge,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10.r)),
+                                        child: Image.file(
+                                          File(context
+                                              .read<EditTaskCubit>()
+                                              .image!
+                                              .path),
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     )
                                   : const SizedBox.shrink(),

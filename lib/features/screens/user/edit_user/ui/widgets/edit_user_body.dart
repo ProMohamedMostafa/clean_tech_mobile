@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -84,45 +85,91 @@ class _EditUserBodyState extends State<EditUserBody> {
                 Center(
                   child: Stack(
                     children: [
-                      Container(
-                        width: 100.w,
-                        height: 100.h,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: AppColor.primaryColor,
-                            width: 2.w,
-                          ),
-                        ),
-                        child: ClipOval(
-                          child: context
-                                  .read<EditUserCubit>()
-                                  .image!
-                                  .path
-                                  .isNotEmpty
-                              ? Image.file(
-                                  File(context
-                                      .read<EditUserCubit>()
-                                      .image!
-                                      .path),
-                                  fit: BoxFit.fill,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Image.asset(
-                                      'assets/images/noImage.png',
-                                      fit: BoxFit.fill,
-                                    );
-                                  },
-                                )
-                              : Image.network(
-                                  '${ApiConstants.apiBaseUrl}${context.read<EditUserCubit>().userDetailsModel!.data!.image}',
-                                  fit: BoxFit.fill,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Image.asset(
-                                      'assets/images/noImage.png',
-                                      fit: BoxFit.fill,
-                                    );
-                                  },
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (contextt) => Scaffold(
+                                appBar: AppBar(
+                                  leading: customBackButton(context),
                                 ),
+                                body: Center(
+                                  child: PhotoView(
+                                    imageProvider:
+                                        (context.read<EditUserCubit>().image !=
+                                                    null &&
+                                                context
+                                                    .read<EditUserCubit>()
+                                                    .image!
+                                                    .path
+                                                    .isNotEmpty)
+                                            ? FileImage(
+                                                File(context
+                                                    .read<EditUserCubit>()
+                                                    .image!
+                                                    .path),
+                                              )
+                                            : NetworkImage(
+                                                '${ApiConstants.apiBaseUrl}${context.read<EditUserCubit>().userDetailsModel!.data!.image}',
+                                              ),
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Image.asset(
+                                        'assets/images/noImage.png',
+                                        fit: BoxFit.fill,
+                                      );
+                                    },
+                                    backgroundDecoration: const BoxDecoration(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          width: 100.w,
+                          height: 100.h,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: AppColor.primaryColor,
+                              width: 2.w,
+                            ),
+                          ),
+                          child: ClipOval(
+                            child: (context.read<EditUserCubit>().image !=
+                                        null &&
+                                    context
+                                        .read<EditUserCubit>()
+                                        .image!
+                                        .path
+                                        .isNotEmpty)
+                                ? Image.file(
+                                    File(context
+                                        .read<EditUserCubit>()
+                                        .image!
+                                        .path),
+                                    fit: BoxFit.fill,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Image.asset(
+                                        'assets/images/noImage.png',
+                                        fit: BoxFit.fill,
+                                      );
+                                    },
+                                  )
+                                : Image.network(
+                                    '${ApiConstants.apiBaseUrl}${context.read<EditUserCubit>().userDetailsModel!.data!.image}',
+                                    fit: BoxFit.fill,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Image.asset(
+                                        'assets/images/noImage.png',
+                                        fit: BoxFit.fill,
+                                      );
+                                    },
+                                  ),
+                          ),
                         ),
                       ),
                       Positioned(

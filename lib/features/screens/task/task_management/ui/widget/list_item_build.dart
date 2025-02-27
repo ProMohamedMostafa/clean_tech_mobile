@@ -688,6 +688,76 @@ Widget buildCardItem(BuildContext context, selectedIndex, index) {
                           color: Colors.blue,
                           border: Border.all(color: Colors.white, width: 1.w),
                         ),
+                        //     child: Image.network(
+                        //       '${ApiConstants.apiBaseUrl}${selectedIndex == 0
+                        // ? context
+                        //     .read<TaskManagementCubit>()
+                        //     .allTasksModel!
+                        //     .data!
+                        //     .data![index]
+                        //   .title!
+                        // : selectedIndex == 1
+                        //     ? context
+                        //         .read<TaskManagementCubit>()
+                        //         .pendingModel!
+                        //         .data!
+                        //         .items![index]
+                        //       .title!
+                        //     : selectedIndex == 2
+                        //         ? context
+                        //             .read<TaskManagementCubit>()
+                        //             .inProgressModel!
+                        //             .data!
+                        //             .items![index]
+                        //           .title!
+                        //         : selectedIndex == 3
+                        //             ? context
+                        //                 .read<TaskManagementCubit>()
+                        //                 .notApprovableModel!
+                        //                 .data!
+                        //                 .items![index]
+                        //               .title!
+                        //             : selectedIndex == 4
+                        //                 ? context
+                        //                     .read<TaskManagementCubit>()
+                        //                     .rejectedModel!
+                        //                     .data!
+                        //                     .items![index]
+                        //                   .title!
+                        //                 : selectedIndex == 5
+                        //                     ? context
+                        //                         .read<TaskManagementCubit>()
+                        //                         .completedModel!
+                        //                         .data!
+                        //                         .items![index]
+                        //                       .title!
+                        //                     : selectedIndex == 6
+                        //                         ? context
+                        //                             .read<TaskManagementCubit>()
+                        //                             .notResolvedModel!
+                        //                             .data!
+                        //                             .items![index]
+                        //                           .title!
+                        //                         : selectedIndex == 7
+                        //                             ? context
+                        //                                 .read<TaskManagementCubit>()
+                        //                                 .overdueModel!
+                        //                                 .data!
+                        //                                 .items![index]
+                        //                               .title!
+                        //                             : context
+                        //                                 .read<TaskManagementCubit>()
+                        //                                 .deleteTaskListModel!
+                        //                                 .data![index]
+                        //                               .title!}',
+                        //       fit: BoxFit.fill,
+                        //       errorBuilder: (context, error, stackTrace) {
+                        //         return Image.asset(
+                        //           'assets/images/noImage.png',
+                        //           fit: BoxFit.fill,
+                        //         );
+                        //       },
+                        //     ),
                       ),
                       // Second circle (overlapping)
                       Positioned(

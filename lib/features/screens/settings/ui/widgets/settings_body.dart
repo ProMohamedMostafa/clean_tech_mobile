@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
@@ -9,6 +10,7 @@ import 'package:smart_cleaning_application/core/networking/api_constants/api_con
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
+import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/features/screens/settings/logic/settings_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/settings/logic/settings_state.dart';
 import 'package:smart_cleaning_application/features/screens/settings/ui/widgets/list_tile_widget.dart';
@@ -69,25 +71,55 @@ class _SettingsBodyState extends State<SettingsBody> {
                   Center(
                     child: Stack(
                       children: [
-                        Container(
-                          width: 80.w,
-                          height: 80.h,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                          ),
-                          child: ClipOval(
-                            child: Image.network(
-                              '${ApiConstants.apiBaseUrl}${context.read<SettingsCubit>().profileModel!.data!.image}',
-                              fit: BoxFit.fill,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Image.asset(
-                                  'assets/images/noImage.png',
-                                  fit: BoxFit.fill,
-                                );
-                              },
-                            ),
-                          ),
-                        ),
+                        GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (contextt) => Scaffold(
+                                    appBar: AppBar(
+                                      leading: customBackButton(context),
+                                    ),
+                                    body: Center(
+                                      child: PhotoView(
+                                        imageProvider: NetworkImage(
+                                          '${ApiConstants.apiBaseUrl}${context.read<SettingsCubit>().profileModel!.data!.image}',
+                                        ),
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return Image.asset(
+                                            'assets/images/noImage.png',
+                                            fit: BoxFit.fill,
+                                          );
+                                        },
+                                        backgroundDecoration:
+                                            const BoxDecoration(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Container(
+                                width: 80.w,
+                                height: 80.h,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                ),
+                                child: ClipOval(
+                                  child: Image.network(
+                                    '${ApiConstants.apiBaseUrl}${context.read<SettingsCubit>().profileModel!.data!.image}',
+                                    fit: BoxFit.fill,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Image.asset(
+                                        'assets/images/noImage.png',
+                                        fit: BoxFit.fill,
+                                      );
+                                    },
+                                  ),
+                                ))),
                         if (role != 'Admin')
                           Positioned(
                             bottom: 1,

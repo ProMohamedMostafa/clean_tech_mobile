@@ -9,6 +9,7 @@ import 'package:smart_cleaning_application/features/screens/integrations/data/mo
 import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/delete_task_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/delete_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/all_tasks_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/all_users_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/change_task_status.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/completed_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/in_progress_model.dart';
@@ -215,7 +216,7 @@ class RestoreTaskLoadingState extends TaskManagementState {}
 class RestoreTaskSuccessState extends TaskManagementState {
   final String message;
 
-  RestoreTaskSuccessState(this.message); 
+  RestoreTaskSuccessState(this.message);
 }
 
 class RestoreTaskErrorState extends TaskManagementState {
@@ -227,7 +228,7 @@ class RestoreTaskErrorState extends TaskManagementState {
 class ForceDeleteTaskLoadingState extends TaskManagementState {}
 
 class ForceDeleteTaskSuccessState extends TaskManagementState {
-   final String message;
+  final String message;
 
   ForceDeleteTaskSuccessState(this.message);
 }
@@ -251,7 +252,20 @@ class TaskDeleteListErrorState extends TaskManagementState {
   TaskDeleteListErrorState(this.error);
 }
 
+//**************************************** */
 
+class TaskUsersLoadingState extends TaskManagementState {}
+
+class TaskUsersSuccessState extends TaskManagementState {
+  final AllUsersTaskModel allUsersTaskModel;
+
+  TaskUsersSuccessState(this.allUsersTaskModel);
+}
+
+class TaskUsersErrorState extends TaskManagementState {
+  final String error;
+  TaskUsersErrorState(this.error);
+}
 //**************************************** */
 
 class GetTaskActionLoadingState extends TaskManagementState {}

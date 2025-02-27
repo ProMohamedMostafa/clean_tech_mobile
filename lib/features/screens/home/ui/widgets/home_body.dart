@@ -39,11 +39,10 @@ class _HomeBodyState extends State<HomeBody> {
 
   @override
   void initState() {
+    context.read<HomeCubit>().getUserDetails();
     if (role != 'Admin') {
-      context.read<HomeCubit>().getUserDetails();
       context.read<HomeCubit>().getUserStatus();
     }
-
     super.initState();
   }
 
@@ -62,7 +61,15 @@ class _HomeBodyState extends State<HomeBody> {
             }
           },
           builder: (context, state) {
-            if (context.read<HomeCubit>().profileModel == null ||
+              if (role == 'Admin'&&
+                context.read<HomeCubit>().profileModel == null) {
+              return Center(
+                child: CircularProgressIndicator(
+                  color: AppColor.primaryColor,
+                ),
+              );
+            }
+            if (role != 'Admin'&&
                 context.read<HomeCubit>().attendanceHistoryModel == null) {
               return Center(
                 child: CircularProgressIndicator(
@@ -130,29 +137,22 @@ class _HomeBodyState extends State<HomeBody> {
                                         verticalSpace(5),
                                         Text(
                                           context
-                                                  .read<HomeCubit>()
-                                                  .attendanceHistoryModel!
-                                                  .data!
-                                                  .data![0]
-                                                  .clockIn ??
-                                              '--:--',
-                                          // context
-                                          //             .read<HomeCubit>()
-                                          //             .attendanceHistoryModel!
-                                          //             .data!
-                                          //             .data![0]
-                                          //             .clockIn !=
-                                          //         null
-                                          //     ? DateFormat('HH:mm').format(
-                                          //         DateTime.parse(context
-                                          //             .read<HomeCubit>()
-                                          //             .attendanceHistoryModel!
-                                          //             .data!
-                                          //             .data!
-                                          //             .first
-                                          //             .clockIn!),
-                                          //       )
-                                          //     : '--:--',
+                                                      .read<HomeCubit>()
+                                                      .attendanceHistoryModel!
+                                                      .data!
+                                                      .data![0]
+                                                      .clockIn !=
+                                                  null
+                                              ? DateFormat('HH:mm').format(
+                                                  DateTime.parse(context
+                                                      .read<HomeCubit>()
+                                                      .attendanceHistoryModel!
+                                                      .data!
+                                                      .data!
+                                                      .first
+                                                      .clockIn!),
+                                                )
+                                              : '--:--',
                                           style: TextStyles.font14BlackSemiBold,
                                         ),
                                       ],
@@ -179,31 +179,24 @@ class _HomeBodyState extends State<HomeBody> {
                                         ),
                                         verticalSpace(5),
                                         Text(
-                                          // context
-                                          //         .read<HomeCubit>()
-                                          //         .attendanceHistoryModel!
-                                          //         .data!
-                                          //         .data!
-                                          //         .first
-                                          //         .clockOut!
-                                          //         .isNotEmpty
-                                          //     ? DateFormat('HH:mm').format(
-                                          //         DateTime.parse(context
-                                          //             .read<HomeCubit>()
-                                          //             .attendanceHistoryModel!
-                                          //             .data!
-                                          //             .data!
-                                          //             .first
-                                          //             .clockOut!),
-                                          //       )
-                                          //     : '--:--',
                                           context
                                                   .read<HomeCubit>()
                                                   .attendanceHistoryModel!
                                                   .data!
-                                                  .data![0]
-                                                  .clockOut ??
-                                              '--:--',
+                                                  .data!
+                                                  .first
+                                                  .clockOut!
+                                                  .isNotEmpty
+                                              ? DateFormat('HH:mm').format(
+                                                  DateTime.parse(context
+                                                      .read<HomeCubit>()
+                                                      .attendanceHistoryModel!
+                                                      .data!
+                                                      .data!
+                                                      .first
+                                                      .clockOut!),
+                                                )
+                                              : '--:--',
                                           style: TextStyles.font14BlackSemiBold,
                                         ),
                                       ],
@@ -216,20 +209,13 @@ class _HomeBodyState extends State<HomeBody> {
                                         ),
                                         verticalSpace(5),
                                         Text(
-                                          context
-                                                  .read<HomeCubit>()
-                                                  .attendanceHistoryModel!
-                                                  .data!
-                                                  .data![0]
-                                                  .duration ??
-                                              '--:--',
-                                          // formatDuration(context
-                                          //     .read<HomeCubit>()
-                                          //     .attendanceHistoryModel!
-                                          //     .data!
-                                          //     .data!
-                                          //     .first
-                                          //     .duration),
+                                          formatDuration(context
+                                              .read<HomeCubit>()
+                                              .attendanceHistoryModel!
+                                              .data!
+                                              .data!
+                                              .first
+                                              .duration),
                                           style: TextStyles.font14BlackSemiBold,
                                         ),
                                       ],
@@ -296,21 +282,14 @@ class _HomeBodyState extends State<HomeBody> {
                                     children: [
                                       TextSpan(
                                         text: context
-                                                .read<HomeCubit>()
-                                                .attendanceHistoryModel!
-                                                .data!
-                                                .data![0]
-                                                .clockIn ??
-                                            'day,',
-                                        //  context
-                                        //             .read<HomeCubit>()
-                                        //             .attendanceHistoryModel
-                                        //             ?.data
-                                        //             ?.data![0]
-                                        //             .date !=
-                                        //         null
-                                        //     ? "${DateFormat('EEEE').format(DateTime.parse(context.read<HomeCubit>().attendanceHistoryModel!.data!.data![0].date!))}, "
-                                        //     : 'Day,',
+                                                    .read<HomeCubit>()
+                                                    .attendanceHistoryModel
+                                                    ?.data
+                                                    ?.data![0]
+                                                    .date !=
+                                                null
+                                            ? "${DateFormat('EEEE').format(DateTime.parse(context.read<HomeCubit>().attendanceHistoryModel!.data!.data![0].date!))}, "
+                                            : 'Day,',
                                         style: TextStyles.font20PrimMedium,
                                       ),
                                       TextSpan(

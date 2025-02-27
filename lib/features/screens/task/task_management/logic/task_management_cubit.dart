@@ -15,6 +15,7 @@ import 'package:smart_cleaning_application/features/screens/integrations/data/mo
 import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/delete_task_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/delete_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/all_tasks_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/all_users_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/change_task_status.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/completed_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/in_progress_model.dart';
@@ -431,6 +432,17 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
     });
   }
 
+
+AllUsersTaskModel? allUsersTaskModel;
+  getAllUsersTask(int id) {
+    emit(TaskUsersLoadingState());
+    DioHelper.getData(url: 'assign/task/$id').then((value) {
+      allUsersTaskModel = AllUsersTaskModel.fromJson(value!.data);
+      emit(TaskUsersSuccessState(allUsersTaskModel!));
+    }).catchError((error) {
+      emit(TaskUsersErrorState(error.toString()));
+    });
+  }
   // String calculateTimeDifference(String createdAt, String status) {
   //   DateTime createdTime = DateTime.parse(createdAt);
   //   Duration difference = DateTime.now().difference(createdTime);

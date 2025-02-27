@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
@@ -19,7 +20,6 @@ import 'package:smart_cleaning_application/features/screens/task/task_management
 import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_state.dart';
 import 'package:smart_cleaning_application/features/screens/task/view_task/ui/widget/upload_files_dialog.dart';
 
-
 class TaskDetailsBody extends StatefulWidget {
   final int id;
   const TaskDetailsBody({super.key, required this.id});
@@ -34,6 +34,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
     context.read<TaskManagementCubit>().getTaskAction(widget.id);
     context.read<TaskManagementCubit>().getTaskDetails(widget.id);
     context.read<TaskManagementCubit>().getTaskFiles(widget.id);
+    context.read<TaskManagementCubit>().getAllUsersTask(widget.id);
 
     super.initState();
   }
@@ -330,17 +331,116 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                               .data!
                               .pointName ??
                           "No item selected"),
-                  verticalSpace(5),
                   rowDetailsBuild(
                       context,
-                      'Supervisor',
+                      'Task Team',
                       context
-                          .read<TaskManagementCubit>()
-                          .taskDetailsModel!
-                          .data!
-                          .createdName!
-                          .toString()),
-                  verticalSpace(5),
+                              .read<TaskManagementCubit>()
+                              .allUsersTaskModel!
+                              .data!
+                              .isEmpty
+                          ? "No users added"
+                          : ''),
+                  if (context
+                      .read<TaskManagementCubit>()
+                      .allUsersTaskModel!
+                      .data!
+                      .isNotEmpty) ...[
+                    verticalSpace(10),
+                    GridView.count(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      childAspectRatio: 1 / 0.35,
+                      children: List.generate(
+                        context
+                            .read<TaskManagementCubit>()
+                            .allUsersTaskModel!
+                            .data!
+                            .length,
+                        (index) => InkWell(
+                          borderRadius: BorderRadius.circular(10.r),
+                          onTap: () {
+                            context.pushNamed(
+                              Routes.userDetailsScreen,
+                              arguments: context
+                                  .read<TaskManagementCubit>()
+                                  .allUsersTaskModel!
+                                  .data![index]
+                                  .id,
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10.r),
+                              border: Border.all(color: Colors.black12),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                CircleAvatar(
+                                    radius: 20.r,
+                                    backgroundImage: context
+                                                .read<TaskManagementCubit>()
+                                                .allUsersTaskModel!
+                                                .data![index]
+                                                .image ==
+                                            null
+                                        ? AssetImage(
+                                            'assets/images/noImage.png',
+                                          )
+                                        : NetworkImage(
+                                            '${ApiConstants.apiBaseUrl}${context.read<TaskManagementCubit>().allUsersTaskModel!.data![index].image}',
+                                          )),
+                                horizontalSpace(10),
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      context
+                                              .read<TaskManagementCubit>()
+                                              .allUsersTaskModel!
+                                              .data![index]
+                                              .firstName ??
+                                          '',
+                                      style: TextStyles.font12BlackSemi,
+                                    ),
+                                    Text(
+                                      context
+                                              .read<TaskManagementCubit>()
+                                              .allUsersTaskModel!
+                                              .data![index]
+                                              .role ??
+                                          '',
+                                      style: TextStyles.font11lightPrimary,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    verticalSpace(10),
+                  ],
+
+                  // rowDetailsBuild(
+                  //     context,
+                  //     'Supervisor',
+                  //     context
+                  //         .read<TaskManagementCubit>()
+                  //         .taskDetailsModel!
+                  //         .data!
+                  //         .createdName!
+                  //         .toString()),
+                  // verticalSpace(10),
                   rowDetailsBuild(
                     context,
                     'Files',
@@ -373,28 +473,60 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                               .taskFilesModel!
                               .data![index];
 
-                          return Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 5.h, horizontal: 10.w),
-                            child: Container(
-                              height: 70.h,
-                              width: 70.w,
-                              clipBehavior: Clip.hardEdge,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.black12,
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (contextt) => Scaffold(
+                                    appBar: AppBar(
+                                      leading: customBackButton(context),
+                                    ),
+                                    body: Center(
+                                      child: PhotoView(
+                                        imageProvider: NetworkImage(
+                                          '${ApiConstants.apiBaseUrl}${file.path}',
+                                        ),
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return Image.asset(
+                                            'assets/images/noImage.png',
+                                            fit: BoxFit.fill,
+                                          );
+                                        },
+                                        backgroundDecoration:
+                                            const BoxDecoration(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                              child: Image.network(
-                                '${ApiConstants.apiBaseUrl}${file.path}',
-                                fit: BoxFit.fill,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Image.asset(
-                                    'assets/images/noImage.png',
-                                    fit: BoxFit.fill,
-                                  );
-                                },
+                              );
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 5.h, horizontal: 10.w),
+                              child: Container(
+                                height: 70.h,
+                                width: 70.w,
+                                clipBehavior: Clip.hardEdge,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.black12,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10.r),
+                                ),
+                                child: Image.network(
+                                  '${ApiConstants.apiBaseUrl}${file.path}',
+                                  fit: BoxFit.fill,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Image.asset(
+                                      'assets/images/noImage.png',
+                                      fit: BoxFit.fill,
+                                    );
+                                  },
+                                ),
                               ),
                             ),
                           );
@@ -452,24 +584,57 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Container(
-                                        width: 50.w,
-                                        height: 50.h,
-                                        clipBehavior: Clip.hardEdge,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.purple,
-                                        ),
-                                        child: Image.network(
-                                          '${ApiConstants.apiBaseUrl}${task.image}',
-                                          fit: BoxFit.fill,
-                                          errorBuilder:
-                                              (context, error, stackTrace) {
-                                            return Image.asset(
-                                              'assets/images/noImage.png',
-                                              fit: BoxFit.fill,
-                                            );
-                                          },
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (contextt) => Scaffold(
+                                                appBar: AppBar(
+                                                  leading:
+                                                      customBackButton(context),
+                                                ),
+                                                body: Center(
+                                                  child: PhotoView(
+                                                    imageProvider: NetworkImage(
+                                                      '${ApiConstants.apiBaseUrl}${task.image}',
+                                                    ),
+                                                    errorBuilder: (context,
+                                                        error, stackTrace) {
+                                                      return Image.asset(
+                                                        'assets/images/noImage.png',
+                                                        fit: BoxFit.fill,
+                                                      );
+                                                    },
+                                                    backgroundDecoration:
+                                                        const BoxDecoration(
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          width: 50.w,
+                                          height: 50.h,
+                                          clipBehavior: Clip.hardEdge,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.purple,
+                                          ),
+                                          child: Image.network(
+                                            '${ApiConstants.apiBaseUrl}${task.image}',
+                                            fit: BoxFit.fill,
+                                            errorBuilder:
+                                                (context, error, stackTrace) {
+                                              return Image.asset(
+                                                'assets/images/noImage.png',
+                                                fit: BoxFit.fill,
+                                              );
+                                            },
+                                          ),
                                         ),
                                       ),
                                       horizontalSpace(10),
@@ -510,29 +675,70 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                               Column(
                                                 children:
                                                     task.files!.map((file) {
-                                                  return Container(
-                                                    width: 80.w,
-                                                    height: 80.h,
-                                                    margin: EdgeInsets.only(
-                                                        bottom: 5.h),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10.r),
-                                                      border: Border.all(
-                                                          color:
-                                                              Colors.black12),
-                                                    ),
-                                                    child: Image.network(
-                                                      '${ApiConstants.apiBaseUrl}${task.files}',
-                                                      fit: BoxFit.fill,
-                                                      errorBuilder: (context,
-                                                          error, stackTrace) {
-                                                        return Image.asset(
-                                                          'assets/images/noImage.png',
-                                                          fit: BoxFit.fill,
-                                                        );
-                                                      },
+                                                  return GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (contextt) =>
+                                                              Scaffold(
+                                                            appBar: AppBar(
+                                                              leading:
+                                                                  customBackButton(
+                                                                      context),
+                                                            ),
+                                                            body: Center(
+                                                              child: PhotoView(
+                                                                imageProvider:
+                                                                    NetworkImage(
+                                                                  '${ApiConstants.apiBaseUrl}${task.files}',
+                                                                ),
+                                                                errorBuilder:
+                                                                    (context,
+                                                                        error,
+                                                                        stackTrace) {
+                                                                  return Image
+                                                                      .asset(
+                                                                    'assets/images/noImage.png',
+                                                                    fit: BoxFit
+                                                                        .fill,
+                                                                  );
+                                                                },
+                                                                backgroundDecoration:
+                                                                    const BoxDecoration(
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                    child: Container(
+                                                      width: 80.w,
+                                                      height: 80.h,
+                                                      margin: EdgeInsets.only(
+                                                          bottom: 5.h),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10.r),
+                                                        border: Border.all(
+                                                            color:
+                                                                Colors.black12),
+                                                      ),
+                                                      child: Image.network(
+                                                        '${ApiConstants.apiBaseUrl}${task.files}',
+                                                        fit: BoxFit.fill,
+                                                        errorBuilder: (context,
+                                                            error, stackTrace) {
+                                                          return Image.asset(
+                                                            'assets/images/noImage.png',
+                                                            fit: BoxFit.fill,
+                                                          );
+                                                        },
+                                                      ),
                                                     ),
                                                   );
                                                 }).toList(),
@@ -659,18 +865,45 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                   ),
                   verticalSpace(10),
                   (state is ImageSelectedState || state is CameraSelectedState)
-                      ? Container(
-                          height: 80,
-                          width: 80,
-                          clipBehavior: Clip.hardEdge,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.r)),
-                          child: Image.file(
-                            File(context
-                                .read<TaskManagementCubit>()
-                                .image!
-                                .path),
-                            fit: BoxFit.cover,
+                      ? GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (contextt) => Scaffold(
+                                  appBar: AppBar(
+                                    leading: customBackButton(context),
+                                  ),
+                                  body: Center(
+                                    child: PhotoView(
+                                      imageProvider: FileImage(
+                                        File(context
+                                            .read<TaskManagementCubit>()
+                                            .image!
+                                            .path),
+                                      ),
+                                      backgroundDecoration: const BoxDecoration(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            height: 80,
+                            width: 80,
+                            clipBehavior: Clip.hardEdge,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.r)),
+                            child: Image.file(
+                              File(context
+                                  .read<TaskManagementCubit>()
+                                  .image!
+                                  .path),
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         )
                       : const SizedBox.shrink(),
