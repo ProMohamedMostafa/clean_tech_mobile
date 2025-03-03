@@ -359,6 +359,10 @@ class _AddPointScreenState extends State<AddPointScreen> {
           validator: (value) {
             if (value == null || value.isEmpty) {
               return "Point is required";
+            } else if (value.length > 55) {
+              return 'User name too long';
+            } else if (value.length < 3) {
+              return 'User name too short';
             }
             return null;
           },
@@ -377,6 +381,10 @@ class _AddPointScreenState extends State<AddPointScreen> {
           validator: (value) {
             if (value == null || value.isEmpty) {
               return "Point Number is required";
+            } else if (value.length > 55) {
+              return 'User name too long';
+            } else if (value.length < 3) {
+              return 'User name too short';
             }
             return null;
           },
@@ -394,6 +402,8 @@ class _AddPointScreenState extends State<AddPointScreen> {
           validator: (value) {
             if (value == null || value.isEmpty) {
               return "point description is required";
+            } else if (value.length < 3) {
+              return 'User name too short';
             }
             return null;
           },

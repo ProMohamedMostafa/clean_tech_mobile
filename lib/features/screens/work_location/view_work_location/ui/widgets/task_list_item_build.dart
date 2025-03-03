@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -125,7 +126,7 @@ Widget buildTaskCardItem(BuildContext context, index, selectedIndex) {
           minHeight: 150.h,
         ),
         width: double.infinity,
-        padding: EdgeInsets.fromLTRB(10, 0, 10, 5),
+        padding: EdgeInsets.fromLTRB(10, role == 'Admin' ? 0 : 10, 10, 5),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(11.r),
@@ -252,57 +253,58 @@ Widget buildTaskCardItem(BuildContext context, index, selectedIndex) {
                   ),
                 ),
                 Spacer(),
-                IconButton(
-                  onPressed: () {
-                    PopUpDialog.show(
-                        context: context,
-                        id: selectedIndex == 0
-                            ? context
-                                .read<WorkLocationCubit>()
-                                .allareaTasksModel!
-                                .data!
-                                .data![index]
-                                .id!
-                            : selectedIndex == 1
-                                ? context
-                                    .read<WorkLocationCubit>()
-                                    .allcityTasksModel!
-                                    .data!
-                                    .data![index]
-                                    .id!
-                                : selectedIndex == 2
-                                    ? context
-                                        .read<WorkLocationCubit>()
-                                        .allorganizationTasksModel!
-                                        .data!
-                                        .data![index]
-                                        .id!
-                                    : selectedIndex == 3
-                                        ? context
-                                            .read<WorkLocationCubit>()
-                                            .allbuildingTasksModel!
-                                            .data!
-                                            .data![index]
-                                            .id!
-                                        : selectedIndex == 4
-                                            ? context
-                                                .read<WorkLocationCubit>()
-                                                .allfloorTasksModel!
-                                                .data!
-                                                .data![index]
-                                                .id!
-                                            : context
-                                                .read<WorkLocationCubit>()
-                                                .allPointTasksModel!
-                                                .data!
-                                                .data![index]
-                                                .id!);
-                  },
-                  icon: Icon(
-                    Icons.more_horiz_rounded,
-                    size: 22.sp,
-                  ),
-                )
+                if (role == 'Admin')
+                  IconButton(
+                    onPressed: () {
+                      PopUpDialog.show(
+                          context: context,
+                          id: selectedIndex == 0
+                              ? context
+                                  .read<WorkLocationCubit>()
+                                  .allareaTasksModel!
+                                  .data!
+                                  .data![index]
+                                  .id!
+                              : selectedIndex == 1
+                                  ? context
+                                      .read<WorkLocationCubit>()
+                                      .allcityTasksModel!
+                                      .data!
+                                      .data![index]
+                                      .id!
+                                  : selectedIndex == 2
+                                      ? context
+                                          .read<WorkLocationCubit>()
+                                          .allorganizationTasksModel!
+                                          .data!
+                                          .data![index]
+                                          .id!
+                                      : selectedIndex == 3
+                                          ? context
+                                              .read<WorkLocationCubit>()
+                                              .allbuildingTasksModel!
+                                              .data!
+                                              .data![index]
+                                              .id!
+                                          : selectedIndex == 4
+                                              ? context
+                                                  .read<WorkLocationCubit>()
+                                                  .allfloorTasksModel!
+                                                  .data!
+                                                  .data![index]
+                                                  .id!
+                                              : context
+                                                  .read<WorkLocationCubit>()
+                                                  .allPointTasksModel!
+                                                  .data!
+                                                  .data![index]
+                                                  .id!);
+                    },
+                    icon: Icon(
+                      Icons.more_horiz_rounded,
+                      size: 22.sp,
+                    ),
+                  )
               ],
             ),
             Text(

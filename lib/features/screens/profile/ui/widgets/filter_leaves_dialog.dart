@@ -43,32 +43,34 @@ class CustomFilterLeavesDialog {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        S.of(context).addUserText13,
-                        style: TextStyles.font16BlackRegular,
-                      ),
-                      CustomDropDownList(
-                        hint: 'Select Role',
-                        items: context
-                                    .read<ProfileCubit>()
-                                    .roleModel
-                                    ?.data
-                                    ?.isEmpty ??
-                                true
-                            ? ['No roles available']
-                            : context
-                                    .read<ProfileCubit>()
-                                    .roleModel
-                                    ?.data
-                                    ?.map((e) => e.name ?? 'Unknown')
-                                    .toList() ??
-                                [],
-                        controller:
-                            context.read<ProfileCubit>().roleController,
-                        keyboardType: TextInputType.text,
-                        suffixIcon: IconBroken.arrowDown2,
-                      ),
-                      verticalSpace(10),
+                      if (role == 'Admin' || role == 'Manager') ...[
+                        Text(
+                          S.of(context).addUserText13,
+                          style: TextStyles.font16BlackRegular,
+                        ),
+                        CustomDropDownList(
+                          hint: 'Select Role',
+                          items: context
+                                      .read<ProfileCubit>()
+                                      .roleModel
+                                      ?.data
+                                      ?.isEmpty ??
+                                  true
+                              ? ['No roles available']
+                              : context
+                                      .read<ProfileCubit>()
+                                      .roleModel
+                                      ?.data
+                                      ?.map((e) => e.name ?? 'Unknown')
+                                      .toList() ??
+                                  [],
+                          controller:
+                              context.read<ProfileCubit>().roleController,
+                          keyboardType: TextInputType.text,
+                          suffixIcon: IconBroken.arrowDown2,
+                        ),
+                        verticalSpace(10),
+                      ],
                       Text(
                         'Type',
                         style: TextStyles.font16BlackRegular,
@@ -78,16 +80,13 @@ class CustomFilterLeavesDialog {
                           final items = ['Sick', 'Annual', 'Ordinary'];
                           final selectedIndex = items.indexOf(selectedValue);
                           if (selectedIndex != -1) {
-                            context
-                                .read<ProfileCubit>()
-                                .typeIdController
-                                .text = selectedIndex.toString();
+                            context.read<ProfileCubit>().typeIdController.text =
+                                selectedIndex.toString();
                           }
                         },
                         hint: 'Select type',
                         items: ['Sick', 'Annual', 'Ordinary'],
-                        controller:
-                            context.read<ProfileCubit>().typeController,
+                        controller: context.read<ProfileCubit>().typeController,
                         keyboardType: TextInputType.text,
                         suffixIcon: IconBroken.arrowDown2,
                       ),
@@ -224,8 +223,7 @@ class CustomFilterLeavesDialog {
                           areaId = selectedArea.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
-                        controller:
-                            context.read<ProfileCubit>().areaController,
+                        controller: context.read<ProfileCubit>().areaController,
                         keyboardType: TextInputType.text,
                       ),
                       verticalSpace(10),
@@ -266,8 +264,7 @@ class CustomFilterLeavesDialog {
                           cityId = selectedCity.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
-                        controller:
-                            context.read<ProfileCubit>().cityController,
+                        controller: context.read<ProfileCubit>().cityController,
                         isRead: false,
                         keyboardType: TextInputType.text,
                       ),
@@ -310,9 +307,8 @@ class CustomFilterLeavesDialog {
                           organizationId = selectedOrganization.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
-                        controller: context
-                            .read<ProfileCubit>()
-                            .organizationController,
+                        controller:
+                            context.read<ProfileCubit>().organizationController,
                         keyboardType: TextInputType.text,
                       ),
                       verticalSpace(10),
@@ -354,9 +350,8 @@ class CustomFilterLeavesDialog {
                           buildingId = selectedBuilding.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
-                        controller: context
-                            .read<ProfileCubit>()
-                            .buildingController,
+                        controller:
+                            context.read<ProfileCubit>().buildingController,
                         keyboardType: TextInputType.text,
                       ),
                       verticalSpace(10),
@@ -445,7 +440,7 @@ class CustomFilterLeavesDialog {
                             context.read<ProfileCubit>().pointController,
                         keyboardType: TextInputType.text,
                       ),
-                      if (role == 'Admin') ...[
+                      if (role != 'Cleaner') ...[
                         verticalSpace(10),
                         Text(
                           'Provider',
@@ -484,9 +479,8 @@ class CustomFilterLeavesDialog {
 
                             providerId = selectedProvider!.id;
                           },
-                          controller: context
-                              .read<ProfileCubit>()
-                              .providerController,
+                          controller:
+                              context.read<ProfileCubit>().providerController,
                           keyboardType: TextInputType.text,
                           suffixIcon: IconBroken.arrowDown2,
                         ),

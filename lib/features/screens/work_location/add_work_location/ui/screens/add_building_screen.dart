@@ -272,6 +272,10 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
           validator: (value) {
             if (value == null || value.isEmpty) {
               return "Building is required";
+            } else if (value.length > 55) {
+              return 'User name too long';
+            } else if (value.length < 3) {
+              return 'User name too short';
             }
             return null;
           },
@@ -290,6 +294,10 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
           validator: (value) {
             if (value == null || value.isEmpty) {
               return "Building number is required";
+            } else if (value.length > 55) {
+              return 'User name too long';
+            } else if (value.length < 3) {
+              return 'User name too short';
             }
             return null;
           },
@@ -307,6 +315,8 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
           validator: (value) {
             if (value == null || value.isEmpty) {
               return "Building description is required";
+            } else if (value.length < 3) {
+              return 'User name too short';
             }
             return null;
           },

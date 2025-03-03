@@ -45,51 +45,52 @@ class CustomFilterTaskDialog {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Created By',
-                        style: TextStyles.font16BlackRegular,
-                      ),
-                      CustomDropDownList(
-                        hint: "Select user",
-                        items: context
-                                    .read<ProfileCubit>()
-                                    .usersModel
-                                    ?.data
-                                    ?.users
-                                    ?.isEmpty ??
-                                true
-                            ? ['No user']
-                            : context
-                                    .read<ProfileCubit>()
-                                    .usersModel
-                                    ?.data
-                                    ?.users
-                                    ?.where((e) => e.role != "Cleaner")
-                                    .map((e) => e.userName ?? 'Unknown')
-                                    .toList() ??
-                                [],
-                        onPressed: (value) {
-                          final selectedUser = context
-                              .read<ProfileCubit>()
-                              .usersModel
-                              ?.data
-                              ?.users
-                              ?.firstWhere((user) =>
-                                  user.userName ==
-                                  context
+                      if (role == 'Admin' || role == 'Manager') ...[
+                        Text(
+                          'Created By',
+                          style: TextStyles.font16BlackRegular,
+                        ),
+                        CustomDropDownList(
+                          hint: "Select user",
+                          items: context
                                       .read<ProfileCubit>()
-                                      .createdByController
-                                      .text);
+                                      .usersModel
+                                      ?.data
+                                      ?.users
+                                      ?.isEmpty ??
+                                  true
+                              ? ['No user']
+                              : context
+                                      .read<ProfileCubit>()
+                                      .usersModel
+                                      ?.data
+                                      ?.users
+                                      ?.where((e) => e.role != "Cleaner")
+                                      .map((e) => e.userName ?? 'Unknown')
+                                      .toList() ??
+                                  [],
+                          onPressed: (value) {
+                            final selectedUser = context
+                                .read<ProfileCubit>()
+                                .usersModel
+                                ?.data
+                                ?.users
+                                ?.firstWhere((user) =>
+                                    user.userName ==
+                                    context
+                                        .read<ProfileCubit>()
+                                        .createdByController
+                                        .text);
 
-                          createdId = selectedUser!.id!;
-                        },
-                        suffixIcon: IconBroken.arrowDown2,
-                        controller: context
-                            .read<ProfileCubit>()
-                            .createdByController,
-                        keyboardType: TextInputType.text,
-                      ),
-                      verticalSpace(10),
+                            createdId = selectedUser!.id!;
+                          },
+                          suffixIcon: IconBroken.arrowDown2,
+                          controller:
+                              context.read<ProfileCubit>().createdByController,
+                          keyboardType: TextInputType.text,
+                        ),
+                        verticalSpace(10),
+                      ],
                       Text(
                         "Status",
                         style: TextStyles.font16BlackRegular,
@@ -108,10 +109,8 @@ class CustomFilterTaskDialog {
                           final selectedIndex = items.indexOf(selectedValue!);
                           statusId = selectedIndex;
 
-                          context
-                              .read<ProfileCubit>()
-                              .statusController
-                              .text = selectedValue;
+                          context.read<ProfileCubit>().statusController.text =
+                              selectedValue;
                         },
                         hint: 'status',
                         items: [
@@ -125,9 +124,8 @@ class CustomFilterTaskDialog {
                         ],
                         suffixIcon: IconBroken.arrowDown2,
                         keyboardType: TextInputType.text,
-                        controller: context
-                            .read<ProfileCubit>()
-                            .statusController,
+                        controller:
+                            context.read<ProfileCubit>().statusController,
                       ),
                       verticalSpace(10),
                       Text(
@@ -144,10 +142,8 @@ class CustomFilterTaskDialog {
                           final selectedIndex = items.indexOf(selectedValue!);
                           priorityId = selectedIndex;
 
-                          context
-                              .read<ProfileCubit>()
-                              .priorityController
-                              .text = selectedValue;
+                          context.read<ProfileCubit>().priorityController.text =
+                              selectedValue;
                         },
                         hint: 'priority',
                         items: [
@@ -157,9 +153,8 @@ class CustomFilterTaskDialog {
                         ],
                         suffixIcon: IconBroken.arrowDown2,
                         keyboardType: TextInputType.text,
-                        controller: context
-                            .read<ProfileCubit>()
-                            .priorityController,
+                        controller:
+                            context.read<ProfileCubit>().priorityController,
                       ),
                       verticalSpace(10),
                       Row(
@@ -345,8 +340,7 @@ class CustomFilterTaskDialog {
                           areaId = selectedArea.id!;
                         },
                         suffixIcon: IconBroken.arrowDown2,
-                        controller:
-                            context.read<ProfileCubit>().areaController,
+                        controller: context.read<ProfileCubit>().areaController,
                         keyboardType: TextInputType.text,
                       ),
                       verticalSpace(10),
@@ -387,8 +381,7 @@ class CustomFilterTaskDialog {
                           cityId = selectedCity.id!;
                         },
                         suffixIcon: IconBroken.arrowDown2,
-                        controller:
-                            context.read<ProfileCubit>().cityController,
+                        controller: context.read<ProfileCubit>().cityController,
                         isRead: false,
                         keyboardType: TextInputType.text,
                       ),
@@ -431,9 +424,8 @@ class CustomFilterTaskDialog {
                           organizationId = selectedOrganization.id!;
                         },
                         suffixIcon: IconBroken.arrowDown2,
-                        controller: context
-                            .read<ProfileCubit>()
-                            .organizationController,
+                        controller:
+                            context.read<ProfileCubit>().organizationController,
                         keyboardType: TextInputType.text,
                       ),
                       verticalSpace(10),
@@ -475,9 +467,8 @@ class CustomFilterTaskDialog {
                           buildingId = selectedBuilding.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
-                        controller: context
-                            .read<ProfileCubit>()
-                            .buildingController,
+                        controller:
+                            context.read<ProfileCubit>().buildingController,
                         keyboardType: TextInputType.text,
                       ),
                       verticalSpace(10),
@@ -607,9 +598,8 @@ class CustomFilterTaskDialog {
                                 .getPoints(selectedProvider!.id!);
                             providerId = selectedProvider.id;
                           },
-                          controller: context
-                              .read<ProfileCubit>()
-                              .providerController,
+                          controller:
+                              context.read<ProfileCubit>().providerController,
                           keyboardType: TextInputType.text,
                           suffixIcon: IconBroken.arrowDown2,
                         ),
@@ -619,19 +609,18 @@ class CustomFilterTaskDialog {
                         child: DefaultElevatedButton(
                             name: 'Done',
                             onPressed: () {
-                              context
-                                  .read<ProfileCubit>()
-                                  .getUserTaskDetails(id,
-                                      createdBy: createdId,
-                                      priority: priorityId,
-                                      status: statusId,
-                                      areaId: areaId,
-                                      cityId: cityId,
-                                      organizationId: organizationId,
-                                      buildingId: buildingId,
-                                      floorId: floorId,
-                                      pointId: pointId,
-                                      providerId: providerId);
+                              context.read<ProfileCubit>().getUserTaskDetails(
+                                  id,
+                                  createdBy: createdId,
+                                  priority: priorityId,
+                                  status: statusId,
+                                  areaId: areaId,
+                                  cityId: cityId,
+                                  organizationId: organizationId,
+                                  buildingId: buildingId,
+                                  floorId: floorId,
+                                  pointId: pointId,
+                                  providerId: providerId);
                               context.pop();
                             },
                             color: AppColor.primaryColor,

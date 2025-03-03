@@ -63,6 +63,10 @@ class ForgotScreenBody extends StatelessWidget {
                             value.isEmpty ||
                             !AppRegex.isEmailValid(value)) {
                           return S.of(context).validationEmail;
+                        } else if (value.length > 55) {
+                          return 'Email too long';
+                        } else if (value.length < 3) {
+                          return 'Email too short';
                         }
                       },
                     ),

@@ -58,7 +58,8 @@ class _EditAreaBodyState extends State<EditAreaBody> {
           listener: (context, state) {
             if (state is EditAreaSuccessState) {
               toast(text: state.editAreaModel.message!, color: Colors.blue);
-              context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen);
+              context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
+                  arguments: 0);
             }
             if (state is EditAreaErrorState) {
               toast(text: state.error, color: Colors.red);
@@ -106,14 +107,6 @@ class _EditAreaBodyState extends State<EditAreaBody> {
                                       ?.map((e) => e.name ?? 'Unknown')
                                       .toList() ??
                                   [],
-                          validator: (value) {
-                            if (value == null ||
-                                value.isEmpty ||
-                                value == 'No country') {
-                              return S.of(context).validationNationality;
-                            }
-                            return null;
-                          },
                           onPressed: (value) {
                             context
                                 .read<EditAreaCubit>()
@@ -135,11 +128,20 @@ class _EditAreaBodyState extends State<EditAreaBody> {
                         ),
                         CustomTextFormField(
                           controller:
-                              context.read<EditAreaCubit>().areaController,
+                              context.read<EditAreaCubit>().areaController
+                                ..text = context
+                                    .read<EditAreaCubit>()
+                                    .areaDetailsInEditModel!
+                                    .data!
+                                    .name!,
                           keyboardType: TextInputType.text,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return "Area is required";
+                              return "Area name is required";
+                            } else if (value.length > 55) {
+                              return 'Area name too long';
+                            } else if (value.length < 3) {
+                              return 'Area name too short';
                             }
                             return null;
                           },
@@ -477,16 +479,22 @@ class _EditAreaBodyState extends State<EditAreaBody> {
                             : DefaultElevatedButton(
                                 name: "Edit",
                                 onPressed: () {
-                                  showCustomDialog(context,
-                                      "Are you Sure you want save the edit of this area ?",
-                                      () {
-                                    context.read<EditAreaCubit>().editArea(
-                                        widget.id,
-                                        selectedManagersIds,
-                                        selectedSupervisorsIds,
-                                        selectedCleanersIds);
-                                    context.pop();
-                                  });
+                                  if (context
+                                      .read<EditAreaCubit>()
+                                      .formKey
+                                      .currentState!
+                                      .validate()) {
+                                    showCustomDialog(context,
+                                        "Are you Sure you want save the edit of this area ?",
+                                        () {
+                                      context.read<EditAreaCubit>().editArea(
+                                          widget.id,
+                                          selectedManagersIds,
+                                          selectedSupervisorsIds,
+                                          selectedCleanersIds);
+                                      context.pop();
+                                    });
+                                  }
                                 },
                                 color: AppColor.primaryColor,
                                 height: 48.h,

@@ -318,6 +318,10 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
           validator: (value) {
             if (value == null || value.isEmpty) {
               return "Floor is required";
+            } else if (value.length > 55) {
+              return 'User name too long';
+            } else if (value.length < 3) {
+              return 'User name too short';
             }
             return null;
           },
@@ -336,6 +340,10 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
           validator: (value) {
             if (value == null || value.isEmpty) {
               return "Floor number is required";
+            } else if (value.length > 55) {
+              return 'User name too long';
+            } else if (value.length < 3) {
+              return 'User name too short';
             }
             return null;
           },
@@ -352,6 +360,8 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
           validator: (value) {
             if (value == null || value.isEmpty) {
               return "floor description is required";
+            } else if (value.length < 3) {
+              return 'User name too short';
             }
             return null;
           },

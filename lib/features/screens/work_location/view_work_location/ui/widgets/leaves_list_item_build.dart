@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -10,7 +11,8 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
 
 Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
-  return InkWell(borderRadius: BorderRadius.circular(11.r),
+  return InkWell(
+    borderRadius: BorderRadius.circular(11.r),
     onTap: () {
       context.pushNamed(Routes.leavesDetailsScreen,
           arguments: selectedIndex == 0
@@ -66,7 +68,7 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
           minHeight: 150.h,
         ),
         width: double.infinity,
-        padding: EdgeInsets.fromLTRB(10, 0, 10, 5),
+        padding: EdgeInsets.fromLTRB(10, role == 'Admin' ? 0 : 10, 10, 5),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(11.r),
@@ -193,23 +195,24 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
                   ),
                 ),
                 Spacer(),
-                IconButton(
-                  onPressed: () {
-                    // PopUpDialog.show(
-                    //   context: context,
-                    //   id: context
-                    //       .read<WorkLocationCubit>()
-                    //       .attendanceLeavesPointModel!
-                    //       .data!
-                    //       .data![index]
-                    //       .id!,
-                    // );
-                  },
-                  icon: Icon(
-                    Icons.more_horiz_rounded,
-                    size: 22.sp,
+                if (role == 'Admin')
+                  IconButton(
+                    onPressed: () {
+                      // PopUpDialog.show(
+                      //   context: context,
+                      //   id: context
+                      //       .read<WorkLocationCubit>()
+                      //       .attendanceLeavesPointModel!
+                      //       .data!
+                      //       .data![index]
+                      //       .id!,
+                      // );
+                    },
+                    icon: Icon(
+                      Icons.more_horiz_rounded,
+                      size: 22.sp,
+                    ),
                   ),
-                ),
               ],
             ),
             Text(

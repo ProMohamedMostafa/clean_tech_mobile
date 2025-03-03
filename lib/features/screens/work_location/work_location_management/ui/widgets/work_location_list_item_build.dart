@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -148,136 +149,142 @@ Widget organizationsListItemBuild(
                               : "${context.read<WorkLocationCubit>().pointModel!.data!.data![index].floorName}",
           style: TextStyles.font12GreyRegular,
         ),
-        trailing: SizedBox(
-            width: 80.w,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                InkWell(
-                    onTap: () {
-                      context.pushNamed(
-                          selectedIndex == 0
-                              ? Routes.editAreaScreen
-                              : selectedIndex == 1
-                                  ? Routes.editCityScreen
-                                  : selectedIndex == 2
-                                      ? Routes.editOrganizationScreen
-                                      : selectedIndex == 3
-                                          ? Routes.editBuildingScreen
-                                          : selectedIndex == 4
-                                              ? Routes.editFloorScreen
-                                              : Routes.editPointScreen,
-                          arguments: selectedIndex == 0
-                              ? context
-                                  .read<WorkLocationCubit>()
-                                  .areaModel!
-                                  .data!
-                                  .areas![index]
-                                  .id
-                              : selectedIndex == 1
+        trailing: role == 'Admin'
+            ? SizedBox(
+                width: 80.w,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    InkWell(
+                        onTap: () {
+                          context.pushNamed(
+                              selectedIndex == 0
+                                  ? Routes.editAreaScreen
+                                  : selectedIndex == 1
+                                      ? Routes.editCityScreen
+                                      : selectedIndex == 2
+                                          ? Routes.editOrganizationScreen
+                                          : selectedIndex == 3
+                                              ? Routes.editBuildingScreen
+                                              : selectedIndex == 4
+                                                  ? Routes.editFloorScreen
+                                                  : Routes.editPointScreen,
+                              arguments: selectedIndex == 0
                                   ? context
                                       .read<WorkLocationCubit>()
-                                      .cityModel!
+                                      .areaModel!
                                       .data!
-                                      .data![index]
+                                      .areas![index]
                                       .id
-                                  : selectedIndex == 2
+                                  : selectedIndex == 1
                                       ? context
                                           .read<WorkLocationCubit>()
-                                          .organizationModel!
+                                          .cityModel!
                                           .data!
                                           .data![index]
                                           .id
-                                      : selectedIndex == 3
+                                      : selectedIndex == 2
                                           ? context
                                               .read<WorkLocationCubit>()
-                                              .buildingModel!
+                                              .organizationModel!
                                               .data!
                                               .data![index]
                                               .id
-                                          : selectedIndex == 4
+                                          : selectedIndex == 3
                                               ? context
                                                   .read<WorkLocationCubit>()
-                                                  .floorModel!
+                                                  .buildingModel!
                                                   .data!
                                                   .data![index]
                                                   .id
-                                              : context
-                                                  .read<WorkLocationCubit>()
-                                                  .pointModel!
-                                                  .data!
-                                                  .data![index]
-                                                  .id);
-                    },
-                    child: Icon(
-                      Icons.mode_edit_outlined,
-                      color: AppColor.thirdColor,
-                    )),
-                horizontalSpace(10),
-                InkWell(
-                    onTap: () {
-                      showCustomDialog(context, 'Are you want to delete ?', () {
-                        selectedIndex == 0
-                            ? context.read<WorkLocationCubit>().deleteArea(
-                                context
-                                    .read<WorkLocationCubit>()
-                                    .areaModel!
-                                    .data!
-                                    .areas![index]
-                                    .id!)
-                            : selectedIndex == 1
-                                ? context.read<WorkLocationCubit>().deleteCity(
+                                              : selectedIndex == 4
+                                                  ? context
+                                                      .read<WorkLocationCubit>()
+                                                      .floorModel!
+                                                      .data!
+                                                      .data![index]
+                                                      .id
+                                                  : context
+                                                      .read<WorkLocationCubit>()
+                                                      .pointModel!
+                                                      .data!
+                                                      .data![index]
+                                                      .id);
+                        },
+                        child: Icon(
+                          Icons.mode_edit_outlined,
+                          color: AppColor.thirdColor,
+                        )),
+                    horizontalSpace(10),
+                    InkWell(
+                        onTap: () {
+                          showCustomDialog(context, 'Are you want to delete ?',
+                              () {
+                            selectedIndex == 0
+                                ? context.read<WorkLocationCubit>().deleteArea(
                                     context
                                         .read<WorkLocationCubit>()
-                                        .cityModel!
+                                        .areaModel!
                                         .data!
-                                        .data![index]
+                                        .areas![index]
                                         .id!)
-                                : selectedIndex == 2
+                                : selectedIndex == 1
                                     ? context
                                         .read<WorkLocationCubit>()
-                                        .deleteOrganization(context
+                                        .deleteCity(context
                                             .read<WorkLocationCubit>()
-                                            .organizationModel!
+                                            .cityModel!
                                             .data!
                                             .data![index]
                                             .id!)
-                                    : selectedIndex == 3
+                                    : selectedIndex == 2
                                         ? context
                                             .read<WorkLocationCubit>()
-                                            .deleteBuilding(context
+                                            .deleteOrganization(context
                                                 .read<WorkLocationCubit>()
-                                                .buildingModel!
+                                                .organizationModel!
                                                 .data!
                                                 .data![index]
                                                 .id!)
-                                        : selectedIndex == 4
+                                        : selectedIndex == 3
                                             ? context
                                                 .read<WorkLocationCubit>()
-                                                .deleteFloor(context
+                                                .deleteBuilding(context
                                                     .read<WorkLocationCubit>()
-                                                    .floorModel!
+                                                    .buildingModel!
                                                     .data!
                                                     .data![index]
                                                     .id!)
-                                            : context
-                                                .read<WorkLocationCubit>()
-                                                .deletePoint(context
+                                            : selectedIndex == 4
+                                                ? context
                                                     .read<WorkLocationCubit>()
-                                                    .pointModel!
-                                                    .data!
-                                                    .data![index]
-                                                    .id!);
+                                                    .deleteFloor(context
+                                                        .read<
+                                                            WorkLocationCubit>()
+                                                        .floorModel!
+                                                        .data!
+                                                        .data![index]
+                                                        .id!)
+                                                : context
+                                                    .read<WorkLocationCubit>()
+                                                    .deletePoint(context
+                                                        .read<
+                                                            WorkLocationCubit>()
+                                                        .pointModel!
+                                                        .data!
+                                                        .data![index]
+                                                        .id!);
 
-                        context.pop();
-                      });
-                    },
-                    child: Icon(
-                      IconBroken.delete,
-                      color: AppColor.thirdColor,
-                    )),
-              ],
-            )),
+                            context.pop();
+                          });
+                        },
+                        child: Icon(
+                          IconBroken.delete,
+                          color: AppColor.thirdColor,
+                        )),
+                  ],
+                ))
+            : SizedBox.shrink(),
       ),
     ),
   );

@@ -76,6 +76,10 @@ class _AddShiftBodyState extends State<AddShiftBody> {
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return "Shift Name is Required";
+                            } else if (value.length > 55) {
+                              return 'User name too long';
+                            } else if (value.length < 3) {
+                              return 'User name too short';
                             }
                             return null;
                           },

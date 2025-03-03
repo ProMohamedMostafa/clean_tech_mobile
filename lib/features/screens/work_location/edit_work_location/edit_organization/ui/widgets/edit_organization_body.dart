@@ -70,7 +70,8 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
               toast(
                   text: state.editOrganizationModel.message!,
                   color: Colors.blue);
-              context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen);
+              context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
+                  arguments: 2);
             }
             if (state is EditOrganizationErrorState) {
               toast(text: state.error, color: Colors.red);
@@ -119,14 +120,6 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              value == 'No country') {
-                            return S.of(context).validationNationality;
-                          }
-                          return null;
-                        },
                         onPressed: (value) {
                           context.read<EditOrganizationCubit>().getArea(value);
                         },
@@ -162,14 +155,6 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              value == 'No areas') {
-                            return "Area is required";
-                          }
-                          return null;
-                        },
                         onPressed: (value) {
                           final selectedArea = context
                               .read<EditOrganizationCubit>()
@@ -218,14 +203,6 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              value == 'No cities') {
-                            return "City is required";
-                          }
-                          return null;
-                        },
                         onPressed: (value) {
                           final selectedCity = context
                               .read<EditOrganizationCubit>()
@@ -263,11 +240,20 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                             .name!,
                         controller: context
                             .read<EditOrganizationCubit>()
-                            .organizationController,
+                            .organizationController
+                          ..text = context
+                              .read<EditOrganizationCubit>()
+                              .organizationDetailsInEditModel!
+                              .data!
+                              .name!,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Organization is required";
+                            return "Organization name is required";
+                          } else if (value.length > 55) {
+                            return 'Organization name too long';
+                          } else if (value.length < 3) {
+                            return 'Organization name too short';
                           }
                           return null;
                         },
@@ -700,19 +686,25 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                           : DefaultElevatedButton(
                               name: "Edit",
                               onPressed: () {
-                                showCustomDialog(context,
-                                    "Are you Sure you want save the edit of this organization ?",
-                                    () {
-                                  context
-                                      .read<EditOrganizationCubit>()
-                                      .editOrganization(
-                                          widget.id,
-                                          selectedManagersIds,
-                                          selectedSupervisorsIds,
-                                          selectedCleanersIds,
-                                          selectedShiftsIds);
-                                  context.pop();
-                                });
+                                if (context
+                                    .read<EditOrganizationCubit>()
+                                    .formKey
+                                    .currentState!
+                                    .validate()) {
+                                  showCustomDialog(context,
+                                      "Are you Sure you want save the edit of this organization ?",
+                                      () {
+                                    context
+                                        .read<EditOrganizationCubit>()
+                                        .editOrganization(
+                                            widget.id,
+                                            selectedManagersIds,
+                                            selectedSupervisorsIds,
+                                            selectedCleanersIds,
+                                            selectedShiftsIds);
+                                    context.pop();
+                                  });
+                                }
                               },
                               color: AppColor.primaryColor,
                               height: 48.h,

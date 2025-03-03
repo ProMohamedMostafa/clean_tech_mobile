@@ -436,30 +436,33 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
               size: 22.sp,
             ),
           ),
-          IconButton(
-              onPressed: () {
-                widget.selectedIndex == 0
-                    ? context.pushNamed(Routes.editAreaScreen,
-                        arguments: widget.id)
-                    : widget.selectedIndex == 1
-                        ? context.pushNamed(Routes.editCityScreen,
-                            arguments: widget.id)
-                        : widget.selectedIndex == 2
-                            ? context.pushNamed(Routes.editOrganizationScreen,
-                                arguments: widget.id)
-                            : widget.selectedIndex == 3
-                                ? context.pushNamed(Routes.editBuildingScreen,
-                                    arguments: widget.id)
-                                : widget.selectedIndex == 4
-                                    ? context.pushNamed(Routes.editFloorScreen,
-                                        arguments: widget.id)
-                                    : context.pushNamed(Routes.editPointScreen,
-                                        arguments: widget.id);
-              },
-              icon: Icon(
-                Icons.edit,
-                color: AppColor.primaryColor,
-              ))
+          if (role == 'Admin')
+            IconButton(
+                onPressed: () {
+                  widget.selectedIndex == 0
+                      ? context.pushNamed(Routes.editAreaScreen,
+                          arguments: widget.id)
+                      : widget.selectedIndex == 1
+                          ? context.pushNamed(Routes.editCityScreen,
+                              arguments: widget.id)
+                          : widget.selectedIndex == 2
+                              ? context.pushNamed(Routes.editOrganizationScreen,
+                                  arguments: widget.id)
+                              : widget.selectedIndex == 3
+                                  ? context.pushNamed(Routes.editBuildingScreen,
+                                      arguments: widget.id)
+                                  : widget.selectedIndex == 4
+                                      ? context.pushNamed(
+                                          Routes.editFloorScreen,
+                                          arguments: widget.id)
+                                      : context.pushNamed(
+                                          Routes.editPointScreen,
+                                          arguments: widget.id);
+                },
+                icon: Icon(
+                  Icons.edit,
+                  color: AppColor.primaryColor,
+                ))
         ],
       ),
       body: BlocConsumer<WorkLocationCubit, WorkLocationState>(
@@ -644,42 +647,41 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                     ]),
                   ),
                   verticalSpace(15),
-                  (uId == widget.id)
-                      ? SizedBox.shrink()
-                      : DefaultElevatedButton(
-                          name: S.of(context).deleteButton,
-                          onPressed: () {
-                            showCustomDialog(
-                                context, S.of(context).deleteMessage, () {
-                              widget.selectedIndex == 0
-                                  ? context
-                                      .read<WorkLocationCubit>()
-                                      .deleteArea(widget.id)
-                                  : widget.selectedIndex == 1
-                                      ? context
-                                          .read<WorkLocationCubit>()
-                                          .deleteCity(widget.id)
-                                      : widget.selectedIndex == 2
-                                          ? context
-                                              .read<WorkLocationCubit>()
-                                              .deleteOrganization(widget.id)
-                                          : widget.selectedIndex == 3
-                                              ? context
-                                                  .read<WorkLocationCubit>()
-                                                  .deleteBuilding(widget.id)
-                                              : widget.selectedIndex == 4
-                                                  ? context
-                                                      .read<WorkLocationCubit>()
-                                                      .deleteFloor(widget.id)
-                                                  : context
-                                                      .read<WorkLocationCubit>()
-                                                      .deletePoint(widget.id);
-                            });
-                          },
-                          color: Colors.red,
-                          height: 48,
-                          width: double.infinity,
-                          textStyles: TextStyles.font20Whitesemimedium),
+                  if (role == 'Admin')
+                    DefaultElevatedButton(
+                        name: S.of(context).deleteButton,
+                        onPressed: () {
+                          showCustomDialog(context, S.of(context).deleteMessage,
+                              () {
+                            widget.selectedIndex == 0
+                                ? context
+                                    .read<WorkLocationCubit>()
+                                    .deleteArea(widget.id)
+                                : widget.selectedIndex == 1
+                                    ? context
+                                        .read<WorkLocationCubit>()
+                                        .deleteCity(widget.id)
+                                    : widget.selectedIndex == 2
+                                        ? context
+                                            .read<WorkLocationCubit>()
+                                            .deleteOrganization(widget.id)
+                                        : widget.selectedIndex == 3
+                                            ? context
+                                                .read<WorkLocationCubit>()
+                                                .deleteBuilding(widget.id)
+                                            : widget.selectedIndex == 4
+                                                ? context
+                                                    .read<WorkLocationCubit>()
+                                                    .deleteFloor(widget.id)
+                                                : context
+                                                    .read<WorkLocationCubit>()
+                                                    .deletePoint(widget.id);
+                          });
+                        },
+                        color: Colors.red,
+                        height: 48,
+                        width: double.infinity,
+                        textStyles: TextStyles.font20Whitesemimedium),
                   verticalSpace(20),
                 ],
               ),

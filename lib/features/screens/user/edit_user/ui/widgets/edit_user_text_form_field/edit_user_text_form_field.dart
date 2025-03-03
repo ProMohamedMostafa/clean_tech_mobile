@@ -18,6 +18,8 @@ class EditUserTextField extends StatelessWidget {
   final Function(String?)? onChanged;
   final Function? suffixPressed;
   final Widget? perfix;
+  final Function(String?)? validator;
+  final Widget? prefixIcon;
   final List<TextInputFormatter>? inputFormatters;
 
   const EditUserTextField(
@@ -32,14 +34,17 @@ class EditUserTextField extends StatelessWidget {
       this.onChanged,
       this.suffixPressed,
       this.perfix,
+      this.validator,
       this.inputFormatters,
       required this.label,
-      required this.hint});
+      required this.hint,
+      this.prefixIcon});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       inputFormatters: inputFormatters,
+      validator: validator != null ? (value) => validator!(value) : null,
       controller: controller,
       obscureText: obscureText,
       keyboardType: keyboardType,
@@ -53,6 +58,7 @@ class EditUserTextField extends StatelessWidget {
         floatingLabelBehavior: FloatingLabelBehavior.always,
         labelStyle: TextStyles.font14BlackSemiBold,
         isDense: true,
+        prefixIcon: prefixIcon,
         suffixIcon: suffixIcon != null
             ? IconButton(
                 onPressed: () {

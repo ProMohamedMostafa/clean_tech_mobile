@@ -45,31 +45,34 @@ class CustomFilterAttedanceDialog {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        S.of(context).addUserText13,
-                        style: TextStyles.font16BlackRegular,
-                      ),
-                      CustomDropDownList(
-                        hint: 'Select Role',
-                        items: context
-                                    .read<ProfileCubit>()
-                                    .roleModel
-                                    ?.data
-                                    ?.isEmpty ??
-                                true
-                            ? ['No roles available']
-                            : context
-                                    .read<ProfileCubit>()
-                                    .roleModel
-                                    ?.data
-                                    ?.map((e) => e.name ?? 'Unknown')
-                                    .toList() ??
-                                [],
-                        controller: context.read<ProfileCubit>().roleController,
-                        keyboardType: TextInputType.text,
-                        suffixIcon: IconBroken.arrowDown2,
-                      ),
-                      verticalSpace(10),
+                      if (role == 'Admin' || role == 'Manager') ...[
+                        Text(
+                          S.of(context).addUserText13,
+                          style: TextStyles.font16BlackRegular,
+                        ),
+                        CustomDropDownList(
+                          hint: 'Select Role',
+                          items: context
+                                      .read<ProfileCubit>()
+                                      .roleModel
+                                      ?.data
+                                      ?.isEmpty ??
+                                  true
+                              ? ['No roles available']
+                              : context
+                                      .read<ProfileCubit>()
+                                      .roleModel
+                                      ?.data
+                                      ?.map((e) => e.name ?? 'Unknown')
+                                      .toList() ??
+                                  [],
+                          controller:
+                              context.read<ProfileCubit>().roleController,
+                          keyboardType: TextInputType.text,
+                          suffixIcon: IconBroken.arrowDown2,
+                        ),
+                        verticalSpace(10),
+                      ],
                       Text(
                         'Status',
                         style: TextStyles.font16BlackRegular,
@@ -485,7 +488,7 @@ class CustomFilterAttedanceDialog {
                             context.read<ProfileCubit>().pointController,
                         keyboardType: TextInputType.text,
                       ),
-                      if (role == 'Admin') ...[
+                      if (role != 'Cleaner') ...[
                         verticalSpace(10),
                         Text(
                           'Provider',

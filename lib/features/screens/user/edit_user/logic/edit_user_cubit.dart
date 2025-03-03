@@ -42,6 +42,7 @@ class EditUserCubit extends Cubit<EditUserState> {
   TextEditingController passwordConfirmationController =
       TextEditingController();
   final shiftController = MultiSelectController<ShiftDetails>();
+  final formKey = GlobalKey<FormState>();
 
   EditModel? editModel;
   editUser(int? id, String? image, List<int>? selectedShiftsIds) async {
@@ -84,7 +85,7 @@ class EditUserCubit extends Cubit<EditUserState> {
           : emailController.text,
       "phoneNumber": phoneController.text.isEmpty
           ? userDetailsModel!.data!.phoneNumber
-          : phoneController.text,
+          : '+966${phoneController.text}',
       "image": imageFile ?? userDetailsModel!.data!.image,
       "birthdate": birthController.text.isEmpty
           ? userDetailsModel!.data!.birthdate

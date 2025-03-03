@@ -56,15 +56,15 @@ class _EditFloorBodyState extends State<EditFloorBody> {
     return Scaffold(
       appBar: AppBar(
         leading: customBackButton(context),
-        title: Text('Edit Floor', style: TextStyles.font16BlackSemiBold),
-        centerTitle: true,
+        title: Text('Edit Floor'),
       ),
       body: SafeArea(
         child: BlocConsumer<EditFloorCubit, EditFloorState>(
           listener: (context, state) {
             if (state is EditFloorSuccessState) {
               toast(text: state.floorEditModel.message!, color: Colors.blue);
-              context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen);
+              context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
+                  arguments: 4);
             }
             if (state is EditFloorErrorState) {
               toast(text: state.error, color: Colors.red);
@@ -111,14 +111,6 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              value == 'No country') {
-                            return S.of(context).validationNationality;
-                          }
-                          return null;
-                        },
                         onPressed: (value) {
                           context.read<EditFloorCubit>().getArea(value);
                         },
@@ -154,14 +146,6 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              value == 'No areas') {
-                            return "Area is required";
-                          }
-                          return null;
-                        },
                         onPressed: (value) {
                           final selectedArea = context
                               .read<EditFloorCubit>()
@@ -209,14 +193,6 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              value == 'No cities') {
-                            return "City is required";
-                          }
-                          return null;
-                        },
                         onPressed: (value) {
                           final selectedCity = context
                               .read<EditFloorCubit>()
@@ -264,14 +240,6 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              value == 'No organizations') {
-                            return "Organization is required";
-                          }
-                          return null;
-                        },
                         onPressed: (value) {
                           final selectedOrganization = context
                               .read<EditFloorCubit>()
@@ -320,14 +288,6 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              value == 'No building') {
-                            return "Building is required";
-                          }
-                          return null;
-                        },
                         onPressed: (value) {
                           final selectedBuilding = context
                               .read<EditFloorCubit>()
@@ -363,11 +323,20 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                             .data!
                             .name!,
                         controller:
-                            context.read<EditFloorCubit>().floorController,
+                            context.read<EditFloorCubit>().floorController
+                              ..text = context
+                                  .read<EditFloorCubit>()
+                                  .floorDetailsInEditModel!
+                                  .data!
+                                  .name!,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Floor is required";
+                            return "Floor name is required";
+                          } else if (value.length > 55) {
+                            return 'Floor name too long';
+                          } else if (value.length < 3) {
+                            return 'Floor name too short';
                           }
                           return null;
                         },
@@ -384,14 +353,20 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                             .floorDetailsInEditModel!
                             .data!
                             .number!,
-                        controller: context
-                            .read<EditFloorCubit>()
-                            .floorNumberController,
+                        controller:
+                            context.read<EditFloorCubit>().floorNumberController
+                              ..text = context
+                                  .read<EditFloorCubit>()
+                                  .floorDetailsInEditModel!
+                                  .data!
+                                  .number!,
                         onlyRead: false,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Floor number is required";
+                          } else if (value.length > 55) {
+                            return 'Floor number too long';
                           }
                           return null;
                         },
@@ -402,9 +377,22 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDescriptionTextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Description is required";
+                            } else if (value.length < 3) {
+                              return 'Description too short';
+                            }
+                            return null;
+                          },
                           controller: context
                               .read<EditFloorCubit>()
-                              .floorDescriptionController,
+                              .floorDescriptionController
+                            ..text = context
+                                .read<EditFloorCubit>()
+                                .floorDetailsInEditModel!
+                                .data!
+                                .description!,
                           hint: context
                               .read<EditFloorCubit>()
                               .floorDetailsInEditModel!
@@ -835,17 +823,23 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                           : DefaultElevatedButton(
                               name: "Edit",
                               onPressed: () {
-                                showCustomDialog(context,
-                                    "Are you Sure you want save the edit of this Floor ?",
-                                    () {
-                                  context.read<EditFloorCubit>().editFloor(
-                                      widget.id,
-                                      selectedManagersIds,
-                                      selectedSupervisorsIds,
-                                      selectedCleanersIds,
-                                      selectedShiftsIds);
-                                  context.pop();
-                                });
+                                if (context
+                                    .read<EditFloorCubit>()
+                                    .formKey
+                                    .currentState!
+                                    .validate()) {
+                                  showCustomDialog(context,
+                                      "Are you Sure you want save the edit of this Floor ?",
+                                      () {
+                                    context.read<EditFloorCubit>().editFloor(
+                                        widget.id,
+                                        selectedManagersIds,
+                                        selectedSupervisorsIds,
+                                        selectedCleanersIds,
+                                        selectedShiftsIds);
+                                    context.pop();
+                                  });
+                                }
                               },
                               color: AppColor.primaryColor,
                               height: 48.h,

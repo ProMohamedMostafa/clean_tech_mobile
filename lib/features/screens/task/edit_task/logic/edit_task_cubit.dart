@@ -37,6 +37,7 @@ class EditTaskCubit extends Cubit<EditTaskState> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController parentTaskController = TextEditingController();
   final supervisorsController = MultiSelectController<SupervisorData>();
+  final formKey = GlobalKey<FormState>();
 
   EditTaskModel? editTaskModel;
   editTask(

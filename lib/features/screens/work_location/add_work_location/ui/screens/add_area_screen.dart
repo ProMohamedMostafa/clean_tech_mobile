@@ -132,6 +132,10 @@ class _AddAreaScreenState extends State<AddAreaScreen> {
           validator: (value) {
             if (value == null || value.isEmpty) {
               return "Area is required";
+            } else if (value.length > 55) {
+              return 'User name too long';
+            } else if (value.length < 3) {
+              return 'User name too short';
             }
             return null;
           },

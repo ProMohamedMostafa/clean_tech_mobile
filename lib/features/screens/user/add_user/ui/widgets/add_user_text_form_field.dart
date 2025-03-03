@@ -16,11 +16,10 @@ class AddUserTextFormField extends StatelessWidget {
   final String? errorMsg;
   final Function(String?)? onChanged;
   final Function? suffixPressed;
-  final Widget? prefix; // Changed to Widget?
-  final Widget? prefixIcon; // Optional prefixIcon as Widget?
+  final Widget? prefix;
+  final Widget? prefixIcon;
   final List<TextInputFormatter>? inputFormatters;
-  final String? hint; // Optional hint
-
+  final String? hint;
   const AddUserTextFormField({
     super.key,
     required this.controller,
@@ -34,9 +33,9 @@ class AddUserTextFormField extends StatelessWidget {
     this.onChanged,
     this.suffixPressed,
     this.prefix,
-    this.prefixIcon, // Optional parameter
+    this.prefixIcon,
     this.inputFormatters,
-    this.hint, // Optional parameter
+    this.hint,
     required this.readOnly,
   });
 
@@ -72,7 +71,7 @@ class AddUserTextFormField extends StatelessWidget {
               )
             : null,
         prefix: prefix,
-        prefixIcon: prefixIcon, // Use the new prefixIcon widget
+        prefixIcon: prefixIcon,
         prefixStyle: TextStyles.font16BlackRegular,
         border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.r),

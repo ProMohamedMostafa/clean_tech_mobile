@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
@@ -83,43 +84,48 @@ class _OrganizationsBodyState extends State<OrganizationsBody> {
         leading: customBackButton(context),
         title: Text('Work Location'),
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 30),
-        child: SizedBox(
-          height: 57.h,
-          width: 57.w,
-          child: ElevatedButton(
-            onPressed: () {
-              widget.selectedIndex == 0
-                  ? context.pushNamed(Routes.addAreaScreen)
-                  : widget.selectedIndex == 1
-                      ? context.pushNamed(Routes.addCityScreen)
-                      : widget.selectedIndex == 2
-                          ? context
-                              .pushNamed(Routes.addOrganizationDetailsScreen)
-                          : widget.selectedIndex == 3
-                              ? context.pushNamed(Routes.addBuildingScreen)
-                              : widget.selectedIndex == 4
-                                  ? context.pushNamed(Routes.addFloorScreen)
-                                  : context.pushNamed(Routes.addPointScreen);
-            },
-            style: ElevatedButton.styleFrom(
-              padding: REdgeInsets.all(0),
-              backgroundColor: AppColor.primaryColor,
-              shape: CircleBorder(),
-              side: BorderSide(
-                color: AppColor.secondaryColor,
-                width: 1.w,
+      floatingActionButton: role == 'Admin'
+          ? Padding(
+              padding: const EdgeInsets.only(bottom: 30),
+              child: SizedBox(
+                height: 57.h,
+                width: 57.w,
+                child: ElevatedButton(
+                  onPressed: () {
+                    widget.selectedIndex == 0
+                        ? context.pushNamed(Routes.addAreaScreen)
+                        : widget.selectedIndex == 1
+                            ? context.pushNamed(Routes.addCityScreen)
+                            : widget.selectedIndex == 2
+                                ? context.pushNamed(
+                                    Routes.addOrganizationDetailsScreen)
+                                : widget.selectedIndex == 3
+                                    ? context
+                                        .pushNamed(Routes.addBuildingScreen)
+                                    : widget.selectedIndex == 4
+                                        ? context
+                                            .pushNamed(Routes.addFloorScreen)
+                                        : context
+                                            .pushNamed(Routes.addPointScreen);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: REdgeInsets.all(0),
+                    backgroundColor: AppColor.primaryColor,
+                    shape: CircleBorder(),
+                    side: BorderSide(
+                      color: AppColor.secondaryColor,
+                      width: 1.w,
+                    ),
+                  ),
+                  child: Icon(
+                    Icons.add_home_outlined,
+                    color: Colors.white,
+                    size: 28.sp,
+                  ),
+                ),
               ),
-            ),
-            child: Icon(
-              Icons.add_home_outlined,
-              color: Colors.white,
-              size: 28.sp,
-            ),
-          ),
-        ),
-      ),
+            )
+          : SizedBox.shrink(),
       body: BlocConsumer<WorkLocationCubit, WorkLocationState>(
         listener: (context, state) {
           if (state is AreaErrorState) {

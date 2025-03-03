@@ -1,11 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
+import 'package:smart_cleaning_application/core/helpers/regx_validations/regx_validations.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
@@ -13,6 +16,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/features/screens/auth/set_password/ui/widgets/password_validation.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/logic/add_user_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/logic/add_user_state.dart';
@@ -29,6 +33,15 @@ class AddUserBody extends StatefulWidget {
 
 class _AddUserBodyState extends State<AddUserBody> {
   List<int> selectedShiftsIds = [];
+
+  bool isShow = false;
+  bool isObscureText = true;
+  bool hasLowercase = false;
+  bool hasUppercase = false;
+  bool hasSpecialCharacters = false;
+  bool hasNumber = false;
+  bool hasMinLength = false;
+
   @override
   void initState() {
     context.read<AddUserCubit>()
@@ -36,7 +49,25 @@ class _AddUserBodyState extends State<AddUserBody> {
       ..getRole()
       ..getProviders()
       ..getAllDeletedProviders();
+    setupPasswordControllerListener();
     super.initState();
+  }
+
+  void setupPasswordControllerListener() {
+    context.read<AddUserCubit>().passwordController.addListener(() {
+      setState(() {
+        hasLowercase = AppRegex.hasLowerCase(
+            context.read<AddUserCubit>().passwordController.text);
+        hasUppercase = AppRegex.hasUpperCase(
+            context.read<AddUserCubit>().passwordController.text);
+        hasSpecialCharacters = AppRegex.hasSpecialCharacter(
+            context.read<AddUserCubit>().passwordController.text);
+        hasNumber = AppRegex.hasNumber(
+            context.read<AddUserCubit>().passwordController.text);
+        hasMinLength = AppRegex.hasMinLength(
+            context.read<AddUserCubit>().passwordController.text);
+      });
+    });
   }
 
   @override
@@ -97,37 +128,74 @@ class _AddUserBodyState extends State<AddUserBody> {
                     Center(
                       child: Stack(
                         children: [
-                          Container(
-                            width: 100.w,
-                            height: 100.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: AppColor.primaryColor,
-                                width: 3.w,
-                              ),
-                            ),
-                            child: ClipOval(
-                              child: context.read<AddUserCubit>().image?.path ==
-                                      null
-                                  ? Image.asset(
-                                      'assets/images/noImage.png',
-                                      fit: BoxFit.fill,
-                                    )
-                                  : Image.file(
-                                      File(context
-                                          .read<AddUserCubit>()
-                                          .image!
-                                          .path),
-                                      fit: BoxFit.fill,
-                                      errorBuilder:
-                                          (context, error, stackTrace) {
-                                        return Image.asset(
-                                          'assets/images/noImage.png',
-                                          fit: BoxFit.fill,
-                                        );
-                                      },
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (contextt) => Scaffold(
+                                    appBar: AppBar(
+                                      leading: customBackButton(context),
                                     ),
+                                    body: Center(
+                                      child: PhotoView(
+                                        imageProvider: context
+                                                    .read<AddUserCubit>()
+                                                    .image
+                                                    ?.path ==
+                                                null
+                                            ? AssetImage(
+                                                'assets/images/noImage.png',
+                                              )
+                                            : FileImage(
+                                                File(context
+                                                    .read<AddUserCubit>()
+                                                    .image!
+                                                    .path),
+                                              ),
+                                        backgroundDecoration:
+                                            const BoxDecoration(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              width: 100.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: AppColor.primaryColor,
+                                  width: 2.w,
+                                ),
+                              ),
+                              child: ClipOval(
+                                child:
+                                    context.read<AddUserCubit>().image?.path ==
+                                            null
+                                        ? Image.asset(
+                                            'assets/images/noImage.png',
+                                            fit: BoxFit.fill,
+                                          )
+                                        : Image.file(
+                                            File(context
+                                                .read<AddUserCubit>()
+                                                .image!
+                                                .path),
+                                            fit: BoxFit.fill,
+                                            errorBuilder:
+                                                (context, error, stackTrace) {
+                                              return Image.asset(
+                                                'assets/images/noImage.png',
+                                                fit: BoxFit.fill,
+                                              );
+                                            },
+                                          ),
+                              ),
                             ),
                           ),
                           Positioned(
@@ -153,7 +221,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                         ],
                       ),
                     ),
-                    verticalSpace(35),
+                    verticalSpace(20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -175,6 +243,13 @@ class _AddUserBodyState extends State<AddUserBody> {
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return S.of(context).validationFirstName;
+                                  } else if (value.length > 55) {
+                                    return 'First name too long';
+                                  } else if (value.length < 3) {
+                                    return 'First name too short';
+                                  } else if (!RegExp(r"^[a-zA-Z\s]+$")
+                                      .hasMatch(value)) {
+                                    return 'Only letters';
                                   }
                                 },
                               ),
@@ -200,6 +275,13 @@ class _AddUserBodyState extends State<AddUserBody> {
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return S.of(context).validationLastName;
+                                  } else if (value.length > 55) {
+                                    return 'Last name too long';
+                                  } else if (value.length < 3) {
+                                    return 'Last name too short';
+                                  } else if (!RegExp(r"^[a-zA-Z\s]+$")
+                                      .hasMatch(value)) {
+                                    return 'Only letters';
                                   }
                                 },
                               ),
@@ -222,6 +304,10 @@ class _AddUserBodyState extends State<AddUserBody> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return S.of(context).validationUserName;
+                        } else if (value.length > 55) {
+                          return 'User name too long';
+                        } else if (value.length < 3) {
+                          return 'User name too short';
                         }
                       },
                     ),
@@ -238,6 +324,10 @@ class _AddUserBodyState extends State<AddUserBody> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return S.of(context).validationAddEmail;
+                        } else if (!RegExp(
+                                r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                            .hasMatch(value)) {
+                          return 'Enter valid email';
                         }
                       },
                     ),
@@ -252,6 +342,9 @@ class _AddUserBodyState extends State<AddUserBody> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return S.of(context).validationPhoneNumber;
+                        } else if (!RegExp(r'(^(?:[+0])?[0-9]{9}$)')
+                            .hasMatch(value)) {
+                          return 'Please enter valid mobile number';
                         }
                         return null;
                       },
@@ -449,7 +542,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                                 keyboardType: TextInputType.none,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return S.of(context).validationBirthdate;
+                                    return 'Birth Date is required';
                                   }
                                 },
                               ),
@@ -472,6 +565,10 @@ class _AddUserBodyState extends State<AddUserBody> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return S.of(context).validationIdNumber;
+                        } else if (value.length > 20) {
+                          return 'ID Number too long';
+                        } else if (value.length < 5) {
+                          return 'ID Number too short';
                         }
                       },
                     ),
@@ -481,23 +578,43 @@ class _AddUserBodyState extends State<AddUserBody> {
                       style: TextStyles.font16BlackRegular,
                     ),
                     AddUserTextFormField(
-                      controller:
-                          context.read<AddUserCubit>().passwordController,
-                      readOnly: false,
-                      keyboardType: TextInputType.text,
-                      suffixIcon: context.read<AddUserCubit>().suffixIcon,
-                      suffixPressed: () {
-                        context
-                            .read<AddUserCubit>()
-                            .changeSuffixIconVisiability();
-                      },
-                      obscureText: context.read<AddUserCubit>().ispassword,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return S.of(context).validationAddPassword;
-                        }
-                      },
-                    ),
+                        controller:
+                            context.read<AddUserCubit>().passwordController,
+                        readOnly: false,
+                        keyboardType: TextInputType.text,
+                        suffixIcon: context.read<AddUserCubit>().suffixIcon,
+                        suffixPressed: () {
+                          context
+                              .read<AddUserCubit>()
+                              .changeSuffixIconVisiability();
+                        },
+                        onChanged: (value) {
+                          if (value!.isNotEmpty) {
+                            isShow = true;
+                          } else {
+                            isShow = false;
+                          }
+                        },
+                        obscureText: context.read<AddUserCubit>().ispassword,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return S.of(context).validationAddPassword;
+                          }
+                          if (!RegExp(
+                                  r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~`)\%\-(_+=;:,.<>/?"[{\]}\|^]).{8,}$')
+                              .hasMatch(value)) {
+                            return S.of(context).validationPassword;
+                          }
+                        }),
+                    verticalSpace(10),
+                    if (isShow == true)
+                      PasswordValidations(
+                        hasLowerCase: hasLowercase,
+                        hasUpperCase: hasUppercase,
+                        hasSpecialCharacters: hasSpecialCharacters,
+                        hasNumber: hasNumber,
+                        hasMinLength: hasMinLength,
+                      ),
                     verticalSpace(10),
                     Text(
                       S.of(context).addUserText11,
@@ -517,10 +634,12 @@ class _AddUserBodyState extends State<AddUserBody> {
                       readOnly: false,
                       keyboardType: TextInputType.text,
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return S
-                              .of(context)
-                              .validationAddPasswordConfirmation;
+                        if (value! !=
+                            context
+                                .read<AddUserCubit>()
+                                .passwordController
+                                .text) {
+                          return S.of(context).validationRepeatPassword;
                         }
                       },
                     ),

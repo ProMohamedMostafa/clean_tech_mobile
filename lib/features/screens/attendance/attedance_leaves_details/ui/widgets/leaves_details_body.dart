@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
@@ -38,15 +39,16 @@ class _LeavesDetailsBodyState extends State<LeavesDetailsBody> {
         title: Text("Leave details"),
         leading: customBackButton(context),
         actions: [
-          IconButton(
-              onPressed: () {
-                context.pushNamed(Routes.editleavesScreen,
-                    arguments: widget.id);
-              },
-              icon: Icon(
-                Icons.edit,
-                color: AppColor.primaryColor,
-              ))
+          if (role == 'Admin')
+            IconButton(
+                onPressed: () {
+                  context.pushNamed(Routes.editleavesScreen,
+                      arguments: widget.id);
+                },
+                icon: Icon(
+                  Icons.edit,
+                  color: AppColor.primaryColor,
+                ))
         ],
       ),
       body: BlocConsumer<AttendanceLeavesCubit, AttendanceLeavesState>(
@@ -261,19 +263,24 @@ class _LeavesDetailsBodyState extends State<LeavesDetailsBody> {
                           ))
                       : Text('There\'s no file'),
                   verticalSpace(20),
-                  Center(
-                    child: DefaultElevatedButton(
-                        name: 'Delete',
-                        onPressed: () {
-                          context
-                              .read<AttendanceLeavesCubit>()
-                              .leavesDelete(widget.id);
-                        },
-                        color: Colors.red,
-                        height: 47,
-                        width: double.infinity,
-                        textStyles: TextStyles.font20Whitesemimedium),
-                  ),
+                  if (role == 'Admin')
+                    state is LeavesDeleteLoadingState
+                        ? CircularProgressIndicator(
+                            color: AppColor.primaryColor,
+                          )
+                        : Center(
+                            child: DefaultElevatedButton(
+                                name: 'Delete',
+                                onPressed: () {
+                                  context
+                                      .read<AttendanceLeavesCubit>()
+                                      .leavesDelete(widget.id);
+                                },
+                                color: Colors.red,
+                                height: 47,
+                                width: double.infinity,
+                                textStyles: TextStyles.font20Whitesemimedium),
+                          ),
                   verticalSpace(20)
                 ],
               ),

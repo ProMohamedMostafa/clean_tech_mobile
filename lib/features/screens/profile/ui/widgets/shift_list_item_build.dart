@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -10,12 +11,13 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/features/screens/profile/logic/profile_cubit.dart';
 
 Widget listShiftItemBuild(BuildContext context, index) {
-  return InkWell(borderRadius: BorderRadius.circular(11.r),
+  return InkWell(
+    borderRadius: BorderRadius.circular(11.r),
     onTap: () {
       context.pushNamed(Routes.shiftDetailsScreen,
           arguments: context
               .read<ProfileCubit>()
-              .allShiftsModel!
+              .userShiftDetailsModel!
               .data!
               .shifts![index]
               .id);
@@ -31,7 +33,7 @@ Widget listShiftItemBuild(BuildContext context, index) {
           minHeight: 125.h,
         ),
         width: double.infinity,
-        padding: EdgeInsets.fromLTRB(10, 0, 10, 5),
+        padding: EdgeInsets.fromLTRB(10, role == 'Admin' ? 0 : 10, 10, 5),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(11.r),
@@ -53,22 +55,23 @@ Widget listShiftItemBuild(BuildContext context, index) {
                   style: TextStyles.font16BlackSemiBold,
                 ),
                 Spacer(),
-                IconButton(
-                  onPressed: () {
-                    // PopUpDialog.show(
-                    //     context: context,
-                    //     id: context
-                    //         .read<ProfileCubit>()
-                    //         .userTaskDetailsModel!
-                    //         .data!
-                    //         .data![index]
-                    //         .id!);
-                  },
-                  icon: Icon(
-                    Icons.more_horiz_rounded,
-                    size: 22.sp,
-                  ),
-                )
+                if (role == 'Admin')
+                  IconButton(
+                    onPressed: () {
+                      // PopUpDialog.show(
+                      //     context: context,
+                      //     id: context
+                      //         .read<ProfileCubit>()
+                      //         .userTaskDetailsModel!
+                      //         .data!
+                      //         .data![index]
+                      //         .id!);
+                    },
+                    icon: Icon(
+                      Icons.more_horiz_rounded,
+                      size: 22.sp,
+                    ),
+                  )
               ],
             ),
             verticalSpace(10),

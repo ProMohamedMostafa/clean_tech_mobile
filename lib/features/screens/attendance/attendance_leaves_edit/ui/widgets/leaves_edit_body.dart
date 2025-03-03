@@ -238,7 +238,12 @@ class _LeavesEditBodyState extends State<LeavesEditBody> {
                       CustomDescriptionTextFormField(
                         controller: context
                             .read<LeavesEditCubit>()
-                            .discriptionController,
+                            .discriptionController
+                          ..text = context
+                              .read<LeavesEditCubit>()
+                              .leavesDetailsModel!
+                              .data!
+                              .reason!,
                         hint: context
                             .read<LeavesEditCubit>()
                             .leavesDetailsModel!

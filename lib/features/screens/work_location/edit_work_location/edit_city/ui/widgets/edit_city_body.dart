@@ -57,7 +57,8 @@ class _EditCityBodyState extends State<EditCityBody> {
           listener: (context, state) {
             if (state is EditCitySuccessState) {
               toast(text: state.editCityModel.message!, color: Colors.blue);
-              context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen);
+              context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
+                  arguments: 1);
             }
             if (state is EditCityErrorState) {
               toast(text: state.error, color: Colors.red);
@@ -105,14 +106,6 @@ class _EditCityBodyState extends State<EditCityBody> {
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              value == 'No country') {
-                            return S.of(context).validationNationality;
-                          }
-                          return null;
-                        },
                         onPressed: (value) {
                           context
                               .read<EditCityCubit>()
@@ -151,14 +144,6 @@ class _EditCityBodyState extends State<EditCityBody> {
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              value == 'No areas') {
-                            return "Area is required";
-                          }
-                          return null;
-                        },
                         onPressed: (value) {
                           final selectedArea = context
                               .read<EditCityCubit>()
@@ -194,12 +179,20 @@ class _EditCityBodyState extends State<EditCityBody> {
                             .cityDetailsInEditModel!
                             .data!
                             .name!,
-                        controller:
-                            context.read<EditCityCubit>().cityController,
+                        controller: context.read<EditCityCubit>().cityController
+                          ..text = context
+                              .read<EditCityCubit>()
+                              .cityDetailsInEditModel!
+                              .data!
+                              .name!,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "City is required";
+                            return "City name is required";
+                          } else if (value.length > 55) {
+                            return 'City name too long';
+                          } else if (value.length < 3) {
+                            return 'City name too short';
                           }
                           return null;
                         },
@@ -524,16 +517,22 @@ class _EditCityBodyState extends State<EditCityBody> {
                           : DefaultElevatedButton(
                               name: "Edit",
                               onPressed: () {
-                                showCustomDialog(context,
-                                    "Are you Sure you want save the edit of this city ?",
-                                    () {
-                                  context.read<EditCityCubit>().editCity(
-                                      widget.id,
-                                      selectedManagersIds,
-                                      selectedSupervisorsIds,
-                                      selectedCleanersIds);
-                                  context.pop();
-                                });
+                                if (context
+                                    .read<EditCityCubit>()
+                                    .formKey
+                                    .currentState!
+                                    .validate()) {
+                                  showCustomDialog(context,
+                                      "Are you Sure you want save the edit of this city ?",
+                                      () {
+                                    context.read<EditCityCubit>().editCity(
+                                        widget.id,
+                                        selectedManagersIds,
+                                        selectedSupervisorsIds,
+                                        selectedCleanersIds);
+                                    context.pop();
+                                  });
+                                }
                               },
                               color: AppColor.primaryColor,
                               height: 48.h,

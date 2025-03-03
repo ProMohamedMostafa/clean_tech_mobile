@@ -133,22 +133,17 @@ class _AddCityScreenState extends State<AddCityScreen> {
         ),
         CustomDropDownList(
           hint: "Select area",
-          items: context
-                      .read<AddOrganizationCubit>()
-                      .areaModel
-                      ?.data
-                  
-                      ?.isEmpty ??
-                  true
-              ? ['No area']
-              : context
-                      .read<AddOrganizationCubit>()
-                      .areaModel
-                      ?.data
-               
-                      ?.map((e) => e.name ?? 'Unknown')
-                      .toList() ??
-                  [],
+          items:
+              context.read<AddOrganizationCubit>().areaModel?.data?.isEmpty ??
+                      true
+                  ? ['No area']
+                  : context
+                          .read<AddOrganizationCubit>()
+                          .areaModel
+                          ?.data
+                          ?.map((e) => e.name ?? 'Unknown')
+                          .toList() ??
+                      [],
           validator: (value) {
             if (value == null || value.isEmpty || value == "No area") {
               return "Area is required";
@@ -160,7 +155,6 @@ class _AddCityScreenState extends State<AddCityScreen> {
                 .read<AddOrganizationCubit>()
                 .areaModel
                 ?.data
-          
                 ?.firstWhere((area) =>
                     area.name ==
                     context.read<AddOrganizationCubit>().areaController.text);
@@ -182,6 +176,10 @@ class _AddCityScreenState extends State<AddCityScreen> {
           validator: (value) {
             if (value == null || value.isEmpty) {
               return "City is required";
+            } else if (value.length > 55) {
+              return 'User name too long';
+            } else if (value.length < 3) {
+              return 'User name too short';
             }
             return null;
           },

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -33,7 +34,8 @@ Widget buildTaskCardItem(BuildContext context, index) {
   } else {
     priorityColorForTask = Colors.black;
   }
-  return InkWell(borderRadius: BorderRadius.circular(11.r),
+  return InkWell(
+    borderRadius: BorderRadius.circular(11.r),
     onTap: () {
       context.pushNamed(Routes.taskDetailsScreen,
           arguments: context
@@ -54,7 +56,7 @@ Widget buildTaskCardItem(BuildContext context, index) {
           minHeight: 150.h,
         ),
         width: double.infinity,
-        padding: EdgeInsets.fromLTRB(10, 0, 10, 5),
+        padding: EdgeInsets.fromLTRB(10, role == 'Admin' ? 0 : 10, 10, 5),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(11.r),
@@ -111,22 +113,23 @@ Widget buildTaskCardItem(BuildContext context, index) {
                   ),
                 ),
                 Spacer(),
-                IconButton(
-                  onPressed: () {
-                    PopUpDialog.show(
-                        context: context,
-                        id: context
-                            .read<ProfileCubit>()
-                            .userTaskDetailsModel!
-                            .data!
-                            .data![index]
-                            .id!);
-                  },
-                  icon: Icon(
-                    Icons.more_horiz_rounded,
-                    size: 22.sp,
-                  ),
-                )
+                if (role == 'Admin')
+                  IconButton(
+                    onPressed: () {
+                      PopUpDialog.show(
+                          context: context,
+                          id: context
+                              .read<ProfileCubit>()
+                              .userTaskDetailsModel!
+                              .data!
+                              .data![index]
+                              .id!);
+                    },
+                    icon: Icon(
+                      Icons.more_horiz_rounded,
+                      size: 22.sp,
+                    ),
+                  )
               ],
             ),
             Text(

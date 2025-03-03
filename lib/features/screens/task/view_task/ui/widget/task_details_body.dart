@@ -262,18 +262,16 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                   .data!
                                   .parentTitle ??
                               'No parent task'),
-                  role == 'Cleaner' ? SizedBox.shrink() : verticalSpace(5),
-                  role == 'Cleaner'
-                      ? SizedBox.shrink()
-                      : rowDetailsBuild(
-                          context,
-                          'Created By',
-                          context
-                              .read<TaskManagementCubit>()
-                              .taskDetailsModel!
-                              .data!
-                              .createdName!),
-                  role == 'Cleaner' ? SizedBox.shrink() : verticalSpace(5),
+                  verticalSpace(5),
+                  rowDetailsBuild(
+                      context,
+                      'Created By',
+                      context
+                          .read<TaskManagementCubit>()
+                          .taskDetailsModel!
+                          .data!
+                          .createdName!),
+                  verticalSpace(5),
                   rowDetailsBuild(
                       context,
                       'Start Date',
@@ -364,14 +362,22 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                         (index) => InkWell(
                           borderRadius: BorderRadius.circular(10.r),
                           onTap: () {
-                            context.pushNamed(
-                              Routes.userDetailsScreen,
-                              arguments: context
-                                  .read<TaskManagementCubit>()
-                                  .allUsersTaskModel!
-                                  .data![index]
-                                  .id,
-                            );
+                            (uId ==
+                                        context
+                                            .read<TaskManagementCubit>()
+                                            .allUsersTaskModel!
+                                            .data![index]
+                                            .id &&
+                                    role == 'Cleaner')
+                                ? null
+                                : context.pushNamed(
+                                    Routes.userDetailsScreen,
+                                    arguments: context
+                                        .read<TaskManagementCubit>()
+                                        .allUsersTaskModel!
+                                        .data![index]
+                                        .id,
+                                  );
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 12),

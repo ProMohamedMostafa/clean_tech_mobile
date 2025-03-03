@@ -48,6 +48,10 @@ class _EmailAndPasswordState extends State<EmailAndPassword> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return S.of(context).validationEmailAndUser;
+                  } else if (value.length > 55) {
+                    return 'UserName or Email too long';
+                  } else if (value.length < 3) {
+                    return 'UserName or Email too short';
                   }
                 },
               ),
@@ -64,6 +68,8 @@ class _EmailAndPasswordState extends State<EmailAndPassword> {
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return S.of(context).validationPassword;
+                    } else if (value.length < 8) {
+                      return 'Password is incorrect';
                     }
                   }),
               verticalSpace(15),

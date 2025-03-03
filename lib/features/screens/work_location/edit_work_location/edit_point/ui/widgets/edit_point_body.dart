@@ -62,7 +62,8 @@ class _EditPointBodyState extends State<EditPointBody> {
           listener: (context, state) {
             if (state is EditPointSuccessState) {
               toast(text: state.pointEditModel.message!, color: Colors.blue);
-              context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen);
+              context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
+                  arguments: 5);
             }
             if (state is EditPointErrorState) {
               toast(text: state.error, color: Colors.red);
@@ -109,14 +110,6 @@ class _EditPointBodyState extends State<EditPointBody> {
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              value == 'No country') {
-                            return S.of(context).validationNationality;
-                          }
-                          return null;
-                        },
                         onPressed: (value) {
                           context.read<EditPointCubit>().getArea(value);
                         },
@@ -152,14 +145,6 @@ class _EditPointBodyState extends State<EditPointBody> {
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              value == 'No areas') {
-                            return "Area is required";
-                          }
-                          return null;
-                        },
                         onPressed: (value) {
                           final selectedArea = context
                               .read<EditPointCubit>()
@@ -207,14 +192,6 @@ class _EditPointBodyState extends State<EditPointBody> {
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              value == 'No cities') {
-                            return "City is required";
-                          }
-                          return null;
-                        },
                         onPressed: (value) {
                           final selectedCity = context
                               .read<EditPointCubit>()
@@ -262,14 +239,6 @@ class _EditPointBodyState extends State<EditPointBody> {
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              value == 'No organizations') {
-                            return "Organization is required";
-                          }
-                          return null;
-                        },
                         onPressed: (value) {
                           final selectedOrganization = context
                               .read<EditPointCubit>()
@@ -318,14 +287,6 @@ class _EditPointBodyState extends State<EditPointBody> {
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              value == 'No building') {
-                            return "Building is required";
-                          }
-                          return null;
-                        },
                         onPressed: (value) {
                           final selectedBuilding = context
                               .read<EditPointCubit>()
@@ -372,14 +333,6 @@ class _EditPointBodyState extends State<EditPointBody> {
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              value == 'No floor') {
-                            return "Floor is required";
-                          }
-                          return null;
-                        },
                         onPressed: (value) {
                           final selectedFloor = context
                               .read<EditPointCubit>()
@@ -414,11 +367,20 @@ class _EditPointBodyState extends State<EditPointBody> {
                             .data!
                             .name!,
                         controller:
-                            context.read<EditPointCubit>().pointController,
+                            context.read<EditPointCubit>().pointController
+                              ..text = context
+                                  .read<EditPointCubit>()
+                                  .pointDetailsInEditModel!
+                                  .data!
+                                  .name!,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Point is required";
+                            return "Point name is required";
+                          } else if (value.length > 55) {
+                            return 'Point name too long';
+                          } else if (value.length < 3) {
+                            return 'Point name too short';
                           }
                           return null;
                         },
@@ -435,14 +397,20 @@ class _EditPointBodyState extends State<EditPointBody> {
                             .pointDetailsInEditModel!
                             .data!
                             .number!,
-                        controller: context
-                            .read<EditPointCubit>()
-                            .pointNumberController,
+                        controller:
+                            context.read<EditPointCubit>().pointNumberController
+                              ..text = context
+                                  .read<EditPointCubit>()
+                                  .pointDetailsInEditModel!
+                                  .data!
+                                  .number!,
                         onlyRead: false,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Point number is required";
+                          } else if (value.length > 55) {
+                            return 'Point number too long';
                           }
                           return null;
                         },
@@ -453,9 +421,22 @@ class _EditPointBodyState extends State<EditPointBody> {
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDescriptionTextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Description is Required";
+                          } else if (value.length < 3) {
+                            return 'Description too short';
+                          }
+                          return null;
+                        },
                         controller: context
                             .read<EditPointCubit>()
-                            .pointDescriptionController,
+                            .pointDescriptionController
+                          ..text = context
+                              .read<EditPointCubit>()
+                              .pointDetailsInEditModel!
+                              .data!
+                              .description!,
                         hint: context
                             .read<EditPointCubit>()
                             .pointDetailsInEditModel!
@@ -887,17 +868,23 @@ class _EditPointBodyState extends State<EditPointBody> {
                           : DefaultElevatedButton(
                               name: "Edit",
                               onPressed: () {
-                                showCustomDialog(context,
-                                    "Are you Sure you want save the edit of this Point ?",
-                                    () {
-                                  context.read<EditPointCubit>().editPoint(
-                                      widget.id,
-                                      selectedManagersIds,
-                                      selectedSupervisorsIds,
-                                      selectedCleanersIds,
-                                      selectedShiftsIds);
-                                  context.pop();
-                                });
+                                if (context
+                                    .read<EditPointCubit>()
+                                    .formKey
+                                    .currentState!
+                                    .validate()) {
+                                  showCustomDialog(context,
+                                      "Are you Sure you want save the edit of this Point ?",
+                                      () {
+                                    context.read<EditPointCubit>().editPoint(
+                                        widget.id,
+                                        selectedManagersIds,
+                                        selectedSupervisorsIds,
+                                        selectedCleanersIds,
+                                        selectedShiftsIds);
+                                    context.pop();
+                                  });
+                                }
                               },
                               color: AppColor.primaryColor,
                               height: 48.h,

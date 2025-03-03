@@ -30,12 +30,11 @@ class IntegrationsBody extends StatelessWidget {
           label: "Assign",
           image: 'assets/images/assign.png',
         ),
-      if (role != 'Cleaner')
-        IntegrationItem(
-          onTap: () => context.pushNamed(Routes.shiftScreen),
-          label: "Shift",
-          image: 'assets/images/shift.png',
-        ),
+      IntegrationItem(
+        onTap: () => context.pushNamed(Routes.shiftScreen),
+        label: "Shift",
+        image: 'assets/images/shift.png',
+      ),
       IntegrationItem(
         onTap: () => context.pushNamed(Routes.taskManagementScreen),
         label: 'Task',

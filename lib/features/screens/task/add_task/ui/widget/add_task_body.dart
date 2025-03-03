@@ -230,7 +230,11 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                           keyboardType: TextInputType.text,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return "Task Name is Required";
+                              return "Task title is Required";
+                            } else if (value.length > 55) {
+                              return 'Task title too long';
+                            } else if (value.length < 3) {
+                              return 'Task title too short';
                             }
                             return null;
                           },
@@ -669,9 +673,22 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                           ],
                         ),
                         verticalSpace(10),
-                        Text(
-                          role == 'Manager' ? 'Supervisor' : 'Cleaner',
-                          style: TextStyles.font16BlackRegular,
+                        RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: role == 'Manager'
+                                    ? 'Supervisor'
+                                    : 'Cleaner',
+                                style: TextStyles.font16BlackRegular,
+                              ),
+                              TextSpan(
+                                text: ' (Optional)',
+                                style: TextStyles.font14GreyRegular,
+                              ),
+                            ],
+                          ),
                         ),
                         verticalSpace(5),
                         MultiDropdown<SupervisorData>(
@@ -728,6 +745,14 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                         ),
                         verticalSpace(5),
                         CustomDescriptionTextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Task description is Required";
+                              } else if (value.length < 3) {
+                                return 'Task description too short';
+                              }
+                              return null;
+                            },
                             controller: context
                                 .read<AddTaskCubit>()
                                 .descriptionController,

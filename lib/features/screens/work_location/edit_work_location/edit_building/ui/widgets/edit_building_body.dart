@@ -56,15 +56,15 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
     return Scaffold(
       appBar: AppBar(
         leading: customBackButton(context),
-        title: Text('Edit Building', style: TextStyles.font16BlackSemiBold),
-        centerTitle: true,
+        title: Text('Edit Building'),
       ),
       body: SafeArea(
         child: BlocConsumer<EditBuildingCubit, EditBuildingState>(
           listener: (context, state) {
             if (state is EditBuildingSuccessState) {
               toast(text: state.buildingEditModel.message!, color: Colors.blue);
-              context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen);
+              context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
+                  arguments: 3);
             }
             if (state is EditBuildingErrorState) {
               toast(text: state.error, color: Colors.red);
@@ -111,14 +111,6 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              value == 'No country') {
-                            return S.of(context).validationNationality;
-                          }
-                          return null;
-                        },
                         onPressed: (value) {
                           context.read<EditBuildingCubit>().getArea(value);
                         },
@@ -154,14 +146,6 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              value == 'No areas') {
-                            return "Area is required";
-                          }
-                          return null;
-                        },
                         onPressed: (value) {
                           final selectedArea = context
                               .read<EditBuildingCubit>()
@@ -209,14 +193,6 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              value == 'No cities') {
-                            return "City is required";
-                          }
-                          return null;
-                        },
                         onPressed: (value) {
                           final selectedCity = context
                               .read<EditBuildingCubit>()
@@ -264,14 +240,6 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              value == 'No organizations') {
-                            return "Organization is required";
-                          }
-                          return null;
-                        },
                         onPressed: (value) {
                           final selectedOrganization = context
                               .read<EditBuildingCubit>()
@@ -307,13 +275,21 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                             .buildingDetailsInEditModel!
                             .data!
                             .name!,
-                        controller: context
-                            .read<EditBuildingCubit>()
-                            .buildingController,
+                        controller:
+                            context.read<EditBuildingCubit>().buildingController
+                              ..text = context
+                                  .read<EditBuildingCubit>()
+                                  .buildingDetailsInEditModel!
+                                  .data!
+                                  .name!,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Building is required";
+                            return "Building name is required";
+                          } else if (value.length > 55) {
+                            return 'Building name too long';
+                          } else if (value.length < 3) {
+                            return 'Building name too short';
                           }
                           return null;
                         },
@@ -332,13 +308,21 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                             .number!,
                         controller: context
                             .read<EditBuildingCubit>()
-                            .buildingNumberController,
+                            .buildingNumberController
+                          ..text = context
+                              .read<EditBuildingCubit>()
+                              .buildingDetailsInEditModel!
+                              .data!
+                              .number!,
                         onlyRead: false,
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Building number is required";
+                          } else if (value.length > 55) {
+                            return 'Building number too long';
                           }
+
                           return null;
                         },
                       ),
@@ -348,9 +332,22 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDescriptionTextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Description is required";
+                            } else if (value.length < 3) {
+                              return 'Description too short';
+                            }
+                            return null;
+                          },
                           controller: context
                               .read<EditBuildingCubit>()
-                              .buildingDescriptionController,
+                              .buildingDescriptionController
+                            ..text = context
+                                .read<EditBuildingCubit>()
+                                .buildingDetailsInEditModel!
+                                .data!
+                                .description!,
                           hint: context
                               .read<EditBuildingCubit>()
                               .buildingDetailsInEditModel!
@@ -781,19 +778,25 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                           : DefaultElevatedButton(
                               name: "Edit",
                               onPressed: () {
-                                showCustomDialog(context,
-                                    "Are you Sure you want save the edit of this building ?",
-                                    () {
-                                  context
-                                      .read<EditBuildingCubit>()
-                                      .editBuilding(
-                                          widget.id,
-                                          selectedManagersIds,
-                                          selectedSupervisorsIds,
-                                          selectedCleanersIds,
-                                          selectedShiftsIds);
-                                  context.pop();
-                                });
+                                if (context
+                                    .read<EditBuildingCubit>()
+                                    .formKey
+                                    .currentState!
+                                    .validate()) {
+                                  showCustomDialog(context,
+                                      "Are you Sure you want save the edit of this building ?",
+                                      () {
+                                    context
+                                        .read<EditBuildingCubit>()
+                                        .editBuilding(
+                                            widget.id,
+                                            selectedManagersIds,
+                                            selectedSupervisorsIds,
+                                            selectedCleanersIds,
+                                            selectedShiftsIds);
+                                    context.pop();
+                                  });
+                                }
                               },
                               color: AppColor.primaryColor,
                               height: 48.h,
