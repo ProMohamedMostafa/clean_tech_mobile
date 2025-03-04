@@ -5,6 +5,7 @@ import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
@@ -60,7 +61,8 @@ class _AddOrganizationDetailsScreenState
           listener: (context, state) {
             if (state is CreateOrganizationSuccessState) {
               toast(text: state.message, color: Colors.blue);
-              context.pop();
+              context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
+                  arguments: 2);
             }
             if (state is CreateOrganizationErrorState) {
               toast(text: state.error, color: Colors.red);
@@ -211,7 +213,7 @@ class _AddOrganizationDetailsScreenState
         ),
         verticalSpace(10),
         Text(
-          "Add organization",
+          "Organization Name",
           style: TextStyles.font16BlackRegular,
         ),
         CustomTextFormField(
@@ -222,11 +224,11 @@ class _AddOrganizationDetailsScreenState
           keyboardType: TextInputType.text,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return "Organization is required";
+              return "Organization name is required";
             } else if (value.length > 55) {
-              return 'User name too long';
+              return 'Organization name too long';
             } else if (value.length < 3) {
-              return 'User name too short';
+              return 'Organization name too short';
             }
             return null;
           },

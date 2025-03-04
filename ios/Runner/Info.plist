@@ -49,6 +49,7 @@
 	<array>
     <string>en</string>
     <string>ar</string>
+    <string>ur</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>request access to the camera</string>

@@ -170,7 +170,7 @@ class _EditCityBodyState extends State<EditCityBody> {
                       ),
                       verticalSpace(10),
                       Text(
-                        "Edit city",
+                        "City Name",
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomTextFormField(

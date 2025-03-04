@@ -5,6 +5,7 @@ import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
@@ -59,7 +60,8 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
           listener: (context, state) {
             if (state is CreateBuildingSuccessState) {
               toast(text: state.message, color: Colors.blue);
-              context.pop();
+              context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
+                  arguments: 3);
             }
             if (state is CreateBuildingErrorState) {
               toast(text: state.error, color: Colors.red);
@@ -260,7 +262,7 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
         ),
         verticalSpace(10),
         Text(
-          "Add building",
+          "Building Name",
           style: TextStyles.font16BlackRegular,
         ),
         CustomTextFormField(
@@ -271,18 +273,18 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
           keyboardType: TextInputType.text,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return "Building is required";
+              return "Building name is required";
             } else if (value.length > 55) {
-              return 'User name too long';
+              return 'Building name too long';
             } else if (value.length < 3) {
-              return 'User name too short';
+              return 'Building name too short';
             }
             return null;
           },
         ),
         verticalSpace(10),
         Text(
-          "Add building Number",
+          "Building Number",
           style: TextStyles.font16BlackRegular,
         ),
         CustomTextFormField(
@@ -295,16 +297,16 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
             if (value == null || value.isEmpty) {
               return "Building number is required";
             } else if (value.length > 55) {
-              return 'User name too long';
+              return 'Building number too long';
             } else if (value.length < 3) {
-              return 'User name too short';
+              return 'Building number too short';
             }
             return null;
           },
         ),
         verticalSpace(10),
         Text(
-          "Add building description",
+          "Building Description",
           style: TextStyles.font16BlackRegular,
         ),
         CustomDescriptionTextFormField(
@@ -314,9 +316,9 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
           hint: 'discription...',
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return "Building description is required";
+              return "description is required";
             } else if (value.length < 3) {
-              return 'User name too short';
+              return 'description too short';
             }
             return null;
           },

@@ -5,6 +5,7 @@ import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
@@ -55,7 +56,8 @@ class _AddCityScreenState extends State<AddCityScreen> {
           listener: (context, state) {
             if (state is CreateCitySuccessState) {
               toast(text: state.message, color: Colors.blue);
-              context.pop();
+              context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
+                  arguments: 1);
             }
             if (state is CreateCityErrorState) {
               toast(text: state.error, color: Colors.red);
@@ -167,7 +169,7 @@ class _AddCityScreenState extends State<AddCityScreen> {
         ),
         verticalSpace(10),
         Text(
-          "Add city",
+          "City Name",
           style: TextStyles.font16BlackRegular,
         ),
         CustomTextFormField(
@@ -175,11 +177,11 @@ class _AddCityScreenState extends State<AddCityScreen> {
           keyboardType: TextInputType.text,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return "City is required";
+              return "City name is required";
             } else if (value.length > 55) {
-              return 'User name too long';
+              return 'City name too long';
             } else if (value.length < 3) {
-              return 'User name too short';
+              return 'City name too short';
             }
             return null;
           },

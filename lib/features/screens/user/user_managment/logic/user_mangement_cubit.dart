@@ -54,6 +54,8 @@ class UserManagementCubit extends Cubit<UserManagementState> {
   TextEditingController typeController = TextEditingController();
   TextEditingController typeIdController = TextEditingController();
 
+  final ScrollController scrollController = ScrollController();
+
   final formKey = GlobalKey<FormState>();
 
   UserDetailsModel? userDetailsModel;

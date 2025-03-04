@@ -123,7 +123,7 @@ class _EditAreaBodyState extends State<EditAreaBody> {
                         ),
                         verticalSpace(10),
                         Text(
-                          "Area",
+                          "Area Name",
                           style: TextStyles.font16BlackRegular,
                         ),
                         CustomTextFormField(

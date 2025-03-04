@@ -5,6 +5,7 @@ import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
@@ -55,7 +56,8 @@ class _AddAreaScreenState extends State<AddAreaScreen> {
           listener: (context, state) {
             if (state is CreateAreaSuccessState) {
               toast(text: state.message, color: Colors.blue);
-              context.pop();
+              context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
+                  arguments: 0);
             }
             if (state is CreateAreaErrorState) {
               toast(text: state.error, color: Colors.red);
@@ -123,7 +125,7 @@ class _AddAreaScreenState extends State<AddAreaScreen> {
         ),
         verticalSpace(10),
         Text(
-          "Add area",
+          "Area Name",
           style: TextStyles.font16BlackRegular,
         ),
         CustomTextFormField(
@@ -131,11 +133,11 @@ class _AddAreaScreenState extends State<AddAreaScreen> {
           keyboardType: TextInputType.text,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return "Area is required";
+              return "Area name is required";
             } else if (value.length > 55) {
-              return 'User name too long';
+              return 'Area name too long';
             } else if (value.length < 3) {
-              return 'User name too short';
+              return 'Area name too short';
             }
             return null;
           },

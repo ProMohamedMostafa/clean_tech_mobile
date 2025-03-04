@@ -15,7 +15,7 @@
     "validationAddPassword": "مطلوب كلمة المرور",
     "validationAddPasswordConfirmation": "مطلوب تأكيد كلمة المرور",
     "validationIdNumber": "مطلوب رقم الهوية",
-    "validationNationality": "مطلوبة الجنسية",
+    "validationNationality": "مطلوبة الدولة",
     "validationCountry": "مطلوب اختيارالدولة",
     "validationRole": "مطلوب اختيار الدور",
     "validationManager": "مطلوب اختيار المدير",

@@ -313,7 +313,7 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                       ),
                       verticalSpace(10),
                       Text(
-                        "Edit Floor Name",
+                        "Floor Name",
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomTextFormField(
@@ -344,7 +344,7 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                       ),
                       verticalSpace(10),
                       Text(
-                        "Add floor Number",
+                        "Floor Number",
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomTextFormField(
@@ -373,7 +373,7 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                       ),
                       verticalSpace(10),
                       Text(
-                        "Add Floor description",
+                        "Floor description",
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDescriptionTextFormField(

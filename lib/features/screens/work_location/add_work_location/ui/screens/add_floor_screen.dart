@@ -5,6 +5,7 @@ import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
@@ -59,7 +60,8 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
           listener: (context, state) {
             if (state is CreateFloorSuccessState) {
               toast(text: state.message, color: Colors.blue);
-              context.pop();
+              context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
+                  arguments: 4);
             }
             if (state is CreateFloorErrorState) {
               toast(text: state.error, color: Colors.red);
@@ -307,7 +309,7 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
         ),
         verticalSpace(10),
         Text(
-          "Add Floor",
+          "Floor Name",
           style: TextStyles.font16BlackRegular,
         ),
         CustomTextFormField(
@@ -317,18 +319,18 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
           keyboardType: TextInputType.text,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return "Floor is required";
+              return "Floor name is required";
             } else if (value.length > 55) {
-              return 'User name too long';
+              return 'Floor name too long';
             } else if (value.length < 3) {
-              return 'User name too short';
+              return 'Floor name too short';
             }
             return null;
           },
         ),
         verticalSpace(10),
         Text(
-          "Add floor Number",
+          "Floor Number",
           style: TextStyles.font16BlackRegular,
         ),
         CustomTextFormField(
@@ -341,16 +343,16 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
             if (value == null || value.isEmpty) {
               return "Floor number is required";
             } else if (value.length > 55) {
-              return 'User name too long';
+              return 'Floor number too long';
             } else if (value.length < 3) {
-              return 'User name too short';
+              return 'Floor number too short';
             }
             return null;
           },
         ),
         verticalSpace(10),
         Text(
-          "Add floor description",
+          "Floor Description",
           style: TextStyles.font16BlackRegular,
         ),
         CustomDescriptionTextFormField(
@@ -359,9 +361,9 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
           hint: 'discription...',
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return "floor description is required";
+              return "description is required";
             } else if (value.length < 3) {
-              return 'User name too short';
+              return 'description too short';
             }
             return null;
           },

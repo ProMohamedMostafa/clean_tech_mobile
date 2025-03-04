@@ -229,7 +229,7 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                       ),
                       verticalSpace(10),
                       Text(
-                        "Edit organization",
+                        "Organization Name",
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomTextFormField(

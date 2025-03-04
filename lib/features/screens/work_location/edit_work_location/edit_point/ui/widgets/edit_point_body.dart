@@ -357,7 +357,7 @@ class _EditPointBodyState extends State<EditPointBody> {
                       ),
                       verticalSpace(10),
                       Text(
-                        "Edit Point Name",
+                        "Point Name",
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomTextFormField(
@@ -388,7 +388,7 @@ class _EditPointBodyState extends State<EditPointBody> {
                       ),
                       verticalSpace(10),
                       Text(
-                        "Add point Number",
+                        "Point Number",
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomTextFormField(
@@ -417,7 +417,7 @@ class _EditPointBodyState extends State<EditPointBody> {
                       ),
                       verticalSpace(10),
                       Text(
-                        "Add point description",
+                        "Point description",
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDescriptionTextFormField(

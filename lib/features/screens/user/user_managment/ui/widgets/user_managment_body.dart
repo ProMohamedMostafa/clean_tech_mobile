@@ -35,7 +35,7 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
       context.read<UserManagementCubit>().getNationality();
       context.read<UserManagementCubit>().getRole();
     }
- if (role == 'Supervisor') {
+    if (role == 'Supervisor') {
       context.read<UserManagementCubit>().getAllUsersInUserManage();
       context.read<UserManagementCubit>().getNationality();
     }
@@ -88,10 +88,7 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
             toast(text: errorMessage, color: Colors.red);
           } else if (state is UserDeleteSuccessState) {
             toast(text: state.deleteUserModel.message!, color: Colors.blue);
-            context.read<UserManagementCubit>().getAllUsersInUserManage();
-            context.read<UserManagementCubit>().getAllDeletedUser();
-          } else if (state is RestoreUsersSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+
             context.read<UserManagementCubit>().getAllUsersInUserManage();
             context.read<UserManagementCubit>().getAllDeletedUser();
           } else if (state is ForceDeleteUsersSuccessState ||
@@ -104,7 +101,7 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
             toast(text: message!, color: Colors.blue);
             context.read<UserManagementCubit>().getAllUsersInUserManage();
             context.read<UserManagementCubit>().getAllDeletedUser();
-          }
+          } 
           if (state is RestoreUsersSuccessState) {
             toast(text: state.message, color: Colors.blue);
             context.read<UserManagementCubit>().getAllUsersInUserManage();
@@ -217,6 +214,7 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
                     Divider(
                       color: Colors.grey[300],
                     ),
+
                     userDetailsBuild(context, selectedIndex!),
                   ],
                 ),

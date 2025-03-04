@@ -266,7 +266,7 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                       ),
                       verticalSpace(10),
                       Text(
-                        "Edit building Name",
+                        "Building Name",
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomTextFormField(
@@ -297,7 +297,7 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                       ),
                       verticalSpace(10),
                       Text(
-                        "Add building Number",
+                        "Building Number",
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomTextFormField(
@@ -328,7 +328,7 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                       ),
                       verticalSpace(10),
                       Text(
-                        "Add building description",
+                        "Building description",
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDescriptionTextFormField(

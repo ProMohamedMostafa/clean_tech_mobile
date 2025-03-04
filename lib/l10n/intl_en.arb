@@ -15,7 +15,7 @@
     "validationAddPassword": "Password is required",
     "validationAddPasswordConfirmation": "Password confirmation is required",
     "validationIdNumber": "ID number is required",
-    "validationNationality": "Nationality is required",
+    "validationNationality": "Country is required",
     "validationCountry": "Selected Country is required",
     "validationRole": "Selected Role is required",
     "validationManager": "Selected Manager is required",
