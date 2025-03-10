@@ -143,16 +143,20 @@ class UserManagementCubit extends Cubit<UserManagementState> {
   }
 
   UsersModel? usersModel;
-  getAllUsersInUserManage(
-      {int? areaId,
-      int? cityId,
-      int? organizationId,
-      int? buildingId,
-      int? floorId,
-      int? pointId,
-      int? providerId}) {
+  getAllUsersInUserManage({
+    int? pageNumber,
+    int? areaId,
+    int? cityId,
+    int? organizationId,
+    int? buildingId,
+    int? floorId,
+    int? pointId,
+    int? providerId,
+  }) {
     emit(AllUsersLoadingState());
     DioHelper.getData(url: "users/pagination", query: {
+      'pageNumber': pageNumber,
+      'pageSize': 10,
       'country': countryController.text,
       'area': areaId,
       'city': cityId,
@@ -406,5 +410,4 @@ class UserManagementCubit extends Cubit<UserManagementState> {
       emit(ShiftErrorState(error.toString()));
     });
   }
-
 }

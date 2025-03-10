@@ -21,10 +21,34 @@ class UserManagmentBody extends StatefulWidget {
 }
 
 class _UserManagmentBodyState extends State<UserManagmentBody> {
+  final ScrollController scrollController = ScrollController();
+
+  _onScroll() {
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
+    //        int nextPage = (context.read<UserManagementCubit>().usersModel?.data?.pageNumber ?? 0) + 1;
+    // context.read<UserManagementCubit>().getAllUsersInUserManage(pageNumber: nextPage);
+  }
+      print('last************');
+      // if (!context.read<UserManagementCubit>().state.hasReachedMax) {
+      // context.read<UserManagementCubit>().getAllUsersInUserManage();
+      // }
+    }
+  
+
+  @override
+  void dispose() {
+    scrollController.removeListener(_onScroll);
+    scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   void initState() {
     if (role == 'Admin') {
+      scrollController.addListener(_onScroll);
       context.read<UserManagementCubit>().getAllUsersInUserManage();
+
       context.read<UserManagementCubit>().getAllDeletedUser();
       context.read<UserManagementCubit>().getNationality();
       context.read<UserManagementCubit>().getRole();
@@ -101,7 +125,7 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
             toast(text: message!, color: Colors.blue);
             context.read<UserManagementCubit>().getAllUsersInUserManage();
             context.read<UserManagementCubit>().getAllDeletedUser();
-          } 
+          }
           if (state is RestoreUsersSuccessState) {
             toast(text: state.message, color: Colors.blue);
             context.read<UserManagementCubit>().getAllUsersInUserManage();
@@ -214,7 +238,6 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
                     Divider(
                       color: Colors.grey[300],
                     ),
-
                     userDetailsBuild(context, selectedIndex!),
                   ],
                 ),
