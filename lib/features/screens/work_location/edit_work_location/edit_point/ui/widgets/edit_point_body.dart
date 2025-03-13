@@ -12,13 +12,10 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_description_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_cleaners_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_managers_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_supervisors_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/point_users_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_point/logic/edit_point_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_point/logic/edit_point_state.dart';
 
@@ -36,18 +33,11 @@ class _EditPointBodyState extends State<EditPointBody> {
   List<int> selectedManagersIds = [];
   List<int> selectedSupervisorsIds = [];
   List<int> selectedCleanersIds = [];
-  List<int> selectedShiftsIds = [];
   @override
   void initState() {
     context.read<EditPointCubit>().getPointDetailsInEdit(widget.id);
     context.read<EditPointCubit>().getPointManagersDetails(widget.id);
-    context.read<EditPointCubit>().getPointShiftsDetails(widget.id);
-    context.read<EditPointCubit>()
-      ..getNationality()
-      ..getManagers()
-      ..getSupervisors()
-      ..getCleaners()
-      ..getShifts();
+    context.read<EditPointCubit>().getNationality();
 
     super.initState();
   }
@@ -111,7 +101,7 @@ class _EditPointBodyState extends State<EditPointBody> {
                                     .toList() ??
                                 [],
                         onPressed: (value) {
-                          context.read<EditPointCubit>().getArea(value);
+                          context.read<EditPointCubit>().getAreas(value);
                         },
                         suffixIcon: IconBroken.arrowDown2,
                         controller: context
@@ -133,23 +123,26 @@ class _EditPointBodyState extends State<EditPointBody> {
                             .areaName!,
                         items: context
                                     .read<EditPointCubit>()
-                                    .areaModel
+                                    .areasModel
                                     ?.data
+                                    ?.areas
                                     ?.isEmpty ??
                                 true
                             ? ['No areas']
                             : context
                                     .read<EditPointCubit>()
-                                    .areaModel
+                                    .areasModel
                                     ?.data
+                                    ?.areas
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
                         onPressed: (value) {
                           final selectedArea = context
                               .read<EditPointCubit>()
-                              .areaModel
+                              .areasModel
                               ?.data
+                              ?.areas
                               ?.firstWhere((area) =>
                                   area.name ==
                                   context
@@ -159,7 +152,7 @@ class _EditPointBodyState extends State<EditPointBody> {
 
                           context
                               .read<EditPointCubit>()
-                              .getCity(selectedArea!.id!);
+                              .getCityy(selectedArea!.id!);
                         },
                         suffixIcon: IconBroken.arrowDown2,
                         controller:
@@ -180,14 +173,16 @@ class _EditPointBodyState extends State<EditPointBody> {
                             .cityName!,
                         items: context
                                     .read<EditPointCubit>()
-                                    .cityModel
+                                    .cityyModel
+                                    ?.data
                                     ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No cities']
                             : context
                                     .read<EditPointCubit>()
-                                    .cityModel
+                                    .cityyModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -195,7 +190,8 @@ class _EditPointBodyState extends State<EditPointBody> {
                         onPressed: (value) {
                           final selectedCity = context
                               .read<EditPointCubit>()
-                              .cityModel
+                              .cityyModel
+                              ?.data
                               ?.data
                               ?.firstWhere((city) =>
                                   city.name ==
@@ -206,7 +202,7 @@ class _EditPointBodyState extends State<EditPointBody> {
 
                           context
                               .read<EditPointCubit>()
-                              .getOrganization(selectedCity!.id!);
+                              .getOrganizations(selectedCity!.id!);
                         },
                         suffixIcon: IconBroken.arrowDown2,
                         controller:
@@ -227,14 +223,16 @@ class _EditPointBodyState extends State<EditPointBody> {
                             .organizationName!,
                         items: context
                                     .read<EditPointCubit>()
-                                    .organizationModel
+                                    .organizationsModel
+                                    ?.data
                                     ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No organization']
                             : context
                                     .read<EditPointCubit>()
-                                    .organizationModel
+                                    .organizationsModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -242,8 +240,9 @@ class _EditPointBodyState extends State<EditPointBody> {
                         onPressed: (value) {
                           final selectedOrganization = context
                               .read<EditPointCubit>()
-                              .organizationModel!
-                              .data!
+                              .organizationsModel
+                              ?.data
+                              ?.data!
                               .firstWhere((organization) =>
                                   organization.name ==
                                   context
@@ -253,7 +252,7 @@ class _EditPointBodyState extends State<EditPointBody> {
 
                           context
                               .read<EditPointCubit>()
-                              .getBuilding(selectedOrganization.id!);
+                              .getBuildings(selectedOrganization!.id!);
                         },
                         suffixIcon: IconBroken.arrowDown2,
                         controller: context
@@ -275,14 +274,16 @@ class _EditPointBodyState extends State<EditPointBody> {
                             .buildingName!,
                         items: context
                                     .read<EditPointCubit>()
-                                    .buildingModel
+                                    .buildingsModel
+                                    ?.data
                                     ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No building']
                             : context
                                     .read<EditPointCubit>()
-                                    .buildingModel
+                                    .buildingsModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -290,8 +291,9 @@ class _EditPointBodyState extends State<EditPointBody> {
                         onPressed: (value) {
                           final selectedBuilding = context
                               .read<EditPointCubit>()
-                              .buildingModel!
-                              .data!
+                              .buildingsModel
+                              ?.data
+                              ?.data!
                               .firstWhere((building) =>
                                   building.name ==
                                   context
@@ -300,7 +302,7 @@ class _EditPointBodyState extends State<EditPointBody> {
                                       .text);
                           context
                               .read<EditPointCubit>()
-                              .getFloor(selectedBuilding.id!);
+                              .getFloors(selectedBuilding!.id!);
                         },
                         suffixIcon: IconBroken.arrowDown2,
                         controller:
@@ -321,14 +323,16 @@ class _EditPointBodyState extends State<EditPointBody> {
                             .floorName!,
                         items: context
                                     .read<EditPointCubit>()
-                                    .floorModel
+                                    .floorsModel
+                                    ?.data
                                     ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No floor']
                             : context
                                     .read<EditPointCubit>()
-                                    .floorModel
+                                    .floorsModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -336,8 +340,9 @@ class _EditPointBodyState extends State<EditPointBody> {
                         onPressed: (value) {
                           final selectedFloor = context
                               .read<EditPointCubit>()
-                              .floorModel!
-                              .data!
+                              .floorsModel
+                              ?.data
+                              ?.data!
                               .firstWhere((floor) =>
                                   floor.name ==
                                   context
@@ -347,7 +352,7 @@ class _EditPointBodyState extends State<EditPointBody> {
                           context
                               .read<EditPointCubit>()
                               .floorIdController
-                              .text = selectedFloor.id!.toString();
+                              .text = selectedFloor!.id!.toString();
                         },
                         suffixIcon: IconBroken.arrowDown2,
                         controller:
@@ -446,7 +451,7 @@ class _EditPointBodyState extends State<EditPointBody> {
                       verticalSpace(10),
                       context
                                   .read<EditPointCubit>()
-                                  .pointManagersDetailsModel
+                                  .pointUsersDetailsModel
                                   ?.data ==
                               null
                           ? SizedBox.shrink()
@@ -467,28 +472,32 @@ class _EditPointBodyState extends State<EditPointBody> {
                             ),
                       context
                                   .read<EditPointCubit>()
-                                  .pointManagersDetailsModel
+                                  .pointUsersDetailsModel
                                   ?.data ==
                               null
                           ? SizedBox.shrink()
-                          : MultiDropdown<ManagersData>(
+                          : MultiDropdown<Users>(
                               items: context
-                                          .read<EditPointCubit>()
-                                          .allManagersModel
-                                          ?.data ==
-                                      null
+                                      .read<EditPointCubit>()
+                                      .pointUsersDetailsModel!
+                                      .data!
+                                      .users!
+                                      .where((user) => user.role == 'Manager')
+                                      .isEmpty
                                   ? [
                                       DropdownItem(
                                         label: 'No managers available',
-                                        value: ManagersData(
+                                        value: Users(
                                             id: null,
                                             userName: 'No managers available'),
                                       )
                                     ]
                                   : context
                                       .read<EditPointCubit>()
-                                      .allManagersModel!
+                                      .pointUsersDetailsModel!
                                       .data!
+                                      .users!
+                                      .where((user) => user.role == 'Manager')
                                       .map((manager) => DropdownItem(
                                             label: manager.userName!,
                                             value: manager,
@@ -507,9 +516,10 @@ class _EditPointBodyState extends State<EditPointBody> {
                               fieldDecoration: FieldDecoration(
                                 hintText: context
                                     .read<EditPointCubit>()
-                                    .pointManagersDetailsModel!
+                                    .pointUsersDetailsModel!
                                     .data!
-                                    .managers!
+                                    .users!
+                                    .where((user) => user.role == 'Manager')
                                     .map((manager) => manager.userName)
                                     .join(', '),
                                 suffixIcon: Icon(IconBroken.arrowDown2),
@@ -551,7 +561,7 @@ class _EditPointBodyState extends State<EditPointBody> {
                       verticalSpace(10),
                       context
                                   .read<EditPointCubit>()
-                                  .allSupervisorsModel
+                                  .pointUsersDetailsModel
                                   ?.data ==
                               null
                           ? SizedBox.shrink()
@@ -572,20 +582,23 @@ class _EditPointBodyState extends State<EditPointBody> {
                             ),
                       context
                                   .read<EditPointCubit>()
-                                  .allSupervisorsModel
+                                  .pointUsersDetailsModel
                                   ?.data ==
                               null
                           ? SizedBox.shrink()
-                          : MultiDropdown<SupervisorsData>(
+                          : MultiDropdown<Users>(
                               items: context
-                                          .read<EditPointCubit>()
-                                          .allSupervisorsModel
-                                          ?.data ==
-                                      null
+                                      .read<EditPointCubit>()
+                                      .pointUsersDetailsModel!
+                                      .data!
+                                      .users!
+                                      .where(
+                                          (user) => user.role == 'Supervisor')
+                                      .isEmpty
                                   ? [
                                       DropdownItem(
                                         label: 'No supervisors available',
-                                        value: SupervisorsData(
+                                        value: Users(
                                             id: null,
                                             userName:
                                                 'No supervisors available'),
@@ -593,8 +606,11 @@ class _EditPointBodyState extends State<EditPointBody> {
                                     ]
                                   : context
                                       .read<EditPointCubit>()
-                                      .allSupervisorsModel!
+                                      .pointUsersDetailsModel!
                                       .data!
+                                      .users!
+                                      .where(
+                                          (user) => user.role == 'Supervisor')
                                       .map((supervisor) => DropdownItem(
                                             label: supervisor.userName!,
                                             value: supervisor,
@@ -613,9 +629,10 @@ class _EditPointBodyState extends State<EditPointBody> {
                               fieldDecoration: FieldDecoration(
                                 hintText: context
                                     .read<EditPointCubit>()
-                                    .pointManagersDetailsModel!
+                                    .pointUsersDetailsModel!
                                     .data!
-                                    .supervisors!
+                                    .users!
+                                    .where((user) => user.role == 'Supervisor')
                                     .map((supervisor) => supervisor.userName)
                                     .join(', '),
                                 suffixIcon: Icon(IconBroken.arrowDown2),
@@ -657,7 +674,7 @@ class _EditPointBodyState extends State<EditPointBody> {
                       verticalSpace(10),
                       context
                                   .read<EditPointCubit>()
-                                  .pointManagersDetailsModel
+                                  .pointUsersDetailsModel
                                   ?.data ==
                               null
                           ? SizedBox.shrink()
@@ -678,28 +695,32 @@ class _EditPointBodyState extends State<EditPointBody> {
                             ),
                       context
                                   .read<EditPointCubit>()
-                                  .pointManagersDetailsModel
+                                  .pointUsersDetailsModel
                                   ?.data ==
                               null
                           ? SizedBox.shrink()
-                          : MultiDropdown<CleanersData>(
+                          : MultiDropdown<Users>(
                               items: context
-                                          .read<EditPointCubit>()
-                                          .allCleanersModel
-                                          ?.data ==
-                                      null
+                                      .read<EditPointCubit>()
+                                      .pointUsersDetailsModel!
+                                      .data!
+                                      .users!
+                                      .where((user) => user.role == 'Cleaner')
+                                      .isEmpty
                                   ? [
                                       DropdownItem(
                                         label: 'No cleaners available',
-                                        value: CleanersData(
+                                        value: Users(
                                             id: null,
                                             userName: 'No cleaners available'),
                                       )
                                     ]
                                   : context
                                       .read<EditPointCubit>()
-                                      .allCleanersModel!
+                                      .pointUsersDetailsModel!
                                       .data!
+                                      .users!
+                                      .where((user) => user.role == 'Cleaner')
                                       .map((cleaner) => DropdownItem(
                                             label: cleaner.userName!,
                                             value: cleaner,
@@ -718,9 +739,10 @@ class _EditPointBodyState extends State<EditPointBody> {
                               fieldDecoration: FieldDecoration(
                                 hintText: context
                                     .read<EditPointCubit>()
-                                    .pointManagersDetailsModel!
+                                    .pointUsersDetailsModel!
                                     .data!
-                                    .cleaners!
+                                    .users!
+                                    .where((user) => user.role == 'Cleaner')
                                     .map((cleaner) => cleaner.userName)
                                     .join(', '),
                                 suffixIcon: Icon(IconBroken.arrowDown2),
@@ -759,106 +781,6 @@ class _EditPointBodyState extends State<EditPointBody> {
                                     .toList();
                               },
                             ),
-                      verticalSpace(10),
-                      context.read<EditPointCubit>().shiftModel?.data == null
-                          ? SizedBox.shrink()
-                          : RichText(
-                              textAlign: TextAlign.center,
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'Shifts',
-                                    style: TextStyles.font16BlackRegular,
-                                  ),
-                                  TextSpan(
-                                    text: ' (Optional)',
-                                    style: TextStyles.font14GreyRegular,
-                                  ),
-                                ],
-                              ),
-                            ),
-                      context.read<EditPointCubit>().shiftModel?.data == null
-                          ? SizedBox.shrink()
-                          : MultiDropdown<ShiftDetails>(
-                              items: context
-                                          .read<EditPointCubit>()
-                                          .shiftModel
-                                          ?.data
-                                          ?.data
-                                          ?.isEmpty ??
-                                      true
-                                  ? [
-                                      DropdownItem(
-                                        label: 'No shifts available',
-                                        value: ShiftDetails(
-                                            id: null,
-                                            name: 'No shifts available'),
-                                      )
-                                    ]
-                                  : context
-                                      .read<EditPointCubit>()
-                                      .shiftModel!
-                                      .data!
-                                      .data!
-                                      .map((shift) => DropdownItem(
-                                            label: shift.name!,
-                                            value: shift,
-                                          ))
-                                      .toList(),
-                              controller: context
-                                  .read<EditPointCubit>()
-                                  .shiftController,
-                              enabled: true,
-                              chipDecoration: ChipDecoration(
-                                backgroundColor: Colors.grey[300],
-                                wrap: true,
-                                runSpacing: 5,
-                                spacing: 5,
-                              ),
-                              fieldDecoration: FieldDecoration(
-                                hintText: context
-                                    .read<EditPointCubit>()
-                                    .pointShiftsDetailsModel!
-                                    .data!
-                                    .shifts!
-                                    .map((shift) => shift.name)
-                                    .join(', '),
-                                suffixIcon: Icon(IconBroken.arrowDown2),
-                                hintStyle: TextStyle(
-                                    fontSize: 12.sp,
-                                    color: AppColor.thirdColor),
-                                showClearIcon: false,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8.r),
-                                  borderSide:
-                                      const BorderSide(color: Colors.grey),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8.r),
-                                  borderSide: const BorderSide(
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8.r),
-                                  borderSide: const BorderSide(
-                                    color: Colors.red,
-                                  ),
-                                ),
-                              ),
-                              dropdownDecoration: const DropdownDecoration(
-                                maxHeight: 200,
-                              ),
-                              dropdownItemDecoration: DropdownItemDecoration(
-                                selectedIcon: const Icon(Icons.check_box,
-                                    color: Colors.blue),
-                              ),
-                              onSelectionChange: (selectedItems) {
-                                selectedShiftsIds = selectedItems
-                                    .map((item) => (item).id!)
-                                    .toList();
-                              },
-                            ),
                       verticalSpace(15),
                       state is EditPointLoadingState
                           ? const Center(
@@ -880,8 +802,8 @@ class _EditPointBodyState extends State<EditPointBody> {
                                         widget.id,
                                         selectedManagersIds,
                                         selectedSupervisorsIds,
-                                        selectedCleanersIds,
-                                        selectedShiftsIds);
+                                        selectedCleanersIds
+                                        );
                                     context.pop();
                                   });
                                 }

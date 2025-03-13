@@ -15,44 +15,65 @@ Widget managerListItemBuild(BuildContext context, index, selectedIndex) {
         arguments: selectedIndex == 0
             ? context
                 .read<WorkLocationCubit>()
-                .areaManagersDetailsModel!
+                .areaUsersDetailsModel!
                 .data!
-                .managers![index]
-                .id
+                .users!
+                .where((user) => user.role == 'Manager')
+                .map((user) => user.id!)
+                .toString()
             : selectedIndex == 1
                 ? context
                     .read<WorkLocationCubit>()
-                    .cityManagersDetailsModel!
+                    .cityUsersDetailsModel!
                     .data!
-                    .managers![index]
-                    .id
+                    .users!
+                    .where((user) => user.role == 'Manager')
+                    .map((user) => user.id!)
+                    .toString()
                 : selectedIndex == 2
                     ? context
                         .read<WorkLocationCubit>()
-                        .organizationManagersDetailsModel!
+                        .organizationUsersShiftDetailsModel!
                         .data!
-                        .managers![index]
-                        .id
+                        .users!
+                        .where((user) => user.role == 'Manager')
+                        .map((user) => user.id!)
+                        .toString()
                     : selectedIndex == 3
                         ? context
                             .read<WorkLocationCubit>()
-                            .buildingManagersDetailsModel!
+                            .buildingUsersShiftDetailsModel!
                             .data!
-                            .managers![index]
-                            .id
+                            .users!
+                            .where((user) => user.role == 'Manager')
+                            .map((user) => user.id!)
+                            .toString()
                         : selectedIndex == 4
                             ? context
                                 .read<WorkLocationCubit>()
-                                .floorManagersDetailsModel!
+                                .floorUsersShiftDetailsModel!
                                 .data!
-                                .managers![index]
-                                .id
-                            : context
-                                .read<WorkLocationCubit>()
-                                .pointManagersDetailsModel!
-                                .data!
-                                .managers![index]
-                                .id,
+                                .users!
+                                .where((user) => user.role == 'Manager')
+                                .map((user) => user.id!)
+                                .toString()
+                            : selectedIndex == 5
+                                ? context
+                                    .read<WorkLocationCubit>()
+                                    .sectionUsersShiftDetailsModel!
+                                    .data!
+                                    .users!
+                                    .where((user) => user.role == 'Manager')
+                                    .map((user) => user.id!)
+                                    .toString()
+                                : context
+                                    .read<WorkLocationCubit>()
+                                    .pointUsersDetailsModel!
+                                    .data!
+                                    .users!
+                                    .where((user) => user.role == 'Manager')
+                                    .map((user) => user.id!)
+                                    .toString(),
       );
     },
     child: ListTile(
@@ -71,7 +92,7 @@ Widget managerListItemBuild(BuildContext context, index, selectedIndex) {
         decoration: BoxDecoration(shape: BoxShape.circle),
         clipBehavior: Clip.hardEdge,
         child: Image.network(
-          '${ApiConstants.apiBaseUrl}${selectedIndex == 0 ? context.read<WorkLocationCubit>().areaManagersDetailsModel!.data!.managers![index].image : selectedIndex == 1 ? context.read<WorkLocationCubit>().cityManagersDetailsModel!.data!.managers![index].image : selectedIndex == 2 ? context.read<WorkLocationCubit>().organizationManagersDetailsModel!.data!.managers![index].image : selectedIndex == 3 ? context.read<WorkLocationCubit>().buildingManagersDetailsModel!.data!.managers![index].image : selectedIndex == 4 ? context.read<WorkLocationCubit>().floorManagersDetailsModel!.data!.managers![index].image : context.read<WorkLocationCubit>().pointManagersDetailsModel!.data!.managers![index].image}',
+          '${ApiConstants.apiBaseUrl}${selectedIndex == 0 ? context.read<WorkLocationCubit>().areaUsersDetailsModel!.data!.users!.where((user) => user.role == 'Manager').map((user) => user.image!).toString() : selectedIndex == 1 ? context.read<WorkLocationCubit>().cityUsersDetailsModel!.data!.users!.where((user) => user.role == 'Manager').map((user) => user.image!).toString() : selectedIndex == 2 ? context.read<WorkLocationCubit>().organizationUsersShiftDetailsModel!.data!.users!.where((user) => user.role == 'Manager').map((user) => user.image!).toString() : selectedIndex == 3 ? context.read<WorkLocationCubit>().buildingUsersShiftDetailsModel!.data!.users!.where((user) => user.role == 'Manager').map((user) => user.image!).toString() : selectedIndex == 4 ? context.read<WorkLocationCubit>().floorUsersShiftDetailsModel!.data!.users!.where((user) => user.role == 'Manager').map((user) => user.image!).toString() : selectedIndex == 5 ? context.read<WorkLocationCubit>().sectionUsersShiftDetailsModel!.data!.users!.where((user) => user.role == 'Manager').map((user) => user.image!).toString() : context.read<WorkLocationCubit>().pointUsersDetailsModel!.data!.users!.where((user) => user.role == 'Manager').map((user) => user.image!).toString()}',
           fit: BoxFit.fill,
           errorBuilder: (context, error, stackTrace) {
             return Image.asset(
@@ -85,88 +106,130 @@ Widget managerListItemBuild(BuildContext context, index, selectedIndex) {
         selectedIndex == 0
             ? context
                 .read<WorkLocationCubit>()
-                .areaManagersDetailsModel!
+                .areaUsersDetailsModel!
                 .data!
-                .managers![index]
-                .userName!
+                .users!
+                .where((user) => user.role == 'Manager')
+                .map((user) => user.userName!)
+                .toString()
             : selectedIndex == 1
                 ? context
                     .read<WorkLocationCubit>()
-                    .cityManagersDetailsModel!
+                    .cityUsersDetailsModel!
                     .data!
-                    .managers![index]
-                    .userName!
+                    .users!
+                    .where((user) => user.role == 'Manager')
+                    .map((user) => user.userName!)
+                    .toString()
                 : selectedIndex == 2
                     ? context
                         .read<WorkLocationCubit>()
-                        .organizationManagersDetailsModel!
+                        .organizationUsersShiftDetailsModel!
                         .data!
-                        .managers![index]
-                        .userName!
+                        .users!
+                        .where((user) => user.role == 'Manager')
+                        .map((user) => user.userName!)
+                        .toString()
                     : selectedIndex == 3
                         ? context
                             .read<WorkLocationCubit>()
-                            .buildingManagersDetailsModel!
+                            .buildingUsersShiftDetailsModel!
                             .data!
-                            .managers![index]
-                            .userName!
+                            .users!
+                            .where((user) => user.role == 'Manager')
+                            .map((user) => user.userName!)
+                            .toString()
                         : selectedIndex == 4
                             ? context
                                 .read<WorkLocationCubit>()
-                                .floorManagersDetailsModel!
+                                .floorUsersShiftDetailsModel!
                                 .data!
-                                .managers![index]
-                                .userName!
-                            : context
-                                .read<WorkLocationCubit>()
-                                .pointManagersDetailsModel!
-                                .data!
-                                .managers![index]
-                                .userName!,
+                                .users!
+                                .where((user) => user.role == 'Manager')
+                                .map((user) => user.userName!)
+                                .toString()
+                            : selectedIndex == 5
+                                ? context
+                                    .read<WorkLocationCubit>()
+                                    .sectionUsersShiftDetailsModel!
+                                    .data!
+                                    .users!
+                                    .where((user) => user.role == 'Manager')
+                                    .map((user) => user.userName!)
+                                    .toString()
+                                : context
+                                    .read<WorkLocationCubit>()
+                                    .pointUsersDetailsModel!
+                                    .data!
+                                    .users!
+                                    .where((user) => user.role == 'Manager')
+                                    .map((user) => user.userName!)
+                                    .toString(),
         style: TextStyles.font14BlackSemiBold,
       ),
       subtitle: Text(
         selectedIndex == 0
             ? context
                 .read<WorkLocationCubit>()
-                .areaManagersDetailsModel!
+                .areaUsersDetailsModel!
                 .data!
-                .managers![index]
-                .email!
+                .users!
+                .where((user) => user.role == 'Manager')
+                .map((user) => user.email!)
+                .toString()
             : selectedIndex == 1
                 ? context
                     .read<WorkLocationCubit>()
-                    .cityManagersDetailsModel!
+                    .cityUsersDetailsModel!
                     .data!
-                    .managers![index]
-                    .email!
+                    .users!
+                    .where((user) => user.role == 'Manager')
+                    .map((user) => user.email!)
+                    .toString()
                 : selectedIndex == 2
                     ? context
                         .read<WorkLocationCubit>()
-                        .organizationManagersDetailsModel!
+                        .organizationUsersShiftDetailsModel!
                         .data!
-                        .managers![index]
-                        .email!
+                        .users!
+                        .where((user) => user.role == 'Manager')
+                        .map((user) => user.email!)
+                        .toString()
                     : selectedIndex == 3
                         ? context
                             .read<WorkLocationCubit>()
-                            .buildingManagersDetailsModel!
+                            .buildingUsersShiftDetailsModel!
                             .data!
-                            .managers![index]
-                            .email!
+                            .users!
+                            .where((user) => user.role == 'Manager')
+                            .map((user) => user.email!)
+                            .toString()
                         : selectedIndex == 4
                             ? context
                                 .read<WorkLocationCubit>()
-                                .floorManagersDetailsModel!
+                                .floorUsersShiftDetailsModel!
                                 .data!
-                                .managers![index]
-                                .email!
-                            : context
-                                .read<WorkLocationCubit>()
-                                .pointManagersDetailsModel!
-                                .data!
-                                .managers![index]
-                                .email!,
+                                .users!
+                                .where((user) => user.role == 'Manager')
+                                .map((user) => user.email!)
+                                .toString()
+                            : selectedIndex == 5
+                                ? context
+                                    .read<WorkLocationCubit>()
+                                    .sectionUsersShiftDetailsModel!
+                                    .data!
+                                    .users!
+                                    .where((user) => user.role == 'Manager')
+                                    .map((user) => user.email!)
+                                    .toString()
+                                : context
+                                    .read<WorkLocationCubit>()
+                                    .pointUsersDetailsModel!
+                                    .data!
+                                    .users!
+                                    .where((user) => user.role == 'Manager')
+                                    .map((user) => user.email!)
+                                    .toString(),
         style: TextStyles.font12GreyRegular,
       ),
     ),

@@ -22,6 +22,7 @@ class CustomFilterWorkLocationDialog {
         int? organizationId;
         int? buildingId;
         int? floorId;
+        int? sectionId;
         return Dialog(
             backgroundColor: Colors.white,
             surfaceTintColor: Colors.white,
@@ -86,6 +87,7 @@ class CustomFilterWorkLocationDialog {
                                           .read<WorkLocationCubit>()
                                           .areasModel
                                           ?.data
+                                          ?.areas
                                           ?.isEmpty ??
                                       true
                                   ? ['No Areas']
@@ -93,6 +95,7 @@ class CustomFilterWorkLocationDialog {
                                           .read<WorkLocationCubit>()
                                           .areasModel
                                           ?.data
+                                          ?.areas
                                           ?.map((e) => e.name ?? 'Unknown')
                                           .toList() ??
                                       []
@@ -118,6 +121,7 @@ class CustomFilterWorkLocationDialog {
                                     .read<WorkLocationCubit>()
                                     .areasModel
                                     ?.data
+                                    ?.areas
                                     ?.firstWhere((area) =>
                                         area.name ==
                                         context
@@ -162,12 +166,14 @@ class CustomFilterWorkLocationDialog {
                                           .read<WorkLocationCubit>()
                                           .cityyModel
                                           ?.data
+                                          ?.data
                                           ?.isEmpty ??
                                       true
                                   ? ['No Cities']
                                   : context
                                           .read<WorkLocationCubit>()
                                           .cityyModel
+                                          ?.data
                                           ?.data
                                           ?.map((e) => e.name ?? 'Unknown')
                                           .toList() ??
@@ -193,6 +199,7 @@ class CustomFilterWorkLocationDialog {
                                 ? context
                                     .read<WorkLocationCubit>()
                                     .cityyModel
+                                    ?.data
                                     ?.data
                                     ?.firstWhere((city) =>
                                         city.name ==
@@ -238,12 +245,14 @@ class CustomFilterWorkLocationDialog {
                                           .read<WorkLocationCubit>()
                                           .organizationsModel
                                           ?.data
+                                          ?.data
                                           ?.isEmpty ??
                                       true
                                   ? ['No organizations']
                                   : context
                                           .read<WorkLocationCubit>()
                                           .organizationsModel
+                                          ?.data
                                           ?.data
                                           ?.map((e) => e.name ?? 'Unknown')
                                           .toList() ??
@@ -269,6 +278,7 @@ class CustomFilterWorkLocationDialog {
                                 ? context
                                     .read<WorkLocationCubit>()
                                     .organizationsModel
+                                    ?.data
                                     ?.data
                                     ?.firstWhere((organization) =>
                                         organization.name ==
@@ -315,12 +325,14 @@ class CustomFilterWorkLocationDialog {
                                           .read<WorkLocationCubit>()
                                           .buildingsModel
                                           ?.data
+                                          ?.data
                                           ?.isEmpty ??
                                       true
                                   ? ['No building']
                                   : context
                                           .read<WorkLocationCubit>()
                                           .buildingsModel
+                                          ?.data
                                           ?.data
                                           ?.map((e) => e.name ?? 'Unknown')
                                           .toList() ??
@@ -346,6 +358,7 @@ class CustomFilterWorkLocationDialog {
                                 ? context
                                     .read<WorkLocationCubit>()
                                     .buildingsModel
+                                    ?.data
                                     ?.data
                                     ?.firstWhere((building) =>
                                         building.name ==
@@ -380,47 +393,130 @@ class CustomFilterWorkLocationDialog {
                         ),
                         verticalSpace(10),
                       ],
-                      if (selectedIndex == 5) ...[
+                      if (selectedIndex == 5 || selectedIndex == 6) ...[
                         Text(
                           'Floor',
                           style: TextStyles.font16BlackRegular,
                         ),
                         CustomDropDownList(
                           hint: "Select floor",
+                          items: selectedIndex == 5
+                              ? context
+                                          .read<WorkLocationCubit>()
+                                          .floorsModel
+                                          ?.data
+                                          ?.data
+                                          ?.isEmpty ??
+                                      true
+                                  ? ['No floor']
+                                  : context
+                                          .read<WorkLocationCubit>()
+                                          .floorsModel
+                                          ?.data
+                                          ?.data
+                                          ?.map((e) => e.name ?? 'Unknown')
+                                          .toList() ??
+                                      []
+                              : context
+                                          .read<WorkLocationCubit>()
+                                          .floorModel
+                                          ?.data
+                                          ?.data
+                                          ?.isEmpty ??
+                                      true
+                                  ? ['No floor']
+                                  : context
+                                          .read<WorkLocationCubit>()
+                                          .floorModel
+                                          ?.data
+                                          ?.data
+                                          ?.map((e) => e.name ?? 'Unknown')
+                                          .toList() ??
+                                      [],
+                          onPressed: (value) {
+                            final selectedFloor = selectedIndex == 5
+                                ? context
+                                    .read<WorkLocationCubit>()
+                                    .floorsModel
+                                    ?.data
+                                    ?.data
+                                    ?.firstWhere((floor) =>
+                                        floor.name ==
+                                        context
+                                            .read<WorkLocationCubit>()
+                                            .floorController
+                                            .text)
+                                    .id
+                                : context
+                                    .read<WorkLocationCubit>()
+                                    .floorModel
+                                    ?.data
+                                    ?.data
+                                    ?.firstWhere((floor) =>
+                                        floor.name ==
+                                        context
+                                            .read<WorkLocationCubit>()
+                                            .floorController
+                                            .text)
+                                    .id;
+
+                            context
+                                .read<WorkLocationCubit>()
+                                .getFloors(selectedFloor!);
+                            floorId = selectedFloor;
+                          },
+                          suffixIcon: IconBroken.arrowDown2,
+                          controller:
+                              context.read<WorkLocationCubit>().floorController,
+                          keyboardType: TextInputType.text,
+                        ),
+                        verticalSpace(10),
+                      ],
+                      if (selectedIndex == 6) ...[
+                        Text(
+                          'Section',
+                          style: TextStyles.font16BlackRegular,
+                        ),
+                        CustomDropDownList(
+                          hint: "Select section",
                           items: context
                                       .read<WorkLocationCubit>()
-                                      .floorsModel
+                                      .sectionsModel
+                                      ?.data
                                       ?.data
                                       ?.isEmpty ??
                                   true
-                              ? ['No floors']
+                              ? ['No section']
                               : context
                                       .read<WorkLocationCubit>()
-                                      .floorsModel
+                                      .sectionModel
+                                      ?.data
                                       ?.data
                                       ?.map((e) => e.name ?? 'Unknown')
                                       .toList() ??
                                   [],
                           onPressed: (value) {
-                            final selectedFloor = context
+                            final selectedSection = context
                                 .read<WorkLocationCubit>()
-                                .floorsModel
+                                .sectionsModel
                                 ?.data
-                                ?.firstWhere((floor) =>
-                                    floor.name ==
+                                ?.data
+                                ?.firstWhere((section) =>
+                                    section.name ==
                                     context
                                         .read<WorkLocationCubit>()
-                                        .floorController
+                                        .sectionController
                                         .text);
 
                             context
                                 .read<WorkLocationCubit>()
-                                .getPoints(selectedFloor!.id!);
-                            floorId = selectedFloor.id;
+                                .getPoints(selectedSection!.id!);
+                            sectionId = selectedSection.id;
                           },
                           suffixIcon: IconBroken.arrowDown2,
-                          controller:
-                              context.read<WorkLocationCubit>().floorController,
+                          controller: context
+                              .read<WorkLocationCubit>()
+                              .sectionController,
                           keyboardType: TextInputType.text,
                         ),
                       ],
@@ -469,12 +565,23 @@ class CustomFilterWorkLocationDialog {
                                                             organizationId,
                                                         buildingId: buildingId,
                                                       )
-                                                  : context
-                                                      .read<WorkLocationCubit>()
-                                                      .getPoint(
-                                                        buildingId: buildingId,
-                                                        floorId: floorId,
-                                                      );
+                                                  : selectedIndex == 5
+                                                      ? context
+                                                          .read<
+                                                              WorkLocationCubit>()
+                                                          .getSection(
+                                                            buildingId:
+                                                                buildingId,
+                                                            floorId: floorId,
+                                                          )
+                                                      : context
+                                                          .read<
+                                                              WorkLocationCubit>()
+                                                          .getPoint(
+                                                            floorId: floorId,
+                                                            sectionId:
+                                                                sectionId,
+                                                          );
                               context.pop();
                             },
                             color: AppColor.primaryColor,

@@ -11,255 +11,255 @@ import 'package:smart_cleaning_application/features/screens/work_location/add_wo
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_supervisors_model.dart';
 
 
-abstract class AddOrganizationState {}
+abstract class AddWorkLocationState {}
 
-class AddOrganizationInitialState extends AddOrganizationState {}
+class AddWorkLocationInitialState extends AddWorkLocationState {}
 
-class AddOrganizationLoadingState extends AddOrganizationState {}
+class AddWorkLocationLoadingState extends AddWorkLocationState {}
 
-class AddOrganizationSuccessState extends AddOrganizationState {}
+class AddWorkLocationSuccessState extends AddWorkLocationState {}
 
-class AddOrganizationErrorState extends AddOrganizationState {
+class AddWorkLocationErrorState extends AddWorkLocationState {
   final String error;
-  AddOrganizationErrorState(this.error);
+  AddWorkLocationErrorState(this.error);
 }
 
 //**************************** */
 
-class GetNationalityLoadingState extends AddOrganizationState {}
+class GetNationalityLoadingState extends AddWorkLocationState {}
 
-class GetNationalitySuccessState extends AddOrganizationState {
+class GetNationalitySuccessState extends AddWorkLocationState {
   final NationalityModel nationalitymodel;
 
   GetNationalitySuccessState(this.nationalitymodel);
 }
 
-class GetNationalityErrorState extends AddOrganizationState {
+class GetNationalityErrorState extends AddWorkLocationState {
   final String error;
   GetNationalityErrorState(this.error);
 }
 //**************************** */
 
-class GetAreaLoadingState extends AddOrganizationState {}
+class GetAreaLoadingState extends AddWorkLocationState {}
 
-class GetAreaSuccessState extends AddOrganizationState {
+class GetAreaSuccessState extends AddWorkLocationState {
   final AreaModel areaModel;
 
   GetAreaSuccessState(this.areaModel);
 }
 
-class GetAreaErrorState extends AddOrganizationState {
+class GetAreaErrorState extends AddWorkLocationState {
   final String error;
   GetAreaErrorState(this.error);
 }
 //**************************** */
 
-class GetCityLoadingState extends AddOrganizationState {}
+class GetCityLoadingState extends AddWorkLocationState {}
 
-class GetCitySuccessState extends AddOrganizationState {
+class GetCitySuccessState extends AddWorkLocationState {
   final CityModel cityModel;
 
   GetCitySuccessState(this.cityModel);
 }
 
-class GetCityErrorState extends AddOrganizationState {
+class GetCityErrorState extends AddWorkLocationState {
   final String error;
   GetCityErrorState(this.error);
 }
 //**************************** */
 
-class GetOrganizationLoadingState extends AddOrganizationState {}
+class GetOrganizationLoadingState extends AddWorkLocationState {}
 
-class GetOrganizationSuccessState extends AddOrganizationState {
+class GetOrganizationSuccessState extends AddWorkLocationState {
   final OrganizationModel organizationModel;
 
   GetOrganizationSuccessState(this.organizationModel);
 }
 
-class GetOrganizationErrorState extends AddOrganizationState {
+class GetOrganizationErrorState extends AddWorkLocationState {
   final String error;
   GetOrganizationErrorState(this.error);
 }
 //**************************** */
 
-class GetBuildingLoadingState extends AddOrganizationState {}
+class GetBuildingLoadingState extends AddWorkLocationState {}
 
-class GetBuildingSuccessState extends AddOrganizationState {
+class GetBuildingSuccessState extends AddWorkLocationState {
   final BuildingModel buildingModel;
 
   GetBuildingSuccessState(this.buildingModel);
 }
 
-class GetBuildingErrorState extends AddOrganizationState {
+class GetBuildingErrorState extends AddWorkLocationState {
   final String error;
   GetBuildingErrorState(this.error);
 }
 //**************************** */
 
-class GetFloorLoadingState extends AddOrganizationState {}
+class GetFloorLoadingState extends AddWorkLocationState {}
 
-class GetFloorSuccessState extends AddOrganizationState {
+class GetFloorSuccessState extends AddWorkLocationState {
   final FloorModel floorModel;
 
   GetFloorSuccessState(this.floorModel);
 }
 
-class GetFloorErrorState extends AddOrganizationState {
+class GetFloorErrorState extends AddWorkLocationState {
   final String error;
   GetFloorErrorState(this.error);
 }
 //**************************** */
 
-class GetPointLoadingState extends AddOrganizationState {}
+class GetPointLoadingState extends AddWorkLocationState {}
 
-class GetPointSuccessState extends AddOrganizationState {
+class GetPointSuccessState extends AddWorkLocationState {
   final PointsModel pointsModel;
 
   GetPointSuccessState(this.pointsModel);
 }
 
-class GetPointErrorState extends AddOrganizationState {
+class GetPointErrorState extends AddWorkLocationState {
   final String error;
   GetPointErrorState(this.error);
 }
 //**************************** */
 
-class AllManagersLoadingState extends AddOrganizationState {}
+class AllManagersLoadingState extends AddWorkLocationState {}
 
-class AllManagersSuccessState extends AddOrganizationState {
+class AllManagersSuccessState extends AddWorkLocationState {
   final AllManagersModel allManagersModel;
 
   AllManagersSuccessState(this.allManagersModel);
 }
 
-class AllManagersErrorState extends AddOrganizationState {
+class AllManagersErrorState extends AddWorkLocationState {
   final String error;
   AllManagersErrorState(this.error);
 }
 //**************************** */
 
-class AllSupervisorsLoadingState extends AddOrganizationState {}
+class AllSupervisorsLoadingState extends AddWorkLocationState {}
 
-class AllSupervisorsSuccessState extends AddOrganizationState {
+class AllSupervisorsSuccessState extends AddWorkLocationState {
   final AllSupervisorsModel allSupervisorsModel;
 
   AllSupervisorsSuccessState(this.allSupervisorsModel);
 }
 
-class AllSupervisorsErrorState extends AddOrganizationState {
+class AllSupervisorsErrorState extends AddWorkLocationState {
   final String error;
   AllSupervisorsErrorState(this.error);
 }
 
 //**************************** */
 
-class AllCleanersLoadingState extends AddOrganizationState {}
+class AllCleanersLoadingState extends AddWorkLocationState {}
 
-class AllCleanersSuccessState extends AddOrganizationState {
+class AllCleanersSuccessState extends AddWorkLocationState {
   final AllCleanersModel allCleanersModel;
 
   AllCleanersSuccessState(this.allCleanersModel);
 }
 
-class AllCleanersErrorState extends AddOrganizationState {
+class AllCleanersErrorState extends AddWorkLocationState {
   final String error;
   AllCleanersErrorState(this.error);
 }
 //***************** */
 
-class CreateAreaLoadingState extends AddOrganizationState {}
+class CreateAreaLoadingState extends AddWorkLocationState {}
 
-class CreateAreaSuccessState extends AddOrganizationState {
+class CreateAreaSuccessState extends AddWorkLocationState {
   final String message;
 
   CreateAreaSuccessState(this.message);
 }
 
-class CreateAreaErrorState extends AddOrganizationState {
+class CreateAreaErrorState extends AddWorkLocationState {
   final String error;
   CreateAreaErrorState(this.error);
 }
 //***************** */
 
-class CreateCityLoadingState extends AddOrganizationState {}
+class CreateCityLoadingState extends AddWorkLocationState {}
 
-class CreateCitySuccessState extends AddOrganizationState {
+class CreateCitySuccessState extends AddWorkLocationState {
   final String message;
 
   CreateCitySuccessState(this.message);
 }
 
-class CreateCityErrorState extends AddOrganizationState {
+class CreateCityErrorState extends AddWorkLocationState {
   final String error;
   CreateCityErrorState(this.error);
 }
 
 //***************** */
 
-class CreateOrganizationLoadingState extends AddOrganizationState {}
+class CreateOrganizationLoadingState extends AddWorkLocationState {}
 
-class CreateOrganizationSuccessState extends AddOrganizationState {
+class CreateOrganizationSuccessState extends AddWorkLocationState {
   final String message;
 
   CreateOrganizationSuccessState(this.message);
 }
 
-class CreateOrganizationErrorState extends AddOrganizationState {
+class CreateOrganizationErrorState extends AddWorkLocationState {
   final String error;
   CreateOrganizationErrorState(this.error);
 }
 //***************** */
 
-class CreateBuildingLoadingState extends AddOrganizationState {}
+class CreateBuildingLoadingState extends AddWorkLocationState {}
 
-class CreateBuildingSuccessState extends AddOrganizationState {
+class CreateBuildingSuccessState extends AddWorkLocationState {
   final String message;
 
   CreateBuildingSuccessState(this.message);
 }
 
-class CreateBuildingErrorState extends AddOrganizationState {
+class CreateBuildingErrorState extends AddWorkLocationState {
   final String error;
   CreateBuildingErrorState(this.error);
 }
 
 //***************** */
 
-class CreateFloorLoadingState extends AddOrganizationState {}
+class CreateFloorLoadingState extends AddWorkLocationState {}
 
-class CreateFloorSuccessState extends AddOrganizationState {
+class CreateFloorSuccessState extends AddWorkLocationState {
   final String message;
 
   CreateFloorSuccessState(this.message);
 }
 
-class CreateFloorErrorState extends AddOrganizationState {
+class CreateFloorErrorState extends AddWorkLocationState {
   final String error;
   CreateFloorErrorState(this.error);
 } //***************** */
 
-class CreatePointLoadingState extends AddOrganizationState {}
+class CreatePointLoadingState extends AddWorkLocationState {}
 
-class CreatePointSuccessState extends AddOrganizationState {
+class CreatePointSuccessState extends AddWorkLocationState {
   final String message;
 
   CreatePointSuccessState(this.message);
 }
 
-class CreatePointErrorState extends AddOrganizationState {
+class CreatePointErrorState extends AddWorkLocationState {
   final String error;
   CreatePointErrorState(this.error);
 }
 //**************************** */
 
-class ShiftLoadingState extends AddOrganizationState {}
+class ShiftLoadingState extends AddWorkLocationState {}
 
-class ShiftSuccessState extends AddOrganizationState {
+class ShiftSuccessState extends AddWorkLocationState {
   final ShiftModel shiftModel;
   ShiftSuccessState(this.shiftModel);
 }
 
-class ShiftErrorState extends AddOrganizationState {
+class ShiftErrorState extends AddWorkLocationState {
   final String error;
   ShiftErrorState(this.error);
 }

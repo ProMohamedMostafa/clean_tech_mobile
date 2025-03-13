@@ -14,9 +14,7 @@ import 'package:smart_cleaning_application/core/widgets/default_toast/default_to
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_cleaners_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_managers_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_supervisors_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/city_users_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_city/logic/edit_city_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_city/logic/edit_city_state.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
@@ -37,11 +35,7 @@ class _EditCityBodyState extends State<EditCityBody> {
   void initState() {
     context.read<EditCityCubit>().getCityDetailsInEdit(widget.id);
     context.read<EditCityCubit>().getCityManagersDetails(widget.id);
-    context.read<EditCityCubit>()
-      ..getNationality()
-      ..getManagers()
-      ..getSupervisors()
-      ..getCleaners();
+    context.read<EditCityCubit>().getNationality();
     super.initState();
   }
 
@@ -66,8 +60,7 @@ class _EditCityBodyState extends State<EditCityBody> {
           },
           builder: (context, state) {
             final cubit = context.read<EditCityCubit>();
-            if (cubit.cityDetailsInEditModel == null ||
-                cubit.cityManagersDetailsModel == null) {
+            if (cubit.cityDetailsInEditModel == null) {
               return const Center(
                 child: CircularProgressIndicator(color: AppColor.primaryColor),
               );
@@ -111,7 +104,7 @@ class _EditCityBodyState extends State<EditCityBody> {
                               .read<EditCityCubit>()
                               .nationalityController
                               .text = value;
-                          context.read<EditCityCubit>().getArea(value);
+                          context.read<EditCityCubit>().getAreas(value);
                         },
                         suffixIcon: IconBroken.arrowDown2,
                         controller:
@@ -132,23 +125,26 @@ class _EditCityBodyState extends State<EditCityBody> {
                             .areaName!,
                         items: context
                                     .read<EditCityCubit>()
-                                    .areaModel
+                                    .areasModel
                                     ?.data
+                                    ?.areas
                                     ?.isEmpty ??
                                 true
                             ? ['No areas']
                             : context
                                     .read<EditCityCubit>()
-                                    .areaModel
+                                    .areasModel
                                     ?.data
+                                    ?.areas
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
                         onPressed: (value) {
                           final selectedArea = context
                               .read<EditCityCubit>()
-                              .areaModel
+                              .areasModel
                               ?.data
+                              ?.areas
                               ?.firstWhere((area) =>
                                   area.name ==
                                   context
@@ -158,7 +154,7 @@ class _EditCityBodyState extends State<EditCityBody> {
 
                           context
                               .read<EditCityCubit>()
-                              .getCity(selectedArea!.id!);
+                              .getCityy(selectedArea!.id!);
                           context.read<EditCityCubit>().areaIdController.text =
                               selectedArea.id!.toString();
                         },
@@ -201,7 +197,7 @@ class _EditCityBodyState extends State<EditCityBody> {
                       verticalSpace(10),
                       context
                                   .read<EditCityCubit>()
-                                  .cityManagersDetailsModel
+                                  .cityUsersDetailsModel
                                   ?.data ==
                               null
                           ? SizedBox.shrink()
@@ -222,28 +218,32 @@ class _EditCityBodyState extends State<EditCityBody> {
                             ),
                       context
                                   .read<EditCityCubit>()
-                                  .cityManagersDetailsModel
+                                  .cityUsersDetailsModel
                                   ?.data ==
                               null
                           ? SizedBox.shrink()
-                          : MultiDropdown<ManagersData>(
+                          : MultiDropdown<Users>(
                               items: context
-                                          .read<EditCityCubit>()
-                                          .allManagersModel
-                                          ?.data ==
-                                      null
+                                      .read<EditCityCubit>()
+                                      .cityUsersDetailsModel!
+                                      .data!
+                                      .users!
+                                      .where((user) => user.role == 'Manager')
+                                      .isEmpty
                                   ? [
                                       DropdownItem(
                                         label: 'No managers available',
-                                        value: ManagersData(
+                                        value: Users(
                                             id: null,
                                             userName: 'No managers available'),
                                       )
                                     ]
                                   : context
                                       .read<EditCityCubit>()
-                                      .allManagersModel!
+                                      .cityUsersDetailsModel!
                                       .data!
+                                      .users!
+                                      .where((user) => user.role == 'Manager')
                                       .map((manager) => DropdownItem(
                                             label: manager.userName!,
                                             value: manager,
@@ -260,11 +260,12 @@ class _EditCityBodyState extends State<EditCityBody> {
                                 spacing: 5,
                               ),
                               fieldDecoration: FieldDecoration(
-                                hintText: context
-                                    .read<EditCityCubit>()
-                                    .cityManagersDetailsModel!
-                                    .data!
-                                    .managers!
+                                hintText:context
+                                      .read<EditCityCubit>()
+                                      .cityUsersDetailsModel!
+                                      .data!
+                                      .users!
+                                      .where((user) => user.role == 'Manager')
                                     .map((manager) => manager.userName)
                                     .join(', '),
                                 suffixIcon: Icon(IconBroken.arrowDown2),
@@ -304,7 +305,7 @@ class _EditCityBodyState extends State<EditCityBody> {
                               },
                             ),
                       verticalSpace(10),
-                      context.read<EditCityCubit>().allSupervisorsModel?.data ==
+                      context.read<EditCityCubit>().cityUsersDetailsModel?.data ==
                               null
                           ? SizedBox.shrink()
                           : RichText(
@@ -322,19 +323,21 @@ class _EditCityBodyState extends State<EditCityBody> {
                                 ],
                               ),
                             ),
-                      context.read<EditCityCubit>().allSupervisorsModel?.data ==
+                      context.read<EditCityCubit>().cityUsersDetailsModel?.data ==
                               null
                           ? SizedBox.shrink()
-                          : MultiDropdown<SupervisorsData>(
+                          : MultiDropdown<Users>(
                               items: context
-                                          .read<EditCityCubit>()
-                                          .allSupervisorsModel
-                                          ?.data ==
-                                      null
+                                      .read<EditCityCubit>()
+                                      .cityUsersDetailsModel!
+                                      .data!
+                                      .users!
+                                      .where((user) => user.role == 'Supervisor')
+                                      .isEmpty
                                   ? [
                                       DropdownItem(
                                         label: 'No supervisors available',
-                                        value: SupervisorsData(
+                                        value: Users(
                                             id: null,
                                             userName:
                                                 'No supervisors available'),
@@ -342,8 +345,10 @@ class _EditCityBodyState extends State<EditCityBody> {
                                     ]
                                   : context
                                       .read<EditCityCubit>()
-                                      .allSupervisorsModel!
+                                      .cityUsersDetailsModel!
                                       .data!
+                                      .users!
+                                      .where((user) => user.role == 'Supervisor')
                                       .map((supervisor) => DropdownItem(
                                             label: supervisor.userName!,
                                             value: supervisor,
@@ -361,10 +366,11 @@ class _EditCityBodyState extends State<EditCityBody> {
                               ),
                               fieldDecoration: FieldDecoration(
                                 hintText: context
-                                    .read<EditCityCubit>()
-                                    .cityManagersDetailsModel!
-                                    .data!
-                                    .supervisors!
+                                      .read<EditCityCubit>()
+                                      .cityUsersDetailsModel!
+                                      .data!
+                                      .users!
+                                      .where((user) => user.role == 'Supervisor')
                                     .map((supervisor) => supervisor.userName)
                                     .join(', '),
                                 suffixIcon: Icon(IconBroken.arrowDown2),
@@ -406,7 +412,7 @@ class _EditCityBodyState extends State<EditCityBody> {
                       verticalSpace(10),
                       context
                                   .read<EditCityCubit>()
-                                  .cityManagersDetailsModel
+                                  .cityUsersDetailsModel
                                   ?.data ==
                               null
                           ? SizedBox.shrink()
@@ -427,28 +433,32 @@ class _EditCityBodyState extends State<EditCityBody> {
                             ),
                       context
                                   .read<EditCityCubit>()
-                                  .cityManagersDetailsModel
+                                  .cityUsersDetailsModel
                                   ?.data ==
                               null
                           ? SizedBox.shrink()
-                          : MultiDropdown<CleanersData>(
+                          : MultiDropdown<Users>(
                               items: context
-                                          .read<EditCityCubit>()
-                                          .allCleanersModel
-                                          ?.data ==
-                                      null
+                                      .read<EditCityCubit>()
+                                      .cityUsersDetailsModel!
+                                      .data!
+                                      .users!
+                                      .where((user) => user.role == 'Cleaner')
+                                      .isEmpty
                                   ? [
                                       DropdownItem(
                                         label: 'No cleaners available',
-                                        value: CleanersData(
+                                        value: Users(
                                             id: null,
                                             userName: 'No cleaners available'),
                                       )
                                     ]
                                   : context
                                       .read<EditCityCubit>()
-                                      .allCleanersModel!
+                                      .cityUsersDetailsModel!
                                       .data!
+                                      .users!
+                                      .where((user) => user.role == 'Cleaner')
                                       .map((cleaner) => DropdownItem(
                                             label: cleaner.userName!,
                                             value: cleaner,
@@ -466,10 +476,11 @@ class _EditCityBodyState extends State<EditCityBody> {
                               ),
                               fieldDecoration: FieldDecoration(
                                 hintText: context
-                                    .read<EditCityCubit>()
-                                    .cityManagersDetailsModel!
-                                    .data!
-                                    .cleaners!
+                                      .read<EditCityCubit>()
+                                      .cityUsersDetailsModel!
+                                      .data!
+                                      .users!
+                                      .where((user) => user.role == 'Cleaner')
                                     .map((cleaner) => cleaner.userName)
                                     .join(', '),
                                 suffixIcon: Icon(IconBroken.arrowDown2),

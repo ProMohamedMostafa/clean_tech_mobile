@@ -15,9 +15,7 @@ import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custo
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_cleaners_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_managers_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_supervisors_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/organization_users_shifts_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_organization/logic/edit_organization_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_organization/logic/edit_organization_state.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
@@ -43,14 +41,8 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
     context
         .read<EditOrganizationCubit>()
         .getOrganizationManagersDetails(widget.id);
-    context
-        .read<EditOrganizationCubit>()
-        .getOrganizationShiftsDetails(widget.id);
     context.read<EditOrganizationCubit>()
       ..getNationality()
-      ..getManagers()
-      ..getSupervisors()
-      ..getCleaners()
       ..getShifts();
 
     super.initState();
@@ -79,9 +71,7 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
           },
           builder: (context, state) {
             final cubit = context.read<EditOrganizationCubit>();
-            if (cubit.organizationDetailsInEditModel == null ||
-                cubit.organizationManagersDetailsModel == null ||
-                cubit.organizationShiftsDetailsModel == null) {
+            if (cubit.organizationDetailsInEditModel == null) {
               return const Center(
                 child: CircularProgressIndicator(color: AppColor.primaryColor),
               );
@@ -121,7 +111,7 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                                     .toList() ??
                                 [],
                         onPressed: (value) {
-                          context.read<EditOrganizationCubit>().getArea(value);
+                          context.read<EditOrganizationCubit>().getAreas(value);
                         },
                         suffixIcon: IconBroken.arrowDown2,
                         controller: context
@@ -143,23 +133,26 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                             .areaName!,
                         items: context
                                     .read<EditOrganizationCubit>()
-                                    .areaModel
+                                    .areasModel
                                     ?.data
+                                    ?.areas
                                     ?.isEmpty ??
                                 true
                             ? ['No areas']
                             : context
                                     .read<EditOrganizationCubit>()
-                                    .areaModel
+                                    .areasModel
                                     ?.data
+                                    ?.areas
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
                         onPressed: (value) {
                           final selectedArea = context
                               .read<EditOrganizationCubit>()
-                              .areaModel
+                              .areasModel
                               ?.data
+                              ?.areas
                               ?.firstWhere((area) =>
                                   area.name ==
                                   context
@@ -169,7 +162,7 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
 
                           context
                               .read<EditOrganizationCubit>()
-                              .getCity(selectedArea!.id!);
+                              .getCityy(selectedArea!.id!);
                         },
                         suffixIcon: IconBroken.arrowDown2,
                         controller: context
@@ -191,14 +184,16 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                             .cityName!,
                         items: context
                                     .read<EditOrganizationCubit>()
-                                    .cityModel
+                                    .cityyModel
+                                    ?.data
                                     ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No cities']
                             : context
                                     .read<EditOrganizationCubit>()
-                                    .cityModel
+                                    .cityyModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -206,7 +201,8 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                         onPressed: (value) {
                           final selectedCity = context
                               .read<EditOrganizationCubit>()
-                              .cityModel
+                              .cityyModel
+                              ?.data
                               ?.data
                               ?.firstWhere((city) =>
                                   city.name ==
@@ -262,7 +258,7 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                       verticalSpace(10),
                       context
                                   .read<EditOrganizationCubit>()
-                                  .organizationManagersDetailsModel
+                                  .organizationUsersShiftsDetailsModel
                                   ?.data ==
                               null
                           ? SizedBox.shrink()
@@ -283,28 +279,32 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                             ),
                       context
                                   .read<EditOrganizationCubit>()
-                                  .organizationManagersDetailsModel
+                                  .organizationUsersShiftsDetailsModel
                                   ?.data ==
                               null
                           ? SizedBox.shrink()
-                          : MultiDropdown<ManagersData>(
+                          : MultiDropdown<Users>(
                               items: context
-                                          .read<EditOrganizationCubit>()
-                                          .allManagersModel
-                                          ?.data ==
-                                      null
+                                      .read<EditOrganizationCubit>()
+                                      .organizationUsersShiftsDetailsModel!
+                                      .data!
+                                      .users!
+                                      .where((user) => user.role == 'Manager')
+                                      .isEmpty
                                   ? [
                                       DropdownItem(
                                         label: 'No managers available',
-                                        value: ManagersData(
+                                        value: Users(
                                             id: null,
                                             userName: 'No managers available'),
                                       )
                                     ]
                                   : context
                                       .read<EditOrganizationCubit>()
-                                      .allManagersModel!
+                                      .organizationUsersShiftsDetailsModel!
                                       .data!
+                                      .users!
+                                      .where((user) => user.role == 'Manager')
                                       .map((manager) => DropdownItem(
                                             label: manager.userName!,
                                             value: manager,
@@ -323,9 +323,10 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                               fieldDecoration: FieldDecoration(
                                 hintText: context
                                     .read<EditOrganizationCubit>()
-                                    .organizationManagersDetailsModel!
+                                    .organizationUsersShiftsDetailsModel!
                                     .data!
-                                    .managers!
+                                    .users!
+                                    .where((user) => user.role == 'Manager')
                                     .map((manager) => manager.userName)
                                     .join(', '),
                                 suffixIcon: Icon(IconBroken.arrowDown2),
@@ -367,7 +368,7 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                       verticalSpace(10),
                       context
                                   .read<EditOrganizationCubit>()
-                                  .allSupervisorsModel
+                                  .organizationUsersShiftsDetailsModel
                                   ?.data ==
                               null
                           ? SizedBox.shrink()
@@ -388,20 +389,23 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                             ),
                       context
                                   .read<EditOrganizationCubit>()
-                                  .allSupervisorsModel
+                                  .organizationUsersShiftsDetailsModel
                                   ?.data ==
                               null
                           ? SizedBox.shrink()
-                          : MultiDropdown<SupervisorsData>(
+                          : MultiDropdown<Users>(
                               items: context
-                                          .read<EditOrganizationCubit>()
-                                          .allSupervisorsModel
-                                          ?.data ==
-                                      null
+                                      .read<EditOrganizationCubit>()
+                                      .organizationUsersShiftsDetailsModel!
+                                      .data!
+                                      .users!
+                                      .where(
+                                          (user) => user.role == 'Supervisor')
+                                      .isEmpty
                                   ? [
                                       DropdownItem(
                                         label: 'No supervisors available',
-                                        value: SupervisorsData(
+                                        value: Users(
                                             id: null,
                                             userName:
                                                 'No supervisors available'),
@@ -409,8 +413,11 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                                     ]
                                   : context
                                       .read<EditOrganizationCubit>()
-                                      .allSupervisorsModel!
+                                      .organizationUsersShiftsDetailsModel!
                                       .data!
+                                      .users!
+                                      .where(
+                                          (user) => user.role == 'Supervisor')
                                       .map((supervisor) => DropdownItem(
                                             label: supervisor.userName!,
                                             value: supervisor,
@@ -429,9 +436,10 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                               fieldDecoration: FieldDecoration(
                                 hintText: context
                                     .read<EditOrganizationCubit>()
-                                    .organizationManagersDetailsModel!
+                                    .organizationUsersShiftsDetailsModel!
                                     .data!
-                                    .supervisors!
+                                    .users!
+                                    .where((user) => user.role == 'Supervisor')
                                     .map((supervisor) => supervisor.userName)
                                     .join(', '),
                                 suffixIcon: Icon(IconBroken.arrowDown2),
@@ -473,7 +481,7 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                       verticalSpace(10),
                       context
                                   .read<EditOrganizationCubit>()
-                                  .organizationManagersDetailsModel
+                                  .organizationUsersShiftsDetailsModel
                                   ?.data ==
                               null
                           ? SizedBox.shrink()
@@ -494,28 +502,32 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                             ),
                       context
                                   .read<EditOrganizationCubit>()
-                                  .organizationManagersDetailsModel
+                                  .organizationUsersShiftsDetailsModel
                                   ?.data ==
                               null
                           ? SizedBox.shrink()
-                          : MultiDropdown<CleanersData>(
+                          : MultiDropdown<Users>(
                               items: context
-                                          .read<EditOrganizationCubit>()
-                                          .allCleanersModel
-                                          ?.data ==
-                                      null
+                                      .read<EditOrganizationCubit>()
+                                      .organizationUsersShiftsDetailsModel!
+                                      .data!
+                                      .users!
+                                      .where((user) => user.role == 'Cleaner')
+                                      .isEmpty
                                   ? [
                                       DropdownItem(
                                         label: 'No cleaners available',
-                                        value: CleanersData(
+                                        value: Users(
                                             id: null,
                                             userName: 'No cleaners available'),
                                       )
                                     ]
                                   : context
                                       .read<EditOrganizationCubit>()
-                                      .allCleanersModel!
+                                      .organizationUsersShiftsDetailsModel!
                                       .data!
+                                      .users!
+                                      .where((user) => user.role == 'Cleaner')
                                       .map((cleaner) => DropdownItem(
                                             label: cleaner.userName!,
                                             value: cleaner,
@@ -534,9 +546,10 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                               fieldDecoration: FieldDecoration(
                                 hintText: context
                                     .read<EditOrganizationCubit>()
-                                    .organizationManagersDetailsModel!
+                                    .organizationUsersShiftsDetailsModel!
                                     .data!
-                                    .cleaners!
+                                    .users!
+                                    .where((user) => user.role == 'Cleaner')
                                     .map((cleaner) => cleaner.userName)
                                     .join(', '),
                                 suffixIcon: Icon(IconBroken.arrowDown2),
@@ -636,7 +649,7 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                               fieldDecoration: FieldDecoration(
                                 hintText: context
                                     .read<EditOrganizationCubit>()
-                                    .organizationShiftsDetailsModel!
+                                    .organizationUsersShiftsDetailsModel!
                                     .data!
                                     .shifts!
                                     .map((shift) => shift.name)

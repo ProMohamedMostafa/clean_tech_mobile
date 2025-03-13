@@ -1,19 +1,20 @@
 class AreaDetailsModel {
   int? statusCode;
-  dynamic meta;
+  String? meta;
   bool? succeeded;
   String? message;
-  dynamic error;
+  String? error;
+  String? businessErrorCode;
   Data? data;
 
-  AreaDetailsModel({
-    this.statusCode,
-    this.meta,
-    this.succeeded,
-    this.message,
-    this.error,
-    this.data,
-  });
+  AreaDetailsModel(
+      {this.statusCode,
+      this.meta,
+      this.succeeded,
+      this.message,
+      this.error,
+      this.businessErrorCode,
+      this.data});
 
   AreaDetailsModel.fromJson(Map<String, dynamic> json) {
     statusCode = json['statusCode'];
@@ -21,20 +22,22 @@ class AreaDetailsModel {
     succeeded = json['succeeded'];
     message = json['message'];
     error = json['error'];
+    businessErrorCode = json['businessErrorCode'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> json = {};
-    json['statusCode'] = statusCode;
-    json['meta'] = meta;
-    json['succeeded'] = succeeded;
-    json['message'] = message;
-    json['error'] = error;
-    if (data != null) {
-      json['data'] = data!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['statusCode'] = statusCode;
+    data['meta'] = meta;
+    data['succeeded'] = succeeded;
+    data['message'] = message;
+    data['error'] = error;
+    data['businessErrorCode'] = businessErrorCode;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
     }
-    return json;
+    return data;
   }
 }
 
@@ -42,46 +45,20 @@ class Data {
   int? id;
   String? name;
   String? countryName;
-  List<dynamic>? managers;
-  List<dynamic>? supervisors;
-  List<dynamic>? cleaners;
-  DateTime? createdAt;
-  DateTime? updatedAt;
 
-  Data({
-    this.id,
-    this.name,
-    this.countryName,
-    this.managers,
-    this.supervisors,
-    this.cleaners,
-    this.createdAt,
-    this.updatedAt,
-  });
+  Data({this.id, this.name, this.countryName});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     countryName = json['countryName'];
-    managers = json['managers'] ?? [];
-    supervisors = json['supervisors'] ?? [];
-    cleaners = json['cleaners'] ?? [];
-    createdAt =
-        json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null;
-    updatedAt =
-        json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> json = {};
-    json['id'] = id;
-    json['name'] = name;
-    json['countryName'] = countryName;
-    json['managers'] = managers;
-    json['supervisors'] = supervisors;
-    json['cleaners'] = cleaners;
-    json['createdAt'] = createdAt?.toIso8601String();
-    json['updatedAt'] = updatedAt?.toIso8601String();
-    return json;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['countryName'] = countryName;
+    return data;
   }
 }

@@ -50,12 +50,19 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
                                   .data!
                                   .leaves![index]
                                   .id!
-                              : context
-                                  .read<WorkLocationCubit>()
-                                  .attendanceLeavesPointModel!
-                                  .data!
-                                  .leaves![index]
-                                  .id!);
+                              : selectedIndex == 5
+                                  ? context
+                                      .read<WorkLocationCubit>()
+                                      .attendanceLeavesSectionModel!
+                                      .data!
+                                      .leaves![index]
+                                      .id!
+                                  : context
+                                      .read<WorkLocationCubit>()
+                                      .attendanceLeavesPointModel!
+                                      .data!
+                                      .leaves![index]
+                                      .id!);
     },
     child: Card(
       elevation: 1,
@@ -125,12 +132,19 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
                                               .data!
                                               .leaves![index]
                                               .type!
-                                          : context
-                                              .read<WorkLocationCubit>()
-                                              .attendanceLeavesPointModel!
-                                              .data!
-                                              .leaves![index]
-                                              .type!,
+                                          : selectedIndex == 5
+                                              ? context
+                                                  .read<WorkLocationCubit>()
+                                                  .attendanceLeavesSectionModel!
+                                                  .data!
+                                                  .leaves![index]
+                                                  .type!
+                                              : context
+                                                  .read<WorkLocationCubit>()
+                                                  .attendanceLeavesPointModel!
+                                                  .data!
+                                                  .leaves![index]
+                                                  .type!,
                       style: TextStyles.font11WhiteSemiBold.copyWith(
                         color: Color(0xffD25260),
                       ),
@@ -183,12 +197,19 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
                                               .data!
                                               .leaves![index]
                                               .role!
-                                          : context
-                                              .read<WorkLocationCubit>()
-                                              .attendanceLeavesPointModel!
-                                              .data!
-                                              .leaves![index]
-                                              .role!,
+                                          : selectedIndex == 5
+                                              ? context
+                                                  .read<WorkLocationCubit>()
+                                                  .attendanceLeavesSectionModel!
+                                                  .data!
+                                                  .leaves![index]
+                                                  .role!
+                                              : context
+                                                  .read<WorkLocationCubit>()
+                                                  .attendanceLeavesPointModel!
+                                                  .data!
+                                                  .leaves![index]
+                                                  .role!,
                       style: TextStyles.font11WhiteSemiBold
                           .copyWith(color: AppColor.primaryColor),
                     ),
@@ -251,12 +272,19 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
                                       .data!
                                       .leaves![index]
                                       .userName!
-                                  : context
-                                      .read<WorkLocationCubit>()
-                                      .attendanceLeavesPointModel!
-                                      .data!
-                                      .leaves![index]
-                                      .userName!,
+                                  : selectedIndex == 5
+                                      ? context
+                                          .read<WorkLocationCubit>()
+                                          .attendanceLeavesSectionModel!
+                                          .data!
+                                          .leaves![index]
+                                          .userName!
+                                      : context
+                                          .read<WorkLocationCubit>()
+                                          .attendanceLeavesPointModel!
+                                          .data!
+                                          .leaves![index]
+                                          .userName!,
               style: TextStyles.font16BlackSemiBold,
             ),
             verticalSpace(10),
@@ -296,12 +324,19 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
                                       .data!
                                       .leaves![index]
                                       .reason!
-                                  : context
-                                      .read<WorkLocationCubit>()
-                                      .attendanceLeavesPointModel!
-                                      .data!
-                                      .leaves![index]
-                                      .reason!,
+                                  : selectedIndex == 5
+                                      ? context
+                                          .read<WorkLocationCubit>()
+                                          .attendanceLeavesSectionModel!
+                                          .data!
+                                          .leaves![index]
+                                          .reason!
+                                      : context
+                                          .read<WorkLocationCubit>()
+                                          .attendanceLeavesPointModel!
+                                          .data!
+                                          .leaves![index]
+                                          .reason!,
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
               style: TextStyles.font11GreyMedium,
@@ -360,13 +395,23 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
                                                     .leaves![index]
                                                     .startDate ??
                                                 ''
-                                            : context
-                                                    .read<WorkLocationCubit>()
-                                                    .attendanceLeavesPointModel!
-                                                    .data!
-                                                    .leaves![index]
-                                                    .startDate ??
-                                                '',
+                                            : selectedIndex == 5
+                                                ? context
+                                                        .read<
+                                                            WorkLocationCubit>()
+                                                        .attendanceLeavesSectionModel!
+                                                        .data!
+                                                        .leaves![index]
+                                                        .startDate ??
+                                                    ''
+                                                : context
+                                                        .read<
+                                                            WorkLocationCubit>()
+                                                        .attendanceLeavesPointModel!
+                                                        .data!
+                                                        .leaves![index]
+                                                        .startDate ??
+                                                    '',
                         style: TextStyles.font11WhiteSemiBold
                             .copyWith(color: AppColor.primaryColor),
                       ),
@@ -415,13 +460,23 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
                                                     .leaves![index]
                                                     .endDate ??
                                                 ''
-                                            : context
-                                                    .read<WorkLocationCubit>()
-                                                    .attendanceLeavesPointModel!
-                                                    .data!
-                                                    .leaves![index]
-                                                    .endDate ??
-                                                '',
+                                            : selectedIndex == 5
+                                                ? context
+                                                        .read<
+                                                            WorkLocationCubit>()
+                                                        .attendanceLeavesSectionModel!
+                                                        .data!
+                                                        .leaves![index]
+                                                        .endDate ??
+                                                    ''
+                                                : context
+                                                        .read<
+                                                            WorkLocationCubit>()
+                                                        .attendanceLeavesPointModel!
+                                                        .data!
+                                                        .leaves![index]
+                                                        .endDate ??
+                                                    '',
                         style: TextStyles.font11WhiteSemiBold
                             .copyWith(color: AppColor.primaryColor),
                       ),

@@ -1,18 +1,21 @@
 class UserShiftDetailsModel {
   int? statusCode;
-  String? meta;
+  dynamic meta;
   bool? succeeded;
   String? message;
-  String? error;
-  Data? data;
+  dynamic error;
+  dynamic businessErrorCode;
+  List<Shift>? data;
 
-  UserShiftDetailsModel(
-      {this.statusCode,
-      this.meta,
-      this.succeeded,
-      this.message,
-      this.error,
-      this.data});
+  UserShiftDetailsModel({
+    this.statusCode,
+    this.meta,
+    this.succeeded,
+    this.message,
+    this.error,
+    this.businessErrorCode,
+    this.data,
+  });
 
   UserShiftDetailsModel.fromJson(Map<String, dynamic> json) {
     statusCode = json['statusCode'];
@@ -20,7 +23,13 @@ class UserShiftDetailsModel {
     succeeded = json['succeeded'];
     message = json['message'];
     error = json['error'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    businessErrorCode = json['businessErrorCode'];
+    if (json['data'] != null) {
+      data = <Shift>[];
+      json['data'].forEach((v) {
+        data!.add(Shift.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -30,37 +39,15 @@ class UserShiftDetailsModel {
     data['succeeded'] = succeeded;
     data['message'] = message;
     data['error'] = error;
+    data['businessErrorCode'] = businessErrorCode;
     if (this.data != null) {
-      data['data'] = this.data!.toJson();
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class Data {
-  List<Shifts>? shifts;
-
-  Data({this.shifts});
-
-  Data.fromJson(Map<String, dynamic> json) {
-    if (json['shifts'] != null) {
-      shifts = <Shifts>[];
-      json['shifts'].forEach((v) {
-        shifts!.add(Shifts.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (shifts != null) {
-      data['shifts'] = shifts!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class Shifts {
+class Shift {
   int? id;
   String? name;
   String? startDate;
@@ -68,15 +55,16 @@ class Shifts {
   String? startTime;
   String? endTime;
 
-  Shifts(
-      {this.id,
-      this.name,
-      this.startDate,
-      this.endDate,
-      this.startTime,
-      this.endTime});
+  Shift({
+    this.id,
+    this.name,
+    this.startDate,
+    this.endDate,
+    this.startTime,
+    this.endTime,
+  });
 
-  Shifts.fromJson(Map<String, dynamic> json) {
+  Shift.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     startDate = json['startDate'];

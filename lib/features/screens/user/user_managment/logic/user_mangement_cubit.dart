@@ -84,7 +84,7 @@ class UserManagementCubit extends Cubit<UserManagementState> {
   UserWorkLocationDetailsModel? userWorkLocationDetailsModel;
   getUserWorkLocationDetails(int? id) {
     emit(UserWorkLocationDetailsLoadingState());
-    DioHelper.getData(url: 'users/level/$id').then((value) {
+    DioHelper.getData(url: 'users/with-work-location/$id').then((value) {
       userWorkLocationDetailsModel =
           UserWorkLocationDetailsModel.fromJson(value!.data);
       emit(UserWorkLocationDetailsSuccessState(userWorkLocationDetailsModel!));

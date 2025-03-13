@@ -14,12 +14,12 @@ import 'package:smart_cleaning_application/features/screens/integrations/data/mo
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_cleaners_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_managers_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_supervisors_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/logic/add_organization_state.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/logic/add_work_location_state.dart';
 
-class AddOrganizationCubit extends Cubit<AddOrganizationState> {
-  AddOrganizationCubit() : super(AddOrganizationInitialState());
+class AddWorkLocationCubit extends Cubit<AddWorkLocationState> {
+  AddWorkLocationCubit() : super(AddWorkLocationInitialState());
 
-  static AddOrganizationCubit get(context) => BlocProvider.of(context);
+  static AddWorkLocationCubit get(context) => BlocProvider.of(context);
 
   TextEditingController nationalityController = TextEditingController();
   TextEditingController areaController = TextEditingController();
@@ -32,6 +32,8 @@ class AddOrganizationCubit extends Cubit<AddOrganizationState> {
   TextEditingController addBuildingController = TextEditingController();
   TextEditingController floorController = TextEditingController();
   TextEditingController addFloorController = TextEditingController();
+  TextEditingController sectionController = TextEditingController();
+  TextEditingController addSectionController = TextEditingController();
   TextEditingController pointController = TextEditingController();
   TextEditingController addPointController = TextEditingController();
   TextEditingController managerNameController = TextEditingController();
@@ -39,6 +41,8 @@ class AddOrganizationCubit extends Cubit<AddOrganizationState> {
   TextEditingController buildingDiscriptionController = TextEditingController();
   TextEditingController floorNumberController = TextEditingController();
   TextEditingController floorDiscriptionController = TextEditingController();
+    TextEditingController sectionNumberController = TextEditingController();
+  TextEditingController sectionDiscriptionController = TextEditingController();
   TextEditingController pointNumberController = TextEditingController();
   TextEditingController pointDiscriptionController = TextEditingController();
   final allmanagersController = MultiSelectController<ManagersData>();

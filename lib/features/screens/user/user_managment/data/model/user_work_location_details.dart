@@ -1,20 +1,21 @@
 class UserWorkLocationDetailsModel {
   int? statusCode;
-  String? meta;
+  dynamic meta;
   bool? succeeded;
   String? message;
-  String? error;
-  String? businessErrorCode;
+  dynamic error;
+  dynamic businessErrorCode;
   Data? data;
 
-  UserWorkLocationDetailsModel(
-      {this.statusCode,
-      this.meta,
-      this.succeeded,
-      this.message,
-      this.error,
-      this.businessErrorCode,
-      this.data});
+  UserWorkLocationDetailsModel({
+    this.statusCode,
+    this.meta,
+    this.succeeded,
+    this.message,
+    this.error,
+    this.businessErrorCode,
+    this.data,
+  });
 
   UserWorkLocationDetailsModel.fromJson(Map<String, dynamic> json) {
     statusCode = json['statusCode'];
@@ -27,227 +28,58 @@ class UserWorkLocationDetailsModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['statusCode'] = statusCode;
-    data['meta'] = meta;
-    data['succeeded'] = succeeded;
-    data['message'] = message;
-    data['error'] = error;
-    data['businessErrorCode'] = businessErrorCode;
-    if (this.data != null) {
-      data['data'] = this.data!.toJson();
+    final Map<String, dynamic> json = {};
+    json['statusCode'] = statusCode;
+    json['meta'] = meta;
+    json['succeeded'] = succeeded;
+    json['message'] = message;
+    json['error'] = error;
+    json['businessErrorCode'] = businessErrorCode;
+    if (data != null) {
+      json['data'] = data!.toJson();
     }
-    return data;
+    return json;
   }
 }
 
 class Data {
-  List<Areas>? areas;
-  List<Cities>? cities;
-  List<Organizations>? organizations;
-  List<Buildings>? buildings;
-  List<Floors>? floors;
-  List<Points>? points;
+  List<dynamic>? areas;
+  List<dynamic>? cities;
+  List<dynamic>? organizations;
+  List<dynamic>? buildings;
+  List<dynamic>? floors;
+  List<dynamic>? sections;
+  List<dynamic>? points;
 
-  Data(
-      {this.areas,
-      this.cities,
-      this.organizations,
-      this.buildings,
-      this.floors,
-      this.points});
+  Data({
+    this.areas,
+    this.cities,
+    this.organizations,
+    this.buildings,
+    this.floors,
+    this.sections,
+    this.points,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
-    if (json['areas'] != null) {
-      areas = <Areas>[];
-      json['areas'].forEach((v) {
-        areas!.add(Areas.fromJson(v));
-      });
-    }
-    if (json['cities'] != null) {
-      cities = <Cities>[];
-      json['cities'].forEach((v) {
-        cities!.add(Cities.fromJson(v));
-      });
-    }
-    if (json['organizations'] != null) {
-      organizations = <Organizations>[];
-      json['organizations'].forEach((v) {
-        organizations!.add(Organizations.fromJson(v));
-      });
-    }
-    if (json['buildings'] != null) {
-      buildings = <Buildings>[];
-      json['buildings'].forEach((v) {
-        buildings!.add(Buildings.fromJson(v));
-      });
-    }
-    if (json['floors'] != null) {
-      floors = <Floors>[];
-      json['floors'].forEach((v) {
-        floors!.add(Floors.fromJson(v));
-      });
-    }
-    if (json['points'] != null) {
-      points = <Points>[];
-      json['points'].forEach((v) {
-        points!.add(Points.fromJson(v));
-      });
-    }
+    areas = json['areas'] ?? [];
+    cities = json['cities'] ?? [];
+    organizations = json['organizations'] ?? [];
+    buildings = json['buildings'] ?? [];
+    floors = json['floors'] ?? [];
+    sections = json['sections'] ?? [];
+    points = json['points'] ?? [];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (areas != null) {
-      data['areas'] = areas!.map((v) => v.toJson()).toList();
-    }
-    if (cities != null) {
-      data['cities'] = cities!.map((v) => v.toJson()).toList();
-    }
-    if (organizations != null) {
-      data['organizations'] = organizations!.map((v) => v.toJson()).toList();
-    }
-    if (buildings != null) {
-      data['buildings'] = buildings!.map((v) => v.toJson()).toList();
-    }
-    if (floors != null) {
-      data['floors'] = floors!.map((v) => v.toJson()).toList();
-    }
-    if (points != null) {
-      data['points'] = points!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class Areas {
-  int? id;
-  String? name;
-  String? countryName;
-
-  Areas({this.id, this.name, this.countryName});
-
-  Areas.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    countryName = json['countryName'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['countryName'] = countryName;
-    return data;
-  }
-}
-
-class Cities {
-  int? id;
-  String? name;
-  String? areaName;
-
-  Cities({this.id, this.name, this.areaName});
-
-  Cities.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    areaName = json['areaName'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['areaName'] = areaName;
-    return data;
-  }
-}
-
-class Organizations {
-  int? id;
-  String? name;
-  String? cityName;
-
-  Organizations({this.id, this.name, this.cityName});
-
-  Organizations.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    cityName = json['cityName'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['cityName'] = cityName;
-    return data;
-  }
-}
-
-class Buildings {
-  int? id;
-  String? name;
-  String? organizationName;
-
-  Buildings({this.id, this.name, this.organizationName});
-
-  Buildings.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    organizationName = json['organizationName'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['organizationName'] = organizationName;
-    return data;
-  }
-}
-
-class Floors {
-  int? id;
-  String? name;
-  String? buildingName;
-
-  Floors({this.id, this.name, this.buildingName});
-
-  Floors.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    buildingName = json['buildingName'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['buildingName'] = buildingName;
-    return data;
-  }
-}
-
-class Points {
-  int? id;
-  String? name;
-  String? floorName;
-
-  Points({this.id, this.name, this.floorName});
-
-  Points.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    floorName = json['floorName'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['floorName'] = floorName;
-    return data;
+    final Map<String, dynamic> json = {};
+    json['areas'] = areas;
+    json['cities'] = cities;
+    json['organizations'] = organizations;
+    json['buildings'] = buildings;
+    json['floors'] = floors;
+    json['sections'] = sections;
+    json['points'] = points;
+    return json;
   }
 }

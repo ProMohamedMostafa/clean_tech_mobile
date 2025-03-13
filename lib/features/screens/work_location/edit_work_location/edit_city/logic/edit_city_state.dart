@@ -1,12 +1,9 @@
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_cleaners_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_managers_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_supervisors_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_city/data/model/city_details_in_edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_city/data/model/edit_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/city_managers_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/city_users_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_model.dart';
 
 abstract class EditCityState {}
 
@@ -43,7 +40,7 @@ class GetNationalityErrorState extends EditCityState {
 class GetAreaLoadingState extends EditCityState {}
 
 class GetAreaSuccessState extends EditCityState {
-  final AreaModel areaModel;
+  final AreaListModel areaModel;
 
   GetAreaSuccessState(this.areaModel);
 }
@@ -52,7 +49,19 @@ class GetAreaErrorState extends EditCityState {
   final String error;
   GetAreaErrorState(this.error);
 }
+//**************************** */
+class GetCityLoadingState extends EditCityState {}
 
+class GetCitySuccessState extends EditCityState {
+  final CityListModel cityModel;
+
+  GetCitySuccessState(this.cityModel);
+}
+
+class GetCityErrorState extends EditCityState {
+  final String error;
+  GetCityErrorState(this.error);
+}
 //**************************** */
 
 class GetCityDetailsLoadingState extends EditCityState {}
@@ -67,72 +76,14 @@ class GetCityDetailsErrorState extends EditCityState {
   final String error;
   GetCityDetailsErrorState(this.error);
 }
-//**************************** */
-
-class GetOrganizationCityLoadingState extends EditCityState {}
-
-class GetOrganizationCitySuccessState extends EditCityState {
-  final CityModel cityModel;
-
-  GetOrganizationCitySuccessState(this.cityModel);
-}
-
-class GetOrganizationCityErrorState extends EditCityState {
-  final String error;
-  GetOrganizationCityErrorState(this.error);
-}
-
-//**************************** */
-
-class AllManagersLoadingState extends EditCityState {}
-
-class AllManagersSuccessState extends EditCityState {
-  final AllManagersModel allManagersModel;
-
-  AllManagersSuccessState(this.allManagersModel);
-}
-
-class AllManagersErrorState extends EditCityState {
-  final String error;
-  AllManagersErrorState(this.error);
-}
-//**************************** */
-
-class AllSupervisorsLoadingState extends EditCityState {}
-
-class AllSupervisorsSuccessState extends EditCityState {
-  final AllSupervisorsModel allSupervisorsModel;
-
-  AllSupervisorsSuccessState(this.allSupervisorsModel);
-}
-
-class AllSupervisorsErrorState extends EditCityState {
-  final String error;
-  AllSupervisorsErrorState(this.error);
-}
-
-//**************************** */
-
-class AllCleanersLoadingState extends EditCityState {}
-
-class AllCleanersSuccessState extends EditCityState {
-  final AllCleanersModel allCleanersModel;
-
-  AllCleanersSuccessState(this.allCleanersModel);
-}
-
-class AllCleanersErrorState extends EditCityState {
-  final String error;
-  AllCleanersErrorState(this.error);
-}
 
 //********************************* */
 class CityManagersDetailsLoadingState extends EditCityState {}
 
 class CityManagersDetailsSuccessState extends EditCityState {
-  final CityManagersDetailsModel cityManagersDetailsModel;
+  final CityUsersDetailsModel cityUsersDetailsModel;
 
-  CityManagersDetailsSuccessState(this.cityManagersDetailsModel);
+  CityManagersDetailsSuccessState(this.cityUsersDetailsModel);
 }
 
 class CityManagersDetailsErrorState extends EditCityState {

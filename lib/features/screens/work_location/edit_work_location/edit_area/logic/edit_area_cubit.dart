@@ -3,15 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_cleaners_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_managers_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_supervisors_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_area/data/model/area_details_in_edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_area/data/model/edit_area_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_area/logic/edit_area_state.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/area_managers_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/area_users_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_model.dart';
 
 class EditAreaCubit extends Cubit<EditAreaState> {
   EditAreaCubit() : super(EditAreaInitialState());
@@ -19,9 +16,9 @@ class EditAreaCubit extends Cubit<EditAreaState> {
   static EditAreaCubit get(context) => BlocProvider.of(context);
   TextEditingController nationalityController = TextEditingController();
   TextEditingController areaController = TextEditingController();
-  final allmanagersController = MultiSelectController<ManagersData>();
-  final allSupervisorsController = MultiSelectController<SupervisorsData>();
-  final allCleanersController = MultiSelectController<CleanersData>();
+  final allmanagersController = MultiSelectController<Users>();
+  final allSupervisorsController = MultiSelectController<Users>();
+  final allCleanersController = MultiSelectController<Users>();
   final formKey = GlobalKey<FormState>();
 
   EditAreaModel? editAreaModel;
@@ -30,15 +27,22 @@ class EditAreaCubit extends Cubit<EditAreaState> {
     emit(EditAreaLoadingState());
     try {
       final managersIds = selectedManagersIds?.isEmpty ?? true
-          ? areaManagersDetailsModel?.data?.managers?.map((m) => m.id).toList()
+          ? areaUsersDetailsModel?.data?.users
+              ?.where((user) => user.role == 'Manager')
+              .map((user) => user.id!)
+              .toList()
           : selectedManagersIds;
       final supervisorsIds = selectedSupervisorsIds?.isEmpty ?? true
-          ? areaManagersDetailsModel?.data?.supervisors
-              ?.map((s) => s.id)
+          ? areaUsersDetailsModel?.data?.users
+              ?.where((user) => user.role == 'Supervisor')
+              .map((user) => user.id!)
               .toList()
           : selectedSupervisorsIds;
       final cleanersIds = selectedCleanersIds?.isEmpty ?? true
-          ? areaManagersDetailsModel?.data?.cleaners?.map((c) => c.id).toList()
+          ? areaUsersDetailsModel?.data?.users
+              ?.where((user) => user.role == 'Cleaner')
+              .map((user) => user.id!)
+              .toList()
           : selectedCleanersIds;
       final response =
           await DioHelper.putData(url: ApiConstants.areaEditUrl, data: {
@@ -49,7 +53,7 @@ class EditAreaCubit extends Cubit<EditAreaState> {
         "countryName": nationalityController.text.isEmpty
             ? areaDetailsInEditModel!.data!.countryName
             : nationalityController.text,
-        "managersIds": [...?managersIds, ...?supervisorsIds, ...?cleanersIds]
+        "userIds": [...?managersIds, ...?supervisorsIds, ...?cleanersIds]
       });
       editAreaModel = EditAreaModel.fromJson(response!.data);
       emit(EditAreaSuccessState(editAreaModel!));
@@ -69,69 +73,39 @@ class EditAreaCubit extends Cubit<EditAreaState> {
     });
   }
 
-  NationalityModel? nationalityModel;
-  getNationality() {
-    emit(GetAreaNationalityLoadingState());
-    DioHelper.getData(url: ApiConstants.countriesUrl).then((value) {
-      nationalityModel = NationalityModel.fromJson(value!.data);
-      emit(GetAreaNationalitySuccessState(nationalityModel!));
-    }).catchError((error) {
-      emit(GetAreaNationalityErrorState(error.toString()));
-    });
-  }
-
-  AreaModel? areaModel;
-  getArea(String countryName) {
-    emit(GetAreaLoadingState());
-    DioHelper.getData(url: "areas/country/$countryName").then((value) {
-      areaModel = AreaModel.fromJson(value!.data);
-      emit(GetAreaSuccessState(areaModel!));
-    }).catchError((error) {
-      emit(GetAreaErrorState(error.toString()));
-    });
-  }
-
-  AllManagersModel? allManagersModel;
-  getManagers() {
-    emit(AllManagersLoadingState());
-    DioHelper.getData(url: 'users/role/2').then((value) {
-      allManagersModel = AllManagersModel.fromJson(value!.data);
-      emit(AllManagersSuccessState(allManagersModel!));
-    }).catchError((error) {
-      emit(AllManagersErrorState(error.toString()));
-    });
-  }
-
-  AllSupervisorsModel? allSupervisorsModel;
-  getSupervisors() {
-    emit(AllSupervisorsLoadingState());
-    DioHelper.getData(url: 'users/role/3').then((value) {
-      allSupervisorsModel = AllSupervisorsModel.fromJson(value!.data);
-      emit(AllSupervisorsSuccessState(allSupervisorsModel!));
-    }).catchError((error) {
-      emit(AllSupervisorsErrorState(error.toString()));
-    });
-  }
-
-  AllCleanersModel? allCleanersModel;
-  getCleaners() {
-    emit(AllCleanersLoadingState());
-    DioHelper.getData(url: 'users/role/4').then((value) {
-      allCleanersModel = AllCleanersModel.fromJson(value!.data);
-      emit(AllCleanersSuccessState(allCleanersModel!));
-    }).catchError((error) {
-      emit(AllCleanersErrorState(error.toString()));
-    });
-  }
-
-  AreaManagersDetailsModel? areaManagersDetailsModel;
+  AreaUsersDetailsModel? areaUsersDetailsModel;
   getAreaManagersDetails(int areaId) {
     emit(AreaManagersDetailsLoadingState());
-    DioHelper.getData(url: 'area/manager/$areaId').then((value) {
-      areaManagersDetailsModel = AreaManagersDetailsModel.fromJson(value!.data);
-      emit(AreaManagersDetailsSuccessState(areaManagersDetailsModel!));
+    DioHelper.getData(url: 'areas/with-user/$areaId').then((value) {
+      areaUsersDetailsModel = AreaUsersDetailsModel.fromJson(value!.data);
+      emit(AreaManagersDetailsSuccessState(areaUsersDetailsModel!));
     }).catchError((error) {
       emit(AreaManagersDetailsErrorState(error.toString()));
+    });
+  }
+
+  NationalityModel? nationalityModel;
+  getNationality() {
+    emit(GetNationalityLoadingState());
+    DioHelper.getData(
+        url: ApiConstants.countriesUrl,
+        query: {'userUsedOnly': false, 'areaUsedOnly': true}).then((value) {
+      nationalityModel = NationalityModel.fromJson(value!.data);
+      emit(GetNationalitySuccessState(nationalityModel!));
+    }).catchError((error) {
+      emit(GetNationalityErrorState(error.toString()));
+    });
+  }
+
+  AreaListModel? areasModel;
+  getAreas(String countryName) {
+    emit(GetAreaLoadingState());
+    DioHelper.getData(url: "areas/pagination", query: {'country': countryName})
+        .then((value) {
+      areasModel = AreaListModel.fromJson(value!.data);
+      emit(GetAreaSuccessState(areasModel!));
+    }).catchError((error) {
+      emit(GetAreaErrorState(error.toString()));
     });
   }
 }

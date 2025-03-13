@@ -9,7 +9,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
 
 Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
-   String formatDuration(String? duration) {
+  String formatDuration(String? duration) {
     if (duration == null || duration.isEmpty) {
       return "    ";
     }
@@ -45,8 +45,6 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
       return "Invalid Time";
     }
   }
-
-  
 
   final List<String> status = ["Absent", "Late", "Present"];
   final List<Color> statusColor = [
@@ -92,12 +90,19 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                           .data!
                           .data![index]
                           .status!
-                      : context
-                          .read<WorkLocationCubit>()
-                          .attendanceHistoryPointModel!
-                          .data!
-                          .data![index]
-                          .status!;
+                      : selectedIndex == 5
+                          ? context
+                              .read<WorkLocationCubit>()
+                              .attendanceHistorySectionModel!
+                              .data!
+                              .data![index]
+                              .status!
+                          : context
+                              .read<WorkLocationCubit>()
+                              .attendanceHistoryPointModel!
+                              .data!
+                              .data![index]
+                              .status!;
 
   if (status.contains(historystatus)) {
     statusColorForTask = statusColor[status.indexOf(historystatus)];
@@ -172,12 +177,19 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                             .data!
                                             .data![index]
                                             .status!
-                                        : context
-                                            .read<WorkLocationCubit>()
-                                            .attendanceHistoryPointModel!
-                                            .data!
-                                            .data![index]
-                                            .status!,
+                                        : selectedIndex == 5
+                                            ? context
+                                                .read<WorkLocationCubit>()
+                                                .attendanceHistorySectionModel!
+                                                .data!
+                                                .data![index]
+                                                .status!
+                                            : context
+                                                .read<WorkLocationCubit>()
+                                                .attendanceHistoryPointModel!
+                                                .data!
+                                                .data![index]
+                                                .status!,
                     style: TextStyles.font11WhiteSemiBold.copyWith(
                       color: statusColorForTask,
                     ),
@@ -196,47 +208,56 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                 child: Center(
                   child: Text(
                     DateFormat('d MMM').format(
-                      DateTime.parse(selectedIndex == 0
-                          ? context
-                              .read<WorkLocationCubit>()
-                              .attendanceHistoryAreaModel!
-                              .data!
-                              .data![index]
-                              .date!
-                          : selectedIndex == 1
-                              ? context
-                                  .read<WorkLocationCubit>()
-                                  .attendanceHistoryCityModel!
-                                  .data!
-                                  .data![index]
-                                  .date!
-                              : selectedIndex == 2
-                                  ? context
-                                      .read<WorkLocationCubit>()
-                                      .attendanceHistoryOrganizationModel!
-                                      .data!
-                                      .data![index]
-                                      .date!
-                                  : selectedIndex == 3
-                                      ? context
-                                          .read<WorkLocationCubit>()
-                                          .attendanceHistoryBuildingModel!
-                                          .data!
-                                          .data![index]
-                                          .date!
-                                      : selectedIndex == 4
-                                          ? context
-                                              .read<WorkLocationCubit>()
-                                              .attendanceHistoryFloorModel!
-                                              .data!
-                                              .data![index]
-                                              .date!
-                                          : context
-                                              .read<WorkLocationCubit>()
-                                              .attendanceHistoryPointModel!
-                                              .data!
-                                              .data![index]
-                                              .date!),
+                      DateTime.parse(
+                        selectedIndex == 0
+                            ? context
+                                .read<WorkLocationCubit>()
+                                .attendanceHistoryAreaModel!
+                                .data!
+                                .data![index]
+                                .date!
+                            : selectedIndex == 1
+                                ? context
+                                    .read<WorkLocationCubit>()
+                                    .attendanceHistoryCityModel!
+                                    .data!
+                                    .data![index]
+                                    .date!
+                                : selectedIndex == 2
+                                    ? context
+                                        .read<WorkLocationCubit>()
+                                        .attendanceHistoryOrganizationModel!
+                                        .data!
+                                        .data![index]
+                                        .date!
+                                    : selectedIndex == 3
+                                        ? context
+                                            .read<WorkLocationCubit>()
+                                            .attendanceHistoryBuildingModel!
+                                            .data!
+                                            .data![index]
+                                            .date!
+                                        : selectedIndex == 4
+                                            ? context
+                                                .read<WorkLocationCubit>()
+                                                .attendanceHistoryFloorModel!
+                                                .data!
+                                                .data![index]
+                                                .date!
+                                            : selectedIndex == 5
+                                                ? context
+                                                    .read<WorkLocationCubit>()
+                                                    .attendanceHistorySectionModel!
+                                                    .data!
+                                                    .data![index]
+                                                    .date!
+                                                : context
+                                                    .read<WorkLocationCubit>()
+                                                    .attendanceHistoryPointModel!
+                                                    .data!
+                                                    .data![index]
+                                                    .date!,
+                      ),
                     ),
                     style: TextStyles.font11WhiteSemiBold
                         .copyWith(color: AppColor.primaryColor),
@@ -289,12 +310,19 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                             .data!
                                             .data![index]
                                             .role!
-                                        : context
-                                            .read<WorkLocationCubit>()
-                                            .attendanceHistoryPointModel!
-                                            .data!
-                                            .data![index]
-                                            .role!,
+                                        : selectedIndex == 5
+                                            ? context
+                                                .read<WorkLocationCubit>()
+                                                .attendanceHistorySectionModel!
+                                                .data!
+                                                .data![index]
+                                                .role!
+                                            : context
+                                                .read<WorkLocationCubit>()
+                                                .attendanceHistoryPointModel!
+                                                .data!
+                                                .data![index]
+                                                .role!,
                     style: TextStyles.font11WhiteSemiBold
                         .copyWith(color: AppColor.primaryColor),
                   ),
@@ -339,12 +367,19 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                     .data!
                                     .data![index]
                                     .userName!
-                                : context
-                                    .read<WorkLocationCubit>()
-                                    .attendanceHistoryPointModel!
-                                    .data!
-                                    .data![index]
-                                    .userName!,
+                                : selectedIndex == 5
+                                    ? context
+                                        .read<WorkLocationCubit>()
+                                        .attendanceHistorySectionModel!
+                                        .data!
+                                        .data![index]
+                                        .userName!
+                                    : context
+                                        .read<WorkLocationCubit>()
+                                        .attendanceHistoryPointModel!
+                                        .data!
+                                        .data![index]
+                                        .userName!,
             style: TextStyles.font16BlackSemiBold,
           ),
           verticalSpace(5),
@@ -394,12 +429,19 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                             .data!
                                             .data![index]
                                             .shiftStart!
-                                        : context
-                                            .read<WorkLocationCubit>()
-                                            .attendanceHistoryPointModel!
-                                            .data!
-                                            .data![index]
-                                            .shiftStart!,
+                                        : selectedIndex == 5
+                                            ? context
+                                                .read<WorkLocationCubit>()
+                                                .attendanceHistorySectionModel!
+                                                .data!
+                                                .data![index]
+                                                .shiftStart!
+                                            : context
+                                                .read<WorkLocationCubit>()
+                                                .attendanceHistoryPointModel!
+                                                .data!
+                                                .data![index]
+                                                .shiftStart!,
                   )),
                   style: TextStyles.font11WhiteSemiBold
                       .copyWith(color: AppColor.thirdColor),
@@ -452,13 +494,21 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                                 .data![index]
                                                 .shiftEnd ??
                                             ''
-                                        : context
-                                                .read<WorkLocationCubit>()
-                                                .attendanceHistoryPointModel!
-                                                .data!
-                                                .data![index]
-                                                .shiftEnd ??
-                                            '',
+                                        : selectedIndex == 5
+                                            ? context
+                                                    .read<WorkLocationCubit>()
+                                                    .attendanceHistorySectionModel!
+                                                    .data!
+                                                    .data![index]
+                                                    .shiftEnd ??
+                                                ''
+                                            : context
+                                                    .read<WorkLocationCubit>()
+                                                    .attendanceHistoryPointModel!
+                                                    .data!
+                                                    .data![index]
+                                                    .shiftEnd ??
+                                                '',
                   )),
                   style: TextStyles.font11WhiteSemiBold
                       .copyWith(color: AppColor.thirdColor),
@@ -480,55 +530,61 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: 
-                        formatTime(selectedIndex == 0
-                            ? context
-                                    .read<WorkLocationCubit>()
-                                    .attendanceHistoryAreaModel!
-                                    .data!
-                                    .data![index]
-                                    .clockIn ??
-                                ''
-                            : selectedIndex == 1
-                                ? context
-                                        .read<WorkLocationCubit>()
-                                        .attendanceHistoryCityModel!
-                                        .data!
-                                        .data![index]
-                                        .clockIn ??
-                                    ''
-                                : selectedIndex == 2
-                                    ? context
-                                            .read<WorkLocationCubit>()
-                                            .attendanceHistoryOrganizationModel!
-                                            .data!
-                                            .data![index]
-                                            .clockIn ??
-                                        ''
-                                    : selectedIndex == 3
-                                        ? context
-                                                .read<WorkLocationCubit>()
-                                                .attendanceHistoryBuildingModel!
-                                                .data!
-                                                .data![index]
-                                                .clockIn ??
-                                            ''
-                                        : selectedIndex == 4
-                                            ? context
-                                                    .read<WorkLocationCubit>()
-                                                    .attendanceHistoryFloorModel!
-                                                    .data!
-                                                    .data![index]
-                                                    .clockIn ??
-                                                ''
-                                            : context
-                                                    .read<WorkLocationCubit>()
-                                                    .attendanceHistoryPointModel!
-                                                    .data!
-                                                    .data![index]
-                                                    .clockIn ??
-                                                ''
-                      ),
+                      text: formatTime(selectedIndex == 0
+                          ? context
+                                  .read<WorkLocationCubit>()
+                                  .attendanceHistoryAreaModel!
+                                  .data!
+                                  .data![index]
+                                  .clockIn ??
+                              ''
+                          : selectedIndex == 1
+                              ? context
+                                      .read<WorkLocationCubit>()
+                                      .attendanceHistoryCityModel!
+                                      .data!
+                                      .data![index]
+                                      .clockIn ??
+                                  ''
+                              : selectedIndex == 2
+                                  ? context
+                                          .read<WorkLocationCubit>()
+                                          .attendanceHistoryOrganizationModel!
+                                          .data!
+                                          .data![index]
+                                          .clockIn ??
+                                      ''
+                                  : selectedIndex == 3
+                                      ? context
+                                              .read<WorkLocationCubit>()
+                                              .attendanceHistoryBuildingModel!
+                                              .data!
+                                              .data![index]
+                                              .clockIn ??
+                                          ''
+                                      : selectedIndex == 4
+                                          ? context
+                                                  .read<WorkLocationCubit>()
+                                                  .attendanceHistoryFloorModel!
+                                                  .data!
+                                                  .data![index]
+                                                  .clockIn ??
+                                              ''
+                                          : selectedIndex == 5
+                                              ? context
+                                                      .read<WorkLocationCubit>()
+                                                      .attendanceHistorySectionModel!
+                                                      .data!
+                                                      .data![index]
+                                                      .clockIn ??
+                                                  ''
+                                              : context
+                                                      .read<WorkLocationCubit>()
+                                                      .attendanceHistoryPointModel!
+                                                      .data!
+                                                      .data![index]
+                                                      .clockIn ??
+                                                  ''),
                       style: TextStyles.font12GreyRegular
                           .copyWith(color: AppColor.primaryColor),
                     ),
@@ -539,52 +595,60 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                     ),
                     TextSpan(
                       text: formatTime(selectedIndex == 0
-                            ? context
-                                    .read<WorkLocationCubit>()
-                                    .attendanceHistoryAreaModel!
-                                    .data!
-                                    .data![index]
-                                    .clockOut ??
-                                ''
-                            : selectedIndex == 1
-                                ? context
-                                        .read<WorkLocationCubit>()
-                                        .attendanceHistoryCityModel!
-                                        .data!
-                                        .data![index]
-                                        .clockOut ??
-                                    ''
-                                : selectedIndex == 2
-                                    ? context
-                                            .read<WorkLocationCubit>()
-                                            .attendanceHistoryOrganizationModel!
-                                            .data!
-                                            .data![index]
-                                            .clockOut ??
-                                        ''
-                                    : selectedIndex == 3
-                                        ? context
-                                                .read<WorkLocationCubit>()
-                                                .attendanceHistoryBuildingModel!
-                                                .data!
-                                                .data![index]
-                                                .clockOut ??
-                                            ''
-                                        : selectedIndex == 4
-                                            ? context
-                                                    .read<WorkLocationCubit>()
-                                                    .attendanceHistoryFloorModel!
-                                                    .data!
-                                                    .data![index]
-                                                    .clockOut ??
-                                                ''
-                                            : context
-                                                    .read<WorkLocationCubit>()
-                                                    .attendanceHistoryPointModel!
-                                                    .data!
-                                                    .data![index]
-                                                    .clockOut ??
-                                                ''),
+                          ? context
+                                  .read<WorkLocationCubit>()
+                                  .attendanceHistoryAreaModel!
+                                  .data!
+                                  .data![index]
+                                  .clockOut ??
+                              ''
+                          : selectedIndex == 1
+                              ? context
+                                      .read<WorkLocationCubit>()
+                                      .attendanceHistoryCityModel!
+                                      .data!
+                                      .data![index]
+                                      .clockOut ??
+                                  ''
+                              : selectedIndex == 2
+                                  ? context
+                                          .read<WorkLocationCubit>()
+                                          .attendanceHistoryOrganizationModel!
+                                          .data!
+                                          .data![index]
+                                          .clockOut ??
+                                      ''
+                                  : selectedIndex == 3
+                                      ? context
+                                              .read<WorkLocationCubit>()
+                                              .attendanceHistoryBuildingModel!
+                                              .data!
+                                              .data![index]
+                                              .clockOut ??
+                                          ''
+                                      : selectedIndex == 4
+                                          ? context
+                                                  .read<WorkLocationCubit>()
+                                                  .attendanceHistoryFloorModel!
+                                                  .data!
+                                                  .data![index]
+                                                  .clockOut ??
+                                              ''
+                                          : selectedIndex == 5
+                                              ? context
+                                                      .read<WorkLocationCubit>()
+                                                      .attendanceHistorySectionModel!
+                                                      .data!
+                                                      .data![index]
+                                                      .clockOut ??
+                                                  ''
+                                              : context
+                                                      .read<WorkLocationCubit>()
+                                                      .attendanceHistoryPointModel!
+                                                      .data!
+                                                      .data![index]
+                                                      .clockOut ??
+                                                  ''),
                       style: TextStyles.font12GreyRegular
                           .copyWith(color: AppColor.primaryColor),
                     ),
@@ -643,13 +707,23 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                                     .data![index]
                                                     .duration ??
                                                 ''
-                                            : context
-                                                    .read<WorkLocationCubit>()
-                                                    .attendanceHistoryPointModel!
-                                                    .data!
-                                                    .data![index]
-                                                    .duration ??
-                                                '',
+                                            : selectedIndex == 5
+                                                ? context
+                                                        .read<
+                                                            WorkLocationCubit>()
+                                                        .attendanceHistorySectionModel!
+                                                        .data!
+                                                        .data![index]
+                                                        .duration ??
+                                                    ''
+                                                : context
+                                                        .read<
+                                                            WorkLocationCubit>()
+                                                        .attendanceHistoryPointModel!
+                                                        .data!
+                                                        .data![index]
+                                                        .duration ??
+                                                    '',
                       ),
                       style: TextStyles.font12GreyRegular,
                     ),

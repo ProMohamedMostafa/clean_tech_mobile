@@ -1,19 +1,14 @@
-
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/points_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_cleaners_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_managers_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_supervisors_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_point/data/model/edit_point_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_point/data/model/point_details_in_edit_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/point_managers_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/point_shifts_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/point_users_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
 
 abstract class EditPointState {}
 
@@ -50,7 +45,7 @@ class GetNationalityErrorState extends EditPointState {
 class GetAreaLoadingState extends EditPointState {}
 
 class GetAreaSuccessState extends EditPointState {
-  final AreaModel areaModel;
+  final AreaListModel areaModel;
 
   GetAreaSuccessState(this.areaModel);
 }
@@ -64,7 +59,7 @@ class GetAreaErrorState extends EditPointState {
 class GetCityLoadingState extends EditPointState {}
 
 class GetCitySuccessState extends EditPointState {
-  final CityModel cityModel;
+  final CityListModel cityModel;
 
   GetCitySuccessState(this.cityModel);
 }
@@ -75,24 +70,24 @@ class GetCityErrorState extends EditPointState {
 }
 
 //**************************** */
-class GetOrganizationsLoadingState extends EditPointState {}
+class GetOrganizationLoadingState extends EditPointState {}
 
-class GetOrganizationsSuccessState extends EditPointState {
-  final OrganizationModel organizationModel;
+class GetOrganizationSuccessState extends EditPointState {
+  final OrganizationListModel organizationModel;
 
-  GetOrganizationsSuccessState(this.organizationModel);
+  GetOrganizationSuccessState(this.organizationModel);
 }
 
-class GetOrganizationsErrorState extends EditPointState {
+class GetOrganizationErrorState extends EditPointState {
   final String error;
-  GetOrganizationsErrorState(this.error);
+  GetOrganizationErrorState(this.error);
 }
 //**************************** */
 
 class GetBuildingLoadingState extends EditPointState {}
 
 class GetBuildingSuccessState extends EditPointState {
-  final BuildingModel buildingModel;
+  final BuildingListModel buildingModel;
 
   GetBuildingSuccessState(this.buildingModel);
 }
@@ -106,7 +101,7 @@ class GetBuildingErrorState extends EditPointState {
 class GetFloorLoadingState extends EditPointState {}
 
 class GetFloorSuccessState extends EditPointState {
-  final FloorModel floorModel;
+  final FloorListModel floorModel;
 
   GetFloorSuccessState(this.floorModel);
 }
@@ -129,49 +124,6 @@ class GetPointErrorState extends EditPointState {
   final String error;
   GetPointErrorState(this.error);
 }
-//**************************** */
-
-class AllManagersLoadingState extends EditPointState {}
-
-class AllManagersSuccessState extends EditPointState {
-  final AllManagersModel allManagersModel;
-
-  AllManagersSuccessState(this.allManagersModel);
-}
-
-class AllManagersErrorState extends EditPointState {
-  final String error;
-  AllManagersErrorState(this.error);
-}
-//**************************** */
-
-class AllSupervisorsLoadingState extends EditPointState {}
-
-class AllSupervisorsSuccessState extends EditPointState {
-  final AllSupervisorsModel allSupervisorsModel;
-
-  AllSupervisorsSuccessState(this.allSupervisorsModel);
-}
-
-class AllSupervisorsErrorState extends EditPointState {
-  final String error;
-  AllSupervisorsErrorState(this.error);
-}
-
-//**************************** */
-
-class AllCleanersLoadingState extends EditPointState {}
-
-class AllCleanersSuccessState extends EditPointState {
-  final AllCleanersModel allCleanersModel;
-
-  AllCleanersSuccessState(this.allCleanersModel);
-}
-
-class AllCleanersErrorState extends EditPointState {
-  final String error;
-  AllCleanersErrorState(this.error);
-}
 
 //**************************** */
 
@@ -186,6 +138,26 @@ class ShiftErrorState extends EditPointState {
   final String error;
   ShiftErrorState(this.error);
 }
+
+
+
+//********************************* */
+class PointManagersDetailsLoadingState extends EditPointState {}
+
+class PointManagersDetailsSuccessState extends EditPointState {
+  final PointUsersDetailsModel pointUsersDetailsModel;
+
+  PointManagersDetailsSuccessState(this.pointUsersDetailsModel);
+}
+
+class PointManagersDetailsErrorState extends EditPointState {
+  final String error;
+  PointManagersDetailsErrorState(this.error);
+}
+
+//*************************************** */
+
+
 class GetPointDetailsLoadingState extends EditPointState {}
 
 class GetPointDetailsSuccessState extends EditPointState {
@@ -197,31 +169,4 @@ class GetPointDetailsSuccessState extends EditPointState {
 class GetPointDetailsErrorState extends EditPointState {
   final String error;
   GetPointDetailsErrorState(this.error);
-}
-//********************************* */
-class PointManagersDetailsLoadingState extends EditPointState {}
-
-class PointManagersDetailsSuccessState extends EditPointState {
-  final PointManagersDetailsModel pointManagersDetailsModel;
-
-  PointManagersDetailsSuccessState(this.pointManagersDetailsModel);
-}
-
-class PointManagersDetailsErrorState extends EditPointState {
-  final String error;
-  PointManagersDetailsErrorState(this.error);
-}
-
-//********************************* */
-class PointShiftsDetailsLoadingState extends EditPointState {}
-
-class PointShiftsDetailsSuccessState extends EditPointState {
-  final PointShiftsDetailsModel pointShiftsDetailsModel;
-
-  PointShiftsDetailsSuccessState(this.pointShiftsDetailsModel);
-}
-
-class PointShiftsDetailsErrorState extends EditPointState {
-  final String error;
-  PointShiftsDetailsErrorState(this.error);
 }

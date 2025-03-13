@@ -4,6 +4,7 @@ class LogInModel {
   bool? succeeded;
   String? message;
   String? error;
+  String? businessErrorCode;
   Data? data;
 
   LogInModel(
@@ -12,6 +13,7 @@ class LogInModel {
       this.succeeded,
       this.message,
       this.error,
+      this.businessErrorCode,
       this.data});
 
   LogInModel.fromJson(Map<String, dynamic> json) {
@@ -20,16 +22,18 @@ class LogInModel {
     succeeded = json['succeeded'];
     message = json['message'];
     error = json['error'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    businessErrorCode = json['businessErrorCode'];
+    data = json['data'] != null ?  Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data =  <String, dynamic>{};
     data['statusCode'] = statusCode;
     data['meta'] = meta;
     data['succeeded'] = succeeded;
     data['message'] = message;
     data['error'] = error;
+    data['businessErrorCode'] = businessErrorCode;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -43,6 +47,7 @@ class Data {
   String? lastName;
   String? email;
   String? role;
+  String? location;
   String? settings;
   String? token;
   String? tokenExpires;
@@ -53,6 +58,7 @@ class Data {
       this.lastName,
       this.email,
       this.role,
+      this.location,
       this.settings,
       this.token,
       this.tokenExpires});
@@ -63,18 +69,20 @@ class Data {
     lastName = json['lastName'];
     email = json['email'];
     role = json['role'];
+    location = json['location'];
     settings = json['settings'];
     token = json['token'];
     tokenExpires = json['tokenExpires'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data =  <String, dynamic>{};
     data['id'] = id;
     data['firstName'] = firstName;
     data['lastName'] = lastName;
     data['email'] = email;
     data['role'] = role;
+    data['location'] = location;
     data['settings'] = settings;
     data['token'] = token;
     data['tokenExpires'] = tokenExpires;

@@ -3,19 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_cleaners_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_managers_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_supervisors_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_building/data/model/building_details_in_edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_building/data/model/edit_building_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_building/logic/edit_building_state.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/building_managers_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/building_shifts_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/building_users_shifts_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
 
 class EditBuildingCubit extends Cubit<EditBuildingState> {
   EditBuildingCubit() : super(EditBuildingInitialState());
@@ -29,9 +25,9 @@ class EditBuildingCubit extends Cubit<EditBuildingState> {
   TextEditingController buildingController = TextEditingController();
   TextEditingController buildingNumberController = TextEditingController();
   TextEditingController buildingDescriptionController = TextEditingController();
-  final allmanagersController = MultiSelectController<ManagersData>();
-  final allSupervisorsController = MultiSelectController<SupervisorsData>();
-  final allCleanersController = MultiSelectController<CleanersData>();
+  final allmanagersController = MultiSelectController<Users>();
+  final allSupervisorsController = MultiSelectController<Users>();
+  final allCleanersController = MultiSelectController<Users>();
   final shiftController = MultiSelectController<ShiftDetails>();
   final formKey = GlobalKey<FormState>();
 
@@ -45,18 +41,21 @@ class EditBuildingCubit extends Cubit<EditBuildingState> {
     emit(EditBuildingLoadingState());
     try {
       final managersIds = selectedManagersIds?.isEmpty ?? true
-          ? buildingManagersDetailsModel?.data?.managers
-              ?.map((m) => m.id)
+          ? buildingUsersShiftsDetailsModel?.data?.users!
+           .where((user) => user.role == 'Manager')
+            .map((user) => user.id!)
               .toList()
           : selectedManagersIds;
       final supervisorsIds = selectedSupervisorsIds?.isEmpty ?? true
-          ? buildingManagersDetailsModel?.data?.supervisors
-              ?.map((s) => s.id)
+          ? buildingUsersShiftsDetailsModel?.data?.users!
+              .where((user) => user.role == 'Manager')
+            .map((user) => user.id!)
               .toList()
           : selectedSupervisorsIds;
       final cleanersIds = selectedCleanersIds?.isEmpty ?? true
-          ? buildingManagersDetailsModel?.data?.cleaners
-              ?.map((c) => c.id)
+          ? buildingUsersShiftsDetailsModel?.data?.users!
+            .where((user) => user.role == 'Manager')
+            .map((user) => user.id!)
               .toList()
           : selectedCleanersIds;
       final response =
@@ -76,7 +75,7 @@ class EditBuildingCubit extends Cubit<EditBuildingState> {
             : organizationIdController.text,
         "managersIds": [...?managersIds, ...?supervisorsIds, ...?cleanersIds],
         "shiftsIds":
-            shiftController ?? buildingShiftsDetailsModel!.data!.shifts,
+            shiftController ?? buildingUsersShiftsDetailsModel!.data!.shifts,
       });
       editBuildingModel = BuildingEditModel.fromJson(response!.data);
       emit(EditBuildingSuccessState(editBuildingModel!));
@@ -97,34 +96,25 @@ class EditBuildingCubit extends Cubit<EditBuildingState> {
     });
   }
 
-  BuildingManagersDetailsModel? buildingManagersDetailsModel;
+  BuildingUsersShiftsDetailsModel? buildingUsersShiftsDetailsModel;
   getBuildingManagersDetails(int buildingId) {
     emit(BuildingManagersDetailsLoadingState());
-    DioHelper.getData(url: 'building/manager/$buildingId').then((value) {
-      buildingManagersDetailsModel =
-          BuildingManagersDetailsModel.fromJson(value!.data);
-      emit(BuildingManagersDetailsSuccessState(buildingManagersDetailsModel!));
+    DioHelper.getData(url: 'buildings/with-user-shift/$buildingId')
+        .then((value) {
+      buildingUsersShiftsDetailsModel =
+          BuildingUsersShiftsDetailsModel.fromJson(value!.data);
+      emit(BuildingManagersDetailsSuccessState(buildingUsersShiftsDetailsModel!));
     }).catchError((error) {
       emit(BuildingManagersDetailsErrorState(error.toString()));
-    });
-  }
-
-  BuildingShiftsDetailsModel? buildingShiftsDetailsModel;
-  getBuildingShiftsDetails(int buildingId) {
-    emit(BuildingShiftsDetailsLoadingState());
-    DioHelper.getData(url: 'building/shift/$buildingId').then((value) {
-      buildingShiftsDetailsModel =
-          BuildingShiftsDetailsModel.fromJson(value!.data);
-      emit(BuildingShiftsDetailsSuccessState(buildingShiftsDetailsModel!));
-    }).catchError((error) {
-      emit(BuildingShiftsDetailsErrorState(error.toString()));
     });
   }
 
   NationalityModel? nationalityModel;
   getNationality() {
     emit(GetNationalityLoadingState());
-    DioHelper.getData(url: ApiConstants.countriesUrl).then((value) {
+    DioHelper.getData(
+        url: ApiConstants.countriesUrl,
+        query: {'userUsedOnly': false, 'areaUsedOnly': true}).then((value) {
       nationalityModel = NationalityModel.fromJson(value!.data);
       emit(GetNationalitySuccessState(nationalityModel!));
     }).catchError((error) {
@@ -132,36 +122,39 @@ class EditBuildingCubit extends Cubit<EditBuildingState> {
     });
   }
 
-  AreaModel? areaModel;
-  getArea(String countryName) {
+  AreaListModel? areasModel;
+  getAreas(String countryName) {
     emit(GetAreaLoadingState());
-    DioHelper.getData(url: "areas/country/$countryName").then((value) {
-      areaModel = AreaModel.fromJson(value!.data);
-      emit(GetAreaSuccessState(areaModel!));
+    DioHelper.getData(url: "areas/pagination", query: {'country': countryName})
+        .then((value) {
+      areasModel = AreaListModel.fromJson(value!.data);
+      emit(GetAreaSuccessState(areasModel!));
     }).catchError((error) {
       emit(GetAreaErrorState(error.toString()));
     });
   }
 
-  CityModel? cityModel;
-  getCity(int areaId) {
+  CityListModel? cityyModel;
+  getCityy(int areaId) {
     emit(GetCityLoadingState());
-    DioHelper.getData(url: "cities/area/$areaId").then((value) {
-      cityModel = CityModel.fromJson(value!.data);
-      emit(GetCitySuccessState(cityModel!));
+    DioHelper.getData(url: "cities/pagination", query: {'area': areaId})
+        .then((value) {
+      cityyModel = CityListModel.fromJson(value!.data);
+      emit(GetCitySuccessState(cityyModel!));
     }).catchError((error) {
       emit(GetCityErrorState(error.toString()));
     });
   }
 
-  OrganizationModel? organizationModel;
-  getOrganization(int cityId) {
-    emit(GetOrganizationsLoadingState());
-    DioHelper.getData(url: "organizations/city/$cityId").then((value) {
-      organizationModel = OrganizationModel.fromJson(value!.data);
-      emit(GetOrganizationsSuccessState(organizationModel!));
+  OrganizationListModel? organizationsModel;
+  getOrganizations(int cityId) {
+    emit(GetOrganizationLoadingState());
+    DioHelper.getData(url: "organizations/pagination", query: {'city': cityId})
+        .then((value) {
+      organizationsModel = OrganizationListModel.fromJson(value!.data);
+      emit(GetOrganizationSuccessState(organizationsModel!));
     }).catchError((error) {
-      emit(GetOrganizationsErrorState(error.toString()));
+      emit(GetOrganizationErrorState(error.toString()));
     });
   }
 
@@ -173,39 +166,6 @@ class EditBuildingCubit extends Cubit<EditBuildingState> {
       emit(ShiftSuccessState(shiftModel!));
     }).catchError((error) {
       emit(ShiftErrorState(error.toString()));
-    });
-  }
-
-  AllManagersModel? allManagersModel;
-  getManagers() {
-    emit(AllManagersLoadingState());
-    DioHelper.getData(url: 'users/role/2').then((value) {
-      allManagersModel = AllManagersModel.fromJson(value!.data);
-      emit(AllManagersSuccessState(allManagersModel!));
-    }).catchError((error) {
-      emit(AllManagersErrorState(error.toString()));
-    });
-  }
-
-  AllSupervisorsModel? allSupervisorsModel;
-  getSupervisors() {
-    emit(AllSupervisorsLoadingState());
-    DioHelper.getData(url: 'users/role/3').then((value) {
-      allSupervisorsModel = AllSupervisorsModel.fromJson(value!.data);
-      emit(AllSupervisorsSuccessState(allSupervisorsModel!));
-    }).catchError((error) {
-      emit(AllSupervisorsErrorState(error.toString()));
-    });
-  }
-
-  AllCleanersModel? allCleanersModel;
-  getCleaners() {
-    emit(AllCleanersLoadingState());
-    DioHelper.getData(url: 'users/role/4').then((value) {
-      allCleanersModel = AllCleanersModel.fromJson(value!.data);
-      emit(AllCleanersSuccessState(allCleanersModel!));
-    }).catchError((error) {
-      emit(AllCleanersErrorState(error.toString()));
     });
   }
 }

@@ -31,6 +31,7 @@ class Routes {
       '/addOrganizationDetailsScreen';
   static const String addBuildingScreen = '/addBuildingScreen';
   static const String addFloorScreen = '/addFloorScreen';
+  static const String addSectionScreen = '/addSectionScreen';
   static const String addPointScreen = '/addPointScreen';
 
   static const String workLocationDetailsScreen = '/workLocationDetailsScreen';
@@ -47,6 +48,7 @@ class Routes {
   static const String editOrganizationScreen = '/editOrganizationScreen';
   static const String editBuildingScreen = '/editBuildingScreen';
   static const String editFloorScreen = '/editFloorScreen';
+  static const String editSectionScreen = '/editSectionScreen';
   static const String editPointScreen = '/editPointScreen';
 
   static const String addShiftScreen = '/addShiftScreen';

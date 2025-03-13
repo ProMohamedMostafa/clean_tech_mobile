@@ -3,20 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_cleaners_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_managers_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_supervisors_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_floor/data/model/edit_floor_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_floor/data/model/floor_details_in_edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_floor/logic/edit_floor_state.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/floor_managers_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/floor_shifts_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/floor_users_shifts_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
 
 class EditFloorCubit extends Cubit<EditFloorState> {
   EditFloorCubit() : super(EditFloorInitialState());
@@ -31,9 +27,9 @@ class EditFloorCubit extends Cubit<EditFloorState> {
   TextEditingController floorController = TextEditingController();
   TextEditingController floorNumberController = TextEditingController();
   TextEditingController floorDescriptionController = TextEditingController();
-  final allmanagersController = MultiSelectController<ManagersData>();
-  final allSupervisorsController = MultiSelectController<SupervisorsData>();
-  final allCleanersController = MultiSelectController<CleanersData>();
+  final allmanagersController = MultiSelectController<Users>();
+  final allSupervisorsController = MultiSelectController<Users>();
+  final allCleanersController = MultiSelectController<Users>();
   final shiftController = MultiSelectController<ShiftDetails>();
   final formKey = GlobalKey<FormState>();
 
@@ -47,15 +43,22 @@ class EditFloorCubit extends Cubit<EditFloorState> {
     emit(EditFloorLoadingState());
 
     final managersIds = selectedManagersIds?.isEmpty ?? true
-        ? floorManagersDetailsModel?.data?.managers?.map((m) => m.id).toList()
+        ? floorUsersShiftsDetailsModel?.data?.users!
+            .where((user) => user.role == 'Manager')
+            .map((user) => user.id!)
+            .toList()
         : selectedManagersIds;
     final supervisorsIds = selectedSupervisorsIds?.isEmpty ?? true
-        ? floorManagersDetailsModel?.data?.supervisors
-            ?.map((s) => s.id)
+        ? floorUsersShiftsDetailsModel?.data?.users!
+            .where((user) => user.role == 'Supervisor')
+            .map((user) => user.id!)
             .toList()
         : selectedSupervisorsIds;
     final cleanersIds = selectedCleanersIds?.isEmpty ?? true
-        ? floorManagersDetailsModel?.data?.cleaners?.map((c) => c.id).toList()
+        ? floorUsersShiftsDetailsModel?.data?.users!
+            .where((user) => user.role == 'Cleaner')
+            .map((user) => user.id!)
+            .toList()
         : selectedCleanersIds;
     try {
       final response =
@@ -73,8 +76,9 @@ class EditFloorCubit extends Cubit<EditFloorState> {
         "buildingId": buildingController.text.isEmpty
             ? floorDetailsInEditModel!.data!.buildingId
             : buildingIdController.text,
-        "managersIds": [...?managersIds, ...?supervisorsIds, ...?cleanersIds],
-        "shiftsIds": shiftController ?? floorShiftsDetailsModel!.data!.shifts,
+        "userIds": [...?managersIds, ...?supervisorsIds, ...?cleanersIds],
+        "shiftIds":
+            shiftController ?? floorUsersShiftsDetailsModel!.data!.shifts,
       });
       editFloorModel = FloorEditModel.fromJson(response!.data);
       emit(EditFloorSuccessState(editFloorModel!));
@@ -94,33 +98,24 @@ class EditFloorCubit extends Cubit<EditFloorState> {
     });
   }
 
-  FloorManagersDetailsModel? floorManagersDetailsModel;
+  FloorUsersShiftsDetailsModel? floorUsersShiftsDetailsModel;
   getFloorManagersDetails(int floorId) {
     emit(FloorManagersDetailsLoadingState());
-    DioHelper.getData(url: 'floor/manager/$floorId').then((value) {
-      floorManagersDetailsModel =
-          FloorManagersDetailsModel.fromJson(value!.data);
-      emit(FloorManagersDetailsSuccessState(floorManagersDetailsModel!));
+    DioHelper.getData(url: 'floors/with-user-shift/$floorId').then((value) {
+      floorUsersShiftsDetailsModel =
+          FloorUsersShiftsDetailsModel.fromJson(value!.data);
+      emit(FloorManagersDetailsSuccessState(floorUsersShiftsDetailsModel!));
     }).catchError((error) {
       emit(FloorManagersDetailsErrorState(error.toString()));
-    });
-  }
-
-  FloorShiftsDetailsModel? floorShiftsDetailsModel;
-  getFloorShiftsDetails(int floorId) {
-    emit(FloorShiftsDetailsLoadingState());
-    DioHelper.getData(url: 'floor/shift/$floorId').then((value) {
-      floorShiftsDetailsModel = FloorShiftsDetailsModel.fromJson(value!.data);
-      emit(FloorShiftsDetailsSuccessState(floorShiftsDetailsModel!));
-    }).catchError((error) {
-      emit(FloorShiftsDetailsErrorState(error.toString()));
     });
   }
 
   NationalityModel? nationalityModel;
   getNationality() {
     emit(GetNationalityLoadingState());
-    DioHelper.getData(url: ApiConstants.countriesUrl).then((value) {
+    DioHelper.getData(
+        url: ApiConstants.countriesUrl,
+        query: {'userUsedOnly': false, 'areaUsedOnly': true}).then((value) {
       nationalityModel = NationalityModel.fromJson(value!.data);
       emit(GetNationalitySuccessState(nationalityModel!));
     }).catchError((error) {
@@ -128,46 +123,50 @@ class EditFloorCubit extends Cubit<EditFloorState> {
     });
   }
 
-  AreaModel? areaModel;
-  getArea(String countryName) {
+  AreaListModel? areasModel;
+  getAreas(String countryName) {
     emit(GetAreaLoadingState());
-    DioHelper.getData(url: "areas/country/$countryName").then((value) {
-      areaModel = AreaModel.fromJson(value!.data);
-      emit(GetAreaSuccessState(areaModel!));
+    DioHelper.getData(url: "areas/pagination", query: {'country': countryName})
+        .then((value) {
+      areasModel = AreaListModel.fromJson(value!.data);
+      emit(GetAreaSuccessState(areasModel!));
     }).catchError((error) {
       emit(GetAreaErrorState(error.toString()));
     });
   }
 
-  CityModel? cityModel;
-  getCity(int areaId) {
+  CityListModel? cityyModel;
+  getCityy(int areaId) {
     emit(GetCityLoadingState());
-    DioHelper.getData(url: "cities/area/$areaId").then((value) {
-      cityModel = CityModel.fromJson(value!.data);
-      emit(GetCitySuccessState(cityModel!));
+    DioHelper.getData(url: "cities/pagination", query: {'area': areaId})
+        .then((value) {
+      cityyModel = CityListModel.fromJson(value!.data);
+      emit(GetCitySuccessState(cityyModel!));
     }).catchError((error) {
       emit(GetCityErrorState(error.toString()));
     });
   }
 
-  OrganizationModel? organizationModel;
-  getOrganization(int cityId) {
-    emit(GetOrganizationsLoadingState());
-    DioHelper.getData(url: "organizations/city/$cityId").then((value) {
-      organizationModel = OrganizationModel.fromJson(value!.data);
-      emit(GetOrganizationsSuccessState(organizationModel!));
+  OrganizationListModel? organizationsModel;
+  getOrganizations(int cityId) {
+    emit(GetOrganizationLoadingState());
+    DioHelper.getData(url: "organizations/pagination", query: {'city': cityId})
+        .then((value) {
+      organizationsModel = OrganizationListModel.fromJson(value!.data);
+      emit(GetOrganizationSuccessState(organizationsModel!));
     }).catchError((error) {
-      emit(GetOrganizationsErrorState(error.toString()));
+      emit(GetOrganizationErrorState(error.toString()));
     });
   }
 
-  BuildingModel? buildingModel;
-  getBuilding(int organizationId) {
+  BuildingListModel? buildingsModel;
+  getBuildings(int organizationId) {
     emit(GetBuildingLoadingState());
-    DioHelper.getData(url: 'buildings/organization/$organizationId')
-        .then((value) {
-      buildingModel = BuildingModel.fromJson(value!.data);
-      emit(GetBuildingSuccessState(buildingModel!));
+    DioHelper.getData(
+        url: 'buildings/pagination',
+        query: {'organization': organizationId}).then((value) {
+      buildingsModel = BuildingListModel.fromJson(value!.data);
+      emit(GetBuildingSuccessState(buildingsModel!));
     }).catchError((error) {
       emit(GetBuildingErrorState(error.toString()));
     });
@@ -181,39 +180,6 @@ class EditFloorCubit extends Cubit<EditFloorState> {
       emit(ShiftSuccessState(shiftModel!));
     }).catchError((error) {
       emit(ShiftErrorState(error.toString()));
-    });
-  }
-
-  AllManagersModel? allManagersModel;
-  getManagers() {
-    emit(AllManagersLoadingState());
-    DioHelper.getData(url: 'users/role/2').then((value) {
-      allManagersModel = AllManagersModel.fromJson(value!.data);
-      emit(AllManagersSuccessState(allManagersModel!));
-    }).catchError((error) {
-      emit(AllManagersErrorState(error.toString()));
-    });
-  }
-
-  AllSupervisorsModel? allSupervisorsModel;
-  getSupervisors() {
-    emit(AllSupervisorsLoadingState());
-    DioHelper.getData(url: 'users/role/3').then((value) {
-      allSupervisorsModel = AllSupervisorsModel.fromJson(value!.data);
-      emit(AllSupervisorsSuccessState(allSupervisorsModel!));
-    }).catchError((error) {
-      emit(AllSupervisorsErrorState(error.toString()));
-    });
-  }
-
-  AllCleanersModel? allCleanersModel;
-  getCleaners() {
-    emit(AllCleanersLoadingState());
-    DioHelper.getData(url: 'users/role/4').then((value) {
-      allCleanersModel = AllCleanersModel.fromJson(value!.data);
-      emit(AllCleanersSuccessState(allCleanersModel!));
-    }).catchError((error) {
-      emit(AllCleanersErrorState(error.toString()));
     });
   }
 }

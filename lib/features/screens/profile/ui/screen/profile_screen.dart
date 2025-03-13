@@ -458,7 +458,7 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   Widget userShiftsDetails() {
     final shiftModel = context.read<ProfileCubit>().userShiftDetailsModel!;
-    if (shiftModel.data!.shifts == null || shiftModel.data!.shifts!.isEmpty) {
+    if (shiftModel.data == null || shiftModel.data!.isEmpty) {
       return Center(
         child: Text(
           "There's no data",
@@ -472,7 +472,7 @@ class _ProfileScreenState extends State<ProfileScreen>
             child: ListView.separated(
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.vertical,
-              itemCount: shiftModel.data!.shifts!.length,
+              itemCount: shiftModel.data!.length,
               separatorBuilder: (context, index) {
                 return verticalSpace(10);
               },

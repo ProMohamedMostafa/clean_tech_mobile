@@ -1,5 +1,5 @@
 class PointDetailsInEditModel {
- int? statusCode;
+  int? statusCode;
   String? meta;
   bool? succeeded;
   String? message;

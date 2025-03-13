@@ -25,6 +25,7 @@ import 'package:smart_cleaning_application/features/screens/work_location/work_l
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_tree_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_tree_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_tree_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/section_tree_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_states.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
@@ -50,7 +51,7 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
   void initState() {
     if (widget.selectedIndex == 0) {
       context.read<WorkLocationCubit>().getAreaDetails(widget.id);
-      context.read<WorkLocationCubit>().getAreaManagersDetails(widget.id);
+      context.read<WorkLocationCubit>().getAreaUsersDetails(widget.id);
       context.read<WorkLocationCubit>().getareaTasks(widget.id);
       context.read<WorkLocationCubit>().getAttendanceHistoryArea(widget.id);
       context.read<WorkLocationCubit>().getAllLeavesArea(widget.id);
@@ -58,7 +59,7 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
     }
     if (widget.selectedIndex == 1) {
       context.read<WorkLocationCubit>().getCityDetails(widget.id);
-      context.read<WorkLocationCubit>().getCityManagersDetails(widget.id);
+      context.read<WorkLocationCubit>().getCityUsersDetails(widget.id);
       context.read<WorkLocationCubit>().getcityTasks(widget.id);
       context.read<WorkLocationCubit>().getAttendanceHistoryCity(widget.id);
       context.read<WorkLocationCubit>().getAllLeavesCity(widget.id);
@@ -66,10 +67,7 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
     }
     if (widget.selectedIndex == 2) {
       context.read<WorkLocationCubit>().getOrganizationDetails(widget.id);
-      context.read<WorkLocationCubit>().getOrganizationShiftsDetails(widget.id);
-      context
-          .read<WorkLocationCubit>()
-          .getOrganizationManagersDetails(widget.id);
+      context.read<WorkLocationCubit>().getOrganizationUsersDetails(widget.id);
       context.read<WorkLocationCubit>().getorganizationTasks(widget.id);
       context
           .read<WorkLocationCubit>()
@@ -79,8 +77,7 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
     }
     if (widget.selectedIndex == 3) {
       context.read<WorkLocationCubit>().getBuildingDetails(widget.id);
-      context.read<WorkLocationCubit>().getBuildingManagersDetails(widget.id);
-      context.read<WorkLocationCubit>().getBuildingShiftsDetails(widget.id);
+      context.read<WorkLocationCubit>().getBuildingUsersDetails(widget.id);
       context.read<WorkLocationCubit>().getbuildingTasks(widget.id);
       context.read<WorkLocationCubit>().getAttendanceHistoryBuilding(widget.id);
       context.read<WorkLocationCubit>().getAllLeavesBuilding(widget.id);
@@ -88,17 +85,23 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
     }
     if (widget.selectedIndex == 4) {
       context.read<WorkLocationCubit>().getFloorDetails(widget.id);
-      context.read<WorkLocationCubit>().getFloorManagersDetails(widget.id);
-      context.read<WorkLocationCubit>().getFloorShiftsDetails(widget.id);
+      context.read<WorkLocationCubit>().getFloorUsersDetails(widget.id);
       context.read<WorkLocationCubit>().getfloorTasks(widget.id);
       context.read<WorkLocationCubit>().getAttendanceHistoryFloor(widget.id);
       context.read<WorkLocationCubit>().getAllLeavesFloor(widget.id);
       context.read<WorkLocationCubit>().getFloortree(widget.id);
     }
     if (widget.selectedIndex == 5) {
+      context.read<WorkLocationCubit>().getSectionDetails(widget.id);
+      context.read<WorkLocationCubit>().getSectionUsersDetails(widget.id);
+      context.read<WorkLocationCubit>().getSectionTasks(widget.id);
+      context.read<WorkLocationCubit>().getAttendanceHistorySection(widget.id);
+      context.read<WorkLocationCubit>().getAllLeavesSection(widget.id);
+      context.read<WorkLocationCubit>().getSectiontree(widget.id);
+    }
+    if (widget.selectedIndex == 6) {
       context.read<WorkLocationCubit>().getPointDetails(widget.id);
-      context.read<WorkLocationCubit>().getPointManagersDetails(widget.id);
-      context.read<WorkLocationCubit>().getPointShiftsDetails(widget.id);
+      context.read<WorkLocationCubit>().getPointUsersDetails(widget.id);
       context.read<WorkLocationCubit>().getPointTasks(widget.id);
       context.read<WorkLocationCubit>().getAttendanceHistoryPoint(widget.id);
       context.read<WorkLocationCubit>().getAllLeavesPoint(widget.id);
@@ -153,11 +156,22 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
         counts.add({"count": "$floorCount", "title": "Floor"});
       }
 
+      int sectionCount = model.data!.cities
+              ?.expand((city) => city.organizations ?? [])
+              .expand((org) => org.buildings ?? [])
+              .expand((building) => building.floors ?? [])
+              .expand((floor) => floor.sections ?? [])
+              .length ??
+          0;
+      if (sectionCount > 0) {
+        counts.add({"count": "$sectionCount", "title": "Section"});
+      }
       int pointCount = model.data!.cities
               ?.expand((city) => city.organizations ?? [])
               .expand((org) => org.buildings ?? [])
               .expand((building) => building.floors ?? [])
-              .expand((floor) => floor.points ?? [])
+              .expand((floor) => floor.sections ?? [])
+              .expand((section) => section.points ?? [])
               .length ??
           0;
       if (pointCount > 0) {
@@ -197,11 +211,21 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
         counts.add({"count": "$floorCount", "title": "Floor"});
       }
 
-      // Points Count
+      int sectionCount = model.data!.organizations
+              ?.expand((org) => org.buildings ?? [])
+              .expand((building) => building.floors ?? [])
+              .expand((floor) => floor.sections ?? [])
+              .length ??
+          0;
+      if (sectionCount > 0) {
+        counts.add({"count": "$sectionCount", "title": "Section"});
+      }
+
       int pointCount = model.data!.organizations
               ?.expand((org) => org.buildings ?? [])
               .expand((building) => building.floors ?? [])
-              .expand((floor) => floor.points ?? [])
+              .expand((floor) => floor.sections ?? [])
+              .expand((section) => section.points ?? [])
               .length ??
           0;
       if (pointCount > 0) {
@@ -230,9 +254,19 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
         counts.add({"count": "$floorCount", "title": "Floor"});
       }
 
+      int sectionCount = model.data!.buildings
+              ?.expand((building) => building.floors ?? [])
+              .expand((floor) => floor.sections ?? [])
+              .length ??
+          0;
+      if (sectionCount > 0) {
+        counts.add({"count": "$sectionCount", "title": "Section"});
+      }
+
       int pointCount = model.data!.buildings
               ?.expand((building) => building.floors ?? [])
-              .expand((floor) => floor.points ?? [])
+              .expand((floor) => floor.sections ?? [])
+              .expand((section) => section.points ?? [])
               .length ??
           0;
       if (pointCount > 0) {
@@ -254,9 +288,19 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
         counts.add({"count": "$floorCount", "title": "Floor"});
       }
 
+      int sectionCount =
+          model.data!.floors?.expand((floor) => floor.sections ?? []).length ??
+              0;
+      if (sectionCount > 0) {
+        counts.add({"count": "$sectionCount", "title": "Section"});
+      }
+
       // Points Count
-      int pointCount =
-          model.data!.floors?.expand((floor) => floor.points ?? []).length ?? 0;
+      int pointCount = model.data!.floors
+              ?.expand((floor) => floor.sections ?? [])
+              .expand((section) => section.points ?? [])
+              .length ??
+          0;
       if (pointCount > 0) {
         counts.add({"count": "$pointCount", "title": "Point"});
       }
@@ -266,6 +310,27 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
   }
 
   List<Map<String, String>> getFloorCountsFromModel(FloorTreeModel model) {
+    List<Map<String, String>> counts = [];
+
+    if (model.data != null) {
+      int sectionCount = model.data!.sections?.length ?? 0;
+      if (sectionCount > 0) {
+        counts.add({"count": "$sectionCount", "title": "Section"});
+      }
+
+      int pointCount = model.data!.sections
+              ?.expand((section) => section.points ?? [])
+              .length ??
+          0;
+      if (pointCount > 0) {
+        counts.add({"count": "$pointCount", "title": "Point"});
+      }
+    }
+
+    return counts;
+  }
+
+  List<Map<String, String>> getSectionCountsFromModel(SectionTreeModel model) {
     List<Map<String, String>> counts = [];
 
     if (model.data != null) {
@@ -304,12 +369,21 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                 .expand((building) => building.floors ?? [])
                 .toList() ??
             [];
-      case 4: // Point
+      case 4: // section
         return areaTreeModel.data!.cities
                 ?.expand((city) => city.organizations ?? [])
                 .expand((org) => org.buildings ?? [])
                 .expand((building) => building.floors ?? [])
-                .expand((floor) => floor.points ?? [])
+                .expand((floor) => floor.sections ?? [])
+                .toList() ??
+            [];
+      case 5: // Point
+        return areaTreeModel.data!.cities
+                ?.expand((city) => city.organizations ?? [])
+                .expand((org) => org.buildings ?? [])
+                .expand((building) => building.floors ?? [])
+                .expand((floor) => floor.sections ?? [])
+                .expand((section) => section.points ?? [])
                 .toList() ??
             [];
       default:
@@ -337,11 +411,19 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                 .expand((building) => building.floors ?? [])
                 .toList() ??
             [];
-      case 3: // Point
+      case 3: // section
         return cityTreeModel.data!.organizations
                 ?.expand((org) => org.buildings ?? [])
                 .expand((building) => building.floors ?? [])
-                .expand((floor) => floor.points ?? [])
+                .expand((floor) => floor.sections ?? [])
+                .toList() ??
+            [];
+      case 4: // Point
+        return cityTreeModel.data!.organizations
+                ?.expand((org) => org.buildings ?? [])
+                .expand((building) => building.floors ?? [])
+                .expand((floor) => floor.sections ?? [])
+                .expand((section) => section.points ?? [])
                 .toList() ??
             [];
       default:
@@ -363,10 +445,17 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                 ?.expand((building) => building.floors ?? [])
                 .toList() ??
             [];
-      case 2: // Point
+      case 2: // section
         return organizationTreeModel.data!.buildings
                 ?.expand((building) => building.floors ?? [])
-                .expand((floor) => floor.points ?? [])
+                .expand((floor) => floor.sections ?? [])
+                .toList() ??
+            [];
+      case 3: // Point
+        return organizationTreeModel.data!.buildings
+                ?.expand((building) => building.floors ?? [])
+                .expand((floor) => floor.sections ?? [])
+                .expand((section) => section.points ?? [])
                 .toList() ??
             [];
       default:
@@ -382,9 +471,15 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
     switch (selectedIndex) {
       case 0: // Floor
         return buildingTreeModel.data!.floors ?? [];
-      case 1: // Point
+      case 1: // section
         return buildingTreeModel.data!.floors
-                ?.expand((floor) => floor.points ?? [])
+                ?.expand((floor) => floor.sections ?? [])
+                .toList() ??
+            [];
+      case 2: // Point
+        return buildingTreeModel.data!.floors
+                ?.expand((floor) => floor.sections ?? [])
+                .expand((section) => section.points ?? [])
                 .toList() ??
             [];
       default:
@@ -399,7 +494,25 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
 
     switch (selectedIndex) {
       case 0: // Points
-        return floorTreeModel.data!.points ?? [];
+        return floorTreeModel.data!.sections ?? [];
+      case 1: // section
+        return floorTreeModel.data!.sections
+                ?.expand((section) => section.points ?? [])
+                .toList() ??
+            [];
+      default:
+        return [];
+    }
+  }
+
+  List<dynamic> getSectionFilteredList(
+      WorkLocationCubit cubit, int selectedIndex) {
+    final sectionTreeModel = cubit.sectionTreeModel;
+    if (sectionTreeModel == null || sectionTreeModel.data == null) return [];
+
+    switch (selectedIndex) {
+      case 0: // Points
+        return sectionTreeModel.data!.points ?? [];
       default:
         return [];
     }
@@ -420,7 +533,9 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                           ? 'Building details'
                           : widget.selectedIndex == 4
                               ? 'Floor details'
-                              : 'Point details',
+                              : widget.selectedIndex == 5
+                                  ? 'Section details'
+                                  : 'Point details',
           style: TextStyles.font16BlackSemiBold,
         ),
         centerTitle: true,
@@ -455,9 +570,13 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                                       ? context.pushNamed(
                                           Routes.editFloorScreen,
                                           arguments: widget.id)
-                                      : context.pushNamed(
-                                          Routes.editPointScreen,
-                                          arguments: widget.id);
+                                      : widget.selectedIndex == 5
+                                          ? context.pushNamed(
+                                              Routes.editSectionScreen,
+                                              arguments: widget.id)
+                                          : context.pushNamed(
+                                              Routes.editPointScreen,
+                                              arguments: widget.id);
                 },
                 icon: Icon(
                   Icons.edit,
@@ -477,25 +596,21 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
         },
         builder: (context, state) {
           if ((widget.selectedIndex == 0 &&
-                  (context.read<WorkLocationCubit>().areaManagersDetailsModel ==
+                  (context.read<WorkLocationCubit>().areaUsersDetailsModel ==
                           null ||
                       context
                               .read<WorkLocationCubit>()
                               .areaTreeModel ==
                           null)) ||
               (widget.selectedIndex == 1 &&
-                  (context.read<WorkLocationCubit>().cityManagersDetailsModel ==
+                  (context.read<WorkLocationCubit>().cityUsersDetailsModel ==
                           null ||
-                      context
-                              .read<WorkLocationCubit>()
-                              .cityTreeModel ==
+                      context.read<WorkLocationCubit>().cityTreeModel ==
                           null)) ||
               (widget.selectedIndex == 2 &&
                   (context.read<WorkLocationCubit>().organizationDetailsModel ==
                           null ||
-                      context
-                              .read<WorkLocationCubit>()
-                              .organizationTreeModel ==
+                      context.read<WorkLocationCubit>().organizationTreeModel ==
                           null)) ||
               (widget.selectedIndex == 3 &&
                   (context.read<WorkLocationCubit>().buildingDetailsModel ==
@@ -505,9 +620,16 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
               (widget.selectedIndex == 4 &&
                   (context.read<WorkLocationCubit>().floorDetailsModel ==
                           null ||
-                      context.read<WorkLocationCubit>().floorTreeModel ==
+                      context
+                              .read<WorkLocationCubit>()
+                              .floorTreeModel ==
                           null)) ||
               (widget.selectedIndex == 5 &&
+                  (context.read<WorkLocationCubit>().sectionDetailsModel ==
+                          null ||
+                      context.read<WorkLocationCubit>().sectionTreeModel ==
+                          null)) ||
+              (widget.selectedIndex == 6 &&
                   (context.read<WorkLocationCubit>().pointDetailsModel ==
                       null))) {
             return const Center(
@@ -673,9 +795,16 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                                                 ? context
                                                     .read<WorkLocationCubit>()
                                                     .deleteFloor(widget.id)
-                                                : context
-                                                    .read<WorkLocationCubit>()
-                                                    .deletePoint(widget.id);
+                                                : widget.selectedIndex == 5
+                                                    ? context
+                                                        .read<
+                                                            WorkLocationCubit>()
+                                                        .deleteSection(
+                                                            widget.id)
+                                                    : context
+                                                        .read<
+                                                            WorkLocationCubit>()
+                                                        .deletePoint(widget.id);
                           });
                         },
                         color: Colors.red,
@@ -723,6 +852,10 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
         items = getFloorCountsFromModel(workLocationCubit.floorTreeModel!);
         filteredList = getFloorFilteredList(workLocationCubit, selectedIndex);
         break;
+      case 5:
+        items = getSectionCountsFromModel(workLocationCubit.sectionTreeModel!);
+        filteredList = getSectionFilteredList(workLocationCubit, selectedIndex);
+        break;
       default:
         items = [];
         filteredList = [];
@@ -751,6 +884,10 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
             context.read<WorkLocationCubit>().floorDetailsModel?.data;
         break;
       case 5:
+        workLocationDetailsModel =
+            context.read<WorkLocationCubit>().sectionDetailsModel?.data;
+        break;
+      case 6:
         workLocationDetailsModel =
             context.read<WorkLocationCubit>().pointDetailsModel?.data;
         break;
@@ -821,6 +958,17 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
             Divider(),
           ],
           if (widget.selectedIndex >= 5) ...[
+            rowDetailsBuild(
+                context,
+                "Section",
+                widget.selectedIndex == 5
+                    ? workLocationDetailsModel.name!
+                    : workLocationDetailsModel.organizationName!,
+                color:
+                    widget.selectedIndex == 2 ? AppColor.primaryColor : null),
+            Divider(),
+          ],
+          if (widget.selectedIndex >= 6) ...[
             rowDetailsBuild(context, "Point", workLocationDetailsModel.name!,
                 color:
                     widget.selectedIndex == 5 ? AppColor.primaryColor : null),
@@ -971,16 +1119,30 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                                                     .toInt(),
                                                 'selectedIndex': 4
                                               }
-                                            : {
-                                                'id': context
-                                                    .read<WorkLocationCubit>()
-                                                    .areaTreeModel!
-                                                    .data!
-                                                    .cities![index]
-                                                    .id!
-                                                    .toInt(),
-                                                'selectedIndex': 5
-                                              });
+                                            : items[selectedIndex]['title'] ==
+                                                    'Section'
+                                                ? {
+                                                    'id': context
+                                                        .read<
+                                                            WorkLocationCubit>()
+                                                        .areaTreeModel!
+                                                        .data!
+                                                        .cities![index]
+                                                        .id!
+                                                        .toInt(),
+                                                    'selectedIndex': 5
+                                                  }
+                                                : {
+                                                    'id': context
+                                                        .read<
+                                                            WorkLocationCubit>()
+                                                        .areaTreeModel!
+                                                        .data!
+                                                        .cities![index]
+                                                        .id!
+                                                        .toInt(),
+                                                    'selectedIndex': 6
+                                                  });
                       }
                       if (widget.selectedIndex == 1) {
                         context.pushNamed(Routes.workLocationDetailsScreen,
@@ -1018,22 +1180,45 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                                                 .toInt(),
                                             'selectedIndex': 4
                                           }
-                                        : {
-                                            'id': context
-                                                .read<WorkLocationCubit>()
-                                                .cityTreeModel!
-                                                .data!
-                                                .organizations![index]
-                                                .id!
-                                                .toInt(),
-                                            'selectedIndex': 5
-                                          });
+                                        : items[selectedIndex]['title'] ==
+                                                'Section'
+                                            ? {
+                                                'id': context
+                                                    .read<WorkLocationCubit>()
+                                                    .cityTreeModel!
+                                                    .data!
+                                                    .organizations![index]
+                                                    .id!
+                                                    .toInt(),
+                                                'selectedIndex': 5
+                                              }
+                                            : {
+                                                'id': context
+                                                    .read<WorkLocationCubit>()
+                                                    .cityTreeModel!
+                                                    .data!
+                                                    .organizations![index]
+                                                    .id!
+                                                    .toInt(),
+                                                'selectedIndex': 6
+                                              });
                       }
 
                       if (widget.selectedIndex == 2) {
                         context.pushNamed(Routes.workLocationDetailsScreen,
-                            arguments:
-                                items[selectedIndex]['title'] == 'Building'
+                            arguments: items[selectedIndex]['title'] ==
+                                    'Building'
+                                ? {
+                                    'id': context
+                                        .read<WorkLocationCubit>()
+                                        .organizationTreeModel!
+                                        .data!
+                                        .buildings![index]
+                                        .id!
+                                        .toInt(),
+                                    'selectedIndex': 3
+                                  }
+                                : items[selectedIndex]['title'] == 'Floor'
                                     ? {
                                         'id': context
                                             .read<WorkLocationCubit>()
@@ -1042,9 +1227,9 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                                             .buildings![index]
                                             .id!
                                             .toInt(),
-                                        'selectedIndex': 3
+                                        'selectedIndex': 4
                                       }
-                                    : items[selectedIndex]['title'] == 'Floor'
+                                    : items[selectedIndex]['title'] == 'Section'
                                         ? {
                                             'id': context
                                                 .read<WorkLocationCubit>()
@@ -1053,7 +1238,7 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                                                 .buildings![index]
                                                 .id!
                                                 .toInt(),
-                                            'selectedIndex': 4
+                                            'selectedIndex': 5
                                           }
                                         : {
                                             'id': context
@@ -1063,7 +1248,7 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                                                 .buildings![index]
                                                 .id!
                                                 .toInt(),
-                                            'selectedIndex': 5
+                                            'selectedIndex': 6
                                           });
                       }
                       if (widget.selectedIndex == 3) {
@@ -1079,28 +1264,64 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                                         .toInt(),
                                     'selectedIndex': 4
                                   }
-                                : {
+                                : items[selectedIndex]['title'] == 'Section'
+                                    ? {
+                                        'id': context
+                                            .read<WorkLocationCubit>()
+                                            .buildingTreeModel!
+                                            .data!
+                                            .floors![index]
+                                            .id!
+                                            .toInt(),
+                                        'selectedIndex': 5
+                                      }
+                                    : {
+                                        'id': context
+                                            .read<WorkLocationCubit>()
+                                            .buildingTreeModel!
+                                            .data!
+                                            .floors![index]
+                                            .id!
+                                            .toInt(),
+                                        'selectedIndex': 6
+                                      });
+                      }
+                      if (widget.selectedIndex == 4) {
+                        context.pushNamed(Routes.workLocationDetailsScreen,
+                            arguments: items[selectedIndex]['title'] == 'Floor'
+                                ? {
                                     'id': context
                                         .read<WorkLocationCubit>()
-                                        .buildingTreeModel!
+                                        .floorTreeModel!
                                         .data!
-                                        .floors![index]
+                                        .sections![index]
                                         .id!
                                         .toInt(),
                                     'selectedIndex': 5
+                                  }
+                                : {
+                                    'id': context
+                                        .read<WorkLocationCubit>()
+                                        .floorTreeModel!
+                                        .data!
+                                        .sections![index]
+                                        .id!
+                                        .toInt(),
+                                    'selectedIndex': 6
                                   });
                       }
-                      if (widget.selectedIndex == 4) {
+
+                      if (widget.selectedIndex == 5) {
                         context.pushNamed(Routes.workLocationDetailsScreen,
                             arguments: {
                               'id': context
                                   .read<WorkLocationCubit>()
-                                  .floorTreeModel!
+                                  .sectionTreeModel!
                                   .data!
                                   .points![index]
                                   .id!
                                   .toInt(),
-                              'selectedIndex': 5
+                              'selectedIndex': 6
                             });
                       }
                     },
@@ -1114,26 +1335,13 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                       child: ListTile(
                         contentPadding: EdgeInsets.symmetric(horizontal: 20),
                         minTileHeight: 72.h,
-                        // leading:
-                        // Icon(
-                        //   selectedIndex == 0
-                        //       ? Icons.location_city
-                        //       : selectedIndex == 1
-                        //           ? Icons.business
-                        //           : selectedIndex == 2
-                        //               ? Icons.house
-                        //               : selectedIndex == 3
-                        //                   ? Icons.stairs
-                        //                   : Icons.place,
-                        //   color: AppColor.thirdColor,
-                        // ),
                         title: Text(
                           filteredList[index].name ?? '',
                           style: TextStyles.font14BlackSemiBold,
                         ),
                         subtitle: Text(
                           items[selectedIndex]['title'] == "Point"
-                              ? filteredList[index].floorName
+                              ? filteredList[index].sectionName
                               : filteredList[index].previousName ?? '',
                           style: TextStyles.font12GreyRegular,
                         ),
@@ -1157,40 +1365,53 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
     final managersData = widget.selectedIndex == 0
         ? context
             .read<WorkLocationCubit>()
-            .areaManagersDetailsModel!
+            .areaUsersDetailsModel!
             .data!
-            .managers
-        : widget.selectedIndex == 1
+            .users!
+            .where((user) => user.role == 'Manager')
+        : selectedIndex == 1
             ? context
                 .read<WorkLocationCubit>()
-                .cityManagersDetailsModel!
+                .cityUsersDetailsModel!
                 .data!
-                .managers
-            : widget.selectedIndex == 2
+                .users!
+                .where((user) => user.role == 'Manager')
+            : selectedIndex == 2
                 ? context
                     .read<WorkLocationCubit>()
-                    .organizationManagersDetailsModel!
+                    .organizationUsersShiftDetailsModel!
                     .data!
-                    .managers
-                : widget.selectedIndex == 3
+                    .users!
+                    .where((user) => user.role == 'Manager')
+                : selectedIndex == 3
                     ? context
                         .read<WorkLocationCubit>()
-                        .buildingManagersDetailsModel!
+                        .buildingUsersShiftDetailsModel!
                         .data!
-                        .managers
-                    : widget.selectedIndex == 4
+                        .users!
+                        .where((user) => user.role == 'Manager')
+                    : selectedIndex == 4
                         ? context
                             .read<WorkLocationCubit>()
-                            .floorManagersDetailsModel!
+                            .floorUsersShiftDetailsModel!
                             .data!
-                            .managers
-                        : context
-                            .read<WorkLocationCubit>()
-                            .pointManagersDetailsModel!
-                            .data!
-                            .managers;
+                            .users!
+                            .where((user) => user.role == 'Manager')
+                        : selectedIndex == 5
+                            ? context
+                                .read<WorkLocationCubit>()
+                                .sectionUsersShiftDetailsModel!
+                                .data!
+                                .users!
+                                .where((user) => user.role == 'Manager')
+                            : context
+                                .read<WorkLocationCubit>()
+                                .pointUsersDetailsModel!
+                                .data!
+                                .users!
+                                .where((user) => user.role == 'Manager');
 
-    if (managersData == null || managersData.isEmpty) {
+    if (managersData.isEmpty) {
       return Center(
         child: Text(
           "There's no data",
@@ -1224,40 +1445,53 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
     final supervisorsData = widget.selectedIndex == 0
         ? context
             .read<WorkLocationCubit>()
-            .areaManagersDetailsModel!
+            .areaUsersDetailsModel!
             .data!
-            .supervisors
-        : widget.selectedIndex == 1
+            .users!
+            .where((user) => user.role == 'Supervisor')
+        : selectedIndex == 1
             ? context
                 .read<WorkLocationCubit>()
-                .cityManagersDetailsModel!
+                .cityUsersDetailsModel!
                 .data!
-                .supervisors
-            : widget.selectedIndex == 2
+                .users!
+                .where((user) => user.role == 'Supervisor')
+            : selectedIndex == 2
                 ? context
                     .read<WorkLocationCubit>()
-                    .organizationManagersDetailsModel!
+                    .organizationUsersShiftDetailsModel!
                     .data!
-                    .supervisors
-                : widget.selectedIndex == 3
+                    .users!
+                    .where((user) => user.role == 'Supervisor')
+                : selectedIndex == 3
                     ? context
                         .read<WorkLocationCubit>()
-                        .buildingManagersDetailsModel!
+                        .buildingUsersShiftDetailsModel!
                         .data!
-                        .supervisors
-                    : widget.selectedIndex == 4
+                        .users!
+                        .where((user) => user.role == 'Supervisor')
+                    : selectedIndex == 4
                         ? context
                             .read<WorkLocationCubit>()
-                            .floorManagersDetailsModel!
+                            .floorUsersShiftDetailsModel!
                             .data!
-                            .supervisors
-                        : context
-                            .read<WorkLocationCubit>()
-                            .pointManagersDetailsModel!
-                            .data!
-                            .supervisors;
+                            .users!
+                            .where((user) => user.role == 'Supervisor')
+                        : selectedIndex == 5
+                            ? context
+                                .read<WorkLocationCubit>()
+                                .sectionUsersShiftDetailsModel!
+                                .data!
+                                .users!
+                                .where((user) => user.role == 'Supervisor')
+                            : context
+                                .read<WorkLocationCubit>()
+                                .pointUsersDetailsModel!
+                                .data!
+                                .users!
+                                .where((user) => user.role == 'Supervisor');
 
-    if (supervisorsData == null || supervisorsData.isEmpty) {
+    if (supervisorsData.isEmpty) {
       return Center(
         child: Text(
           "There's no data",
@@ -1291,40 +1525,53 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
     final cleanersData = widget.selectedIndex == 0
         ? context
             .read<WorkLocationCubit>()
-            .areaManagersDetailsModel!
+            .areaUsersDetailsModel!
             .data!
-            .cleaners
-        : widget.selectedIndex == 1
+            .users!
+            .where((user) => user.role == 'Cleaner')
+        : selectedIndex == 1
             ? context
                 .read<WorkLocationCubit>()
-                .cityManagersDetailsModel!
+                .cityUsersDetailsModel!
                 .data!
-                .cleaners
-            : widget.selectedIndex == 2
+                .users!
+                .where((user) => user.role == 'Cleaner')
+            : selectedIndex == 2
                 ? context
                     .read<WorkLocationCubit>()
-                    .organizationManagersDetailsModel!
+                    .organizationUsersShiftDetailsModel!
                     .data!
-                    .cleaners
-                : widget.selectedIndex == 3
+                    .users!
+                    .where((user) => user.role == 'Cleaner')
+                : selectedIndex == 3
                     ? context
                         .read<WorkLocationCubit>()
-                        .buildingManagersDetailsModel!
+                        .buildingUsersShiftDetailsModel!
                         .data!
-                        .cleaners
-                    : widget.selectedIndex == 4
+                        .users!
+                        .where((user) => user.role == 'Cleaner')
+                    : selectedIndex == 4
                         ? context
                             .read<WorkLocationCubit>()
-                            .floorManagersDetailsModel!
+                            .floorUsersShiftDetailsModel!
                             .data!
-                            .cleaners
-                        : context
-                            .read<WorkLocationCubit>()
-                            .pointManagersDetailsModel!
-                            .data!
-                            .cleaners;
+                            .users!
+                            .where((user) => user.role == 'Cleaner')
+                        : selectedIndex == 5
+                            ? context
+                                .read<WorkLocationCubit>()
+                                .sectionUsersShiftDetailsModel!
+                                .data!
+                                .users!
+                                .where((user) => user.role == 'Cleaner')
+                            : context
+                                .read<WorkLocationCubit>()
+                                .pointUsersDetailsModel!
+                                .data!
+                                .users!
+                                .where((user) => user.role == 'Cleaner');
 
-    if (cleanersData == null || cleanersData.isEmpty) {
+    if (cleanersData.isEmpty) {
       return Center(
         child: Text(
           "There's no data",
@@ -1362,26 +1609,28 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
             : widget.selectedIndex == 2
                 ? context
                     .read<WorkLocationCubit>()
-                    .organizationShiftsDetailsModel!
+                    .organizationUsersShiftDetailsModel!
                     .data!
                     .shifts
                 : widget.selectedIndex == 3
                     ? context
                         .read<WorkLocationCubit>()
-                        .buildingShiftsDetailsModel!
+                        .buildingUsersShiftDetailsModel!
                         .data!
                         .shifts
                     : widget.selectedIndex == 4
                         ? context
                             .read<WorkLocationCubit>()
-                            .floorShiftsDetailsModel!
+                            .floorUsersShiftDetailsModel!
                             .data!
                             .shifts
-                        : context
-                            .read<WorkLocationCubit>()
-                            .pointShiftsDetailsModel!
-                            .data!
-                            .shifts;
+                        : widget.selectedIndex == 5
+                            ? context
+                                .read<WorkLocationCubit>()
+                                .sectionUsersShiftDetailsModel!
+                                .data!
+                                .shifts
+                            : null;
 
     if (shiftModel == null || shiftModel.isEmpty) {
       return Center(
@@ -1427,7 +1676,13 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                     ? context.read<WorkLocationCubit>().allbuildingTasksModel
                     : widget.selectedIndex == 4
                         ? context.read<WorkLocationCubit>().allfloorTasksModel
-                        : context.read<WorkLocationCubit>().allPointTasksModel;
+                        : widget.selectedIndex == 5
+                            ? context
+                                .read<WorkLocationCubit>()
+                                .allSectionTasksModel
+                            : context
+                                .read<WorkLocationCubit>()
+                                .allPointTasksModel;
 
     if (taskModel?.data?.data == null || taskModel!.data!.data!.isEmpty) {
       return Center(
@@ -1524,11 +1779,17 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                             .attendanceHistoryFloorModel
                             ?.data
                             ?.data
-                        : context
-                            .read<WorkLocationCubit>()
-                            .attendanceHistoryPointModel
-                            ?.data
-                            ?.data;
+                        : widget.selectedIndex == 5
+                            ? context
+                                .read<WorkLocationCubit>()
+                                .attendanceHistorySectionModel
+                                ?.data
+                                ?.data
+                            : context
+                                .read<WorkLocationCubit>()
+                                .attendanceHistoryPointModel
+                                ?.data
+                                ?.data;
 
     if (attendanceData == null || attendanceData.isEmpty) {
       return Center(
@@ -1625,11 +1886,17 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                             .attendanceLeavesFloorModel
                             ?.data
                             ?.leaves
-                        : context
-                            .read<WorkLocationCubit>()
-                            .attendanceLeavesPointModel
-                            ?.data
-                            ?.leaves;
+                        : widget.selectedIndex == 4
+                            ? context
+                                .read<WorkLocationCubit>()
+                                .attendanceLeavesSectionModel
+                                ?.data
+                                ?.leaves
+                            : context
+                                .read<WorkLocationCubit>()
+                                .attendanceLeavesPointModel
+                                ?.data
+                                ?.leaves;
 
     if (attendanceData == null || attendanceData.isEmpty) {
       return Center(

@@ -97,6 +97,8 @@ class DataItem {
   String? name;
   String? number;
   String? description;
+  int? sectionId;
+  String? sectionName;
   int? floorId;
   String? floorName;
   int? buildingId;
@@ -114,6 +116,8 @@ class DataItem {
     this.name,
     this.number,
     this.description,
+    this.sectionId,
+    this.sectionName,
     this.floorId,
     this.floorName,
     this.buildingId,
@@ -132,6 +136,8 @@ class DataItem {
     name = json['name'];
     number = json['number'];
     description = json['description'];
+    sectionId = json['sectionId'];
+    sectionName = json['sectionName'];
     floorId = json['floorId'];
     floorName = json['floorName'];
     buildingId = json['buildingId'];
@@ -151,6 +157,8 @@ class DataItem {
     data['name'] = name;
     data['number'] = number;
     data['description'] = description;
+    data['sectionId'] = sectionId;
+    data['sectionName'] = sectionName;
     data['floorId'] = floorId;
     data['floorName'] = floorName;
     data['buildingId'] = buildingId;

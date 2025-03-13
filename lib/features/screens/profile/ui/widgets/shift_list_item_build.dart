@@ -19,7 +19,7 @@ Widget listShiftItemBuild(BuildContext context, index) {
               .read<ProfileCubit>()
               .userShiftDetailsModel!
               .data!
-              .shifts![index]
+              [index]
               .id);
     },
     child: Card(
@@ -50,7 +50,7 @@ Widget listShiftItemBuild(BuildContext context, index) {
                       .read<ProfileCubit>()
                       .userShiftDetailsModel!
                       .data!
-                      .shifts![index]
+                      [index]
                       .name!,
                   style: TextStyles.font16BlackSemiBold,
                 ),
@@ -92,7 +92,7 @@ Widget listShiftItemBuild(BuildContext context, index) {
                             .read<ProfileCubit>()
                             .userShiftDetailsModel!
                             .data!
-                            .shifts![index]
+                            [index]
                             .startTime!,
                         style: TextStyles.font12GreyRegular,
                       ),
@@ -105,7 +105,7 @@ Widget listShiftItemBuild(BuildContext context, index) {
                             .read<ProfileCubit>()
                             .userShiftDetailsModel!
                             .data!
-                            .shifts![index]
+                            [index]
                             .endTime!,
                         style: TextStyles.font12GreyRegular,
                       ),
@@ -128,7 +128,7 @@ Widget listShiftItemBuild(BuildContext context, index) {
                       .read<ProfileCubit>()
                       .userShiftDetailsModel!
                       .data!
-                      .shifts![index]
+                      [index]
                       .startDate!,
                   style: TextStyles.font11WhiteSemiBold
                       .copyWith(color: AppColor.primaryColor),
@@ -145,7 +145,7 @@ Widget listShiftItemBuild(BuildContext context, index) {
                       .read<ProfileCubit>()
                       .userShiftDetailsModel!
                       .data!
-                      .shifts![index]
+                      [index]
                       .endDate!,
                   style: TextStyles.font11WhiteSemiBold
                       .copyWith(color: AppColor.primaryColor),

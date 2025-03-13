@@ -32,7 +32,9 @@ Widget organizationsFilterAndDeleteBuild(
                             ? cubit.getBuilding()
                             : selectedIndex == 4
                                 ? cubit.getFloor()
-                                : cubit.getPoint();
+                                : selectedIndex == 5
+                                    ? cubit.getSection()
+                                    : cubit.getPoint();
           },
         ),
       ),
@@ -46,11 +48,9 @@ Widget organizationsFilterAndDeleteBuild(
           cubit.floorController.clear();
           cubit.buildingController.clear();
           cubit.pointController.clear();
-       
+
           CustomFilterWorkLocationDialog.show(
-            context: context,
-            selectedIndex: selectedIndex
-          );
+              context: context, selectedIndex: selectedIndex);
         },
         child: Container(
           height: 49.h,

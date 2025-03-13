@@ -19,8 +19,9 @@ class _ChooseViewWorkLocationState extends State<ChooseViewWorkLocation> {
     {'title': 'Area', 'icon': Icons.map},
     {'title': 'City', 'icon': Icons.location_city},
     {'title': 'Organizations', 'icon': Icons.business},
-    {'title': 'Building', 'icon': Icons.house},
-    {'title': 'Floor', 'icon': Icons.stairs},
+    {'title': 'Building', 'icon': Icons.home_work},
+    {'title': 'Floor', 'icon': Icons.house},
+    {'title': 'Section', 'icon': Icons.stairs},
     {'title': 'Point', 'icon': Icons.place},
   ];
 
@@ -89,9 +90,13 @@ class _ChooseViewWorkLocationState extends State<ChooseViewWorkLocation> {
                                             ? context.pushNamed(
                                                 Routes.workLocationScreen,
                                                 arguments: index)
-                                            : context.pushNamed(
-                                                Routes.workLocationScreen,
-                                                arguments: index);
+                                            : index == 5
+                                                ? context.pushNamed(
+                                                    Routes.workLocationScreen,
+                                                    arguments: index)
+                                                : context.pushNamed(
+                                                    Routes.workLocationScreen,
+                                                    arguments: index);
                       },
                     ),
                   );

@@ -57,13 +57,21 @@ Widget organizationsListItemBuild(
                                 .data![index]
                                 .id!
                                 .toInt()
-                            : context
-                                .read<WorkLocationCubit>()
-                                .pointModel!
-                                .data!
-                                .data![index]
-                                .id!
-                                .toInt(),
+                            : selectedIndex == 5
+                                ? context
+                                    .read<WorkLocationCubit>()
+                                    .sectionModel!
+                                    .data!
+                                    .data![index]
+                                    .id!
+                                    .toInt()
+                                : context
+                                    .read<WorkLocationCubit>()
+                                    .pointModel!
+                                    .data!
+                                    .data![index]
+                                    .id!
+                                    .toInt(),
         'selectedIndex': selectedIndex
       });
     },
@@ -85,10 +93,12 @@ Widget organizationsListItemBuild(
                   : selectedIndex == 2
                       ? Icons.business
                       : selectedIndex == 3
-                          ? Icons.house
+                          ? Icons.home_work
                           : selectedIndex == 4
-                              ? Icons.stairs
-                              : Icons.place,
+                              ? Icons.house
+                              : selectedIndex == 5
+                                  ? Icons.stairs
+                                  : Icons.place,
           color: AppColor.primaryColor,
         ),
         title: Text(
@@ -127,12 +137,19 @@ Widget organizationsListItemBuild(
                                   .data!
                                   .data![index]
                                   .name!
-                              : context
-                                  .read<WorkLocationCubit>()
-                                  .pointModel!
-                                  .data!
-                                  .data![index]
-                                  .name!,
+                              : selectedIndex == 5
+                                  ? context
+                                      .read<WorkLocationCubit>()
+                                      .sectionModel!
+                                      .data!
+                                      .data![index]
+                                      .name!
+                                  : context
+                                      .read<WorkLocationCubit>()
+                                      .pointModel!
+                                      .data!
+                                      .data![index]
+                                      .name!,
           style: TextStyles.font14Primarybold,
         ),
         subtitle: Text(
@@ -146,7 +163,9 @@ Widget organizationsListItemBuild(
                           ? "${context.read<WorkLocationCubit>().buildingModel!.data!.data![index].organizationName}"
                           : selectedIndex == 4
                               ? "${context.read<WorkLocationCubit>().floorModel!.data!.data![index].buildingName}"
-                              : "${context.read<WorkLocationCubit>().pointModel!.data!.data![index].floorName}",
+                              : selectedIndex == 5
+                                  ? "${context.read<WorkLocationCubit>().sectionModel!.data!.data![index].floorName}"
+                                  : "${context.read<WorkLocationCubit>().pointModel!.data!.data![index].sectionName}",
           style: TextStyles.font12GreyRegular,
         ),
         trailing: role == 'Admin'
@@ -168,7 +187,9 @@ Widget organizationsListItemBuild(
                                               ? Routes.editBuildingScreen
                                               : selectedIndex == 4
                                                   ? Routes.editFloorScreen
-                                                  : Routes.editPointScreen,
+                                                  : selectedIndex == 5
+                                                      ? Routes.editSectionScreen
+                                                      : Routes.editPointScreen,
                               arguments: selectedIndex == 0
                                   ? context
                                       .read<WorkLocationCubit>()
@@ -204,12 +225,21 @@ Widget organizationsListItemBuild(
                                                       .data!
                                                       .data![index]
                                                       .id
-                                                  : context
-                                                      .read<WorkLocationCubit>()
-                                                      .pointModel!
-                                                      .data!
-                                                      .data![index]
-                                                      .id);
+                                                  : selectedIndex == 5
+                                                      ? context
+                                                          .read<
+                                                              WorkLocationCubit>()
+                                                          .sectionModel!
+                                                          .data!
+                                                          .data![index]
+                                                          .id
+                                                      : context
+                                                          .read<
+                                                              WorkLocationCubit>()
+                                                          .pointModel!
+                                                          .data!
+                                                          .data![index]
+                                                          .id);
                         },
                         child: Icon(
                           Icons.mode_edit_outlined,
@@ -221,13 +251,12 @@ Widget organizationsListItemBuild(
                           showCustomDialog(context, 'Are you want to delete ?',
                               () {
                             selectedIndex == 0
-                                ? context.read<WorkLocationCubit>().deleteArea(
-                                    context
-                                        .read<WorkLocationCubit>()
-                                        .areaModel!
-                                        .data!
-                                        .areas![index]
-                                        .id!)
+                                ? context.read<WorkLocationCubit>().deleteArea(context
+                                    .read<WorkLocationCubit>()
+                                    .areaModel!
+                                    .data!
+                                    .areas![index]
+                                    .id!)
                                 : selectedIndex == 1
                                     ? context
                                         .read<WorkLocationCubit>()
@@ -256,24 +285,32 @@ Widget organizationsListItemBuild(
                                                     .data![index]
                                                     .id!)
                                             : selectedIndex == 4
-                                                ? context
+                                                ? context.read<WorkLocationCubit>().deleteFloor(context
                                                     .read<WorkLocationCubit>()
-                                                    .deleteFloor(context
+                                                    .floorModel!
+                                                    .data!
+                                                    .data![index]
+                                                    .id!)
+                                                : selectedIndex == 5
+                                                    ? context
                                                         .read<
                                                             WorkLocationCubit>()
-                                                        .floorModel!
-                                                        .data!
-                                                        .data![index]
-                                                        .id!)
-                                                : context
-                                                    .read<WorkLocationCubit>()
-                                                    .deletePoint(context
+                                                        .deleteSection(context
+                                                            .read<
+                                                                WorkLocationCubit>()
+                                                            .sectionModel!
+                                                            .data!
+                                                            .data![index]
+                                                            .id!)
+                                                    : context
                                                         .read<
                                                             WorkLocationCubit>()
-                                                        .pointModel!
-                                                        .data!
-                                                        .data![index]
-                                                        .id!);
+                                                        .deletePoint(context
+                                                            .read<WorkLocationCubit>()
+                                                            .pointModel!
+                                                            .data!
+                                                            .data![index]
+                                                            .id!);
 
                             context.pop();
                           });

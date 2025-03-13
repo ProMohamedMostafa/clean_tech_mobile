@@ -4,6 +4,7 @@ class BuildingDetailsModel {
   bool? succeeded;
   String? message;
   String? error;
+  String? businessErrorCode;
   Data? data;
 
   BuildingDetailsModel(
@@ -12,6 +13,7 @@ class BuildingDetailsModel {
       this.succeeded,
       this.message,
       this.error,
+      this.businessErrorCode,
       this.data});
 
   BuildingDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -20,16 +22,18 @@ class BuildingDetailsModel {
     succeeded = json['succeeded'];
     message = json['message'];
     error = json['error'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    businessErrorCode = json['businessErrorCode'];
+    data = json['data'] != null ?  Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data =  <String, dynamic>{};
     data['statusCode'] = statusCode;
     data['meta'] = meta;
     data['succeeded'] = succeeded;
     data['message'] = message;
     data['error'] = error;
+    data['businessErrorCode'] = businessErrorCode;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -78,7 +82,7 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data =  <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
     data['number'] = number;

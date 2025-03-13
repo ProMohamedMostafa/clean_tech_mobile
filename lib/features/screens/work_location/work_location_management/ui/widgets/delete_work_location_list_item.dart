@@ -56,11 +56,17 @@ Widget deleteOrganizationsListItemBuild(
                                 .deletedFloorList!
                                 .data![index]
                                 .name!
-                            : context
-                                .read<WorkLocationCubit>()
-                                .deletedPointList!
-                                .data![index]
-                                .name!,
+                            : selectedIndex == 5
+                                ? context
+                                    .read<WorkLocationCubit>()
+                                    .deletedSectionList!
+                                    .data![index]
+                                    .name!
+                                : context
+                                    .read<WorkLocationCubit>()
+                                    .deletedPointList!
+                                    .data![index]
+                                    .name!,
         style: TextStyles.font14BlackSemiBold,
       ),
       subtitle: Text(
@@ -94,11 +100,17 @@ Widget deleteOrganizationsListItemBuild(
                                 .deletedFloorList!
                                 .data![index]
                                 .buildingName!
-                            : context
-                                .read<WorkLocationCubit>()
-                                .deletedPointList!
-                                .data![index]
-                                .floorName!,
+                            : selectedIndex == 5
+                                ? context
+                                    .read<WorkLocationCubit>()
+                                    .deletedSectionList!
+                                    .data![index]
+                                    .floorName!
+                                : context
+                                    .read<WorkLocationCubit>()
+                                    .deletedPointList!
+                                    .data![index]
+                                    .sectionName!,
         style: TextStyles.font12GreyRegular,
       ),
       trailing: SizedBox(
@@ -149,13 +161,21 @@ Widget deleteOrganizationsListItemBuild(
                                                   .deletedFloorList!
                                                   .data![index]
                                                   .id!)
-                                          : context
-                                              .read<WorkLocationCubit>()
-                                              .restoreDeletedPoint(context
+                                          : selectedIndex == 5
+                                              ? context
                                                   .read<WorkLocationCubit>()
-                                                  .deletedPointList!
-                                                  .data![index]
-                                                  .id!);
+                                                  .restoreDeletedSection(context
+                                                      .read<WorkLocationCubit>()
+                                                      .deletedSectionList!
+                                                      .data![index]
+                                                      .id!)
+                                              : context
+                                                  .read<WorkLocationCubit>()
+                                                  .restoreDeletedPoint(context
+                                                      .read<WorkLocationCubit>()
+                                                      .deletedPointList!
+                                                      .data![index]
+                                                      .id!);
                       context.pop();
                     });
                   },
@@ -206,7 +226,14 @@ Widget deleteOrganizationsListItemBuild(
                                                   .deletedFloorList!
                                                   .data![index]
                                                   .id!)
-                                          : context
+                                          :selectedIndex == 5
+                                                  ? context
+                                              .read<WorkLocationCubit>()
+                                              .forcedDeletedSection(context
+                                                  .read<WorkLocationCubit>()
+                                                  .deletedSectionList!
+                                                  .data![index]
+                                                  .id!): context
                                               .read<WorkLocationCubit>()
                                               .forcedDeletedPoint(context
                                                   .read<WorkLocationCubit>()

@@ -16,8 +16,8 @@ import 'package:smart_cleaning_application/features/screens/integrations/ui/widg
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_cleaners_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_managers_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_supervisors_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/logic/add_organization_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/logic/add_organization_state.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/logic/add_work_location_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/logic/add_work_location_state.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class AddCityScreen extends StatefulWidget {
@@ -34,7 +34,7 @@ class _AddCityScreenState extends State<AddCityScreen> {
   int? areaId;
   @override
   void initState() {
-    context.read<AddOrganizationCubit>()
+    context.read<AddWorkLocationCubit>()
       ..getNationality()
       ..getManagers()
       ..getSupervisors()
@@ -52,7 +52,7 @@ class _AddCityScreenState extends State<AddCityScreen> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-            child: BlocConsumer<AddOrganizationCubit, AddOrganizationState>(
+            child: BlocConsumer<AddWorkLocationCubit, AddWorkLocationState>(
           listener: (context, state) {
             if (state is CreateCitySuccessState) {
               toast(text: state.message, color: Colors.blue);
@@ -67,7 +67,7 @@ class _AddCityScreenState extends State<AddCityScreen> {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Form(
-                key: context.read<AddOrganizationCubit>().formAddKey,
+                key: context.read<AddWorkLocationCubit>().formAddKey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,23 +98,23 @@ class _AddCityScreenState extends State<AddCityScreen> {
         CustomDropDownList(
           hint: "Select country",
           items: context
-                      .read<AddOrganizationCubit>()
+                      .read<AddWorkLocationCubit>()
                       .nationalityModel
                       ?.data
                       ?.isEmpty ??
                   true
               ? ['No country']
               : context
-                      .read<AddOrganizationCubit>()
+                      .read<AddWorkLocationCubit>()
                       .nationalityModel
                       ?.data
                       ?.map((e) => e.name ?? 'Unknown')
                       .toList() ??
                   [],
           onChanged: (value) {
-            context.read<AddOrganizationCubit>().nationalityController.text =
+            context.read<AddWorkLocationCubit>().nationalityController.text =
                 value!;
-            context.read<AddOrganizationCubit>().getArea(value);
+            context.read<AddWorkLocationCubit>().getArea(value);
           },
           validator: (value) {
             if (value == null || value.isEmpty || value == 'No country') {
@@ -124,7 +124,7 @@ class _AddCityScreenState extends State<AddCityScreen> {
           },
           suffixIcon: IconBroken.arrowDown2,
           controller:
-              context.read<AddOrganizationCubit>().nationalityController,
+              context.read<AddWorkLocationCubit>().nationalityController,
           isRead: false,
           keyboardType: TextInputType.text,
         ),
@@ -136,11 +136,11 @@ class _AddCityScreenState extends State<AddCityScreen> {
         CustomDropDownList(
           hint: "Select area",
           items:
-              context.read<AddOrganizationCubit>().areaModel?.data?.isEmpty ??
+              context.read<AddWorkLocationCubit>().areaModel?.data?.isEmpty ??
                       true
                   ? ['No area']
                   : context
-                          .read<AddOrganizationCubit>()
+                          .read<AddWorkLocationCubit>()
                           .areaModel
                           ?.data
                           ?.map((e) => e.name ?? 'Unknown')
@@ -154,16 +154,16 @@ class _AddCityScreenState extends State<AddCityScreen> {
           },
           onPressed: (value) {
             final selectedArea = context
-                .read<AddOrganizationCubit>()
+                .read<AddWorkLocationCubit>()
                 .areaModel
                 ?.data
                 ?.firstWhere((area) =>
                     area.name ==
-                    context.read<AddOrganizationCubit>().areaController.text);
+                    context.read<AddWorkLocationCubit>().areaController.text);
             areaId = selectedArea!.id!;
           },
           suffixIcon: IconBroken.arrowDown2,
-          controller: context.read<AddOrganizationCubit>().areaController,
+          controller: context.read<AddWorkLocationCubit>().areaController,
           isRead: false,
           keyboardType: TextInputType.text,
         ),
@@ -173,7 +173,7 @@ class _AddCityScreenState extends State<AddCityScreen> {
           style: TextStyles.font16BlackRegular,
         ),
         CustomTextFormField(
-          controller: context.read<AddOrganizationCubit>().addCityController,
+          controller: context.read<AddWorkLocationCubit>().addCityController,
           keyboardType: TextInputType.text,
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -189,7 +189,7 @@ class _AddCityScreenState extends State<AddCityScreen> {
           onlyRead: false,
         ),
         verticalSpace(10),
-        context.read<AddOrganizationCubit>().allManagersModel?.data == null
+        context.read<AddWorkLocationCubit>().allManagersModel?.data == null
             ? SizedBox.shrink()
             : RichText(
                 textAlign: TextAlign.center,
@@ -206,11 +206,11 @@ class _AddCityScreenState extends State<AddCityScreen> {
                   ],
                 ),
               ),
-        context.read<AddOrganizationCubit>().allManagersModel?.data == null
+        context.read<AddWorkLocationCubit>().allManagersModel?.data == null
             ? SizedBox.shrink()
             : MultiDropdown<ManagersData>(
                 items: context
-                            .read<AddOrganizationCubit>()
+                            .read<AddWorkLocationCubit>()
                             .allManagersModel
                             ?.data ==
                         null
@@ -222,7 +222,7 @@ class _AddCityScreenState extends State<AddCityScreen> {
                         )
                       ]
                     : context
-                        .read<AddOrganizationCubit>()
+                        .read<AddWorkLocationCubit>()
                         .allManagersModel!
                         .data!
                         .map((manager) => DropdownItem(
@@ -231,7 +231,7 @@ class _AddCityScreenState extends State<AddCityScreen> {
                             ))
                         .toList(),
                 controller:
-                    context.read<AddOrganizationCubit>().allmanagersController,
+                    context.read<AddWorkLocationCubit>().allmanagersController,
                 enabled: true,
                 chipDecoration: ChipDecoration(
                   backgroundColor: Colors.grey[300],
@@ -274,7 +274,7 @@ class _AddCityScreenState extends State<AddCityScreen> {
                 },
               ),
         verticalSpace(10),
-        context.read<AddOrganizationCubit>().allSupervisorsModel?.data == null
+        context.read<AddWorkLocationCubit>().allSupervisorsModel?.data == null
             ? SizedBox.shrink()
             : RichText(
                 textAlign: TextAlign.center,
@@ -291,11 +291,11 @@ class _AddCityScreenState extends State<AddCityScreen> {
                   ],
                 ),
               ),
-        context.read<AddOrganizationCubit>().allSupervisorsModel?.data == null
+        context.read<AddWorkLocationCubit>().allSupervisorsModel?.data == null
             ? SizedBox.shrink()
             : MultiDropdown<SupervisorsData>(
                 items: context
-                            .read<AddOrganizationCubit>()
+                            .read<AddWorkLocationCubit>()
                             .allSupervisorsModel
                             ?.data ==
                         null
@@ -307,7 +307,7 @@ class _AddCityScreenState extends State<AddCityScreen> {
                         )
                       ]
                     : context
-                        .read<AddOrganizationCubit>()
+                        .read<AddWorkLocationCubit>()
                         .allSupervisorsModel!
                         .data!
                         .map((supervisor) => DropdownItem(
@@ -316,7 +316,7 @@ class _AddCityScreenState extends State<AddCityScreen> {
                             ))
                         .toList(),
                 controller: context
-                    .read<AddOrganizationCubit>()
+                    .read<AddWorkLocationCubit>()
                     .allSupervisorsController,
                 enabled: true,
                 chipDecoration: ChipDecoration(
@@ -360,7 +360,7 @@ class _AddCityScreenState extends State<AddCityScreen> {
                 },
               ),
         verticalSpace(10),
-        context.read<AddOrganizationCubit>().allCleanersModel?.data == null
+        context.read<AddWorkLocationCubit>().allCleanersModel?.data == null
             ? SizedBox.shrink()
             : RichText(
                 textAlign: TextAlign.center,
@@ -377,11 +377,11 @@ class _AddCityScreenState extends State<AddCityScreen> {
                   ],
                 ),
               ),
-        context.read<AddOrganizationCubit>().allCleanersModel?.data == null
+        context.read<AddWorkLocationCubit>().allCleanersModel?.data == null
             ? SizedBox.shrink()
             : MultiDropdown<CleanersData>(
                 items: context
-                            .read<AddOrganizationCubit>()
+                            .read<AddWorkLocationCubit>()
                             .allCleanersModel
                             ?.data ==
                         null
@@ -393,7 +393,7 @@ class _AddCityScreenState extends State<AddCityScreen> {
                         )
                       ]
                     : context
-                        .read<AddOrganizationCubit>()
+                        .read<AddWorkLocationCubit>()
                         .allCleanersModel!
                         .data!
                         .map((cleaner) => DropdownItem(
@@ -402,7 +402,7 @@ class _AddCityScreenState extends State<AddCityScreen> {
                             ))
                         .toList(),
                 controller:
-                    context.read<AddOrganizationCubit>().allCleanersController,
+                    context.read<AddWorkLocationCubit>().allCleanersController,
                 enabled: true,
                 chipDecoration: ChipDecoration(
                   backgroundColor: Colors.grey[300],
@@ -458,11 +458,11 @@ class _AddCityScreenState extends State<AddCityScreen> {
             name: "Add",
             onPressed: () {
               if (context
-                  .read<AddOrganizationCubit>()
+                  .read<AddWorkLocationCubit>()
                   .formAddKey
                   .currentState!
                   .validate()) {
-                context.read<AddOrganizationCubit>().createCity(
+                context.read<AddWorkLocationCubit>().createCity(
                     areaId!,
                     selectedManagersIds,
                     selectedSupervisorsIds,

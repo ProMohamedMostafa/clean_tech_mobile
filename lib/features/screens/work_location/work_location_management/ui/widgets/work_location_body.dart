@@ -29,6 +29,7 @@ class _OrganizationsBodyState extends State<OrganizationsBody> {
     "Organizations",
     "Buildings",
     "Floors",
+    "Sections",
     "Points",
   ];
   @override
@@ -67,9 +68,14 @@ class _OrganizationsBodyState extends State<OrganizationsBody> {
         workLocationCubit.getOrganization();
         break;
       case 5:
+        workLocationCubit.getSection();
+        workLocationCubit.getAllDeletedSection();
+        workLocationCubit.getBuilding();
+        break;
+      case 6:
         workLocationCubit.getPoint();
         workLocationCubit.getAllDeletedPoint();
-        workLocationCubit.getBuilding();
+        workLocationCubit.getFloor();
         break;
       default:
         break;
@@ -105,8 +111,11 @@ class _OrganizationsBodyState extends State<OrganizationsBody> {
                                     : widget.selectedIndex == 4
                                         ? context
                                             .pushNamed(Routes.addFloorScreen)
-                                        : context
-                                            .pushNamed(Routes.addPointScreen);
+                                        : widget.selectedIndex == 4
+                                            ? context.pushNamed(
+                                                Routes.addSectionScreen)
+                                            : context.pushNamed(
+                                                Routes.addPointScreen);
                   },
                   style: ElevatedButton.styleFrom(
                     padding: REdgeInsets.all(0),
@@ -168,7 +177,14 @@ class _OrganizationsBodyState extends State<OrganizationsBody> {
             context.read<WorkLocationCubit>().getFloor();
             context.read<WorkLocationCubit>().getAllDeletedFloor();
           }
-
+          if (state is SectionErrorState) {
+            toast(text: state.error, color: Colors.red);
+          }
+          if (state is SectionDeleteSuccessState) {
+            toast(text: state.message, color: Colors.blue);
+            context.read<WorkLocationCubit>().getSection();
+            context.read<WorkLocationCubit>().getAllDeletedSection();
+          }
           if (state is PointErrorState) {
             toast(text: state.error, color: Colors.red);
           }
@@ -260,6 +276,24 @@ class _OrganizationsBodyState extends State<OrganizationsBody> {
             context.read<WorkLocationCubit>().getAllDeletedFloor();
             context.read<WorkLocationCubit>().getFloor();
           }
+
+          if (state is DeleteForceSectionSuccessState ||
+              state is DeleteRestoreSectionSuccessState) {
+            String? message;
+
+            if (state is DeleteForceSectionSuccessState) {
+              message = state.message;
+            } else if (state is DeleteRestoreSectionSuccessState) {
+              message = state.message;
+            }
+
+            if (message != null) {
+              toast(text: message, color: Colors.blue);
+            }
+            context.read<WorkLocationCubit>().getAllDeletedSection();
+            context.read<WorkLocationCubit>().getSection();
+          }
+
           if (state is DeleteForcePointSuccessState ||
               state is DeleteRestorePointSuccessState) {
             String? message;
@@ -325,6 +359,14 @@ class _OrganizationsBodyState extends State<OrganizationsBody> {
             );
           }
           if (widget.selectedIndex == 5 &&
+              context.read<WorkLocationCubit>().sectionModel == null &&
+              context.read<WorkLocationCubit>().deletedSectionList == null) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: AppColor.primaryColor,
+              ),
+            );
+          } if (widget.selectedIndex == 6 &&
               context.read<WorkLocationCubit>().pointModel == null &&
               context.read<WorkLocationCubit>().deletedPointList == null) {
             return Center(
@@ -399,6 +441,10 @@ class _OrganizationsBodyState extends State<OrganizationsBody> {
                                                 ?.data?.data?.length ??
                                             0;
                                       case 5:
+                                        return workLocationCubit.sectionModel
+                                                ?.data?.data?.length ??
+                                            0;
+                                            case 6:
                                         return workLocationCubit.pointModel
                                                 ?.data?.data?.length ??
                                             0;
@@ -434,6 +480,11 @@ class _OrganizationsBodyState extends State<OrganizationsBody> {
                                                 ?.length ??
                                             0;
                                       case 5:
+                                        return workLocationCubit
+                                                .deletedSectionList
+                                                ?.data
+                                                ?.length ??
+                                            0; case 6:
                                         return workLocationCubit
                                                 .deletedPointList
                                                 ?.data

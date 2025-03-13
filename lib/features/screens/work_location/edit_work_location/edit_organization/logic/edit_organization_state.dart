@@ -1,15 +1,11 @@
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_cleaners_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_managers_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_supervisors_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_organization/data/model/edit_organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_organization/data/model/organization_details_in_edit_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/organization_managers_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/organization_shifts_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/organization_users_shifts_details_model.dart';
 
 abstract class EditOrganizationState {}
 
@@ -58,31 +54,31 @@ class GetNationalityErrorState extends EditOrganizationState {
 
 //**************************** */
 
-class GetOrganizationAreaLoadingState extends EditOrganizationState {}
+class GetAreaLoadingState extends EditOrganizationState {}
 
-class GetOrganizationAreaSuccessState extends EditOrganizationState {
-  final AreaModel areaModel;
+class GetAreaSuccessState extends EditOrganizationState {
+  final AreaListModel areaModel;
 
-  GetOrganizationAreaSuccessState(this.areaModel);
+  GetAreaSuccessState(this.areaModel);
 }
 
-class GetOrganizationAreaErrorState extends EditOrganizationState {
+class GetAreaErrorState extends EditOrganizationState {
   final String error;
-  GetOrganizationAreaErrorState(this.error);
+  GetAreaErrorState(this.error);
 }
 //**************************** */
 
-class GetOrganizationCityLoadingState extends EditOrganizationState {}
+class GetCityLoadingState extends EditOrganizationState {}
 
-class GetOrganizationCitySuccessState extends EditOrganizationState {
-  final CityModel cityModel;
+class GetCitySuccessState extends EditOrganizationState {
+  final CityListModel cityModel;
 
-  GetOrganizationCitySuccessState(this.cityModel);
+  GetCitySuccessState(this.cityModel);
 }
 
-class GetOrganizationCityErrorState extends EditOrganizationState {
+class GetCityErrorState extends EditOrganizationState {
   final String error;
-  GetOrganizationCityErrorState(this.error);
+  GetCityErrorState(this.error);
 }
 
 //***************************** */
@@ -102,56 +98,10 @@ class GetOrganizationDetailsErrorState extends EditOrganizationState {
 
 //**************************** */
 
-
-class AllManagersLoadingState extends EditOrganizationState {}
-
-class AllManagersSuccessState extends EditOrganizationState {
-  final AllManagersModel allManagersModel;
-
-  AllManagersSuccessState(this.allManagersModel);
-}
-
-class AllManagersErrorState extends EditOrganizationState {
-  final String error;
-  AllManagersErrorState(this.error);
-}
-//**************************** */
-
-class AllSupervisorsLoadingState extends EditOrganizationState {}
-
-class AllSupervisorsSuccessState extends EditOrganizationState {
-  final AllSupervisorsModel allSupervisorsModel;
-
-  AllSupervisorsSuccessState(this.allSupervisorsModel);
-}
-
-class AllSupervisorsErrorState extends EditOrganizationState {
-  final String error;
-  AllSupervisorsErrorState(this.error);
-}
-
-//**************************** */
-
-class AllCleanersLoadingState extends EditOrganizationState {}
-
-class AllCleanersSuccessState extends EditOrganizationState {
-  final AllCleanersModel allCleanersModel;
-
-  AllCleanersSuccessState(this.allCleanersModel);
-}
-
-class AllCleanersErrorState extends EditOrganizationState {
-  final String error;
-  AllCleanersErrorState(this.error);
-}
-
-
- //********************************* */
-
 class OrganizationManagersDetailsLoadingState extends EditOrganizationState {}
 
 class OrganizationManagersDetailsSuccessState extends EditOrganizationState {
-  final OrganizationManagersDetailsModel organizationManagersDetailsModel;
+  final OrganizationUsersShiftsDetailsModel organizationManagersDetailsModel;
 
   OrganizationManagersDetailsSuccessState(
       this.organizationManagersDetailsModel);
@@ -160,20 +110,6 @@ class OrganizationManagersDetailsSuccessState extends EditOrganizationState {
 class OrganizationManagersDetailsErrorState extends EditOrganizationState {
   final String error;
   OrganizationManagersDetailsErrorState(this.error);
-}
-
-//********************************* */
-class OrganizationShiftsDetailsLoadingState extends EditOrganizationState {}
-
-class OrganizationShiftsDetailsSuccessState extends EditOrganizationState {
-  final OrganizationShiftsDetailsModel organizationShiftsDetailsModel;
-
-  OrganizationShiftsDetailsSuccessState(this.organizationShiftsDetailsModel);
-}
-
-class OrganizationShiftsDetailsErrorState extends EditOrganizationState {
-  final String error;
-  OrganizationShiftsDetailsErrorState(this.error);
 }
 
 //**************************** */

@@ -252,26 +252,20 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                         Positioned(
                           bottom: 1,
                           right: 10,
-                          child: InkWell(
-                            onTap: () {
-                              // context.read<EditUserCubit>().galleryFile();
-                            },
-                            child: Container(
-                              width: 15.w,
-                              height: 15.h,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: context
-                                              .read<UserManagementCubit>()
-                                              .userStatusModel!
-                                              .data!
-                                              .status ==
-                                          'not working'
-                                      ? Colors.red
-                                      : Colors.green,
-                                  border: Border.all(
-                                      color: Colors.white, width: 2.w)),
-                            ),
+                          child: Container(
+                            width: 15.w,
+                            height: 15.h,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: context
+                                            .read<UserManagementCubit>()
+                                            .userStatusModel!
+                                            .data ==
+                                        null
+                                    ? Colors.red
+                                    : Colors.green,
+                                border: Border.all(
+                                    color: Colors.white, width: 2.w)),
                           ),
                         )
                       ],
@@ -543,7 +537,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
   Widget userShiftsDetails() {
     final shiftModel =
         context.read<UserManagementCubit>().userShiftDetailsModel!;
-    if (shiftModel.data!.shifts == null || shiftModel.data!.shifts!.isEmpty) {
+    if (shiftModel.data == null || shiftModel.data!.isEmpty) {
       return Center(
         child: Text(
           "There's no data",
@@ -557,7 +551,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
             child: ListView.separated(
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.vertical,
-              itemCount: shiftModel.data!.shifts!.length,
+              itemCount: shiftModel.data!.length,
               separatorBuilder: (context, index) {
                 return verticalSpace(10);
               },
@@ -1104,16 +1098,11 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
     }
     PdfGridRow dataRowShift = shiftsDetails.rows.add();
     List<String> valuesShift = [
-      userShiftDetails?.shifts?.map((e) => e.name).join("\n") ??
-          "There's no data",
-      userShiftDetails?.shifts?.map((e) => e.startTime).join("\n") ??
-          "There's no data",
-      userShiftDetails?.shifts?.map((e) => e.endTime).join("\n") ??
-          "There's no data",
-      userShiftDetails?.shifts?.map((e) => e.startDate).join("\n") ??
-          "There's no data",
-      userShiftDetails?.shifts?.map((e) => e.endDate).join("\n") ??
-          "There's no data",
+      userShiftDetails?.map((e) => e.name).join("\n") ?? "There's no data",
+      userShiftDetails?.map((e) => e.startTime).join("\n") ?? "There's no data",
+      userShiftDetails?.map((e) => e.endTime).join("\n") ?? "There's no data",
+      userShiftDetails?.map((e) => e.startDate).join("\n") ?? "There's no data",
+      userShiftDetails?.map((e) => e.endDate).join("\n") ?? "There's no data",
     ];
 
 // Fill data row

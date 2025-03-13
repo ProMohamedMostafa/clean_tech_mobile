@@ -4,6 +4,7 @@ class FloorDetailsModel {
   bool? succeeded;
   String? message;
   String? error;
+  String? businessErrorCode;
   Data? data;
 
   FloorDetailsModel(
@@ -12,6 +13,7 @@ class FloorDetailsModel {
       this.succeeded,
       this.message,
       this.error,
+      this.businessErrorCode,
       this.data});
 
   FloorDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class FloorDetailsModel {
     succeeded = json['succeeded'];
     message = json['message'];
     error = json['error'];
+    businessErrorCode = json['businessErrorCode'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
@@ -30,6 +33,7 @@ class FloorDetailsModel {
     data['succeeded'] = succeeded;
     data['message'] = message;
     data['error'] = error;
+    data['businessErrorCode'] = businessErrorCode;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }

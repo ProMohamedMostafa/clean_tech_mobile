@@ -1,11 +1,8 @@
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_cleaners_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_managers_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_supervisors_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_area/data/model/area_details_in_edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_area/data/model/edit_area_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/area_managers_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/area_users_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_model.dart';
 
 abstract class EditAreaState {}
 
@@ -25,24 +22,24 @@ class EditAreaErrorState extends EditAreaState {
 
 //******************************** */
 
-class GetAreaNationalityLoadingState extends EditAreaState {}
+class GetNationalityLoadingState extends EditAreaState {}
 
-class GetAreaNationalitySuccessState extends EditAreaState {
+class GetNationalitySuccessState extends EditAreaState {
   final NationalityModel nationalitymodel;
 
-  GetAreaNationalitySuccessState(this.nationalitymodel);
+  GetNationalitySuccessState(this.nationalitymodel);
 }
 
-class GetAreaNationalityErrorState extends EditAreaState {
+class GetNationalityErrorState extends EditAreaState {
   final String error;
-  GetAreaNationalityErrorState(this.error);
+  GetNationalityErrorState(this.error);
 }
 //**************************** */
 
 class GetAreaLoadingState extends EditAreaState {}
 
 class GetAreaSuccessState extends EditAreaState {
-  final AreaModel areaModel;
+  final AreaListModel areaModel;
 
   GetAreaSuccessState(this.areaModel);
 }
@@ -66,57 +63,14 @@ class GetAreaDetailsErrorState extends EditAreaState {
   final String error;
   GetAreaDetailsErrorState(this.error);
 }
-//**************************** */
-
-class AllManagersLoadingState extends EditAreaState {}
-
-class AllManagersSuccessState extends EditAreaState {
-  final AllManagersModel allManagersModel;
-
-  AllManagersSuccessState(this.allManagersModel);
-}
-
-class AllManagersErrorState extends EditAreaState {
-  final String error;
-  AllManagersErrorState(this.error);
-}
-//**************************** */
-
-class AllSupervisorsLoadingState extends EditAreaState {}
-
-class AllSupervisorsSuccessState extends EditAreaState {
-  final AllSupervisorsModel allSupervisorsModel;
-
-  AllSupervisorsSuccessState(this.allSupervisorsModel);
-}
-
-class AllSupervisorsErrorState extends EditAreaState {
-  final String error;
-  AllSupervisorsErrorState(this.error);
-}
-
-//**************************** */
-
-class AllCleanersLoadingState extends EditAreaState {}
-
-class AllCleanersSuccessState extends EditAreaState {
-  final AllCleanersModel allCleanersModel;
-
-  AllCleanersSuccessState(this.allCleanersModel);
-}
-
-class AllCleanersErrorState extends EditAreaState {
-  final String error;
-  AllCleanersErrorState(this.error);
-}
 //******************************** */
 
 class AreaManagersDetailsLoadingState extends EditAreaState {}
 
 class AreaManagersDetailsSuccessState extends EditAreaState {
-  final AreaManagersDetailsModel areaManagersDetailsModel;
+  final AreaUsersDetailsModel areaUsersDetailsModel;
 
-  AreaManagersDetailsSuccessState(this.areaManagersDetailsModel);
+  AreaManagersDetailsSuccessState(this.areaUsersDetailsModel);
 }
 
 class AreaManagersDetailsErrorState extends EditAreaState {

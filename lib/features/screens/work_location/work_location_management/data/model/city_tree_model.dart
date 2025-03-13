@@ -141,11 +141,43 @@ class Floors {
   int? id;
   String? name;
   String? previousName;
-  List<Points>? points;
+  List<Sections>? sections;
 
-  Floors({this.id, this.name, this.previousName, this.points});
+  Floors({this.id, this.name, this.previousName, this.sections});
 
   Floors.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    previousName = json['previousName'];
+    if (json['sections'] != null) {
+      sections = <Sections>[];
+      json['sections'].forEach((v) {
+        sections!.add(Sections.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['previousName'] = previousName;
+    if (sections != null) {
+      data['sections'] = sections!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Sections {
+  int? id;
+  String? name;
+  String? previousName;
+  List<Points>? points;
+
+  Sections({this.id, this.name, this.previousName, this.points});
+
+  Sections.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     previousName = json['previousName'];
@@ -172,21 +204,92 @@ class Floors {
 class Points {
   int? id;
   String? name;
+  String? number;
+  String? description;
+  bool? isCountable;
+  double? capacity;
+  String? unit;
+  int? sectionId;
+  String? sectionName;
+  int? floorId;
   String? floorName;
+  int? buildingId;
+  String? buildingName;
+  int? organizationId;
+  String? organizationName;
+  int? cityId;
+  String? cityName;
+  int? areaId;
+  String? areaName;
+  String? countryName;
 
-  Points({this.id, this.name, this.floorName});
+  Points(
+      {this.id,
+      this.name,
+      this.number,
+      this.description,
+      this.isCountable,
+      this.capacity,
+      this.unit,
+      this.sectionId,
+      this.sectionName,
+      this.floorId,
+      this.floorName,
+      this.buildingId,
+      this.buildingName,
+      this.organizationId,
+      this.organizationName,
+      this.cityId,
+      this.cityName,
+      this.areaId,
+      this.areaName,
+      this.countryName});
 
   Points.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
+    number = json['number'];
+    description = json['description'];
+    isCountable = json['isCountable'];
+    capacity = json['capacity'];
+    unit = json['unit'];
+    sectionId = json['sectionId'];
+    sectionName = json['sectionName'];
+    floorId = json['floorId'];
     floorName = json['floorName'];
+    buildingId = json['buildingId'];
+    buildingName = json['buildingName'];
+    organizationId = json['organizationId'];
+    organizationName = json['organizationName'];
+    cityId = json['cityId'];
+    cityName = json['cityName'];
+    areaId = json['areaId'];
+    areaName = json['areaName'];
+    countryName = json['countryName'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
+    data['number'] = number;
+    data['description'] = description;
+    data['isCountable'] = isCountable;
+    data['capacity'] = capacity;
+    data['unit'] = unit;
+    data['sectionId'] = sectionId;
+    data['sectionName'] = sectionName;
+    data['floorId'] = floorId;
     data['floorName'] = floorName;
+    data['buildingId'] = buildingId;
+    data['buildingName'] = buildingName;
+    data['organizationId'] = organizationId;
+    data['organizationName'] = organizationName;
+    data['cityId'] = cityId;
+    data['cityName'] = cityName;
+    data['areaId'] = areaId;
+    data['areaName'] = areaName;
+    data['countryName'] = countryName;
     return data;
   }
 }

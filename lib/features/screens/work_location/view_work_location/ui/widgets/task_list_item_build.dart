@@ -56,12 +56,19 @@ Widget buildTaskCardItem(BuildContext context, index, selectedIndex) {
                           .data!
                           .data![index]
                           .priority!
-                      : context
-                          .read<WorkLocationCubit>()
-                          .allPointTasksModel!
-                          .data!
-                          .data![index]
-                          .priority!;
+                      : selectedIndex == 5
+                          ? context
+                              .read<WorkLocationCubit>()
+                              .allSectionTasksModel!
+                              .data!
+                              .data![index]
+                              .priority!
+                          : context
+                              .read<WorkLocationCubit>()
+                              .allPointTasksModel!
+                              .data!
+                              .data![index]
+                              .priority!;
 
   // Find the color based on the priority value
   if (priority.contains(taskPriority)) {
@@ -108,12 +115,19 @@ Widget buildTaskCardItem(BuildContext context, index, selectedIndex) {
                                   .data!
                                   .data![index]
                                   .id!
-                              : context
-                                  .read<WorkLocationCubit>()
-                                  .allPointTasksModel!
-                                  .data!
-                                  .data![index]
-                                  .id!);
+                              : selectedIndex == 5
+                                  ? context
+                                      .read<WorkLocationCubit>()
+                                      .allSectionTasksModel!
+                                      .data!
+                                      .data![index]
+                                      .id!
+                                  : context
+                                      .read<WorkLocationCubit>()
+                                      .allPointTasksModel!
+                                      .data!
+                                      .data![index]
+                                      .id!);
     },
     child: Card(
       elevation: 1,
@@ -183,12 +197,19 @@ Widget buildTaskCardItem(BuildContext context, index, selectedIndex) {
                                               .data!
                                               .data![index]
                                               .priority!
-                                          : context
-                                              .read<WorkLocationCubit>()
-                                              .allPointTasksModel!
-                                              .data!
-                                              .data![index]
-                                              .priority!,
+                                          : selectedIndex == 5
+                                              ? context
+                                                  .read<WorkLocationCubit>()
+                                                  .allSectionTasksModel!
+                                                  .data!
+                                                  .data![index]
+                                                  .priority!
+                                              : context
+                                                  .read<WorkLocationCubit>()
+                                                  .allPointTasksModel!
+                                                  .data!
+                                                  .data![index]
+                                                  .priority!,
                       style: TextStyles.font11WhiteSemiBold.copyWith(
                         color: priorityColorForTask,
                       ),
@@ -241,12 +262,19 @@ Widget buildTaskCardItem(BuildContext context, index, selectedIndex) {
                                               .data!
                                               .data![index]
                                               .status!
-                                          : context
-                                              .read<WorkLocationCubit>()
-                                              .allPointTasksModel!
-                                              .data!
-                                              .data![index]
-                                              .status!,
+                                          : selectedIndex == 5
+                                              ? context
+                                                  .read<WorkLocationCubit>()
+                                                  .allSectionTasksModel!
+                                                  .data!
+                                                  .data![index]
+                                                  .status!
+                                              : context
+                                                  .read<WorkLocationCubit>()
+                                                  .allPointTasksModel!
+                                                  .data!
+                                                  .data![index]
+                                                  .status!,
                       style: TextStyles.font11WhiteSemiBold
                           .copyWith(color: AppColor.primaryColor),
                     ),
@@ -293,12 +321,19 @@ Widget buildTaskCardItem(BuildContext context, index, selectedIndex) {
                                                   .data!
                                                   .data![index]
                                                   .id!
-                                              : context
-                                                  .read<WorkLocationCubit>()
-                                                  .allPointTasksModel!
-                                                  .data!
-                                                  .data![index]
-                                                  .id!);
+                                              : selectedIndex == 5
+                                                  ? context
+                                                      .read<WorkLocationCubit>()
+                                                      .allSectionTasksModel!
+                                                      .data!
+                                                      .data![index]
+                                                      .id!
+                                                  : context
+                                                      .read<WorkLocationCubit>()
+                                                      .allPointTasksModel!
+                                                      .data!
+                                                      .data![index]
+                                                      .id!);
                     },
                     icon: Icon(
                       Icons.more_horiz_rounded,
@@ -343,12 +378,19 @@ Widget buildTaskCardItem(BuildContext context, index, selectedIndex) {
                                       .data!
                                       .data![index]
                                       .title!
-                                  : context
-                                      .read<WorkLocationCubit>()
-                                      .allPointTasksModel!
-                                      .data!
-                                      .data![index]
-                                      .title!,
+                                  : selectedIndex == 5
+                                      ? context
+                                          .read<WorkLocationCubit>()
+                                          .allSectionTasksModel!
+                                          .data!
+                                          .data![index]
+                                          .title!
+                                      : context
+                                          .read<WorkLocationCubit>()
+                                          .allPointTasksModel!
+                                          .data!
+                                          .data![index]
+                                          .title!,
               style: TextStyles.font16BlackSemiBold,
             ),
             verticalSpace(10),
@@ -388,12 +430,19 @@ Widget buildTaskCardItem(BuildContext context, index, selectedIndex) {
                                       .data!
                                       .data![index]
                                       .description!
-                                  : context
-                                      .read<WorkLocationCubit>()
-                                      .allPointTasksModel!
-                                      .data!
-                                      .data![index]
-                                      .description!,
+                                  : selectedIndex == 5
+                                      ? context
+                                          .read<WorkLocationCubit>()
+                                          .allSectionTasksModel!
+                                          .data!
+                                          .data![index]
+                                          .description!
+                                      : context
+                                          .read<WorkLocationCubit>()
+                                          .allPointTasksModel!
+                                          .data!
+                                          .data![index]
+                                          .description!,
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
               style: TextStyles.font11GreyMedium,
@@ -443,12 +492,19 @@ Widget buildTaskCardItem(BuildContext context, index, selectedIndex) {
                                           .data!
                                           .data![index]
                                           .startTime!
-                                      : context
-                                          .read<WorkLocationCubit>()
-                                          .allPointTasksModel!
-                                          .data!
-                                          .data![index]
-                                          .startTime!,
+                                      : selectedIndex == 5
+                                          ? context
+                                              .read<WorkLocationCubit>()
+                                              .allSectionTasksModel!
+                                              .data!
+                                              .data![index]
+                                              .startTime!
+                                          : context
+                                              .read<WorkLocationCubit>()
+                                              .allPointTasksModel!
+                                              .data!
+                                              .data![index]
+                                              .startTime!,
                   style: TextStyles.font11WhiteSemiBold
                       .copyWith(color: AppColor.primaryColor),
                 ),

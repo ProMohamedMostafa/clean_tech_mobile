@@ -4,6 +4,7 @@ class PointDetailsModel {
   bool? succeeded;
   String? message;
   String? error;
+  String? businessErrorCode;
   Data? data;
 
   PointDetailsModel(
@@ -12,6 +13,7 @@ class PointDetailsModel {
       this.succeeded,
       this.message,
       this.error,
+      this.businessErrorCode,
       this.data});
 
   PointDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class PointDetailsModel {
     succeeded = json['succeeded'];
     message = json['message'];
     error = json['error'];
+    businessErrorCode = json['businessErrorCode'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
@@ -30,6 +33,7 @@ class PointDetailsModel {
     data['succeeded'] = succeeded;
     data['message'] = message;
     data['error'] = error;
+    data['businessErrorCode'] = businessErrorCode;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -42,6 +46,11 @@ class Data {
   String? name;
   String? number;
   String? description;
+  bool? isCountable;
+  double? capacity;
+  String? unit;
+  int? sectionId;
+  String? sectionName;
   int? floorId;
   String? floorName;
   int? buildingId;
@@ -59,6 +68,11 @@ class Data {
       this.name,
       this.number,
       this.description,
+      this.isCountable,
+      this.capacity,
+      this.unit,
+      this.sectionId,
+      this.sectionName,
       this.floorId,
       this.floorName,
       this.buildingId,
@@ -76,6 +90,11 @@ class Data {
     name = json['name'];
     number = json['number'];
     description = json['description'];
+    isCountable = json['isCountable'];
+    capacity = json['capacity'];
+    unit = json['unit'];
+    sectionId = json['sectionId'];
+    sectionName = json['sectionName'];
     floorId = json['floorId'];
     floorName = json['floorName'];
     buildingId = json['buildingId'];
@@ -95,6 +114,11 @@ class Data {
     data['name'] = name;
     data['number'] = number;
     data['description'] = description;
+    data['isCountable'] = isCountable;
+    data['capacity'] = capacity;
+    data['unit'] = unit;
+    data['sectionId'] = sectionId;
+    data['sectionName'] = sectionName;
     data['floorId'] = floorId;
     data['floorName'] = floorName;
     data['buildingId'] = buildingId;

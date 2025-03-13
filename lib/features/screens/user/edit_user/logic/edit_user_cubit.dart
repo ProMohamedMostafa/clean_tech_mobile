@@ -101,7 +101,7 @@ class EditUserCubit extends Cubit<EditUserState> {
       "countryName": countryController.text.isEmpty
           ? userDetailsModel!.data!.countryName
           : countryController.text,
-      "role": roleController.text.isEmpty
+      "RoleId": roleController.text.isEmpty
           ? getRoleId(userDetailsModel!.data!.role!)
           : roleIdController.text,
       "managerId": managerIdController.text.isEmpty
@@ -113,7 +113,7 @@ class EditUserCubit extends Cubit<EditUserState> {
       "providerId": providerController.text.isEmpty
           ? userDetailsModel!.data!.providerId
           : providerIdController.text,
-      "ShiftsIds": selectedShiftsIds ?? userShiftDetailsModel!.data!.shifts,
+      "ShiftsIds": selectedShiftsIds ?? userShiftDetailsModel!.data!,
     };
 
     FormData formData = FormData.fromMap(formDataMap);

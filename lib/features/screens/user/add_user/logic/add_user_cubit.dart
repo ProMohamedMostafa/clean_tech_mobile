@@ -71,7 +71,7 @@ class AddUserCubit extends Cubit<AddUserState> {
       "iDNumber": idNumberController.text,
       "nationalityName": nationalityController.text,
       "countryName": countryController.text,
-      "role": roleIdController.text,
+      "RoleId": roleIdController.text,
       "managerId": managerIdController.text,
       "gender": genderIdController.text,
       "providerId": providerIdController.text,

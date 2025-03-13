@@ -6,7 +6,7 @@ import 'package:smart_cleaning_application/features/screens/work_location/work_l
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/ui/widgets/work_location_list_item_build.dart';
 
 Widget organizationDetailsBuild(BuildContext context, int selectedIndex) {
-  final organizationData = selectedIndex == 0
+  final workLocationData = selectedIndex == 0
       ? context.read<WorkLocationCubit>().areaModel?.data?.areas
       : selectedIndex == 1
           ? context.read<WorkLocationCubit>().cityModel?.data?.data
@@ -16,13 +16,19 @@ Widget organizationDetailsBuild(BuildContext context, int selectedIndex) {
                   ? context.read<WorkLocationCubit>().buildingModel?.data?.data
                   : selectedIndex == 4
                       ? context.read<WorkLocationCubit>().floorModel?.data?.data
-                      : context
-                          .read<WorkLocationCubit>()
-                          .pointModel
-                          ?.data
-                          ?.data;
+                      : selectedIndex == 5
+                          ? context
+                              .read<WorkLocationCubit>()
+                              .sectionModel
+                              ?.data
+                              ?.data
+                          : context
+                              .read<WorkLocationCubit>()
+                              .pointModel
+                              ?.data
+                              ?.data;
 
-  if (organizationData == null || organizationData.isEmpty) {
+  if (workLocationData == null || workLocationData.isEmpty) {
     return Center(
       child: Text(
         "There's no data",
@@ -34,7 +40,7 @@ Widget organizationDetailsBuild(BuildContext context, int selectedIndex) {
       shrinkWrap: true,
       physics: const ClampingScrollPhysics(),
       scrollDirection: Axis.vertical,
-      itemCount: organizationData.length,
+      itemCount: workLocationData.length,
       separatorBuilder: (context, index) {
         return verticalSpace(10);
       },

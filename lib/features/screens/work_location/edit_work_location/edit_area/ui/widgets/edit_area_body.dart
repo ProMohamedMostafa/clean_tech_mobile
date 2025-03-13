@@ -14,9 +14,7 @@ import 'package:smart_cleaning_application/core/widgets/default_toast/default_to
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_cleaners_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_managers_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_supervisors_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/area_users_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_area/logic/edit_area_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_area/logic/edit_area_state.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
@@ -37,11 +35,7 @@ class _EditAreaBodyState extends State<EditAreaBody> {
   void initState() {
     context.read<EditAreaCubit>().getAreaDetailsInEdit(widget.id);
     context.read<EditAreaCubit>().getAreaManagersDetails(widget.id);
-    context.read<EditAreaCubit>()
-      ..getNationality()
-      ..getManagers()
-      ..getSupervisors()
-      ..getCleaners();
+    context.read<EditAreaCubit>().getNationality();
 
     super.initState();
   }
@@ -67,8 +61,7 @@ class _EditAreaBodyState extends State<EditAreaBody> {
           },
           builder: (context, state) {
             final cubit = context.read<EditAreaCubit>();
-            if (cubit.areaManagersDetailsModel == null ||
-                cubit.areaDetailsInEditModel == null) {
+            if (cubit.areaDetailsInEditModel == null) {
               return const Center(
                 child: CircularProgressIndicator(color: AppColor.primaryColor),
               );
@@ -112,7 +105,7 @@ class _EditAreaBodyState extends State<EditAreaBody> {
                                 .read<EditAreaCubit>()
                                 .nationalityController
                                 .text = value;
-                            context.read<EditAreaCubit>().getArea(value);
+                            context.read<EditAreaCubit>().getAreas(value);
                           },
                           suffixIcon: IconBroken.arrowDown2,
                           controller: context
@@ -155,7 +148,7 @@ class _EditAreaBodyState extends State<EditAreaBody> {
                         verticalSpace(10),
                         context
                                     .read<EditAreaCubit>()
-                                    .areaManagersDetailsModel
+                                    .areaUsersDetailsModel
                                     ?.data ==
                                 null
                             ? SizedBox.shrink()
@@ -176,20 +169,22 @@ class _EditAreaBodyState extends State<EditAreaBody> {
                               ),
                         context
                                     .read<EditAreaCubit>()
-                                    .areaManagersDetailsModel
+                                    .areaUsersDetailsModel
                                     ?.data ==
                                 null
                             ? SizedBox.shrink()
-                            : MultiDropdown<ManagersData>(
+                            : MultiDropdown<Users>(
                                 items: context
-                                            .read<EditAreaCubit>()
-                                            .allManagersModel
-                                            ?.data ==
-                                        null
+                                        .read<EditAreaCubit>()
+                                        .areaUsersDetailsModel!
+                                        .data!
+                                        .users!
+                                        .where((user) => user.role == 'Manager')
+                                        .isEmpty
                                     ? [
                                         DropdownItem(
                                           label: 'No managers available',
-                                          value: ManagersData(
+                                          value: Users(
                                               id: null,
                                               userName:
                                                   'No managers available'),
@@ -197,8 +192,10 @@ class _EditAreaBodyState extends State<EditAreaBody> {
                                       ]
                                     : context
                                         .read<EditAreaCubit>()
-                                        .allManagersModel!
+                                        .areaUsersDetailsModel!
                                         .data!
+                                        .users!
+                                        .where((user) => user.role == 'Manager')
                                         .map((manager) => DropdownItem(
                                               label: manager.userName!,
                                               value: manager,
@@ -215,11 +212,12 @@ class _EditAreaBodyState extends State<EditAreaBody> {
                                   spacing: 5,
                                 ),
                                 fieldDecoration: FieldDecoration(
-                                  hintText: context
-                                      .read<EditAreaCubit>()
-                                      .areaManagersDetailsModel!
-                                      .data!
-                                      .managers!
+                                  hintText:  context
+                                        .read<EditAreaCubit>()
+                                        .areaUsersDetailsModel!
+                                        .data!
+                                        .users!
+                                        .where((user) => user.role == 'Manager')
                                       .map((manager) => manager.userName)
                                       .join(', '),
                                   suffixIcon: Icon(IconBroken.arrowDown2),
@@ -261,7 +259,7 @@ class _EditAreaBodyState extends State<EditAreaBody> {
                         verticalSpace(10),
                         context
                                     .read<EditAreaCubit>()
-                                    .allSupervisorsModel
+                                    .areaUsersDetailsModel
                                     ?.data ==
                                 null
                             ? SizedBox.shrink()
@@ -282,29 +280,32 @@ class _EditAreaBodyState extends State<EditAreaBody> {
                               ),
                         context
                                     .read<EditAreaCubit>()
-                                    .allSupervisorsModel
+                                    .areaUsersDetailsModel
                                     ?.data ==
                                 null
                             ? SizedBox.shrink()
-                            : MultiDropdown<SupervisorsData>(
-                                items: context
-                                            .read<EditAreaCubit>()
-                                            .allSupervisorsModel
-                                            ?.data ==
-                                        null
+                            : MultiDropdown<Users>(
+                                items:  context
+                                        .read<EditAreaCubit>()
+                                        .areaUsersDetailsModel!
+                                        .data!
+                                        .users!
+                                        .where((user) => user.role == 'Supervisor').isEmpty
                                     ? [
                                         DropdownItem(
                                           label: 'No supervisors available',
-                                          value: SupervisorsData(
+                                          value: Users(
                                               id: null,
                                               userName:
                                                   'No supervisors available'),
                                         )
                                       ]
-                                    : context
+                                    :  context
                                         .read<EditAreaCubit>()
-                                        .allSupervisorsModel!
+                                        .areaUsersDetailsModel!
                                         .data!
+                                        .users!
+                                        .where((user) => user.role == 'Supervisor')
                                         .map((supervisor) => DropdownItem(
                                               label: supervisor.userName!,
                                               value: supervisor,
@@ -321,11 +322,12 @@ class _EditAreaBodyState extends State<EditAreaBody> {
                                   spacing: 5,
                                 ),
                                 fieldDecoration: FieldDecoration(
-                                  hintText: context
-                                      .read<EditAreaCubit>()
-                                      .areaManagersDetailsModel!
-                                      .data!
-                                      .supervisors!
+                                  hintText:  context
+                                        .read<EditAreaCubit>()
+                                        .areaUsersDetailsModel!
+                                        .data!
+                                        .users!
+                                        .where((user) => user.role == 'Supervisor')
                                       .map((supervisor) => supervisor.userName)
                                       .join(', '),
                                   suffixIcon: Icon(IconBroken.arrowDown2),
@@ -367,7 +369,7 @@ class _EditAreaBodyState extends State<EditAreaBody> {
                         verticalSpace(10),
                         context
                                     .read<EditAreaCubit>()
-                                    .areaManagersDetailsModel
+                                    .areaUsersDetailsModel
                                     ?.data ==
                                 null
                             ? SizedBox.shrink()
@@ -388,29 +390,32 @@ class _EditAreaBodyState extends State<EditAreaBody> {
                               ),
                         context
                                     .read<EditAreaCubit>()
-                                    .areaManagersDetailsModel
+                                    .areaUsersDetailsModel
                                     ?.data ==
                                 null
                             ? SizedBox.shrink()
-                            : MultiDropdown<CleanersData>(
+                            : MultiDropdown<Users>(
                                 items: context
-                                            .read<EditAreaCubit>()
-                                            .allCleanersModel
-                                            ?.data ==
-                                        null
+                                        .read<EditAreaCubit>()
+                                        .areaUsersDetailsModel!
+                                        .data!
+                                        .users!
+                                        .where((user) => user.role == 'Cleaner').isEmpty
                                     ? [
                                         DropdownItem(
                                           label: 'No cleaners available',
-                                          value: CleanersData(
+                                          value: Users(
                                               id: null,
                                               userName:
                                                   'No cleaners available'),
                                         )
                                       ]
-                                    : context
+                                    :  context
                                         .read<EditAreaCubit>()
-                                        .allCleanersModel!
+                                        .areaUsersDetailsModel!
                                         .data!
+                                        .users!
+                                        .where((user) => user.role == 'Cleaner')
                                         .map((cleaner) => DropdownItem(
                                               label: cleaner.userName!,
                                               value: cleaner,
@@ -427,11 +432,12 @@ class _EditAreaBodyState extends State<EditAreaBody> {
                                   spacing: 5,
                                 ),
                                 fieldDecoration: FieldDecoration(
-                                  hintText: context
-                                      .read<EditAreaCubit>()
-                                      .areaManagersDetailsModel!
-                                      .data!
-                                      .cleaners!
+                                  hintText:  context
+                                        .read<EditAreaCubit>()
+                                        .areaUsersDetailsModel!
+                                        .data!
+                                        .users!
+                                        .where((user) => user.role == 'Cleaner')
                                       .map((cleaner) => cleaner.userName)
                                       .join(', '),
                                   suffixIcon: Icon(IconBroken.arrowDown2),

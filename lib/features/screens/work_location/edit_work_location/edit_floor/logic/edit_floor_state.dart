@@ -1,16 +1,12 @@
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_cleaners_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_managers_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_supervisors_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_floor/data/model/edit_floor_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_floor/data/model/floor_details_in_edit_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/floor_managers_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/floor_shifts_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/floor_users_shifts_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
 
 abstract class EditFloorState {}
 
@@ -47,7 +43,7 @@ class GetNationalityErrorState extends EditFloorState {
 class GetAreaLoadingState extends EditFloorState {}
 
 class GetAreaSuccessState extends EditFloorState {
-  final AreaModel areaModel;
+  final AreaListModel areaModel;
 
   GetAreaSuccessState(this.areaModel);
 }
@@ -61,7 +57,7 @@ class GetAreaErrorState extends EditFloorState {
 class GetCityLoadingState extends EditFloorState {}
 
 class GetCitySuccessState extends EditFloorState {
-  final CityModel cityModel;
+  final CityListModel cityModel;
 
   GetCitySuccessState(this.cityModel);
 }
@@ -72,24 +68,24 @@ class GetCityErrorState extends EditFloorState {
 }
 
 //**************************** */
-class GetOrganizationsLoadingState extends EditFloorState {}
+class GetOrganizationLoadingState extends EditFloorState {}
 
-class GetOrganizationsSuccessState extends EditFloorState {
-  final OrganizationModel organizationModel;
+class GetOrganizationSuccessState extends EditFloorState {
+  final OrganizationListModel organizationModel;
 
-  GetOrganizationsSuccessState(this.organizationModel);
+  GetOrganizationSuccessState(this.organizationModel);
 }
 
-class GetOrganizationsErrorState extends EditFloorState {
+class GetOrganizationErrorState extends EditFloorState {
   final String error;
-  GetOrganizationsErrorState(this.error);
+  GetOrganizationErrorState(this.error);
 }
 //**************************** */
 
 class GetBuildingLoadingState extends EditFloorState {}
 
 class GetBuildingSuccessState extends EditFloorState {
-  final BuildingModel buildingModel;
+  final BuildingListModel buildingModel;
 
   GetBuildingSuccessState(this.buildingModel);
 }
@@ -115,50 +111,6 @@ class GetFloorDetailsErrorState extends EditFloorState {
 }
 //**************************** */
 
-class AllManagersLoadingState extends EditFloorState {}
-
-class AllManagersSuccessState extends EditFloorState {
-  final AllManagersModel allManagersModel;
-
-  AllManagersSuccessState(this.allManagersModel);
-}
-
-class AllManagersErrorState extends EditFloorState {
-  final String error;
-  AllManagersErrorState(this.error);
-}
-//**************************** */
-
-class AllSupervisorsLoadingState extends EditFloorState {}
-
-class AllSupervisorsSuccessState extends EditFloorState {
-  final AllSupervisorsModel allSupervisorsModel;
-
-  AllSupervisorsSuccessState(this.allSupervisorsModel);
-}
-
-class AllSupervisorsErrorState extends EditFloorState {
-  final String error;
-  AllSupervisorsErrorState(this.error);
-}
-
-//**************************** */
-
-class AllCleanersLoadingState extends EditFloorState {}
-
-class AllCleanersSuccessState extends EditFloorState {
-  final AllCleanersModel allCleanersModel;
-
-  AllCleanersSuccessState(this.allCleanersModel);
-}
-
-class AllCleanersErrorState extends EditFloorState {
-  final String error;
-  AllCleanersErrorState(this.error);
-}
-
-//**************************** */
-
 class ShiftLoadingState extends EditFloorState {}
 
 class ShiftSuccessState extends EditFloorState {
@@ -175,9 +127,9 @@ class ShiftErrorState extends EditFloorState {
 class FloorManagersDetailsLoadingState extends EditFloorState {}
 
 class FloorManagersDetailsSuccessState extends EditFloorState {
-  final FloorManagersDetailsModel floorManagersDetailsModel;
+  final FloorUsersShiftsDetailsModel floorUsersShiftsDetailsModel;
 
-  FloorManagersDetailsSuccessState(this.floorManagersDetailsModel);
+  FloorManagersDetailsSuccessState(this.floorUsersShiftsDetailsModel);
 }
 
 class FloorManagersDetailsErrorState extends EditFloorState {
@@ -185,16 +137,4 @@ class FloorManagersDetailsErrorState extends EditFloorState {
   FloorManagersDetailsErrorState(this.error);
 }
 
-//********************************* */
-class FloorShiftsDetailsLoadingState extends EditFloorState {}
 
-class FloorShiftsDetailsSuccessState extends EditFloorState {
-  final FloorShiftsDetailsModel floorShiftsDetailsModel;
-
-  FloorShiftsDetailsSuccessState(this.floorShiftsDetailsModel);
-}
-
-class FloorShiftsDetailsErrorState extends EditFloorState {
-  final String error;
-  FloorShiftsDetailsErrorState(this.error);
-}

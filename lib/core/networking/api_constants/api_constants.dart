@@ -14,6 +14,7 @@ class ApiConstants {
   static const organizationEditUrl = "organizations/edit";
   static const buildingEditUrl = "buildings/edit";
   static const floorEditUrl = "floors/edit";
+  static const sectionEditUrl = "section/edit";
   static const pointEditUrl = "points/edit";
   static const deleteUserListUrl = "users/deleted/index";
   static const deletedProvidersListUrl = "providers/deleted/index";
@@ -30,6 +31,7 @@ class ApiConstants {
   static const organizationUrl = "organizations/pagination";
   static const buildingUrl = "buildings/pagination";
   static const floorUrl = "floors/pagination";
+  static const sectionUrl = "sections/pagination";
   static const pointUrl = "points/pagination";
 
   static const allDeletedAreaList = '/areas/deleted/index';
@@ -37,6 +39,7 @@ class ApiConstants {
   static const allDeletedOrganizationList = '/organizations/deleted/index';
   static const allDeletedBuildingList = '/buildings/deleted/index';
   static const allDeletedFloorList = '/floors/deleted/index';
+  static const allDeletedSectionList = '/sections/deleted/index';
   static const allDeletedPointList = '/points/deleted/index';
 
   static const createShiftUrl = "shifts/create";

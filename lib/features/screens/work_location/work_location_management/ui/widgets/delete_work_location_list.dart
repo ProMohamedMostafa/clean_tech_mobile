@@ -11,24 +11,23 @@ Widget deleteOrganizationListBuild(BuildContext context, int selectedIndex) {
       : selectedIndex == 1
           ? context.read<WorkLocationCubit>().deletedCityList?.data!
           : selectedIndex == 2
-              ? context
-                  .read<WorkLocationCubit>()
-                  .deletedOrganizationList
-                  ?.data!
+              ? context.read<WorkLocationCubit>().deletedOrganizationList?.data!
               : selectedIndex == 3
-                  ? context
-                      .read<WorkLocationCubit>()
-                      .deletedBuildingList
-                      ?.data!
+                  ? context.read<WorkLocationCubit>().deletedBuildingList?.data!
                   : selectedIndex == 4
                       ? context
                           .read<WorkLocationCubit>()
                           .deletedFloorList
                           ?.data!
-                      : context
-                          .read<WorkLocationCubit>()
-                          .deletedPointList
-                          ?.data!;
+                      : selectedIndex == 5
+                          ? context
+                              .read<WorkLocationCubit>()
+                              .deletedSectionList
+                              ?.data!
+                          : context
+                              .read<WorkLocationCubit>()
+                              .deletedPointList
+                              ?.data!;
 
   if (deletedListData == null || deletedListData.isEmpty) {
     return Center(
@@ -43,16 +42,15 @@ Widget deleteOrganizationListBuild(BuildContext context, int selectedIndex) {
       physics: const ClampingScrollPhysics(),
       scrollDirection: Axis.vertical,
       itemCount: deletedListData.length,
-           separatorBuilder: (context, index) {
-                return verticalSpace(10);
-              },
+      separatorBuilder: (context, index) {
+        return verticalSpace(10);
+      },
       itemBuilder: (context, index) {
         return Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             deleteOrganizationsListItemBuild(context, selectedIndex, index),
-            
           ],
         );
       },
