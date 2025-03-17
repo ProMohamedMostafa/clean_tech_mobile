@@ -284,22 +284,22 @@ class CustomFilterAttedanceDialog {
                         items: context
                                     .read<UserManagementCubit>()
                                     .cityModel
-                                    ?.data
+                                    ?.data?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No cities']
                             : context
                                     .read<UserManagementCubit>()
                                     .cityModel
-                                    ?.data
+                                    ?.data?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
                         onPressed: (value) {
                           final selectedCity = context
                               .read<UserManagementCubit>()
-                              .cityModel
-                              ?.data
+                            .cityModel
+                                    ?.data?.data
                               ?.firstWhere((city) =>
                                   city.name ==
                                   context
@@ -327,14 +327,14 @@ class CustomFilterAttedanceDialog {
                         items: context
                                     .read<UserManagementCubit>()
                                     .organizationModel
-                                    ?.data
+                                    ?.data?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No organizations']
                             : context
                                     .read<UserManagementCubit>()
                                     .organizationModel
-                                    ?.data
+                                     ?.data?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
@@ -342,7 +342,7 @@ class CustomFilterAttedanceDialog {
                           final selectedOrganization = context
                               .read<UserManagementCubit>()
                               .organizationModel
-                              ?.data
+                         ?.data?.data
                               ?.firstWhere((organization) =>
                                   organization.name ==
                                   context
@@ -371,14 +371,14 @@ class CustomFilterAttedanceDialog {
                         items: context
                                     .read<UserManagementCubit>()
                                     .buildingModel
-                                    ?.data
+                               ?.data?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No building']
                             : context
                                     .read<UserManagementCubit>()
                                     .buildingModel
-                                    ?.data
+                               ?.data?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
@@ -386,7 +386,7 @@ class CustomFilterAttedanceDialog {
                           final selectedBuilding = context
                               .read<UserManagementCubit>()
                               .buildingModel
-                              ?.data
+                         ?.data?.data
                               ?.firstWhere((building) =>
                                   building.name ==
                                   context
@@ -415,14 +415,14 @@ class CustomFilterAttedanceDialog {
                         items: context
                                     .read<UserManagementCubit>()
                                     .floorModel
-                                    ?.data
+                               ?.data?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No floors']
                             : context
                                     .read<UserManagementCubit>()
                                     .floorModel
-                                    ?.data
+                               ?.data?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
@@ -430,7 +430,7 @@ class CustomFilterAttedanceDialog {
                           final selectedFloor = context
                               .read<UserManagementCubit>()
                               .floorModel
-                              ?.data
+                         ?.data?.data
                               ?.firstWhere((floor) =>
                                   floor.name ==
                                   context
@@ -440,7 +440,7 @@ class CustomFilterAttedanceDialog {
 
                           context
                               .read<UserManagementCubit>()
-                              .getPoints(selectedFloor!.id!);
+                              .getPoint(selectedFloor!.id!);
                           floorId = selectedFloor.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
@@ -457,23 +457,23 @@ class CustomFilterAttedanceDialog {
                         hint: "Select point",
                         items: context
                                     .read<UserManagementCubit>()
-                                    .pointsModel
-                                    ?.data
+                                    .pointModel
+                               ?.data?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No point']
                             : context
                                     .read<UserManagementCubit>()
-                                    .pointsModel
-                                    ?.data
+                                    .pointModel
+                               ?.data?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
                         onPressed: (value) {
                           final selectedPoint = context
                               .read<UserManagementCubit>()
-                              .pointsModel
-                              ?.data
+                              .pointModel
+                         ?.data?.data
                               ?.firstWhere((point) =>
                                   point.name ==
                                   context
@@ -483,7 +483,7 @@ class CustomFilterAttedanceDialog {
 
                           context
                               .read<UserManagementCubit>()
-                              .getPoints(selectedPoint!.id!);
+                              .getPoint(selectedPoint!.id!);
                           pointId = selectedPoint.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
@@ -502,8 +502,8 @@ class CustomFilterAttedanceDialog {
                           items: context
                                       .read<UserManagementCubit>()
                                       .providersModel
-                                      ?.data
-                                      ?.data
+                                 ?.data?.data
+                                    
                                       ?.isEmpty ??
                                   true
                               ? ['No providers available']

@@ -1,12 +1,6 @@
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/data/models/attendance_history_model.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/data/models/attendance_leaves_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_area_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/points_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
@@ -17,6 +11,12 @@ import 'package:smart_cleaning_application/features/screens/user/user_managment/
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_status_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_task_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_work_location_details.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/point_model.dart';
 
 abstract class ProfileState {}
 
@@ -193,7 +193,7 @@ class RoleErrorState extends ProfileState {
 class GetAreaLoadingState extends ProfileState {}
 
 class GetAreaSuccessState extends ProfileState {
-  final AreaModel areaModel;
+  final AreaListModel areaModel;
 
   GetAreaSuccessState(this.areaModel);
 }
@@ -207,7 +207,7 @@ class GetAreaErrorState extends ProfileState {
 class GetCityLoadingState extends ProfileState {}
 
 class GetCitySuccessState extends ProfileState {
-  final CityModel cityModel;
+  final CityListModel cityModel;
 
   GetCitySuccessState(this.cityModel);
 }
@@ -219,7 +219,7 @@ class GetCityErrorState extends ProfileState {
 class GetOrganizationLoadingState extends ProfileState {}
 
 class GetOrganizationSuccessState extends ProfileState {
-  final OrganizationModel organizationModel;
+  final OrganizationListModel organizationModel;
 
   GetOrganizationSuccessState(this.organizationModel);
 }
@@ -233,7 +233,7 @@ class GetOrganizationErrorState extends ProfileState {
 class GetBuildingLoadingState extends ProfileState {}
 
 class GetBuildingSuccessState extends ProfileState {
-  final BuildingModel buildingModel;
+  final BuildingListModel buildingModel;
 
   GetBuildingSuccessState(this.buildingModel);
 }
@@ -247,7 +247,7 @@ class GetBuildingErrorState extends ProfileState {
 class GetFloorLoadingState extends ProfileState {}
 
 class GetFloorSuccessState extends ProfileState {
-  final FloorModel floorModel;
+  final FloorListModel floorModel;
 
   GetFloorSuccessState(this.floorModel);
 }
@@ -261,7 +261,7 @@ class GetFloorErrorState extends ProfileState {
 class GetPointsLoadingState extends ProfileState {}
 
 class GetPointsSuccessState extends ProfileState {
-  final PointsModel pointsModel;
+  final PointListModel pointsModel;
 
   GetPointsSuccessState(this.pointsModel);
 }

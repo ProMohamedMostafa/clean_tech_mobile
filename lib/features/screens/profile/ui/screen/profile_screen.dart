@@ -440,12 +440,12 @@ class _ProfileScreenState extends State<ProfileScreen>
     final workLocationModel =
         context.read<ProfileCubit>().userWorkLocationDetailsModel!;
     if (workLocationModel.data == null ||
-        (workLocationModel.data!.areas!.isEmpty &&
-            workLocationModel.data!.cities!.isEmpty &&
-            workLocationModel.data!.organizations!.isEmpty &&
-            workLocationModel.data!.buildings!.isEmpty &&
-            workLocationModel.data!.floors!.isEmpty &&
-            workLocationModel.data!.points!.isEmpty)) {
+        (workLocationModel.data.areas.isEmpty &&
+            workLocationModel.data.cities.isEmpty &&
+            workLocationModel.data.organizations.isEmpty &&
+            workLocationModel.data.buildings.isEmpty &&
+            workLocationModel.data.floors.isEmpty &&
+            workLocationModel.data.points.isEmpty)) {
       return Center(
         child: Text(
           "There's no data",

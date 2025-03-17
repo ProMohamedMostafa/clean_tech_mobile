@@ -517,13 +517,13 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
   Widget locationUserDetails() {
     final workLocationModel =
         context.read<UserManagementCubit>().userWorkLocationDetailsModel!;
-    if (workLocationModel.data == null ||
-        (workLocationModel.data!.areas!.isEmpty &&
-            workLocationModel.data!.cities!.isEmpty &&
-            workLocationModel.data!.organizations!.isEmpty &&
-            workLocationModel.data!.buildings!.isEmpty &&
-            workLocationModel.data!.floors!.isEmpty &&
-            workLocationModel.data!.points!.isEmpty)) {
+    if (workLocationModel.data.areas.isEmpty &&
+        workLocationModel.data.cities.isEmpty &&
+        workLocationModel.data.organizations.isEmpty &&
+        workLocationModel.data.buildings.isEmpty &&
+        workLocationModel.data.floors.isEmpty &&
+        workLocationModel.data.sections.isEmpty &&
+        workLocationModel.data.points.isEmpty) {
       return Center(
         child: Text(
           "There's no data",
@@ -1022,22 +1022,20 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
       );
     }
     PdfGridRow dataRow = locationDetails.rows.add();
-    List<String> values = [
-      userWorkLocationDetailsModel?.areas?.map((e) => e.name).join("\n") ??
-          "There's no data",
-      userWorkLocationDetailsModel?.cities?.map((e) => e.name).join("\n") ??
-          "There's no data",
-      userWorkLocationDetailsModel?.organizations
-              ?.map((e) => e.name)
-              .join("\n") ??
-          "There's no data",
-      userWorkLocationDetailsModel?.buildings?.map((e) => e.name).join("\n") ??
-          "There's no data",
-      userWorkLocationDetailsModel?.floors?.map((e) => e.name).join("\n") ??
-          "There's no data",
-      userWorkLocationDetailsModel?.points?.map((e) => e.name).join("\n") ??
-          "There's no data",
-    ];
+    List<String> values = userWorkLocationDetailsModel.points.isNotEmpty
+        ? [
+            userWorkLocationDetailsModel.areas.map((e) => e.name).join("\n"),
+            userWorkLocationDetailsModel.cities.map((e) => e.name).join("\n"),
+            userWorkLocationDetailsModel.organizations
+                .map((e) => e.name)
+                .join("\n"),
+            userWorkLocationDetailsModel.buildings
+                .map((e) => e.name)
+                .join("\n"),
+            userWorkLocationDetailsModel.floors.map((e) => e.name).join("\n"),
+            userWorkLocationDetailsModel.points.map((e) => e.name).join("\n"),
+          ]
+        : ["There's no data"];
 
 // Fill data row
     for (int i = 0; i < values.length; i++) {

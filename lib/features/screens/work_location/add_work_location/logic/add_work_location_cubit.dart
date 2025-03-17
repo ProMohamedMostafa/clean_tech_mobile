@@ -3,18 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/points_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_cleaners_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_managers_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_supervisors_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/logic/add_work_location_state.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/point_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/section_model.dart';
 
 class AddWorkLocationCubit extends Cubit<AddWorkLocationState> {
   AddWorkLocationCubit() : super(AddWorkLocationInitialState());
@@ -41,22 +40,36 @@ class AddWorkLocationCubit extends Cubit<AddWorkLocationState> {
   TextEditingController buildingDiscriptionController = TextEditingController();
   TextEditingController floorNumberController = TextEditingController();
   TextEditingController floorDiscriptionController = TextEditingController();
-    TextEditingController sectionNumberController = TextEditingController();
+  TextEditingController sectionNumberController = TextEditingController();
   TextEditingController sectionDiscriptionController = TextEditingController();
   TextEditingController pointNumberController = TextEditingController();
   TextEditingController pointDiscriptionController = TextEditingController();
-  final allmanagersController = MultiSelectController<ManagersData>();
-  final allSupervisorsController = MultiSelectController<SupervisorsData>();
-  final allCleanersController = MultiSelectController<CleanersData>();
+  final allmanagersController = MultiSelectController<User>();
+  final allSupervisorsController = MultiSelectController<User>();
+  final allCleanersController = MultiSelectController<User>();
   final shiftController = MultiSelectController<ShiftDetails>();
 
   final formKey = GlobalKey<FormState>();
   final formAddKey = GlobalKey<FormState>();
 
+  UsersModel? usersModel;
+  getAllUsers() {
+    emit(AllUsersLoadingState());
+    DioHelper.getData(url: "users/pagination").then((value) {
+      usersModel = UsersModel.fromJson(value!.data);
+      emit(AllUsersSuccessState(usersModel!));
+    }).catchError((error) {
+      emit(AllUsersErrorState(error.toString()));
+    });
+  }
+
   NationalityModel? nationalityModel;
-  getNationality() {
+  getNationality({bool? userUsedOnly, bool? areaUsedOnly}) {
     emit(GetNationalityLoadingState());
-    DioHelper.getData(url: ApiConstants.countriesUrl).then((value) {
+    DioHelper.getData(
+            url: ApiConstants.countriesUrl,
+            query: {'userUsedOnly': userUsedOnly, 'areaUsedOnly': areaUsedOnly})
+        .then((value) {
       nationalityModel = NationalityModel.fromJson(value!.data);
       emit(GetNationalitySuccessState(nationalityModel!));
     }).catchError((error) {
@@ -64,92 +77,88 @@ class AddWorkLocationCubit extends Cubit<AddWorkLocationState> {
     });
   }
 
-  AreaModel? areaModel;
+  AreaListModel? areaModel;
   getArea(String countryName) {
     emit(GetAreaLoadingState());
-    DioHelper.getData(url: "areas/country/$countryName").then((value) {
-      areaModel = AreaModel.fromJson(value!.data);
+    DioHelper.getData(url: "areas/pagination", query: {'country': countryName})
+        .then((value) {
+      areaModel = AreaListModel.fromJson(value!.data);
       emit(GetAreaSuccessState(areaModel!));
     }).catchError((error) {
       emit(GetAreaErrorState(error.toString()));
     });
   }
 
-  CityModel? cityModel;
+  CityListModel? cityModel;
   getCity(int areaId) {
     emit(GetCityLoadingState());
-    DioHelper.getData(url: "cities/area/$areaId").then((value) {
-      cityModel = CityModel.fromJson(value!.data);
+    DioHelper.getData(url: "cities/pagination", query: {'area': areaId})
+        .then((value) {
+      cityModel = CityListModel.fromJson(value!.data);
       emit(GetCitySuccessState(cityModel!));
     }).catchError((error) {
       emit(GetCityErrorState(error.toString()));
     });
   }
 
-  OrganizationModel? organizationModel;
+  OrganizationListModel? organizationModel;
   getOrganization(int cityId) {
     emit(GetOrganizationLoadingState());
-    DioHelper.getData(url: "organizations/city/$cityId").then((value) {
-      organizationModel = OrganizationModel.fromJson(value!.data);
+    DioHelper.getData(url: "organizations/pagination", query: {'city': cityId})
+        .then((value) {
+      organizationModel = OrganizationListModel.fromJson(value!.data);
       emit(GetOrganizationSuccessState(organizationModel!));
     }).catchError((error) {
       emit(GetOrganizationErrorState(error.toString()));
     });
   }
 
-  BuildingModel? buildingModel;
+  BuildingListModel? buildingModel;
   getBuilding(int organizationId) {
     emit(GetBuildingLoadingState());
-    DioHelper.getData(url: 'buildings/organization/$organizationId')
-        .then((value) {
-      buildingModel = BuildingModel.fromJson(value!.data);
+    DioHelper.getData(
+        url: 'buildings/pagination',
+        query: {'organization': organizationId}).then((value) {
+      buildingModel = BuildingListModel.fromJson(value!.data);
       emit(GetBuildingSuccessState(buildingModel!));
     }).catchError((error) {
       emit(GetBuildingErrorState(error.toString()));
     });
   }
 
-  FloorModel? floorModel;
+  FloorListModel? floorModel;
   getFloor(int buildingId) {
     emit(GetFloorLoadingState());
-    DioHelper.getData(url: 'floors/building/$buildingId').then((value) {
-      floorModel = FloorModel.fromJson(value!.data);
+    DioHelper.getData(url: 'floors/pagination', query: {'building': buildingId})
+        .then((value) {
+      floorModel = FloorListModel.fromJson(value!.data);
       emit(GetFloorSuccessState(floorModel!));
     }).catchError((error) {
       emit(GetFloorErrorState(error.toString()));
     });
   }
 
-  PointsModel? pointsModel;
-  getPoints(int pointId) {
+  SectionListModel? sectionModel;
+  getSection(int floorId) {
+    emit(GetSectionLoadingState());
+    DioHelper.getData(url: 'sections/pagination', query: {'floor': floorId})
+        .then((value) {
+      sectionModel = SectionListModel.fromJson(value!.data);
+      emit(GetSectionSuccessState(sectionModel!));
+    }).catchError((error) {
+      emit(GetSectionErrorState(error.toString()));
+    });
+  }
+
+  PointListModel? pointModel;
+  getPoint(int sectionId) {
     emit(GetPointLoadingState());
-    DioHelper.getData(url: 'points/floor/$pointId').then((value) {
-      pointsModel = PointsModel.fromJson(value!.data);
-      emit(GetPointSuccessState(pointsModel!));
+    DioHelper.getData(url: 'points/pagination', query: {'section': sectionId})
+        .then((value) {
+      pointModel = PointListModel.fromJson(value!.data);
+      emit(GetPointSuccessState(pointModel!));
     }).catchError((error) {
       emit(GetPointErrorState(error.toString()));
-    });
-  }
-
-  AllManagersModel? allManagersModel;
-  getManagers() {
-    emit(AllManagersLoadingState());
-    DioHelper.getData(url: 'users/role/2').then((value) {
-      allManagersModel = AllManagersModel.fromJson(value!.data);
-      emit(AllManagersSuccessState(allManagersModel!));
-    }).catchError((error) {
-      emit(AllManagersErrorState(error.toString()));
-    });
-  }
-
-  AllSupervisorsModel? allSupervisorsModel;
-  getSupervisors() {
-    emit(AllSupervisorsLoadingState());
-    DioHelper.getData(url: 'users/role/3').then((value) {
-      allSupervisorsModel = AllSupervisorsModel.fromJson(value!.data);
-      emit(AllSupervisorsSuccessState(allSupervisorsModel!));
-    }).catchError((error) {
-      emit(AllSupervisorsErrorState(error.toString()));
     });
   }
 
@@ -164,24 +173,13 @@ class AddWorkLocationCubit extends Cubit<AddWorkLocationState> {
     });
   }
 
-  AllCleanersModel? allCleanersModel;
-  getCleaners() {
-    emit(AllCleanersLoadingState());
-    DioHelper.getData(url: 'users/role/4').then((value) {
-      allCleanersModel = AllCleanersModel.fromJson(value!.data);
-      emit(AllCleanersSuccessState(allCleanersModel!));
-    }).catchError((error) {
-      emit(AllCleanersErrorState(error.toString()));
-    });
-  }
-
   createArea(String countryName, List<int>? selectedManagersIds,
       List<int>? selectedSupervisorsIds, List<int>? selectedCleanersIds) {
     emit(CreateAreaLoadingState());
     DioHelper.postData(url: ApiConstants.createAreaUrl, data: {
       "name": addAreaController.text,
       "countryName": countryName,
-      "managersIds": [
+      "userIds": [
         ...?selectedManagersIds,
         ...?selectedSupervisorsIds,
         ...?selectedCleanersIds
@@ -202,7 +200,7 @@ class AddWorkLocationCubit extends Cubit<AddWorkLocationState> {
     DioHelper.postData(url: ApiConstants.createCityUrl, data: {
       "name": addCityController.text,
       "areaId": areaId,
-      "managersIds": [
+      "userIds": [
         ...?selectedManagersIds,
         ...?selectedSupervisorsIds,
         ...?selectedCleanersIds
@@ -228,12 +226,12 @@ class AddWorkLocationCubit extends Cubit<AddWorkLocationState> {
     DioHelper.postData(url: ApiConstants.createOrganizationUrl, data: {
       "name": addOrganizationController.text,
       "cityId": cityId,
-      "managersIds": [
+      "userIds": [
         ...?selectedManagersIds,
         ...?selectedSupervisorsIds,
         ...?selectedCleanersIds
       ],
-      "shiftsIds": selectedShiftsIds
+      "shiftIds": selectedShiftsIds
     }).then((value) {
       final message = value?.data['message'] ?? "Created successfully";
       emit(CreateOrganizationSuccessState(message));
@@ -258,12 +256,12 @@ class AddWorkLocationCubit extends Cubit<AddWorkLocationState> {
       "number": buildingNumberController.text,
       "description": buildingDiscriptionController.text,
       "organizationId": organizationId,
-      "managersIds": [
+      "userIds": [
         ...?selectedManagersIds,
         ...?selectedSupervisorsIds,
         ...?selectedCleanersIds
       ],
-      "shiftsIds": selectedShiftsIds
+      "shiftIds": selectedShiftsIds
     }).then((value) {
       final message = value?.data['message'] ?? "Created successfully";
       emit(CreateBuildingSuccessState(message));
@@ -291,12 +289,12 @@ class AddWorkLocationCubit extends Cubit<AddWorkLocationState> {
       "number": floorNumberController.text,
       "description": floorDiscriptionController.text,
       "buildingId": buildingId,
-      "managersIds": [
+      "userIds": [
         ...?selectedManagersIds,
         ...?selectedSupervisorsIds,
         ...?selectedCleanersIds
       ],
-      "shiftsIds": selectedShiftsIds
+      "shiftIds": selectedShiftsIds
     }).then((value) {
       final message = value?.data['message'] ?? "Created successfully";
       emit(CreateFloorSuccessState(message));
@@ -313,24 +311,61 @@ class AddWorkLocationCubit extends Cubit<AddWorkLocationState> {
     });
   }
 
-  createpoint(
-      int floorId,
+  createSection(
+      int buildingId,
       List<int>? selectedManagersIds,
       List<int>? selectedSupervisorsIds,
       List<int>? selectedCleanersIds,
       List<int>? selectedShiftsIds) {
+    emit(CreateSectionLoadingState());
+    DioHelper.postData(url: ApiConstants.createSectionUrl, data: {
+      "name": addSectionController.text,
+      "number": sectionNumberController.text,
+      "description": sectionDiscriptionController.text,
+      "floorId": buildingId,
+      "userIds": [
+        ...?selectedManagersIds,
+        ...?selectedSupervisorsIds,
+        ...?selectedCleanersIds
+      ],
+      "shiftIds": selectedShiftsIds
+    }).then((value) {
+      final message = value?.data['message'] ?? "Created successfully";
+      emit(CreateSectionSuccessState(message));
+      nationalityController.clear();
+      areaController.clear();
+      cityController.clear();
+      organizationController.clear();
+      buildingController.clear();
+      floorController.clear();
+      sectionNumberController.clear();
+      sectionDiscriptionController.clear();
+      addSectionController.clear();
+    }).catchError((error) {
+      emit(CreateSectionErrorState(error.toString()));
+    });
+  }
+
+  createPoint(
+    int sectionId,
+    List<int>? selectedManagersIds,
+    List<int>? selectedSupervisorsIds,
+    List<int>? selectedCleanersIds,
+  ) {
     emit(CreatePointLoadingState());
     DioHelper.postData(url: ApiConstants.createPointUrl, data: {
       "name": addPointController.text,
       "number": pointNumberController.text,
       "description": pointDiscriptionController.text,
-      "floorId": floorId,
-      "managersIds": [
+      "isCountable": true,
+      "capacity": 1,
+      "unit": 0,
+      "sectionId": sectionId,
+      "userIds": [
         ...?selectedManagersIds,
         ...?selectedSupervisorsIds,
         ...?selectedCleanersIds
       ],
-      "shiftsIds": selectedShiftsIds
     }).then((value) {
       final message = value?.data['message'] ?? "Created successfully";
       emit(CreatePointSuccessState(message));
@@ -340,6 +375,7 @@ class AddWorkLocationCubit extends Cubit<AddWorkLocationState> {
       organizationController.clear();
       buildingController.clear();
       floorController.clear();
+      sectionController.clear();
       pointNumberController.clear();
       pointDiscriptionController.clear();
       addPointController.clear();

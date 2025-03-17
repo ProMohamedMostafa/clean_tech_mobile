@@ -284,14 +284,14 @@ class CustomFilterAttedanceDialog {
                         items: context
                                     .read<ProfileCubit>()
                                     .cityModel
-                                    ?.data
+                                    ?.data?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No cities']
                             : context
                                     .read<ProfileCubit>()
                                     .cityModel
-                                    ?.data
+                                      ?.data?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
@@ -299,7 +299,7 @@ class CustomFilterAttedanceDialog {
                           final selectedCity = context
                               .read<ProfileCubit>()
                               .cityModel
-                              ?.data
+                                ?.data?.data
                               ?.firstWhere((city) =>
                                   city.name ==
                                   context
@@ -326,14 +326,14 @@ class CustomFilterAttedanceDialog {
                         items: context
                                     .read<ProfileCubit>()
                                     .organizationModel
-                                    ?.data
+                                      ?.data?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No organizations']
                             : context
                                     .read<ProfileCubit>()
                                     .organizationModel
-                                    ?.data
+                                      ?.data?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
@@ -341,7 +341,7 @@ class CustomFilterAttedanceDialog {
                           final selectedOrganization = context
                               .read<ProfileCubit>()
                               .organizationModel
-                              ?.data
+                                ?.data?.data
                               ?.firstWhere((organization) =>
                                   organization.name ==
                                   context
@@ -369,14 +369,14 @@ class CustomFilterAttedanceDialog {
                         items: context
                                     .read<ProfileCubit>()
                                     .buildingModel
-                                    ?.data
+                                      ?.data?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No building']
                             : context
                                     .read<ProfileCubit>()
                                     .buildingModel
-                                    ?.data
+                                      ?.data?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
@@ -384,7 +384,7 @@ class CustomFilterAttedanceDialog {
                           final selectedBuilding = context
                               .read<ProfileCubit>()
                               .buildingModel
-                              ?.data
+                                ?.data?.data
                               ?.firstWhere((building) =>
                                   building.name ==
                                   context
@@ -412,14 +412,14 @@ class CustomFilterAttedanceDialog {
                         items: context
                                     .read<ProfileCubit>()
                                     .floorModel
-                                    ?.data
+                                      ?.data?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No floors']
                             : context
                                     .read<ProfileCubit>()
                                     .floorModel
-                                    ?.data
+                                      ?.data?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
@@ -427,7 +427,7 @@ class CustomFilterAttedanceDialog {
                           final selectedFloor = context
                               .read<ProfileCubit>()
                               .floorModel
-                              ?.data
+                                ?.data?.data
                               ?.firstWhere((floor) =>
                                   floor.name ==
                                   context
@@ -437,7 +437,7 @@ class CustomFilterAttedanceDialog {
 
                           context
                               .read<ProfileCubit>()
-                              .getPoints(selectedFloor!.id!);
+                              .getPoint(selectedFloor!.id!);
                           floorId = selectedFloor.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
@@ -454,23 +454,23 @@ class CustomFilterAttedanceDialog {
                         hint: "Select point",
                         items: context
                                     .read<ProfileCubit>()
-                                    .pointsModel
-                                    ?.data
+                                    .pointModel
+                                      ?.data?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No point']
                             : context
                                     .read<ProfileCubit>()
-                                    .pointsModel
-                                    ?.data
+                                    .pointModel
+                                      ?.data?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
                         onPressed: (value) {
                           final selectedPoint = context
                               .read<ProfileCubit>()
-                              .pointsModel
-                              ?.data
+                              .pointModel
+                                ?.data?.data
                               ?.firstWhere((point) =>
                                   point.name ==
                                   context
@@ -480,7 +480,7 @@ class CustomFilterAttedanceDialog {
 
                           context
                               .read<ProfileCubit>()
-                              .getPoints(selectedPoint!.id!);
+                              .getPoint(selectedPoint!.id!);
                           pointId = selectedPoint.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
@@ -499,8 +499,8 @@ class CustomFilterAttedanceDialog {
                           items: context
                                       .read<ProfileCubit>()
                                       .providersModel
-                                      ?.data
-                                      ?.data
+                                        ?.data?.data
+                                     
                                       ?.isEmpty ??
                                   true
                               ? ['No providers available']

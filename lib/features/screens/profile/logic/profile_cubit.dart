@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
@@ -6,12 +5,6 @@ import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/data/models/attendance_history_model.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/data/models/attendance_leaves_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_area_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/points_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
@@ -23,6 +16,12 @@ import 'package:smart_cleaning_application/features/screens/user/user_managment/
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_status_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_task_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_work_location_details.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/point_model.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
   ProfileCubit() : super(ProfileInitialState());
@@ -268,71 +267,80 @@ class ProfileCubit extends Cubit<ProfileState> {
     });
   }
 
-  AreaModel? areaModel;
+
+  AreaListModel? areaModel;
   getArea(String countryName) {
     emit(GetAreaLoadingState());
-    DioHelper.getData(url: "areas/country/$countryName").then((value) {
-      areaModel = AreaModel.fromJson(value!.data);
+    DioHelper.getData(url: "areas/pagination", query: {'country': countryName})
+        .then((value) {
+      areaModel = AreaListModel.fromJson(value!.data);
       emit(GetAreaSuccessState(areaModel!));
     }).catchError((error) {
       emit(GetAreaErrorState(error.toString()));
     });
   }
 
-  CityModel? cityModel;
+  CityListModel? cityModel;
   getCity(int areaId) {
     emit(GetCityLoadingState());
-    DioHelper.getData(url: "cities/area/$areaId").then((value) {
-      cityModel = CityModel.fromJson(value!.data);
+    DioHelper.getData(url: "cities/pagination", query: {'area': areaId})
+        .then((value) {
+      cityModel = CityListModel.fromJson(value!.data);
       emit(GetCitySuccessState(cityModel!));
     }).catchError((error) {
       emit(GetCityErrorState(error.toString()));
     });
   }
 
-  OrganizationModel? organizationModel;
+  OrganizationListModel? organizationModel;
   getOrganization(int cityId) {
     emit(GetOrganizationLoadingState());
-    DioHelper.getData(url: "organizations/city/$cityId").then((value) {
-      organizationModel = OrganizationModel.fromJson(value!.data);
+    DioHelper.getData(url: "organizations/pagination", query: {'city': cityId})
+        .then((value) {
+      organizationModel = OrganizationListModel.fromJson(value!.data);
       emit(GetOrganizationSuccessState(organizationModel!));
     }).catchError((error) {
       emit(GetOrganizationErrorState(error.toString()));
     });
   }
 
-  BuildingModel? buildingModel;
-  getBuilding(int id) {
+  BuildingListModel? buildingModel;
+  getBuilding(int organizationId) {
     emit(GetBuildingLoadingState());
-    DioHelper.getData(url: 'buildings/organization/$id').then((value) {
-      buildingModel = BuildingModel.fromJson(value!.data);
+    DioHelper.getData(
+        url: 'buildings/pagination',
+        query: {'organization': organizationId}).then((value) {
+      buildingModel = BuildingListModel.fromJson(value!.data);
       emit(GetBuildingSuccessState(buildingModel!));
     }).catchError((error) {
       emit(GetBuildingErrorState(error.toString()));
     });
   }
 
-  FloorModel? floorModel;
-  getFloor(int id) {
+  FloorListModel? floorModel;
+  getFloor(int buildingId) {
     emit(GetFloorLoadingState());
-    DioHelper.getData(url: 'floors/building/$id').then((value) {
-      floorModel = FloorModel.fromJson(value!.data);
+    DioHelper.getData(url: 'floors/pagination', query: {'building': buildingId})
+        .then((value) {
+      floorModel = FloorListModel.fromJson(value!.data);
       emit(GetFloorSuccessState(floorModel!));
     }).catchError((error) {
       emit(GetFloorErrorState(error.toString()));
     });
   }
 
-  PointsModel? pointsModel;
-  getPoints(int id) {
+  PointListModel? pointModel;
+  getPoint(int sectionId) {
     emit(GetPointsLoadingState());
-    DioHelper.getData(url: 'points/floor/$id').then((value) {
-      pointsModel = PointsModel.fromJson(value!.data);
-      emit(GetPointsSuccessState(pointsModel!));
+    DioHelper.getData(url: 'points/pagination', query: {'section': sectionId})
+        .then((value) {
+      pointModel = PointListModel.fromJson(value!.data);
+      emit(GetPointsSuccessState(pointModel!));
     }).catchError((error) {
       emit(GetPointsErrorState(error.toString()));
     });
   }
+
 
   ProvidersModel? providersModel;
   getProviders() {

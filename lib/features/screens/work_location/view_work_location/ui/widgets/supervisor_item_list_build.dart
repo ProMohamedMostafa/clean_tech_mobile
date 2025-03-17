@@ -8,69 +8,86 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
 
 Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
+  List<int> cleanerIds = selectedIndex == 0
+      ? context
+              .read<WorkLocationCubit>()
+              .areaUsersDetailsModel
+              ?.data
+              ?.users
+              ?.where((user) => user.role == 'Supervisor')
+              .map((user) => user.id!)
+              .toList() ??
+          []
+      : selectedIndex == 1
+          ? context
+                  .read<WorkLocationCubit>()
+                  .cityUsersDetailsModel
+                  ?.data
+                  ?.users
+                  ?.where((user) => user.role == 'Supervisor')
+                  .map((user) => user.id!)
+                  .toList() ??
+              []
+          : selectedIndex == 2
+              ? context
+                      .read<WorkLocationCubit>()
+                      .organizationUsersShiftDetailsModel
+                      ?.data
+                      ?.users
+                      ?.where((user) => user.role == 'Supervisor')
+                      .map((user) => user.id!)
+                      .toList() ??
+                  []
+              : selectedIndex == 3
+                  ? context
+                          .read<WorkLocationCubit>()
+                          .buildingUsersShiftDetailsModel
+                          ?.data
+                          ?.users
+                          ?.where((user) => user.role == 'Supervisor')
+                          .map((user) => user.id!)
+                          .toList() ??
+                      []
+                  : selectedIndex == 4
+                      ? context
+                              .read<WorkLocationCubit>()
+                              .floorUsersShiftDetailsModel
+                              ?.data
+                              ?.users
+                              ?.where((user) => user.role == 'Supervisor')
+                              .map((user) => user.id!)
+                              .toList() ??
+                          []
+                      : selectedIndex == 5
+                          ? context
+                                  .read<WorkLocationCubit>()
+                                  .sectionUsersShiftDetailsModel
+                                  ?.data
+                                  ?.users
+                                  ?.where((user) => user.role == 'Supervisor')
+                                  .map((user) => user.id!)
+                                  .toList() ??
+                              []
+                          : context
+                                  .read<WorkLocationCubit>()
+                                  .pointUsersDetailsModel
+                                  ?.data
+                                  ?.users
+                                  ?.where((user) => user.role == 'Supervisor')
+                                  .map((user) => user.id!)
+                                  .toList() ??
+                              [];
+
   return InkWell(
     onTap: () {
+      int? cleanerId = cleanerIds.isNotEmpty ? cleanerIds.first : null;
       context.pushNamed(
         Routes.userDetailsScreen,
-        arguments: selectedIndex == 0
-            ? context
-                .read<WorkLocationCubit>()
-                .areaUsersDetailsModel!
-                .data!
-                .users!
-                .where((user) => user.role == 'Supervisor')
-                .map((user) => user.id!)
-            : selectedIndex == 1
-                ? context
-                    .read<WorkLocationCubit>()
-                    .cityUsersDetailsModel!
-                    .data!
-                    .users!
-                    .where((user) => user.role == 'Supervisor')
-                    .map((user) => user.id!)
-                : selectedIndex == 2
-                    ? context
-                        .read<WorkLocationCubit>()
-                        .organizationUsersShiftDetailsModel!
-                        .data!
-                        .users!
-                        .where((user) => user.role == 'Supervisor')
-                        .map((user) => user.id!)
-                    : selectedIndex == 3
-                        ? context
-                            .read<WorkLocationCubit>()
-                            .buildingUsersShiftDetailsModel!
-                            .data!
-                            .users!
-                            .where((user) => user.role == 'Supervisor')
-                            .map((user) => user.id!)
-                        : selectedIndex == 4
-                            ? context
-                                .read<WorkLocationCubit>()
-                                .floorUsersShiftDetailsModel!
-                                .data!
-                                .users!
-                                .where((user) => user.role == 'Supervisor')
-                                .map((user) => user.id!)
-                            : selectedIndex == 5
-                                ? context
-                                    .read<WorkLocationCubit>()
-                                    .sectionUsersShiftDetailsModel!
-                                    .data!
-                                    .users!
-                                    .where((user) => user.role == 'Supervisor')
-                                    .map((user) => user.id!)
-                                : context
-                                    .read<WorkLocationCubit>()
-                                    .pointUsersDetailsModel!
-                                    .data!
-                                    .users!
-                                    .where((user) => user.role == 'Supervisor')
-                                    .map((user) => user.id!),
+        arguments: cleanerId,
       );
     },
     child: ListTile(
-      contentPadding: EdgeInsets.zero,
+      contentPadding: EdgeInsets.symmetric(horizontal: 5),
       minTileHeight: 60.h,
       leading: Container(
         height: 40.h,
@@ -97,7 +114,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                 .users!
                 .where((user) => user.role == 'Supervisor')
                 .map((user) => user.userName!)
-                .toString()
+                .join(", ")
             : selectedIndex == 1
                 ? context
                     .read<WorkLocationCubit>()
@@ -106,7 +123,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                     .users!
                     .where((user) => user.role == 'Supervisor')
                     .map((user) => user.userName!)
-                    .toString()
+                    .join(", ")
                 : selectedIndex == 2
                     ? context
                         .read<WorkLocationCubit>()
@@ -115,7 +132,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                         .users!
                         .where((user) => user.role == 'Supervisor')
                         .map((user) => user.userName!)
-                        .toString()
+                        .join(", ")
                     : selectedIndex == 3
                         ? context
                             .read<WorkLocationCubit>()
@@ -124,7 +141,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                             .users!
                             .where((user) => user.role == 'Supervisor')
                             .map((user) => user.userName!)
-                            .toString()
+                            .join(", ")
                         : selectedIndex == 4
                             ? context
                                 .read<WorkLocationCubit>()
@@ -133,7 +150,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                                 .users!
                                 .where((user) => user.role == 'Supervisor')
                                 .map((user) => user.userName!)
-                                .toString()
+                                .join(", ")
                             : selectedIndex == 5
                                 ? context
                                     .read<WorkLocationCubit>()
@@ -142,7 +159,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                                     .users!
                                     .where((user) => user.role == 'Supervisor')
                                     .map((user) => user.userName!)
-                                    .toString()
+                                    .join(", ")
                                 : context
                                     .read<WorkLocationCubit>()
                                     .pointUsersDetailsModel!
@@ -150,7 +167,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                                     .users!
                                     .where((user) => user.role == 'Supervisor')
                                     .map((user) => user.userName!)
-                                    .toString(),
+                                    .join(", "),
         style: TextStyles.font14BlackSemiBold,
       ),
       subtitle: Text(
@@ -162,7 +179,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                 .users!
                 .where((user) => user.role == 'Supervisor')
                 .map((user) => user.email!)
-                .toString()
+                .join(", ")
             : selectedIndex == 1
                 ? context
                     .read<WorkLocationCubit>()
@@ -171,7 +188,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                     .users!
                     .where((user) => user.role == 'Supervisor')
                     .map((user) => user.email!)
-                    .toString()
+                    .join(", ")
                 : selectedIndex == 2
                     ? context
                         .read<WorkLocationCubit>()
@@ -180,7 +197,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                         .users!
                         .where((user) => user.role == 'Supervisor')
                         .map((user) => user.email!)
-                        .toString()
+                        .join(", ")
                     : selectedIndex == 3
                         ? context
                             .read<WorkLocationCubit>()
@@ -189,7 +206,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                             .users!
                             .where((user) => user.role == 'Supervisor')
                             .map((user) => user.email!)
-                            .toString()
+                            .join(", ")
                         : selectedIndex == 4
                             ? context
                                 .read<WorkLocationCubit>()
@@ -198,7 +215,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                                 .users!
                                 .where((user) => user.role == 'Supervisor')
                                 .map((user) => user.email!)
-                                .toString()
+                                .join(", ")
                             : selectedIndex == 5
                                 ? context
                                     .read<WorkLocationCubit>()
@@ -207,7 +224,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                                     .users!
                                     .where((user) => user.role == 'Supervisor')
                                     .map((user) => user.email!)
-                                    .toString()
+                                    .join(", ")
                                 : context
                                     .read<WorkLocationCubit>()
                                     .pointUsersDetailsModel!
@@ -215,7 +232,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                                     .users!
                                     .where((user) => user.role == 'Supervisor')
                                     .map((user) => user.email!)
-                                    .toString(),
+                                    .join(", "),
         style: TextStyles.font12GreyRegular,
       ),
     ),

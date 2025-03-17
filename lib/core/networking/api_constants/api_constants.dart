@@ -24,6 +24,7 @@ class ApiConstants {
   static const createOrganizationUrl = "organizations/create";
   static const createBuildingUrl = "buildings/create";
   static const createFloorUrl = "floors/create";
+  static const createSectionUrl = "sections/create";
   static const createPointUrl = "points/create";
 
   static const areaUrl = "areas/pagination";

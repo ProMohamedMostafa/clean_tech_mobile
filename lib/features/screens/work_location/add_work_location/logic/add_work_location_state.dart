@@ -1,14 +1,13 @@
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/points_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_cleaners_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_managers_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_supervisors_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/point_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/section_model.dart';
 
 
 abstract class AddWorkLocationState {}
@@ -43,9 +42,9 @@ class GetNationalityErrorState extends AddWorkLocationState {
 class GetAreaLoadingState extends AddWorkLocationState {}
 
 class GetAreaSuccessState extends AddWorkLocationState {
-  final AreaModel areaModel;
+  final AreaListModel areaListModel;
 
-  GetAreaSuccessState(this.areaModel);
+  GetAreaSuccessState(this.areaListModel);
 }
 
 class GetAreaErrorState extends AddWorkLocationState {
@@ -57,7 +56,7 @@ class GetAreaErrorState extends AddWorkLocationState {
 class GetCityLoadingState extends AddWorkLocationState {}
 
 class GetCitySuccessState extends AddWorkLocationState {
-  final CityModel cityModel;
+  final CityListModel cityModel;
 
   GetCitySuccessState(this.cityModel);
 }
@@ -71,7 +70,7 @@ class GetCityErrorState extends AddWorkLocationState {
 class GetOrganizationLoadingState extends AddWorkLocationState {}
 
 class GetOrganizationSuccessState extends AddWorkLocationState {
-  final OrganizationModel organizationModel;
+  final OrganizationListModel organizationModel;
 
   GetOrganizationSuccessState(this.organizationModel);
 }
@@ -85,7 +84,7 @@ class GetOrganizationErrorState extends AddWorkLocationState {
 class GetBuildingLoadingState extends AddWorkLocationState {}
 
 class GetBuildingSuccessState extends AddWorkLocationState {
-  final BuildingModel buildingModel;
+  final BuildingListModel buildingModel;
 
   GetBuildingSuccessState(this.buildingModel);
 }
@@ -99,7 +98,7 @@ class GetBuildingErrorState extends AddWorkLocationState {
 class GetFloorLoadingState extends AddWorkLocationState {}
 
 class GetFloorSuccessState extends AddWorkLocationState {
-  final FloorModel floorModel;
+  final FloorListModel floorModel;
 
   GetFloorSuccessState(this.floorModel);
 }
@@ -110,10 +109,25 @@ class GetFloorErrorState extends AddWorkLocationState {
 }
 //**************************** */
 
+class GetSectionLoadingState extends AddWorkLocationState {}
+
+class GetSectionSuccessState extends AddWorkLocationState {
+  final SectionListModel sectionsModel;
+
+  GetSectionSuccessState(this.sectionsModel);
+}
+
+class GetSectionErrorState extends AddWorkLocationState {
+  final String error;
+  GetSectionErrorState(this.error);
+}
+
+//**************************** */
+
 class GetPointLoadingState extends AddWorkLocationState {}
 
 class GetPointSuccessState extends AddWorkLocationState {
-  final PointsModel pointsModel;
+  final PointListModel pointsModel;
 
   GetPointSuccessState(this.pointsModel);
 }
@@ -124,47 +138,19 @@ class GetPointErrorState extends AddWorkLocationState {
 }
 //**************************** */
 
-class AllManagersLoadingState extends AddWorkLocationState {}
+class AllUsersLoadingState extends AddWorkLocationState {}
 
-class AllManagersSuccessState extends AddWorkLocationState {
-  final AllManagersModel allManagersModel;
+class AllUsersSuccessState extends AddWorkLocationState {
+  final UsersModel usersModel;
 
-  AllManagersSuccessState(this.allManagersModel);
+  AllUsersSuccessState(this.usersModel);
 }
 
-class AllManagersErrorState extends AddWorkLocationState {
+class AllUsersErrorState extends AddWorkLocationState {
   final String error;
-  AllManagersErrorState(this.error);
-}
-//**************************** */
-
-class AllSupervisorsLoadingState extends AddWorkLocationState {}
-
-class AllSupervisorsSuccessState extends AddWorkLocationState {
-  final AllSupervisorsModel allSupervisorsModel;
-
-  AllSupervisorsSuccessState(this.allSupervisorsModel);
+  AllUsersErrorState(this.error);
 }
 
-class AllSupervisorsErrorState extends AddWorkLocationState {
-  final String error;
-  AllSupervisorsErrorState(this.error);
-}
-
-//**************************** */
-
-class AllCleanersLoadingState extends AddWorkLocationState {}
-
-class AllCleanersSuccessState extends AddWorkLocationState {
-  final AllCleanersModel allCleanersModel;
-
-  AllCleanersSuccessState(this.allCleanersModel);
-}
-
-class AllCleanersErrorState extends AddWorkLocationState {
-  final String error;
-  AllCleanersErrorState(this.error);
-}
 //***************** */
 
 class CreateAreaLoadingState extends AddWorkLocationState {}
@@ -237,6 +223,19 @@ class CreateFloorErrorState extends AddWorkLocationState {
   final String error;
   CreateFloorErrorState(this.error);
 } //***************** */
+
+class CreateSectionLoadingState extends AddWorkLocationState {}
+
+class CreateSectionSuccessState extends AddWorkLocationState {
+  final String message;
+
+  CreateSectionSuccessState(this.message);
+}
+
+class CreateSectionErrorState extends AddWorkLocationState {
+  final String error;
+  CreateSectionErrorState(this.error);
+}//***************** */
 
 class CreatePointLoadingState extends AddWorkLocationState {}
 

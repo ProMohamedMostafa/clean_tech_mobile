@@ -111,7 +111,7 @@ class _OrganizationsBodyState extends State<OrganizationsBody> {
                                     : widget.selectedIndex == 4
                                         ? context
                                             .pushNamed(Routes.addFloorScreen)
-                                        : widget.selectedIndex == 4
+                                        : widget.selectedIndex == 5
                                             ? context.pushNamed(
                                                 Routes.addSectionScreen)
                                             : context.pushNamed(
@@ -366,7 +366,8 @@ class _OrganizationsBodyState extends State<OrganizationsBody> {
                 color: AppColor.primaryColor,
               ),
             );
-          } if (widget.selectedIndex == 6 &&
+          }
+          if (widget.selectedIndex == 6 &&
               context.read<WorkLocationCubit>().pointModel == null &&
               context.read<WorkLocationCubit>().deletedPointList == null) {
             return Center(
@@ -444,7 +445,7 @@ class _OrganizationsBodyState extends State<OrganizationsBody> {
                                         return workLocationCubit.sectionModel
                                                 ?.data?.data?.length ??
                                             0;
-                                            case 6:
+                                      case 6:
                                         return workLocationCubit.pointModel
                                                 ?.data?.data?.length ??
                                             0;
@@ -484,7 +485,8 @@ class _OrganizationsBodyState extends State<OrganizationsBody> {
                                                 .deletedSectionList
                                                 ?.data
                                                 ?.length ??
-                                            0; case 6:
+                                            0;
+                                      case 6:
                                         return workLocationCubit
                                                 .deletedPointList
                                                 ?.data
@@ -504,6 +506,7 @@ class _OrganizationsBodyState extends State<OrganizationsBody> {
                                     });
                                   },
                                   child: Container(
+                                    padding: EdgeInsets.only(left: 3),
                                     height: 45.h,
                                     width: containerWidth,
                                     decoration: BoxDecoration(

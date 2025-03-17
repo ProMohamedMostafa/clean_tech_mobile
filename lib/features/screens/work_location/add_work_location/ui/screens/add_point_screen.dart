@@ -11,13 +11,10 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_description_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_cleaners_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_managers_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_supervisors_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/logic/add_work_location_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/logic/add_work_location_state.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
@@ -33,16 +30,12 @@ class _AddPointScreenState extends State<AddPointScreen> {
   List<int> selectedManagersIds = [];
   List<int> selectedSupervisorsIds = [];
   List<int> selectedCleanersIds = [];
-  List<int> selectedShiftsIds = [];
-  int? floorId;
+  int? sectionId;
   @override
   void initState() {
     context.read<AddWorkLocationCubit>()
-      ..getNationality()
-      ..getManagers()
-      ..getSupervisors()
-      ..getCleaners()
-      ..getShifts();
+      ..getNationality(userUsedOnly: false, areaUsedOnly: true)
+      ..getAllUsers();
     super.initState();
   }
 
@@ -61,13 +54,21 @@ class _AddPointScreenState extends State<AddPointScreen> {
             if (state is CreatePointSuccessState) {
               toast(text: state.message, color: Colors.blue);
               context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
-                  arguments: 5);
+                  arguments: 6);
             }
             if (state is CreatePointErrorState) {
               toast(text: state.error, color: Colors.red);
             }
           },
           builder: (context, state) {
+            if (context.read<AddWorkLocationCubit>().usersModel == null ||
+                context.read<AddWorkLocationCubit>().nationalityModel == null) {
+              return Center(
+                child: CircularProgressIndicator(
+                  color: AppColor.primaryColor,
+                ),
+              );
+            }
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Form(
@@ -78,7 +79,7 @@ class _AddPointScreenState extends State<AddPointScreen> {
                   children: [
                     verticalSpace(20),
                     _buildDetailsField(),
-                    verticalSpace(16),
+                    verticalSpace(20),
                     _buildContinueButton(state),
                     verticalSpace(20),
                   ],
@@ -140,17 +141,22 @@ class _AddPointScreenState extends State<AddPointScreen> {
         ),
         CustomDropDownList(
           hint: "Select area",
-          items:
-              context.read<AddWorkLocationCubit>().areaModel?.data?.isEmpty ??
-                      true
-                  ? ['No area']
-                  : context
-                          .read<AddWorkLocationCubit>()
-                          .areaModel
-                          ?.data
-                          ?.map((e) => e.name ?? 'Unknown')
-                          .toList() ??
-                      [],
+          items: context
+                      .read<AddWorkLocationCubit>()
+                      .areaModel
+                      ?.data
+                      ?.areas
+                      ?.isEmpty ??
+                  true
+              ? ['No area']
+              : context
+                      .read<AddWorkLocationCubit>()
+                      .areaModel
+                      ?.data
+                      ?.areas
+                      ?.map((e) => e.name ?? 'Unknown')
+                      .toList() ??
+                  [],
           validator: (value) {
             if (value == null || value.isEmpty || value == "No area") {
               return "Area is required";
@@ -162,6 +168,7 @@ class _AddPointScreenState extends State<AddPointScreen> {
                 .read<AddWorkLocationCubit>()
                 .areaModel
                 ?.data
+                ?.areas
                 ?.firstWhere((area) =>
                     area.name ==
                     context.read<AddWorkLocationCubit>().areaController.text);
@@ -179,17 +186,22 @@ class _AddPointScreenState extends State<AddPointScreen> {
         ),
         CustomDropDownList(
           hint: "Select city",
-          items:
-              context.read<AddWorkLocationCubit>().cityModel?.data?.isEmpty ??
-                      true
-                  ? ['No cities']
-                  : context
-                          .read<AddWorkLocationCubit>()
-                          .cityModel
-                          ?.data
-                          ?.map((e) => e.name ?? 'Unknown')
-                          .toList() ??
-                      [],
+          items: context
+                      .read<AddWorkLocationCubit>()
+                      .cityModel
+                      ?.data
+                      ?.data
+                      ?.isEmpty ??
+                  true
+              ? ['No cities']
+              : context
+                      .read<AddWorkLocationCubit>()
+                      .cityModel
+                      ?.data
+                      ?.data
+                      ?.map((e) => e.name ?? 'Unknown')
+                      .toList() ??
+                  [],
           validator: (value) {
             if (value == null || value.isEmpty || value == 'No cities') {
               return "City is required";
@@ -200,6 +212,7 @@ class _AddPointScreenState extends State<AddPointScreen> {
             final selectedCity = context
                 .read<AddWorkLocationCubit>()
                 .cityModel
+                ?.data
                 ?.data
                 ?.firstWhere((city) =>
                     city.name ==
@@ -224,12 +237,14 @@ class _AddPointScreenState extends State<AddPointScreen> {
                       .read<AddWorkLocationCubit>()
                       .organizationModel
                       ?.data
+                      ?.data
                       ?.isEmpty ??
                   true
               ? ['No organizations']
               : context
                       .read<AddWorkLocationCubit>()
                       .organizationModel
+                      ?.data
                       ?.data
                       ?.map((e) => e.name ?? 'Unknown')
                       .toList() ??
@@ -244,6 +259,7 @@ class _AddPointScreenState extends State<AddPointScreen> {
             final selectedOrganization = context
                 .read<AddWorkLocationCubit>()
                 .organizationModel
+                ?.data
                 ?.data
                 ?.firstWhere((organization) =>
                     organization.name ==
@@ -272,12 +288,14 @@ class _AddPointScreenState extends State<AddPointScreen> {
                       .read<AddWorkLocationCubit>()
                       .buildingModel
                       ?.data
+                      ?.data
                       ?.isEmpty ??
                   true
               ? ['No building']
               : context
                       .read<AddWorkLocationCubit>()
                       .buildingModel
+                      ?.data
                       ?.data
                       ?.map((e) => e.name ?? 'Unknown')
                       .toList() ??
@@ -292,6 +310,7 @@ class _AddPointScreenState extends State<AddPointScreen> {
             final selectedBuilding = context
                 .read<AddWorkLocationCubit>()
                 .buildingModel
+                ?.data
                 ?.data
                 ?.firstWhere((building) =>
                     building.name ==
@@ -315,17 +334,22 @@ class _AddPointScreenState extends State<AddPointScreen> {
         ),
         CustomDropDownList(
           hint: "Select floor",
-          items:
-              context.read<AddWorkLocationCubit>().floorModel?.data?.isEmpty ??
-                      true
-                  ? ['No floors']
-                  : context
-                          .read<AddWorkLocationCubit>()
-                          .floorModel
-                          ?.data
-                          ?.map((e) => e.name ?? 'Unknown')
-                          .toList() ??
-                      [],
+          items: context
+                      .read<AddWorkLocationCubit>()
+                      .floorModel
+                      ?.data
+                      ?.data
+                      ?.isEmpty ??
+                  true
+              ? ['No floors']
+              : context
+                      .read<AddWorkLocationCubit>()
+                      .floorModel
+                      ?.data
+                      ?.data
+                      ?.map((e) => e.name ?? 'Unknown')
+                      .toList() ??
+                  [],
           validator: (value) {
             if (value == null || value.isEmpty || value == 'No floors') {
               return "Floor is required";
@@ -337,14 +361,64 @@ class _AddPointScreenState extends State<AddPointScreen> {
                 .read<AddWorkLocationCubit>()
                 .floorModel
                 ?.data
+                ?.data
                 ?.firstWhere((floor) =>
                     floor.name ==
                     context.read<AddWorkLocationCubit>().floorController.text);
 
-            floorId = selectedFloor!.id!;
+            context.read<AddWorkLocationCubit>().getSection(selectedFloor!.id!);
           },
           suffixIcon: IconBroken.arrowDown2,
           controller: context.read<AddWorkLocationCubit>().floorController,
+          isRead: false,
+          keyboardType: TextInputType.text,
+        ),
+        verticalSpace(10),
+        Text(
+          "Section",
+          style: TextStyles.font16BlackRegular,
+        ),
+        CustomDropDownList(
+          hint: "Select section",
+          items: context
+                      .read<AddWorkLocationCubit>()
+                      .sectionModel
+                      ?.data
+                      ?.data
+                      ?.isEmpty ??
+                  true
+              ? ['No sections']
+              : context
+                      .read<AddWorkLocationCubit>()
+                      .sectionModel
+                      ?.data
+                      ?.data
+                      ?.map((e) => e.name ?? 'Unknown')
+                      .toList() ??
+                  [],
+          validator: (value) {
+            if (value == null || value.isEmpty || value == 'No sections') {
+              return "Section is required";
+            }
+            return null;
+          },
+          onPressed: (value) {
+            final selectedSection = context
+                .read<AddWorkLocationCubit>()
+                .sectionModel
+                ?.data
+                ?.data
+                ?.firstWhere((section) =>
+                    section.name ==
+                    context
+                        .read<AddWorkLocationCubit>()
+                        .sectionController
+                        .text);
+
+            sectionId = selectedSection!.id!;
+          },
+          suffixIcon: IconBroken.arrowDown2,
+          controller: context.read<AddWorkLocationCubit>().sectionController,
           isRead: false,
           keyboardType: TextInputType.text,
         ),
@@ -383,10 +457,8 @@ class _AddPointScreenState extends State<AddPointScreen> {
           validator: (value) {
             if (value == null || value.isEmpty) {
               return "Point number is required";
-            } else if (value.length > 55) {
+            } else if (value.length > 30) {
               return 'Point number too long';
-            } else if (value.length < 3) {
-              return 'Point number too short';
             }
             return null;
           },
@@ -411,7 +483,7 @@ class _AddPointScreenState extends State<AddPointScreen> {
           },
         ),
         verticalSpace(10),
-        context.read<AddWorkLocationCubit>().allManagersModel?.data == null
+        context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
             : RichText(
                 textAlign: TextAlign.center,
@@ -428,25 +500,29 @@ class _AddPointScreenState extends State<AddPointScreen> {
                   ],
                 ),
               ),
-        context.read<AddWorkLocationCubit>().allManagersModel?.data == null
+        context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
-            : MultiDropdown<ManagersData>(
+            : MultiDropdown<User>(
                 items: context
-                            .read<AddWorkLocationCubit>()
-                            .allManagersModel
-                            ?.data ==
-                        null
+                        .read<AddWorkLocationCubit>()
+                        .usersModel!
+                        .data!
+                        .users!
+                        .where((user) => user.role == 'Manager')
+                        .isEmpty
                     ? [
                         DropdownItem(
                           label: 'No managers available',
-                          value: ManagersData(
-                              id: null, userName: 'No managers available'),
+                          value:
+                              User(id: null, userName: 'No managers available'),
                         )
                       ]
                     : context
                         .read<AddWorkLocationCubit>()
-                        .allManagersModel!
+                        .usersModel!
                         .data!
+                        .users!
+                        .where((user) => user.role == 'Manager')
                         .map((manager) => DropdownItem(
                               label: manager.userName!,
                               value: manager,
@@ -496,7 +572,7 @@ class _AddPointScreenState extends State<AddPointScreen> {
                 },
               ),
         verticalSpace(10),
-        context.read<AddWorkLocationCubit>().allSupervisorsModel?.data == null
+        context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
             : RichText(
                 textAlign: TextAlign.center,
@@ -513,25 +589,29 @@ class _AddPointScreenState extends State<AddPointScreen> {
                   ],
                 ),
               ),
-        context.read<AddWorkLocationCubit>().allSupervisorsModel?.data == null
+        context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
-            : MultiDropdown<SupervisorsData>(
+            : MultiDropdown<User>(
                 items: context
-                            .read<AddWorkLocationCubit>()
-                            .allSupervisorsModel
-                            ?.data ==
-                        null
+                        .read<AddWorkLocationCubit>()
+                        .usersModel!
+                        .data!
+                        .users!
+                        .where((user) => user.role == 'Supervisor')
+                        .isEmpty
                     ? [
                         DropdownItem(
                           label: 'No supervisors available',
-                          value: SupervisorsData(
+                          value: User(
                               id: null, userName: 'No supervisors available'),
                         )
                       ]
                     : context
                         .read<AddWorkLocationCubit>()
-                        .allSupervisorsModel!
+                        .usersModel!
                         .data!
+                        .users!
+                        .where((user) => user.role == 'Supervisor')
                         .map((supervisor) => DropdownItem(
                               label: supervisor.userName!,
                               value: supervisor,
@@ -582,7 +662,7 @@ class _AddPointScreenState extends State<AddPointScreen> {
                 },
               ),
         verticalSpace(10),
-        context.read<AddWorkLocationCubit>().allCleanersModel?.data == null
+        context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
             : RichText(
                 textAlign: TextAlign.center,
@@ -599,25 +679,29 @@ class _AddPointScreenState extends State<AddPointScreen> {
                   ],
                 ),
               ),
-        context.read<AddWorkLocationCubit>().allCleanersModel?.data == null
+        context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
-            : MultiDropdown<CleanersData>(
+            : MultiDropdown<User>(
                 items: context
-                            .read<AddWorkLocationCubit>()
-                            .allCleanersModel
-                            ?.data ==
-                        null
+                        .read<AddWorkLocationCubit>()
+                        .usersModel!
+                        .data!
+                        .users!
+                        .where((user) => user.role == 'Cleaner')
+                        .isEmpty
                     ? [
                         DropdownItem(
                           label: 'No cleaners available',
-                          value: CleanersData(
-                              id: null, userName: 'No cleaners available'),
+                          value:
+                              User(id: null, userName: 'No cleaners available'),
                         )
                       ]
                     : context
                         .read<AddWorkLocationCubit>()
-                        .allCleanersModel!
+                        .usersModel!
                         .data!
+                        .users!
+                        .where((user) => user.role == 'Cleaner')
                         .map((cleaner) => DropdownItem(
                               label: cleaner.userName!,
                               value: cleaner,
@@ -667,94 +751,6 @@ class _AddPointScreenState extends State<AddPointScreen> {
                 },
               ),
         verticalSpace(10),
-        context.read<AddWorkLocationCubit>().shiftModel?.data == null
-            ? SizedBox.shrink()
-            : RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Shifts',
-                      style: TextStyles.font16BlackRegular,
-                    ),
-                    TextSpan(
-                      text: ' (Optional)',
-                      style: TextStyles.font14GreyRegular,
-                    ),
-                  ],
-                ),
-              ),
-        context.read<AddWorkLocationCubit>().shiftModel?.data == null
-            ? SizedBox.shrink()
-            : MultiDropdown<ShiftDetails>(
-                items: context
-                            .read<AddWorkLocationCubit>()
-                            .shiftModel
-                            ?.data
-                            ?.data
-                            ?.isEmpty ??
-                        true
-                    ? [
-                        DropdownItem(
-                          label: 'No shifts available',
-                          value: ShiftDetails(
-                              id: null, name: 'No shifts available'),
-                        )
-                      ]
-                    : context
-                        .read<AddWorkLocationCubit>()
-                        .shiftModel!
-                        .data!
-                        .data!
-                        .map((shift) => DropdownItem(
-                              label: shift.name!,
-                              value: shift,
-                            ))
-                        .toList(),
-                controller:
-                    context.read<AddWorkLocationCubit>().shiftController,
-                enabled: true,
-                chipDecoration: ChipDecoration(
-                  backgroundColor: Colors.grey[300],
-                  wrap: true,
-                  runSpacing: 5,
-                  spacing: 5,
-                ),
-                fieldDecoration: FieldDecoration(
-                  hintText: 'Select shift',
-                  suffixIcon: Icon(IconBroken.arrowDown2),
-                  hintStyle:
-                      TextStyle(fontSize: 12.sp, color: AppColor.thirdColor),
-                  showClearIcon: false,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: const BorderSide(color: Colors.grey),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: const BorderSide(
-                      color: Colors.grey,
-                    ),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: const BorderSide(
-                      color: Colors.red,
-                    ),
-                  ),
-                ),
-                dropdownDecoration: const DropdownDecoration(
-                  maxHeight: 200,
-                ),
-                dropdownItemDecoration: DropdownItemDecoration(
-                  selectedIcon: const Icon(Icons.check_box, color: Colors.blue),
-                ),
-                onSelectionChange: (selectedItems) {
-                  selectedShiftsIds =
-                      selectedItems.map((item) => (item).id!).toList();
-                },
-              ),
-        verticalSpace(10),
       ],
     );
   }
@@ -772,12 +768,12 @@ class _AddPointScreenState extends State<AddPointScreen> {
                   .formAddKey
                   .currentState!
                   .validate()) {
-                context.read<AddWorkLocationCubit>().createpoint(
-                    floorId!,
-                    selectedManagersIds,
-                    selectedSupervisorsIds,
-                    selectedCleanersIds,
-                    selectedShiftsIds);
+                context.read<AddWorkLocationCubit>().createPoint(
+                      sectionId!,
+                      selectedManagersIds,
+                      selectedSupervisorsIds,
+                      selectedCleanersIds,
+                    );
               }
             },
             color: AppColor.primaryColor,

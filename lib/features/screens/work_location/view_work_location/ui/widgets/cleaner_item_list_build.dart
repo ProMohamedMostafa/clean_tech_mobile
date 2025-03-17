@@ -8,85 +8,88 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
 
 Widget cleanerListItemBuild(BuildContext context, index, selectedIndex) {
+  List<int> cleanerIds = selectedIndex == 0
+      ? context
+              .read<WorkLocationCubit>()
+              .areaUsersDetailsModel
+              ?.data
+              ?.users
+              ?.where((user) => user.role == 'Cleaner')
+              .map((user) => user.id!)
+              .toList() ??
+          []
+      : selectedIndex == 1
+          ? context
+                  .read<WorkLocationCubit>()
+                  .cityUsersDetailsModel
+                  ?.data
+                  ?.users
+                  ?.where((user) => user.role == 'Cleaner')
+                  .map((user) => user.id!)
+                  .toList() ??
+              []
+          : selectedIndex == 2
+              ? context
+                      .read<WorkLocationCubit>()
+                      .organizationUsersShiftDetailsModel
+                      ?.data
+                      ?.users
+                      ?.where((user) => user.role == 'Cleaner')
+                      .map((user) => user.id!)
+                      .toList() ??
+                  []
+              : selectedIndex == 3
+                  ? context
+                          .read<WorkLocationCubit>()
+                          .buildingUsersShiftDetailsModel
+                          ?.data
+                          ?.users
+                          ?.where((user) => user.role == 'Cleaner')
+                          .map((user) => user.id!)
+                          .toList() ??
+                      []
+                  : selectedIndex == 4
+                      ? context
+                              .read<WorkLocationCubit>()
+                              .floorUsersShiftDetailsModel
+                              ?.data
+                              ?.users
+                              ?.where((user) => user.role == 'Cleaner')
+                              .map((user) => user.id!)
+                              .toList() ??
+                          []
+                      : selectedIndex == 5
+                          ? context
+                                  .read<WorkLocationCubit>()
+                                  .sectionUsersShiftDetailsModel
+                                  ?.data
+                                  ?.users
+                                  ?.where((user) => user.role == 'Cleaner')
+                                  .map((user) => user.id!)
+                                  .toList() ??
+                              []
+                          : context
+                                  .read<WorkLocationCubit>()
+                                  .pointUsersDetailsModel
+                                  ?.data
+                                  ?.users
+                                  ?.where((user) => user.role == 'Cleaner')
+                                  .map((user) => user.id!)
+                                  .toList() ??
+                              [];
+
   return InkWell(
     onTap: () {
+      int? cleanerId = cleanerIds.isNotEmpty ? cleanerIds.first : null;
       context.pushNamed(
         Routes.userDetailsScreen,
-        arguments: selectedIndex == 0
-            ? context
-                .read<WorkLocationCubit>()
-                .areaUsersDetailsModel!
-                .data!
-                .users!
-                .where((user) => user.role == 'Cleaner')
-                .map((user) => user.id!)
-                .toString()
-            : selectedIndex == 1
-                ? context
-                    .read<WorkLocationCubit>()
-                    .cityUsersDetailsModel!
-                    .data!
-                    .users!
-                    .where((user) => user.role == 'Cleaner')
-                    .map((user) => user.id!)
-                    .toString()
-                : selectedIndex == 2
-                    ? context
-                        .read<WorkLocationCubit>()
-                        .organizationUsersShiftDetailsModel!
-                        .data!
-                        .users!
-                        .where((user) => user.role == 'Cleaner')
-                        .map((user) => user.id!)
-                        .toString()
-                    : selectedIndex == 3
-                        ? context
-                            .read<WorkLocationCubit>()
-                            .buildingUsersShiftDetailsModel!
-                            .data!
-                            .users!
-                            .where((user) => user.role == 'Cleaner')
-                            .map((user) => user.id!)
-                            .toString()
-                        : selectedIndex == 4
-                            ? context
-                                .read<WorkLocationCubit>()
-                                .floorUsersShiftDetailsModel!
-                                .data!
-                                .users!
-                                .where((user) => user.role == 'Cleaner')
-                                .map((user) => user.id!)
-                                .toString()
-                            : selectedIndex == 5
-                                ? context
-                                    .read<WorkLocationCubit>()
-                                    .sectionUsersShiftDetailsModel!
-                                    .data!
-                                    .users!
-                                    .where((user) => user.role == 'Cleaner')
-                                    .map((user) => user.id!)
-                                    .toString()
-                                : context
-                                    .read<WorkLocationCubit>()
-                                    .pointUsersDetailsModel!
-                                    .data!
-                                    .users!
-                                    .where((user) => user.role == 'Cleaner')
-                                    .map((user) => user.id!)
-                                    .toString(),
+        arguments: cleanerId,
       );
     },
     child: ListTile(
-      contentPadding: EdgeInsets.zero,
+      contentPadding: EdgeInsets.symmetric(horizontal: 5),
       minTileHeight: 60.h,
-      leading:
-          //  Container(
-          //   height: 40.h,
-          //   width: 40.w,
-          //   decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.amber),
-          // ),
-
-          Container(
+      leading: Container(
         height: 40.h,
         width: 40.w,
         decoration: BoxDecoration(shape: BoxShape.circle),
@@ -111,7 +114,7 @@ Widget cleanerListItemBuild(BuildContext context, index, selectedIndex) {
                 .users!
                 .where((user) => user.role == 'Cleaner')
                 .map((user) => user.userName!)
-                .toString()
+                .join(", ")
             : selectedIndex == 1
                 ? context
                     .read<WorkLocationCubit>()
@@ -120,7 +123,7 @@ Widget cleanerListItemBuild(BuildContext context, index, selectedIndex) {
                     .users!
                     .where((user) => user.role == 'Cleaner')
                     .map((user) => user.userName!)
-                    .toString()
+                    .join(", ")
                 : selectedIndex == 2
                     ? context
                         .read<WorkLocationCubit>()
@@ -129,7 +132,7 @@ Widget cleanerListItemBuild(BuildContext context, index, selectedIndex) {
                         .users!
                         .where((user) => user.role == 'Cleaner')
                         .map((user) => user.userName!)
-                        .toString()
+                        .join(", ")
                     : selectedIndex == 3
                         ? context
                             .read<WorkLocationCubit>()
@@ -138,7 +141,7 @@ Widget cleanerListItemBuild(BuildContext context, index, selectedIndex) {
                             .users!
                             .where((user) => user.role == 'Cleaner')
                             .map((user) => user.userName!)
-                            .toString()
+                            .join(", ")
                         : selectedIndex == 4
                             ? context
                                 .read<WorkLocationCubit>()
@@ -147,7 +150,7 @@ Widget cleanerListItemBuild(BuildContext context, index, selectedIndex) {
                                 .users!
                                 .where((user) => user.role == 'Cleaner')
                                 .map((user) => user.userName!)
-                                .toString()
+                                .join(", ")
                             : selectedIndex == 5
                                 ? context
                                     .read<WorkLocationCubit>()
@@ -156,7 +159,7 @@ Widget cleanerListItemBuild(BuildContext context, index, selectedIndex) {
                                     .users!
                                     .where((user) => user.role == 'Cleaner')
                                     .map((user) => user.userName!)
-                                    .toString()
+                                    .join(", ")
                                 : context
                                     .read<WorkLocationCubit>()
                                     .pointUsersDetailsModel!
@@ -164,7 +167,7 @@ Widget cleanerListItemBuild(BuildContext context, index, selectedIndex) {
                                     .users!
                                     .where((user) => user.role == 'Cleaner')
                                     .map((user) => user.userName!)
-                                    .toString(),
+                                    .join(", "),
         style: TextStyles.font14BlackSemiBold,
       ),
       subtitle: Text(
@@ -176,7 +179,7 @@ Widget cleanerListItemBuild(BuildContext context, index, selectedIndex) {
                 .users!
                 .where((user) => user.role == 'Cleaner')
                 .map((user) => user.email!)
-                .toString()
+                .join(", ")
             : selectedIndex == 1
                 ? context
                     .read<WorkLocationCubit>()
@@ -185,7 +188,7 @@ Widget cleanerListItemBuild(BuildContext context, index, selectedIndex) {
                     .users!
                     .where((user) => user.role == 'Cleaner')
                     .map((user) => user.email!)
-                    .toString()
+                    .join(", ")
                 : selectedIndex == 2
                     ? context
                         .read<WorkLocationCubit>()
@@ -194,7 +197,7 @@ Widget cleanerListItemBuild(BuildContext context, index, selectedIndex) {
                         .users!
                         .where((user) => user.role == 'Cleaner')
                         .map((user) => user.email!)
-                        .toString()
+                        .join(", ")
                     : selectedIndex == 3
                         ? context
                             .read<WorkLocationCubit>()
@@ -203,7 +206,7 @@ Widget cleanerListItemBuild(BuildContext context, index, selectedIndex) {
                             .users!
                             .where((user) => user.role == 'Cleaner')
                             .map((user) => user.email!)
-                            .toString()
+                            .join(", ")
                         : selectedIndex == 4
                             ? context
                                 .read<WorkLocationCubit>()
@@ -212,7 +215,7 @@ Widget cleanerListItemBuild(BuildContext context, index, selectedIndex) {
                                 .users!
                                 .where((user) => user.role == 'Cleaner')
                                 .map((user) => user.email!)
-                                .toString()
+                                .join(", ")
                             : selectedIndex == 5
                                 ? context
                                     .read<WorkLocationCubit>()
@@ -221,7 +224,7 @@ Widget cleanerListItemBuild(BuildContext context, index, selectedIndex) {
                                     .users!
                                     .where((user) => user.role == 'Cleaner')
                                     .map((user) => user.email!)
-                                    .toString()
+                                    .join(", ")
                                 : context
                                     .read<WorkLocationCubit>()
                                     .pointUsersDetailsModel!
@@ -229,7 +232,7 @@ Widget cleanerListItemBuild(BuildContext context, index, selectedIndex) {
                                     .users!
                                     .where((user) => user.role == 'Cleaner')
                                     .map((user) => user.email!)
-                                    .toString(),
+                                    .join(", "),
         style: TextStyles.font12GreyRegular,
       ),
     ),

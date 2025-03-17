@@ -360,14 +360,14 @@ class CustomFilterTaskDialog {
                         items: context
                                     .read<UserManagementCubit>()
                                     .cityModel
-                                    ?.data
+                                   ?.data?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No cities']
                             : context
                                     .read<UserManagementCubit>()
                                     .cityModel
-                                    ?.data
+                                   ?.data?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
@@ -375,7 +375,7 @@ class CustomFilterTaskDialog {
                           final selectedCity = context
                               .read<UserManagementCubit>()
                               .cityModel
-                              ?.data
+                             ?.data?.data
                               ?.firstWhere((city) =>
                                   city.name ==
                                   context
@@ -403,14 +403,14 @@ class CustomFilterTaskDialog {
                         items: context
                                     .read<UserManagementCubit>()
                                     .organizationModel
-                                    ?.data
+                                   ?.data?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No organizations']
                             : context
                                     .read<UserManagementCubit>()
                                     .organizationModel
-                                    ?.data
+                                   ?.data?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
@@ -418,7 +418,7 @@ class CustomFilterTaskDialog {
                           final selectedOrganization = context
                               .read<UserManagementCubit>()
                               .organizationModel
-                              ?.data
+                             ?.data?.data
                               ?.firstWhere((organization) =>
                                   organization.name ==
                                   context
@@ -447,14 +447,14 @@ class CustomFilterTaskDialog {
                         items: context
                                     .read<UserManagementCubit>()
                                     .buildingModel
-                                    ?.data
+                                   ?.data?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No building']
                             : context
                                     .read<UserManagementCubit>()
                                     .buildingModel
-                                    ?.data
+                                   ?.data?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
@@ -462,7 +462,7 @@ class CustomFilterTaskDialog {
                           final selectedBuilding = context
                               .read<UserManagementCubit>()
                               .buildingModel
-                              ?.data
+                             ?.data?.data
                               ?.firstWhere((building) =>
                                   building.name ==
                                   context
@@ -491,14 +491,14 @@ class CustomFilterTaskDialog {
                         items: context
                                     .read<UserManagementCubit>()
                                     .floorModel
-                                    ?.data
+                                   ?.data?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No floors']
                             : context
                                     .read<UserManagementCubit>()
                                     .floorModel
-                                    ?.data
+                                   ?.data?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
@@ -506,7 +506,7 @@ class CustomFilterTaskDialog {
                           final selectedFloor = context
                               .read<UserManagementCubit>()
                               .floorModel
-                              ?.data
+                             ?.data?.data
                               ?.firstWhere((floor) =>
                                   floor.name ==
                                   context
@@ -516,7 +516,7 @@ class CustomFilterTaskDialog {
 
                           context
                               .read<UserManagementCubit>()
-                              .getPoints(selectedFloor!.id!);
+                              .getPoint(selectedFloor!.id!);
                           floorId = selectedFloor.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
@@ -533,23 +533,23 @@ class CustomFilterTaskDialog {
                         hint: "Select point",
                         items: context
                                     .read<UserManagementCubit>()
-                                    .pointsModel
-                                    ?.data
+                                    .pointModel
+                                   ?.data?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No point']
                             : context
                                     .read<UserManagementCubit>()
-                                    .pointsModel
-                                    ?.data
+                                    .pointModel
+                                   ?.data?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
                         onPressed: (value) {
                           final selectedPoint = context
                               .read<UserManagementCubit>()
-                              .pointsModel
-                              ?.data
+                              .pointModel
+                             ?.data?.data
                               ?.firstWhere((point) =>
                                   point.name ==
                                   context
@@ -559,7 +559,7 @@ class CustomFilterTaskDialog {
 
                           context
                               .read<UserManagementCubit>()
-                              .getPoints(selectedPoint!.id!);
+                              .getPoint(selectedPoint!.id!);
                           pointId = selectedPoint.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
@@ -594,8 +594,8 @@ class CustomFilterTaskDialog {
                           onPressed: (value) {
                             final selectedProvider = context
                                 .read<UserManagementCubit>()
-                                .pointsModel
-                                ?.data
+                                .pointModel
+                                ?.data?.data
                                 ?.firstWhere((provider) =>
                                     provider.name ==
                                     context
@@ -605,7 +605,7 @@ class CustomFilterTaskDialog {
 
                             context
                                 .read<UserManagementCubit>()
-                                .getPoints(selectedProvider!.id!);
+                                .getPoint(selectedProvider!.id!);
                             providerId = selectedProvider.id;
                           },
                           controller: context

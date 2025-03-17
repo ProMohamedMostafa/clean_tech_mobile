@@ -24,6 +24,7 @@ class CustomFilterUserDialog {
         int? organizationId;
         int? buildingId;
         int? floorId;
+        int? sectionId;
         int? pointId;
         int? providerId;
         return Dialog(
@@ -86,6 +87,7 @@ class CustomFilterUserDialog {
                                     .read<UserManagementCubit>()
                                     .areaModel
                                     ?.data
+                                    ?.areas
                                     ?.isEmpty ??
                                 true
                             ? ['No Areas']
@@ -93,6 +95,7 @@ class CustomFilterUserDialog {
                                     .read<UserManagementCubit>()
                                     .areaModel
                                     ?.data
+                                    ?.areas
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
@@ -101,6 +104,7 @@ class CustomFilterUserDialog {
                               .read<UserManagementCubit>()
                               .areaModel
                               ?.data
+                              ?.areas
                               ?.firstWhere((area) =>
                                   area.name ==
                                   context
@@ -129,12 +133,14 @@ class CustomFilterUserDialog {
                                     .read<UserManagementCubit>()
                                     .cityModel
                                     ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No Cities']
                             : context
                                     .read<UserManagementCubit>()
                                     .cityModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -143,6 +149,7 @@ class CustomFilterUserDialog {
                           final selectedCity = context
                               .read<UserManagementCubit>()
                               .cityModel
+                              ?.data
                               ?.data
                               ?.firstWhere((city) =>
                                   city.name ==
@@ -172,12 +179,14 @@ class CustomFilterUserDialog {
                                     .read<UserManagementCubit>()
                                     .organizationModel
                                     ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No organizations']
                             : context
                                     .read<UserManagementCubit>()
                                     .organizationModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -186,6 +195,7 @@ class CustomFilterUserDialog {
                           final selectedOrganization = context
                               .read<UserManagementCubit>()
                               .organizationModel
+                              ?.data
                               ?.data
                               ?.firstWhere((organization) =>
                                   organization.name ==
@@ -216,12 +226,14 @@ class CustomFilterUserDialog {
                                     .read<UserManagementCubit>()
                                     .buildingModel
                                     ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No building']
                             : context
                                     .read<UserManagementCubit>()
                                     .buildingModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -230,6 +242,7 @@ class CustomFilterUserDialog {
                           final selectedBuilding = context
                               .read<UserManagementCubit>()
                               .buildingModel
+                              ?.data
                               ?.data
                               ?.firstWhere((building) =>
                                   building.name ==
@@ -260,12 +273,14 @@ class CustomFilterUserDialog {
                                     .read<UserManagementCubit>()
                                     .floorModel
                                     ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No floors']
                             : context
                                     .read<UserManagementCubit>()
                                     .floorModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -274,6 +289,7 @@ class CustomFilterUserDialog {
                           final selectedFloor = context
                               .read<UserManagementCubit>()
                               .floorModel
+                              ?.data
                               ?.data
                               ?.firstWhere((floor) =>
                                   floor.name ==
@@ -284,12 +300,58 @@ class CustomFilterUserDialog {
 
                           context
                               .read<UserManagementCubit>()
-                              .getPoints(selectedFloor!.id!);
+                              .getPoint(selectedFloor!.id!);
                           floorId = selectedFloor.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
                         controller:
                             context.read<UserManagementCubit>().floorController,
+                        keyboardType: TextInputType.text,
+                      ),
+                      verticalSpace(10),
+                        Text(
+                        'Section',
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomDropDownList(
+                        hint: "Select section",
+                        items: context
+                                    .read<UserManagementCubit>()
+                                    .sectionModel
+                                    ?.data
+                                    ?.data
+                                    ?.isEmpty ??
+                                true
+                            ? ['No sections']
+                            : context
+                                    .read<UserManagementCubit>()
+                                    .sectionModel
+                                    ?.data
+                                    ?.data
+                                    ?.map((e) => e.name ?? 'Unknown')
+                                    .toList() ??
+                                [],
+                        onPressed: (value) {
+                          final selectedSection = context
+                              .read<UserManagementCubit>()
+                              .sectionModel
+                              ?.data
+                              ?.data
+                              ?.firstWhere((section) =>
+                                  section.name ==
+                                  context
+                                      .read<UserManagementCubit>()
+                                      .sectionController
+                                      .text);
+
+                          context
+                              .read<UserManagementCubit>()
+                              .getPoint(selectedSection!.id!);
+                          sectionId = selectedSection.id;
+                        },
+                        suffixIcon: IconBroken.arrowDown2,
+                        controller:
+                            context.read<UserManagementCubit>().sectionController,
                         keyboardType: TextInputType.text,
                       ),
                       verticalSpace(10),
@@ -301,14 +363,16 @@ class CustomFilterUserDialog {
                         hint: "Select point",
                         items: context
                                     .read<UserManagementCubit>()
-                                    .pointsModel
+                                    .pointModel
+                                    ?.data
                                     ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No point']
                             : context
                                     .read<UserManagementCubit>()
-                                    .pointsModel
+                                    .pointModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -316,7 +380,8 @@ class CustomFilterUserDialog {
                         onPressed: (value) {
                           final selectedPoint = context
                               .read<UserManagementCubit>()
-                              .pointsModel
+                              .pointModel
+                              ?.data
                               ?.data
                               ?.firstWhere((point) =>
                                   point.name ==
@@ -327,7 +392,7 @@ class CustomFilterUserDialog {
 
                           context
                               .read<UserManagementCubit>()
-                              .getPoints(selectedPoint!.id!);
+                              .getPoint(selectedPoint!.id!);
                           pointId = selectedPoint.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
@@ -362,7 +427,8 @@ class CustomFilterUserDialog {
                           onPressed: (value) {
                             final selectedProvider = context
                                 .read<UserManagementCubit>()
-                                .pointsModel
+                                .pointModel
+                                ?.data
                                 ?.data
                                 ?.firstWhere((provider) =>
                                     provider.name ==
@@ -373,7 +439,7 @@ class CustomFilterUserDialog {
 
                             context
                                 .read<UserManagementCubit>()
-                                .getPoints(selectedProvider!.id!);
+                                .getPoint(selectedProvider!.id!);
                             providerId = selectedProvider.id;
                           },
                           controller: context
@@ -425,6 +491,7 @@ class CustomFilterUserDialog {
                                       organizationId: organizationId,
                                       buildingId: buildingId,
                                       floorId: floorId,
+                                      sectionId:sectionId,
                                       pointId: pointId,
                                       providerId: providerId);
                               context.pop();

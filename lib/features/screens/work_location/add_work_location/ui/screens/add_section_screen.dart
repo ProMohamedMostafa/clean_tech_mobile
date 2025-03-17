@@ -15,9 +15,7 @@ import 'package:smart_cleaning_application/features/screens/integrations/data/mo
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_description_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_cleaners_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_managers_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_supervisors_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/logic/add_work_location_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/logic/add_work_location_state.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
@@ -34,14 +32,12 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
   List<int> selectedSupervisorsIds = [];
   List<int> selectedCleanersIds = [];
   List<int> selectedShiftsIds = [];
-  int? buildingId;
+  int? floorId;
   @override
   void initState() {
     context.read<AddWorkLocationCubit>()
-      ..getNationality()
-      ..getManagers()
-      ..getSupervisors()
-      ..getCleaners()
+      ..getNationality(userUsedOnly: false, areaUsedOnly: true)
+      ..getAllUsers()
       ..getShifts();
     super.initState();
   }
@@ -58,16 +54,25 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
         child: SingleChildScrollView(
             child: BlocConsumer<AddWorkLocationCubit, AddWorkLocationState>(
           listener: (context, state) {
-            // if (state is CreateSectionSuccessState) {
-            //   toast(text: state.message, color: Colors.blue);
-            //   context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
-            //       arguments: 4);
-            // }
-            // if (state is CreateSectionErrorState) {
-            //   toast(text: state.error, color: Colors.red);
-            // }
+            if (state is CreateSectionSuccessState) {
+              toast(text: state.message, color: Colors.blue);
+              context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
+                  arguments: 5);
+            }
+            if (state is CreateSectionErrorState) {
+              toast(text: state.error, color: Colors.red);
+            }
           },
           builder: (context, state) {
+            if (context.read<AddWorkLocationCubit>().usersModel == null ||
+                context.read<AddWorkLocationCubit>().nationalityModel == null ||
+                context.read<AddWorkLocationCubit>().shiftModel == null) {
+              return Center(
+                child: CircularProgressIndicator(
+                  color: AppColor.primaryColor,
+                ),
+              );
+            }
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Form(
@@ -78,7 +83,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
                   children: [
                     verticalSpace(20),
                     _buildDetailsField(),
-                    verticalSpace(16),
+                    verticalSpace(20),
                     _buildContinueButton(state),
                     verticalSpace(20),
                   ],
@@ -140,17 +145,22 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
         ),
         CustomDropDownList(
           hint: "Select area",
-          items:
-              context.read<AddWorkLocationCubit>().areaModel?.data?.isEmpty ??
-                      true
-                  ? ['No area']
-                  : context
-                          .read<AddWorkLocationCubit>()
-                          .areaModel
-                          ?.data
-                          ?.map((e) => e.name ?? 'Unknown')
-                          .toList() ??
-                      [],
+          items: context
+                      .read<AddWorkLocationCubit>()
+                      .areaModel
+                      ?.data
+                      ?.areas
+                      ?.isEmpty ??
+                  true
+              ? ['No area']
+              : context
+                      .read<AddWorkLocationCubit>()
+                      .areaModel
+                      ?.data
+                      ?.areas
+                      ?.map((e) => e.name ?? 'Unknown')
+                      .toList() ??
+                  [],
           validator: (value) {
             if (value == null || value.isEmpty || value == "No area") {
               return "Area is required";
@@ -162,6 +172,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
                 .read<AddWorkLocationCubit>()
                 .areaModel
                 ?.data
+                ?.areas
                 ?.firstWhere((area) =>
                     area.name ==
                     context.read<AddWorkLocationCubit>().areaController.text);
@@ -179,17 +190,22 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
         ),
         CustomDropDownList(
           hint: "Select city",
-          items:
-              context.read<AddWorkLocationCubit>().cityModel?.data?.isEmpty ??
-                      true
-                  ? ['No cities']
-                  : context
-                          .read<AddWorkLocationCubit>()
-                          .cityModel
-                          ?.data
-                          ?.map((e) => e.name ?? 'Unknown')
-                          .toList() ??
-                      [],
+          items: context
+                      .read<AddWorkLocationCubit>()
+                      .cityModel
+                      ?.data
+                      ?.data
+                      ?.isEmpty ??
+                  true
+              ? ['No cities']
+              : context
+                      .read<AddWorkLocationCubit>()
+                      .cityModel
+                      ?.data
+                      ?.data
+                      ?.map((e) => e.name ?? 'Unknown')
+                      .toList() ??
+                  [],
           validator: (value) {
             if (value == null || value.isEmpty || value == 'No cities') {
               return "City is required";
@@ -200,6 +216,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
             final selectedCity = context
                 .read<AddWorkLocationCubit>()
                 .cityModel
+                ?.data
                 ?.data
                 ?.firstWhere((city) =>
                     city.name ==
@@ -224,12 +241,14 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
                       .read<AddWorkLocationCubit>()
                       .organizationModel
                       ?.data
+                      ?.data
                       ?.isEmpty ??
                   true
               ? ['No organizations']
               : context
                       .read<AddWorkLocationCubit>()
                       .organizationModel
+                      ?.data
                       ?.data
                       ?.map((e) => e.name ?? 'Unknown')
                       .toList() ??
@@ -244,6 +263,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
             final selectedOrganization = context
                 .read<AddWorkLocationCubit>()
                 .organizationModel
+                ?.data
                 ?.data
                 ?.firstWhere((organization) =>
                     organization.name ==
@@ -272,12 +292,14 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
                       .read<AddWorkLocationCubit>()
                       .buildingModel
                       ?.data
+                      ?.data
                       ?.isEmpty ??
                   true
               ? ['No building']
               : context
                       .read<AddWorkLocationCubit>()
                       .buildingModel
+                      ?.data
                       ?.data
                       ?.map((e) => e.name ?? 'Unknown')
                       .toList() ??
@@ -293,6 +315,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
                 .read<AddWorkLocationCubit>()
                 .buildingModel
                 ?.data
+                ?.data
                 ?.firstWhere((building) =>
                     building.name ==
                     context
@@ -300,10 +323,58 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
                         .buildingController
                         .text);
 
-            buildingId = selectedBuilding!.id!;
+            context
+                .read<AddWorkLocationCubit>()
+                .getFloor(selectedBuilding!.id!);
           },
           suffixIcon: IconBroken.arrowDown2,
           controller: context.read<AddWorkLocationCubit>().buildingController,
+          isRead: false,
+          keyboardType: TextInputType.text,
+        ),
+        verticalSpace(10),
+        Text(
+          "Floor",
+          style: TextStyles.font16BlackRegular,
+        ),
+        CustomDropDownList(
+          hint: "Select floor",
+          items: context
+                      .read<AddWorkLocationCubit>()
+                      .floorModel
+                      ?.data
+                      ?.data
+                      ?.isEmpty ??
+                  true
+              ? ['No floor']
+              : context
+                      .read<AddWorkLocationCubit>()
+                      .floorModel
+                      ?.data
+                      ?.data
+                      ?.map((e) => e.name ?? 'Unknown')
+                      .toList() ??
+                  [],
+          validator: (value) {
+            if (value == null || value.isEmpty || value == 'No floor') {
+              return "Floor is required";
+            }
+            return null;
+          },
+          onPressed: (value) {
+            final selectedFloor = context
+                .read<AddWorkLocationCubit>()
+                .floorModel
+                ?.data
+                ?.data
+                ?.firstWhere((floor) =>
+                    floor.name ==
+                    context.read<AddWorkLocationCubit>().floorController.text);
+
+            floorId = selectedFloor!.id!;
+          },
+          suffixIcon: IconBroken.arrowDown2,
+          controller: context.read<AddWorkLocationCubit>().floorController,
           isRead: false,
           keyboardType: TextInputType.text,
         ),
@@ -342,10 +413,8 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
           validator: (value) {
             if (value == null || value.isEmpty) {
               return "Section number is required";
-            } else if (value.length > 55) {
+            } else if (value.length > 30) {
               return 'Section number too long';
-            } else if (value.length < 3) {
-              return 'Section number too short';
             }
             return null;
           },
@@ -369,7 +438,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
           },
         ),
         verticalSpace(10),
-        context.read<AddWorkLocationCubit>().allManagersModel?.data == null
+        context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
             : RichText(
                 textAlign: TextAlign.center,
@@ -386,25 +455,29 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
                   ],
                 ),
               ),
-        context.read<AddWorkLocationCubit>().allManagersModel?.data == null
+        context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
-            : MultiDropdown<ManagersData>(
+            : MultiDropdown<User>(
                 items: context
-                            .read<AddWorkLocationCubit>()
-                            .allManagersModel
-                            ?.data ==
-                        null
+                        .read<AddWorkLocationCubit>()
+                        .usersModel!
+                        .data!
+                        .users!
+                        .where((user) => user.role == 'Manager')
+                        .isEmpty
                     ? [
                         DropdownItem(
                           label: 'No managers available',
-                          value: ManagersData(
-                              id: null, userName: 'No managers available'),
+                          value:
+                              User(id: null, userName: 'No managers available'),
                         )
                       ]
                     : context
                         .read<AddWorkLocationCubit>()
-                        .allManagersModel!
+                        .usersModel!
                         .data!
+                        .users!
+                        .where((user) => user.role == 'Manager')
                         .map((manager) => DropdownItem(
                               label: manager.userName!,
                               value: manager,
@@ -454,7 +527,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
                 },
               ),
         verticalSpace(10),
-        context.read<AddWorkLocationCubit>().allSupervisorsModel?.data == null
+        context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
             : RichText(
                 textAlign: TextAlign.center,
@@ -471,25 +544,29 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
                   ],
                 ),
               ),
-        context.read<AddWorkLocationCubit>().allSupervisorsModel?.data == null
+        context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
-            : MultiDropdown<SupervisorsData>(
+            : MultiDropdown<User>(
                 items: context
-                            .read<AddWorkLocationCubit>()
-                            .allSupervisorsModel
-                            ?.data ==
-                        null
+                        .read<AddWorkLocationCubit>()
+                        .usersModel!
+                        .data!
+                        .users!
+                        .where((user) => user.role == 'Supervisor')
+                        .isEmpty
                     ? [
                         DropdownItem(
                           label: 'No supervisors available',
-                          value: SupervisorsData(
+                          value: User(
                               id: null, userName: 'No supervisors available'),
                         )
                       ]
                     : context
                         .read<AddWorkLocationCubit>()
-                        .allSupervisorsModel!
+                        .usersModel!
                         .data!
+                        .users!
+                        .where((user) => user.role == 'Supervisor')
                         .map((supervisor) => DropdownItem(
                               label: supervisor.userName!,
                               value: supervisor,
@@ -540,7 +617,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
                 },
               ),
         verticalSpace(10),
-        context.read<AddWorkLocationCubit>().allCleanersModel?.data == null
+        context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
             : RichText(
                 textAlign: TextAlign.center,
@@ -557,25 +634,29 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
                   ],
                 ),
               ),
-        context.read<AddWorkLocationCubit>().allCleanersModel?.data == null
+        context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
-            : MultiDropdown<CleanersData>(
+            : MultiDropdown<User>(
                 items: context
-                            .read<AddWorkLocationCubit>()
-                            .allCleanersModel
-                            ?.data ==
-                        null
+                        .read<AddWorkLocationCubit>()
+                        .usersModel!
+                        .data!
+                        .users!
+                        .where((user) => user.role == 'Cleaner')
+                        .isEmpty
                     ? [
                         DropdownItem(
                           label: 'No cleaners available',
-                          value: CleanersData(
-                              id: null, userName: 'No cleaners available'),
+                          value:
+                              User(id: null, userName: 'No cleaners available'),
                         )
                       ]
                     : context
                         .read<AddWorkLocationCubit>()
-                        .allCleanersModel!
+                        .usersModel!
                         .data!
+                        .users!
+                        .where((user) => user.role == 'Cleaner')
                         .map((cleaner) => DropdownItem(
                               label: cleaner.userName!,
                               value: cleaner,
@@ -725,18 +806,18 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
         : DefaultElevatedButton(
             name: "Add",
             onPressed: () {
-              // if (context
-              //     .read<AddWorkLocationCubit>()
-              //     .formAddKey
-              //     .currentState!
-              //     .validate()) {
-              //   context.read<AddWorkLocationCubit>().createSection(
-              //       buildingId!,
-              //       selectedManagersIds,
-              //       selectedSupervisorsIds,
-              //       selectedCleanersIds,
-              //       selectedShiftsIds);
-              // }
+              if (context
+                  .read<AddWorkLocationCubit>()
+                  .formAddKey
+                  .currentState!
+                  .validate()) {
+                context.read<AddWorkLocationCubit>().createSection(
+                    floorId!,
+                    selectedManagersIds,
+                    selectedSupervisorsIds,
+                    selectedCleanersIds,
+                    selectedShiftsIds);
+              }
             },
             color: AppColor.primaryColor,
             height: 47.h,

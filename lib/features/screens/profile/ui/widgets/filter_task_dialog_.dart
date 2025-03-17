@@ -354,12 +354,14 @@ class CustomFilterTaskDialog {
                                     .read<ProfileCubit>()
                                     .cityModel
                                     ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No cities']
                             : context
                                     .read<ProfileCubit>()
                                     .cityModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -368,6 +370,7 @@ class CustomFilterTaskDialog {
                           final selectedCity = context
                               .read<ProfileCubit>()
                               .cityModel
+                              ?.data
                               ?.data
                               ?.firstWhere((city) =>
                                   city.name ==
@@ -396,12 +399,14 @@ class CustomFilterTaskDialog {
                                     .read<ProfileCubit>()
                                     .organizationModel
                                     ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No organizations']
                             : context
                                     .read<ProfileCubit>()
                                     .organizationModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -410,6 +415,7 @@ class CustomFilterTaskDialog {
                           final selectedOrganization = context
                               .read<ProfileCubit>()
                               .organizationModel
+                              ?.data
                               ?.data
                               ?.firstWhere((organization) =>
                                   organization.name ==
@@ -439,12 +445,14 @@ class CustomFilterTaskDialog {
                                     .read<ProfileCubit>()
                                     .buildingModel
                                     ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No building']
                             : context
                                     .read<ProfileCubit>()
                                     .buildingModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -453,6 +461,7 @@ class CustomFilterTaskDialog {
                           final selectedBuilding = context
                               .read<ProfileCubit>()
                               .buildingModel
+                              ?.data
                               ?.data
                               ?.firstWhere((building) =>
                                   building.name ==
@@ -482,12 +491,14 @@ class CustomFilterTaskDialog {
                                     .read<ProfileCubit>()
                                     .floorModel
                                     ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No floors']
                             : context
                                     .read<ProfileCubit>()
                                     .floorModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -496,6 +507,7 @@ class CustomFilterTaskDialog {
                           final selectedFloor = context
                               .read<ProfileCubit>()
                               .floorModel
+                              ?.data
                               ?.data
                               ?.firstWhere((floor) =>
                                   floor.name ==
@@ -506,7 +518,7 @@ class CustomFilterTaskDialog {
 
                           context
                               .read<ProfileCubit>()
-                              .getPoints(selectedFloor!.id!);
+                              .getPoint(selectedFloor!.id!);
                           floorId = selectedFloor.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
@@ -523,14 +535,16 @@ class CustomFilterTaskDialog {
                         hint: "Select point",
                         items: context
                                     .read<ProfileCubit>()
-                                    .pointsModel
+                                    .pointModel
+                                    ?.data
                                     ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No point']
                             : context
                                     .read<ProfileCubit>()
-                                    .pointsModel
+                                    .pointModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -538,7 +552,8 @@ class CustomFilterTaskDialog {
                         onPressed: (value) {
                           final selectedPoint = context
                               .read<ProfileCubit>()
-                              .pointsModel
+                              .pointModel
+                              ?.data
                               ?.data
                               ?.firstWhere((point) =>
                                   point.name ==
@@ -549,7 +564,7 @@ class CustomFilterTaskDialog {
 
                           context
                               .read<ProfileCubit>()
-                              .getPoints(selectedPoint!.id!);
+                              .getPoint(selectedPoint!.id!);
                           pointId = selectedPoint.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
@@ -584,7 +599,8 @@ class CustomFilterTaskDialog {
                           onPressed: (value) {
                             final selectedProvider = context
                                 .read<ProfileCubit>()
-                                .pointsModel
+                                .pointModel
+                                ?.data
                                 ?.data
                                 ?.firstWhere((provider) =>
                                     provider.name ==
@@ -595,7 +611,7 @@ class CustomFilterTaskDialog {
 
                             context
                                 .read<ProfileCubit>()
-                                .getPoints(selectedProvider!.id!);
+                                .getPoint(selectedProvider!.id!);
                             providerId = selectedProvider.id;
                           },
                           controller:

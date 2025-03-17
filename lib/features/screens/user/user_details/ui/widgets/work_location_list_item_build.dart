@@ -15,8 +15,8 @@ Widget listWorkLocationItemBuild(BuildContext context) {
       if (context
           .read<UserManagementCubit>()
           .userWorkLocationDetailsModel!
-          .data!
-          .areas!
+          .data
+          .areas
           .isNotEmpty) ...[
         Card(
           elevation: 1,
@@ -63,8 +63,8 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                   itemCount: context
                       .read<UserManagementCubit>()
                       .userWorkLocationDetailsModel!
-                      .data!
-                      .areas!
+                      .data
+                      .areas
                       .length,
                   separatorBuilder: (context, index) {
                     return verticalSpace(10);
@@ -80,9 +80,9 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                   'id': context
                                       .read<UserManagementCubit>()
                                       .userWorkLocationDetailsModel!
-                                      .data!
-                                      .areas![index]
-                                      .id!
+                                      .data
+                                      .areas[index]
+                                      .id
                                       .toInt(),
                                   'selectedIndex': 0
                                 });
@@ -100,13 +100,13 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                   context
                                       .read<UserManagementCubit>()
                                       .userWorkLocationDetailsModel!
-                                      .data!
-                                      .areas![index]
-                                      .name!,
+                                      .data
+                                      .areas[index]
+                                      .name,
                                   style: TextStyles.font14BlackSemiBold,
                                 ),
                                 Text(
-                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data!.areas![index].countryName!})",
+                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data.areas[index].countryName})",
                                   style: TextStyles.font12GreyRegular,
                                 ),
                                 Spacer(),
@@ -131,8 +131,8 @@ Widget listWorkLocationItemBuild(BuildContext context) {
       if (context
           .read<UserManagementCubit>()
           .userWorkLocationDetailsModel!
-          .data!
-          .cities!
+          .data
+          .cities
           .isNotEmpty) ...[
         Card(
           elevation: 1,
@@ -179,8 +179,8 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                   itemCount: context
                       .read<UserManagementCubit>()
                       .userWorkLocationDetailsModel!
-                      .data!
-                      .cities!
+                      .data
+                      .cities
                       .length,
                   separatorBuilder: (context, index) {
                     return verticalSpace(10);
@@ -196,9 +196,9 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                   'id': context
                                       .read<UserManagementCubit>()
                                       .userWorkLocationDetailsModel!
-                                      .data!
-                                      .cities![index]
-                                      .id!
+                                      .data
+                                      .cities[index]
+                                      .id
                                       .toInt(),
                                   'selectedIndex': 1
                                 });
@@ -216,13 +216,13 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                   context
                                       .read<UserManagementCubit>()
                                       .userWorkLocationDetailsModel!
-                                      .data!
-                                      .cities![index]
-                                      .name!,
+                                      .data
+                                      .cities[index]
+                                      .name,
                                   style: TextStyles.font14BlackSemiBold,
                                 ),
                                 Text(
-                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data!.cities![index].areaName!})",
+                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data.cities[index].areaName})",
                                   style: TextStyles.font12GreyRegular,
                                 ),
                                 Spacer(),
@@ -247,8 +247,8 @@ Widget listWorkLocationItemBuild(BuildContext context) {
       if (context
           .read<UserManagementCubit>()
           .userWorkLocationDetailsModel!
-          .data!
-          .organizations!
+          .data
+          .organizations
           .isNotEmpty) ...[
         Card(
           elevation: 1,
@@ -295,8 +295,8 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                   itemCount: context
                       .read<UserManagementCubit>()
                       .userWorkLocationDetailsModel!
-                      .data!
-                      .organizations!
+                      .data
+                      .organizations
                       .length,
                   separatorBuilder: (context, index) {
                     return verticalSpace(10);
@@ -312,9 +312,9 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                   'id': context
                                       .read<UserManagementCubit>()
                                       .userWorkLocationDetailsModel!
-                                      .data!
-                                      .organizations![index]
-                                      .id!
+                                      .data
+                                      .organizations[index]
+                                      .id
                                       .toInt(),
                                   'selectedIndex': 2
                                 });
@@ -332,13 +332,13 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                   context
                                       .read<UserManagementCubit>()
                                       .userWorkLocationDetailsModel!
-                                      .data!
-                                      .organizations![index]
-                                      .name!,
+                                      .data
+                                      .organizations[index]
+                                      .name,
                                   style: TextStyles.font14BlackSemiBold,
                                 ),
                                 Text(
-                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data!.organizations![index].cityName!})",
+                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data.organizations[index].cityName})",
                                   style: TextStyles.font12GreyRegular,
                                 ),
                                 Spacer(),
@@ -363,8 +363,8 @@ Widget listWorkLocationItemBuild(BuildContext context) {
       if (context
           .read<UserManagementCubit>()
           .userWorkLocationDetailsModel!
-          .data!
-          .buildings!
+          .data
+          .buildings
           .isNotEmpty) ...[
         Card(
           elevation: 1,
@@ -411,8 +411,8 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                   itemCount: context
                       .read<UserManagementCubit>()
                       .userWorkLocationDetailsModel!
-                      .data!
-                      .buildings!
+                      .data
+                      .buildings
                       .length,
                   separatorBuilder: (context, index) {
                     return verticalSpace(10);
@@ -428,9 +428,9 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                   'id': context
                                       .read<UserManagementCubit>()
                                       .userWorkLocationDetailsModel!
-                                      .data!
-                                      .buildings![index]
-                                      .id!
+                                      .data
+                                      .buildings[index]
+                                      .id
                                       .toInt(),
                                   'selectedIndex': 3
                                 });
@@ -448,13 +448,13 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                   context
                                       .read<UserManagementCubit>()
                                       .userWorkLocationDetailsModel!
-                                      .data!
-                                      .buildings![index]
-                                      .name!,
+                                      .data
+                                      .buildings[index]
+                                      .name,
                                   style: TextStyles.font14BlackSemiBold,
                                 ),
                                 Text(
-                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data!.buildings![index].organizationName!})",
+                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data.buildings[index].organizationName})",
                                   style: TextStyles.font12GreyRegular,
                                 ),
                                 Spacer(),
@@ -479,8 +479,8 @@ Widget listWorkLocationItemBuild(BuildContext context) {
       if (context
           .read<UserManagementCubit>()
           .userWorkLocationDetailsModel!
-          .data!
-          .floors!
+          .data
+          .floors
           .isNotEmpty) ...[
         Card(
           elevation: 1,
@@ -527,8 +527,8 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                   itemCount: context
                       .read<UserManagementCubit>()
                       .userWorkLocationDetailsModel!
-                      .data!
-                      .floors!
+                      .data
+                      .floors
                       .length,
                   separatorBuilder: (context, index) {
                     return verticalSpace(10);
@@ -544,9 +544,9 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                   'id': context
                                       .read<UserManagementCubit>()
                                       .userWorkLocationDetailsModel!
-                                      .data!
-                                      .floors![index]
-                                      .id!
+                                      .data
+                                      .floors[index]
+                                      .id
                                       .toInt(),
                                   'selectedIndex': 4
                                 });
@@ -564,13 +564,13 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                   context
                                       .read<UserManagementCubit>()
                                       .userWorkLocationDetailsModel!
-                                      .data!
-                                      .floors![index]
-                                      .name!,
+                                      .data
+                                      .floors[index]
+                                      .name,
                                   style: TextStyles.font14BlackSemiBold,
                                 ),
                                 Text(
-                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data!.floors![index].buildingName!})",
+                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data.floors[index].buildingName})",
                                   style: TextStyles.font12GreyRegular,
                                 ),
                                 Spacer(),
@@ -595,8 +595,123 @@ Widget listWorkLocationItemBuild(BuildContext context) {
       if (context
           .read<UserManagementCubit>()
           .userWorkLocationDetailsModel!
-          .data!
-          .points!
+          .data
+          .sections
+          .isNotEmpty) ...[
+        Card(
+          elevation: 1,
+          margin: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(11.r),
+          ),
+          child: Container(
+            constraints: BoxConstraints(
+              minHeight: 100.h,
+            ),
+            width: double.infinity,
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(11.r),
+              border: Border.all(color: AppColor.secondaryColor),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 8.w,
+                      height: 24,
+                      decoration: BoxDecoration(
+                          color: AppColor.primaryColor,
+                          borderRadius: BorderRadius.circular(1.r)),
+                    ),
+                    horizontalSpace(5),
+                    Text(
+                      'Section',
+                      style: TextStyles.font16BlackSemiBold,
+                    ),
+                  ],
+                ),
+                verticalSpace(20),
+                ListView.separated(
+                  shrinkWrap: true,
+                  physics: const BouncingScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  itemCount: context
+                      .read<UserManagementCubit>()
+                      .userWorkLocationDetailsModel!
+                      .data
+                      .sections
+                      .length,
+                  separatorBuilder: (context, index) {
+                    return verticalSpace(10);
+                  },
+                  itemBuilder: (context, index) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            context.pushNamed(Routes.workLocationDetailsScreen,
+                                arguments: {
+                                  'id': context
+                                      .read<UserManagementCubit>()
+                                      .userWorkLocationDetailsModel!
+                                      .data
+                                      .sections[index]
+                                      .id
+                                      .toInt(),
+                                  'selectedIndex': 5
+                                });
+                          },
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(10, 8, 8, 8),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5.r),
+                                border:
+                                    Border.all(color: AppColor.secondaryColor)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  context
+                                      .read<UserManagementCubit>()
+                                      .userWorkLocationDetailsModel!
+                                      .data
+                                      .sections[index]
+                                      .name,
+                                  style: TextStyles.font14BlackSemiBold,
+                                ),
+                                Text(
+                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data.sections[index].floorName})",
+                                  style: TextStyles.font12GreyRegular,
+                                ),
+                                Spacer(),
+                                Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  color: Colors.blue,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                )
+              ],
+            ),
+          ),
+        ),
+      ],
+      if (context
+          .read<UserManagementCubit>()
+          .userWorkLocationDetailsModel!
+          .data
+          .points
           .isNotEmpty) ...[
         Card(
           elevation: 1,
@@ -643,8 +758,8 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                   itemCount: context
                       .read<UserManagementCubit>()
                       .userWorkLocationDetailsModel!
-                      .data!
-                      .points!
+                      .data
+                      .points
                       .length,
                   separatorBuilder: (context, index) {
                     return verticalSpace(10);
@@ -660,11 +775,11 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                   'id': context
                                       .read<UserManagementCubit>()
                                       .userWorkLocationDetailsModel!
-                                      .data!
-                                      .points![index]
-                                      .id!
+                                      .data
+                                      .points[index]
+                                      .id
                                       .toInt(),
-                                  'selectedIndex': 5
+                                  'selectedIndex': 6
                                 });
                           },
                           child: Container(
@@ -680,13 +795,13 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                   context
                                       .read<UserManagementCubit>()
                                       .userWorkLocationDetailsModel!
-                                      .data!
-                                      .points![index]
-                                      .name!,
+                                      .data
+                                      .points[index]
+                                      .name,
                                   style: TextStyles.font14BlackSemiBold,
                                 ),
                                 Text(
-                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data!.points![index].floorName!})",
+                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data.points[index].sectionName})",
                                   style: TextStyles.font12GreyRegular,
                                 ),
                                 Spacer(),

@@ -27,7 +27,7 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
       );
     },
     child: ListTile(
-      contentPadding: EdgeInsets.zero,
+      contentPadding: EdgeInsets.symmetric(horizontal: 5),
       minTileHeight: 60.h,
       leading: Container(
         height: 40.h,

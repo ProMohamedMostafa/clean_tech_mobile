@@ -14,9 +14,7 @@ import 'package:smart_cleaning_application/core/widgets/default_toast/default_to
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_cleaners_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_managers_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/data/model/all_supervisors_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/logic/add_work_location_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/logic/add_work_location_state.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
@@ -39,10 +37,8 @@ class _AddOrganizationDetailsScreenState
   @override
   void initState() {
     context.read<AddWorkLocationCubit>()
-      ..getNationality()
-      ..getManagers()
-      ..getSupervisors()
-      ..getCleaners()
+      ..getNationality(userUsedOnly: false, areaUsedOnly: true)
+      ..getAllUsers()
       ..getShifts();
     super.initState();
   }
@@ -69,6 +65,15 @@ class _AddOrganizationDetailsScreenState
             }
           },
           builder: (context, state) {
+            if (context.read<AddWorkLocationCubit>().usersModel == null ||
+                context.read<AddWorkLocationCubit>().nationalityModel == null ||
+                context.read<AddWorkLocationCubit>().shiftModel == null) {
+              return Center(
+                child: CircularProgressIndicator(
+                  color: AppColor.primaryColor,
+                ),
+              );
+            }
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Form(
@@ -79,8 +84,9 @@ class _AddOrganizationDetailsScreenState
                   children: [
                     verticalSpace(20),
                     _buildDetailsField(),
-                    verticalSpace(16),
+                    verticalSpace(20),
                     _buildContinueButton(state),
+                    verticalSpace(20),
                   ],
                 ),
               ),
@@ -140,17 +146,22 @@ class _AddOrganizationDetailsScreenState
         ),
         CustomDropDownList(
           hint: "Select area",
-          items:
-              context.read<AddWorkLocationCubit>().areaModel?.data?.isEmpty ??
-                      true
-                  ? ['No area']
-                  : context
-                          .read<AddWorkLocationCubit>()
-                          .areaModel
-                          ?.data
-                          ?.map((e) => e.name ?? 'Unknown')
-                          .toList() ??
-                      [],
+          items: context
+                      .read<AddWorkLocationCubit>()
+                      .areaModel
+                      ?.data
+                      ?.areas
+                      ?.isEmpty ??
+                  true
+              ? ['No area']
+              : context
+                      .read<AddWorkLocationCubit>()
+                      .areaModel
+                      ?.data
+                      ?.areas
+                      ?.map((e) => e.name ?? 'Unknown')
+                      .toList() ??
+                  [],
           validator: (value) {
             if (value == null || value.isEmpty || value == "No area") {
               return "Area is required";
@@ -162,6 +173,7 @@ class _AddOrganizationDetailsScreenState
                 .read<AddWorkLocationCubit>()
                 .areaModel
                 ?.data
+                ?.areas
                 ?.firstWhere((area) =>
                     area.name ==
                     context.read<AddWorkLocationCubit>().areaController.text);
@@ -179,17 +191,22 @@ class _AddOrganizationDetailsScreenState
         ),
         CustomDropDownList(
           hint: "Select city",
-          items:
-              context.read<AddWorkLocationCubit>().cityModel?.data?.isEmpty ??
-                      true
-                  ? ['No cities']
-                  : context
-                          .read<AddWorkLocationCubit>()
-                          .cityModel
-                          ?.data
-                          ?.map((e) => e.name ?? 'Unknown')
-                          .toList() ??
-                      [],
+          items: context
+                      .read<AddWorkLocationCubit>()
+                      .cityModel
+                      ?.data
+                      ?.data
+                      ?.isEmpty ??
+                  true
+              ? ['No cities']
+              : context
+                      .read<AddWorkLocationCubit>()
+                      .cityModel
+                      ?.data
+                      ?.data
+                      ?.map((e) => e.name ?? 'Unknown')
+                      .toList() ??
+                  [],
           validator: (value) {
             if (value == null || value.isEmpty || value == 'No cities') {
               return "City is required";
@@ -200,6 +217,7 @@ class _AddOrganizationDetailsScreenState
             final selectedCity = context
                 .read<AddWorkLocationCubit>()
                 .cityModel
+                ?.data
                 ?.data
                 ?.firstWhere((city) =>
                     city.name ==
@@ -234,7 +252,7 @@ class _AddOrganizationDetailsScreenState
           },
         ),
         verticalSpace(10),
-        context.read<AddWorkLocationCubit>().allManagersModel?.data == null
+        context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
             : RichText(
                 textAlign: TextAlign.center,
@@ -251,25 +269,29 @@ class _AddOrganizationDetailsScreenState
                   ],
                 ),
               ),
-        context.read<AddWorkLocationCubit>().allManagersModel?.data == null
+        context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
-            : MultiDropdown<ManagersData>(
+            : MultiDropdown<User>(
                 items: context
-                            .read<AddWorkLocationCubit>()
-                            .allManagersModel
-                            ?.data ==
-                        null
+                        .read<AddWorkLocationCubit>()
+                        .usersModel!
+                        .data!
+                        .users!
+                        .where((user) => user.role == 'Manager')
+                        .isEmpty
                     ? [
                         DropdownItem(
                           label: 'No managers available',
-                          value: ManagersData(
-                              id: null, userName: 'No managers available'),
+                          value:
+                              User(id: null, userName: 'No managers available'),
                         )
                       ]
                     : context
                         .read<AddWorkLocationCubit>()
-                        .allManagersModel!
+                        .usersModel!
                         .data!
+                        .users!
+                        .where((user) => user.role == 'Manager')
                         .map((manager) => DropdownItem(
                               label: manager.userName!,
                               value: manager,
@@ -319,7 +341,7 @@ class _AddOrganizationDetailsScreenState
                 },
               ),
         verticalSpace(10),
-        context.read<AddWorkLocationCubit>().allSupervisorsModel?.data == null
+        context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
             : RichText(
                 textAlign: TextAlign.center,
@@ -336,25 +358,29 @@ class _AddOrganizationDetailsScreenState
                   ],
                 ),
               ),
-        context.read<AddWorkLocationCubit>().allSupervisorsModel?.data == null
+        context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
-            : MultiDropdown<SupervisorsData>(
+            : MultiDropdown<User>(
                 items: context
-                            .read<AddWorkLocationCubit>()
-                            .allSupervisorsModel
-                            ?.data ==
-                        null
+                        .read<AddWorkLocationCubit>()
+                        .usersModel!
+                        .data!
+                        .users!
+                        .where((user) => user.role == 'Supervisor')
+                        .isEmpty
                     ? [
                         DropdownItem(
                           label: 'No supervisors available',
-                          value: SupervisorsData(
+                          value: User(
                               id: null, userName: 'No supervisors available'),
                         )
                       ]
                     : context
                         .read<AddWorkLocationCubit>()
-                        .allSupervisorsModel!
+                        .usersModel!
                         .data!
+                        .users!
+                        .where((user) => user.role == 'Supervisor')
                         .map((supervisor) => DropdownItem(
                               label: supervisor.userName!,
                               value: supervisor,
@@ -405,7 +431,7 @@ class _AddOrganizationDetailsScreenState
                 },
               ),
         verticalSpace(10),
-        context.read<AddWorkLocationCubit>().allCleanersModel?.data == null
+        context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
             : RichText(
                 textAlign: TextAlign.center,
@@ -422,25 +448,29 @@ class _AddOrganizationDetailsScreenState
                   ],
                 ),
               ),
-        context.read<AddWorkLocationCubit>().allCleanersModel?.data == null
+        context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
-            : MultiDropdown<CleanersData>(
+            : MultiDropdown<User>(
                 items: context
-                            .read<AddWorkLocationCubit>()
-                            .allCleanersModel
-                            ?.data ==
-                        null
+                        .read<AddWorkLocationCubit>()
+                        .usersModel!
+                        .data!
+                        .users!
+                        .where((user) => user.role == 'Cleaner')
+                        .isEmpty
                     ? [
                         DropdownItem(
                           label: 'No cleaners available',
-                          value: CleanersData(
-                              id: null, userName: 'No cleaners available'),
+                          value:
+                              User(id: null, userName: 'No cleaners available'),
                         )
                       ]
                     : context
                         .read<AddWorkLocationCubit>()
-                        .allCleanersModel!
+                        .usersModel!
                         .data!
+                        .users!
+                        .where((user) => user.role == 'Cleaner')
                         .map((cleaner) => DropdownItem(
                               label: cleaner.userName!,
                               value: cleaner,
