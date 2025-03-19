@@ -72,4 +72,13 @@ class ApiConstants {
   static const leavesCreateUrl = "leaves/create";
   static const leavesEditUrl = "leaves/edit";
 
+  static const createCategoryUrl = "categories/create";
+  static const categoryUrl = "categories/pagination";
+  static const deleteCategoryListUrl = "categories/deleted/index";
+  static const editCategoryUrl = "categories/edit";
+
+  static const createMaterialUrl = "materials/create";
+  static const materialUrl = "materials/pagination";
+  static const deleteMaterialListUrl = "materials/deleted/index";
+  static const editMaterialUrl = "materials/edit";
 }

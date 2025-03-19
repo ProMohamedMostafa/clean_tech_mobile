@@ -23,6 +23,20 @@ import 'package:smart_cleaning_application/features/screens/languages/ui/screen/
 import 'package:smart_cleaning_application/features/screens/profile/logic/profile_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/profile/ui/screen/profile_screen.dart';
 import 'package:smart_cleaning_application/features/screens/settings/logic/settings_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/stock/add_category/logic/add_category_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/stock/add_category/ui/screen/add_category_screen.dart';
+import 'package:smart_cleaning_application/features/screens/stock/add_material/logic/add_material_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/stock/add_material/ui/screen/add_category_screen.dart';
+import 'package:smart_cleaning_application/features/screens/stock/category_management/logic/category_mangement_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/stock/category_management/ui/screen/material_managment.dart';
+import 'package:smart_cleaning_application/features/screens/stock/choose_stock_view/choose_view_stock.dart';
+import 'package:smart_cleaning_application/features/screens/stock/edit_category/logic/edit_category_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/stock/edit_category/ui/screen/edit_category_screen.dart';
+import 'package:smart_cleaning_application/features/screens/stock/edit_material/logic/edit_material_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/stock/edit_material/ui/screen/edit_material_screen.dart';
+import 'package:smart_cleaning_application/features/screens/stock/material_management/logic/material_mangement_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/stock/material_management/ui/screen/category_managment.dart';
+import 'package:smart_cleaning_application/features/screens/stock/view_material/ui/screen/material_details_screen.dart';
 import 'package:smart_cleaning_application/features/screens/technical_support/ui/screen/technical_support_screen.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/logic/add_work_location_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/screens/add_area_screen.dart';
@@ -505,6 +519,69 @@ class AppRouter {
           ),
         );
 
+      case Routes.viewStockScreen:
+        return MaterialPageRoute(
+          builder: (_) => const ChooseViewStock(),
+        );
+      case Routes.categoryScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => CategoryManagementCubit(),
+            child: const CategoryManagmentScreen(),
+          ),
+        );
+      case Routes.addCategoryScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => AddCategoryCubit(),
+            child: const AddCategoryScreen(),
+          ),
+        );
+      case Routes.editCategoryScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => EditCategoryCubit(),
+            child: EditCategoryScreen(
+              id: id,
+            ),
+          ),
+        );
+
+      case Routes.materialScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => MaterialManagementCubit(),
+            child: const MaterialManagmentScreen(),
+          ),
+        );
+      case Routes.addMaterialScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => AddMaterialCubit(),
+            child: const AddMaterialScreen(),
+          ),
+        );
+      case Routes.editMaterialScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => EditMaterialCubit(),
+            child: EditMaterialScreen(
+              id: id,
+            ),
+          ),
+        );
+      case Routes.materialDetailsScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => MaterialManagementCubit(),
+            child: MaterialDetailsScreen(
+              id: id,
+            ),
+          ),
+        );
       default:
         return null;
     }

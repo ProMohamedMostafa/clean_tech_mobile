@@ -45,6 +45,12 @@ class IntegrationsBody extends StatelessWidget {
         label: "Attendance",
         image: 'assets/images/attendance.png',
       ),
+      if (role == 'Admin')
+        IntegrationItem(
+          onTap: () => context.pushNamed(Routes.viewStockScreen),
+          label: "Stock",
+          image: 'assets/images/stock.png',
+        ),
     ];
 
     return Scaffold(

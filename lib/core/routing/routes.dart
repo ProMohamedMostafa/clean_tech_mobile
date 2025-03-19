@@ -66,4 +66,15 @@ class Routes {
   static const String leavesScreen = '/leavesScreen';
   static const String createleavesScreen = '/createleavesScreen';
   static const String editleavesScreen = '/editleavesScreen';
+
+  static const String viewStockScreen = '/viewStockScreen';
+  static const String categoryScreen = '/categoryScreen';
+  static const String addCategoryScreen = '/addCategoryScreen';
+  static const String editCategoryScreen = '/editCategoryScreen';
+
+  static const String materialScreen = '/materialScreen';
+  static const String addMaterialScreen = '/addMaterialScreen';
+  static const String editMaterialScreen = '/editMaterialScreen';
+  static const String materialDetailsScreen = '/materialDetailsScreen';
+
 }
