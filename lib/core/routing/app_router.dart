@@ -36,6 +36,8 @@ import 'package:smart_cleaning_application/features/screens/stock/edit_material/
 import 'package:smart_cleaning_application/features/screens/stock/edit_material/ui/screen/edit_material_screen.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/logic/material_mangement_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/ui/screen/category_managment.dart';
+import 'package:smart_cleaning_application/features/screens/stock/transaction_management/logic/transaction_mangement_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/stock/transaction_management/ui/screen/transaction_managment.dart';
 import 'package:smart_cleaning_application/features/screens/stock/view_material/ui/screen/material_details_screen.dart';
 import 'package:smart_cleaning_application/features/screens/technical_support/ui/screen/technical_support_screen.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/logic/add_work_location_cubit.dart';
@@ -580,6 +582,14 @@ class AppRouter {
             child: MaterialDetailsScreen(
               id: id,
             ),
+          ),
+        );
+
+      case Routes.transactionScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => TransactionManagementCubit(),
+            child: const TransactionManagmentScreen(),
           ),
         );
       default:

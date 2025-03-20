@@ -21,7 +21,6 @@ class AddMaterialCubit extends Cubit<AddMaterialState> {
   AddMaterialModel? addMaterialModel;
   addMaterial(
     int? categoryId,
-   
   ) {
     emit(AddMaterialLoadingState());
     DioHelper.postData(url: ApiConstants.createMaterialUrl, data: {

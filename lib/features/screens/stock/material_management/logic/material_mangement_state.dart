@@ -1,3 +1,5 @@
+import 'package:share_plus/share_plus.dart';
+import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/category_management_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/data/model/deleted_material_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/data/model/material_management_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/view_material/data/model/material_details_model.dart';
@@ -102,4 +104,52 @@ class AllProvidersSuccessState extends MaterialManagementState {
 class AllProvidersErrorState extends MaterialManagementState {
   final String error;
   AllProvidersErrorState(this.error);
+}
+//***************************** */
+
+class CategoriesLoadingState extends MaterialManagementState {}
+
+class CategoriesSuccessState extends MaterialManagementState {
+  final CategoryManagementModel catergoriesModel;
+
+  CategoriesSuccessState(this.catergoriesModel);
+}
+
+class CategoriesErrorState extends MaterialManagementState {
+  final String error;
+  CategoriesErrorState(this.error);
+}
+
+//***************************** */
+
+class AddMaterialLoadingState extends MaterialManagementState {}
+
+class AddMaterialSuccessState extends MaterialManagementState {
+  final String message;
+
+  AddMaterialSuccessState(this.message);
+}
+
+class AddMaterialErrorState extends MaterialManagementState {
+  final String error;
+  AddMaterialErrorState(this.error);
+}
+//***************************** */
+
+class ReduceMaterialLoadingState extends MaterialManagementState {}
+
+class ReduceMaterialSuccessState extends MaterialManagementState {
+  final String message;
+
+  ReduceMaterialSuccessState(this.message);
+}
+
+class ReduceMaterialErrorState extends MaterialManagementState {
+  final String error;
+  ReduceMaterialErrorState(this.error);
+}
+//*************************** */
+class ImageSelectedState extends MaterialManagementState {
+  final XFile image;
+  ImageSelectedState(this.image);
 }

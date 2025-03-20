@@ -4,11 +4,11 @@ import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
-import 'package:smart_cleaning_application/features/screens/stock/material_management/logic/material_mangement_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/stock/material_management/ui/widgets/filter_dialog_.dart';
+import 'package:smart_cleaning_application/features/screens/stock/transaction_management/logic/transaction_mangement_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/stock/transaction_management/ui/widgets/filter_dialog_.dart';
 
 Widget filterAndSearchBuild(
-    BuildContext context, MaterialManagementCubit cubit) {
+    BuildContext context, TransactionManagementCubit cubit) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.start,
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -22,7 +22,7 @@ Widget filterAndSearchBuild(
           keyboardType: TextInputType.text,
           onlyRead: false,
           onChanged: (searchedCharacter) {
-            cubit.getMaterialList();
+            cubit.getTransactionList();
           },
         ),
       ),
@@ -30,10 +30,13 @@ Widget filterAndSearchBuild(
       InkWell(
         borderRadius: BorderRadius.circular(10.r),
         onTap: () {
-          cubit.unitController.clear();
-          cubit.unitIdController.clear();
+          cubit.userController.clear();
+          cubit.userIdController.clear();
           cubit.categoryController.clear();
-          cubit.categoryIdController.clear();
+          cubit.providerController.clear();
+          cubit.providerIdController.clear();
+          cubit.startDateController.clear();
+          cubit.endDateController.clear();
           CustomFilterMaterialDialog.show(
             context: context,
           );

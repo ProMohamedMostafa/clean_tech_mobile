@@ -27,7 +27,7 @@ class IntegrationsBody extends StatelessWidget {
       if (role == 'Admin')
         IntegrationItem(
           onTap: () => context.pushNamed(Routes.assignScreen),
-          label: "Assign",
+          label: "Assign Management",
           image: 'assets/images/assign.png',
         ),
       IntegrationItem(

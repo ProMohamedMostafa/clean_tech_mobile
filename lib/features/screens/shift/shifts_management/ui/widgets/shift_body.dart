@@ -44,7 +44,7 @@ class _ShiftBodyState extends State<ShiftBody> {
     return Scaffold(
         appBar: AppBar(
           leading: customBackButton(context),
-          title: Text('Shift Management'),
+          title: Text('Shifts'),
         ),
         floatingActionButton: Padding(
           padding: const EdgeInsets.only(bottom: 30),

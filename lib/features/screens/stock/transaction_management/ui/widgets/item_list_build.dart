@@ -1,270 +1,189 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
-import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
-import 'package:smart_cleaning_application/features/screens/stock/material_management/logic/material_mangement_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/stock/material_management/ui/widgets/add_pop_up_dialog.dart';
-import 'package:smart_cleaning_application/features/screens/stock/material_management/ui/widgets/pop_up_dialog.dart';
+import 'package:smart_cleaning_application/features/screens/stock/transaction_management/logic/transaction_mangement_cubit.dart';
 
 Widget listItemBuild(BuildContext context, selectedIndex, index) {
+  final List<int> typeId = [0, 1];
+  final List<Color> statusColor = [
+    Colors.green,
+    Colors.red,
+  ];
+  int tsransactionType;
+  Color statusColorForType;
+
+  tsransactionType = context
+      .read<TransactionManagementCubit>()
+      .transactionManagementModel!
+      .data
+      .data[index]
+      .typeId;
+
+  if (typeId.contains(tsransactionType)) {
+    statusColorForType = statusColor[typeId.indexOf(tsransactionType)];
+  } else {
+    statusColorForType = Colors.black;
+  }
   return InkWell(
     borderRadius: BorderRadius.circular(11.r),
-    onTap: () {
-      context.pushNamed(
-        Routes.materialDetailsScreen,
-        arguments: context
-            .read<MaterialManagementCubit>()
-            .materialManagementModel!
-            .data
-            .data[index]
-            .id,
-      );
-    },
+    onTap: () {},
     child: Card(
-        elevation: 1,
-        margin: EdgeInsets.zero,
-        color: Colors.white,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(11.r),
-            side: BorderSide(color: AppColor.secondaryColor)),
-        child: Padding(
-          padding: selectedIndex == 0
-              ? const EdgeInsets.fromLTRB(10, 0, 10, 10)
-              : const EdgeInsets.fromLTRB(10, 10, 0, 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      elevation: 1,
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(11.r),
+      ),
+      child: Container(
+        constraints: BoxConstraints(
+          minHeight: 90.h,
+        ),
+        width: double.infinity,
+        padding: EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(11.r),
+          border: Border.all(color: AppColor.secondaryColor),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(
+                  context
+                      .read<TransactionManagementCubit>()
+                      .transactionManagementModel!
+                      .data
+                      .data[index]
+                      .userName,
+                  style: TextStyles.font16BlackSemiBold,
+                ),
+                horizontalSpace(5),
+                Container(
+                  height: 23.h,
+                  margin: EdgeInsets.zero,
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  decoration: BoxDecoration(
+                    color: statusColorForType.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(4.r),
+                  ),
+                  child: Center(
+                    child: Text(
+                      context
+                          .read<TransactionManagementCubit>()
+                          .transactionManagementModel!
+                          .data
+                          .data[index]
+                          .type,
+                      style: TextStyles.font11WhiteSemiBold.copyWith(
+                        color: statusColorForType,
+                      ),
+                    ),
+                  ),
+                ),
+                Spacer(),
+                Icon(
+                  IconBroken.calendar,
+                  color: AppColor.primaryColor,
+                  size: 18.sp,
+                ),
+                horizontalSpace(3),
+                Text(
+                  context
+                      .read<TransactionManagementCubit>()
+                      .transactionManagementModel!
+                      .data
+                      .data[index]
+                      .date,
+                  style: TextStyles.font11WhiteSemiBold
+                      .copyWith(color: AppColor.primaryColor),
+                ),
+              ],
+            ),
+            verticalSpace(12),
+            RichText(
+              text: TextSpan(
                 children: [
-                  Text(
-                    selectedIndex == 0
-                        ? context
-                            .read<MaterialManagementCubit>()
-                            .materialManagementModel!
+                  TextSpan(
+                    text: 'Category: ',
+                    style: TextStyles.font12GreyRegular,
+                  ),
+                  TextSpan(
+                    text: context
+                        .read<TransactionManagementCubit>()
+                        .transactionManagementModel!
+                        .data
+                        .data[index]
+                        .category,
+                    style: TextStyles.font14Primarybold,
+                  ),
+                ],
+              ),
+            ),
+            verticalSpace(10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: 'Quantity: ',
+                        style: TextStyles.font12GreyRegular,
+                      ),
+                      TextSpan(
+                        text: context
+                            .read<TransactionManagementCubit>()
+                            .transactionManagementModel!
                             .data
                             .data[index]
-                            .name
-                        : context
-                            .read<MaterialManagementCubit>()
-                            .deletedMaterialListModel!
-                            .data![index]
-                            .name!,
-                    style: TextStyles.font16BlackSemiBold,
+                            .quantity
+                            .toString(),
+                        style: TextStyles.font14Primarybold,
+                      ),
+                      TextSpan(
+                        text:
+                            ' ${context.read<TransactionManagementCubit>().transactionManagementModel!.data.data[index].unit ?? ''}',
+                        style: TextStyles.font12GreyRegular
+                            .copyWith(color: AppColor.primaryColor),
+                      ),
+                    ],
                   ),
-                  selectedIndex == 0
-                      ? IconButton(
-                          onPressed: () {
-                            PopUpDialog.show(
-                              context: context,
-                              id: context
-                                  .read<MaterialManagementCubit>()
-                                  .materialManagementModel!
-                                  .data
-                                  .data[index]
-                                  .id,
-                            );
-                          },
-                          icon: Icon(
-                            Icons.more_horiz_rounded,
-                            size: 22.sp,
-                          ),
-                        )
-                      : SizedBox(
-                          width: 80.w,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              InkWell(
-                                  onTap: () {
-                                    showCustomDialog(context,
-                                        "Are you Sure to restore this material ?",
-                                        () {
-                                      context
-                                          .read<MaterialManagementCubit>()
-                                          .restoreDeletedMaterial(
-                                            context
-                                                .read<MaterialManagementCubit>()
-                                                .deletedMaterialListModel!
-                                                .data![index]
-                                                .id!,
-                                          );
-                                      context.pop();
-                                    });
-                                  },
-                                  child: Icon(
-                                    Icons.replay_outlined,
-                                    color: AppColor.thirdColor,
-                                  )),
-                              horizontalSpace(10),
-                              InkWell(
-                                  onTap: () {
-                                    showCustomDialog(
-                                        context, "Forced Delete this material",
-                                        () {
-                                      context
-                                          .read<MaterialManagementCubit>()
-                                          .forcedDeletedMaterial(context
-                                              .read<MaterialManagementCubit>()
-                                              .deletedMaterialListModel!
-                                              .data![index]
-                                              .id!);
-                                      context.pop();
-                                    });
-                                  },
-                                  child: Icon(
-                                    IconBroken.delete,
-                                    color: AppColor.thirdColor,
-                                  )),
-                            ],
-                          ),
-                        ),
-                ],
-              ),
-              verticalSpace(5),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'Quantity: ',
-                          style: TextStyles.font12GreyRegular,
-                        ),
-                        TextSpan(
-                          text: selectedIndex == 0
-                              ? context
-                                  .read<MaterialManagementCubit>()
-                                  .materialManagementModel!
-                                  .data
-                                  .data[index]
-                                  .quantity
-                                  .toString()
-                              : context
-                                  .read<MaterialManagementCubit>()
-                                  .deletedMaterialListModel!
-                                  .data![index]
-                                  .quantity!
-                                  .toString(),
-                          style: TextStyles.font14Primarybold,
-                        ),
-                      ],
-                    ),
-                  ),
-                  horizontalSpace(30),
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'Minimum: ',
-                          style: TextStyles.font12GreyRegular,
-                        ),
-                        TextSpan(
-                          text: selectedIndex == 0
-                              ? context
-                                  .read<MaterialManagementCubit>()
-                                  .materialManagementModel!
-                                  .data
-                                  .data[index]
-                                  .minThreshold
-                                  .toString()
-                              : context
-                                  .read<MaterialManagementCubit>()
-                                  .deletedMaterialListModel!
-                                  .data![index]
-                                  .minThreshold!
-                                  .toString(),
-                          style: TextStyles.font14Primarybold,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              verticalSpace(10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'Category: ',
-                          style: TextStyles.font12GreyRegular,
-                        ),
-                        TextSpan(
-                          text: selectedIndex == 0
-                              ? context
-                                  .read<MaterialManagementCubit>()
-                                  .materialManagementModel!
-                                  .data
-                                  .data[index]
-                                  .categoryName
-                              : context
-                                  .read<MaterialManagementCubit>()
-                                  .deletedMaterialListModel!
-                                  .data![index]
-                                  .categoryName!,
-                          style: TextStyles.font14Primarybold,
-                        ),
-                      ],
-                    ),
-                  ),
-                  selectedIndex == 0
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                ),
+                horizontalSpace(30),
+                context
+                            .read<TransactionManagementCubit>()
+                            .transactionManagementModel
+                            ?.data
+                            .data[index]
+                            .price !=
+                        null
+                    ? RichText(
+                        text: TextSpan(
                           children: [
-                            InkWell(
-                              borderRadius: BorderRadius.circular(50.r),
-                              onTap: () {},
-                              child: Container(
-                                width: 30,
-                                height: 30,
-                                decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(Icons.remove, color: Colors.white),
-                              ),
+                            TextSpan(
+                              text: 'Total Price: ',
+                              style: TextStyles.font12GreyRegular,
                             ),
-                            horizontalSpace(8),
-                            InkWell(
-                              borderRadius: BorderRadius.circular(50.r),
-                              onTap: () {
-                                AddPopUpDialog.show(
-                                  context: context,
-                                  id: context
-                                      .read<MaterialManagementCubit>()
-                                      .materialManagementModel!
-                                      .data
-                                      .data[index]
-                                      .id,
-                                );
-                              },
-                              child: Container(
-                                width: 30,
-                                height: 30,
-                                decoration: BoxDecoration(
-                                  color: AppColor.primaryColor,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(Icons.add, color: Colors.white),
-                              ),
+                            TextSpan(
+                              text:
+                                  '${context.read<TransactionManagementCubit>().transactionManagementModel!.data.data[index].price.toString()} \$',
+                              style: TextStyles.font14Primarybold,
                             ),
                           ],
-                        )
-                      : SizedBox.shrink(),
-                ],
-              ),
-            ],
-          ),
-        )),
+                        ),
+                      )
+                    : SizedBox.shrink(),
+              ],
+            ),
+          ],
+        ),
+      ),
+    ),
   );
 }

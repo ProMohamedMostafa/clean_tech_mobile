@@ -156,6 +156,12 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                                   .toString(),
                           style: TextStyles.font14Primarybold,
                         ),
+                        TextSpan(
+                          text:
+                              ' ${selectedIndex == 0 ? context.read<MaterialManagementCubit>().materialManagementModel!.data.data[index].unit : context.read<MaterialManagementCubit>().deletedMaterialListModel!.data![index].unit}',
+                          style: TextStyles.font12GreyRegular
+                              .copyWith(color: AppColor.primaryColor),
+                        ),
                       ],
                     ),
                   ),
@@ -183,6 +189,12 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                                   .minThreshold!
                                   .toString(),
                           style: TextStyles.font14Primarybold,
+                        ),
+                        TextSpan(
+                          text:
+                              ' ${selectedIndex == 0 ? context.read<MaterialManagementCubit>().materialManagementModel!.data.data[index].unit : context.read<MaterialManagementCubit>().deletedMaterialListModel!.data![index].unit}',
+                          style: TextStyles.font12GreyRegular
+                              .copyWith(color: AppColor.primaryColor),
                         ),
                       ],
                     ),

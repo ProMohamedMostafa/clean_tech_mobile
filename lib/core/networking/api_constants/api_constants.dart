@@ -81,4 +81,6 @@ class ApiConstants {
   static const materialUrl = "materials/pagination";
   static const deleteMaterialListUrl = "materials/deleted/index";
   static const editMaterialUrl = "materials/edit";
+
+  static const transactionUrl = "stock/transactions";
 }

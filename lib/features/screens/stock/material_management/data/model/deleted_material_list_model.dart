@@ -26,13 +26,13 @@ class DeletedMaterialListModel {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add( Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['statusCode'] = statusCode;
     data['meta'] = meta;
     data['succeeded'] = succeeded;
@@ -50,35 +50,43 @@ class Data {
   int? id;
   String? name;
   double? minThreshold;
+  String? description;
   double? quantity;
   int? categoryId;
   String? categoryName;
+  String? unit;
 
   Data(
       {this.id,
       this.name,
       this.minThreshold,
+      this.description,
       this.quantity,
       this.categoryId,
-      this.categoryName});
+      this.categoryName,
+      this.unit});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     minThreshold = json['minThreshold'];
+    description = json['description'];
     quantity = json['quantity'];
     categoryId = json['categoryId'];
     categoryName = json['categoryName'];
+    unit = json['unit'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
     data['minThreshold'] = minThreshold;
+    data['description'] = description;
     data['quantity'] = quantity;
     data['categoryId'] = categoryId;
     data['categoryName'] = categoryName;
+    data['unit'] = unit;
     return data;
   }
 }

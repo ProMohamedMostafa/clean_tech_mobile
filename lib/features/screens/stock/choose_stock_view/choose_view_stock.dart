@@ -69,12 +69,9 @@ class _ChooseViewStockState extends State<ChooseViewStock> {
                       onTap: () {
                         index == 0
                             ? context.pushNamed(Routes.categoryScreen)
-                            : context.pushNamed(Routes.materialScreen);
-                        //         : index == 2
-                        //             ? context.pushNamed(
-                        //                 Routes.workLocationScreen,
-                        //                 arguments: index)
-                        //             : null;
+                            : index == 1
+                                ? context.pushNamed(Routes.materialScreen)
+                                : context.pushNamed(Routes.transactionScreen);
                       },
                     ),
                   );

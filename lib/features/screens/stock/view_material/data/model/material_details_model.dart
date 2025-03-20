@@ -49,6 +49,7 @@ class Data {
   double? quantity;
   int? categoryId;
   String? categoryName;
+  String? unit;
 
   Data(
       {this.id,
@@ -57,7 +58,8 @@ class Data {
       this.description,
       this.quantity,
       this.categoryId,
-      this.categoryName});
+      this.categoryName,
+      this.unit});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -67,6 +69,7 @@ class Data {
     quantity = json['quantity'];
     categoryId = json['categoryId'];
     categoryName = json['categoryName'];
+    unit = json['unit'];
   }
 
   Map<String, dynamic> toJson() {
@@ -78,6 +81,7 @@ class Data {
     data['quantity'] = quantity;
     data['categoryId'] = categoryId;
     data['categoryName'] = categoryName;
+    data['unit'] = unit;
     return data;
   }
 }

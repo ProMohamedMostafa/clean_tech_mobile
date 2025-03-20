@@ -77,4 +77,7 @@ class Routes {
   static const String editMaterialScreen = '/editMaterialScreen';
   static const String materialDetailsScreen = '/materialDetailsScreen';
 
+  static const String transactionScreen = '/transactionScreen';
+
+
 }

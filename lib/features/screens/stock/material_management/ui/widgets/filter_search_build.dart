@@ -33,7 +33,6 @@ Widget filterAndSearchBuild(
           cubit.unitController.clear();
           cubit.unitIdController.clear();
           cubit.categoryController.clear();
-          cubit.categoryIdController.clear();
           CustomFilterMaterialDialog.show(
             context: context,
           );

@@ -1,63 +1,40 @@
-class MaterialManagementModel {
+class TransactionManagementModel {
   final int statusCode;
-  final dynamic meta;
   final bool succeeded;
   final String message;
-  final dynamic error;
-  final dynamic businessErrorCode;
-  final MaterialData data;
+  final TransactionData data;
 
-  MaterialManagementModel({
+  TransactionManagementModel({
     required this.statusCode,
-    this.meta,
     required this.succeeded,
     required this.message,
-    this.error,
-    this.businessErrorCode,
     required this.data,
   });
 
-  factory MaterialManagementModel.fromJson(Map<String, dynamic> json) {
-    return MaterialManagementModel(
+  factory TransactionManagementModel.fromJson(Map<String, dynamic> json) {
+    return TransactionManagementModel(
       statusCode: json['statusCode'],
-      meta: json['meta'],
       succeeded: json['succeeded'],
       message: json['message'],
-      error: json['error'],
-      businessErrorCode: json['businessErrorCode'],
-      data: MaterialData.fromJson(json['data']),
+      data: TransactionData.fromJson(json['data']),
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'statusCode': statusCode,
-      'meta': meta,
-      'succeeded': succeeded,
-      'message': message,
-      'error': error,
-      'businessErrorCode': businessErrorCode,
-      'data': data.toJson(),
-    };
   }
 }
 
-class MaterialData {
+class TransactionData {
   final int currentPage;
   final int totalPages;
   final int totalCount;
-  final dynamic meta;
   final int pageSize;
   final bool hasPreviousPage;
   final bool hasNextPage;
   final bool succeeded;
-  final List<MaterialItem> data;
+  final List<TransactionItem> data;
 
-  MaterialData({
+  TransactionData({
     required this.currentPage,
     required this.totalPages,
     required this.totalCount,
-    this.meta,
     required this.pageSize,
     required this.hasPreviousPage,
     required this.hasNextPage,
@@ -65,77 +42,74 @@ class MaterialData {
     required this.data,
   });
 
-  factory MaterialData.fromJson(Map<String, dynamic> json) {
-    return MaterialData(
+  factory TransactionData.fromJson(Map<String, dynamic> json) {
+    return TransactionData(
       currentPage: json['currentPage'],
       totalPages: json['totalPages'],
       totalCount: json['totalCount'],
-      meta: json['meta'],
       pageSize: json['pageSize'],
       hasPreviousPage: json['hasPreviousPage'],
       hasNextPage: json['hasNextPage'],
       succeeded: json['succeeded'],
       data: (json['data'] as List)
-          .map((item) => MaterialItem.fromJson(item))
+          .map((item) => TransactionItem.fromJson(item))
           .toList(),
     );
   }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'currentPage': currentPage,
-      'totalPages': totalPages,
-      'totalCount': totalCount,
-      'meta': meta,
-      'pageSize': pageSize,
-      'hasPreviousPage': hasPreviousPage,
-      'hasNextPage': hasNextPage,
-      'succeeded': succeeded,
-      'data': data.map((item) => item.toJson()).toList(),
-    };
-  }
 }
 
-class MaterialItem {
-  final int id;
+class TransactionItem {
   final String name;
-  final double minThreshold;
-  final String description;
-  final double quantity;
+  final String date;
+  final String category;
   final int categoryId;
-  final String categoryName;
+  final String provider;
+  final int providerId;
+  final double quantity;
+  final double price;
+  final double totalPrice;
+  final String? file;
+  final String userName;
+  final int userId;
+  final int typeId;
+  final String type;
+  final String? unit;
 
-  MaterialItem({
-    required this.id,
+  TransactionItem({
     required this.name,
-    required this.minThreshold,
-    required this.description,
-    required this.quantity,
+    required this.date,
+    required this.category,
     required this.categoryId,
-    required this.categoryName,
+    required this.provider,
+    required this.providerId,
+    required this.quantity,
+    required this.price,
+    required this.totalPrice,
+    required this.file,
+    required this.userName,
+    required this.userId,
+    required this.typeId,
+    required this.type,
+    required this.unit,
   });
 
-  factory MaterialItem.fromJson(Map<String, dynamic> json) {
-    return MaterialItem(
-      id: json['id'],
+  factory TransactionItem.fromJson(Map<String, dynamic> json) {
+    return TransactionItem(
       name: json['name'],
-      minThreshold: json['minThreshold'],
-      description: json['description'],
-      quantity: json['quantity'],
+      date: json['date'],
+      category: json['category'],
       categoryId: json['categoryId'],
-      categoryName: json['categoryName'],
+      provider: json['provider'],
+      providerId: json['providerId'],
+      quantity: json['quantity'],
+      price: json['price'],
+      totalPrice: json['totalPrice'],
+      file: json['file'],
+      userName: json['userName'],
+      userId: json['userId'],
+      typeId: json['typeId'],
+      type: json['type'],
+      unit: json['unit'],
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'minThreshold': minThreshold,
-      'description': description,
-      'quantity': quantity,
-      'categoryId': categoryId,
-      'categoryName': categoryName,
-    };
   }
 }

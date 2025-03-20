@@ -17,6 +17,7 @@ class CustomFilterMaterialDialog {
     return await showDialog(
       context: context,
       builder: (dialogContext) {
+        int? categoryId;
         return Dialog(
             backgroundColor: Colors.white,
             surfaceTintColor: Colors.white,
@@ -64,6 +65,51 @@ class CustomFilterMaterialDialog {
                         keyboardType: TextInputType.text,
                         suffixIcon: IconBroken.arrowDown2,
                       ),
+                      verticalSpace(10),
+                      Text(
+                        'Category',
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomDropDownList(
+                        hint: "Select category",
+                        items: context
+                                    .read<MaterialManagementCubit>()
+                                    .categoryManagementModel
+                                    ?.data
+                                    .categories
+                                    .isEmpty ??
+                                true
+                            ? ['No category']
+                            : context
+                                    .read<MaterialManagementCubit>()
+                                    .categoryManagementModel
+                                    ?.data
+                                    .categories
+                                    .map((e) => e.name)
+                                    .toList() ??
+                                [],
+                        onPressed: (value) {
+                          final selectedCategory = context
+                              .read<MaterialManagementCubit>()
+                              .categoryManagementModel
+                              ?.data
+                              .categories
+                              .firstWhere((category) =>
+                                  category.name ==
+                                  context
+                                      .read<MaterialManagementCubit>()
+                                      .categoryController
+                                      .text);
+
+                          categoryId = selectedCategory!.id;
+                        },
+                        suffixIcon: IconBroken.arrowDown2,
+                        controller: context
+                            .read<MaterialManagementCubit>()
+                            .categoryController,
+                        isRead: false,
+                        keyboardType: TextInputType.text,
+                      ),
                       verticalSpace(20),
                       Center(
                         child: DefaultElevatedButton(
@@ -71,7 +117,7 @@ class CustomFilterMaterialDialog {
                             onPressed: () {
                               context
                                   .read<MaterialManagementCubit>()
-                                  .getMaterialList();
+                                  .getMaterialList(categoryId: categoryId);
                               context.pop();
                             },
                             color: AppColor.primaryColor,
