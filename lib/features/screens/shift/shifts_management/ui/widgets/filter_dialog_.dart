@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -26,8 +25,7 @@ class CustomFilterShiftDialog {
         int? organizationId;
         int? buildingId;
         int? floorId;
-        int? pointId;
-        int? providerId;
+        int? sectionId;
         return Dialog(
             backgroundColor: Colors.white,
             surfaceTintColor: Colors.white,
@@ -251,12 +249,14 @@ class CustomFilterShiftDialog {
                                     .read<ShiftCubit>()
                                     .cityModel
                                     ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No cities']
                             : context
                                     .read<ShiftCubit>()
                                     .cityModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -265,6 +265,7 @@ class CustomFilterShiftDialog {
                           final selectedCity = context
                               .read<ShiftCubit>()
                               .cityModel
+                              ?.data
                               ?.data
                               ?.firstWhere((city) =>
                                   city.name ==
@@ -293,12 +294,14 @@ class CustomFilterShiftDialog {
                                     .read<ShiftCubit>()
                                     .organizationModel
                                     ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No organizations']
                             : context
                                     .read<ShiftCubit>()
                                     .organizationModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -307,6 +310,7 @@ class CustomFilterShiftDialog {
                           final selectedOrganization = context
                               .read<ShiftCubit>()
                               .organizationModel
+                              ?.data
                               ?.data
                               ?.firstWhere((organization) =>
                                   organization.name ==
@@ -336,12 +340,14 @@ class CustomFilterShiftDialog {
                                     .read<ShiftCubit>()
                                     .buildingModel
                                     ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No building']
                             : context
                                     .read<ShiftCubit>()
                                     .buildingModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -350,6 +356,7 @@ class CustomFilterShiftDialog {
                           final selectedBuilding = context
                               .read<ShiftCubit>()
                               .buildingModel
+                              ?.data
                               ?.data
                               ?.firstWhere((building) =>
                                   building.name ==
@@ -379,12 +386,14 @@ class CustomFilterShiftDialog {
                                     .read<ShiftCubit>()
                                     .floorModel
                                     ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No floors']
                             : context
                                     .read<ShiftCubit>()
                                     .floorModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -393,6 +402,7 @@ class CustomFilterShiftDialog {
                           final selectedFloor = context
                               .read<ShiftCubit>()
                               .floorModel
+                              ?.data
                               ?.data
                               ?.firstWhere((floor) =>
                                   floor.name ==
@@ -403,7 +413,7 @@ class CustomFilterShiftDialog {
 
                           context
                               .read<ShiftCubit>()
-                              .getPoints(selectedFloor!.id!);
+                              .getPoint(selectedFloor!.id!);
                           floorId = selectedFloor.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
@@ -412,91 +422,51 @@ class CustomFilterShiftDialog {
                       ),
                       verticalSpace(10),
                       Text(
-                        'Points',
+                        'Section',
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
-                        hint: "Select point",
+                        hint: "Select section",
                         items: context
                                     .read<ShiftCubit>()
-                                    .pointsModel
+                                    .sectionModel
+                                    ?.data
                                     ?.data
                                     ?.isEmpty ??
                                 true
-                            ? ['No point']
+                            ? ['No sections']
                             : context
                                     .read<ShiftCubit>()
-                                    .pointsModel
+                                    .sectionModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
                         onPressed: (value) {
-                          final selectedPoint = context
+                          final selectedSection = context
                               .read<ShiftCubit>()
-                              .pointsModel
+                              .sectionModel
                               ?.data
-                              ?.firstWhere((point) =>
-                                  point.name ==
+                              ?.data
+                              ?.firstWhere((section) =>
+                                  section.name ==
                                   context
                                       .read<ShiftCubit>()
-                                      .pointController
+                                      .sectionController
                                       .text);
 
                           context
                               .read<ShiftCubit>()
-                              .getPoints(selectedPoint!.id!);
-                          pointId = selectedPoint.id;
+                              .getPoint(selectedSection!.id!);
+                          sectionId = selectedSection.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
-                        controller: context.read<ShiftCubit>().pointController,
+                        controller:
+                            context.read<ShiftCubit>().sectionController,
                         keyboardType: TextInputType.text,
                       ),
-                      if (role == 'Admin') ...[
-                        verticalSpace(10),
-                        Text(
-                          'Provider',
-                          style: TextStyles.font16BlackRegular,
-                        ),
-                        CustomDropDownList(
-                          hint: 'Select Provider',
-                          items: context
-                                      .read<ShiftCubit>()
-                                      .providersModel
-                                      ?.data
-                                      ?.data
-                                      ?.isEmpty ??
-                                  true
-                              ? ['No providers available']
-                              : context
-                                      .read<ShiftCubit>()
-                                      .providersModel
-                                      ?.data
-                                      ?.data
-                                      ?.map((e) => e.name ?? 'Unknown')
-                                      .toList() ??
-                                  [],
-                          onPressed: (value) {
-                            final selectedProvider = context
-                                .read<ShiftCubit>()
-                                .providersModel
-                                ?.data
-                                ?.data
-                                ?.firstWhere((provider) =>
-                                    provider.name ==
-                                    context
-                                        .read<ShiftCubit>()
-                                        .providerController
-                                        .text);
-
-                            providerId = selectedProvider!.id;
-                          },
-                          controller:
-                              context.read<ShiftCubit>().providerController,
-                          keyboardType: TextInputType.text,
-                          suffixIcon: IconBroken.arrowDown2,
-                        ),
-                      ],
+                   
                       verticalSpace(20),
                       Center(
                         child: DefaultElevatedButton(
@@ -508,8 +478,7 @@ class CustomFilterShiftDialog {
                                     organizationId: organizationId,
                                     buildingId: buildingId,
                                     floorId: floorId,
-                                    pointId: pointId,
-                                    providerId: providerId,
+                                    sectionId: sectionId,
                                   );
                               context.pop();
                             },

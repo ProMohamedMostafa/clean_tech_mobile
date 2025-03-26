@@ -1,9 +1,10 @@
 class UsersModel {
   int? statusCode;
-  dynamic meta;
+  String? meta;
   bool? succeeded;
   String? message;
-  dynamic error;
+  String? error;
+  int? businessErrorCode;
   UserData? data;
 
   UsersModel({
@@ -12,6 +13,7 @@ class UsersModel {
     this.succeeded,
     this.message,
     this.error,
+    this.businessErrorCode,
     this.data,
   });
 
@@ -21,6 +23,7 @@ class UsersModel {
     succeeded = json['succeeded'];
     message = json['message'];
     error = json['error'];
+    businessErrorCode = json['businessErrorCode'];
     data = json['data'] != null ? UserData.fromJson(json['data']) : null;
   }
 
@@ -31,6 +34,7 @@ class UsersModel {
     data['succeeded'] = succeeded;
     data['message'] = message;
     data['error'] = error;
+    data['businessErrorCode'] = businessErrorCode;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -42,7 +46,7 @@ class UserData {
   int? currentPage;
   int? totalPages;
   int? totalCount;
-  dynamic meta;
+  String? meta;
   int? pageSize;
   bool? hasPreviousPage;
   bool? hasNextPage;
@@ -99,16 +103,19 @@ class User {
   String? lastName;
   String? email;
   String? phoneNumber;
-  dynamic image;
+  String? image;
   String? birthdate;
-  dynamic managerId;
+  int? managerId;
+  String? managerName;
   String? idNumber;
   String? nationalityName;
   String? countryName;
-  dynamic providerId;
-  dynamic providerName;
+  int? providerId;
+  String? providerName;
   String? gender;
+  int? genderId;
   String? role;
+  int? roleId;
   String? createdAt;
   String? updatedAt;
 
@@ -122,13 +129,16 @@ class User {
     this.image,
     this.birthdate,
     this.managerId,
+    this.managerName,
     this.idNumber,
     this.nationalityName,
     this.countryName,
     this.providerId,
     this.providerName,
     this.gender,
+    this.genderId,
     this.role,
+    this.roleId,
     this.createdAt,
     this.updatedAt,
   });
@@ -143,13 +153,16 @@ class User {
     image = json['image'];
     birthdate = json['birthdate'];
     managerId = json['managerId'];
+    managerName = json['managerName'];
     idNumber = json['idNumber'];
     nationalityName = json['nationalityName'];
     countryName = json['countryName'];
     providerId = json['providerId'];
     providerName = json['providerName'];
     gender = json['gender'];
+    genderId = json['genderId'];
     role = json['role'];
+    roleId = json['roleId'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
   }
@@ -165,13 +178,16 @@ class User {
     data['image'] = image;
     data['birthdate'] = birthdate;
     data['managerId'] = managerId;
+    data['managerName'] = managerName;
     data['idNumber'] = idNumber;
     data['nationalityName'] = nationalityName;
     data['countryName'] = countryName;
     data['providerId'] = providerId;
     data['providerName'] = providerName;
     data['gender'] = gender;
+    data['genderId'] = genderId;
     data['role'] = role;
+    data['roleId'] = roleId;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
     return data;

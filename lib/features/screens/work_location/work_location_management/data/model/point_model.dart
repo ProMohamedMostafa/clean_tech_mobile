@@ -97,6 +97,9 @@ class DataItem {
   String? name;
   String? number;
   String? description;
+  bool? isCountable;
+  double? capacity;
+  String? unit;
   int? sectionId;
   String? sectionName;
   int? floorId;
@@ -116,6 +119,9 @@ class DataItem {
     this.name,
     this.number,
     this.description,
+    this.isCountable,
+    this.capacity,
+    this.unit,
     this.sectionId,
     this.sectionName,
     this.floorId,
@@ -136,6 +142,9 @@ class DataItem {
     name = json['name'];
     number = json['number'];
     description = json['description'];
+    isCountable = json['isCountable'];
+    capacity = json['capacity'];
+    unit = json['unit'];
     sectionId = json['sectionId'];
     sectionName = json['sectionName'];
     floorId = json['floorId'];
@@ -157,6 +166,9 @@ class DataItem {
     data['name'] = name;
     data['number'] = number;
     data['description'] = description;
+    data['isCountable'] = isCountable;
+    data['capacity'] = capacity;
+    data['unit'] = unit;
     data['sectionId'] = sectionId;
     data['sectionName'] = sectionName;
     data['floorId'] = floorId;

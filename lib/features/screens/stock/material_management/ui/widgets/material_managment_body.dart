@@ -82,6 +82,16 @@ class _MaterialManagmentBodyState extends State<MaterialManagmentBody> {
             context.read<MaterialManagementCubit>().getAllDeletedMaterial();
             toast(text: state.message, color: Colors.blue);
           }
+          if (state is AddMaterialSuccessState) {
+            context.read<MaterialManagementCubit>().getMaterialList();
+            context.read<MaterialManagementCubit>().getAllDeletedMaterial();
+            toast(text: state.message, color: Colors.blue);
+          }
+          if (state is ReduceMaterialSuccessState) {
+            context.read<MaterialManagementCubit>().getMaterialList();
+            context.read<MaterialManagementCubit>().getAllDeletedMaterial();
+            toast(text: state.message, color: Colors.blue);
+          }
 
           if (state is MaterialManagementErrorState) {
             toast(text: state.error, color: Colors.red);
@@ -93,6 +103,12 @@ class _MaterialManagmentBodyState extends State<MaterialManagmentBody> {
             toast(text: state.error, color: Colors.red);
           }
           if (state is RestoreMaterialErrorState) {
+            toast(text: state.error, color: Colors.red);
+          }
+          if (state is AddMaterialErrorState) {
+            toast(text: state.error, color: Colors.red);
+          }
+          if (state is ReduceMaterialErrorState) {
             toast(text: state.error, color: Colors.red);
           }
         },

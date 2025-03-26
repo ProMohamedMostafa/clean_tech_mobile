@@ -24,7 +24,8 @@ class _AttendanceLeavesBodyState extends State<AttendanceLeavesBody> {
   void initState() {
     context.read<AttendanceLeavesCubit>()
       ..getAllLeaves()
-      ..getRole();
+      ..getRole()
+      ..getAllUsers();
     super.initState();
   }
 

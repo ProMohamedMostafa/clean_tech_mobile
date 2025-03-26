@@ -14,12 +14,12 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_date_picker.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_description_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_time_picker.dart';
-import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/supervisor_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/logic/edit_task_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/logic/edit_task_state.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/ui/widget/upload_files_dialog.dart';
@@ -38,9 +38,12 @@ class _EditTaskBodyState extends State<EditTaskBody> {
   List<int> selectedSupervisorIds = [];
   int? buildingId;
   int? floorId;
+  int? sectionId;
   int? pointId;
   int? parentId;
   int? isSelected;
+  double? currentReading;
+  bool isPointCountable = false;
   String? selectedPriority;
   final List<String> priority = ["Low", "Medium", "High"];
   final List<Color> tasksColor = [
@@ -52,12 +55,11 @@ class _EditTaskBodyState extends State<EditTaskBody> {
   void initState() {
     super.initState();
     final editTaskCubit = context.read<EditTaskCubit>();
+
     editTaskCubit.getTaskDetails(widget.id);
-    editTaskCubit.getUsersTask(widget.id);
-    editTaskCubit.getTaskFiles(widget.id);
     editTaskCubit.getAllTasks();
-    // editTaskCubit.getOrganization();
-    editTaskCubit.getSupervisor();
+    editTaskCubit.getOrganization();
+    editTaskCubit.getAllUsers();
   }
 
   @override
@@ -78,20 +80,11 @@ class _EditTaskBodyState extends State<EditTaskBody> {
             }
           },
           builder: (context, state) {
-            final editTaskCubit = context.read<EditTaskCubit>();
-            final supervisorModel = editTaskCubit.supervisorModel;
-            final taskDetailsModel = editTaskCubit.taskDetailsModel;
-            final usersTaskModel = editTaskCubit.usersTaskModel;
-            // final organizationModel = editTaskCubit.organizationModel;
-            final taskFilesModel = editTaskCubit.taskFilesModel;
-            final allTasksModel = editTaskCubit.allTasksModel;
-
-            if (taskDetailsModel == null ||
-                supervisorModel == null ||
-                usersTaskModel == null ||
-                taskFilesModel == null ||
-                // organizationModel == null ||
-                allTasksModel == null) {
+            if (context.read<EditTaskCubit>().taskDetailsModel == null
+                //  ||
+                //     context.read<EditTaskCubit>().usersModel == null ||
+                //     context.read<EditTaskCubit>().allOrganizationModel == null
+                ) {
               return Center(
                 child: CircularProgressIndicator(
                   color: AppColor.primaryColor,
@@ -99,16 +92,29 @@ class _EditTaskBodyState extends State<EditTaskBody> {
               );
             }
             if (selectedPriority == null &&
-                taskDetailsModel.data?.priority != null) {
-              selectedPriority = taskDetailsModel.data!.priority!;
+                context
+                        .read<EditTaskCubit>()
+                        .taskDetailsModel
+                        ?.data
+                        ?.priority !=
+                    null) {
+              selectedPriority = context
+                  .read<EditTaskCubit>()
+                  .taskDetailsModel!
+                  .data!
+                  .priority!;
               isSelected = priority.contains(selectedPriority)
                   ? priority.indexOf(selectedPriority!)
                   : null;
             }
-            final items = supervisorModel.data!
-                .map((supervisor) => DropdownItem(
-                      label: supervisor.userName!,
-                      value: supervisor,
+            var items = context
+                .read<EditTaskCubit>()
+                .usersModel
+                ?.data
+                ?.users
+                ?.map((employee) => DropdownItem(
+                      label: employee.userName!,
+                      value: employee,
                     ))
                 .toList();
             return SafeArea(
@@ -291,14 +297,16 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                       '',
                                   items: context
                                               .read<EditTaskCubit>()
-                                              .organizationModel
+                                              .allOrganizationModel
+                                              ?.data
                                               ?.data
                                               ?.isEmpty ??
                                           true
                                       ? ['No organizations']
                                       : context
                                               .read<EditTaskCubit>()
-                                              .organizationModel
+                                              .allOrganizationModel
+                                              ?.data
                                               ?.data
                                               ?.map((e) => e.name ?? 'Unknown')
                                               .toList() ??
@@ -306,7 +314,8 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                   onChanged: (value) {
                                     final selectedOrganization = context
                                         .read<EditTaskCubit>()
-                                        .organizationModel
+                                        .allOrganizationModel
+                                        ?.data
                                         ?.data
                                         ?.firstWhere((organization) =>
                                             organization.name ==
@@ -353,12 +362,14 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                               .read<EditTaskCubit>()
                                               .buildingModel
                                               ?.data
+                                              ?.data
                                               ?.isEmpty ??
                                           true
                                       ? ['No building']
                                       : context
                                               .read<EditTaskCubit>()
                                               .buildingModel
+                                              ?.data
                                               ?.data
                                               ?.map((e) => e.name ?? 'Unknown')
                                               .toList() ??
@@ -367,6 +378,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                     final selectedBuilding = context
                                         .read<EditTaskCubit>()
                                         .buildingModel
+                                        ?.data
                                         ?.data
                                         ?.firstWhere((building) =>
                                             building.name ==
@@ -404,15 +416,11 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                 ),
                                 verticalSpace(5),
                                 CustomDropDownList(
-                                  hint: context
-                                          .read<EditTaskCubit>()
-                                          .taskDetailsModel!
-                                          .data!
-                                          .floorName ??
-                                      '',
+                                  hint: "Select floor",
                                   items: context
                                               .read<EditTaskCubit>()
                                               .floorModel
+                                              ?.data
                                               ?.data
                                               ?.isEmpty ??
                                           true
@@ -421,13 +429,15 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                               .read<EditTaskCubit>()
                                               .floorModel
                                               ?.data
+                                              ?.data
                                               ?.map((e) => e.name ?? 'Unknown')
                                               .toList() ??
                                           [],
-                                  onChanged: (value) {
+                                  onPressed: (value) {
                                     final selectedFloor = context
                                         .read<EditTaskCubit>()
                                         .floorModel
+                                        ?.data
                                         ?.data
                                         ?.firstWhere((floor) =>
                                             floor.name ==
@@ -438,13 +448,72 @@ class _EditTaskBodyState extends State<EditTaskBody> {
 
                                     context
                                         .read<EditTaskCubit>()
-                                        .getPoints(selectedFloor!.id!);
+                                        .getSection(selectedFloor!.id!);
                                     floorId = selectedFloor.id;
                                   },
                                   suffixIcon: IconBroken.arrowDown2,
                                   controller: context
                                       .read<EditTaskCubit>()
                                       .floorController,
+                                  keyboardType: TextInputType.text,
+                                ),
+                                verticalSpace(10),
+                                RichText(
+                                  textAlign: TextAlign.center,
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: 'Section',
+                                        style: TextStyles.font16BlackRegular,
+                                      ),
+                                      TextSpan(
+                                        text: ' (Optional)',
+                                        style: TextStyles.font14GreyRegular,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                verticalSpace(5),
+                                CustomDropDownList(
+                                  hint: "Select section",
+                                  items: context
+                                              .read<EditTaskCubit>()
+                                              .sectionModel
+                                              ?.data
+                                              ?.data
+                                              ?.isEmpty ??
+                                          true
+                                      ? ['No sections']
+                                      : context
+                                              .read<EditTaskCubit>()
+                                              .sectionModel
+                                              ?.data
+                                              ?.data
+                                              ?.map((e) => e.name ?? 'Unknown')
+                                              .toList() ??
+                                          [],
+                                  onPressed: (value) {
+                                    final selectedSection = context
+                                        .read<EditTaskCubit>()
+                                        .sectionModel
+                                        ?.data
+                                        ?.data
+                                        ?.firstWhere((section) =>
+                                            section.name ==
+                                            context
+                                                .read<EditTaskCubit>()
+                                                .sectionController
+                                                .text);
+
+                                    context
+                                        .read<EditTaskCubit>()
+                                        .getPoint(selectedSection!.id!);
+                                    sectionId = selectedSection.id!;
+                                  },
+                                  suffixIcon: IconBroken.arrowDown2,
+                                  controller: context
+                                      .read<EditTaskCubit>()
+                                      .sectionController,
                                   keyboardType: TextInputType.text,
                                 ),
                                 verticalSpace(10),
@@ -465,30 +534,28 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                 ),
                                 verticalSpace(5),
                                 CustomDropDownList(
-                                  hint: context
-                                          .read<EditTaskCubit>()
-                                          .taskDetailsModel!
-                                          .data!
-                                          .pointName ??
-                                      '',
+                                  hint: "Select point",
                                   items: context
                                               .read<EditTaskCubit>()
-                                              .pointsModel
+                                              .pointModel
+                                              ?.data
                                               ?.data
                                               ?.isEmpty ??
                                           true
                                       ? ['No point']
                                       : context
                                               .read<EditTaskCubit>()
-                                              .pointsModel
+                                              .pointModel
+                                              ?.data
                                               ?.data
                                               ?.map((e) => e.name ?? 'Unknown')
                                               .toList() ??
                                           [],
-                                  onChanged: (value) {
+                                  onPressed: (value) {
                                     final selectedPoint = context
                                         .read<EditTaskCubit>()
-                                        .pointsModel
+                                        .pointModel
+                                        ?.data
                                         ?.data
                                         ?.firstWhere((point) =>
                                             point.name ==
@@ -499,8 +566,10 @@ class _EditTaskBodyState extends State<EditTaskBody> {
 
                                     context
                                         .read<EditTaskCubit>()
-                                        .getPoints(selectedPoint!.id!);
+                                        .getPoint(selectedPoint!.id!);
                                     pointId = selectedPoint.id;
+                                    isPointCountable =
+                                        selectedPoint.isCountable ?? false;
                                   },
                                   suffixIcon: IconBroken.arrowDown2,
                                   controller: context
@@ -509,6 +578,44 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                   keyboardType: TextInputType.text,
                                 ),
                                 verticalSpace(10),
+                                if (isPointCountable) ...[
+                                  verticalSpace(10),
+                                  Text(
+                                    "Currently reading",
+                                    style: TextStyles.font16BlackRegular,
+                                  ),
+                                  CustomTextFormField(
+                                    onlyRead: false,
+                                    hint: context
+                                        .read<EditTaskCubit>()
+                                        .taskDetailsModel!
+                                        .data!
+                                        .currentReading!
+                                        .toString(),
+                                    controller: context
+                                        .read<EditTaskCubit>()
+                                        .currentReadingController
+                                      ..text = context
+                                          .read<EditTaskCubit>()
+                                          .taskDetailsModel!
+                                          .data!
+                                          .currentReading!
+                                          .toString(),
+                                    keyboardType: TextInputType.number,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return "Currently reading is Required";
+                                      } else if (value.length > 30) {
+                                        return 'Currently reading too long';
+                                      }
+                                      return null;
+                                    },
+                                    onChanged: (value) {
+                                      currentReading = double.parse(value);
+                                    },
+                                  ),
+                                  verticalSpace(10),
+                                ],
                                 Text(
                                   "Status",
                                   style: TextStyles.font16BlackRegular,
@@ -719,13 +826,24 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                   ],
                                 ),
                                 verticalSpace(10),
-                                Text(
-                                  role == 'Manager' ? 'Supervisor' : 'Cleaner',
-                                  style: TextStyles.font16BlackRegular,
+                                RichText(
+                                  textAlign: TextAlign.center,
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: 'Employee',
+                                        style: TextStyles.font16BlackRegular,
+                                      ),
+                                      TextSpan(
+                                        text: ' (Optional)',
+                                        style: TextStyles.font14GreyRegular,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 verticalSpace(5),
-                                MultiDropdown<SupervisorData>(
-                                  items: items,
+                                MultiDropdown<User>(
+                                  items: items ?? [],
                                   controller: context
                                       .read<EditTaskCubit>()
                                       .supervisorsController,
@@ -737,9 +855,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                     spacing: 5,
                                   ),
                                   fieldDecoration: FieldDecoration(
-                                    hintText: role == 'Manager'
-                                        ? 'supervisor'
-                                        : 'cleaner',
+                                    hintText: 'Select employee',
                                     hintStyle: TextStyle(
                                         fontSize: 12.sp,
                                         color: AppColor.thirdColor),
@@ -827,8 +943,9 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                 ),
                                 if (context
                                     .read<EditTaskCubit>()
-                                    .taskFilesModel!
+                                    .taskDetailsModel!
                                     .data!
+                                    .files!
                                     .isNotEmpty)
                                   SizedBox(
                                     height: 80,
@@ -836,14 +953,16 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                       scrollDirection: Axis.horizontal,
                                       itemCount: context
                                           .read<EditTaskCubit>()
-                                          .taskFilesModel!
+                                          .taskDetailsModel!
                                           .data!
+                                          .files!
                                           .length,
                                       itemBuilder: (context, index) {
                                         final file = context
                                             .read<EditTaskCubit>()
-                                            .taskFilesModel!
-                                            .data![index];
+                                            .taskDetailsModel!
+                                            .data!
+                                            .files![index];
                                         return Padding(
                                           padding: EdgeInsets.symmetric(
                                               vertical: 5.h, horizontal: 10.w),
@@ -968,9 +1087,11 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                                         statusId,
                                                         buildingId,
                                                         floorId,
+                                                        sectionId,
                                                         pointId,
                                                         selectedSupervisorIds,
-                                                        parentId);
+                                                        parentId,
+                                                        currentReading);
                                               }
                                             },
                                             color: AppColor.primaryColor,

@@ -30,7 +30,10 @@ class _EditShiftBodyState extends State<EditShiftBody> {
   @override
   void initState() {
     context.read<EditShiftCubit>().getShiftDetails(widget.id);
-    context.read<EditShiftCubit>().getShiftLevelDetails(widget.id);
+    context.read<EditShiftCubit>().getShiftOrganizationDetails(widget.id);
+    context.read<EditShiftCubit>().getShiftBuildingDetails(widget.id);
+    context.read<EditShiftCubit>().getShiftFloorDetails(widget.id);
+    context.read<EditShiftCubit>().getShiftSectionDetails(widget.id);
     context.read<EditShiftCubit>().getOrganization();
     super.initState();
   }
@@ -59,7 +62,10 @@ class _EditShiftBodyState extends State<EditShiftBody> {
           builder: (context, state) {
             final cubit = context.read<EditShiftCubit>();
             if (cubit.shiftDetailsModel == null ||
-                cubit.shiftLevelDetailsModel == null) {
+                cubit.shiftOrganizationDetailsModel == null ||
+                cubit.shiftBuildingsDetailsModel == null ||
+                cubit.shiftFloorDetailsModel == null ||
+                cubit.shiftSectionDetailsModel == null) {
               return const Center(
                 child: CircularProgressIndicator(color: AppColor.primaryColor),
               );
@@ -275,9 +281,8 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                         CustomDropDownList(
                           hint: context
                                   .read<EditShiftCubit>()
-                                  .shiftLevelDetailsModel!
-                                  .data
-                                  ?.organizations![0]
+                                  .shiftOrganizationDetailsModel!
+                                  .data?[0]
                                   .name
                                   .toString() ??
                               '',
@@ -334,15 +339,15 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                         CustomDropDownList(
                           hint: context
                                   .read<EditShiftCubit>()
-                                  .shiftLevelDetailsModel!
-                                  .data
-                                  ?.buildings![0]
+                                  .shiftBuildingsDetailsModel!
+                                  .data?[0]
                                   .name
                                   .toString() ??
                               '',
                           items: context
                                       .read<EditShiftCubit>()
                                       .buildingModel
+                                      ?.data
                                       ?.data
                                       ?.isEmpty ??
                                   true
@@ -351,6 +356,7 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                                       .read<EditShiftCubit>()
                                       .buildingModel
                                       ?.data
+                                      ?.data
                                       ?.map((e) => e.name ?? 'Unknown')
                                       .toList() ??
                                   [],
@@ -358,6 +364,7 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                             final selectedBuilding = context
                                 .read<EditShiftCubit>()
                                 .buildingModel
+                                ?.data
                                 ?.data
                                 ?.firstWhere((building) =>
                                     building.name ==
@@ -388,15 +395,15 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                         CustomDropDownList(
                           hint: context
                                   .read<EditShiftCubit>()
-                                  .shiftLevelDetailsModel!
-                                  .data
-                                  ?.floors![0]
+                                  .shiftFloorDetailsModel!
+                                  .data?[0]
                                   .name
                                   .toString() ??
                               '',
                           items: context
                                       .read<EditShiftCubit>()
                                       .floorModel
+                                      ?.data
                                       ?.data
                                       ?.isEmpty ??
                                   true
@@ -405,6 +412,7 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                                       .read<EditShiftCubit>()
                                       .floorModel
                                       ?.data
+                                      ?.data
                                       ?.map((e) => e.name ?? 'Unknown')
                                       .toList() ??
                                   [],
@@ -412,6 +420,7 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                             final selectedFloor = context
                                 .read<EditShiftCubit>()
                                 .floorModel
+                                ?.data
                                 ?.data
                                 ?.firstWhere((floor) =>
                                     floor.name ==
@@ -422,7 +431,7 @@ class _EditShiftBodyState extends State<EditShiftBody> {
 
                             context
                                 .read<EditShiftCubit>()
-                                .getPoints(selectedFloor!.id!);
+                                .getSection(selectedFloor!.id!);
                             context
                                 .read<EditShiftCubit>()
                                 .floorIdController
@@ -436,56 +445,55 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                         ),
                         verticalSpace(10),
                         Text(
-                          'Point',
+                          'Section',
                           style: TextStyles.font16BlackRegular,
                         ),
                         verticalSpace(5),
                         CustomDropDownList(
                           hint: context
                                   .read<EditShiftCubit>()
-                                  .shiftLevelDetailsModel!
-                                  .data
-                                  ?.points![0]
+                                  .shiftSectionDetailsModel!
+                                  .data?[0]
                                   .name
                                   .toString() ??
                               '',
                           items: context
                                       .read<EditShiftCubit>()
-                                      .pointModel
+                                      .sectionModel
+                                      ?.data
                                       ?.data
                                       ?.isEmpty ??
                                   true
-                              ? ['No point']
+                              ? ['No section']
                               : context
                                       .read<EditShiftCubit>()
-                                      .pointModel
+                                      .sectionModel
+                                      ?.data
                                       ?.data
                                       ?.map((e) => e.name ?? 'Unknown')
                                       .toList() ??
                                   [],
                           onPressed: (value) {
-                            final selectedPoint = context
+                            final selectedSection = context
                                 .read<EditShiftCubit>()
-                                .pointModel
+                                .sectionModel
                                 ?.data
-                                ?.firstWhere((point) =>
-                                    point.name ==
+                                ?.data
+                                ?.firstWhere((section) =>
+                                    section.name ==
                                     context
                                         .read<EditShiftCubit>()
-                                        .pointController
+                                        .sectionController
                                         .text);
 
                             context
                                 .read<EditShiftCubit>()
-                                .getPoints(selectedPoint!.id!);
-                            context
-                                .read<EditShiftCubit>()
-                                .pointIdController
-                                .text = selectedPoint.id!.toString();
+                                .sectionIdController
+                                .text = selectedSection!.id!.toString();
                           },
                           suffixIcon: IconBroken.arrowDown2,
                           controller:
-                              context.read<EditShiftCubit>().pointController,
+                              context.read<EditShiftCubit>().sectionController,
                           isRead: false,
                           keyboardType: TextInputType.text,
                         ),

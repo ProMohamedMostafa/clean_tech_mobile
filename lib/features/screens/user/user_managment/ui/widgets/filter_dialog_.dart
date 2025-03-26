@@ -356,7 +356,7 @@ class CustomFilterUserDialog {
                       ),
                       verticalSpace(10),
                       Text(
-                        'Points',
+                        'Point',
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
@@ -400,8 +400,9 @@ class CustomFilterUserDialog {
                             context.read<UserManagementCubit>().pointController,
                         keyboardType: TextInputType.text,
                       ),
-                      verticalSpace(10),
+                    
                       if (role == 'Admin') ...[
+                          verticalSpace(10),
                         Text(
                           'Provider',
                           style: TextStyles.font16BlackRegular,

@@ -14,9 +14,9 @@ Widget listFloorItemBuild(BuildContext context, index) {
       context.pushNamed(Routes.workLocationDetailsScreen, arguments: {
         'id': context
             .read<ShiftCubit>()
-            .shiftLevelDetailsModel!
+            .shiftFloorDetailsModel!
             .data!
-            .floors![index]
+          [index]
             .id!
             .toInt(),
         'selectedIndex': 4
@@ -35,9 +35,9 @@ Widget listFloorItemBuild(BuildContext context, index) {
         title: Text(
           context
                   .read<ShiftCubit>()
-                  .shiftLevelDetailsModel!
-                  .data!
-                  .floors![index]
+                  .shiftFloorDetailsModel!
+            .data!
+          [index]
                   .name ??
               '',
           style: TextStyles.font14BlackSemiBold,
@@ -45,9 +45,9 @@ Widget listFloorItemBuild(BuildContext context, index) {
         subtitle: Text(
           context
                   .read<ShiftCubit>()
-                  .shiftLevelDetailsModel!
-                  .data!
-                  .floors![index]
+                  .shiftFloorDetailsModel!
+            .data!
+          [index]
                   .buildingName ??
               '',
           style: TextStyles.font12GreyRegular,

@@ -16,8 +16,8 @@ Widget listWorkLocationItemBuild(BuildContext context) {
           .read<UserManagementCubit>()
           .userWorkLocationDetailsModel!
           .data
-          .areas
-          .isNotEmpty) ...[
+         ! .areas
+        !  .isNotEmpty) ...[
         Card(
           elevation: 1,
           margin: EdgeInsets.zero,
@@ -64,8 +64,8 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                       .read<UserManagementCubit>()
                       .userWorkLocationDetailsModel!
                       .data
-                      .areas
-                      .length,
+                     ! .areas
+                      !.length,
                   separatorBuilder: (context, index) {
                     return verticalSpace(10);
                   },
@@ -81,9 +81,9 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                       .read<UserManagementCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
-                                      .areas[index]
+                                    !  .areas![index]
                                       .id
-                                      .toInt(),
+                                    !  .toInt(),
                                   'selectedIndex': 0
                                 });
                           },
@@ -101,12 +101,12 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                       .read<UserManagementCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
-                                      .areas[index]
-                                      .name,
+                                     ! .areas![index]
+                                      .name!,
                                   style: TextStyles.font14BlackSemiBold,
                                 ),
                                 Text(
-                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data.areas[index].countryName})",
+                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data!.areas![index].countryName})",
                                   style: TextStyles.font12GreyRegular,
                                 ),
                                 Spacer(),
@@ -132,8 +132,8 @@ Widget listWorkLocationItemBuild(BuildContext context) {
           .read<UserManagementCubit>()
           .userWorkLocationDetailsModel!
           .data
-          .cities
-          .isNotEmpty) ...[
+        !  .cities
+          !.isNotEmpty) ...[
         Card(
           elevation: 1,
           margin: EdgeInsets.zero,
@@ -180,8 +180,8 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                       .read<UserManagementCubit>()
                       .userWorkLocationDetailsModel!
                       .data
-                      .cities
-                      .length,
+                      !.cities
+                     ! .length,
                   separatorBuilder: (context, index) {
                     return verticalSpace(10);
                   },
@@ -197,9 +197,9 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                       .read<UserManagementCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
-                                      .cities[index]
+                                    !  .cities![index]
                                       .id
-                                      .toInt(),
+                                    !  .toInt(),
                                   'selectedIndex': 1
                                 });
                           },
@@ -217,12 +217,12 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                       .read<UserManagementCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
-                                      .cities[index]
-                                      .name,
+                                     ! .cities![index]
+                                      .name!,
                                   style: TextStyles.font14BlackSemiBold,
                                 ),
                                 Text(
-                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data.cities[index].areaName})",
+                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data!.cities![index].areaName})",
                                   style: TextStyles.font12GreyRegular,
                                 ),
                                 Spacer(),
@@ -248,8 +248,8 @@ Widget listWorkLocationItemBuild(BuildContext context) {
           .read<UserManagementCubit>()
           .userWorkLocationDetailsModel!
           .data
-          .organizations
-          .isNotEmpty) ...[
+          !.organizations
+        !  .isNotEmpty) ...[
         Card(
           elevation: 1,
           margin: EdgeInsets.zero,
@@ -296,8 +296,8 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                       .read<UserManagementCubit>()
                       .userWorkLocationDetailsModel!
                       .data
-                      .organizations
-                      .length,
+                     ! .organizations
+                    ! .length,
                   separatorBuilder: (context, index) {
                     return verticalSpace(10);
                   },
@@ -313,9 +313,9 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                       .read<UserManagementCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
-                                      .organizations[index]
+                                     ! .organizations![index]
                                       .id
-                                      .toInt(),
+                                      !.toInt(),
                                   'selectedIndex': 2
                                 });
                           },
@@ -333,12 +333,12 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                       .read<UserManagementCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
-                                      .organizations[index]
-                                      .name,
+                                 !     .organizations![index]
+                                      .name!,
                                   style: TextStyles.font14BlackSemiBold,
                                 ),
                                 Text(
-                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data.organizations[index].cityName})",
+                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data!.organizations![index].cityName})",
                                   style: TextStyles.font12GreyRegular,
                                 ),
                                 Spacer(),
@@ -364,8 +364,8 @@ Widget listWorkLocationItemBuild(BuildContext context) {
           .read<UserManagementCubit>()
           .userWorkLocationDetailsModel!
           .data
-          .buildings
-          .isNotEmpty) ...[
+          !.buildings
+         !.isNotEmpty) ...[
         Card(
           elevation: 1,
           margin: EdgeInsets.zero,
@@ -412,8 +412,8 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                       .read<UserManagementCubit>()
                       .userWorkLocationDetailsModel!
                       .data
-                      .buildings
-                      .length,
+                     ! .buildings
+                     ! .length,
                   separatorBuilder: (context, index) {
                     return verticalSpace(10);
                   },
@@ -429,9 +429,9 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                       .read<UserManagementCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
-                                      .buildings[index]
+                                      !.buildings![index]
                                       .id
-                                      .toInt(),
+                                    !  .toInt(),
                                   'selectedIndex': 3
                                 });
                           },
@@ -449,12 +449,12 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                       .read<UserManagementCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
-                                      .buildings[index]
-                                      .name,
+                                     ! .buildings![index]
+                                      .name!,
                                   style: TextStyles.font14BlackSemiBold,
                                 ),
                                 Text(
-                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data.buildings[index].organizationName})",
+                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data!.buildings![index].organizationName})",
                                   style: TextStyles.font12GreyRegular,
                                 ),
                                 Spacer(),
@@ -480,8 +480,8 @@ Widget listWorkLocationItemBuild(BuildContext context) {
           .read<UserManagementCubit>()
           .userWorkLocationDetailsModel!
           .data
-          .floors
-          .isNotEmpty) ...[
+      !    .floors
+        !  .isNotEmpty) ...[
         Card(
           elevation: 1,
           margin: EdgeInsets.zero,
@@ -528,8 +528,8 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                       .read<UserManagementCubit>()
                       .userWorkLocationDetailsModel!
                       .data
-                      .floors
-                      .length,
+                    !  .floors
+                     ! .length,
                   separatorBuilder: (context, index) {
                     return verticalSpace(10);
                   },
@@ -545,9 +545,9 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                       .read<UserManagementCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
-                                      .floors[index]
+                                     ! .floors![index]
                                       .id
-                                      .toInt(),
+                                    !  .toInt(),
                                   'selectedIndex': 4
                                 });
                           },
@@ -565,12 +565,12 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                       .read<UserManagementCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
-                                      .floors[index]
-                                      .name,
+                                    !  .floors![index]
+                                      .name!,
                                   style: TextStyles.font14BlackSemiBold,
                                 ),
                                 Text(
-                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data.floors[index].buildingName})",
+                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data!.floors![index].buildingName})",
                                   style: TextStyles.font12GreyRegular,
                                 ),
                                 Spacer(),
@@ -596,8 +596,8 @@ Widget listWorkLocationItemBuild(BuildContext context) {
           .read<UserManagementCubit>()
           .userWorkLocationDetailsModel!
           .data
-          .sections
-          .isNotEmpty) ...[
+          !.sections
+         ! .isNotEmpty) ...[
         Card(
           elevation: 1,
           margin: EdgeInsets.zero,
@@ -644,8 +644,8 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                       .read<UserManagementCubit>()
                       .userWorkLocationDetailsModel!
                       .data
-                      .sections
-                      .length,
+                     ! .sections
+                     ! .length,
                   separatorBuilder: (context, index) {
                     return verticalSpace(10);
                   },
@@ -661,9 +661,9 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                       .read<UserManagementCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
-                                      .sections[index]
+                                   !   .sections![index]
                                       .id
-                                      .toInt(),
+                                   !   .toInt(),
                                   'selectedIndex': 5
                                 });
                           },
@@ -681,12 +681,12 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                       .read<UserManagementCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
-                                      .sections[index]
-                                      .name,
+                              !        .sections![index]
+                                      .name!,
                                   style: TextStyles.font14BlackSemiBold,
                                 ),
                                 Text(
-                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data.sections[index].floorName})",
+                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data!.sections![index].floorName})",
                                   style: TextStyles.font12GreyRegular,
                                 ),
                                 Spacer(),
@@ -711,8 +711,8 @@ Widget listWorkLocationItemBuild(BuildContext context) {
           .read<UserManagementCubit>()
           .userWorkLocationDetailsModel!
           .data
-          .points
-          .isNotEmpty) ...[
+       !   .points
+       !   .isNotEmpty) ...[
         Card(
           elevation: 1,
           margin: EdgeInsets.zero,
@@ -759,8 +759,8 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                       .read<UserManagementCubit>()
                       .userWorkLocationDetailsModel!
                       .data
-                      .points
-                      .length,
+                   !   .points
+                     ! .length,
                   separatorBuilder: (context, index) {
                     return verticalSpace(10);
                   },
@@ -776,9 +776,9 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                       .read<UserManagementCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
-                                      .points[index]
+                                   !   .points![index]
                                       .id
-                                      .toInt(),
+                                     ! .toInt(),
                                   'selectedIndex': 6
                                 });
                           },
@@ -796,12 +796,12 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                       .read<UserManagementCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
-                                      .points[index]
-                                      .name,
+                                  !    .points![index]
+                                      .name!,
                                   style: TextStyles.font14BlackSemiBold,
                                 ),
                                 Text(
-                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data.points[index].sectionName})",
+                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data!.points![index].sectionName})",
                                   style: TextStyles.font12GreyRegular,
                                 ),
                                 Spacer(),

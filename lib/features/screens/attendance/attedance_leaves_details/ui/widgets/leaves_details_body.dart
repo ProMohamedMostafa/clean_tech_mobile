@@ -115,14 +115,53 @@ class _LeavesDetailsBodyState extends State<LeavesDetailsBody> {
                             .userName!,
                         style: TextStyles.font16BlackSemiBold,
                       ),
-                      Container(
-                        width: 30.w,
-                        height: 30.h,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.blue,
-                        ),
-                      ),
+                      GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (contextt) => Scaffold(
+                                  appBar: AppBar(
+                                    leading: customBackButton(context),
+                                  ),
+                                  body: Center(
+                                    child: PhotoView(
+                                      imageProvider: NetworkImage(
+                                        '${ApiConstants.apiBaseUrl}${context.read<AttendanceLeavesCubit>().leavesDetailsModel!.data!.image}',
+                                      ),
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Image.asset(
+                                          'assets/images/noImage.png',
+                                          fit: BoxFit.fill,
+                                        );
+                                      },
+                                      backgroundDecoration: const BoxDecoration(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            height: 30,
+                            width: 30,
+                            clipBehavior: Clip.hardEdge,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.r)),
+                            child: Image.network(
+                              '${ApiConstants.apiBaseUrl}${context.read<AttendanceLeavesCubit>().leavesDetailsModel!.data!.image}',
+                              fit: BoxFit.fill,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                  'assets/images/noImage.png',
+                                  fit: BoxFit.fill,
+                                );
+                              },
+                            ),
+                          )),
                     ],
                   ),
                   Divider(

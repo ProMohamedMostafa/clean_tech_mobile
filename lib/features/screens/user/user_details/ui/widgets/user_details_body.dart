@@ -256,16 +256,24 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                             width: 15.w,
                             height: 15.h,
                             decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: context
-                                            .read<UserManagementCubit>()
-                                            .userStatusModel!
-                                            .data ==
-                                        null
-                                    ? Colors.red
-                                    : Colors.green,
-                                border: Border.all(
-                                    color: Colors.white, width: 2.w)),
+                              shape: BoxShape.circle,
+                              color: context
+                                          .read<UserManagementCubit>()
+                                          .userStatusModel
+                                          ?.data ==
+                                      null
+                                  ? Colors.red
+                                  : context
+                                              .read<UserManagementCubit>()
+                                              .userStatusModel!
+                                              .data!
+                                              .clockOut ==
+                                          null
+                                      ? Colors.green
+                                      : Colors.red,
+                              border:
+                                  Border.all(color: Colors.white, width: 2.w),
+                            ),
                           ),
                         )
                       ],
@@ -517,13 +525,13 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
   Widget locationUserDetails() {
     final workLocationModel =
         context.read<UserManagementCubit>().userWorkLocationDetailsModel!;
-    if (workLocationModel.data.areas.isEmpty &&
-        workLocationModel.data.cities.isEmpty &&
-        workLocationModel.data.organizations.isEmpty &&
-        workLocationModel.data.buildings.isEmpty &&
-        workLocationModel.data.floors.isEmpty &&
-        workLocationModel.data.sections.isEmpty &&
-        workLocationModel.data.points.isEmpty) {
+    if (workLocationModel.data!.areas!.isEmpty &&
+        workLocationModel.data!.cities!.isEmpty &&
+        workLocationModel.data!.organizations!.isEmpty &&
+        workLocationModel.data!.buildings!.isEmpty &&
+        workLocationModel.data!.floors!.isEmpty &&
+        workLocationModel.data!.sections!.isEmpty &&
+        workLocationModel.data!.points!.isEmpty) {
       return Center(
         child: Text(
           "There's no data",
@@ -1022,18 +1030,18 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
       );
     }
     PdfGridRow dataRow = locationDetails.rows.add();
-    List<String> values = userWorkLocationDetailsModel.points.isNotEmpty
+    List<String> values = userWorkLocationDetailsModel!.points!.isNotEmpty
         ? [
-            userWorkLocationDetailsModel.areas.map((e) => e.name).join("\n"),
-            userWorkLocationDetailsModel.cities.map((e) => e.name).join("\n"),
-            userWorkLocationDetailsModel.organizations
+            userWorkLocationDetailsModel.areas!.map((e) => e.name).join("\n"),
+            userWorkLocationDetailsModel.cities!.map((e) => e.name).join("\n"),
+            userWorkLocationDetailsModel.organizations!
                 .map((e) => e.name)
                 .join("\n"),
-            userWorkLocationDetailsModel.buildings
+            userWorkLocationDetailsModel.buildings!
                 .map((e) => e.name)
                 .join("\n"),
-            userWorkLocationDetailsModel.floors.map((e) => e.name).join("\n"),
-            userWorkLocationDetailsModel.points.map((e) => e.name).join("\n"),
+            userWorkLocationDetailsModel.floors!.map((e) => e.name).join("\n"),
+            userWorkLocationDetailsModel.points!.map((e) => e.name).join("\n"),
           ]
         : ["There's no data"];
 

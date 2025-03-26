@@ -6,16 +6,10 @@ import 'package:intl/intl.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_area_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/points_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/all_tasks_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/delete_task_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/delete_task_model.dart';
-import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/all_tasks_model.dart';
-import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/all_users_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/change_task_status.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/completed_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/in_progress_model.dart';
@@ -24,12 +18,15 @@ import 'package:smart_cleaning_application/features/screens/task/task_management
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/overdue_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/pending_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/rejected_model.dart';
-import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/task_action_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/task_details.dart';
-import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/task_files_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_state.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
-
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/point_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/section_model.dart';
 import '../../../integrations/data/models/gallary_model.dart';
 
 class TaskManagementCubit extends Cubit<TaskManagementState> {
@@ -51,21 +48,13 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
   TextEditingController organizationController = TextEditingController();
   TextEditingController buildingController = TextEditingController();
   TextEditingController floorController = TextEditingController();
+  TextEditingController sectionController = TextEditingController();
   TextEditingController pointController = TextEditingController();
   TextEditingController commentController = TextEditingController();
   TextEditingController providerController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
+    TextEditingController currentReadingController = TextEditingController();
 
-  DeleteTaskModel? deleteTaskModel;
-  taskDelete(int id) {
-    emit(TaskDeleteLoadingState());
-    DioHelper.postData(url: 'tasks/delete/$id', data: {'id': id}).then((value) {
-      deleteTaskModel = DeleteTaskModel.fromJson(value!.data);
-      emit(TaskDeleteSuccessState(deleteTaskModel!));
-    }).catchError((error) {
-      emit(TaskDeleteErrorState(error.toString()));
-    });
-  }
+  final formKey = GlobalKey<FormState>();
 
   DeleteTaskListModel? deleteTaskListModel;
   getAllDeletedTasks() {
@@ -75,6 +64,17 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
       emit(TaskDeleteListSuccessState(deleteTaskListModel!));
     }).catchError((error) {
       emit(TaskDeleteListErrorState(error.toString()));
+    });
+  }
+
+  DeleteTaskModel? deleteTaskModel;
+  taskDelete(int id) {
+    emit(TaskDeleteLoadingState());
+    DioHelper.postData(url: 'tasks/delete/$id', data: {'id': id}).then((value) {
+      deleteTaskModel = DeleteTaskModel.fromJson(value!.data);
+      emit(TaskDeleteSuccessState(deleteTaskModel!));
+    }).catchError((error) {
+      emit(TaskDeleteErrorState(error.toString()));
     });
   }
 
@@ -112,6 +112,7 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
       int? organizationId,
       int? buildingId,
       int? floorId,
+      int? sectionId,
       int? pointId,
       int? providerId}) {
     emit(GetAllTasksLoadingState());
@@ -131,6 +132,7 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
       'organization': organizationId,
       'building': buildingId,
       'floor': floorId,
+      'section': sectionId,
       'point': pointId,
     }).then((value) {
       allTasksModel = AllTasksModel.fromJson(value!.data);
@@ -140,14 +142,14 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
     });
   }
 
-  TaskFilesModel? taskFilesModel;
-  getTaskFiles(int id) {
-    emit(GetTaskFilesLoadingState());
-    DioHelper.getData(url: "file/task/$id").then((value) {
-      taskFilesModel = TaskFilesModel.fromJson(value!.data);
-      emit(GetTaskFilesSuccessState(taskFilesModel!));
+  TaskDetailsModel? taskDetailsModel;
+  getTaskDetails(int id) {
+    emit(GetTaskDetailsLoadingState());
+    DioHelper.getData(url: "tasks/$id").then((value) {
+      taskDetailsModel = TaskDetailsModel.fromJson(value!.data);
+      emit(GetTaskDetailsSuccessState(taskDetailsModel!));
     }).catchError((error) {
-      emit(GetTaskFilesErrorState(error.toString()));
+      emit(GetTaskDetailsErrorState(error.toString()));
     });
   }
 
@@ -249,23 +251,13 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
     });
   }
 
-  TaskDetailsModel? taskDetailsModel;
-  getTaskDetails(int id) {
-    emit(GetTaskDetailsLoadingState());
-    DioHelper.getData(url: "tasks/$id").then((value) {
-      taskDetailsModel = TaskDetailsModel.fromJson(value!.data);
-      emit(GetTaskDetailsSuccessState(taskDetailsModel!));
-    }).catchError((error) {
-      emit(GetTaskDetailsErrorState(error.toString()));
-    });
-  }
-
   ChangeTaskStatusModel? changeTaskStatusModel;
-  changeTaskStatus(int taskId, int statusIndex) async {
+  changeTaskStatus(int taskId, int statusIndex,{double? reading}) async {
     emit(GetChangeTaskStatusLoadingState());
     Map<String, dynamic> formDataMap = {
       "TaskId": taskId,
       "Status": statusIndex,
+      "ReadingAfter": reading,
     };
     FormData formData = FormData.fromMap(formDataMap);
     try {
@@ -278,7 +270,6 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
     }
   }
 
-  ChangeTaskStatusModel? changeTaskStatusCommentModel;
   addComment(String image, int taskId, int statusIndex) async {
     MultipartFile? imageFile;
     if (image.isNotEmpty) {
@@ -287,60 +278,22 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
         filename: image.split('/').last,
       );
     }
-    emit(GetChangeTaskStatusLoadingState());
+    emit(AddCommentsLoadingState());
     Map<String, dynamic> formDataMap = {
       "TaskId": taskId,
-      "Status": statusIndex,
       "Comment": commentController.text,
       "Files": imageFile,
     };
     FormData formData = FormData.fromMap(formDataMap);
     try {
-      final response = await DioHelper.postData2(
-          url: ApiConstants.changeTaskStatusUrl, data: formData);
-      changeTaskStatusCommentModel =
-          ChangeTaskStatusModel.fromJson(response!.data);
+      final response =
+          await DioHelper.postData2(url: 'comments/create', data: formData);
+      final message = response?.data['message'] ?? "added successfully";
 
-      emit(GetChangeTaskStatusSuccessState(changeTaskStatusCommentModel!));
+      emit(AddCommentsSuccessState(message!));
     } catch (error) {
-      emit(GetChangeTaskStatusErrorState(error.toString()));
+      emit(AddCommentsErrorState(error.toString()));
     }
-  }
-
-  TaskActionModel? taskActionModel;
-  getTaskAction(int id) {
-    emit(GetTaskActionLoadingState());
-
-    DioHelper.getData(url: "action/task/$id").then((value) {
-      taskActionModel = TaskActionModel.fromJson(value!.data);
-
-      // // Calculate time differences and total times based on status
-      // for (var action in taskActionModel!.data!) {
-      //   if (action.status == "In Progress") {
-      //     action.timeDifferenceText =
-      //         calculateTimeDifference(action.createdAt!, action.status!);
-      //   } else if (action.status == "Rejected") {
-      //     action.timeDifferenceText =
-      //         calculateTimeDifference(action.createdAt!, action.status!);
-      //   } else if (action.status == "Completed") {
-      //     action.timeDifferenceText =
-      //         calculateTotalElapsedTime(action.createdAt!);
-      //   } else if (action.status == "Waiting For Approval") {
-      //     action.timeDifferenceText =
-      //         calculateTotalElapsedTime(action.createdAt!);
-      //   } else if (action.status == "Pending") {
-      //     action.timeDifferenceText = "Task not start yet";
-      //   } else if (action.status == "Not Resolved") {
-      //     action.timeDifferenceText = "Task was stopped";
-      //   } else if (action.status == "Overdue") {
-      //     action.timeDifferenceText = "Task is Overdue";
-      //   }
-      // }
-
-      emit(GetTaskActionSuccessState(taskActionModel!));
-    }).catchError((error) {
-      emit(GetTaskActionErrorState(error.toString()));
-    });
   }
 
   AllAreaModel? allAreaModel;
@@ -354,57 +307,74 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
     });
   }
 
-  CityModel? cityModel;
+  CityListModel? cityModel;
   getCity(int areaId) {
     emit(GetCityLoadingState());
-    DioHelper.getData(url: "cities/area/$areaId").then((value) {
-      cityModel = CityModel.fromJson(value!.data);
+    DioHelper.getData(url: "cities/pagination", query: {'area': areaId})
+        .then((value) {
+      cityModel = CityListModel.fromJson(value!.data);
       emit(GetCitySuccessState(cityModel!));
     }).catchError((error) {
       emit(GetCityErrorState(error.toString()));
     });
   }
 
-  OrganizationModel? organizationModel;
+  OrganizationListModel? organizationModel;
   getOrganization(int cityId) {
     emit(GetOrganizationLoadingState());
-    DioHelper.getData(url: "organizations/city/$cityId").then((value) {
-      organizationModel = OrganizationModel.fromJson(value!.data);
+    DioHelper.getData(url: "organizations/pagination", query: {'city': cityId})
+        .then((value) {
+      organizationModel = OrganizationListModel.fromJson(value!.data);
       emit(GetOrganizationSuccessState(organizationModel!));
     }).catchError((error) {
       emit(GetOrganizationErrorState(error.toString()));
     });
   }
 
-  BuildingModel? buildingModel;
+  BuildingListModel? buildingModel;
   getBuilding(int organizationId) {
     emit(GetBuildingLoadingState());
-    DioHelper.getData(url: 'buildings/organization/$organizationId')
-        .then((value) {
-      buildingModel = BuildingModel.fromJson(value!.data);
+    DioHelper.getData(
+        url: 'buildings/pagination',
+        query: {'organization': organizationId}).then((value) {
+      buildingModel = BuildingListModel.fromJson(value!.data);
       emit(GetBuildingSuccessState(buildingModel!));
     }).catchError((error) {
       emit(GetBuildingErrorState(error.toString()));
     });
   }
 
-  FloorModel? floorModel;
+  FloorListModel? floorModel;
   getFloor(int buildingId) {
     emit(GetFloorLoadingState());
-    DioHelper.getData(url: 'floors/building/$buildingId').then((value) {
-      floorModel = FloorModel.fromJson(value!.data);
+    DioHelper.getData(url: 'floors/pagination', query: {'building': buildingId})
+        .then((value) {
+      floorModel = FloorListModel.fromJson(value!.data);
       emit(GetFloorSuccessState(floorModel!));
     }).catchError((error) {
       emit(GetFloorErrorState(error.toString()));
     });
   }
 
-  PointsModel? pointsModel;
-  getPoints(int pointId) {
+  SectionListModel? sectionModel;
+  getSection(int floorId) {
+    emit(GetSectionLoadingState());
+    DioHelper.getData(url: 'sections/pagination', query: {'floor': floorId})
+        .then((value) {
+      sectionModel = SectionListModel.fromJson(value!.data);
+      emit(GetSectionSuccessState(sectionModel!));
+    }).catchError((error) {
+      emit(GetSectionErrorState(error.toString()));
+    });
+  }
+
+  PointListModel? pointModel;
+  getPoint(int sectionId) {
     emit(GetPointLoadingState());
-    DioHelper.getData(url: 'points/floor/$pointId').then((value) {
-      pointsModel = PointsModel.fromJson(value!.data);
-      emit(GetPointSuccessState(pointsModel!));
+    DioHelper.getData(url: 'points/pagination', query: {'section': sectionId})
+        .then((value) {
+      pointModel = PointListModel.fromJson(value!.data);
+      emit(GetPointSuccessState(pointModel!));
     }).catchError((error) {
       emit(GetPointErrorState(error.toString()));
     });
@@ -431,55 +401,6 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
       emit(AllUsersErrorState(error.toString()));
     });
   }
-
-
-AllUsersTaskModel? allUsersTaskModel;
-  getAllUsersTask(int id) {
-    emit(TaskUsersLoadingState());
-    DioHelper.getData(url: 'assign/task/$id').then((value) {
-      allUsersTaskModel = AllUsersTaskModel.fromJson(value!.data);
-      emit(TaskUsersSuccessState(allUsersTaskModel!));
-    }).catchError((error) {
-      emit(TaskUsersErrorState(error.toString()));
-    });
-  }
-  // String calculateTimeDifference(String createdAt, String status) {
-  //   DateTime createdTime = DateTime.parse(createdAt);
-  //   Duration difference = DateTime.now().difference(createdTime);
-
-  //   int days = difference.inDays;
-  //   int hours = difference.inHours % 24;
-  //   int minutes = difference.inMinutes % 60;
-
-  //   String result = "Received";
-  //   if (days > 0) result += " $days day${days > 1 ? 's' : ''}";
-  //   if (hours > 0) result += " $hours hour${hours > 1 ? 's' : ''}";
-  //   if (minutes > 0) result += " $minutes minute${minutes > 1 ? 's' : ''}";
-  //   if (days == 0 && hours == 0 && minutes == 0) result += " just now";
-
-  //   return result.trim();
-  // }
-
-  // String calculateTotalElapsedTime(String completedAt) {
-  //   DateTime completedTime = DateTime.parse(completedAt);
-
-  //   var inProgressAction = taskActionModel!.data!
-  //       .firstWhere((action) => action.status == "In Progress");
-
-  //   DateTime inProgressTime = DateTime.parse(inProgressAction.createdAt!);
-  //   Duration difference = completedTime.difference(inProgressTime);
-
-  //   int days = difference.inDays;
-  //   int hours = difference.inHours % 24;
-  //   int minutes = difference.inMinutes % 60;
-
-  //   String result = "Total time:";
-  //   if (days > 0) result += " $days day${days > 1 ? 's' : ''}";
-  //   if (hours > 0) result += " $hours hour${hours > 1 ? 's' : ''}";
-  //   if (minutes > 0) result += " $minutes minute${minutes > 1 ? 's' : ''}";
-
-  //   return result.trim();
-  // }
 
   GalleryModel? gellaryModel;
   XFile? image;

@@ -1,15 +1,14 @@
 import 'package:image_picker/image_picker.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/all_tasks_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/edit_task_model.dart';
-import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/users_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/task_details.dart';
-import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/task_files_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/point_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/section_model.dart';
 
-import '../../../integrations/data/models/building_model.dart';
-import '../../../integrations/data/models/floor_model.dart';
-import '../../../integrations/data/models/organization_model.dart';
-import '../../../integrations/data/models/points_model.dart';
-import '../../add_task/data/models/supervisor_model.dart';
 
 abstract class EditTaskState {}
 
@@ -42,36 +41,6 @@ class GetTaskDetailsErrorState extends EditTaskState {
   GetTaskDetailsErrorState(this.error);
 }
 
-//**************************************** */
-
-class GetUsersTaskLoadingState extends EditTaskState {}
-
-class GetUsersTaskSuccessState extends EditTaskState {
-  final UsersTaskModel usersTaskModel;
-
-  GetUsersTaskSuccessState(this.usersTaskModel);
-}
-
-class GetUsersTaskErrorState extends EditTaskState {
-  final String error;
-  GetUsersTaskErrorState(this.error);
-}
-
-//**************************************** */
-
-class GetTaskFilesLoadingState extends EditTaskState {}
-
-class GetTaskFilesSuccessState extends EditTaskState {
-  final TaskFilesModel taskFilesModel;
-
-  GetTaskFilesSuccessState(this.taskFilesModel);
-}
-
-class GetTaskFilesErrorState extends EditTaskState {
-  final String error;
-  GetTaskFilesErrorState(this.error);
-}
-
 //***************************** */
 
 class GetAllTasksLoadingState extends EditTaskState {}
@@ -91,9 +60,9 @@ class GetAllTasksErrorState extends EditTaskState {
 class GetOrganizationLoadingState extends EditTaskState {}
 
 class GetOrganizationSuccessState extends EditTaskState {
-  final OrganizationModel organizationModel;
+  final AllOrganizationModel allOrganizationModel;
 
-  GetOrganizationSuccessState(this.organizationModel);
+  GetOrganizationSuccessState(this.allOrganizationModel);
 }
 
 class GetOrganizationErrorState extends EditTaskState {
@@ -102,10 +71,12 @@ class GetOrganizationErrorState extends EditTaskState {
 }
 //**************************** */
 
+//**************************** */
+
 class GetBuildingLoadingState extends EditTaskState {}
 
 class GetBuildingSuccessState extends EditTaskState {
-  final BuildingModel buildingModel;
+  final BuildingListModel buildingModel;
 
   GetBuildingSuccessState(this.buildingModel);
 }
@@ -119,7 +90,7 @@ class GetBuildingErrorState extends EditTaskState {
 class GetFloorLoadingState extends EditTaskState {}
 
 class GetFloorSuccessState extends EditTaskState {
-  final FloorModel floorModel;
+  final FloorListModel floorModel;
 
   GetFloorSuccessState(this.floorModel);
 }
@@ -130,33 +101,49 @@ class GetFloorErrorState extends EditTaskState {
 }
 //**************************** */
 
-class GetPointsLoadingState extends EditTaskState {}
+class GetSectionLoadingState extends EditTaskState {}
 
-class GetPointsSuccessState extends EditTaskState {
-  final PointsModel pointsModel;
+class GetSectionSuccessState extends EditTaskState {
+  final SectionListModel sectionModel;
 
-  GetPointsSuccessState(this.pointsModel);
+  GetSectionSuccessState(this.sectionModel);
 }
 
-class GetPointsErrorState extends EditTaskState {
+class GetSectionErrorState extends EditTaskState {
   final String error;
-  GetPointsErrorState(this.error);
+  GetSectionErrorState(this.error);
+}
+//**************************** */
+
+class GetPointLoadingState extends EditTaskState {}
+
+class GetPointSuccessState extends EditTaskState {
+  final PointListModel pointsModel;
+
+  GetPointSuccessState(this.pointsModel);
+}
+
+class GetPointErrorState extends EditTaskState {
+  final String error;
+  GetPointErrorState(this.error);
 }
 
 //**************************** */
 
-class GetSupervisorLoadingState extends EditTaskState {}
+class AllUsersLoadingState extends EditTaskState {}
 
-class GetSupervisorSuccessState extends EditTaskState {
-  final SupervisorModel supervisorModel;
+class AllUsersSuccessState extends EditTaskState {
+  final UsersModel usersModel;
 
-  GetSupervisorSuccessState(this.supervisorModel);
+  AllUsersSuccessState(this.usersModel);
 }
 
-class GetSupervisorErrorState extends EditTaskState {
+class AllUsersErrorState extends EditTaskState {
   final String error;
-  GetSupervisorErrorState(this.error);
+  AllUsersErrorState(this.error);
 }
+
+//************************** */
 
 class ImageSelectedState extends EditTaskState {
   final XFile image;

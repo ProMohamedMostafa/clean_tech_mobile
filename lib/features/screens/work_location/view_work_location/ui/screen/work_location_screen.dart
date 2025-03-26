@@ -960,15 +960,43 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                 "Section",
                 widget.selectedIndex == 5
                     ? workLocationDetailsModel.name!
-                    : workLocationDetailsModel.organizationName!,
+                    : workLocationDetailsModel.sectionName!,
                 color:
-                    widget.selectedIndex == 2 ? AppColor.primaryColor : null),
+                    widget.selectedIndex == 5 ? AppColor.primaryColor : null),
             Divider(),
           ],
           if (widget.selectedIndex >= 6) ...[
+            if (context
+                    .read<WorkLocationCubit>()
+                    .pointUsersDetailsModel
+                    ?.data
+                    ?.isCountable ==
+                true) ...[
+              rowDetailsBuild(
+                context,
+                "Capacity",
+                context
+                    .read<WorkLocationCubit>()
+                    .pointUsersDetailsModel!
+                    .data!
+                    .capacity!
+                    .toString(),
+              ),
+              Divider(),
+              rowDetailsBuild(
+                context,
+                "Unit",
+                context
+                    .read<WorkLocationCubit>()
+                    .pointUsersDetailsModel!
+                    .data!
+                    .unit!,
+              ),
+              Divider()
+            ],
             rowDetailsBuild(context, "Point", workLocationDetailsModel.name!,
                 color:
-                    widget.selectedIndex == 5 ? AppColor.primaryColor : null),
+                    widget.selectedIndex == 6 ? AppColor.primaryColor : null),
             Divider()
           ],
           if (widget.selectedIndex >= 3) ...[
@@ -1067,267 +1095,23 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                 children: [
                   InkWell(
                     onTap: () {
-                      if (widget.selectedIndex == 0) {
-                        context.pushNamed(Routes.workLocationDetailsScreen,
-                            arguments: items[selectedTreeIndex]['title'] ==
-                                    'City'
-                                ? {
-                                    'id': context
-                                        .read<WorkLocationCubit>()
-                                        .areaTreeModel!
-                                        .data!
-                                        .cities![index]
-                                        .id!
-                                        .toInt(),
-                                    'selectedIndex': 1
-                                  }
-                                : items[selectedTreeIndex]['title'] ==
-                                        'Organization'
-                                    ? {
-                                        'id': context
-                                            .read<WorkLocationCubit>()
-                                            .areaTreeModel!
-                                            .data!
-                                            .cities![index]
-                                            .id!
-                                            .toInt(),
-                                        'selectedIndex': 2
-                                      }
-                                    : items[selectedTreeIndex]['title'] ==
-                                            'Building'
-                                        ? {
-                                            'id': context
-                                                .read<WorkLocationCubit>()
-                                                .areaTreeModel!
-                                                .data!
-                                                .cities![index]
-                                                .id!
-                                                .toInt(),
-                                            'selectedIndex': 3
-                                          }
-                                        : items[selectedTreeIndex]['title'] ==
-                                                'Floor'
-                                            ? {
-                                                'id': context
-                                                    .read<WorkLocationCubit>()
-                                                    .areaTreeModel!
-                                                    .data!
-                                                    .cities![index]
-                                                    .id!
-                                                    .toInt(),
-                                                'selectedIndex': 4
-                                              }
-                                            : items[selectedTreeIndex]
-                                                        ['title'] ==
-                                                    'Section'
-                                                ? {
-                                                    'id': context
-                                                        .read<
-                                                            WorkLocationCubit>()
-                                                        .areaTreeModel!
-                                                        .data!
-                                                        .cities![index]
-                                                        .id!
-                                                        .toInt(),
-                                                    'selectedIndex': 5
-                                                  }
-                                                : {
-                                                    'id': context
-                                                        .read<
-                                                            WorkLocationCubit>()
-                                                        .areaTreeModel!
-                                                        .data!
-                                                        .cities![index]
-                                                        .id!
-                                                        .toInt(),
-                                                    'selectedIndex': 6
-                                                  });
-                      }
-                      if (widget.selectedIndex == 1) {
-                        context.pushNamed(Routes.workLocationDetailsScreen,
-                            arguments: items[selectedTreeIndex]['title'] ==
-                                    'Organization'
-                                ? {
-                                    'id': context
-                                        .read<WorkLocationCubit>()
-                                        .cityTreeModel!
-                                        .data!
-                                        .organizations![index]
-                                        .id!
-                                        .toInt(),
-                                    'selectedIndex': 2
-                                  }
-                                : items[selectedTreeIndex]['title'] ==
-                                        'Building'
-                                    ? {
-                                        'id': context
-                                            .read<WorkLocationCubit>()
-                                            .cityTreeModel!
-                                            .data!
-                                            .organizations![index]
-                                            .id!
-                                            .toInt(),
-                                        'selectedIndex': 3
-                                      }
-                                    : items[selectedTreeIndex]['title'] ==
-                                            'Floor'
-                                        ? {
-                                            'id': context
-                                                .read<WorkLocationCubit>()
-                                                .cityTreeModel!
-                                                .data!
-                                                .organizations![index]
-                                                .id!
-                                                .toInt(),
-                                            'selectedIndex': 4
-                                          }
-                                        : items[selectedTreeIndex]['title'] ==
-                                                'Section'
-                                            ? {
-                                                'id': context
-                                                    .read<WorkLocationCubit>()
-                                                    .cityTreeModel!
-                                                    .data!
-                                                    .organizations![index]
-                                                    .id!
-                                                    .toInt(),
-                                                'selectedIndex': 5
-                                              }
-                                            : {
-                                                'id': context
-                                                    .read<WorkLocationCubit>()
-                                                    .cityTreeModel!
-                                                    .data!
-                                                    .organizations![index]
-                                                    .id!
-                                                    .toInt(),
-                                                'selectedIndex': 6
-                                              });
-                      }
+                      final item = filteredList[index];
+                      final currentTitle = items[selectedTreeIndex]['title']!;
 
-                      if (widget.selectedIndex == 2) {
-                        context.pushNamed(Routes.workLocationDetailsScreen,
-                            arguments: items[selectedTreeIndex]['title'] ==
-                                    'Building'
-                                ? {
-                                    'id': context
-                                        .read<WorkLocationCubit>()
-                                        .organizationTreeModel!
-                                        .data!
-                                        .buildings![index]
-                                        .id!
-                                        .toInt(),
-                                    'selectedIndex': 3
-                                  }
-                                : items[selectedTreeIndex]['title'] == 'Floor'
-                                    ? {
-                                        'id': context
-                                            .read<WorkLocationCubit>()
-                                            .organizationTreeModel!
-                                            .data!
-                                            .buildings![index]
-                                            .id!
-                                            .toInt(),
-                                        'selectedIndex': 4
-                                      }
-                                    : items[selectedTreeIndex]['title'] ==
-                                            'Section'
-                                        ? {
-                                            'id': context
-                                                .read<WorkLocationCubit>()
-                                                .organizationTreeModel!
-                                                .data!
-                                                .buildings![index]
-                                                .id!
-                                                .toInt(),
-                                            'selectedIndex': 5
-                                          }
-                                        : {
-                                            'id': context
-                                                .read<WorkLocationCubit>()
-                                                .organizationTreeModel!
-                                                .data!
-                                                .buildings![index]
-                                                .id!
-                                                .toInt(),
-                                            'selectedIndex': 6
-                                          });
-                      }
-                      if (widget.selectedIndex == 3) {
-                        context.pushNamed(Routes.workLocationDetailsScreen,
-                            arguments: items[selectedTreeIndex]['title'] ==
-                                    'Floor'
-                                ? {
-                                    'id': context
-                                        .read<WorkLocationCubit>()
-                                        .buildingTreeModel!
-                                        .data!
-                                        .floors![index]
-                                        .id!
-                                        .toInt(),
-                                    'selectedIndex': 4
-                                  }
-                                : items[selectedTreeIndex]['title'] == 'Section'
-                                    ? {
-                                        'id': context
-                                            .read<WorkLocationCubit>()
-                                            .buildingTreeModel!
-                                            .data!
-                                            .floors![index]
-                                            .id!
-                                            .toInt(),
-                                        'selectedIndex': 5
-                                      }
-                                    : {
-                                        'id': context
-                                            .read<WorkLocationCubit>()
-                                            .buildingTreeModel!
-                                            .data!
-                                            .floors![index]
-                                            .id!
-                                            .toInt(),
-                                        'selectedIndex': 6
-                                      });
-                      }
-                      if (widget.selectedIndex == 4) {
-                        context.pushNamed(Routes.workLocationDetailsScreen,
-                            arguments:
-                                items[selectedTreeIndex]['title'] == 'Floor'
-                                    ? {
-                                        'id': context
-                                            .read<WorkLocationCubit>()
-                                            .floorTreeModel!
-                                            .data!
-                                            .sections![index]
-                                            .id!
-                                            .toInt(),
-                                        'selectedIndex': 5
-                                      }
-                                    : {
-                                        'id': context
-                                            .read<WorkLocationCubit>()
-                                            .floorTreeModel!
-                                            .data!
-                                            .sections![index]
-                                            .id!
-                                            .toInt(),
-                                        'selectedIndex': 6
-                                      });
-                      }
+                      final levelIndex = {
+                        'City': 1,
+                        'Organization': 2,
+                        'Building': 3,
+                        'Floor': 4,
+                        'Section': 5,
+                        'Point': 6,
+                      };
 
-                      if (widget.selectedIndex == 5) {
-                        context.pushNamed(Routes.workLocationDetailsScreen,
-                            arguments: {
-                              'id': context
-                                  .read<WorkLocationCubit>()
-                                  .sectionTreeModel!
-                                  .data!
-                                  .points![index]
-                                  .id!
-                                  .toInt(),
-                              'selectedIndex': 6
-                            });
-                      }
+                      context.pushNamed(Routes.workLocationDetailsScreen,
+                          arguments: {
+                            'id': item.id!,
+                            'selectedIndex': levelIndex[currentTitle]
+                          });
                     },
                     child: Card(
                       elevation: 1,

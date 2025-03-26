@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -15,6 +14,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_date_picker.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_time_picker.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_description_text_form_field.dart';
@@ -22,8 +22,6 @@ import 'package:smart_cleaning_application/features/screens/integrations/ui/widg
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/logic/add_task_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/logic/add_task_state.dart';
-
-import '../../data/models/supervisor_model.dart';
 
 class AddTaskBody extends StatefulWidget {
   const AddTaskBody({super.key});
@@ -37,10 +35,14 @@ class _AddTaskBodyState extends State<AddTaskBody> {
   List<int> selectedSupervisorIds = [];
   int? buildingId;
   int? floorId;
+  int? sectionId;
   int? pointId;
+  double? currentReading;
   int? parentId;
   bool _isFormSubmitted = false;
   int? selectedPriority;
+  bool isPointCountable = false;
+
   final Map<String, int> priorityMap = {
     "High": 2,
     "Medium": 1,
@@ -56,7 +58,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
   void initState() {
     context.read<AddTaskCubit>().getAllTasks();
     context.read<AddTaskCubit>().getOrganization();
-    context.read<AddTaskCubit>().getSupervisor();
+    context.read<AddTaskCubit>().getAllUsers();
     super.initState();
   }
 
@@ -80,19 +82,22 @@ class _AddTaskBodyState extends State<AddTaskBody> {
             }
           },
           builder: (context, state) {
-            var supervisorModel = context.read<AddTaskCubit>().supervisorModel;
-
-            if (supervisorModel == null || supervisorModel.data == null) {
+            if (context.read<AddTaskCubit>().usersModel == null) {
               return Center(
-                  child: CircularProgressIndicator(
-                color: AppColor.primaryColor,
-              ));
+                child: CircularProgressIndicator(
+                  color: AppColor.primaryColor,
+                ),
+              );
             }
 
-            var items = supervisorModel.data!
-                .map((supervisor) => DropdownItem(
-                      label: supervisor.userName!,
-                      value: supervisor,
+            var items = context
+                .read<AddTaskCubit>()
+                .usersModel
+                ?.data
+                ?.users
+                ?.map((employee) => DropdownItem(
+                      label: employee.userName!,
+                      value: employee,
                     ))
                 .toList();
             return SafeArea(
@@ -182,8 +187,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                       .allTasksModel
                                       ?.data
                                       ?.data
-                                      ?.where((task) => task.createdBy != uId)
-                                      .toList()
+                                      ?.toList()
                                       .isEmpty ??
                                   true
                               ? ['No task']
@@ -192,11 +196,10 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                       .allTasksModel
                                       ?.data
                                       ?.data
-                                      ?.where((task) => task.createdBy != uId)
-                                      .map((e) => e.title ?? 'Unknown')
+                                      ?.map((e) => e.title ?? 'Unknown')
                                       .toList() ??
                                   [],
-                          onChanged: (value) {
+                          onPressed: (value) {
                             final selectedParentTask = context
                                 .read<AddTaskCubit>()
                                 .allTasksModel
@@ -274,7 +277,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                       ?.map((e) => e.name ?? 'Unknown')
                                       .toList() ??
                                   [],
-                          onChanged: (value) {
+                          onPressed: (value) {
                             final selectedOrganization = context
                                 .read<AddTaskCubit>()
                                 .allOrganizationModel
@@ -320,6 +323,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                       .read<AddTaskCubit>()
                                       .buildingModel
                                       ?.data
+                                      ?.data
                                       ?.isEmpty ??
                                   true
                               ? ['No building']
@@ -327,13 +331,15 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                       .read<AddTaskCubit>()
                                       .buildingModel
                                       ?.data
+                                      ?.data
                                       ?.map((e) => e.name ?? 'Unknown')
                                       .toList() ??
                                   [],
-                          onChanged: (value) {
+                          onPressed: (value) {
                             final selectedBuilding = context
                                 .read<AddTaskCubit>()
                                 .buildingModel
+                                ?.data
                                 ?.data
                                 ?.firstWhere((building) =>
                                     building.name ==
@@ -375,6 +381,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                       .read<AddTaskCubit>()
                                       .floorModel
                                       ?.data
+                                      ?.data
                                       ?.isEmpty ??
                                   true
                               ? ['No floors']
@@ -382,13 +389,15 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                       .read<AddTaskCubit>()
                                       .floorModel
                                       ?.data
+                                      ?.data
                                       ?.map((e) => e.name ?? 'Unknown')
                                       .toList() ??
                                   [],
-                          onChanged: (value) {
+                          onPressed: (value) {
                             final selectedFloor = context
                                 .read<AddTaskCubit>()
                                 .floorModel
+                                ?.data
                                 ?.data
                                 ?.firstWhere((floor) =>
                                     floor.name ==
@@ -399,12 +408,70 @@ class _AddTaskBodyState extends State<AddTaskBody> {
 
                             context
                                 .read<AddTaskCubit>()
-                                .getPoints(selectedFloor!.id!);
+                                .getSection(selectedFloor!.id!);
                             floorId = selectedFloor.id;
                           },
                           suffixIcon: IconBroken.arrowDown2,
                           controller:
                               context.read<AddTaskCubit>().floorController,
+                          keyboardType: TextInputType.text,
+                        ),
+                        verticalSpace(10),
+                        RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Section',
+                                style: TextStyles.font16BlackRegular,
+                              ),
+                              TextSpan(
+                                text: ' (Optional)',
+                                style: TextStyles.font14GreyRegular,
+                              ),
+                            ],
+                          ),
+                        ),
+                        verticalSpace(5),
+                        CustomDropDownList(
+                          hint: "Select section",
+                          items: context
+                                      .read<AddTaskCubit>()
+                                      .sectionModel
+                                      ?.data
+                                      ?.data
+                                      ?.isEmpty ??
+                                  true
+                              ? ['No sections']
+                              : context
+                                      .read<AddTaskCubit>()
+                                      .sectionModel
+                                      ?.data
+                                      ?.data
+                                      ?.map((e) => e.name ?? 'Unknown')
+                                      .toList() ??
+                                  [],
+                          onPressed: (value) {
+                            final selectedSection = context
+                                .read<AddTaskCubit>()
+                                .sectionModel
+                                ?.data
+                                ?.data
+                                ?.firstWhere((section) =>
+                                    section.name ==
+                                    context
+                                        .read<AddTaskCubit>()
+                                        .sectionController
+                                        .text);
+
+                            context
+                                .read<AddTaskCubit>()
+                                .getPoint(selectedSection!.id!);
+                            sectionId = selectedSection.id;
+                          },
+                          suffixIcon: IconBroken.arrowDown2,
+                          controller:
+                              context.read<AddTaskCubit>().sectionController,
                           keyboardType: TextInputType.text,
                         ),
                         verticalSpace(10),
@@ -428,22 +495,25 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                           hint: "Select point",
                           items: context
                                       .read<AddTaskCubit>()
-                                      .pointsModel
+                                      .pointModel
+                                      ?.data
                                       ?.data
                                       ?.isEmpty ??
                                   true
                               ? ['No point']
                               : context
                                       .read<AddTaskCubit>()
-                                      .pointsModel
+                                      .pointModel
+                                      ?.data
                                       ?.data
                                       ?.map((e) => e.name ?? 'Unknown')
                                       .toList() ??
                                   [],
-                          onChanged: (value) {
+                          onPressed: (value) {
                             final selectedPoint = context
                                 .read<AddTaskCubit>()
-                                .pointsModel
+                                .pointModel
+                                ?.data
                                 ?.data
                                 ?.firstWhere((point) =>
                                     point.name ==
@@ -454,14 +524,43 @@ class _AddTaskBodyState extends State<AddTaskBody> {
 
                             context
                                 .read<AddTaskCubit>()
-                                .getPoints(selectedPoint!.id!);
+                                .getPoint(selectedPoint!.id!);
                             pointId = selectedPoint.id;
+                            isPointCountable =
+                                selectedPoint.isCountable ?? false;
                           },
                           suffixIcon: IconBroken.arrowDown2,
                           controller:
                               context.read<AddTaskCubit>().pointController,
                           keyboardType: TextInputType.text,
                         ),
+                        if (isPointCountable) ...[
+                          verticalSpace(10),
+                          Text(
+                            "Currently reading",
+                            style: TextStyles.font16BlackRegular,
+                          ),
+                          CustomTextFormField(
+                            onlyRead: false,
+                            hint: "Write Currently reading",
+                            controller: context
+                                .read<AddTaskCubit>()
+                                .currentlyReadingController,
+                            keyboardType: TextInputType.number,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Currently reading is Required";
+                              } else if (value.length > 30) {
+                                return 'Currently reading too long';
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              currentReading = double.parse(value);
+                            },
+                          ),
+                          verticalSpace(10),
+                        ],
                         verticalSpace(10),
                         Text(
                           "Status",
@@ -469,13 +568,13 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                         ),
                         verticalSpace(5),
                         CustomDropDownList(
-                          onChanged: (selectedValue) {
+                          onPressed: (selectedValue) {
                             final items = [
                               'Pending',
                               'Completed',
                               'Overdue',
                             ];
-                            final selectedIndex = items.indexOf(selectedValue!);
+                            final selectedIndex = items.indexOf(selectedValue);
                             if (selectedIndex != -1) {
                               if (selectedIndex == 1) {
                                 statusId = 3;
@@ -678,9 +777,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: role == 'Manager'
-                                    ? 'Supervisor'
-                                    : 'Cleaner',
+                                text: 'Employee',
                                 style: TextStyles.font16BlackRegular,
                               ),
                               TextSpan(
@@ -691,8 +788,8 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                           ),
                         ),
                         verticalSpace(5),
-                        MultiDropdown<SupervisorData>(
-                          items: items,
+                        MultiDropdown<User>(
+                          items: items!,
                           controller: context
                               .read<AddTaskCubit>()
                               .supervisorsController,
@@ -704,8 +801,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                             spacing: 5,
                           ),
                           fieldDecoration: FieldDecoration(
-                            hintText:
-                                role == 'Manager' ? 'supervisor' : 'cleaner',
+                            hintText: 'Select employee',
                             hintStyle: TextStyle(
                                 fontSize: 12.sp, color: AppColor.thirdColor),
                             showClearIcon: false,
@@ -878,13 +974,16 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                           .currentState!
                                           .validate()) {
                                         context.read<AddTaskCubit>().addTask(
-                                            selectedPriority,
-                                            statusId,
-                                            buildingId,
-                                            floorId,
-                                            pointId,
-                                            selectedSupervisorIds,
-                                            parentId);
+                                            priorityId: selectedPriority,
+                                            statusId: statusId,
+                                            buildingId: buildingId,
+                                            floorId: floorId,
+                                            sectionId: sectionId,
+                                            pointId: pointId,
+                                            selectedSupervisorIds:
+                                                selectedSupervisorIds,
+                                            parentId: parentId,
+                                            currentReading: currentReading);
                                       }
                                     },
                                     color: AppColor.primaryColor,

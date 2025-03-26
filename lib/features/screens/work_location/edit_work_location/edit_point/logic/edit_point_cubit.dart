@@ -5,7 +5,6 @@ import 'package:smart_cleaning_application/core/networking/api_constants/api_con
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_point/data/model/edit_point_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_point/data/model/point_details_in_edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_point/logic/edit_point_state.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/point_users_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_model.dart';
@@ -25,17 +24,27 @@ class EditPointCubit extends Cubit<EditPointState> {
   TextEditingController buildingController = TextEditingController();
   TextEditingController floorController = TextEditingController();
   TextEditingController floorIdController = TextEditingController();
+  TextEditingController sectionController = TextEditingController();
+  TextEditingController sectionIdController = TextEditingController();
   TextEditingController pointController = TextEditingController();
   TextEditingController pointNumberController = TextEditingController();
   TextEditingController pointDescriptionController = TextEditingController();
+  TextEditingController capacityController = TextEditingController();
+  TextEditingController unitController = TextEditingController();
   final allmanagersController = MultiSelectController<Users>();
   final allSupervisorsController = MultiSelectController<Users>();
   final allCleanersController = MultiSelectController<Users>();
   final formKey = GlobalKey<FormState>();
 
   PointEditModel? editPointModel;
-  editPoint(int? id, List<int>? selectedManagersIds,
-      List<int>? selectedSupervisorsIds, List<int>? selectedCleanersIds) async {
+  editPoint(
+    int? id,
+    List<int>? selectedManagersIds,
+    List<int>? selectedSupervisorsIds,
+    List<int>? selectedCleanersIds,
+    double? capacity,
+    int? unit,
+  ) async {
     emit(EditPointLoadingState());
     try {
       final managersIds = selectedManagersIds?.isEmpty ?? true
@@ -60,17 +69,20 @@ class EditPointCubit extends Cubit<EditPointState> {
           await DioHelper.putData(url: ApiConstants.pointEditUrl, data: {
         "id": id,
         "name": pointController.text.isEmpty
-            ? pointDetailsInEditModel!.data!.name
+            ? pointUsersDetailsModel!.data!.name
             : pointController.text,
         "number": pointNumberController.text.isEmpty
-            ? pointDetailsInEditModel!.data!.number
+            ? pointUsersDetailsModel!.data!.number
             : pointNumberController.text,
         "description": pointDescriptionController.text.isEmpty
-            ? pointDetailsInEditModel!.data!.description
+            ? pointUsersDetailsModel!.data!.description
             : pointDescriptionController.text,
-        "sectionId": floorController.text.isEmpty
-            ? pointDetailsInEditModel!.data!.floorId
-            : floorIdController.text,
+        "isCountable": capacity ?? pointUsersDetailsModel!.data!.isCountable,
+        "capacity": capacity ?? pointUsersDetailsModel!.data!.capacity,
+        "unit": unit ?? pointUsersDetailsModel!.data!.unit,
+        "sectionId": sectionController.text.isEmpty
+            ? pointUsersDetailsModel!.data!.sectionId
+            : sectionIdController.text,
         "userIds": [...?managersIds, ...?supervisorsIds, ...?cleanersIds],
       });
       editPointModel = PointEditModel.fromJson(response!.data);
@@ -78,17 +90,6 @@ class EditPointCubit extends Cubit<EditPointState> {
     } catch (error) {
       emit(EditPointErrorState(error.toString()));
     }
-  }
-
-  PointDetailsInEditModel? pointDetailsInEditModel;
-  getPointDetailsInEdit(int id) {
-    emit(GetPointDetailsLoadingState());
-    DioHelper.getData(url: 'points/$id').then((value) {
-      pointDetailsInEditModel = PointDetailsInEditModel.fromJson(value!.data);
-      emit(GetPointDetailsSuccessState(pointDetailsInEditModel!));
-    }).catchError((error) {
-      emit(GetPointDetailsErrorState(error.toString()));
-    });
   }
 
   PointUsersDetailsModel? pointUsersDetailsModel;

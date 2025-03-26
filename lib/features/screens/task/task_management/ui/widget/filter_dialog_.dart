@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -25,12 +26,13 @@ class CustomFilterTaskDialog {
         int? organizationId;
         int? buildingId;
         int? floorId;
+        int? sectionId;
         int? pointId;
         int? statusId;
         int? priorityId;
         int? createdId;
         int? assignToId;
-         int? providerId;
+        int? providerId;
         return Dialog(
             backgroundColor: Colors.white,
             surfaceTintColor: Colors.white,
@@ -47,51 +49,53 @@ class CustomFilterTaskDialog {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Created By',
-                        style: TextStyles.font16BlackRegular,
-                      ),
-                      CustomDropDownList(
-                        hint: "Select user",
-                        items: context
-                                    .read<TaskManagementCubit>()
-                                    .usersModel
-                                    ?.data
-                                    ?.users
-                                    ?.isEmpty ??
-                                true
-                            ? ['No user']
-                            : context
-                                    .read<TaskManagementCubit>()
-                                    .usersModel
-                                    ?.data
-                                    ?.users
-                                    ?.where((e) => e.role != "Cleaner")
-                                    .map((e) => e.userName ?? 'Unknown')
-                                    .toList() ??
-                                [],
-                        onPressed: (value) {
-                          final selectedUser = context
-                              .read<TaskManagementCubit>()
-                              .usersModel
-                              ?.data
-                              ?.users
-                              ?.firstWhere((user) =>
-                                  user.userName ==
-                                  context
+                      if (role == 'Admin') ...[
+                        Text(
+                          'Created By',
+                          style: TextStyles.font16BlackRegular,
+                        ),
+                        CustomDropDownList(
+                          hint: "Select user",
+                          items: context
                                       .read<TaskManagementCubit>()
-                                      .createdByController
-                                      .text);
+                                      .usersModel
+                                      ?.data
+                                      ?.users
+                                      ?.isEmpty ??
+                                  true
+                              ? ['No user']
+                              : context
+                                      .read<TaskManagementCubit>()
+                                      .usersModel
+                                      ?.data
+                                      ?.users
+                                      ?.where((e) => e.role != "Cleaner")
+                                      .map((e) => e.userName ?? 'Unknown')
+                                      .toList() ??
+                                  [],
+                          onPressed: (value) {
+                            final selectedUser = context
+                                .read<TaskManagementCubit>()
+                                .usersModel
+                                ?.data
+                                ?.users
+                                ?.firstWhere((user) =>
+                                    user.userName ==
+                                    context
+                                        .read<TaskManagementCubit>()
+                                        .createdByController
+                                        .text);
 
-                          createdId = selectedUser!.id!;
-                        },
-                        suffixIcon: IconBroken.arrowDown2,
-                        controller: context
-                            .read<TaskManagementCubit>()
-                            .createdByController,
-                        keyboardType: TextInputType.text,
-                      ),
-                      verticalSpace(10),
+                            createdId = selectedUser!.id!;
+                          },
+                          suffixIcon: IconBroken.arrowDown2,
+                          controller: context
+                              .read<TaskManagementCubit>()
+                              .createdByController,
+                          keyboardType: TextInputType.text,
+                        ),
+                        verticalSpace(10),
+                      ],
                       Text(
                         'Assgin to',
                         style: TextStyles.font16BlackRegular,
@@ -407,12 +411,14 @@ class CustomFilterTaskDialog {
                                     .read<TaskManagementCubit>()
                                     .cityModel
                                     ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No cities']
                             : context
                                     .read<TaskManagementCubit>()
                                     .cityModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -421,6 +427,7 @@ class CustomFilterTaskDialog {
                           final selectedCity = context
                               .read<TaskManagementCubit>()
                               .cityModel
+                              ?.data
                               ?.data
                               ?.firstWhere((city) =>
                                   city.name ==
@@ -450,12 +457,14 @@ class CustomFilterTaskDialog {
                                     .read<TaskManagementCubit>()
                                     .organizationModel
                                     ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No organizations']
                             : context
                                     .read<TaskManagementCubit>()
                                     .organizationModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -464,6 +473,7 @@ class CustomFilterTaskDialog {
                           final selectedOrganization = context
                               .read<TaskManagementCubit>()
                               .organizationModel
+                              ?.data
                               ?.data
                               ?.firstWhere((organization) =>
                                   organization.name ==
@@ -494,12 +504,14 @@ class CustomFilterTaskDialog {
                                     .read<TaskManagementCubit>()
                                     .buildingModel
                                     ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No building']
                             : context
                                     .read<TaskManagementCubit>()
                                     .buildingModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -508,6 +520,7 @@ class CustomFilterTaskDialog {
                           final selectedBuilding = context
                               .read<TaskManagementCubit>()
                               .buildingModel
+                              ?.data
                               ?.data
                               ?.firstWhere((building) =>
                                   building.name ==
@@ -538,12 +551,14 @@ class CustomFilterTaskDialog {
                                     .read<TaskManagementCubit>()
                                     .floorModel
                                     ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No floors']
                             : context
                                     .read<TaskManagementCubit>()
                                     .floorModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -552,6 +567,7 @@ class CustomFilterTaskDialog {
                           final selectedFloor = context
                               .read<TaskManagementCubit>()
                               .floorModel
+                              ?.data
                               ?.data
                               ?.firstWhere((floor) =>
                                   floor.name ==
@@ -562,7 +578,7 @@ class CustomFilterTaskDialog {
 
                           context
                               .read<TaskManagementCubit>()
-                              .getPoints(selectedFloor!.id!);
+                              .getPoint(selectedFloor!.id!);
                           floorId = selectedFloor.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
@@ -572,21 +588,70 @@ class CustomFilterTaskDialog {
                       ),
                       verticalSpace(10),
                       Text(
-                        'Points',
+                        'Section',
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomDropDownList(
+                        hint: "Select section",
+                        items: context
+                                    .read<TaskManagementCubit>()
+                                    .sectionModel
+                                    ?.data
+                                    ?.data
+                                    ?.isEmpty ??
+                                true
+                            ? ['No sections']
+                            : context
+                                    .read<TaskManagementCubit>()
+                                    .sectionModel
+                                    ?.data
+                                    ?.data
+                                    ?.map((e) => e.name ?? 'Unknown')
+                                    .toList() ??
+                                [],
+                        onPressed: (value) {
+                          final selectedSection = context
+                              .read<TaskManagementCubit>()
+                              .sectionModel
+                              ?.data
+                              ?.data
+                              ?.firstWhere((section) =>
+                                  section.name ==
+                                  context
+                                      .read<TaskManagementCubit>()
+                                      .sectionController
+                                      .text);
+
+                          context
+                              .read<TaskManagementCubit>()
+                              .getPoint(selectedSection!.id!);
+                          sectionId = selectedSection.id;
+                        },
+                        suffixIcon: IconBroken.arrowDown2,
+                        controller: context
+                            .read<TaskManagementCubit>()
+                            .sectionController,
+                        keyboardType: TextInputType.text,
+                      ),
+                      verticalSpace(10),
+                      Text(
+                        'Point',
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
                         hint: "Select point",
                         items: context
                                     .read<TaskManagementCubit>()
-                                    .pointsModel
+                                    .pointModel
+                                    ?.data
                                     ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No point']
                             : context
                                     .read<TaskManagementCubit>()
-                                    .pointsModel
+                                    .pointModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -594,7 +659,8 @@ class CustomFilterTaskDialog {
                         onPressed: (value) {
                           final selectedPoint = context
                               .read<TaskManagementCubit>()
-                              .pointsModel
+                              .pointModel
+                              ?.data
                               ?.data
                               ?.firstWhere((point) =>
                                   point.name ==
@@ -605,7 +671,7 @@ class CustomFilterTaskDialog {
 
                           context
                               .read<TaskManagementCubit>()
-                              .getPoints(selectedPoint!.id!);
+                              .getPoint(selectedPoint!.id!);
                           pointId = selectedPoint.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
@@ -613,8 +679,7 @@ class CustomFilterTaskDialog {
                             context.read<TaskManagementCubit>().pointController,
                         keyboardType: TextInputType.text,
                       ),
-                    
-                          verticalSpace(10),
+                      verticalSpace(10),
                       Text(
                         'Provider',
                         style: TextStyles.font16BlackRegular,
@@ -658,7 +723,6 @@ class CustomFilterTaskDialog {
                         keyboardType: TextInputType.text,
                         suffixIcon: IconBroken.arrowDown2,
                       ),
-                      
                       verticalSpace(20),
                       Center(
                         child: DefaultElevatedButton(
@@ -683,8 +747,9 @@ class CustomFilterTaskDialog {
                                     organizationId: organizationId,
                                     buildingId: buildingId,
                                     floorId: floorId,
+                                    sectionId: sectionId,
                                     pointId: pointId,
-                                        providerId: providerId,
+                                    providerId: providerId,
                                   );
                               context.pop();
                             },

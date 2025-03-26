@@ -42,23 +42,29 @@ class UserStatusModel {
 }
 
 class Data {
+  String? clockIn;
+  String? clockOut;
+  String? duration;
+  String? date;
   String? status;
-  String? shiftStart;
-  String? shiftEnd;
 
-  Data({this.status, this.shiftStart, this.shiftEnd});
+  Data({this.clockIn, this.clockOut, this.duration, this.date, this.status});
 
   Data.fromJson(Map<String, dynamic> json) {
+    clockIn = json['clockIn'];
+    clockOut = json['clockOut'];
+    duration = json['duration'];
+    date = json['date'];
     status = json['status'];
-    shiftStart = json['shiftStart'];
-    shiftEnd = json['shiftEnd'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['clockIn'] = clockIn;
+    data['clockOut'] = clockOut;
+    data['duration'] = duration;
+    data['date'] = date;
     data['status'] = status;
-    data['shiftStart'] = shiftStart;
-    data['shiftEnd'] = shiftEnd;
     return data;
   }
 }

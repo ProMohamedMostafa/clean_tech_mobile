@@ -25,9 +25,9 @@ class LeavesEditCubit extends Cubit<LeavesEditState> {
   final formKey = GlobalKey<FormState>();
 
   AttendanceLeavesEditModel? attendanceLeavesEditModel;
-  editLeaves(String? image,int id,typeId) async {
+  editLeaves(String? image, int id, typeId) async {
     emit(LeavesEditLoadingState());
-MultipartFile? imageFile;
+    MultipartFile? imageFile;
     if (image != null && image.isNotEmpty) {
       imageFile = await MultipartFile.fromFile(
         image,
@@ -35,30 +35,30 @@ MultipartFile? imageFile;
       );
     }
 
-      Map<String, dynamic> formDataMap = {
-        "id": id,
-        "userId": employeeController.text.isNotEmpty
-            ? employeeIdController.text
-            : leavesDetailsModel!.data!.id,
-        "startDate": startDateController.text.isNotEmpty
-            ? startDateController.text
-            : leavesDetailsModel!.data!.startDate,
-        "endDate": endDateController.text.isNotEmpty
-            ? endDateController.text
-            : leavesDetailsModel!.data!.endDate,
-        "type": typeController.text.isNotEmpty
-            ? typeId
-            : leavesDetailsModel!.data!.type,
-        "reason": discriptionController.text.isNotEmpty
-            ? discriptionController.text
-            : leavesDetailsModel!.data!.reason,
-            "File": leavesDetailsModel!.data!.file ?? imageFile
-      };
+    Map<String, dynamic> formDataMap = {
+      "Id": id,
+      "UserId": employeeController.text.isNotEmpty
+          ? employeeIdController.text
+          : leavesDetailsModel!.data!.id,
+      "StartDate": startDateController.text.isNotEmpty
+          ? startDateController.text
+          : leavesDetailsModel!.data!.startDate,
+      "EndDate": endDateController.text.isNotEmpty
+          ? endDateController.text
+          : leavesDetailsModel!.data!.endDate,
+      "Type": typeController.text.isNotEmpty
+          ? typeId
+          : leavesDetailsModel!.data!.type,
+      "Reason": discriptionController.text.isNotEmpty
+          ? discriptionController.text
+          : leavesDetailsModel!.data!.reason,
+      "File": leavesDetailsModel!.data!.file ?? imageFile
+    };
 
     FormData formData = FormData.fromMap(formDataMap);
     try {
-      final response =
-          await DioHelper.putData2(url: ApiConstants.leavesEditUrl, data: formData);
+      final response = await DioHelper.putData2(
+          url: ApiConstants.leavesEditUrl, data: formData);
       attendanceLeavesEditModel =
           AttendanceLeavesEditModel.fromJson(response!.data);
       emit(LeavesEditSuccessState(attendanceLeavesEditModel!));
@@ -79,7 +79,7 @@ MultipartFile? imageFile;
   }
 
   UsersModel? usersModel;
-  getAllUsersInUserManage({
+  getAllUsers({
     int? organizationId,
     int? buildingId,
     int? floorId,
@@ -94,7 +94,7 @@ MultipartFile? imageFile;
     });
   }
 
-GalleryModel? gellaryModel;
+  GalleryModel? gellaryModel;
   XFile? image;
   Future<void> galleryFile() async {
     final ImagePicker picker = ImagePicker();
@@ -106,5 +106,4 @@ GalleryModel? gellaryModel;
       emit(ImageSelectedState(image!));
     }
   }
-
 }

@@ -20,11 +20,10 @@ class TransactionManagmentBody extends StatefulWidget {
 class _TransactionManagmentBodyState extends State<TransactionManagmentBody> {
   @override
   void initState() {
-    context.read<TransactionManagementCubit>()
-      ..getTransactionList()
-      ..getUsers()
-      ..getCategoryList()
-      ..getProviders();
+    context.read<TransactionManagementCubit>().getTransactionList();
+    context.read<TransactionManagementCubit>().getUsers();
+    context.read<TransactionManagementCubit>().getCategoryList();
+    context.read<TransactionManagementCubit>().getProviders();
 
     super.initState();
   }
@@ -106,10 +105,10 @@ class _TransactionManagmentBodyState extends State<TransactionManagmentBody> {
                                     children: [
                                       Text(
                                         index == 0
-                                            ? "${context.read<TransactionManagementCubit>().transactionManagementModel?.data.data.length ?? 0}"
+                                            ? "${context.read<TransactionManagementCubit>().transactionManagementModel?.data!.transactions.length ?? 0}"
                                             : index == 1
-                                                ? "${context.read<TransactionManagementCubit>().transactionManagementModel?.data.data.where((type) => type.type == 'In').length ?? 0}"
-                                                : "${context.read<TransactionManagementCubit>().transactionManagementModel?.data.data.where((type) => type.type == 'Out').length ?? 0}",
+                                                ? "${context.read<TransactionManagementCubit>().transactionManagementModel?.data!.transactions.where((type) => type.typeId == 0).length ?? 0}"
+                                                : "${context.read<TransactionManagementCubit>().transactionManagementModel?.data!.transactions.where((type) => type.typeId == 1).length ?? 0}",
                                         style: TextStyle(
                                           fontSize: 13.sp,
                                           color: isSelected

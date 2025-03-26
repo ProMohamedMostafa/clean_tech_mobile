@@ -131,12 +131,18 @@ class _SettingsBodyState extends State<SettingsBody> {
                                   shape: BoxShape.circle,
                                   color: context
                                               .read<SettingsCubit>()
-                                              .userStatusModel!
-                                              .data!
-                                              .status ==
-                                          'not working'
+                                              .userStatusModel
+                                              ?.data ==
+                                          null
                                       ? Colors.red
-                                      : Colors.green,
+                                      : context
+                                                  .read<SettingsCubit>()
+                                                  .userStatusModel!
+                                                  .data!
+                                                  .clockOut ==
+                                              null
+                                          ? Colors.green
+                                          : Colors.red,
                                   border: Border.all(
                                       color: Colors.white, width: 2.w)),
                             ),

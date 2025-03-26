@@ -1,15 +1,19 @@
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_area_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/points_model.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_building_details.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_floor_details.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_organization_details.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_section_details.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/all_shifts_deleted_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/all_shifts_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/shift_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/shift_level_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/shift_users_details.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/point_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/section_model.dart';
 
 abstract class ShiftState {}
 
@@ -106,16 +110,52 @@ class ForceDeleteShiftErrorState extends ShiftState {
 }
 
 //******************** */
-class ShiftLevelDetailsLoadingState extends ShiftState {}
+class ShiftOrganizationDetailsLoadingState extends ShiftState {}
 
-class ShiftLevelDetailsSuccessState extends ShiftState {
-  final ShiftLevelDetailsModel shiftLevelDetailsModel;
-  ShiftLevelDetailsSuccessState(this.shiftLevelDetailsModel);
+class ShiftOrganizationDetailsSuccessState extends ShiftState {
+  final ShiftOrganizationDetailsModel shiftOrganizationDetailsModel;
+  ShiftOrganizationDetailsSuccessState(this.shiftOrganizationDetailsModel);
 }
 
-class ShiftLevelDetailsErrorState extends ShiftState {
+class ShiftOrganizationDetailsErrorState extends ShiftState {
   final String error;
-  ShiftLevelDetailsErrorState(this.error);
+  ShiftOrganizationDetailsErrorState(this.error);
+} //******************** */
+
+class ShiftBuildingDetailsLoadingState extends ShiftState {}
+
+class ShiftBuildingDetailsSuccessState extends ShiftState {
+  final ShiftBuildingsDetailsModel shiftBuildingsDetailsModel;
+  ShiftBuildingDetailsSuccessState(this.shiftBuildingsDetailsModel);
+}
+
+class ShiftBuildingDetailsErrorState extends ShiftState {
+  final String error;
+  ShiftBuildingDetailsErrorState(this.error);
+} //******************** */
+
+class ShiftFloorDetailsLoadingState extends ShiftState {}
+
+class ShiftFloorDetailsSuccessState extends ShiftState {
+  final ShiftFloorDetailsModel shiftFloorDetailsModel;
+  ShiftFloorDetailsSuccessState(this.shiftFloorDetailsModel);
+}
+
+class ShiftFloorDetailsErrorState extends ShiftState {
+  final String error;
+  ShiftFloorDetailsErrorState(this.error);
+} //******************** */
+
+class ShiftSectionDetailsLoadingState extends ShiftState {}
+
+class ShiftSectionDetailsSuccessState extends ShiftState {
+  final ShiftSectionDetailsModel shiftSectionDetailsModel;
+  ShiftSectionDetailsSuccessState(this.shiftSectionDetailsModel);
+}
+
+class ShiftSectionDetailsErrorState extends ShiftState {
+  final String error;
+  ShiftSectionDetailsErrorState(this.error);
 }
 //**************************** */
 
@@ -136,7 +176,7 @@ class GetAreaErrorState extends ShiftState {
 class GetCityLoadingState extends ShiftState {}
 
 class GetCitySuccessState extends ShiftState {
-  final CityModel cityModel;
+  final CityListModel cityModel;
 
   GetCitySuccessState(this.cityModel);
 }
@@ -150,7 +190,7 @@ class GetCityErrorState extends ShiftState {
 class GetOrganizationLoadingState extends ShiftState {}
 
 class GetOrganizationSuccessState extends ShiftState {
-  final OrganizationModel organizationModel;
+  final OrganizationListModel organizationModel;
 
   GetOrganizationSuccessState(this.organizationModel);
 }
@@ -164,7 +204,7 @@ class GetOrganizationErrorState extends ShiftState {
 class GetBuildingLoadingState extends ShiftState {}
 
 class GetBuildingSuccessState extends ShiftState {
-  final BuildingModel buildingModel;
+  final BuildingListModel buildingModel;
 
   GetBuildingSuccessState(this.buildingModel);
 }
@@ -178,7 +218,7 @@ class GetBuildingErrorState extends ShiftState {
 class GetFloorLoadingState extends ShiftState {}
 
 class GetFloorSuccessState extends ShiftState {
-  final FloorModel floorModel;
+  final FloorListModel floorModel;
 
   GetFloorSuccessState(this.floorModel);
 }
@@ -186,13 +226,26 @@ class GetFloorSuccessState extends ShiftState {
 class GetFloorErrorState extends ShiftState {
   final String error;
   GetFloorErrorState(this.error);
+} //**************************** */
+
+class GetSectionLoadingState extends ShiftState {}
+
+class GetSectionSuccessState extends ShiftState {
+  final SectionListModel sectionsModel;
+
+  GetSectionSuccessState(this.sectionsModel);
+}
+
+class GetSectionErrorState extends ShiftState {
+  final String error;
+  GetSectionErrorState(this.error);
 }
 //**************************** */
 
 class GetPointLoadingState extends ShiftState {}
 
 class GetPointSuccessState extends ShiftState {
-  final PointsModel pointsModel;
+  final PointListModel pointsModel;
 
   GetPointSuccessState(this.pointsModel);
 }

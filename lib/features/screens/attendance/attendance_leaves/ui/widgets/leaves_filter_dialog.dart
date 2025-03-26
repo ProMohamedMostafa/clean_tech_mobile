@@ -24,8 +24,10 @@ class LeavesFilterDialog {
         int? organizationId;
         int? buildingId;
         int? floorId;
+        int? sectionId;
         int? pointId;
         int? providerId;
+        int? userId;
         return Dialog(
             backgroundColor: Colors.white,
             surfaceTintColor: Colors.white,
@@ -185,6 +187,53 @@ class LeavesFilterDialog {
                       ),
                       verticalSpace(10),
                       Text(
+                        'User',
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomDropDownList(
+                        hint: 'Select Users',
+                        items: context
+                                    .read<AttendanceLeavesCubit>()
+                                    .usersModel
+                                    ?.data
+                                    ?.users
+                                    ?.isEmpty ??
+                                true
+                            ? ['No users available']
+                            : context
+                                    .read<AttendanceLeavesCubit>()
+                                    .usersModel
+                                    ?.data
+                                    ?.users
+                                    ?.map((e) => e.userName ?? 'Unknown')
+                                    .toList() ??
+                                [],
+                        onPressed: (value) {
+                          final selectedUser = context
+                              .read<AttendanceLeavesCubit>()
+                              .usersModel
+                              ?.data
+                              ?.users
+                              ?.firstWhere((user) =>
+                                  user.userName ==
+                                  context
+                                      .read<AttendanceLeavesCubit>()
+                                      .userController
+                                      .text);
+
+                          context
+                              .read<AttendanceLeavesCubit>()
+                              .getCity(selectedUser!.id!);
+                          userId = selectedUser.id;
+                        },
+                        controller: context
+                            .read<AttendanceLeavesCubit>()
+                            .userController,
+                        keyboardType: TextInputType.text,
+                        suffixIcon: IconBroken.arrowDown2,
+                      ),
+                      verticalSpace(10),
+                      Text(
                         'Area',
                         style: TextStyles.font16BlackRegular,
                       ),
@@ -241,12 +290,14 @@ class LeavesFilterDialog {
                                     .read<AttendanceLeavesCubit>()
                                     .cityModel
                                     ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No cities']
                             : context
                                     .read<AttendanceLeavesCubit>()
                                     .cityModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -255,6 +306,7 @@ class LeavesFilterDialog {
                           final selectedCity = context
                               .read<AttendanceLeavesCubit>()
                               .cityModel
+                              ?.data
                               ?.data
                               ?.firstWhere((city) =>
                                   city.name ==
@@ -285,12 +337,14 @@ class LeavesFilterDialog {
                                     .read<AttendanceLeavesCubit>()
                                     .organizationModel
                                     ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No organizations']
                             : context
                                     .read<AttendanceLeavesCubit>()
                                     .organizationModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -299,6 +353,7 @@ class LeavesFilterDialog {
                           final selectedOrganization = context
                               .read<AttendanceLeavesCubit>()
                               .organizationModel
+                              ?.data
                               ?.data
                               ?.firstWhere((organization) =>
                                   organization.name ==
@@ -329,12 +384,14 @@ class LeavesFilterDialog {
                                     .read<AttendanceLeavesCubit>()
                                     .buildingModel
                                     ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No building']
                             : context
                                     .read<AttendanceLeavesCubit>()
                                     .buildingModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -343,6 +400,7 @@ class LeavesFilterDialog {
                           final selectedBuilding = context
                               .read<AttendanceLeavesCubit>()
                               .buildingModel
+                              ?.data
                               ?.data
                               ?.firstWhere((building) =>
                                   building.name ==
@@ -373,12 +431,14 @@ class LeavesFilterDialog {
                                     .read<AttendanceLeavesCubit>()
                                     .floorModel
                                     ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No floors']
                             : context
                                     .read<AttendanceLeavesCubit>()
                                     .floorModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -387,6 +447,7 @@ class LeavesFilterDialog {
                           final selectedFloor = context
                               .read<AttendanceLeavesCubit>()
                               .floorModel
+                              ?.data
                               ?.data
                               ?.firstWhere((floor) =>
                                   floor.name ==
@@ -397,7 +458,7 @@ class LeavesFilterDialog {
 
                           context
                               .read<AttendanceLeavesCubit>()
-                              .getPoints(selectedFloor!.id!);
+                              .getPoint(selectedFloor!.id!);
                           floorId = selectedFloor.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
@@ -408,21 +469,70 @@ class LeavesFilterDialog {
                       ),
                       verticalSpace(10),
                       Text(
-                        'Points',
+                        'Section',
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomDropDownList(
+                        hint: "Select section",
+                        items: context
+                                    .read<AttendanceLeavesCubit>()
+                                    .sectionModel
+                                    ?.data
+                                    ?.data
+                                    ?.isEmpty ??
+                                true
+                            ? ['No sections']
+                            : context
+                                    .read<AttendanceLeavesCubit>()
+                                    .sectionModel
+                                    ?.data
+                                    ?.data
+                                    ?.map((e) => e.name ?? 'Unknown')
+                                    .toList() ??
+                                [],
+                        onPressed: (value) {
+                          final selectedSection = context
+                              .read<AttendanceLeavesCubit>()
+                              .sectionModel
+                              ?.data
+                              ?.data
+                              ?.firstWhere((section) =>
+                                  section.name ==
+                                  context
+                                      .read<AttendanceLeavesCubit>()
+                                      .sectionController
+                                      .text);
+
+                          context
+                              .read<AttendanceLeavesCubit>()
+                              .getPoint(selectedSection!.id!);
+                          sectionId = selectedSection.id;
+                        },
+                        suffixIcon: IconBroken.arrowDown2,
+                        controller: context
+                            .read<AttendanceLeavesCubit>()
+                            .sectionController,
+                        keyboardType: TextInputType.text,
+                      ),
+                      verticalSpace(10),
+                      Text(
+                        'Point',
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
                         hint: "Select point",
                         items: context
                                     .read<AttendanceLeavesCubit>()
-                                    .pointsModel
+                                    .pointModel
+                                    ?.data
                                     ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No point']
                             : context
                                     .read<AttendanceLeavesCubit>()
-                                    .pointsModel
+                                    .pointModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -430,7 +540,8 @@ class LeavesFilterDialog {
                         onPressed: (value) {
                           final selectedPoint = context
                               .read<AttendanceLeavesCubit>()
-                              .pointsModel
+                              .pointModel
+                              ?.data
                               ?.data
                               ?.firstWhere((point) =>
                                   point.name ==
@@ -441,7 +552,7 @@ class LeavesFilterDialog {
 
                           context
                               .read<AttendanceLeavesCubit>()
-                              .getPoints(selectedPoint!.id!);
+                              .getPoint(selectedPoint!.id!);
                           pointId = selectedPoint.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
@@ -502,14 +613,15 @@ class LeavesFilterDialog {
                               context
                                   .read<AttendanceLeavesCubit>()
                                   .getAllLeaves(
-                                    areaId: areaId,
-                                    cityId: cityId,
-                                    organizationId: organizationId,
-                                    buildingId: buildingId,
-                                    floorId: floorId,
-                                    pointId: pointId,
-                                    providerId: providerId,
-                                  );
+                                      areaId: areaId,
+                                      cityId: cityId,
+                                      organizationId: organizationId,
+                                      buildingId: buildingId,
+                                      floorId: floorId,
+                                      sectionId: sectionId,
+                                      pointId: pointId,
+                                      providerId: providerId,
+                                      userId: userId);
 
                               context.pop();
                             },

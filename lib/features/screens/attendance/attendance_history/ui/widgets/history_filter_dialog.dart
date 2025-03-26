@@ -25,8 +25,10 @@ class HistoryFilterDialog {
         int? buildingId;
         int? floorId;
         int? pointId;
+        int? sectionId;
         int? statusId;
         int? providerId;
+        int? userId;
         int? shiftId;
         return Dialog(
             backgroundColor: Colors.white,
@@ -231,6 +233,53 @@ class HistoryFilterDialog {
                       ),
                       verticalSpace(10),
                       Text(
+                        'User',
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomDropDownList(
+                        hint: 'Select Users',
+                        items: context
+                                    .read<AttendanceHistoryCubit>()
+                                    .usersModel
+                                    ?.data
+                                    ?.users
+                                    ?.isEmpty ??
+                                true
+                            ? ['No users available']
+                            : context
+                                    .read<AttendanceHistoryCubit>()
+                                    .usersModel
+                                    ?.data
+                                    ?.users
+                                    ?.map((e) => e.userName ?? 'Unknown')
+                                    .toList() ??
+                                [],
+                        onPressed: (value) {
+                          final selectedUser = context
+                              .read<AttendanceHistoryCubit>()
+                              .usersModel
+                              ?.data
+                              ?.users
+                              ?.firstWhere((user) =>
+                                  user.userName ==
+                                  context
+                                      .read<AttendanceHistoryCubit>()
+                                      .userController
+                                      .text);
+
+                          context
+                              .read<AttendanceHistoryCubit>()
+                              .getCity(selectedUser!.id!);
+                          userId = selectedUser.id;
+                        },
+                        controller: context
+                            .read<AttendanceHistoryCubit>()
+                            .userController,
+                        keyboardType: TextInputType.text,
+                        suffixIcon: IconBroken.arrowDown2,
+                      ),
+                      verticalSpace(10),
+                      Text(
                         'Area',
                         style: TextStyles.font16BlackRegular,
                       ),
@@ -287,12 +336,14 @@ class HistoryFilterDialog {
                                     .read<AttendanceHistoryCubit>()
                                     .cityModel
                                     ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No cities']
                             : context
                                     .read<AttendanceHistoryCubit>()
                                     .cityModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -301,6 +352,7 @@ class HistoryFilterDialog {
                           final selectedCity = context
                               .read<AttendanceHistoryCubit>()
                               .cityModel
+                              ?.data
                               ?.data
                               ?.firstWhere((city) =>
                                   city.name ==
@@ -331,12 +383,14 @@ class HistoryFilterDialog {
                                     .read<AttendanceHistoryCubit>()
                                     .organizationModel
                                     ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No organizations']
                             : context
                                     .read<AttendanceHistoryCubit>()
                                     .organizationModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -345,6 +399,7 @@ class HistoryFilterDialog {
                           final selectedOrganization = context
                               .read<AttendanceHistoryCubit>()
                               .organizationModel
+                              ?.data
                               ?.data
                               ?.firstWhere((organization) =>
                                   organization.name ==
@@ -375,12 +430,14 @@ class HistoryFilterDialog {
                                     .read<AttendanceHistoryCubit>()
                                     .buildingModel
                                     ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No building']
                             : context
                                     .read<AttendanceHistoryCubit>()
                                     .buildingModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -389,6 +446,7 @@ class HistoryFilterDialog {
                           final selectedBuilding = context
                               .read<AttendanceHistoryCubit>()
                               .buildingModel
+                              ?.data
                               ?.data
                               ?.firstWhere((building) =>
                                   building.name ==
@@ -419,12 +477,14 @@ class HistoryFilterDialog {
                                     .read<AttendanceHistoryCubit>()
                                     .floorModel
                                     ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No floors']
                             : context
                                     .read<AttendanceHistoryCubit>()
                                     .floorModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -433,6 +493,7 @@ class HistoryFilterDialog {
                           final selectedFloor = context
                               .read<AttendanceHistoryCubit>()
                               .floorModel
+                              ?.data
                               ?.data
                               ?.firstWhere((floor) =>
                                   floor.name ==
@@ -443,7 +504,7 @@ class HistoryFilterDialog {
 
                           context
                               .read<AttendanceHistoryCubit>()
-                              .getPoints(selectedFloor!.id!);
+                              .getPoint(selectedFloor!.id!);
                           floorId = selectedFloor.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
@@ -454,21 +515,70 @@ class HistoryFilterDialog {
                       ),
                       verticalSpace(10),
                       Text(
-                        'Points',
+                        'Section',
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomDropDownList(
+                        hint: "Select section",
+                        items: context
+                                    .read<AttendanceHistoryCubit>()
+                                    .sectionModel
+                                    ?.data
+                                    ?.data
+                                    ?.isEmpty ??
+                                true
+                            ? ['No sections']
+                            : context
+                                    .read<AttendanceHistoryCubit>()
+                                    .sectionModel
+                                    ?.data
+                                    ?.data
+                                    ?.map((e) => e.name ?? 'Unknown')
+                                    .toList() ??
+                                [],
+                        onPressed: (value) {
+                          final selectedSection = context
+                              .read<AttendanceHistoryCubit>()
+                              .sectionModel
+                              ?.data
+                              ?.data
+                              ?.firstWhere((section) =>
+                                  section.name ==
+                                  context
+                                      .read<AttendanceHistoryCubit>()
+                                      .sectionController
+                                      .text);
+
+                          context
+                              .read<AttendanceHistoryCubit>()
+                              .getPoint(selectedSection!.id!);
+                          sectionId = selectedSection.id;
+                        },
+                        suffixIcon: IconBroken.arrowDown2,
+                        controller: context
+                            .read<AttendanceHistoryCubit>()
+                            .sectionController,
+                        keyboardType: TextInputType.text,
+                      ),
+                      verticalSpace(10),
+                      Text(
+                        'Point',
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
                         hint: "Select point",
                         items: context
                                     .read<AttendanceHistoryCubit>()
-                                    .pointsModel
+                                    .pointModel
+                                    ?.data
                                     ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No point']
                             : context
                                     .read<AttendanceHistoryCubit>()
-                                    .pointsModel
+                                    .pointModel
+                                    ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
@@ -476,7 +586,8 @@ class HistoryFilterDialog {
                         onPressed: (value) {
                           final selectedPoint = context
                               .read<AttendanceHistoryCubit>()
-                              .pointsModel
+                              .pointModel
+                              ?.data
                               ?.data
                               ?.firstWhere((point) =>
                                   point.name ==
@@ -487,7 +598,7 @@ class HistoryFilterDialog {
 
                           context
                               .read<AttendanceHistoryCubit>()
-                              .getPoints(selectedPoint!.id!);
+                              .getPoint(selectedPoint!.id!);
                           pointId = selectedPoint.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
@@ -554,9 +665,11 @@ class HistoryFilterDialog {
                                     organizationId: organizationId,
                                     buildingId: buildingId,
                                     floorId: floorId,
+                                    sectionId: sectionId,
                                     pointId: pointId,
                                     providerId: providerId,
                                     shiftId: shiftId,
+userId:userId
                                   );
 
                               context.pop();

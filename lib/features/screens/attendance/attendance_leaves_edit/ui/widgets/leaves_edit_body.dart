@@ -34,7 +34,7 @@ class _LeavesEditBodyState extends State<LeavesEditBody> {
   @override
   void initState() {
     context.read<LeavesEditCubit>().getLeavesDetails(widget.id);
-    context.read<LeavesEditCubit>().getAllUsersInUserManage();
+    context.read<LeavesEditCubit>().getAllUsers();
     super.initState();
   }
 

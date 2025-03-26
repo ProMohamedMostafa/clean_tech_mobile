@@ -23,6 +23,7 @@ class _AttendanceHistoryBodyState extends State<AttendanceHistoryBody> {
     context.read<AttendanceHistoryCubit>().getProviders();
     context.read<AttendanceHistoryCubit>().getRole();
     context.read<AttendanceHistoryCubit>().getShifts();
+    context.read<AttendanceHistoryCubit>().getAllUsers();
     super.initState();
   }
 

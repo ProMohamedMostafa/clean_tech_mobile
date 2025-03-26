@@ -1,13 +1,15 @@
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/data/models/attendance_history_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_area_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/points_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/point_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/section_model.dart';
 
 abstract class AttendanceHistoryState {}
 
@@ -80,25 +82,24 @@ class AllProvidersErrorState extends AttendanceHistoryState {
 
 //********************************* */
 
-class GetAllAreaLoadingState extends AttendanceHistoryState {}
+class GetAreaLoadingState extends AttendanceHistoryState {}
 
-class GetAllAreaSuccessState extends AttendanceHistoryState {
-  final AllAreaModel allAreaModel;
+class GetAreaSuccessState extends AttendanceHistoryState {
+  final AllAreaModel? allAreaModel;
 
-  GetAllAreaSuccessState(this.allAreaModel);
+  GetAreaSuccessState(this.allAreaModel);
 }
 
-class GetAllAreaErrorState extends AttendanceHistoryState {
+class GetAreaErrorState extends AttendanceHistoryState {
   final String error;
-  GetAllAreaErrorState(this.error);
+  GetAreaErrorState(this.error);
 }
-
 //**************************** */
 
 class GetCityLoadingState extends AttendanceHistoryState {}
 
 class GetCitySuccessState extends AttendanceHistoryState {
-  final CityModel cityModel;
+  final CityListModel cityModel;
 
   GetCitySuccessState(this.cityModel);
 }
@@ -111,7 +112,7 @@ class GetCityErrorState extends AttendanceHistoryState {
 class GetOrganizationLoadingState extends AttendanceHistoryState {}
 
 class GetOrganizationSuccessState extends AttendanceHistoryState {
-  final OrganizationModel organizationModel;
+  final OrganizationListModel organizationModel;
 
   GetOrganizationSuccessState(this.organizationModel);
 }
@@ -125,7 +126,7 @@ class GetOrganizationErrorState extends AttendanceHistoryState {
 class GetBuildingLoadingState extends AttendanceHistoryState {}
 
 class GetBuildingSuccessState extends AttendanceHistoryState {
-  final BuildingModel buildingModel;
+  final BuildingListModel buildingModel;
 
   GetBuildingSuccessState(this.buildingModel);
 }
@@ -139,7 +140,7 @@ class GetBuildingErrorState extends AttendanceHistoryState {
 class GetFloorLoadingState extends AttendanceHistoryState {}
 
 class GetFloorSuccessState extends AttendanceHistoryState {
-  final FloorModel floorModel;
+  final FloorListModel floorModel;
 
   GetFloorSuccessState(this.floorModel);
 }
@@ -150,15 +151,43 @@ class GetFloorErrorState extends AttendanceHistoryState {
 }
 //**************************** */
 
-class GetPointsLoadingState extends AttendanceHistoryState {}
+class GetSectionLoadingState extends AttendanceHistoryState {}
 
-class GetPointsSuccessState extends AttendanceHistoryState {
-  final PointsModel pointsModel;
+class GetSectionSuccessState extends AttendanceHistoryState {
+  final SectionListModel sectionModel;
 
-  GetPointsSuccessState(this.pointsModel);
+  GetSectionSuccessState(this.sectionModel);
 }
 
-class GetPointsErrorState extends AttendanceHistoryState {
+class GetSectionErrorState extends AttendanceHistoryState {
   final String error;
-  GetPointsErrorState(this.error);
+  GetSectionErrorState(this.error);
+}
+//**************************** */
+
+class GetPointLoadingState extends AttendanceHistoryState {}
+
+class GetPointSuccessState extends AttendanceHistoryState {
+  final PointListModel pointsModel;
+
+  GetPointSuccessState(this.pointsModel);
+}
+
+class GetPointErrorState extends AttendanceHistoryState {
+  final String error;
+  GetPointErrorState(this.error);
+}
+//***************** */
+
+class AllUsersLoadingState extends AttendanceHistoryState {}
+
+class AllUsersSuccessState extends AttendanceHistoryState {
+  final UsersModel usersModel;
+
+  AllUsersSuccessState(this.usersModel);
+}
+
+class AllUsersErrorState extends AttendanceHistoryState {
+  final String error;
+  AllUsersErrorState(this.error);
 }

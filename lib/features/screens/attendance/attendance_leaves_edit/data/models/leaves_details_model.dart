@@ -23,11 +23,11 @@ class LeavesDetailsModel {
     message = json['message'];
     error = json['error'];
     businessErrorCode = json['businessErrorCode'];
-    data = json['data'] != null ?  Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['statusCode'] = statusCode;
     data['meta'] = meta;
     data['succeeded'] = succeeded;
@@ -48,6 +48,7 @@ class Data {
   String? userName;
   String? firstName;
   String? lastName;
+  String? image;
   String? startDate;
   String? endDate;
   String? reason;
@@ -61,6 +62,7 @@ class Data {
       this.userName,
       this.firstName,
       this.lastName,
+      this.image,
       this.startDate,
       this.endDate,
       this.reason,
@@ -74,6 +76,7 @@ class Data {
     userName = json['userName'];
     firstName = json['firstName'];
     lastName = json['lastName'];
+    image = json['image'];
     startDate = json['startDate'];
     endDate = json['endDate'];
     reason = json['reason'];
@@ -82,13 +85,14 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['userId'] = userId;
     data['role'] = role;
     data['userName'] = userName;
     data['firstName'] = firstName;
     data['lastName'] = lastName;
+    data['image'] = image;
     data['startDate'] = startDate;
     data['endDate'] = endDate;
     data['reason'] = reason;

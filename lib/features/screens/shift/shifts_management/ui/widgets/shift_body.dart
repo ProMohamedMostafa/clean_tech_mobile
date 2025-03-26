@@ -27,7 +27,6 @@ class _ShiftBodyState extends State<ShiftBody> {
       context.read<ShiftCubit>().getAllShifts();
       context.read<ShiftCubit>().getArea();
       context.read<ShiftCubit>().getAllDeletedShifts();
-      context.read<ShiftCubit>().getProviders();
     }
     if (role == 'Manager') {
       context.read<ShiftCubit>().getAllShifts();
@@ -97,7 +96,7 @@ class _ShiftBodyState extends State<ShiftBody> {
           },
           builder: (context, state) {
             final cubit = context.read<ShiftCubit>();
-            if (cubit.allShiftsModel == null &&
+            if (cubit.allShiftsModel == null ||
                 cubit.allShiftsDeletedModel == null) {
               return const Center(
                 child: CircularProgressIndicator(color: AppColor.primaryColor),

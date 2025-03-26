@@ -10,23 +10,21 @@ Widget transactionDetailsBuild(BuildContext context, int selectedIndex) {
       ? context
           .read<TransactionManagementCubit>()
           .transactionManagementModel
-          ?.data
-          .data
+          ?.data!
+          .transactions
       : selectedIndex == 1
           ? context
               .read<TransactionManagementCubit>()
               .transactionManagementModel
-              ?.data
-              .data
-              .where((type) => type.type == 'In')
-          : selectedIndex == 2
-              ? context
-                  .read<TransactionManagementCubit>()
-                  .transactionManagementModel
-                  ?.data
-                  .data
-                  .where((type) => type.type == 'Out')
-              : null;
+              ?.data!
+              .transactions
+              .where((type) => type.typeId == 0)
+          : context
+              .read<TransactionManagementCubit>()
+              .transactionManagementModel
+              ?.data!
+              .transactions
+              .where((type) => type.typeId == 1);
 
   if (transactionsData == null || transactionsData.isEmpty) {
     return Center(

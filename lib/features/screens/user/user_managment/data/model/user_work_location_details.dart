@@ -1,357 +1,511 @@
 class UserWorkLocationDetailsModel {
-  final int statusCode;
-  final bool succeeded;
-  final String message;
-  final DataModel data;
+  int? statusCode;
+  String? meta;
+  bool? succeeded;
+  String? message;
+  String? error;
+  String? businessErrorCode;
+  Data? data;
 
-  UserWorkLocationDetailsModel({
-    required this.statusCode,
-    required this.succeeded,
-    required this.message,
-    required this.data,
-  });
+  UserWorkLocationDetailsModel(
+      {this.statusCode,
+      this.meta,
+      this.succeeded,
+      this.message,
+      this.error,
+      this.businessErrorCode,
+      this.data});
 
-  factory UserWorkLocationDetailsModel.fromJson(Map<String, dynamic> json) {
-    return UserWorkLocationDetailsModel(
-      statusCode: json['statusCode'],
-      succeeded: json['succeeded'],
-      message: json['message'] ?? '',
-      data: DataModel.fromJson(json['data']),
-    );
+  UserWorkLocationDetailsModel.fromJson(Map<String, dynamic> json) {
+    statusCode = json['statusCode'];
+    meta = json['meta'];
+    succeeded = json['succeeded'];
+    message = json['message'];
+    error = json['error'];
+    businessErrorCode = json['businessErrorCode'];
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['statusCode'] = statusCode;
+    data['meta'] = meta;
+    data['succeeded'] = succeeded;
+    data['message'] = message;
+    data['error'] = error;
+    data['businessErrorCode'] = businessErrorCode;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
+    return data;
   }
 }
 
-class DataModel {
-  final List<AreaModel> areas;
-  final List<CityModel> cities;
-  final List<OrganizationModel> organizations;
-  final List<BuildingModel> buildings;
-  final List<FloorModel> floors;
-  final List<SectionModel> sections;
-  final List<PointModel> points;
+class Data {
+  List<Areas>? areas;
+  List<Cities>? cities;
+  List<Organizations>? organizations;
+  List<Buildings>? buildings;
+  List<Floors>? floors;
+  List<Sections>? sections;
+  List<Points>? points;
 
-  DataModel({
-    required this.areas,
-    required this.cities,
-    required this.organizations,
-    required this.buildings,
-    required this.floors,
-    required this.sections,
-    required this.points,
-  });
+  Data(
+      {this.areas,
+      this.cities,
+      this.organizations,
+      this.buildings,
+      this.floors,
+      this.sections,
+      this.points});
 
-  factory DataModel.fromJson(Map<String, dynamic> json) {
-    return DataModel(
-      areas: (json['areas'] as List).map((e) => AreaModel.fromJson(e)).toList(),
-      cities:
-          (json['cities'] as List).map((e) => CityModel.fromJson(e)).toList(),
-      organizations: (json['organizations'] as List)
-          .map((e) => OrganizationModel.fromJson(e))
-          .toList(),
-      buildings: (json['buildings'] as List)
-          .map((e) => BuildingModel.fromJson(e))
-          .toList(),
-      floors:
-          (json['floors'] as List).map((e) => FloorModel.fromJson(e)).toList(),
-      sections: (json['sections'] as List)
-          .map((e) => SectionModel.fromJson(e))
-          .toList(),
-      points:
-          (json['points'] as List).map((e) => PointModel.fromJson(e)).toList(),
-    );
+  Data.fromJson(Map<String, dynamic> json) {
+    if (json['areas'] != null) {
+      areas = <Areas>[];
+      json['areas'].forEach((v) {
+        areas!.add(Areas.fromJson(v));
+      });
+    }
+    if (json['cities'] != null) {
+      cities = <Cities>[];
+      json['cities'].forEach((v) {
+        cities!.add(Cities.fromJson(v));
+      });
+    }
+    if (json['organizations'] != null) {
+      organizations = <Organizations>[];
+      json['organizations'].forEach((v) {
+        organizations!.add(Organizations.fromJson(v));
+      });
+    }
+    if (json['buildings'] != null) {
+      buildings = <Buildings>[];
+      json['buildings'].forEach((v) {
+        buildings!.add(Buildings.fromJson(v));
+      });
+    }
+    if (json['floors'] != null) {
+      floors = <Floors>[];
+      json['floors'].forEach((v) {
+        floors!.add(Floors.fromJson(v));
+      });
+    }
+    if (json['sections'] != null) {
+      sections = <Sections>[];
+      json['sections'].forEach((v) {
+        sections!.add(Sections.fromJson(v));
+      });
+    }
+    if (json['points'] != null) {
+      points = <Points>[];
+      json['points'].forEach((v) {
+        points!.add(Points.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (areas != null) {
+      data['areas'] = areas!.map((v) => v.toJson()).toList();
+    }
+    if (cities != null) {
+      data['cities'] = cities!.map((v) => v.toJson()).toList();
+    }
+    if (organizations != null) {
+      data['organizations'] = organizations!.map((v) => v.toJson()).toList();
+    }
+    if (buildings != null) {
+      data['buildings'] = buildings!.map((v) => v.toJson()).toList();
+    }
+    if (floors != null) {
+      data['floors'] = floors!.map((v) => v.toJson()).toList();
+    }
+    if (sections != null) {
+      data['sections'] = sections!.map((v) => v.toJson()).toList();
+    }
+    if (points != null) {
+      data['points'] = points!.map((v) => v.toJson()).toList();
+    }
+    return data;
   }
 }
 
-class AreaModel {
-  final int id;
-  final String name;
-  final String countryName;
+class Areas {
+  int? id;
+  String? name;
+  String? countryName;
 
-  AreaModel({required this.id, required this.name, required this.countryName});
+  Areas({this.id, this.name, this.countryName});
 
-  factory AreaModel.fromJson(Map<String, dynamic> json) {
-    return AreaModel(
-      id: json['id'],
-      name: json['name'],
-      countryName: json['countryName'],
-    );
+  Areas.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    countryName = json['countryName'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['countryName'] = countryName;
+    return data;
   }
 }
 
-class CityModel {
-  final int id;
-  final String name;
-  final int areaId;
-  final String areaName;
-  final String countryName;
+class Cities {
+  int? id;
+  String? name;
+  int? areaId;
+  String? areaName;
+  String? countryName;
 
-  CityModel(
-      {required this.id,
-      required this.name,
-      required this.areaId,
-      required this.areaName,
-      required this.countryName});
+  Cities({this.id, this.name, this.areaId, this.areaName, this.countryName});
 
-  factory CityModel.fromJson(Map<String, dynamic> json) {
-    return CityModel(
-      id: json['id'],
-      name: json['name'],
-      areaId: json['areaId'],
-      areaName: json['areaName'],
-      countryName: json['countryName'],
-    );
+  Cities.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    areaId = json['areaId'];
+    areaName = json['areaName'];
+    countryName = json['countryName'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['areaId'] = areaId;
+    data['areaName'] = areaName;
+    data['countryName'] = countryName;
+    return data;
   }
 }
 
-class OrganizationModel {
-  final int id;
-  final String name;
-  final int cityId;
-  final String cityName;
-  final int areaId;
-  final String areaName;
-  final String countryName;
+class Organizations {
+  int? id;
+  String? name;
+  int? cityId;
+  String? cityName;
+  int? areaId;
+  String? areaName;
+  String? countryName;
 
-  OrganizationModel({
-    required this.id,
-    required this.name,
-    required this.cityId,
-    required this.cityName,
-    required this.areaId,
-    required this.areaName,
-    required this.countryName,
-  });
+  Organizations(
+      {this.id,
+      this.name,
+      this.cityId,
+      this.cityName,
+      this.areaId,
+      this.areaName,
+      this.countryName});
 
-  factory OrganizationModel.fromJson(Map<String, dynamic> json) {
-    return OrganizationModel(
-      id: json['id'],
-      name: json['name'],
-      cityId: json['cityId'],
-      cityName: json['cityName'],
-      areaId: json['areaId'],
-      areaName: json['areaName'],
-      countryName: json['countryName'],
-    );
+  Organizations.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    cityId = json['cityId'];
+    cityName = json['cityName'];
+    areaId = json['areaId'];
+    areaName = json['areaName'];
+    countryName = json['countryName'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['cityId'] = cityId;
+    data['cityName'] = cityName;
+    data['areaId'] = areaId;
+    data['areaName'] = areaName;
+    data['countryName'] = countryName;
+    return data;
   }
 }
 
-class BuildingModel {
-  final int id;
-  final String name;
-  final String number;
-  final String description;
-  final int organizationId;
-  final String organizationName;
-  final int cityId;
-  final String cityName;
-  final int areaId;
-  final String areaName;
-  final String countryName;
+class Buildings {
+  int? id;
+  String? name;
+  String? number;
+  String? description;
+  int? organizationId;
+  String? organizationName;
+  int? cityId;
+  String? cityName;
+  int? areaId;
+  String? areaName;
+  String? countryName;
 
-  BuildingModel({
-    required this.id,
-    required this.name,
-    required this.number,
-    required this.description,
-    required this.organizationId,
-    required this.organizationName,
-    required this.cityId,
-    required this.cityName,
-    required this.areaId,
-    required this.areaName,
-    required this.countryName,
-  });
+  Buildings(
+      {this.id,
+      this.name,
+      this.number,
+      this.description,
+      this.organizationId,
+      this.organizationName,
+      this.cityId,
+      this.cityName,
+      this.areaId,
+      this.areaName,
+      this.countryName});
 
-  factory BuildingModel.fromJson(Map<String, dynamic> json) {
-    return BuildingModel(
-      id: json['id'],
-      name: json['name'],
-      number: json['number'],
-      description: json['description'],
-      organizationId: json['organizationId'],
-      organizationName: json['organizationName'],
-      cityId: json['cityId'],
-      cityName: json['cityName'],
-      areaId: json['areaId'],
-      areaName: json['areaName'],
-      countryName: json['countryName'],
-    );
+  Buildings.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    number = json['number'];
+    description = json['description'];
+    organizationId = json['organizationId'];
+    organizationName = json['organizationName'];
+    cityId = json['cityId'];
+    cityName = json['cityName'];
+    areaId = json['areaId'];
+    areaName = json['areaName'];
+    countryName = json['countryName'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['number'] = number;
+    data['description'] = description;
+    data['organizationId'] = organizationId;
+    data['organizationName'] = organizationName;
+    data['cityId'] = cityId;
+    data['cityName'] = cityName;
+    data['areaId'] = areaId;
+    data['areaName'] = areaName;
+    data['countryName'] = countryName;
+    return data;
   }
 }
 
-class FloorModel {
-  final int id;
-  final String name;
-  final String number;
-  final String description;
-  final int buildingId;
-  final String buildingName;
-  final int organizationId;
-  final String organizationName;
-  final int cityId;
-  final String cityName;
-  final int areaId;
-  final String areaName;
-  final String countryName;
+class Floors {
+  int? id;
+  String? name;
+  String? number;
+  String? description;
+  int? buildingId;
+  String? buildingName;
+  int? organizationId;
+  String? organizationName;
+  int? cityId;
+  String? cityName;
+  int? areaId;
+  String? areaName;
+  String? countryName;
 
-  FloorModel({
-    required this.id,
-    required this.name,
-    required this.number,
-    required this.description,
-    required this.buildingId,
-    required this.buildingName,
-    required this.organizationId,
-    required this.organizationName,
-    required this.cityId,
-    required this.cityName,
-    required this.areaId,
-    required this.areaName,
-    required this.countryName,
-  });
+  Floors(
+      {this.id,
+      this.name,
+      this.number,
+      this.description,
+      this.buildingId,
+      this.buildingName,
+      this.organizationId,
+      this.organizationName,
+      this.cityId,
+      this.cityName,
+      this.areaId,
+      this.areaName,
+      this.countryName});
 
-  factory FloorModel.fromJson(Map<String, dynamic> json) {
-    return FloorModel(
-      id: json['id'],
-      name: json['name'],
-      number: json['number'],
-      description: json['description'],
-      buildingId: json['buildingId'],
-      buildingName: json['buildingName'],
-      organizationId: json['organizationId'],
-      organizationName: json['organizationName'],
-      cityId: json['cityId'],
-      cityName: json['cityName'],
-      areaId: json['areaId'],
-      areaName: json['areaName'],
-      countryName: json['countryName'],
-    );
+  Floors.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    number = json['number'];
+    description = json['description'];
+    buildingId = json['buildingId'];
+    buildingName = json['buildingName'];
+    organizationId = json['organizationId'];
+    organizationName = json['organizationName'];
+    cityId = json['cityId'];
+    cityName = json['cityName'];
+    areaId = json['areaId'];
+    areaName = json['areaName'];
+    countryName = json['countryName'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['number'] = number;
+    data['description'] = description;
+    data['buildingId'] = buildingId;
+    data['buildingName'] = buildingName;
+    data['organizationId'] = organizationId;
+    data['organizationName'] = organizationName;
+    data['cityId'] = cityId;
+    data['cityName'] = cityName;
+    data['areaId'] = areaId;
+    data['areaName'] = areaName;
+    data['countryName'] = countryName;
+    return data;
   }
 }
 
-class SectionModel {
-  final int id;
-  final String name;
-  final String number;
-  final String description;
-  final int floorId;
-  final String floorName;
-  final int buildingId;
-  final String buildingName;
-  final int organizationId;
-  final String organizationName;
-  final int cityId;
-  final String cityName;
-  final int areaId;
-  final String areaName;
-  final String countryName;
+class Sections {
+  int? id;
+  String? name;
+  String? number;
+  String? description;
+  int? floorId;
+  String? floorName;
+  int? buildingId;
+  String? buildingName;
+  int? organizationId;
+  String? organizationName;
+  int? cityId;
+  String? cityName;
+  int? areaId;
+  String? areaName;
+  String? countryName;
 
-  SectionModel({
-    required this.id,
-    required this.name,
-    required this.number,
-    required this.description,
-    required this.floorId,
-    required this.floorName,
-    required this.buildingId,
-    required this.buildingName,
-    required this.organizationId,
-    required this.organizationName,
-    required this.cityId,
-    required this.cityName,
-    required this.areaId,
-    required this.areaName,
-    required this.countryName,
-  });
+  Sections(
+      {this.id,
+      this.name,
+      this.number,
+      this.description,
+      this.floorId,
+      this.floorName,
+      this.buildingId,
+      this.buildingName,
+      this.organizationId,
+      this.organizationName,
+      this.cityId,
+      this.cityName,
+      this.areaId,
+      this.areaName,
+      this.countryName});
 
-  factory SectionModel.fromJson(Map<String, dynamic> json) {
-    return SectionModel(
-      id: json['id'],
-      name: json['name'],
-      number: json['number'],
-      description: json['description'],
-      floorId: json['floorId'],
-      floorName: json['floorName'],
-      buildingId: json['buildingId'],
-      buildingName: json['buildingName'],
-      organizationId: json['organizationId'],
-      organizationName: json['organizationName'],
-      cityId: json['cityId'],
-      cityName: json['cityName'],
-      areaId: json['areaId'],
-      areaName: json['areaName'],
-      countryName: json['countryName'],
-    );
+  Sections.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    number = json['number'];
+    description = json['description'];
+    floorId = json['floorId'];
+    floorName = json['floorName'];
+    buildingId = json['buildingId'];
+    buildingName = json['buildingName'];
+    organizationId = json['organizationId'];
+    organizationName = json['organizationName'];
+    cityId = json['cityId'];
+    cityName = json['cityName'];
+    areaId = json['areaId'];
+    areaName = json['areaName'];
+    countryName = json['countryName'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['number'] = number;
+    data['description'] = description;
+    data['floorId'] = floorId;
+    data['floorName'] = floorName;
+    data['buildingId'] = buildingId;
+    data['buildingName'] = buildingName;
+    data['organizationId'] = organizationId;
+    data['organizationName'] = organizationName;
+    data['cityId'] = cityId;
+    data['cityName'] = cityName;
+    data['areaId'] = areaId;
+    data['areaName'] = areaName;
+    data['countryName'] = countryName;
+    return data;
   }
 }
 
-class PointModel {
-  final int id;
-  final String name;
-  final String number;
-  final String description;
-  final bool isCountable;
-  final String? capacity;
-  final String unit;
-  final int sectionId;
-  final String sectionName;
-  final int floorId;
-  final String floorName;
-  final int buildingId;
-  final String buildingName;
-  final int organizationId;
-  final String organizationName;
-  final int cityId;
-  final String cityName;
-  final int areaId;
-  final String areaName;
-  final String countryName;
+class Points {
+  int? id;
+  String? name;
+  String? number;
+  String? description;
+  bool? isCountable;
+  double? capacity;
+  String? unit;
+  int? sectionId;
+  String? sectionName;
+  int? floorId;
+  String? floorName;
+  int? buildingId;
+  String? buildingName;
+  int? organizationId;
+  String? organizationName;
+  int? cityId;
+  String? cityName;
+  int? areaId;
+  String? areaName;
+  String? countryName;
 
-  PointModel({
-    required this.id,
-    required this.name,
-    required this.number,
-    required this.description,
-    required this.isCountable,
-    this.capacity,
-    required this.unit,
-    required this.sectionId,
-    required this.sectionName,
-    required this.floorId,
-    required this.floorName,
-    required this.buildingId,
-    required this.buildingName,
-    required this.organizationId,
-    required this.organizationName,
-    required this.cityId,
-    required this.cityName,
-    required this.areaId,
-    required this.areaName,
-    required this.countryName,
-  });
+  Points(
+      {this.id,
+      this.name,
+      this.number,
+      this.description,
+      this.isCountable,
+      this.capacity,
+      this.unit,
+      this.sectionId,
+      this.sectionName,
+      this.floorId,
+      this.floorName,
+      this.buildingId,
+      this.buildingName,
+      this.organizationId,
+      this.organizationName,
+      this.cityId,
+      this.cityName,
+      this.areaId,
+      this.areaName,
+      this.countryName});
 
-  factory PointModel.fromJson(Map<String, dynamic> json) {
-    return PointModel(
-      id: json['id'],
-      name: json['name'],
-      number: json['number'],
-      description: json['description'],
-      isCountable: json['isCountable'],
-      capacity: json['capacity'],
-      unit: json['unit'],
-      sectionId: json['sectionId'],
-      sectionName: json['sectionName'],
-      floorId: json['floorId'],
-      floorName: json['floorName'],
-      buildingId: json['buildingId'],
-      buildingName: json['buildingName'],
-      organizationId: json['organizationId'],
-      organizationName: json['organizationName'],
-      cityId: json['cityId'],
-      cityName: json['cityName'],
-      areaId: json['areaId'],
-      areaName: json['areaName'],
-      countryName: json['countryName'],
-    );
+  Points.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    number = json['number'];
+    description = json['description'];
+    isCountable = json['isCountable'];
+    capacity = json['capacity'];
+    unit = json['unit'];
+    sectionId = json['sectionId'];
+    sectionName = json['sectionName'];
+    floorId = json['floorId'];
+    floorName = json['floorName'];
+    buildingId = json['buildingId'];
+    buildingName = json['buildingName'];
+    organizationId = json['organizationId'];
+    organizationName = json['organizationName'];
+    cityId = json['cityId'];
+    cityName = json['cityName'];
+    areaId = json['areaId'];
+    areaName = json['areaName'];
+    countryName = json['countryName'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['number'] = number;
+    data['description'] = description;
+    data['isCountable'] = isCountable;
+    data['capacity'] = capacity;
+    data['unit'] = unit;
+    data['sectionId'] = sectionId;
+    data['sectionName'] = sectionName;
+    data['floorId'] = floorId;
+    data['floorName'] = floorName;
+    data['buildingId'] = buildingId;
+    data['buildingName'] = buildingName;
+    data['organizationId'] = organizationId;
+    data['organizationName'] = organizationName;
+    data['cityId'] = cityId;
+    data['cityName'] = cityName;
+    data['areaId'] = areaId;
+    data['areaName'] = areaName;
+    data['countryName'] = countryName;
+    return data;
   }
 }

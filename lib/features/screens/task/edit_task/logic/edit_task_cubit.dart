@@ -3,21 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_dropdown/multi_dropdown.dart';
-import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/all_tasks_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/gallary_model.dart';
-import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/supervisor_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/edit_task_model.dart';
-import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/users_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/logic/edit_task_state.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/task_details.dart';
-import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/task_files_model.dart';
-import '../../../integrations/data/models/building_model.dart';
-import '../../../integrations/data/models/floor_model.dart';
-import '../../../integrations/data/models/organization_model.dart';
-import '../../../integrations/data/models/points_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/point_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/section_model.dart';
 
 class EditTaskCubit extends Cubit<EditTaskState> {
   EditTaskCubit() : super(EditTaskInitialState());
@@ -31,12 +29,14 @@ class EditTaskCubit extends Cubit<EditTaskState> {
   TextEditingController organizationController = TextEditingController();
   TextEditingController buildingController = TextEditingController();
   TextEditingController floorController = TextEditingController();
+  TextEditingController sectionController = TextEditingController();
   TextEditingController pointController = TextEditingController();
   TextEditingController statusController = TextEditingController();
   TextEditingController cleanersController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController parentTaskController = TextEditingController();
-  final supervisorsController = MultiSelectController<SupervisorData>();
+  TextEditingController currentReadingController = TextEditingController();
+  final supervisorsController = MultiSelectController<User>();
   final formKey = GlobalKey<FormState>();
 
   EditTaskModel? editTaskModel;
@@ -46,13 +46,15 @@ class EditTaskCubit extends Cubit<EditTaskState> {
     int? statusId,
     int? buildingId,
     int? floorId,
+    int? sectionId,
     int? pointId,
     List<int>? selectedSupervisorIds,
     int? parentId,
+    double? currentReading,
   ) async {
     emit(EditTaskLoadingState());
     Map<String, dynamic> formDataMap = {
-      "id": id,
+      "Id": id,
       "ParentId": parentTaskController.text.isEmpty
           ? taskDetailsModel!.data!.parentId
           : parentId,
@@ -82,13 +84,19 @@ class EditTaskCubit extends Cubit<EditTaskState> {
       "FloorId": floorController.text.isEmpty
           ? taskDetailsModel!.data!.floorId
           : floorId,
+      "SectionId": sectionController.text.isEmpty
+          ? taskDetailsModel!.data!.sectionId
+          : sectionId,
       "PointId": pointController.text.isEmpty
           ? taskDetailsModel!.data!.pointId
           : pointId,
-      "UsersIds": selectedSupervisorIds ??
-          usersTaskModel?.data?.map((user) => user.id ?? 0).toList() ??
+      "UserIds": selectedSupervisorIds ??
+          taskDetailsModel?.data?.users?.map((user) => user.id ?? 0).toList() ??
           [],
       "Files": [],
+      "CurrentReading": currentReadingController.text.isEmpty
+          ? taskDetailsModel!.data!.currentReading
+          : currentReading,
     };
 
     FormData formData = FormData.fromMap(formDataMap);
@@ -100,28 +108,6 @@ class EditTaskCubit extends Cubit<EditTaskState> {
     } catch (error) {
       emit(EditTaskErrorState(error.toString()));
     }
-  }
-
-  TaskFilesModel? taskFilesModel;
-  getTaskFiles(int id) {
-    emit(GetTaskFilesLoadingState());
-    DioHelper.getData(url: "file/task/$id").then((value) {
-      taskFilesModel = TaskFilesModel.fromJson(value!.data);
-      emit(GetTaskFilesSuccessState(taskFilesModel!));
-    }).catchError((error) {
-      emit(GetTaskFilesErrorState(error.toString()));
-    });
-  }
-
-  UsersTaskModel? usersTaskModel;
-  getUsersTask(int id) {
-    emit(GetUsersTaskLoadingState());
-    DioHelper.getData(url: "assign/task/$id").then((value) {
-      usersTaskModel = UsersTaskModel.fromJson(value!.data);
-      emit(GetUsersTaskSuccessState(usersTaskModel!));
-    }).catchError((error) {
-      emit(GetUsersTaskErrorState(error.toString()));
-    });
   }
 
   TaskDetailsModel? taskDetailsModel;
@@ -146,58 +132,74 @@ class EditTaskCubit extends Cubit<EditTaskState> {
     });
   }
 
-  SupervisorModel? supervisorModel;
-  getSupervisor() {
-    emit(GetSupervisorLoadingState());
-    DioHelper.getData(url: 'users/manager/$uId').then((value) {
-      supervisorModel = SupervisorModel.fromJson(value!.data);
-      emit(GetSupervisorSuccessState(supervisorModel!));
+  UsersModel? usersModel;
+  getAllUsers() {
+    emit(AllUsersLoadingState());
+    DioHelper.getData(url: "users/pagination").then((value) {
+      usersModel = UsersModel.fromJson(value!.data);
+      emit(AllUsersSuccessState(usersModel!));
     }).catchError((error) {
-      emit(GetSupervisorErrorState(error.toString()));
+      emit(AllUsersErrorState(error.toString()));
     });
   }
 
-  OrganizationModel? organizationModel;
+  AllOrganizationModel? allOrganizationModel;
   getOrganization() {
     emit(GetOrganizationLoadingState());
     DioHelper.getData(url: ApiConstants.organizationUrl).then((value) {
-      organizationModel = OrganizationModel.fromJson(value!.data);
-      emit(GetOrganizationSuccessState(organizationModel!));
+      allOrganizationModel = AllOrganizationModel.fromJson(value!.data);
+      emit(GetOrganizationSuccessState(allOrganizationModel!));
     }).catchError((error) {
       emit(GetOrganizationErrorState(error.toString()));
     });
   }
 
-  BuildingModel? buildingModel;
-  getBuilding(int id) {
+  BuildingListModel? buildingModel;
+  getBuilding(int organizationId) {
     emit(GetBuildingLoadingState());
-    DioHelper.getData(url: 'buildings/organization/$id').then((value) {
-      buildingModel = BuildingModel.fromJson(value!.data);
+    DioHelper.getData(
+        url: 'buildings/pagination',
+        query: {'organization': organizationId}).then((value) {
+      buildingModel = BuildingListModel.fromJson(value!.data);
       emit(GetBuildingSuccessState(buildingModel!));
     }).catchError((error) {
       emit(GetBuildingErrorState(error.toString()));
     });
   }
 
-  FloorModel? floorModel;
-  getFloor(int id) {
+  FloorListModel? floorModel;
+  getFloor(int buildingId) {
     emit(GetFloorLoadingState());
-    DioHelper.getData(url: 'floors/building/$id').then((value) {
-      floorModel = FloorModel.fromJson(value!.data);
+    DioHelper.getData(url: 'floors/pagination', query: {'building': buildingId})
+        .then((value) {
+      floorModel = FloorListModel.fromJson(value!.data);
       emit(GetFloorSuccessState(floorModel!));
     }).catchError((error) {
       emit(GetFloorErrorState(error.toString()));
     });
   }
 
-  PointsModel? pointsModel;
-  getPoints(int id) {
-    emit(GetPointsLoadingState());
-    DioHelper.getData(url: 'points/floor/$id').then((value) {
-      pointsModel = PointsModel.fromJson(value!.data);
-      emit(GetPointsSuccessState(pointsModel!));
+  SectionListModel? sectionModel;
+  getSection(int floorId) {
+    emit(GetSectionLoadingState());
+    DioHelper.getData(url: 'sections/pagination', query: {'floor': floorId})
+        .then((value) {
+      sectionModel = SectionListModel.fromJson(value!.data);
+      emit(GetSectionSuccessState(sectionModel!));
     }).catchError((error) {
-      emit(GetPointsErrorState(error.toString()));
+      emit(GetSectionErrorState(error.toString()));
+    });
+  }
+
+  PointListModel? pointModel;
+  getPoint(int sectionId) {
+    emit(GetPointLoadingState());
+    DioHelper.getData(url: 'points/pagination', query: {'section': sectionId})
+        .then((value) {
+      pointModel = PointListModel.fromJson(value!.data);
+      emit(GetPointSuccessState(pointModel!));
+    }).catchError((error) {
+      emit(GetPointErrorState(error.toString()));
     });
   }
 

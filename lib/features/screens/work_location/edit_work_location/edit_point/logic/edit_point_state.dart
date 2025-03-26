@@ -2,7 +2,6 @@ import 'package:smart_cleaning_application/features/screens/integrations/data/mo
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/points_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_point/data/model/edit_point_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_point/data/model/point_details_in_edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/point_users_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
@@ -139,8 +138,6 @@ class ShiftErrorState extends EditPointState {
   ShiftErrorState(this.error);
 }
 
-
-
 //********************************* */
 class PointManagersDetailsLoadingState extends EditPointState {}
 
@@ -157,13 +154,12 @@ class PointManagersDetailsErrorState extends EditPointState {
 
 //*************************************** */
 
-
 class GetPointDetailsLoadingState extends EditPointState {}
 
 class GetPointDetailsSuccessState extends EditPointState {
-  final PointDetailsInEditModel pointDetailsInEditModel;
+  final PointUsersDetailsModel pointUsersDetailsModel;
 
-  GetPointDetailsSuccessState(this.pointDetailsInEditModel);
+  GetPointDetailsSuccessState(this.pointUsersDetailsModel);
 }
 
 class GetPointDetailsErrorState extends EditPointState {

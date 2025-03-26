@@ -1,26 +1,34 @@
-class PointDetailsInEditModel {
+class ShiftFloorDetailsModel {
   int? statusCode;
   String? meta;
   bool? succeeded;
   String? message;
   String? error;
-  Data? data;
+  String? businessErrorCode;
+  List<Data>? data;
 
-  PointDetailsInEditModel(
+  ShiftFloorDetailsModel(
       {this.statusCode,
       this.meta,
       this.succeeded,
       this.message,
       this.error,
+      this.businessErrorCode,
       this.data});
 
-  PointDetailsInEditModel.fromJson(Map<String, dynamic> json) {
+  ShiftFloorDetailsModel.fromJson(Map<String, dynamic> json) {
     statusCode = json['statusCode'];
     meta = json['meta'];
     succeeded = json['succeeded'];
     message = json['message'];
     error = json['error'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    businessErrorCode = json['businessErrorCode'];
+    if (json['data'] != null) {
+      data = <Data>[];
+      json['data'].forEach((v) {
+        data!.add(Data.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -30,8 +38,9 @@ class PointDetailsInEditModel {
     data['succeeded'] = succeeded;
     data['message'] = message;
     data['error'] = error;
+    data['businessErrorCode'] = businessErrorCode;
     if (this.data != null) {
-      data['data'] = this.data!.toJson();
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -42,8 +51,6 @@ class Data {
   String? name;
   String? number;
   String? description;
-  int? floorId;
-  String? floorName;
   int? buildingId;
   String? buildingName;
   int? organizationId;
@@ -59,8 +66,6 @@ class Data {
       this.name,
       this.number,
       this.description,
-      this.floorId,
-      this.floorName,
       this.buildingId,
       this.buildingName,
       this.organizationId,
@@ -76,8 +81,6 @@ class Data {
     name = json['name'];
     number = json['number'];
     description = json['description'];
-    floorId = json['floorId'];
-    floorName = json['floorName'];
     buildingId = json['buildingId'];
     buildingName = json['buildingName'];
     organizationId = json['organizationId'];
@@ -95,8 +98,6 @@ class Data {
     data['name'] = name;
     data['number'] = number;
     data['description'] = description;
-    data['floorId'] = floorId;
-    data['floorName'] = floorName;
     data['buildingId'] = buildingId;
     data['buildingName'] = buildingName;
     data['organizationId'] = organizationId;

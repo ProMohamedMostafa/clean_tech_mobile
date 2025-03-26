@@ -33,9 +33,10 @@ class _EditPointBodyState extends State<EditPointBody> {
   List<int> selectedManagersIds = [];
   List<int> selectedSupervisorsIds = [];
   List<int> selectedCleanersIds = [];
+  double? capacity;
+  int? unit;
   @override
   void initState() {
-    context.read<EditPointCubit>().getPointDetailsInEdit(widget.id);
     context.read<EditPointCubit>().getPointManagersDetails(widget.id);
     context.read<EditPointCubit>().getNationality();
 
@@ -61,7 +62,7 @@ class _EditPointBodyState extends State<EditPointBody> {
           },
           builder: (context, state) {
             final cubit = context.read<EditPointCubit>();
-            if (cubit.pointDetailsInEditModel == null) {
+            if (cubit.pointUsersDetailsModel == null) {
               return const Center(
                 child: CircularProgressIndicator(color: AppColor.primaryColor),
               );
@@ -83,7 +84,7 @@ class _EditPointBodyState extends State<EditPointBody> {
                       CustomDropDownList(
                         hint: context
                             .read<EditPointCubit>()
-                            .pointDetailsInEditModel!
+                            .pointUsersDetailsModel!
                             .data!
                             .countryName!,
                         items: context
@@ -118,7 +119,7 @@ class _EditPointBodyState extends State<EditPointBody> {
                       CustomDropDownList(
                         hint: context
                             .read<EditPointCubit>()
-                            .pointDetailsInEditModel!
+                            .pointUsersDetailsModel!
                             .data!
                             .areaName!,
                         items: context
@@ -168,7 +169,7 @@ class _EditPointBodyState extends State<EditPointBody> {
                       CustomDropDownList(
                         hint: context
                             .read<EditPointCubit>()
-                            .pointDetailsInEditModel!
+                            .pointUsersDetailsModel!
                             .data!
                             .cityName!,
                         items: context
@@ -218,7 +219,7 @@ class _EditPointBodyState extends State<EditPointBody> {
                       CustomDropDownList(
                         hint: context
                             .read<EditPointCubit>()
-                            .pointDetailsInEditModel!
+                            .pointUsersDetailsModel!
                             .data!
                             .organizationName!,
                         items: context
@@ -269,7 +270,7 @@ class _EditPointBodyState extends State<EditPointBody> {
                       CustomDropDownList(
                         hint: context
                             .read<EditPointCubit>()
-                            .pointDetailsInEditModel!
+                            .pointUsersDetailsModel!
                             .data!
                             .buildingName!,
                         items: context
@@ -318,7 +319,7 @@ class _EditPointBodyState extends State<EditPointBody> {
                       CustomDropDownList(
                         hint: context
                             .read<EditPointCubit>()
-                            .pointDetailsInEditModel!
+                            .pointUsersDetailsModel!
                             .data!
                             .floorName!,
                         items: context
@@ -368,14 +369,14 @@ class _EditPointBodyState extends State<EditPointBody> {
                       CustomTextFormField(
                         hint: context
                             .read<EditPointCubit>()
-                            .pointDetailsInEditModel!
+                            .pointUsersDetailsModel!
                             .data!
                             .name!,
                         controller:
                             context.read<EditPointCubit>().pointController
                               ..text = context
                                   .read<EditPointCubit>()
-                                  .pointDetailsInEditModel!
+                                  .pointUsersDetailsModel!
                                   .data!
                                   .name!,
                         keyboardType: TextInputType.text,
@@ -399,14 +400,14 @@ class _EditPointBodyState extends State<EditPointBody> {
                       CustomTextFormField(
                         hint: context
                             .read<EditPointCubit>()
-                            .pointDetailsInEditModel!
+                            .pointUsersDetailsModel!
                             .data!
                             .number!,
                         controller:
                             context.read<EditPointCubit>().pointNumberController
                               ..text = context
                                   .read<EditPointCubit>()
-                                  .pointDetailsInEditModel!
+                                  .pointUsersDetailsModel!
                                   .data!
                                   .number!,
                         onlyRead: false,
@@ -439,12 +440,12 @@ class _EditPointBodyState extends State<EditPointBody> {
                             .pointDescriptionController
                           ..text = context
                               .read<EditPointCubit>()
-                              .pointDetailsInEditModel!
+                              .pointUsersDetailsModel!
                               .data!
                               .description!,
                         hint: context
                             .read<EditPointCubit>()
-                            .pointDetailsInEditModel!
+                            .pointUsersDetailsModel!
                             .data!
                             .description!,
                       ),
@@ -781,7 +782,146 @@ class _EditPointBodyState extends State<EditPointBody> {
                                     .toList();
                               },
                             ),
-                      verticalSpace(15),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Is Countable:",
+                            style: TextStyles.font16BlackRegular,
+                          ),
+                          horizontalSpace(10),
+                          Row(
+                            children: [
+                              Radio<bool>(
+                                value: true,
+                                groupValue: context
+                                    .read<EditPointCubit>()
+                                    .pointUsersDetailsModel!
+                                    .data!
+                                    .isCountable,
+                                activeColor: AppColor.primaryColor,
+                                onChanged: (value) {
+                                  setState(() {
+                                    context
+                                        .read<EditPointCubit>()
+                                        .pointUsersDetailsModel!
+                                        .data!
+                                        .isCountable = value;
+                                  });
+                                },
+                              ),
+                              const Text("Yes"),
+                            ],
+                          ),
+                          horizontalSpace(10),
+                          Row(
+                            children: [
+                              Radio<bool>(
+                                value: false,
+                                groupValue: context
+                                    .read<EditPointCubit>()
+                                    .pointUsersDetailsModel!
+                                    .data!
+                                    .isCountable,
+                                activeColor: AppColor.primaryColor,
+                                onChanged: (value) {
+                                  setState(() {
+                                    context
+                                        .read<EditPointCubit>()
+                                        .pointUsersDetailsModel!
+                                        .data!
+                                        .isCountable = value;
+                                  });
+                                },
+                              ),
+                              const Text("No"),
+                            ],
+                          ),
+                        ],
+                      ),
+                      if (context
+                              .read<EditPointCubit>()
+                              .pointUsersDetailsModel!
+                              .data!
+                              .isCountable ==
+                          true) ...[
+                        Text(
+                          "Capacity",
+                          style: TextStyles.font16BlackRegular,
+                        ),
+                        CustomTextFormField(
+                          onlyRead: false,
+                          hint: context
+                                  .read<EditPointCubit>()
+                                  .pointUsersDetailsModel
+                                  ?.data
+                                  ?.capacity
+                                  ?.toString() ??
+                              'Write capacity',
+                          controller:
+                              context.read<EditPointCubit>().capacityController
+                                ..text = context
+                                        .read<EditPointCubit>()
+                                        .pointUsersDetailsModel
+                                        ?.data
+                                        ?.capacity
+                                        ?.toString() ??
+                                    '',
+                          keyboardType: TextInputType.number,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "capacity is Required";
+                            } else if (value.length > 30) {
+                              return 'capacity too long';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            capacity = double.parse(value);
+                          },
+                        ),
+                        verticalSpace(10),
+                        Text(
+                          'Unit',
+                          style: TextStyles.font16BlackRegular,
+                        ),
+                        CustomDropDownList(
+                          onPressed: (selectedValue) {
+                            final items = [
+                              'Ml',
+                              'L',
+                              'Kg',
+                              'G',
+                              'M',
+                              'Cm',
+                              'Pieces'
+                            ];
+                            final selectedIndex = items.indexOf(selectedValue);
+                            if (selectedIndex != -1) {
+                              unit = selectedIndex;
+                            }
+                          },
+                          hint: context
+                                  .read<EditPointCubit>()
+                                  .pointUsersDetailsModel!
+                                  .data!
+                                  .unit ??
+                              'Select',
+                          items: ['Ml', 'L', 'Kg', 'G', 'M', 'Cm', 'Pieces'],
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Unit is Required";
+                            }
+                            return null;
+                          },
+                          controller:
+                              context.read<EditPointCubit>().unitController,
+                          keyboardType: TextInputType.text,
+                          suffixIcon: IconBroken.arrowDown2,
+                        ),
+                        verticalSpace(10)
+                      ],
+                      verticalSpace(20),
                       state is EditPointLoadingState
                           ? const Center(
                               child: CircularProgressIndicator(
@@ -802,8 +942,9 @@ class _EditPointBodyState extends State<EditPointBody> {
                                         widget.id,
                                         selectedManagersIds,
                                         selectedSupervisorsIds,
-                                        selectedCleanersIds
-                                        );
+                                        selectedCleanersIds,
+                                        capacity,
+                                        unit);
                                     context.pop();
                                   });
                                 }

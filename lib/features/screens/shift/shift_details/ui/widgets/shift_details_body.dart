@@ -15,7 +15,7 @@ import 'package:smart_cleaning_application/features/screens/integrations/ui/widg
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/ui/widgets/building_list_item_build.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/ui/widgets/floor_list_item_build.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/ui/widgets/organization_list_item_build.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shift_details/ui/widgets/point_list_item_build.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shift_details/ui/widgets/section_list_item_build.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/logic/shift_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/logic/shift_state.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
@@ -34,7 +34,10 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
   @override
   void initState() {
     context.read<ShiftCubit>().getShiftDetails(widget.id);
-    context.read<ShiftCubit>().getShiftLevelDetails(widget.id);
+    context.read<ShiftCubit>().getShiftOrganizationDetails(widget.id);
+    context.read<ShiftCubit>().getShiftBuildingDetails(widget.id);
+    context.read<ShiftCubit>().getShiftFloorDetails(widget.id);
+    context.read<ShiftCubit>().getShiftSectionDetails(widget.id);
     controller = TabController(length: 5, vsync: this);
     controller.addListener(() {
       setState(() {});
@@ -166,7 +169,7 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
                           ),
                           Tab(
                             child: Text(
-                              "Point",
+                              "Section",
                               style: TextStyle(
                                   color: controller.index == 4
                                       ? Colors.white
@@ -184,7 +187,7 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
                       organizationDetails(),
                       buildingDetails(),
                       floorDetails(),
-                      pointDetails(),
+                      sectionDetails(),
                     ]),
                   ),
                   verticalSpace(15),
@@ -251,7 +254,7 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
 
   Widget organizationDetails() {
     final organizationsData =
-        context.read<ShiftCubit>().shiftLevelDetailsModel?.data?.organizations;
+        context.read<ShiftCubit>().shiftOrganizationDetailsModel?.data;
 
     if (organizationsData == null || organizationsData.isEmpty) {
       return Center(
@@ -284,7 +287,7 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
 
   Widget buildingDetails() {
     final buildingsData =
-        context.read<ShiftCubit>().shiftLevelDetailsModel?.data?.buildings;
+        context.read<ShiftCubit>().shiftBuildingsDetailsModel?.data;
 
     if (buildingsData == null || buildingsData.isEmpty) {
       return Center(
@@ -317,7 +320,7 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
 
   Widget floorDetails() {
     final floorsData =
-        context.read<ShiftCubit>().shiftLevelDetailsModel?.data?.floors;
+        context.read<ShiftCubit>().shiftSectionDetailsModel?.data;
 
     if (floorsData == null || floorsData.isEmpty) {
       return Center(
@@ -348,11 +351,11 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
     }
   }
 
-  Widget pointDetails() {
-    final pointsData =
-        context.read<ShiftCubit>().shiftLevelDetailsModel?.data?.points;
+  Widget sectionDetails() {
+    final sectiontsData =
+        context.read<ShiftCubit>().shiftSectionDetailsModel?.data;
 
-    if (pointsData == null || pointsData.isEmpty) {
+    if (sectiontsData == null || sectiontsData.isEmpty) {
       return Center(
         child: Text(
           "There's no data",
@@ -364,7 +367,7 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
         shrinkWrap: true,
         physics: const ClampingScrollPhysics(),
         scrollDirection: Axis.vertical,
-        itemCount: pointsData.length,
+        itemCount: sectiontsData.length,
         separatorBuilder: (context, index) {
           return verticalSpace(10);
         },

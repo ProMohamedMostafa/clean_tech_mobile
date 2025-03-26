@@ -1,10 +1,13 @@
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_organization_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/points_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/edit_shift/data/model/edit_shift_model.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_building_details.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_floor_details.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_organization_details.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_section_details.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/shift_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/shift_level_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/section_model.dart';
 
 abstract class EditShiftState {}
 
@@ -26,7 +29,7 @@ class EditShiftErrorState extends EditShiftState {
 class ShiftDetailsLoadingState extends EditShiftState {}
 
 class ShiftDetailsSuccessState extends EditShiftState {
- final ShiftDetailsModel shiftDetailsModel;
+  final ShiftDetailsModel shiftDetailsModel;
   ShiftDetailsSuccessState(this.shiftDetailsModel);
 }
 
@@ -36,16 +39,52 @@ class ShiftDetailsErrorState extends EditShiftState {
 }
 
 //******************** */
-class ShiftLevelDetailsLoadingState extends EditShiftState {}
+class ShiftOrganizationDetailsLoadingState extends EditShiftState {}
 
-class ShiftLevelDetailsSuccessState extends EditShiftState {
- final ShiftLevelDetailsModel shiftLevelDetailsModel;
-  ShiftLevelDetailsSuccessState(this.shiftLevelDetailsModel);
+class ShiftOrganizationDetailsSuccessState extends EditShiftState {
+  final ShiftOrganizationDetailsModel shiftOrganizationDetailsModel;
+  ShiftOrganizationDetailsSuccessState(this.shiftOrganizationDetailsModel);
 }
 
-class ShiftLevelDetailsErrorState extends EditShiftState {
+class ShiftOrganizationDetailsErrorState extends EditShiftState {
   final String error;
-  ShiftLevelDetailsErrorState(this.error);
+  ShiftOrganizationDetailsErrorState(this.error);
+} //******************** */
+
+class ShiftBuildingDetailsLoadingState extends EditShiftState {}
+
+class ShiftBuildingDetailsSuccessState extends EditShiftState {
+  final ShiftBuildingsDetailsModel shiftBuildingsDetailsModel;
+  ShiftBuildingDetailsSuccessState(this.shiftBuildingsDetailsModel);
+}
+
+class ShiftBuildingDetailsErrorState extends EditShiftState {
+  final String error;
+  ShiftBuildingDetailsErrorState(this.error);
+} //******************** */
+
+class ShiftFloorDetailsLoadingState extends EditShiftState {}
+
+class ShiftFloorDetailsSuccessState extends EditShiftState {
+  final ShiftFloorDetailsModel shiftFloorDetailsModel;
+  ShiftFloorDetailsSuccessState(this.shiftFloorDetailsModel);
+}
+
+class ShiftFloorDetailsErrorState extends EditShiftState {
+  final String error;
+  ShiftFloorDetailsErrorState(this.error);
+} //******************** */
+
+class ShiftSectionDetailsLoadingState extends EditShiftState {}
+
+class ShiftSectionDetailsSuccessState extends EditShiftState {
+  final ShiftSectionDetailsModel shiftSectionDetailsModel;
+  ShiftSectionDetailsSuccessState(this.shiftSectionDetailsModel);
+}
+
+class ShiftSectionDetailsErrorState extends EditShiftState {
+  final String error;
+  ShiftSectionDetailsErrorState(this.error);
 }
 
 //**************************** */
@@ -66,7 +105,7 @@ class OrganizationErrorState extends EditShiftState {
 class GetBuildingLoadingState extends EditShiftState {}
 
 class GetBuildingSuccessState extends EditShiftState {
-  final BuildingModel buildingModel;
+  final BuildingListModel buildingModel;
 
   GetBuildingSuccessState(this.buildingModel);
 }
@@ -80,7 +119,7 @@ class GetBuildingErrorState extends EditShiftState {
 class GetFloorLoadingState extends EditShiftState {}
 
 class GetFloorSuccessState extends EditShiftState {
-  final FloorModel floorModel;
+  final FloorListModel floorModel;
 
   GetFloorSuccessState(this.floorModel);
 }
@@ -91,15 +130,15 @@ class GetFloorErrorState extends EditShiftState {
 }
 //**************************** */
 
-class GetPointLoadingState extends EditShiftState {}
+class GetSectionLoadingState extends EditShiftState {}
 
-class GetPointSuccessState extends EditShiftState {
-  final PointsModel pointModel;
+class GetSectionSuccessState extends EditShiftState {
+  final SectionListModel sectionModel;
 
-  GetPointSuccessState(this.pointModel);
+  GetSectionSuccessState(this.sectionModel);
 }
 
-class GetPointErrorState extends EditShiftState {
+class GetSectionErrorState extends EditShiftState {
   final String error;
-  GetPointErrorState(this.error);
+  GetSectionErrorState(this.error);
 }

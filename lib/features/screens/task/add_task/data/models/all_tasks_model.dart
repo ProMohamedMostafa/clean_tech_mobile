@@ -4,6 +4,7 @@ class AllTasksModel {
   bool? succeeded;
   String? message;
   String? error;
+  int? businessErrorCode;
   PaginatedData? data;
 
   AllTasksModel({
@@ -12,30 +13,30 @@ class AllTasksModel {
     this.succeeded,
     this.message,
     this.error,
+    this.businessErrorCode,
     this.data,
   });
 
-  AllTasksModel.fromJson(Map<String, dynamic> json) {
-    statusCode = json['statusCode'];
-    meta = json['meta'];
-    succeeded = json['succeeded'];
-    message = json['message'];
-    error = json['error'];
-    data = json['data'] != null ? PaginatedData.fromJson(json['data']) : null;
-  }
+  factory AllTasksModel.fromJson(Map<String, dynamic> json) => AllTasksModel(
+        statusCode: json['statusCode'],
+        meta: json['meta'],
+        succeeded: json['succeeded'],
+        message: json['message'],
+        error: json['error'],
+        businessErrorCode: json['businessErrorCode'],
+        data:
+            json['data'] != null ? PaginatedData.fromJson(json['data']) : null,
+      );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> result = {};
-    result['statusCode'] = statusCode;
-    result['meta'] = meta;
-    result['succeeded'] = succeeded;
-    result['message'] = message;
-    result['error'] = error;
-    if (data != null) {
-      result['data'] = data!.toJson();
-    }
-    return result;
-  }
+  Map<String, dynamic> toJson() => {
+        'statusCode': statusCode,
+        'meta': meta,
+        'succeeded': succeeded,
+        'message': message,
+        'error': error,
+        'businessErrorCode': businessErrorCode,
+        'data': data?.toJson(),
+      };
 }
 
 class PaginatedData {
@@ -61,37 +62,31 @@ class PaginatedData {
     this.data,
   });
 
-  PaginatedData.fromJson(Map<String, dynamic> json) {
-    currentPage = json['currentPage'];
-    totalPages = json['totalPages'];
-    totalCount = json['totalCount'];
-    meta = json['meta'];
-    pageSize = json['pageSize'];
-    hasPreviousPage = json['hasPreviousPage'];
-    hasNextPage = json['hasNextPage'];
-    succeeded = json['succeeded'];
-    if (json['data'] != null) {
-      data = List<TaskData>.from(
-        json['data'].map((v) => TaskData.fromJson(v)),
+  factory PaginatedData.fromJson(Map<String, dynamic> json) => PaginatedData(
+        currentPage: json['currentPage'],
+        totalPages: json['totalPages'],
+        totalCount: json['totalCount'],
+        meta: json['meta'],
+        pageSize: json['pageSize'],
+        hasPreviousPage: json['hasPreviousPage'],
+        hasNextPage: json['hasNextPage'],
+        succeeded: json['succeeded'],
+        data: json['data'] != null
+            ? List<TaskData>.from(json['data'].map((v) => TaskData.fromJson(v)))
+            : [],
       );
-    }
-  }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> result = {};
-    result['currentPage'] = currentPage;
-    result['totalPages'] = totalPages;
-    result['totalCount'] = totalCount;
-    result['meta'] = meta;
-    result['pageSize'] = pageSize;
-    result['hasPreviousPage'] = hasPreviousPage;
-    result['hasNextPage'] = hasNextPage;
-    result['succeeded'] = succeeded;
-    if (data != null) {
-      result['data'] = data!.map((v) => v.toJson()).toList();
-    }
-    return result;
-  }
+  Map<String, dynamic> toJson() => {
+        'currentPage': currentPage,
+        'totalPages': totalPages,
+        'totalCount': totalCount,
+        'meta': meta,
+        'pageSize': pageSize,
+        'hasPreviousPage': hasPreviousPage,
+        'hasNextPage': hasNextPage,
+        'succeeded': succeeded,
+        'data': data?.map((v) => v.toJson()).toList(),
+      };
 }
 
 class TaskData {
@@ -99,7 +94,9 @@ class TaskData {
   String? title;
   String? description;
   String? priority;
+  int? priorityId;
   String? status;
+  int? statusId;
   String? startDate;
   String? endDate;
   String? startTime;
@@ -107,17 +104,21 @@ class TaskData {
   String? organizationName;
   String? buildingName;
   String? floorName;
+  String? sectionName;
   String? pointName;
   String? parentTitle;
   int? createdBy;
-  String? createdName;
+  String? createdUserName;
+  List<UserData>? users;
 
   TaskData({
     this.id,
     this.title,
     this.description,
     this.priority,
+    this.priorityId,
     this.status,
+    this.statusId,
     this.startDate,
     this.endDate,
     this.startTime,
@@ -125,49 +126,100 @@ class TaskData {
     this.organizationName,
     this.buildingName,
     this.floorName,
+    this.sectionName,
     this.pointName,
     this.parentTitle,
     this.createdBy,
-    this.createdName,
+    this.createdUserName,
+    this.users,
   });
 
-  TaskData.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    title = json['title'];
-    description = json['description'];
-    priority = json['priority'];
-    status = json['status'];
-    startDate = json['startDate'];
-    endDate = json['endDate'];
-    startTime = json['startTime'];
-    endTime = json['endTime'];
-    organizationName = json['organizationName'];
-    buildingName = json['buildingName'];
-    floorName = json['floorName'];
-    pointName = json['pointName'];
-    parentTitle = json['parentTitle'];
-    createdBy = json['createdBy'];
-    createdName = json['createdName'];
-  }
+  factory TaskData.fromJson(Map<String, dynamic> json) => TaskData(
+        id: json['id'],
+        title: json['title'],
+        description: json['description'],
+        priority: json['priority'],
+        priorityId: json['priorityId'],
+        status: json['status'],
+        statusId: json['statusId'],
+        startDate: json['startDate'],
+        endDate: json['endDate'],
+        startTime: json['startTime'],
+        endTime: json['endTime'],
+        organizationName: json['organizationName'],
+        buildingName: json['buildingName'],
+        floorName: json['floorName'],
+        sectionName: json['sectionName'],
+        pointName: json['pointName'],
+        parentTitle: json['parentTitle'],
+        createdBy: json['createdBy'],
+        createdUserName: json['createdUserName'],
+        users: json['users'] != null
+            ? List<UserData>.from(
+                json['users'].map((v) => UserData.fromJson(v)))
+            : [],
+      );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> result = {};
-    result['id'] = id;
-    result['title'] = title;
-    result['description'] = description;
-    result['priority'] = priority;
-    result['status'] = status;
-    result['startDate'] = startDate;
-    result['endDate'] = endDate;
-    result['startTime'] = startTime;
-    result['endTime'] = endTime;
-    result['organizationName'] = organizationName;
-    result['buildingName'] = buildingName;
-    result['floorName'] = floorName;
-    result['pointName'] = pointName;
-    result['parentTitle'] = parentTitle;
-    result['createdBy'] = createdBy;
-    result['createdName'] = createdName;
-    return result;
-  }
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'title': title,
+        'description': description,
+        'priority': priority,
+        'priorityId': priorityId,
+        'status': status,
+        'statusId': statusId,
+        'startDate': startDate,
+        'endDate': endDate,
+        'startTime': startTime,
+        'endTime': endTime,
+        'organizationName': organizationName,
+        'buildingName': buildingName,
+        'floorName': floorName,
+        'sectionName': sectionName,
+        'pointName': pointName,
+        'parentTitle': parentTitle,
+        'createdBy': createdBy,
+        'createdUserName': createdUserName,
+        'users': users?.map((v) => v.toJson()).toList(),
+      };
+}
+
+class UserData {
+  int? id;
+  String? userName;
+  String? firstName;
+  String? lastName;
+  String? role;
+  String? email;
+  String? image;
+
+  UserData({
+    this.id,
+    this.userName,
+    this.firstName,
+    this.lastName,
+    this.role,
+    this.email,
+    this.image,
+  });
+
+  factory UserData.fromJson(Map<String, dynamic> json) => UserData(
+        id: json['id'],
+        userName: json['userName'],
+        firstName: json['firstName'],
+        lastName: json['lastName'],
+        role: json['role'],
+        email: json['email'],
+        image: json['image'],
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'userName': userName,
+        'firstName': firstName,
+        'lastName': lastName,
+        'role': role,
+        'email': email,
+        'image': image,
+      };
 }

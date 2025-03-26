@@ -14,9 +14,9 @@ Widget listOrganizationItemBuild(BuildContext context, index) {
       context.pushNamed(Routes.workLocationDetailsScreen, arguments: {
         'id': context
             .read<ShiftCubit>()
-            .shiftLevelDetailsModel!
+            .shiftOrganizationDetailsModel!
             .data!
-            .organizations![index]
+            [index]
             .id!
             .toInt(),
         'selectedIndex': 2
@@ -35,9 +35,9 @@ Widget listOrganizationItemBuild(BuildContext context, index) {
         title: Text(
           context
                   .read<ShiftCubit>()
-                  .shiftLevelDetailsModel!
-                  .data!
-                  .organizations![index]
+                  .shiftOrganizationDetailsModel!
+            .data!
+            [index]
                   .name ??
               '',
           style: TextStyles.font14BlackSemiBold,
@@ -45,9 +45,9 @@ Widget listOrganizationItemBuild(BuildContext context, index) {
         subtitle: Text(
           context
                   .read<ShiftCubit>()
-                  .shiftLevelDetailsModel!
-                  .data!
-                  .organizations![index]
+                  .shiftOrganizationDetailsModel!
+            .data!
+            [index]
                   .cityName ??
               '',
           style: TextStyles.font12GreyRegular,

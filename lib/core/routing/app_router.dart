@@ -319,7 +319,7 @@ class AppRouter {
           ),
         );
       case Routes.workLocationDetailsScreen:
-        final args = settings.arguments as Map<String, int>;
+        final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => WorkLocationCubit(),

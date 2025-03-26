@@ -11,13 +11,11 @@ Widget listPointItemBuild(BuildContext context, index) {
   return InkWell(
     borderRadius: BorderRadius.circular(11.r),
     onTap: () {
-      context.pushNamed(Routes.workLocationDetailsScreen,
-         arguments: {
+      context.pushNamed(Routes.workLocationDetailsScreen, arguments: {
         'id': context
             .read<ShiftCubit>()
-            .shiftLevelDetailsModel!
-            .data!
-            .points![index]
+            .shiftSectionDetailsModel!
+            .data![index]
             .id!
             .toInt(),
         'selectedIndex': 5
@@ -36,9 +34,8 @@ Widget listPointItemBuild(BuildContext context, index) {
         title: Text(
           context
                   .read<ShiftCubit>()
-                  .shiftLevelDetailsModel!
-                  .data!
-                  .points![index]
+                  .shiftSectionDetailsModel!
+                  .data![index]
                   .name ??
               '',
           style: TextStyles.font14BlackSemiBold,
@@ -46,9 +43,8 @@ Widget listPointItemBuild(BuildContext context, index) {
         subtitle: Text(
           context
                   .read<ShiftCubit>()
-                  .shiftLevelDetailsModel!
-                  .data!
-                  .points![index]
+                  .shiftSectionDetailsModel!
+                  .data![index]
                   .floorName ??
               '',
           style: TextStyles.font12GreyRegular,

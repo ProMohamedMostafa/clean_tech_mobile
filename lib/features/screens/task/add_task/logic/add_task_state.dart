@@ -1,11 +1,12 @@
 import 'package:image_picker/image_picker.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_organization_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/points_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/all_tasks_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/create_task_model.dart';
-import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/supervisor_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/point_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/section_model.dart';
 
 abstract class AddTaskState {}
 
@@ -56,7 +57,7 @@ class GetOrganizationErrorState extends AddTaskState {
 class GetBuildingLoadingState extends AddTaskState {}
 
 class GetBuildingSuccessState extends AddTaskState {
-  final BuildingModel buildingModel;
+  final BuildingListModel buildingModel;
 
   GetBuildingSuccessState(this.buildingModel);
 }
@@ -70,7 +71,7 @@ class GetBuildingErrorState extends AddTaskState {
 class GetFloorLoadingState extends AddTaskState {}
 
 class GetFloorSuccessState extends AddTaskState {
-  final FloorModel floorModel;
+  final FloorListModel floorModel;
 
   GetFloorSuccessState(this.floorModel);
 }
@@ -81,33 +82,47 @@ class GetFloorErrorState extends AddTaskState {
 }
 //**************************** */
 
-class GetPointsLoadingState extends AddTaskState {}
+class GetSectionLoadingState extends AddTaskState {}
 
-class GetPointsSuccessState extends AddTaskState {
-  final PointsModel pointsModel;
+class GetSectionSuccessState extends AddTaskState {
+  final SectionListModel sectionModel;
 
-  GetPointsSuccessState(this.pointsModel);
+  GetSectionSuccessState(this.sectionModel);
 }
 
-class GetPointsErrorState extends AddTaskState {
+class GetSectionErrorState extends AddTaskState {
   final String error;
-  GetPointsErrorState(this.error);
+  GetSectionErrorState(this.error);
+}
+//**************************** */
+
+class GetPointLoadingState extends AddTaskState {}
+
+class GetPointSuccessState extends AddTaskState {
+  final PointListModel pointsModel;
+
+  GetPointSuccessState(this.pointsModel);
+}
+
+class GetPointErrorState extends AddTaskState {
+  final String error;
+  GetPointErrorState(this.error);
 }
 
 
 //**************************** */
 
-class GetSupervisorLoadingState extends AddTaskState {}
+class AllUsersLoadingState extends AddTaskState {}
 
-class GetSupervisorSuccessState extends AddTaskState {
-  final SupervisorModel supervisorModel;
+class AllUsersSuccessState extends AddTaskState {
+  final UsersModel usersModel;
 
-  GetSupervisorSuccessState(this.supervisorModel);
+  AllUsersSuccessState(this.usersModel);
 }
 
-class GetSupervisorErrorState extends AddTaskState {
+class AllUsersErrorState extends AddTaskState {
   final String error;
-  GetSupervisorErrorState(this.error);
+  AllUsersErrorState(this.error);
 }
 //***************************** */
 

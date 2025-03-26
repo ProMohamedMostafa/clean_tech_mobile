@@ -31,6 +31,9 @@ class _AddPointScreenState extends State<AddPointScreen> {
   List<int> selectedSupervisorsIds = [];
   List<int> selectedCleanersIds = [];
   int? sectionId;
+  bool? isCountable = true;
+  double? capacity;
+  int? unit;
   @override
   void initState() {
     context.read<AddWorkLocationCubit>()
@@ -750,7 +753,96 @@ class _AddPointScreenState extends State<AddPointScreen> {
                       selectedItems.map((item) => (item).id!).toList();
                 },
               ),
-        verticalSpace(10),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "Is Countable:",
+              style: TextStyles.font16BlackRegular,
+            ),
+            horizontalSpace(10),
+            Row(
+              children: [
+                Radio<bool>(
+                  value: true,
+                  groupValue: isCountable,
+                  activeColor: AppColor.primaryColor,
+                  onChanged: (value) {
+                    setState(() {
+                      isCountable = value;
+                    });
+                  },
+                ),
+                const Text("Yes"),
+              ],
+            ),
+            horizontalSpace(10),
+            Row(
+              children: [
+                Radio<bool>(
+                  value: false,
+                  groupValue: isCountable,
+                  activeColor: AppColor.primaryColor,
+                  onChanged: (value) {
+                    setState(() {
+                      isCountable = value;
+                    });
+                  },
+                ),
+                const Text("No"),
+              ],
+            ),
+          ],
+        ),
+        if (isCountable == true) ...[
+          Text(
+            "Capacity",
+            style: TextStyles.font16BlackRegular,
+          ),
+          CustomTextFormField(
+            onlyRead: false,
+            hint: "Write capacity",
+            controller: context.read<AddWorkLocationCubit>().capacityController,
+            keyboardType: TextInputType.number,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "capacity is Required";
+              } else if (value.length > 30) {
+                return 'capacity too long';
+              }
+              return null;
+            },
+            onChanged: (value) {
+              capacity = double.parse(value);
+            },
+          ),
+          verticalSpace(10),
+          Text(
+            'Unit',
+            style: TextStyles.font16BlackRegular,
+          ),
+          CustomDropDownList(
+            onPressed: (selectedValue) {
+              final items = ['Ml', 'L', 'Kg', 'G', 'M', 'Cm', 'Pieces'];
+              final selectedIndex = items.indexOf(selectedValue);
+              if (selectedIndex != -1) {
+                unit = selectedIndex;
+              }
+            },
+            hint: 'Select',
+            items: ['Ml', 'L', 'Kg', 'G', 'M', 'Cm', 'Pieces'],
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Unit is Required";
+              }
+              return null;
+            },
+            controller: context.read<AddWorkLocationCubit>().unitController,
+            keyboardType: TextInputType.text,
+            suffixIcon: IconBroken.arrowDown2,
+          ),
+          verticalSpace(10)
+        ],
       ],
     );
   }
@@ -769,11 +861,13 @@ class _AddPointScreenState extends State<AddPointScreen> {
                   .currentState!
                   .validate()) {
                 context.read<AddWorkLocationCubit>().createPoint(
-                      sectionId!,
-                      selectedManagersIds,
-                      selectedSupervisorsIds,
-                      selectedCleanersIds,
-                    );
+                    sectionId!,
+                    selectedManagersIds,
+                    selectedSupervisorsIds,
+                    selectedCleanersIds,
+                    isCountable,
+                    capacity,
+                    unit);
               }
             },
             color: AppColor.primaryColor,

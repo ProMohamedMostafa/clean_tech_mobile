@@ -20,6 +20,8 @@ class AddWorkLocationCubit extends Cubit<AddWorkLocationState> {
 
   static AddWorkLocationCubit get(context) => BlocProvider.of(context);
 
+  TextEditingController capacityController = TextEditingController();
+  TextEditingController unitController = TextEditingController();
   TextEditingController nationalityController = TextEditingController();
   TextEditingController areaController = TextEditingController();
   TextEditingController addAreaController = TextEditingController();
@@ -347,19 +349,22 @@ class AddWorkLocationCubit extends Cubit<AddWorkLocationState> {
   }
 
   createPoint(
-    int sectionId,
-    List<int>? selectedManagersIds,
-    List<int>? selectedSupervisorsIds,
-    List<int>? selectedCleanersIds,
-  ) {
+      int sectionId,
+      List<int>? selectedManagersIds,
+      List<int>? selectedSupervisorsIds,
+      List<int>? selectedCleanersIds,
+      bool? isCountable,
+      double? capacity,
+      int? unit,) {
     emit(CreatePointLoadingState());
     DioHelper.postData(url: ApiConstants.createPointUrl, data: {
       "name": addPointController.text,
       "number": pointNumberController.text,
       "description": pointDiscriptionController.text,
-      "isCountable": true,
-      "capacity": 1,
-      "unit": 0,
+      "isCountable": isCountable,
+      "capacity":
+          capacity,
+      "unit": unit,
       "sectionId": sectionId,
       "userIds": [
         ...?selectedManagersIds,

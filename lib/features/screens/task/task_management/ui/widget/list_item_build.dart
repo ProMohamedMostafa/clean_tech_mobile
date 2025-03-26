@@ -338,7 +338,7 @@ Widget buildCardItem(BuildContext context, selectedIndex, index) {
                   ),
                   Spacer(),
                   role == 'Cleaner'
-                      ? SizedBox.shrink()
+                      ? verticalSpace(30)
                       : selectedIndex == 8
                           ? Row(
                               mainAxisAlignment: MainAxisAlignment.center,
