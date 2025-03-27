@@ -1,7 +1,7 @@
 import 'package:image_picker/image_picker.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_user_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/edit_user/data/model/edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_details_model.dart';
@@ -101,22 +101,19 @@ class AllProvidersErrorState extends EditUserState {
   final String error;
   AllProvidersErrorState(this.error);
 }
+//***************** */
 
+class AllUsersLoadingState extends EditUserState {}
 
+class AllUsersSuccessState extends EditUserState {
+  final UsersModel usersModel;
 
-//**************************** */
-
-class RoleUserLoadingState extends EditUserState {}
-
-class RoleUserSuccessState extends EditUserState {
-  final RoleUserModel roleUsermodel;
-
-  RoleUserSuccessState(this.roleUsermodel);
+  AllUsersSuccessState(this.usersModel);
 }
 
-class RoleUserErrorState extends EditUserState {
+class AllUsersErrorState extends EditUserState {
   final String error;
-  RoleUserErrorState(this.error);
+  AllUsersErrorState(this.error);
 }
 //*************************** */
 

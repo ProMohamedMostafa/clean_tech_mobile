@@ -10,7 +10,6 @@ import 'package:smart_cleaning_application/features/screens/edit_profile/logic/e
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/gallary_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_user_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/settings/data/model/profile_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
@@ -135,17 +134,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     });
   }
 
-  RoleUserModel? roleUserModel;
-  getRoleUser(int id) {
-    emit(RoleUserLoadingState());
-    roleUserModel = null;
-    DioHelper.getData(url: 'users/role/$id').then((value) {
-      roleUserModel = RoleUserModel.fromJson(value!.data);
-      emit(RoleUserSuccessState(roleUserModel!));
-    }).catchError((error) {
-      emit(RoleUserErrorState(error.toString()));
-    });
-  }
+
 
   GalleryModel? gellaryModel;
   XFile? image;

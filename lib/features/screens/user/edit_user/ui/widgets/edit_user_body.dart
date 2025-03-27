@@ -46,7 +46,7 @@ class _EditUserBodyState extends State<EditUserBody> {
   void initState() {
     context.read<EditUserCubit>().getUserDetailsInEdit(widget.id);
     context.read<EditUserCubit>().getUserShiftDetails(widget.id);
-    context.read<EditUserCubit>().getRoleUser(widget.id);
+    context.read<EditUserCubit>().getAllUsers(widget.id);
     context.read<EditUserCubit>()
       ..getNationality()
       ..getRole()
@@ -614,7 +614,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                       } else {
                         managerId = selectedRole.id! - 1;
                       }
-                      context.read<EditUserCubit>().getRoleUser(managerId);
+                      context.read<EditUserCubit>().getAllUsers(managerId);
                     },
                     onPressed: (selectedValue) {
                       final selectedId = context
@@ -692,8 +692,9 @@ class _EditUserBodyState extends State<EditUserBody> {
                     onPressed: (selectedValue) {
                       final selectedId = context
                           .read<EditUserCubit>()
-                          .roleUserModel
-                          ?.data!
+                          .usersModel
+                          ?.data
+                          ?.users!
                           .firstWhere(
                               (manager) => manager.userName == selectedValue)
                           .id
@@ -741,8 +742,9 @@ class _EditUserBodyState extends State<EditUserBody> {
                                         'user',
                     items: context
                                 .read<EditUserCubit>()
-                                .roleUserModel
-                                ?.data!
+                                .usersModel
+                                ?.data
+                                ?.users!
                                 .isEmpty ??
                             true
                         ? [
@@ -779,8 +781,9 @@ class _EditUserBodyState extends State<EditUserBody> {
                           ]
                         : context
                                 .read<EditUserCubit>()
-                                .roleUserModel
-                                ?.data!
+                                .usersModel
+                                ?.data
+                                ?.users!
                                 .map((e) => e.userName ?? 'Unknown')
                                 .toList() ??
                             [],

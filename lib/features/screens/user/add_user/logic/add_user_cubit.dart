@@ -6,6 +6,7 @@ import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/all_deleted_providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/user_create.dart';
@@ -13,7 +14,6 @@ import 'package:smart_cleaning_application/features/screens/user/add_user/logic/
 
 import '../../../integrations/data/models/gallary_model.dart';
 import '../../../integrations/data/models/role_model.dart';
-import '../../../integrations/data/models/role_user_model.dart';
 import '../../../integrations/data/models/shift_model.dart';
 
 class AddUserCubit extends Cubit<AddUserState> {
@@ -170,16 +170,14 @@ class AddUserCubit extends Cubit<AddUserState> {
       emit(RoleErrorState(error.toString()));
     });
   }
-
-  RoleUserModel? roleUserModel;
-  getRoleUser(int id) {
-    emit(RoleUserLoadingState());
-    roleUserModel = null;
-    DioHelper.getData(url: 'users/role/$id').then((value) {
-      roleUserModel = RoleUserModel.fromJson(value!.data);
-      emit(RoleUserSuccessState(roleUserModel!));
+ UsersModel? usersModel;
+  getAllUsers(int id) {
+    emit(AllUsersLoadingState());
+    DioHelper.getData(url: "users/pagination",query: {'role':id}).then((value) {
+      usersModel = UsersModel.fromJson(value!.data);
+      emit(AllUsersSuccessState(usersModel!));
     }).catchError((error) {
-      emit(RoleUserErrorState(error.toString()));
+      emit(AllUsersErrorState(error.toString()));
     });
   }
 

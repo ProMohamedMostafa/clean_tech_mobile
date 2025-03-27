@@ -662,7 +662,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                         } else {
                           managerId = selectedRole.id! - 1;
                         }
-                        context.read<AddUserCubit>().getRoleUser(managerId);
+                        context.read<AddUserCubit>().getAllUsers(managerId);
                       },
                       onPressed: (selectedValue) {
                         final selectedId = context
@@ -755,8 +755,8 @@ class _AddUserBodyState extends State<AddUserBody> {
                       onPressed: (selectedValue) {
                         final selectedId = context
                             .read<AddUserCubit>()
-                            .roleUserModel
-                            ?.data!
+                            .usersModel
+                            ?.data?.users!
                             .firstWhere(
                                 (manager) => manager.userName == selectedValue)
                             .id
@@ -804,8 +804,8 @@ class _AddUserBodyState extends State<AddUserBody> {
                                   : 'Users',
                       items: context
                                   .read<AddUserCubit>()
-                                  .roleUserModel
-                                  ?.data!
+                                  .usersModel
+                            ?.data?.users!
                                   .isEmpty ??
                               true
                           ? [
@@ -842,8 +842,8 @@ class _AddUserBodyState extends State<AddUserBody> {
                             ]
                           : context
                                   .read<AddUserCubit>()
-                                  .roleUserModel
-                                  ?.data!
+                                .usersModel
+                            ?.data?.users!
                                   .map((e) => e.userName ?? 'Unknown')
                                   .toList() ??
                               [],

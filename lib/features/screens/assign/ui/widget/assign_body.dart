@@ -9,11 +9,12 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_user_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/assign/logic/assign_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/assign/logic/assign_state.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/all_shifts_model.dart';
+
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class AssignBody extends StatefulWidget {
@@ -28,13 +29,13 @@ class _AssignBodyState extends State<AssignBody> {
   int? selectedSecendIndex = 0;
   int? selectedLocation;
   int? selectedlocationId;
-  int? selectedRoleUserId;
   List<int> selectedUsersIds = [];
+  int? selectedUserId;
   List<int> selectedShiftsIds = [];
 
   @override
   void initState() {
-    context.read<AssignCubit>().getShifts();
+    context.read<AssignCubit>().getAllShifts();
     context.read<AssignCubit>().getRole();
     context.read<AssignCubit>().getArea();
     context.read<AssignCubit>().getAllOrganization();
@@ -54,12 +55,35 @@ class _AssignBodyState extends State<AssignBody> {
             BlocConsumer<AssignCubit, AssignStates>(listener: (context, state) {
           if (state is AssignSuccessState) {
             toast(text: state.assignModel.message!, color: Colors.blue);
-            // context.pushNamedAndRemoveLastTwo(Routes.taskManagementScreen);
+
+            context.read<AssignCubit>().locationController.clear();
+            context.read<AssignCubit>().roleController.clear();
+            context.read<AssignCubit>().shiftController.clearAll();
+            context.read<AssignCubit>().usersController.clearAll();
+            context.read<AssignCubit>().userController.clear();
+
+            selectedLocation = null;
+            selectedlocationId = null;
+            selectedUsersIds.clear();
+            selectedShiftsIds.clear();
+            context.read<AssignCubit>().getAllShifts();
+            context.read<AssignCubit>().getRole();
+            context.read<AssignCubit>().getArea();
+            context.read<AssignCubit>().getAllOrganization();
           }
           if (state is AssignErrorState) {
             toast(text: state.error, color: Colors.red);
           }
         }, builder: (context, state) {
+          final cubit = context.read<AssignCubit>();
+          if (cubit.allShiftsModel == null ||
+              cubit.roleModel == null ||
+              cubit.allAreaModel == null ||
+              cubit.allOrganizationModel == null) {
+            return const Center(
+              child: CircularProgressIndicator(color: AppColor.primaryColor),
+            );
+          }
           return CustomScrollView(
             slivers: [
               SliverFillRemaining(
@@ -114,12 +138,11 @@ class _AssignBodyState extends State<AssignBody> {
                                                   .clearAll();
                                               context
                                                   .read<AssignCubit>()
-                                                  .userController
+                                                  .usersController
                                                   .clearAll();
 
                                               selectedLocation = null;
                                               selectedlocationId = null;
-                                              selectedRoleUserId = null;
                                               selectedUsersIds.clear();
                                               selectedShiftsIds.clear();
                                             }
@@ -226,11 +249,10 @@ class _AssignBodyState extends State<AssignBody> {
                                                           .clearAll();
                                                       context
                                                           .read<AssignCubit>()
-                                                          .userController
+                                                          .usersController
                                                           .clearAll();
                                                       selectedLocation = null;
                                                       selectedlocationId = null;
-                                                      selectedRoleUserId = null;
                                                       selectedUsersIds.clear();
                                                       selectedShiftsIds.clear();
                                                     }
@@ -296,11 +318,7 @@ class _AssignBodyState extends State<AssignBody> {
                             ),
                             verticalSpace(10),
                             if ((selectedIndex == 0 &&
-                                    selectedSecendIndex == 0) ||
-                                (selectedIndex == 0 &&
                                     selectedSecendIndex == 1) ||
-                                (selectedIndex == 1 &&
-                                    selectedSecendIndex == 0) ||
                                 (selectedIndex == 2 &&
                                     selectedSecendIndex == 0)) ...[
                               Text(
@@ -309,7 +327,7 @@ class _AssignBodyState extends State<AssignBody> {
                               ),
                               CustomDropDownList(
                                   isRead: true,
-                                  onChanged: (selectedValue) {
+                                  onPressed: (selectedValue) {
                                     final selectedRole = context
                                         .read<AssignCubit>()
                                         .roleModel
@@ -318,12 +336,12 @@ class _AssignBodyState extends State<AssignBody> {
                                             role.name == selectedValue);
                                     context
                                         .read<AssignCubit>()
-                                        .userController
+                                        .usersController
                                         .clearAll();
 
                                     context
                                         .read<AssignCubit>()
-                                        .getRoleUser(selectedRole!.id!);
+                                        .getAllUsers(selectedRole!.id!);
                                   },
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
@@ -351,18 +369,12 @@ class _AssignBodyState extends State<AssignBody> {
                                       .roleController,
                                   suffixIcon: IconBroken.arrowDown2,
                                   keyboardType: TextInputType.text),
-                              context
-                                      .read<AssignCubit>()
-                                      .roleController
-                                      .text
-                                      .isEmpty
+                              (context.read<AssignCubit>().usersModel?.data ==
+                                      null)
                                   ? SizedBox.shrink()
                                   : verticalSpace(10),
-                              context
-                                      .read<AssignCubit>()
-                                      .roleController
-                                      .text
-                                      .isEmpty
+                              (context.read<AssignCubit>().usersModel?.data ==
+                                      null)
                                   ? SizedBox.shrink()
                                   : Text(
                                       context
@@ -377,23 +389,21 @@ class _AssignBodyState extends State<AssignBody> {
                                               .text,
                                       style: TextStyles.font16BlackRegular,
                                     ),
-                              (context
-                                          .read<AssignCubit>()
-                                          .roleUserModel
-                                          ?.data ==
+                              (context.read<AssignCubit>().usersModel?.data ==
                                       null)
                                   ? SizedBox.shrink()
-                                  : MultiDropdown<DataRoleUser>(
+                                  : MultiDropdown<User>(
                                       items: context
                                                   .read<AssignCubit>()
-                                                  .roleUserModel!
+                                                  .usersModel!
                                                   .data
+                                                  ?.users
                                                   ?.isEmpty ??
                                               true
                                           ? [
                                               DropdownItem(
                                                 label: 'No users available',
-                                                value: DataRoleUser(
+                                                value: User(
                                                     id: null,
                                                     userName:
                                                         'No users available'),
@@ -401,8 +411,9 @@ class _AssignBodyState extends State<AssignBody> {
                                             ]
                                           : context
                                               .read<AssignCubit>()
-                                              .roleUserModel!
+                                              .usersModel!
                                               .data!
+                                              .users!
                                               .map((role) => DropdownItem(
                                                     label: role.userName!,
                                                     value: role,
@@ -410,7 +421,7 @@ class _AssignBodyState extends State<AssignBody> {
                                               .toList(),
                                       controller: context
                                           .read<AssignCubit>()
-                                          .userController,
+                                          .usersController,
                                       enabled: true,
                                       chipDecoration: ChipDecoration(
                                         backgroundColor: Colors.grey[300],
@@ -470,103 +481,208 @@ class _AssignBodyState extends State<AssignBody> {
                             if ((selectedIndex == 0 &&
                                     selectedSecendIndex == 0) ||
                                 (selectedIndex == 1 &&
+                                    selectedSecendIndex == 0)) ...[
+                              Text(
+                                S.of(context).addUserText13,
+                                style: TextStyles.font16BlackRegular,
+                              ),
+                              CustomDropDownList(
+                                  isRead: true,
+                                  onPressed: (selectedValue) {
+                                    final selectedRole = context
+                                        .read<AssignCubit>()
+                                        .roleModel
+                                        ?.data
+                                        ?.firstWhere((role) =>
+                                            role.name == selectedValue);
+                                    context
+                                        .read<AssignCubit>()
+                                        .usersController
+                                        .clearAll();
+
+                                    context
+                                        .read<AssignCubit>()
+                                        .getAllUsers(selectedRole!.id!);
+                                  },
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "Role is Required";
+                                    }
+                                    return null;
+                                  },
+                                  hint: 'Select Role',
+                                  items: context
+                                              .read<AssignCubit>()
+                                              .roleModel
+                                              ?.data
+                                              ?.isEmpty ??
+                                          true
+                                      ? ['No roles available']
+                                      : context
+                                              .read<AssignCubit>()
+                                              .roleModel
+                                              ?.data
+                                              ?.map((e) => e.name ?? 'Unknown')
+                                              .toList() ??
+                                          [],
+                                  controller: context
+                                      .read<AssignCubit>()
+                                      .roleController,
+                                  suffixIcon: IconBroken.arrowDown2,
+                                  keyboardType: TextInputType.text),
+                              (context.read<AssignCubit>().usersModel?.data ==
+                                      null)
+                                  ? SizedBox.shrink()
+                                  : verticalSpace(10),
+                              (context.read<AssignCubit>().usersModel?.data ==
+                                      null)
+                                  ? SizedBox.shrink()
+                                  : Text(
+                                      context
+                                              .read<AssignCubit>()
+                                              .roleController
+                                              .text
+                                              .isEmpty
+                                          ? 'User'
+                                          : context
+                                              .read<AssignCubit>()
+                                              .roleController
+                                              .text,
+                                      style: TextStyles.font16BlackRegular,
+                                    ),
+                              (context.read<AssignCubit>().usersModel?.data ==
+                                      null)
+                                  ? SizedBox.shrink()
+                                  : CustomDropDownList(
+                                      isRead: true,
+                                      onPressed: (selectedValue) {
+                                        final selectedUser = context
+                                            .read<AssignCubit>()
+                                            .usersModel
+                                            ?.data
+                                            ?.users
+                                            ?.firstWhere((user) =>
+                                                user.userName == selectedValue);
+                                        selectedUserId = selectedUser!.id;
+                                      },
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return "User is Required";
+                                        }
+                                        return null;
+                                      },
+                                      hint: 'Select user',
+                                      items: context
+                                                  .read<AssignCubit>()
+                                                  .usersModel
+                                                  ?.data
+                                                  ?.users
+                                                  ?.isEmpty ??
+                                              true
+                                          ? ['No users available']
+                                          : context
+                                                  .read<AssignCubit>()
+                                                  .usersModel
+                                                  ?.data
+                                                  ?.users
+                                                  ?.map((e) =>
+                                                      e.userName ?? 'Unknown')
+                                                  .toList() ??
+                                              [],
+                                      controller: context
+                                          .read<AssignCubit>()
+                                          .userController,
+                                      suffixIcon: IconBroken.arrowDown2,
+                                      keyboardType: TextInputType.text),
+                              verticalSpace(10),
+                            ],
+                            if ((selectedIndex == 0 &&
+                                    selectedSecendIndex == 0) ||
+                                (selectedIndex == 1 &&
                                     selectedSecendIndex == 0) ||
                                 (selectedIndex == 1 &&
                                     selectedSecendIndex == 1) ||
                                 (selectedIndex == 2 &&
                                     selectedSecendIndex == 1)) ...[
-                              context.read<AssignCubit>().shiftModel?.data ==
-                                      null
-                                  ? SizedBox.shrink()
-                                  : Text(
-                                      'Shift',
-                                      style: TextStyles.font16BlackRegular,
+                              Text(
+                                'Shift',
+                                style: TextStyles.font16BlackRegular,
+                              ),
+                              MultiDropdown<Shift>(
+                                items: context
+                                            .read<AssignCubit>()
+                                            .allShiftsModel!
+                                            .data
+                                            ?.shifts
+                                            ?.isEmpty ??
+                                        true
+                                    ? [
+                                        DropdownItem(
+                                          label: 'No users available',
+                                          value: Shift(
+                                              id: null,
+                                              name: 'No users available'),
+                                        )
+                                      ]
+                                    : context
+                                        .read<AssignCubit>()
+                                        .allShiftsModel!
+                                        .data!
+                                        .shifts!
+                                        .map((role) => DropdownItem(
+                                              label: role.name!,
+                                              value: role,
+                                            ))
+                                        .toList(),
+                                controller:
+                                    context.read<AssignCubit>().shiftController,
+                                enabled: true,
+                                chipDecoration: ChipDecoration(
+                                  backgroundColor: Colors.grey[300],
+                                  wrap: true,
+                                  runSpacing: 5,
+                                  spacing: 5,
+                                ),
+                                fieldDecoration: FieldDecoration(
+                                  hintText: 'Select shift',
+                                  hintStyle: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: AppColor.thirdColor),
+                                  showClearIcon: false,
+                                  suffixIcon: Padding(
+                                    padding: EdgeInsets.only(right: 10),
+                                    child: Icon(IconBroken.arrowDown2),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.r),
+                                    borderSide:
+                                        const BorderSide(color: Colors.grey),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.r),
+                                    borderSide: const BorderSide(
+                                      color: Colors.grey,
                                     ),
-                              context.read<AssignCubit>().shiftModel?.data ==
-                                      null
-                                  ? SizedBox.shrink()
-                                  : MultiDropdown<ShiftDetails>(
-                                      items: context
-                                                  .read<AssignCubit>()
-                                                  .shiftModel
-                                                  ?.data
-                                                  ?.data
-                                                  ?.isEmpty ??
-                                              true
-                                          ? [
-                                              DropdownItem(
-                                                label: 'No users available',
-                                                value: ShiftDetails(
-                                                    id: null,
-                                                    name: 'No users available'),
-                                              )
-                                            ]
-                                          : context
-                                              .read<AssignCubit>()
-                                              .shiftModel!
-                                              .data!
-                                              .data!
-                                              .map((role) => DropdownItem(
-                                                    label: role.name!,
-                                                    value: role,
-                                                  ))
-                                              .toList(),
-                                      controller: context
-                                          .read<AssignCubit>()
-                                          .shiftController,
-                                      enabled: true,
-                                      chipDecoration: ChipDecoration(
-                                        backgroundColor: Colors.grey[300],
-                                        wrap: true,
-                                        runSpacing: 5,
-                                        spacing: 5,
-                                      ),
-                                      fieldDecoration: FieldDecoration(
-                                        hintText: 'Select shift',
-                                        suffixIcon: Padding(
-                                          padding: EdgeInsets.only(right: 10),
-                                          child: Icon(IconBroken.arrowDown2),
-                                        ),
-                                        hintStyle: TextStyle(
-                                            fontSize: 12.sp,
-                                            color: AppColor.thirdColor),
-                                        showClearIcon: false,
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8.r),
-                                          borderSide: const BorderSide(
-                                              color: Colors.grey),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8.r),
-                                          borderSide: const BorderSide(
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                        errorBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8.r),
-                                          borderSide: const BorderSide(
-                                            color: Colors.red,
-                                          ),
-                                        ),
-                                      ),
-                                      dropdownDecoration:
-                                          const DropdownDecoration(
-                                              maxHeight: 200),
-                                      dropdownItemDecoration:
-                                          DropdownItemDecoration(
-                                        selectedIcon: const Icon(
-                                            Icons.check_box,
-                                            color: Colors.blue),
-                                      ),
-                                      onSelectionChange: (selectedItems) {
-                                        selectedShiftsIds = selectedItems
-                                            .map((item) => (item).id!)
-                                            .toList();
-                                      },
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.r),
+                                    borderSide: const BorderSide(
+                                      color: Colors.red,
                                     ),
+                                  ),
+                                ),
+                                dropdownDecoration:
+                                    const DropdownDecoration(maxHeight: 200),
+                                dropdownItemDecoration: DropdownItemDecoration(
+                                  selectedIcon: const Icon(Icons.check_box,
+                                      color: Colors.blue),
+                                ),
+                                onSelectionChange: (selectedItems) {
+                                  selectedShiftsIds = selectedItems
+                                      .map((item) => (item).id!)
+                                      .toList();
+                                },
+                              ),
                               verticalSpace(10),
                             ],
                             if ((selectedIndex == 0 &&
@@ -582,18 +698,19 @@ class _AssignBodyState extends State<AssignBody> {
                                 style: TextStyles.font16BlackRegular,
                               ),
                               CustomDropDownList(
-                                onChanged: (selectedValue) {
+                                onPressed: (selectedValue) {
                                   final items = [
                                     'Area',
                                     'City',
                                     'Organization',
                                     'Building',
                                     'Floor',
+                                    'Section',
                                     'Point'
                                   ];
 
                                   selectedLocation =
-                                      items.indexOf(selectedValue!);
+                                      items.indexOf(selectedValue);
                                   context.read<AssignCubit>().getArea();
                                 },
                                 validator: (value) {
@@ -614,7 +731,13 @@ class _AssignBodyState extends State<AssignBody> {
                                   'Organization',
                                   'Building',
                                   'Floor',
-                                  'Point'
+                                  'Section',
+                                  if (!((selectedIndex == 1 &&
+                                          selectedSecendIndex == 1) ||
+                                      (selectedIndex == 2 &&
+                                          selectedSecendIndex == 1))) ...[
+                                    'Point'
+                                  ]
                                 ],
                                 suffixIcon: IconBroken.arrowDown2,
                                 keyboardType: TextInputType.text,
@@ -632,7 +755,8 @@ class _AssignBodyState extends State<AssignBody> {
                                       selectedLocation == 2 ||
                                       selectedLocation == 3 ||
                                       selectedLocation == 4 ||
-                                      selectedLocation == 5)) ...[
+                                      selectedLocation == 5 ||
+                                      selectedLocation == 6)) ...[
                                 Text(
                                   'Area',
                                   style: TextStyles.font16BlackRegular,
@@ -685,7 +809,8 @@ class _AssignBodyState extends State<AssignBody> {
                                       selectedLocation == 2 ||
                                       selectedLocation == 3 ||
                                       selectedLocation == 4 ||
-                                      selectedLocation == 5)) ...[
+                                      selectedLocation == 5 ||
+                                      selectedLocation == 6)) ...[
                                 Text(
                                   'City',
                                   style: TextStyles.font16BlackRegular,
@@ -695,6 +820,7 @@ class _AssignBodyState extends State<AssignBody> {
                                       final selectedCity = context
                                           .read<AssignCubit>()
                                           .cityModel
+                                          ?.data
                                           ?.data
                                           ?.firstWhere((city) =>
                                               city.name == selectedValue);
@@ -709,12 +835,14 @@ class _AssignBodyState extends State<AssignBody> {
                                                 .read<AssignCubit>()
                                                 .cityModel
                                                 ?.data
+                                                ?.data
                                                 ?.isEmpty ??
                                             true
                                         ? ['No city available']
                                         : context
                                                 .read<AssignCubit>()
                                                 .cityModel
+                                                ?.data
                                                 ?.data
                                                 ?.map(
                                                     (e) => e.name ?? 'Unknown')
@@ -730,19 +858,21 @@ class _AssignBodyState extends State<AssignBody> {
                               if (selectedLocation == 2 ||
                                   selectedLocation == 3 ||
                                   selectedLocation == 4 ||
-                                  selectedLocation == 5) ...[
+                                  selectedLocation == 5 ||
+                                  selectedLocation == 6) ...[
                                 Text(
                                   'Organization',
                                   style: TextStyles.font16BlackRegular,
                                 ),
-                                (selectedIndex == 1 && selectedSecendIndex == 1) ||
+                                (selectedIndex == 1 &&
+                                            selectedSecendIndex == 1) ||
                                         (selectedIndex == 2 &&
                                             selectedSecendIndex == 1)
                                     ? CustomDropDownList(
                                         onPressed: (selectedValue) {
                                           final selectedOrganization = context
                                               .read<AssignCubit>()
-                                              .organizationListModel
+                                              .allOrganizationModel
                                               ?.data
                                               ?.data
                                               ?.firstWhere((organization) =>
@@ -759,7 +889,7 @@ class _AssignBodyState extends State<AssignBody> {
                                         hint: 'Select Organization',
                                         items: context
                                                     .read<AssignCubit>()
-                                                    .organizationListModel
+                                                    .allOrganizationModel
                                                     ?.data
                                                     ?.data
                                                     ?.isEmpty ??
@@ -767,7 +897,7 @@ class _AssignBodyState extends State<AssignBody> {
                                             ? ['No organization available']
                                             : context
                                                     .read<AssignCubit>()
-                                                    .organizationListModel
+                                                    .allOrganizationModel
                                                     ?.data
                                                     ?.data
                                                     ?.map((e) =>
@@ -785,6 +915,7 @@ class _AssignBodyState extends State<AssignBody> {
                                               .read<AssignCubit>()
                                               .organizationModel
                                               ?.data
+                                              ?.data
                                               ?.firstWhere((organization) =>
                                                   organization.name ==
                                                   selectedValue);
@@ -801,6 +932,7 @@ class _AssignBodyState extends State<AssignBody> {
                                                     .read<AssignCubit>()
                                                     .organizationModel
                                                     ?.data
+                                                    ?.data
                                                     ?.isEmpty ??
                                                 true
                                             ? ['No organization available']
@@ -808,19 +940,22 @@ class _AssignBodyState extends State<AssignBody> {
                                                     .read<AssignCubit>()
                                                     .organizationModel
                                                     ?.data
+                                                    ?.data
                                                     ?.map((e) =>
                                                         e.name ?? 'Unknown')
                                                     .toList() ??
                                                 [],
-                                        controller:
-                                            context.read<AssignCubit>().organizationController,
+                                        controller: context
+                                            .read<AssignCubit>()
+                                            .organizationController,
                                         suffixIcon: IconBroken.arrowDown2,
                                         keyboardType: TextInputType.text),
                                 verticalSpace(10),
                               ],
                               if (selectedLocation == 3 ||
                                   selectedLocation == 4 ||
-                                  selectedLocation == 5) ...[
+                                  selectedLocation == 5 ||
+                                  selectedLocation == 6) ...[
                                 Text(
                                   'Building',
                                   style: TextStyles.font16BlackRegular,
@@ -830,6 +965,7 @@ class _AssignBodyState extends State<AssignBody> {
                                       final selectedBuilding = context
                                           .read<AssignCubit>()
                                           .buildingModel
+                                          ?.data
                                           ?.data
                                           ?.firstWhere((building) =>
                                               building.name == selectedValue);
@@ -843,12 +979,14 @@ class _AssignBodyState extends State<AssignBody> {
                                                 .read<AssignCubit>()
                                                 .buildingModel
                                                 ?.data
+                                                ?.data
                                                 ?.isEmpty ??
                                             true
                                         ? ['No building available']
                                         : context
                                                 .read<AssignCubit>()
                                                 .buildingModel
+                                                ?.data
                                                 ?.data
                                                 ?.map(
                                                     (e) => e.name ?? 'Unknown')
@@ -862,7 +1000,8 @@ class _AssignBodyState extends State<AssignBody> {
                                 verticalSpace(10),
                               ],
                               if (selectedLocation == 4 ||
-                                  selectedLocation == 5) ...[
+                                  selectedLocation == 5 ||
+                                  selectedLocation == 6) ...[
                                 Text(
                                   'Floor',
                                   style: TextStyles.font16BlackRegular,
@@ -873,11 +1012,12 @@ class _AssignBodyState extends State<AssignBody> {
                                           .read<AssignCubit>()
                                           .floorModel
                                           ?.data
+                                          ?.data
                                           ?.firstWhere((floor) =>
                                               floor.name == selectedValue);
                                       context
                                           .read<AssignCubit>()
-                                          .getPoints(selectedFloor!.id!);
+                                          .getSection(selectedFloor!.id!);
                                       selectedlocationId = selectedFloor.id!;
                                     },
                                     hint: 'Select Floor',
@@ -885,12 +1025,14 @@ class _AssignBodyState extends State<AssignBody> {
                                                 .read<AssignCubit>()
                                                 .floorModel
                                                 ?.data
+                                                ?.data
                                                 ?.isEmpty ??
                                             true
                                         ? ['No floor available']
                                         : context
                                                 .read<AssignCubit>()
                                                 .floorModel
+                                                ?.data
                                                 ?.data
                                                 ?.map(
                                                     (e) => e.name ?? 'Unknown')
@@ -903,7 +1045,56 @@ class _AssignBodyState extends State<AssignBody> {
                                     keyboardType: TextInputType.text),
                                 verticalSpace(10),
                               ],
-                              if (selectedLocation == 5) ...[
+                              if (selectedLocation == 5 ||
+                                  selectedLocation == 6) ...[
+                                Text(
+                                  'Section',
+                                  style: TextStyles.font16BlackRegular,
+                                ),
+                                CustomDropDownList(
+                                    onPressed: (selectedValue) {
+                                      final selectedSection = context
+                                          .read<AssignCubit>()
+                                          .sectionModel
+                                          ?.data
+                                          ?.data
+                                          ?.firstWhere((section) =>
+                                              section.name == selectedValue);
+                                      context
+                                          .read<AssignCubit>()
+                                          .getPoint(selectedSection!.id!);
+                                      selectedlocationId = selectedSection.id!;
+                                    },
+                                    hint: 'Select Section',
+                                    items: context
+                                                .read<AssignCubit>()
+                                                .sectionModel
+                                                ?.data
+                                                ?.data
+                                                ?.isEmpty ??
+                                            true
+                                        ? ['No section available']
+                                        : context
+                                                .read<AssignCubit>()
+                                                .sectionModel
+                                                ?.data
+                                                ?.data
+                                                ?.map(
+                                                    (e) => e.name ?? 'Unknown')
+                                                .toList() ??
+                                            [],
+                                    controller: context
+                                        .read<AssignCubit>()
+                                        .sectionController,
+                                    suffixIcon: IconBroken.arrowDown2,
+                                    keyboardType: TextInputType.text),
+                                verticalSpace(10),
+                              ],
+                              if ((selectedIndex != 1 ||
+                                      selectedSecendIndex != 1) &&
+                                  (selectedIndex != 2 ||
+                                      selectedSecendIndex != 1) &&
+                                  selectedLocation == 6) ...[
                                 Text(
                                   'Point',
                                   style: TextStyles.font16BlackRegular,
@@ -912,7 +1103,8 @@ class _AssignBodyState extends State<AssignBody> {
                                     onPressed: (selectedValue) {
                                       final selectedPoint = context
                                           .read<AssignCubit>()
-                                          .pointsModel
+                                          .pointModel
+                                          ?.data
                                           ?.data
                                           ?.firstWhere((point) =>
                                               point.name == selectedValue);
@@ -922,14 +1114,16 @@ class _AssignBodyState extends State<AssignBody> {
                                     hint: 'Select Point',
                                     items: context
                                                 .read<AssignCubit>()
-                                                .pointsModel
+                                                .pointModel
+                                                ?.data
                                                 ?.data
                                                 ?.isEmpty ??
                                             true
                                         ? ['No point available']
                                         : context
                                                 .read<AssignCubit>()
-                                                .pointsModel
+                                                .pointModel
+                                                ?.data
                                                 ?.data
                                                 ?.map(
                                                     (e) => e.name ?? 'Unknown')
@@ -960,24 +1154,22 @@ class _AssignBodyState extends State<AssignBody> {
                                             selectedSecendIndex == 0) ||
                                         (selectedIndex == 1 &&
                                             selectedSecendIndex == 0)) {
-                                      context.read<AssignCubit>().assignShift(
-                                          selectedShiftsIds, selectedUsersIds);
+                                      context
+                                          .read<AssignCubit>()
+                                          .assignUserShift(selectedShiftsIds,
+                                              selectedUsersIds,
+                                              selectedUserId: selectedUserId);
                                     }
                                     if ((selectedIndex == 0 &&
                                             selectedSecendIndex == 1) ||
                                         (selectedIndex == 2 &&
                                             selectedSecendIndex == 0)) {
                                       selectedLocation == 0
-                                          ? context
-                                              .read<AssignCubit>()
-                                              .assignArea(selectedlocationId,
-                                                  selectedUsersIds)
+                                          ? context.read<AssignCubit>().assignArea(
+                                              selectedlocationId, selectedUsersIds)
                                           : selectedLocation == 1
-                                              ? context
-                                                  .read<AssignCubit>()
-                                                  .assignCity(
-                                                      selectedlocationId,
-                                                      selectedUsersIds)
+                                              ? context.read<AssignCubit>().assignCity(
+                                                  selectedlocationId, selectedUsersIds)
                                               : selectedLocation == 2
                                                   ? context
                                                       .read<AssignCubit>()
@@ -994,9 +1186,14 @@ class _AssignBodyState extends State<AssignBody> {
                                                           ? context.read<AssignCubit>().assignFloor(
                                                               selectedlocationId,
                                                               selectedUsersIds)
-                                                          : context.read<AssignCubit>().assignPoint(
-                                                              selectedlocationId,
-                                                              selectedUsersIds);
+                                                          : selectedLocation ==
+                                                                  5
+                                                              ? context.read<AssignCubit>().assignSection(
+                                                                  selectedlocationId,
+                                                                  selectedUsersIds)
+                                                              : context
+                                                                  .read<AssignCubit>()
+                                                                  .assignPoint(selectedlocationId, selectedUsersIds);
                                     }
                                     if ((selectedIndex == 1 &&
                                             selectedSecendIndex == 1) ||
@@ -1020,11 +1217,13 @@ class _AssignBodyState extends State<AssignBody> {
                                                       .assignFloorShift(
                                                           selectedlocationId,
                                                           selectedShiftsIds)
-                                                  : context
-                                                      .read<AssignCubit>()
-                                                      .assignPointShift(
-                                                          selectedlocationId,
-                                                          selectedShiftsIds);
+                                                  : selectedLocation == 5
+                                                      ? context
+                                                          .read<AssignCubit>()
+                                                          .assignSectionShift(
+                                                              selectedlocationId,
+                                                              selectedShiftsIds)
+                                                      : null;
                                     }
                                   },
                                   color: AppColor.primaryColor,

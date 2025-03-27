@@ -7,8 +7,8 @@ import 'package:smart_cleaning_application/core/networking/api_constants/api_con
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_user_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/edit_user/data/model/edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/edit_user/logic/edit_user_state.dart';
@@ -181,19 +181,16 @@ class EditUserCubit extends Cubit<EditUserState> {
       emit(RoleErrorState(error.toString()));
     });
   }
-
-  RoleUserModel? roleUserModel;
-  getRoleUser(int id) {
-    emit(RoleUserLoadingState());
-    roleUserModel = null;
-    DioHelper.getData(url: 'users/role/$id').then((value) {
-      roleUserModel = RoleUserModel.fromJson(value!.data);
-      emit(RoleUserSuccessState(roleUserModel!));
+ UsersModel? usersModel;
+  getAllUsers(int id) {
+    emit(AllUsersLoadingState());
+    DioHelper.getData(url: "users/pagination",query: {'role':id}).then((value) {
+      usersModel = UsersModel.fromJson(value!.data);
+      emit(AllUsersSuccessState(usersModel!));
     }).catchError((error) {
-      emit(RoleUserErrorState(error.toString()));
+      emit(AllUsersErrorState(error.toString()));
     });
   }
-
   GalleryModel? gellaryModel;
   XFile? image;
   Future<void> galleryFile() async {

@@ -2,7 +2,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:smart_cleaning_application/features/screens/edit_profile/data/model/edit_profile_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_user_model.dart';
 import 'package:smart_cleaning_application/features/screens/settings/data/model/profile_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_shift_details_model.dart';
@@ -102,17 +101,3 @@ class AllProvidersErrorState extends EditProfileState {
   AllProvidersErrorState(this.error);
 }
 
-//**************************** */
-
-class RoleUserLoadingState extends EditProfileState {}
-
-class RoleUserSuccessState extends EditProfileState {
-  final RoleUserModel roleUsermodel;
-
-  RoleUserSuccessState(this.roleUsermodel);
-}
-
-class RoleUserErrorState extends EditProfileState {
-  final String error;
-  RoleUserErrorState(this.error);
-}

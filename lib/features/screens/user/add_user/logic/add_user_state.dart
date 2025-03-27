@@ -1,10 +1,10 @@
 import 'package:image_picker/image_picker.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/all_deleted_providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/user_create.dart';
 import '../../../integrations/data/models/role_model.dart';
-import '../../../integrations/data/models/role_user_model.dart';
 
 abstract class AddUserState {}
 
@@ -123,19 +123,19 @@ class AllProvidersErrorState extends AddUserState {
   AllProvidersErrorState(this.error);
 }
 
-//**************************** */
+//***************** */
 
-class RoleUserLoadingState extends AddUserState {}
+class AllUsersLoadingState extends AddUserState {}
 
-class RoleUserSuccessState extends AddUserState {
-  final RoleUserModel roleUsermodel;
+class AllUsersSuccessState extends AddUserState {
+  final UsersModel usersModel;
 
-  RoleUserSuccessState(this.roleUsermodel);
+  AllUsersSuccessState(this.usersModel);
 }
 
-class RoleUserErrorState extends AddUserState {
+class AllUsersErrorState extends AddUserState {
   final String error;
-  RoleUserErrorState(this.error);
+  AllUsersErrorState(this.error);
 }
 
 //*************************** */
