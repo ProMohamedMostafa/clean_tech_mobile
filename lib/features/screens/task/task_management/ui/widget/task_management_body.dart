@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -111,57 +112,58 @@ class _TaskManagementBodyState extends State<TaskManagementBody> {
           }
         },
         builder: (context, state) {
-          // final cubit = context.read<TaskManagementCubit>();
-
-          return SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  verticalSpace(15),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: taskManagementFilterAndSearchBuild(
-                        context,
-                        context.read<TaskManagementCubit>(),
-                        selectedIndex,
-                        selectedDate),
-                  ),
-                  verticalSpace(15),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: timePicker(context),
-                  ),
-                  verticalSpace(15),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Padding(
+          return Skeletonizer(
+            enabled: context.read<TaskManagementCubit>().allTasksModel == null,
+            child: SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    verticalSpace(15),
+                    Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: taskCategories(),
+                      child: taskManagementFilterAndSearchBuild(
+                          context,
+                          context.read<TaskManagementCubit>(),
+                          selectedIndex,
+                          selectedDate),
                     ),
-                  ),
-                  verticalSpace(15),
-                  // (state is GetAllTasksLoadingState ||
-                  //         state is GetPendingTasksLoadingState ||
-                  //         state is GetInProgressTasksLoadingState ||
-                  //         state is GetNotApprovableTasksLoadingState ||
-                  //         state is GetCompletedTasksLoadingState ||
-                  //         state is GetNotResolvedTasksLoadingState ||
-                  //         state is GetOverdueTasksLoadingState ||
-                  //         cubit.allTasksModel == null ||
-                  //         cubit.pendingModel == null ||
-                  //         cubit.inProgressModel == null ||
-                  //         cubit.notApprovableModel == null ||
-                  //         cubit.completedModel == null ||
-                  //         cubit.notResolvedModel == null ||
-                  //         cubit.overdueModel == null)
-                  //     ? Center(
-                  //         child: CircularProgressIndicator(
-                  //             color: AppColor.primaryColor),
-                  //       ):
-                  taskListDetailsBuild(context, selectedIndex!, selectedDate),
-                  verticalSpace(30)
-                ],
+                    verticalSpace(15),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: timePicker(context),
+                    ),
+                    verticalSpace(15),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: taskCategories(),
+                      ),
+                    ),
+                    verticalSpace(15),
+                    // (state is GetAllTasksLoadingState ||
+                    //         state is GetPendingTasksLoadingState ||
+                    //         state is GetInProgressTasksLoadingState ||
+                    //         state is GetNotApprovableTasksLoadingState ||
+                    //         state is GetCompletedTasksLoadingState ||
+                    //         state is GetNotResolvedTasksLoadingState ||
+                    //         state is GetOverdueTasksLoadingState ||
+                    //         cubit.allTasksModel == null ||
+                    //         cubit.pendingModel == null ||
+                    //         cubit.inProgressModel == null ||
+                    //         cubit.notApprovableModel == null ||
+                    //         cubit.completedModel == null ||
+                    //         cubit.notResolvedModel == null ||
+                    //         cubit.overdueModel == null)
+                    //     ? Center(
+                    //         child: CircularProgressIndicator(
+                    //             color: AppColor.primaryColor),
+                    //       ):
+                    taskListDetailsBuild(context, selectedIndex!, selectedDate),
+                    verticalSpace(30)
+                  ],
+                ),
               ),
             ),
           );

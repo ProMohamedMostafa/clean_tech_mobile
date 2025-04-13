@@ -84,8 +84,8 @@ class CustomFilterMaterialDialog {
                                     .read<MaterialManagementCubit>()
                                     .categoryManagementModel
                                     ?.data
-                                    .categories
-                                    .map((e) => e.name)
+                                   .categories
+                                  .map((e) => e.name)
                                     .toList() ??
                                 [],
                         onPressed: (value) {
@@ -93,8 +93,8 @@ class CustomFilterMaterialDialog {
                               .read<MaterialManagementCubit>()
                               .categoryManagementModel
                               ?.data
-                              .categories
-                              .firstWhere((category) =>
+                             .categories
+                             .firstWhere((category) =>
                                   category.name ==
                                   context
                                       .read<MaterialManagementCubit>()

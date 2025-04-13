@@ -123,7 +123,7 @@ class _EditMaterialBodyState extends State<EditMaterialBody> {
                                       .categoryManagementModel
                                       ?.data
                                       .categories
-                                      .isEmpty ??
+                                     .isEmpty ??
                                   true
                               ? ['No category']
                               : context
@@ -140,7 +140,7 @@ class _EditMaterialBodyState extends State<EditMaterialBody> {
                                 .categoryManagementModel
                                 ?.data
                                 .categories
-                                .firstWhere((category) =>
+                               .firstWhere((category) =>
                                     category.name ==
                                     context
                                         .read<EditMaterialCubit>()

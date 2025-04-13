@@ -105,16 +105,16 @@ class _AddMaterialBodyState extends State<AddMaterialBody> {
                                       .read<AddMaterialCubit>()
                                       .categoryManagementModel
                                       ?.data
-                                      .categories
-                                      .isEmpty ??
+                                     ! .categories
+                                      !.isEmpty ??
                                   true
                               ? ['No category']
                               : context
                                       .read<AddMaterialCubit>()
                                       .categoryManagementModel
                                       ?.data
-                                      .categories
-                                      .map((e) => e.name)
+                                     ! .categories
+                                     ! .map((e) => e.name)
                                       .toList() ??
                                   [],
                           onPressed: (value) {
@@ -122,8 +122,8 @@ class _AddMaterialBodyState extends State<AddMaterialBody> {
                                 .read<AddMaterialCubit>()
                                 .categoryManagementModel
                                 ?.data
-                                .categories
-                                .firstWhere((category) =>
+                               ! .categories
+                               ! .firstWhere((category) =>
                                     category.name ==
                                     context
                                         .read<AddMaterialCubit>()

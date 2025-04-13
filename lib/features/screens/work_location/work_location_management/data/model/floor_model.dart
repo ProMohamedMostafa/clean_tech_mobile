@@ -40,7 +40,7 @@ class Data {
   bool? hasPreviousPage;
   bool? hasNextPage;
   bool? succeeded;
-  List<DataItem>? data;
+  List<FloorDataItem>? data;
 
   Data({this.currentPage, this.totalPages, this.totalCount, this.meta, this.pageSize, this.hasPreviousPage, this.hasNextPage, this.succeeded, this.data});
 
@@ -54,7 +54,7 @@ class Data {
     hasNextPage = json['hasNextPage'];
     succeeded = json['succeeded'];
     if (json['data'] != null) {
-      data = (json['data'] as List).map((v) => DataItem.fromJson(v)).toList();
+      data = (json['data'] as List).map((v) => FloorDataItem.fromJson(v)).toList();
     }
   }
 
@@ -75,7 +75,7 @@ class Data {
   }
 }
 
-class DataItem {
+class FloorDataItem {
   int? id;
   String? name;
   String? number;
@@ -90,9 +90,9 @@ class DataItem {
   String? areaName;
   String? countryName;
 
-  DataItem({this.id, this.name, this.number, this.description, this.buildingId, this.buildingName, this.organizationId, this.organizationName, this.cityId, this.cityName, this.areaId, this.areaName, this.countryName});
+  FloorDataItem({this.id, this.name, this.number, this.description, this.buildingId, this.buildingName, this.organizationId, this.organizationName, this.cityId, this.cityName, this.areaId, this.areaName, this.countryName});
 
-  DataItem.fromJson(Map<String, dynamic> json) {
+  FloorDataItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     number = json['number'];

@@ -46,7 +46,7 @@ class Data {
   bool? hasPreviousPage;
   bool? hasNextPage;
   bool? succeeded;
-  List<DataItem>? data;
+  List<SectionDataItem>? data;
 
   Data(
       {this.currentPage,
@@ -69,7 +69,7 @@ class Data {
     hasNextPage = json['hasNextPage'];
     succeeded = json['succeeded'];
     if (json['data'] != null) {
-      data = (json['data'] as List).map((v) => DataItem.fromJson(v)).toList();
+      data = (json['data'] as List).map((v) => SectionDataItem.fromJson(v)).toList();
     }
   }
 
@@ -90,7 +90,7 @@ class Data {
   }
 }
 
-class DataItem {
+class SectionDataItem {
   int? id;
   String? name;
   String? number;
@@ -107,7 +107,7 @@ class DataItem {
   String? areaName;
   String? countryName;
 
-  DataItem(
+  SectionDataItem(
       {this.id,
       this.name,
       this.number,
@@ -124,7 +124,7 @@ class DataItem {
       this.areaName,
       this.countryName});
 
-  DataItem.fromJson(Map<String, dynamic> json) {
+  SectionDataItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     number = json['number'];

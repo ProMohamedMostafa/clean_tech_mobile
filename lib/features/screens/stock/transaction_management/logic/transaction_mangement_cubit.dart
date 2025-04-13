@@ -23,26 +23,141 @@ class TransactionManagementCubit extends Cubit<TransactionManagementState> {
   TextEditingController endDateController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
+  ScrollController scrollController = ScrollController();
+  ScrollController inScrollController = ScrollController();
+  ScrollController outScrollController = ScrollController();
+  int currentPage = 1;
 
   TransactionManagementModel? transactionManagementModel;
-  getTransactionList(
-      {int? type, int? userId, int? categoryId, int? providerId}) {
+  getTransactionList({int? userId, int? categoryId, int? providerId}) {
     emit(TransactionManagementLoadingState());
     DioHelper.getData(url: ApiConstants.transactionUrl, query: {
+      'PageNumber': currentPage,
+      'PageSize': 10,
       'Search': searchController.text,
       'UserId': userId,
       'StartDate': startDateController.text,
       'EndDate': endDateController.text,
       'ProviderId': providerId,
       'CategoryId': categoryId,
-      'Type': type,
     }).then((value) {
-      transactionManagementModel =
-          TransactionManagementModel.fromJson(value!.data);
+      final newTransaction = TransactionManagementModel.fromJson(value!.data);
+
+      if (transactionManagementModel == null) {
+        transactionManagementModel = newTransaction;
+      } else {
+        transactionManagementModel?.data.data
+            .addAll(newTransaction.data?.data ?? []);
+        transactionManagementModel?.data.currentPage =
+            newTransaction.data.currentPage;
+        transactionManagementModel?.data.totalPages =
+            newTransaction.data.totalPages;
+      }
       emit(TransactionManagementSuccessState(transactionManagementModel!));
     }).catchError((error) {
       emit(TransactionManagementErrorState(error.toString()));
     });
+  }
+
+  int currentPageIn = 1;
+
+  TransactionManagementModel? transactionManagementInModel;
+  getTransactionInList({int? userId, int? categoryId, int? providerId}) {
+    emit(TransactionManagementLoadingState());
+    DioHelper.getData(url: ApiConstants.transactionUrl, query: {
+      'PageNumber': currentPageIn,
+      'PageSize': 10,
+      'Search': searchController.text,
+      'UserId': userId,
+      'StartDate': startDateController.text,
+      'EndDate': endDateController.text,
+      'ProviderId': providerId,
+      'CategoryId': categoryId,
+      'Type': 0,
+    }).then((value) {
+      final newTransaction = TransactionManagementModel.fromJson(value!.data);
+
+      if (transactionManagementInModel == null) {
+        transactionManagementInModel = newTransaction;
+      } else {
+        transactionManagementInModel?.data.data
+            .addAll(newTransaction.data?.data ?? []);
+        transactionManagementInModel?.data.currentPage =
+            newTransaction.data.currentPage;
+        transactionManagementInModel?.data.totalPages =
+            newTransaction.data.totalPages;
+      }
+      emit(TransactionManagementSuccessState(transactionManagementInModel!));
+    }).catchError((error) {
+      emit(TransactionManagementErrorState(error.toString()));
+    });
+  }
+
+  int currentPageOut = 1;
+
+  TransactionManagementModel? transactionManagementOutModel;
+  getTransactionOutList({int? userId, int? categoryId, int? providerId}) {
+    emit(TransactionManagementLoadingState());
+    DioHelper.getData(url: ApiConstants.transactionUrl, query: {
+      'PageNumber': currentPageIn,
+      'PageSize': 10,
+      'Search': searchController.text,
+      'UserId': userId,
+      'StartDate': startDateController.text,
+      'EndDate': endDateController.text,
+      'ProviderId': providerId,
+      'CategoryId': categoryId,
+      'Type': 1,
+    }).then((value) {
+      final newTransaction = TransactionManagementModel.fromJson(value!.data);
+
+      if (transactionManagementOutModel == null) {
+        transactionManagementOutModel = newTransaction;
+      } else {
+        transactionManagementOutModel?.data.data
+            .addAll(newTransaction.data?.data ?? []);
+        transactionManagementOutModel?.data.currentPage =
+            newTransaction.data.currentPage;
+        transactionManagementOutModel?.data.totalPages =
+            newTransaction.data.totalPages;
+      }
+      emit(TransactionManagementSuccessState(transactionManagementOutModel!));
+    }).catchError((error) {
+      emit(TransactionManagementErrorState(error.toString()));
+    });
+  }
+
+  initialize() {
+    scrollController = ScrollController()
+      ..addListener(() {
+        if (scrollController.position.atEdge &&
+            scrollController.position.pixels != 0) {
+          currentPage++;
+          getTransactionList();
+        }
+      });
+  }
+
+  initializeIn() {
+    inScrollController = ScrollController()
+      ..addListener(() {
+        if (scrollController.position.atEdge &&
+            scrollController.position.pixels != 0) {
+          currentPage++;
+          getTransactionList();
+        }
+      });
+  }
+
+  initializeOut() {
+    outScrollController = ScrollController()
+      ..addListener(() {
+        if (scrollController.position.atEdge &&
+            scrollController.position.pixels != 0) {
+          currentPage++;
+          getTransactionList();
+        }
+      });
   }
 
   UsersModel? usersModel;

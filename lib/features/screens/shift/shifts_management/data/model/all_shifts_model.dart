@@ -2,12 +2,18 @@ class AllShiftsModel {
   int? statusCode;
   bool? succeeded;
   String? message;
-  Data? data;
+  String? error;
+  String? businessErrorCode;
+  String? meta;
+  ShiftDataModel? data;
 
   AllShiftsModel({
     this.statusCode,
     this.succeeded,
     this.message,
+    this.error,
+    this.businessErrorCode,
+    this.meta,
     this.data,
   });
 
@@ -15,7 +21,10 @@ class AllShiftsModel {
     statusCode = json['statusCode'];
     succeeded = json['succeeded'];
     message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    error = json['error'];
+    businessErrorCode = json['businessErrorCode'];
+    meta = json['meta'];
+    data = json['data'] != null ? ShiftDataModel.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -23,6 +32,9 @@ class AllShiftsModel {
     result['statusCode'] = statusCode;
     result['succeeded'] = succeeded;
     result['message'] = message;
+    result['error'] = error;
+    result['businessErrorCode'] = businessErrorCode;
+    result['meta'] = meta;
     if (data != null) {
       result['data'] = data!.toJson();
     }
@@ -30,7 +42,7 @@ class AllShiftsModel {
   }
 }
 
-class Data {
+class ShiftDataModel {
   int? currentPage;
   int? totalPages;
   int? totalCount;
@@ -38,9 +50,10 @@ class Data {
   bool? hasPreviousPage;
   bool? hasNextPage;
   bool? succeeded;
+  dynamic meta;
   List<Shift>? shifts;
 
-  Data({
+  ShiftDataModel({
     this.currentPage,
     this.totalPages,
     this.totalCount,
@@ -48,10 +61,11 @@ class Data {
     this.hasPreviousPage,
     this.hasNextPage,
     this.succeeded,
+    this.meta,
     this.shifts,
   });
 
-  Data.fromJson(Map<String, dynamic> json) {
+  ShiftDataModel.fromJson(Map<String, dynamic> json) {
     currentPage = json['currentPage'];
     totalPages = json['totalPages'];
     totalCount = json['totalCount'];
@@ -59,8 +73,9 @@ class Data {
     hasPreviousPage = json['hasPreviousPage'];
     hasNextPage = json['hasNextPage'];
     succeeded = json['succeeded'];
+    meta = json['meta'];
     if (json['data'] != null) {
-      shifts = List<Shift>.from(json['data'].map((v) => Shift.fromJson(v)));
+      shifts = List<Shift>.from(json['data'].map((x) => Shift.fromJson(x)));
     }
   }
 
@@ -73,8 +88,9 @@ class Data {
     result['hasPreviousPage'] = hasPreviousPage;
     result['hasNextPage'] = hasNextPage;
     result['succeeded'] = succeeded;
+    result['meta'] = meta;
     if (shifts != null) {
-      result['data'] = shifts!.map((v) => v.toJson()).toList();
+      result['data'] = shifts!.map((x) => x.toJson()).toList();
     }
     return result;
   }

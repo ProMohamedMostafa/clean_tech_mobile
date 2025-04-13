@@ -40,6 +40,8 @@ class AttendanceHistoryCubit extends Cubit<AttendanceHistoryState> {
   TextEditingController providerController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
+  ScrollController scrollController = ScrollController();
+  int currentPage = 1;
 
   AttendanceHistoryModel? attendanceHistoryModel;
   getAllHistory({
@@ -57,6 +59,8 @@ class AttendanceHistoryCubit extends Cubit<AttendanceHistoryState> {
   }) {
     emit(HistoryLoadingState());
     DioHelper.getData(url: ApiConstants.hisotryUrl, query: {
+      'pageNumber': currentPage,
+      'pageSize': 10,
       'search': searchController.text,
       'UserId': userId,
       'History': false,
@@ -74,11 +78,31 @@ class AttendanceHistoryCubit extends Cubit<AttendanceHistoryState> {
       'PointId': pointId,
       'ProviderId': providerId
     }).then((value) {
-      attendanceHistoryModel = AttendanceHistoryModel.fromJson(value!.data);
+      final newHistory = AttendanceHistoryModel.fromJson(value!.data);
+
+      if (attendanceHistoryModel == null) {
+        attendanceHistoryModel = newHistory;
+      } else {
+        attendanceHistoryModel?.data?.data?.addAll(newHistory.data?.data ?? []);
+        attendanceHistoryModel?.data?.currentPage =
+            newHistory.data?.currentPage;
+        attendanceHistoryModel?.data?.totalPages = newHistory.data?.totalPages;
+      }
       emit(HistorySuccessState(attendanceHistoryModel!));
     }).catchError((error) {
       emit(HistoryErrorState(error.toString()));
     });
+  }
+
+  void initialize() {
+    scrollController = ScrollController()
+      ..addListener(() {
+        if (scrollController.position.atEdge &&
+            scrollController.position.pixels != 0) {
+          currentPage++;
+          getAllHistory();
+        }
+      });
   }
 
   ShiftModel? shiftModel;

@@ -20,23 +20,23 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
       ? context
           .read<TransactionManagementCubit>()
           .transactionManagementModel!
-          .data!
-          .transactions[index]
+          .data
+          .data[index]
           .typeId
       : selectedIndex == 1
           ? context
               .read<TransactionManagementCubit>()
               .transactionManagementModel!
-              .data!
-              .transactions
+              .data
+              .data
               .where((type) => type.typeId == 0)
               .toList()[index]
               .typeId
           : context
               .read<TransactionManagementCubit>()
               .transactionManagementModel!
-              .data!
-              .transactions
+              .data
+              .data
               .where((type) => type.typeId == 1)
               .toList()[index]
               .typeId;
@@ -77,23 +77,23 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                       ? context
                           .read<TransactionManagementCubit>()
                           .transactionManagementModel!
-                          .data!
-                          .transactions[index]
+                          .data
+                          .data[index]
                           .userName
                       : selectedIndex == 1
                           ? context
                               .read<TransactionManagementCubit>()
                               .transactionManagementModel!
-                              .data!
-                              .transactions
+                              .data
+                              .data
                               .where((type) => type.typeId == 0)
                               .toList()[index]
                               .userName
                           : context
                               .read<TransactionManagementCubit>()
                               .transactionManagementModel!
-                              .data!
-                              .transactions
+                              .data
+                              .data
                               .where((type) => type.typeId == 1)
                               .toList()[index]
                               .userName,
@@ -114,23 +114,23 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                           ? context
                               .read<TransactionManagementCubit>()
                               .transactionManagementModel!
-                              .data!
-                              .transactions[index]
+                              .data
+                              .data[index]
                               .type
                           : selectedIndex == 1
                               ? context
                                   .read<TransactionManagementCubit>()
                                   .transactionManagementModel!
-                                  .data!
-                                  .transactions
+                                  .data
+                                  .data
                                   .where((type) => type.typeId == 0)
                                   .toList()[index]
                                   .type
                               : context
                                   .read<TransactionManagementCubit>()
                                   .transactionManagementModel!
-                                  .data!
-                                  .transactions
+                                  .data
+                                  .data
                                   .where((type) => type.typeId == 1)
                                   .toList()[index]
                                   .type,
@@ -152,23 +152,23 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                       ? context
                           .read<TransactionManagementCubit>()
                           .transactionManagementModel!
-                          .data!
-                          .transactions[index]
+                          .data
+                          .data[index]
                           .date
                       : selectedIndex == 1
                           ? context
                               .read<TransactionManagementCubit>()
                               .transactionManagementModel!
-                              .data!
-                              .transactions
+                              .data
+                              .data
                               .where((type) => type.typeId == 0)
                               .toList()[index]
                               .date
                           : context
                               .read<TransactionManagementCubit>()
                               .transactionManagementModel!
-                              .data!
-                              .transactions
+                              .data
+                              .data
                               .where((type) => type.typeId == 1)
                               .toList()[index]
                               .date,
@@ -190,23 +190,23 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                         ? context
                             .read<TransactionManagementCubit>()
                             .transactionManagementModel!
-                            .data!
-                            .transactions[index]
+                            .data
+                            .data[index]
                             .category
                         : selectedIndex == 1
                             ? context
                                 .read<TransactionManagementCubit>()
                                 .transactionManagementModel!
-                                .data!
-                                .transactions
+                                .data
+                                .data
                                 .where((type) => type.typeId == 0)
                                 .toList()[index]
                                 .category
                             : context
                                 .read<TransactionManagementCubit>()
                                 .transactionManagementModel!
-                                .data!
-                                .transactions
+                                .data
+                                .data
                                 .where((type) => type.typeId == 1)
                                 .toList()[index]
                                 .category,
@@ -231,16 +231,16 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                             ? context
                                 .read<TransactionManagementCubit>()
                                 .transactionManagementModel!
-                                .data!
-                                .transactions[index]
+                                .data
+                                .data[index]
                                 .quantity
                                 .toString()
                             : selectedIndex == 1
                                 ? context
                                     .read<TransactionManagementCubit>()
                                     .transactionManagementModel!
-                                    .data!
-                                    .transactions
+                                    .data
+                                    .data
                                     .where((type) => type.typeId == 0)
                                     .toList()[index]
                                     .quantity
@@ -248,8 +248,8 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                                 : context
                                     .read<TransactionManagementCubit>()
                                     .transactionManagementModel!
-                                    .data!
-                                    .transactions
+                                    .data
+                                    .data
                                     .where((type) => type.typeId == 1)
                                     .toList()[index]
                                     .quantity
@@ -258,7 +258,7 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                       ),
                       TextSpan(
                         text:
-                            ' ${selectedIndex == 0 ? context.read<TransactionManagementCubit>().transactionManagementModel!.data!.transactions[index].unit : selectedIndex == 1 ? context.read<TransactionManagementCubit>().transactionManagementModel!.data!.transactions.where((type) => type.typeId == 0).toList()[index].unit : context.read<TransactionManagementCubit>().transactionManagementModel!.data!.transactions.where((type) => type.typeId == 1).toList()[index].unit ?? ''}',
+                            ' ${selectedIndex == 0 ? context.read<TransactionManagementCubit>().transactionManagementModel?.data.data[index].unit : selectedIndex == 1 ? context.read<TransactionManagementCubit>().transactionManagementModel?.data.data.where((type) => type.typeId == 0).toList()[index].unit : context.read<TransactionManagementCubit>().transactionManagementModel?.data.data.where((type) => type.typeId == 1).toList()[index].unit ?? ''}',
                         style: TextStyles.font12GreyRegular
                             .copyWith(color: AppColor.primaryColor),
                       ),
@@ -276,7 +276,7 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                         ),
                         TextSpan(
                           text:
-                              '${selectedIndex == 0 ? context.read<TransactionManagementCubit>().transactionManagementModel!.data!.transactions[index].totalPrice : selectedIndex == 1 ? context.read<TransactionManagementCubit>().transactionManagementModel!.data!.transactions.where((type) => type.typeId == 0).toList()[index].totalPrice : context.read<TransactionManagementCubit>().transactionManagementModel!.data!.transactions.where((type) => type.typeId == 1).toList()[index].totalPrice.toString()} \$',
+                              '${selectedIndex == 0 ? context.read<TransactionManagementCubit>().transactionManagementModel!.data.data[index].totalPrice : selectedIndex == 1 ? context.read<TransactionManagementCubit>().transactionManagementModel!.data.data.where((type) => type.typeId == 0).toList()[index].totalPrice : context.read<TransactionManagementCubit>().transactionManagementModel!.data.data.where((type) => type.typeId == 1).toList()[index].totalPrice.toString()} \$',
                           style: TextStyles.font14Primarybold,
                         ),
                       ],

@@ -19,8 +19,10 @@ Widget shiftListDetailsBuild(BuildContext context, int selectedIndex) {
     );
   } else {
     return ListView.separated(
+    controller: selectedIndex == 0
+          ? context.read<ShiftCubit>().scrollController
+          : null,
       shrinkWrap: true,
-      physics: const ClampingScrollPhysics(),
       scrollDirection: Axis.vertical,
       itemCount: shiftsData.length,
       separatorBuilder: (context, index) {

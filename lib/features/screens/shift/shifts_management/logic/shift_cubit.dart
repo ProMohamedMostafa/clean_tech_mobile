@@ -9,6 +9,7 @@ import 'package:smart_cleaning_application/features/screens/shift/shift_details/
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_section_details.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/all_shifts_deleted_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/all_shifts_model.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/delete_shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/shift_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/logic/shift_state.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
@@ -37,6 +38,7 @@ class ShiftCubit extends Cubit<ShiftState> {
   TextEditingController pointController = TextEditingController();
   TextEditingController providerController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  ScrollController scrollController = ScrollController();
 
   ShiftDetailsModel? shiftDetailsModel;
   getShiftDetails(int? id) {
@@ -96,6 +98,8 @@ class ShiftCubit extends Cubit<ShiftState> {
     });
   }
 
+  int currentPage = 1;
+
   AllShiftsModel? allShiftsModel;
   getAllShifts({
     int? areaId,
@@ -107,6 +111,8 @@ class ShiftCubit extends Cubit<ShiftState> {
   }) {
     emit(ShiftLoadingState());
     DioHelper.getData(url: ApiConstants.allShiftsUrl, query: {
+      'pageNumber': currentPage,
+      'pageSize': 10,
       'search': searchController.text,
       'area': areaId,
       'city': cityId,
@@ -119,19 +125,58 @@ class ShiftCubit extends Cubit<ShiftState> {
       'startTime': startTimeController.text,
       'endTime': endTimeController.text,
     }).then((value) {
-      allShiftsModel = AllShiftsModel.fromJson(value!.data);
+      final newShifts = AllShiftsModel.fromJson(value!.data);
+
+      if (allShiftsModel == null) {
+        allShiftsModel = newShifts;
+      } else {
+        allShiftsModel?.data?.shifts?.addAll(newShifts.data?.shifts ?? []);
+        allShiftsModel?.data?.currentPage = newShifts.data?.currentPage;
+        allShiftsModel?.data?.totalPages = newShifts.data?.totalPages;
+      }
       emit(ShiftSuccessState(allShiftsModel!));
     }).catchError((error) {
       emit(ShiftErrorState(error.toString()));
     });
   }
 
+  void initialize() {
+    scrollController = ScrollController()
+      ..addListener(() {
+        if (scrollController.position.atEdge &&
+            scrollController.position.pixels != 0) {
+          currentPage++;
+          getAllShifts();
+        }
+      });
+  }
+
+  List<Shift> deletedShifts = [];
+  DeleteShiftModel? deleteShiftModel;
   shiftDelete(int id) {
     emit(ShiftDeleteLoadingState());
     DioHelper.postData(url: 'shifts/delete/$id', data: {'id': id})
         .then((value) {
-      final message = value?.data['message'] ?? "restored successfully";
-      emit(ShiftDeleteSuccessState(message!));
+      deleteShiftModel = DeleteShiftModel.fromJson(value!.data);
+
+      final deletedShift = allShiftsModel?.data?.shifts?.firstWhere(
+        (shift) => shift.id == id,
+      );
+
+      if (deletedShift != null) {
+        // Remove from main list
+        allShiftsModel?.data?.shifts?.removeWhere((shift) => shift.id == id);
+
+        // Add to deleted list
+        deletedShifts.insert(0, deletedShift);
+
+        //  Reload current page to refill to 10 users
+        if (currentPage == 1) {
+          allShiftsModel = null;
+          getAllShifts();
+        }
+      }
+      emit(ShiftDeleteSuccessState(deleteShiftModel!));
     }).catchError((error) {
       emit(ShiftDeleteErrorState(error.toString()));
     });
@@ -153,6 +198,40 @@ class ShiftCubit extends Cubit<ShiftState> {
     DioHelper.postData(url: 'shifts/restore/$id', data: {'id': id})
         .then((value) {
       final message = value?.data['message'] ?? "restored successfully";
+      // Find and process the restored user
+      final restoredData = allShiftsDeletedModel?.data?.firstWhere(
+        (data) => data.id == id,
+      );
+
+      if (restoredData != null) {
+        // Remove from deleted list
+        allShiftsDeletedModel?.data?.removeWhere((data) => data.id == id);
+
+        // Initialize users list if null
+        allShiftsModel?.data?.shifts ??= [];
+
+        // Convert to User object
+        final restoredUser = Shift.fromJson(restoredData.toJson());
+
+        // Find the correct position to insert (sorted by ID)
+        int insertIndex = allShiftsModel!.data!.shifts!
+            .indexWhere((user) => user.id! > restoredUser.id!);
+
+        // If not found, add to end
+        if (insertIndex == -1)
+          insertIndex = allShiftsModel!.data!.shifts!.length;
+
+        // Insert at correct position
+        allShiftsModel?.data?.shifts?.insert(insertIndex, restoredUser);
+
+        // Update pagination metadata
+        allShiftsModel?.data?.totalCount =
+            (allShiftsModel?.data?.totalCount ?? 0) + 1;
+        allShiftsModel?.data?.totalPages =
+            ((allShiftsModel?.data?.totalCount ?? 0) /
+                    (allShiftsModel?.data?.pageSize ?? 10))
+                .ceil();
+      }
       emit(RestoreShiftSuccessState(message));
     }).catchError((error) {
       emit(RestoreShiftErrorState(error.toString()));

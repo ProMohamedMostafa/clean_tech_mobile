@@ -180,15 +180,21 @@ Widget buildAttendanceCardItem(BuildContext context, index) {
                   style: TextStyles.font12GreyRegular,
                 ),
                 TextSpan(
-                  text:
-                      DateFormat('hh:mm a').format(DateFormat('HH:mm:ss').parse(
-                    context
-                        .read<UserManagementCubit>()
-                        .attendanceHistoryModel!
-                        .data!
-                        .data![index]
-                        .shiftStart!,
-                  )),
+                  text: context
+                              .read<UserManagementCubit>()
+                              .attendanceHistoryModel!
+                              .data!
+                              .data![index]
+                              .startShift !=
+                          null
+                      ? DateFormat('hh:mm a').format(DateFormat('HH:mm:ss')
+                          .parse(context
+                              .read<UserManagementCubit>()
+                              .attendanceHistoryModel!
+                              .data!
+                              .data![index]
+                              .startShift!.toString()))
+                      : '--',
                   style: TextStyles.font11WhiteSemiBold
                       .copyWith(color: AppColor.thirdColor),
                 ),
@@ -199,12 +205,20 @@ Widget buildAttendanceCardItem(BuildContext context, index) {
                 ),
                 TextSpan(
                   text: context
-                          .read<UserManagementCubit>()
-                          .attendanceHistoryModel!
-                          .data!
-                          .data![index]
-                          .shiftEnd ??
-                      '',
+                              .read<UserManagementCubit>()
+                              .attendanceHistoryModel!
+                              .data!
+                              .data![index]
+                              .endShift !=
+                          null
+                      ? DateFormat('hh:mm a').format(DateFormat('HH:mm:ss')
+                          .parse(context
+                              .read<UserManagementCubit>()
+                              .attendanceHistoryModel!
+                              .data!
+                              .data![index]
+                              .endShift!.toString()))
+                      : '--',
                   style: TextStyles.font11WhiteSemiBold
                       .copyWith(color: AppColor.thirdColor),
                 ),

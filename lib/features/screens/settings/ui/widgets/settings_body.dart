@@ -83,12 +83,12 @@ class _SettingsBodyState extends State<SettingsBody> {
                                     body: Center(
                                       child: PhotoView(
                                         imageProvider: NetworkImage(
-                                          '${ApiConstants.apiBaseUrl}${context.read<SettingsCubit>().profileModel!.data!.image}',
+                                          '${ApiConstants.apiBaseUrlImage}${context.read<SettingsCubit>().profileModel!.data!.image}',
                                         ),
                                         errorBuilder:
                                             (context, error, stackTrace) {
                                           return Image.asset(
-                                            'assets/images/noImage.png',
+                                            'assets/images/person.png',
                                             fit: BoxFit.fill,
                                           );
                                         },
@@ -110,11 +110,11 @@ class _SettingsBodyState extends State<SettingsBody> {
                                 ),
                                 child: ClipOval(
                                   child: Image.network(
-                                    '${ApiConstants.apiBaseUrl}${context.read<SettingsCubit>().profileModel!.data!.image}',
+                                    '${ApiConstants.apiBaseUrlImage}${context.read<SettingsCubit>().profileModel!.data!.image}',
                                     fit: BoxFit.fill,
                                     errorBuilder: (context, error, stackTrace) {
                                       return Image.asset(
-                                        'assets/images/noImage.png',
+                                        'assets/images/person.png',
                                         fit: BoxFit.fill,
                                       );
                                     },

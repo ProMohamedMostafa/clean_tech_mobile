@@ -127,12 +127,12 @@ class _LeavesDetailsBodyState extends State<LeavesDetailsBody> {
                                   body: Center(
                                     child: PhotoView(
                                       imageProvider: NetworkImage(
-                                        '${ApiConstants.apiBaseUrl}${context.read<AttendanceLeavesCubit>().leavesDetailsModel!.data!.image}',
+                                        '${ApiConstants.apiBaseUrlImage}${context.read<AttendanceLeavesCubit>().leavesDetailsModel!.data!.image}',
                                       ),
                                       errorBuilder:
                                           (context, error, stackTrace) {
                                         return Image.asset(
-                                          'assets/images/noImage.png',
+                                          'assets/images/person.png',
                                           fit: BoxFit.fill,
                                         );
                                       },

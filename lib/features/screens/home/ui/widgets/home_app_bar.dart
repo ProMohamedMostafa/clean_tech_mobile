@@ -28,11 +28,11 @@ Widget homeAppBar(BuildContext context) {
               ),
               child: ClipOval(
                 child: Image.network(
-                  '${ApiConstants.apiBaseUrl}${context.read<HomeCubit>().profileModel!.data!.image}',
+                  '${ApiConstants.apiBaseUrlImage}${context.read<HomeCubit>().profileModel!.data!.image}',
                   fit: BoxFit.fill,
                   errorBuilder: (context, error, stackTrace) {
                     return Image.asset(
-                      'assets/images/noImage.png',
+                      'assets/images/person.png',
                       fit: BoxFit.fill,
                     );
                   },
@@ -48,7 +48,6 @@ Widget homeAppBar(BuildContext context) {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-
                   RichText(
                     textAlign: TextAlign.center,
                     text: TextSpan(

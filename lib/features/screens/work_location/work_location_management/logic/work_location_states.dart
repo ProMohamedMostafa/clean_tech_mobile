@@ -19,6 +19,13 @@ import 'package:smart_cleaning_application/features/screens/work_location/work_l
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_tree_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_tree_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/delete_area_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/delete_building_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/delete_city_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/delete_floor_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/delete_organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/delete_point_model.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/delete_section_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/deleted_area_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/deleted_building_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/deleted_city_list_model.dart';
@@ -373,9 +380,9 @@ class PointUsersDetailsErrorState extends WorkLocationState {
 class AreaDeleteLoadingState extends WorkLocationState {}
 
 class AreaDeleteSuccessState extends WorkLocationState {
-  final String message;
+  final DeleteAreaModel deleteAreaModel;
 
-  AreaDeleteSuccessState(this.message);
+  AreaDeleteSuccessState(this.deleteAreaModel);
 }
 
 class AreaDeleteErrorState extends WorkLocationState {
@@ -387,9 +394,9 @@ class AreaDeleteErrorState extends WorkLocationState {
 class CityDeleteLoadingState extends WorkLocationState {}
 
 class CityDeleteSuccessState extends WorkLocationState {
-  final String message;
+  final DeleteCityModel deleteCityModel;
 
-  CityDeleteSuccessState(this.message);
+  CityDeleteSuccessState(this.deleteCityModel);
 }
 
 class CityDeleteErrorState extends WorkLocationState {
@@ -401,9 +408,9 @@ class CityDeleteErrorState extends WorkLocationState {
 class OrganizationDeleteLoadingState extends WorkLocationState {}
 
 class OrganizationDeleteSuccessState extends WorkLocationState {
-  final String message;
+  final DeleteOrganizationModel deleteOrganizationModel;
 
-  OrganizationDeleteSuccessState(this.message);
+  OrganizationDeleteSuccessState(this.deleteOrganizationModel);
 }
 
 class OrganizationDeleteErrorState extends WorkLocationState {
@@ -415,9 +422,9 @@ class OrganizationDeleteErrorState extends WorkLocationState {
 class BuildingDeleteLoadingState extends WorkLocationState {}
 
 class BuildingDeleteSuccessState extends WorkLocationState {
-  final String message;
+  final DeleteBuildingModel deleteBuildingModel;
 
-  BuildingDeleteSuccessState(this.message);
+  BuildingDeleteSuccessState(this.deleteBuildingModel);
 }
 
 class BuildingDeleteErrorState extends WorkLocationState {
@@ -429,9 +436,9 @@ class BuildingDeleteErrorState extends WorkLocationState {
 class FloorDeleteLoadingState extends WorkLocationState {}
 
 class FloorDeleteSuccessState extends WorkLocationState {
-  final String message;
+  final DeleteFloorModel deleteFloorModel;
 
-  FloorDeleteSuccessState(this.message);
+  FloorDeleteSuccessState(this.deleteFloorModel);
 }
 
 class FloorDeleteErrorState extends WorkLocationState {
@@ -443,9 +450,9 @@ class FloorDeleteErrorState extends WorkLocationState {
 class SectionDeleteLoadingState extends WorkLocationState {}
 
 class SectionDeleteSuccessState extends WorkLocationState {
-  final String message;
+  final DeleteSectionModel deleteSectionModel;
 
-  SectionDeleteSuccessState(this.message);
+  SectionDeleteSuccessState(this.deleteSectionModel);
 }
 
 class SectionDeleteErrorState extends WorkLocationState {
@@ -458,9 +465,9 @@ class SectionDeleteErrorState extends WorkLocationState {
 class PointDeleteLoadingState extends WorkLocationState {}
 
 class PointDeleteSuccessState extends WorkLocationState {
-  final String message;
+  final DeletePointModel deletePointModel;
 
-  PointDeleteSuccessState(this.message);
+  PointDeleteSuccessState(this.deletePointModel);
 }
 
 class PointDeleteErrorState extends WorkLocationState {

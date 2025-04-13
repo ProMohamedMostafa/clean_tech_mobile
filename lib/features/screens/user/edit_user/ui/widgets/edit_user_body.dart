@@ -140,12 +140,12 @@ class _EditUserBodyState extends State<EditUserBody> {
                                                   .path),
                                             )
                                           : NetworkImage(
-                                              '${ApiConstants.apiBaseUrl}${context.read<EditUserCubit>().userDetailsModel!.data!.image}',
+                                              '${ApiConstants.apiBaseUrlImage}${context.read<EditUserCubit>().userDetailsModel!.data!.image}',
                                             ),
                                       errorBuilder:
                                           (context, error, stackTrace) {
                                         return Image.asset(
-                                          'assets/images/noImage.png',
+                                          'assets/images/person.png',
                                           fit: BoxFit.fill,
                                         );
                                       },
@@ -185,18 +185,18 @@ class _EditUserBodyState extends State<EditUserBody> {
                                       errorBuilder:
                                           (context, error, stackTrace) {
                                         return Image.asset(
-                                          'assets/images/noImage.png',
+                                          'assets/images/person.png',
                                           fit: BoxFit.fill,
                                         );
                                       },
                                     )
                                   : Image.network(
-                                      '${ApiConstants.apiBaseUrl}${context.read<EditUserCubit>().userDetailsModel!.data!.image}',
+                                      '${ApiConstants.apiBaseUrlImage}${context.read<EditUserCubit>().userDetailsModel!.data!.image}',
                                       fit: BoxFit.fill,
                                       errorBuilder:
                                           (context, error, stackTrace) {
                                         return Image.asset(
-                                          'assets/images/noImage.png',
+                                          'assets/images/person.png',
                                           fit: BoxFit.fill,
                                         );
                                       },

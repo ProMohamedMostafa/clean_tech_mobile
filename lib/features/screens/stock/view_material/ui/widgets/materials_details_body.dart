@@ -50,7 +50,7 @@ class _MaterialDetailsBodyState extends State<MaterialDetailsBody> {
       body: BlocConsumer<MaterialManagementCubit, MaterialManagementState>(
         listener: (context, state) {
           if (state is DeleteMaterialSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.deleteMaterialModel.message!, color: Colors.blue);
             context.pushNamedAndRemoveUntil(
               Routes.materialScreen,
               predicate: (route) => false,

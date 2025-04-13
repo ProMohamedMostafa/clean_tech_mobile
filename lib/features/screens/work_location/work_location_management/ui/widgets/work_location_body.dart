@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -35,6 +36,7 @@ class _OrganizationsBodyState extends State<OrganizationsBody> {
   @override
   void initState() {
     super.initState();
+    context.read<WorkLocationCubit>().initialize(widget.selectedIndex);
     fetchData();
   }
 
@@ -141,243 +143,155 @@ class _OrganizationsBodyState extends State<OrganizationsBody> {
             toast(text: state.error, color: Colors.red);
           }
           if (state is AreaDeleteSuccessState) {
-            toast(text: state.message, color: Colors.blue);
-            context.read<WorkLocationCubit>().getArea();
+            toast(text: state.deleteAreaModel.message!, color: Colors.blue);
             context.read<WorkLocationCubit>().getAllDeletedArea();
           }
           if (state is CityErrorState) {
             toast(text: state.error, color: Colors.red);
           }
           if (state is CityDeleteSuccessState) {
-            toast(text: state.message, color: Colors.blue);
-            context.read<WorkLocationCubit>().getCity();
+            toast(text: state.deleteCityModel.message!, color: Colors.blue);
             context.read<WorkLocationCubit>().getAllDeletedCity();
           }
           if (state is OrganizationErrorState) {
             toast(text: state.error, color: Colors.red);
           }
           if (state is OrganizationDeleteSuccessState) {
-            toast(text: state.message, color: Colors.blue);
-            context.read<WorkLocationCubit>().getOrganization();
+            toast(
+                text: state.deleteOrganizationModel.message!,
+                color: Colors.blue);
             context.read<WorkLocationCubit>().getAllDeletedOrganization();
           }
           if (state is BuildingErrorState) {
             toast(text: state.error, color: Colors.red);
           }
           if (state is BuildingDeleteSuccessState) {
-            toast(text: state.message, color: Colors.blue);
-            context.read<WorkLocationCubit>().getBuilding();
+            toast(text: state.deleteBuildingModel.message!, color: Colors.blue);
             context.read<WorkLocationCubit>().getAllDeletedBuilding();
           }
           if (state is FloorErrorState) {
             toast(text: state.error, color: Colors.red);
           }
           if (state is FloorDeleteSuccessState) {
-            toast(text: state.message, color: Colors.blue);
-            context.read<WorkLocationCubit>().getFloor();
+            toast(text: state.deleteFloorModel.message!, color: Colors.blue);
             context.read<WorkLocationCubit>().getAllDeletedFloor();
           }
           if (state is SectionErrorState) {
             toast(text: state.error, color: Colors.red);
           }
           if (state is SectionDeleteSuccessState) {
-            toast(text: state.message, color: Colors.blue);
-            context.read<WorkLocationCubit>().getSection();
+            toast(text: state.deleteSectionModel.message!, color: Colors.blue);
             context.read<WorkLocationCubit>().getAllDeletedSection();
           }
           if (state is PointErrorState) {
             toast(text: state.error, color: Colors.red);
           }
           if (state is PointDeleteSuccessState) {
-            toast(text: state.message, color: Colors.blue);
-            context.read<WorkLocationCubit>().getPoint();
+            toast(text: state.deletePointModel.message!, color: Colors.blue);
             context.read<WorkLocationCubit>().getAllDeletedPoint();
           }
 
-          if (state is DeleteForceAreaSuccessState ||
-              state is DeleteRestoreAreaSuccessState) {
-            String? message;
-
-            if (state is DeleteForceAreaSuccessState) {
-              message = state.message;
-            } else if (state is DeleteRestoreAreaSuccessState) {
-              message = state.message;
-            }
-
-            if (message != null) {
-              toast(text: message, color: Colors.blue);
-            }
+          if (state is DeleteForceAreaSuccessState) {
+            toast(text: state.message, color: Colors.blue);
 
             context.read<WorkLocationCubit>().getAllDeletedArea();
             context.read<WorkLocationCubit>().getArea();
           }
-          if (state is DeleteForceCitySuccessState ||
-              state is DeleteRestoreCitySuccessState) {
-            String? message;
+          if (state is DeleteRestoreAreaSuccessState) {
+            toast(text: state.message, color: Colors.blue);
+          }
 
-            if (state is DeleteForceCitySuccessState) {
-              message = state.message;
-            } else if (state is DeleteRestoreCitySuccessState) {
-              message = state.message;
-            }
+          if (state is DeleteForceCitySuccessState) {
+            toast(text: state.message, color: Colors.blue);
 
-            if (message != null) {
-              toast(text: message, color: Colors.blue);
-            }
             context.read<WorkLocationCubit>().getAllDeletedCity();
             context.read<WorkLocationCubit>().getCity();
           }
+          if (state is DeleteRestoreCitySuccessState) {
+            toast(text: state.message, color: Colors.blue);
+          }
 
-          if (state is DeleteForceOrganizationSuccessState ||
-              state is DeleteRestoreOrganizationSuccessState) {
-            String? message;
-
-            if (state is DeleteForceOrganizationSuccessState) {
-              message = state.message;
-            } else if (state is DeleteRestoreOrganizationSuccessState) {
-              message = state.message;
-            }
-
-            if (message != null) {
-              toast(text: message, color: Colors.blue);
-            }
+          if (state is DeleteForceOrganizationSuccessState) {
+            toast(text: state.message, color: Colors.blue);
             context.read<WorkLocationCubit>().getAllDeletedOrganization();
             context.read<WorkLocationCubit>().getOrganization();
           }
-          if (state is DeleteForceBuildingSuccessState ||
-              state is DeleteRestoreBuildingSuccessState) {
-            String? message;
+          if (state is DeleteRestoreOrganizationSuccessState) {
+            toast(text: state.message, color: Colors.blue);
+          }
 
-            if (state is DeleteForceBuildingSuccessState) {
-              message = state.message;
-            } else if (state is DeleteRestoreBuildingSuccessState) {
-              message = state.message;
-            }
+          if (state is DeleteForceBuildingSuccessState) {
+            toast(text: state.message, color: Colors.blue);
 
-            if (message != null) {
-              toast(text: message, color: Colors.blue);
-            }
             context.read<WorkLocationCubit>().getAllDeletedBuilding();
             context.read<WorkLocationCubit>().getBuilding();
           }
-          if (state is DeleteForceFloorSuccessState ||
-              state is DeleteRestoreFloorSuccessState) {
-            String? message;
 
-            if (state is DeleteForceFloorSuccessState) {
-              message = state.message;
-            } else if (state is DeleteRestoreFloorSuccessState) {
-              message = state.message;
-            }
+          if (state is DeleteRestoreBuildingSuccessState) {
+            toast(text: state.message, color: Colors.blue);
+          }
 
-            if (message != null) {
-              toast(text: message, color: Colors.blue);
-            }
+          if (state is DeleteForceFloorSuccessState) {
+            toast(text: state.message, color: Colors.blue);
+
             context.read<WorkLocationCubit>().getAllDeletedFloor();
             context.read<WorkLocationCubit>().getFloor();
           }
+          if (state is DeleteRestoreFloorSuccessState) {
+            toast(text: state.message, color: Colors.blue);
+          }
 
-          if (state is DeleteForceSectionSuccessState ||
-              state is DeleteRestoreSectionSuccessState) {
-            String? message;
+          if (state is DeleteForceSectionSuccessState) {
+            toast(text: state.message, color: Colors.blue);
 
-            if (state is DeleteForceSectionSuccessState) {
-              message = state.message;
-            } else if (state is DeleteRestoreSectionSuccessState) {
-              message = state.message;
-            }
-
-            if (message != null) {
-              toast(text: message, color: Colors.blue);
-            }
             context.read<WorkLocationCubit>().getAllDeletedSection();
             context.read<WorkLocationCubit>().getSection();
           }
+          if (state is DeleteRestoreSectionSuccessState) {
+            toast(text: state.message, color: Colors.blue);
+          }
 
-          if (state is DeleteForcePointSuccessState ||
-              state is DeleteRestorePointSuccessState) {
-            String? message;
+          if (state is DeleteForcePointSuccessState) {
+            toast(text: state.message, color: Colors.blue);
 
-            if (state is DeleteForcePointSuccessState) {
-              message = state.message;
-            } else if (state is DeleteRestorePointSuccessState) {
-              message = state.message;
-            }
-
-            if (message != null) {
-              toast(text: message, color: Colors.blue);
-            }
             context.read<WorkLocationCubit>().getAllDeletedPoint();
             context.read<WorkLocationCubit>().getPoint();
           }
+          if (state is DeleteRestorePointSuccessState) {
+            toast(text: state.message, color: Colors.blue);
+          }
         },
         builder: (context, state) {
-          if (widget.selectedIndex == 0 &&
-              context.read<WorkLocationCubit>().areaModel == null &&
-              context.read<WorkLocationCubit>().deletedAreaList == null) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: AppColor.primaryColor,
-              ),
-            );
-          }
-          if (widget.selectedIndex == 1 &&
-              context.read<WorkLocationCubit>().cityModel == null &&
-              context.read<WorkLocationCubit>().deletedCityList == null) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: AppColor.primaryColor,
-              ),
-            );
-          }
-          if (widget.selectedIndex == 2 &&
-              context.read<WorkLocationCubit>().organizationModel == null &&
-              context.read<WorkLocationCubit>().deletedOrganizationList ==
-                  null) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: AppColor.primaryColor,
-              ),
-            );
-          }
-          if (widget.selectedIndex == 3 &&
-              context.read<WorkLocationCubit>().buildingModel == null &&
-              context.read<WorkLocationCubit>().deletedBuildingList == null) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: AppColor.primaryColor,
-              ),
-            );
-          }
-          if (widget.selectedIndex == 4 &&
-              context.read<WorkLocationCubit>().floorModel == null &&
-              context.read<WorkLocationCubit>().deletedFloorList == null) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: AppColor.primaryColor,
-              ),
-            );
-          }
-          if (widget.selectedIndex == 5 &&
-              context.read<WorkLocationCubit>().sectionModel == null &&
-              context.read<WorkLocationCubit>().deletedSectionList == null) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: AppColor.primaryColor,
-              ),
-            );
-          }
-          if (widget.selectedIndex == 6 &&
-              context.read<WorkLocationCubit>().pointModel == null &&
-              context.read<WorkLocationCubit>().deletedPointList == null) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: AppColor.primaryColor,
-              ),
-            );
-          }
-          return SafeArea(
-            child: SingleChildScrollView(
+          return Skeletonizer(
+            enabled: (widget.selectedIndex == 0 &&
+                    context.read<WorkLocationCubit>().areaModel == null &&
+                    context.read<WorkLocationCubit>().deletedAreaList ==
+                        null) ||
+                (widget.selectedIndex == 1 &&
+                    context.read<WorkLocationCubit>().cityModel == null &&
+                    context.read<WorkLocationCubit>().deletedCityList ==
+                        null) ||
+                (widget.selectedIndex == 2 &&
+                    context.read<WorkLocationCubit>().organizationModel ==
+                        null &&
+                    context.read<WorkLocationCubit>().deletedOrganizationList ==
+                        null) ||
+                (widget.selectedIndex == 3 &&
+                    context.read<WorkLocationCubit>().buildingModel == null &&
+                    context.read<WorkLocationCubit>().deletedBuildingList ==
+                        null) ||
+                (widget.selectedIndex == 4 &&
+                    context.read<WorkLocationCubit>().floorModel == null &&
+                    context.read<WorkLocationCubit>().deletedFloorList ==
+                        null) ||
+                (widget.selectedIndex == 5 &&
+                    context.read<WorkLocationCubit>().sectionModel == null &&
+                    context.read<WorkLocationCubit>().deletedSectionList ==
+                        null) ||
+                (widget.selectedIndex == 6 &&
+                    context.read<WorkLocationCubit>().pointModel == null &&
+                    context.read<WorkLocationCubit>().deletedPointList == null),
+            child: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
@@ -561,11 +475,108 @@ class _OrganizationsBodyState extends State<OrganizationsBody> {
                     Divider(
                       color: Colors.grey[300],
                     ),
-                    selectedIndex == 0
-                        ? organizationDetailsBuild(
-                            context, widget.selectedIndex)
-                        : deleteOrganizationListBuild(
-                            context, widget.selectedIndex),
+                    if (selectedIndex == 0) ...[
+                      Expanded(
+                        child: (widget.selectedIndex == 0
+                                ? state is AreaLoadingState &&
+                                    (context
+                                            .read<WorkLocationCubit>()
+                                            .areaModel ==
+                                        null)
+                                : widget.selectedIndex == 1
+                                    ? state is CityLoadingState &&
+                                        (context
+                                                .read<WorkLocationCubit>()
+                                                .cityModel ==
+                                            null)
+                                    : widget.selectedIndex == 2
+                                        ? state is OrganizationLoadingState &&
+                                            (context
+                                                    .read<WorkLocationCubit>()
+                                                    .organizationModel ==
+                                                null)
+                                        : widget.selectedIndex == 3
+                                            ? state is BuildingLoadingState &&
+                                                (context
+                                                        .read<
+                                                            WorkLocationCubit>()
+                                                        .buildingModel ==
+                                                    null)
+                                            : widget.selectedIndex == 4
+                                                ? state is FloorLoadingState &&
+                                                    (context
+                                                            .read<
+                                                                WorkLocationCubit>()
+                                                            .floorModel ==
+                                                        null)
+                                                : widget.selectedIndex == 5
+                                                    ? state is SectionLoadingState &&
+                                                        (context
+                                                                .read<
+                                                                    WorkLocationCubit>()
+                                                                .sectionModel ==
+                                                            null)
+                                                    : state is PointLoadingState &&
+                                                        (context
+                                                                .read<WorkLocationCubit>()
+                                                                .pointModel ==
+                                                            null))
+                            ? Center(child: CircularProgressIndicator(color: AppColor.primaryColor))
+                            : organizationDetailsBuild(context, widget.selectedIndex),
+                      ),
+                      verticalSpace(10),
+                    ],
+                    if (selectedIndex == 1) ...[
+                      Expanded(
+                        child: (widget.selectedIndex == 0
+                                ? state is DeletedAreaLoadingState &&
+                                    (context
+                                            .read<WorkLocationCubit>()
+                                            .deletedAreaList ==
+                                        null)
+                                : widget.selectedIndex == 1
+                                    ? state is DeletedCityLoadingState &&
+                                        (context
+                                                .read<WorkLocationCubit>()
+                                                .deletedCityList ==
+                                            null)
+                                    : widget.selectedIndex == 2
+                                        ? state is DeletedOrganizationLoadingState &&
+                                            (context
+                                                    .read<WorkLocationCubit>()
+                                                    .deletedOrganizationList ==
+                                                null)
+                                        : widget.selectedIndex == 3
+                                            ? state is DeletedBuildingLoadingState &&
+                                                (context
+                                                        .read<
+                                                            WorkLocationCubit>()
+                                                        .deletedBuildingList ==
+                                                    null)
+                                            : widget.selectedIndex == 4
+                                                ? state is DeletedFloorLoadingState &&
+                                                    (context
+                                                            .read<
+                                                                WorkLocationCubit>()
+                                                            .deletedFloorList ==
+                                                        null)
+                                                : widget.selectedIndex == 5
+                                                    ? state is DeletedSectionLoadingState &&
+                                                        (context
+                                                                .read<
+                                                                    WorkLocationCubit>()
+                                                                .deletedSectionList ==
+                                                            null)
+                                                    : state is DeletedPointLoadingState &&
+                                                        (context
+                                                                .read<WorkLocationCubit>()
+                                                                .deletedPointList ==
+                                                            null))
+                            ? Center(child: CircularProgressIndicator(color: AppColor.primaryColor))
+                            : deleteOrganizationListBuild(context, widget.selectedIndex),
+                      ),
+                      verticalSpace(10),
+                    ]
                   ],
                 ),
               ),

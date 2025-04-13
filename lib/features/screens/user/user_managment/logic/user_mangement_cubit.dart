@@ -52,11 +52,12 @@ class UserManagementCubit extends Cubit<UserManagementState> {
   TextEditingController sectionController = TextEditingController();
   TextEditingController pointController = TextEditingController();
   TextEditingController roleController = TextEditingController();
+  TextEditingController roleIdController = TextEditingController();
   TextEditingController providerController = TextEditingController();
   TextEditingController typeController = TextEditingController();
   TextEditingController typeIdController = TextEditingController();
 
-  final ScrollController scrollController = ScrollController();
+  ScrollController scrollController = ScrollController();
 
   final formKey = GlobalKey<FormState>();
 
@@ -144,9 +145,10 @@ class UserManagementCubit extends Cubit<UserManagementState> {
     });
   }
 
+  int currentPage = 1;
   UsersModel? usersModel;
+
   getAllUsersInUserManage({
-    int? pageNumber,
     int? areaId,
     int? cityId,
     int? organizationId,
@@ -157,8 +159,9 @@ class UserManagementCubit extends Cubit<UserManagementState> {
     int? providerId,
   }) {
     emit(AllUsersLoadingState());
+
     DioHelper.getData(url: "users/pagination", query: {
-      'pageNumber': pageNumber,
+      'pageNumber': currentPage,
       'pageSize': 10,
       'country': countryController.text,
       'area': areaId,
@@ -168,22 +171,64 @@ class UserManagementCubit extends Cubit<UserManagementState> {
       'floor': floorId,
       'section': sectionId,
       'point': pointId,
-      'role': roleController.text,
+      'role': roleIdController.text,
       'search': searchController.text,
       'provider': providerId,
     }).then((value) {
-      usersModel = UsersModel.fromJson(value!.data);
+      final newUsers = UsersModel.fromJson(value!.data);
+
+      if (usersModel == null) {
+        usersModel = newUsers;
+      } else {
+        usersModel?.data?.users?.addAll(newUsers.data?.users ?? []);
+        usersModel?.data?.currentPage = newUsers.data?.currentPage;
+        usersModel?.data?.totalPages = newUsers.data?.totalPages;
+      }
+
       emit(AllUsersSuccessState(usersModel!));
     }).catchError((error) {
       emit(AllUsersErrorState(error.toString()));
     });
   }
 
+  void initialize() {
+    scrollController = ScrollController()
+      ..addListener(() {
+        if (scrollController.position.atEdge &&
+            scrollController.position.pixels != 0) {
+          currentPage++;
+          getAllUsersInUserManage();
+        }
+      });
+  }
+
   DeleteUserModel? deleteUserModel;
+  List<User> deletedUsers = [];
+
   userDelete(int id) {
     emit(UserDeleteLoadingState());
+
     DioHelper.postData(url: 'users/delete/$id', data: {'id': id}).then((value) {
       deleteUserModel = DeleteUserModel.fromJson(value!.data);
+
+      final deletedUser = usersModel?.data?.users?.firstWhere(
+        (user) => user.id == id,
+      );
+
+      if (deletedUser != null) {
+        // Remove from main list
+        usersModel?.data?.users?.removeWhere((user) => user.id == id);
+
+        // Add to deleted list
+        deletedUsers.insert(0, deletedUser);
+
+        //  Reload current page to refill to 10 users
+        if (currentPage == 1) {
+          usersModel = null;
+          getAllUsersInUserManage();
+        }
+      }
+
       emit(UserDeleteSuccessState(deleteUserModel!));
     }).catchError((error) {
       emit(UserDeleteErrorState(error.toString()));
@@ -203,10 +248,44 @@ class UserManagementCubit extends Cubit<UserManagementState> {
 
   restoreDeletedUser(int id) {
     emit(RestoreUsersLoadingState());
+
     DioHelper.postData(url: 'users/restore/$id', data: {'id': id})
         .then((value) {
-      final message = value?.data['message'] ?? "restored successfully";
-      emit(RestoreUsersSuccessState(message));
+      final responseMessage = value?.data['message'] ?? "Restored successfully";
+
+      // Find and process the restored user
+      final restoredData = deletedListModel?.data?.firstWhere(
+        (data) => data.id == id,
+      );
+
+      if (restoredData != null) {
+        // Remove from deleted list
+        deletedListModel?.data?.removeWhere((data) => data.id == id);
+
+        // Initialize users list if null
+        usersModel?.data?.users ??= [];
+
+        // Convert to User object
+        final restoredUser = User.fromJson(restoredData.toJson());
+
+        // Find the correct position to insert (sorted by ID)
+        int insertIndex = usersModel!.data!.users!
+            .indexWhere((user) => user.id! > restoredUser.id!);
+
+        // If not found, add to end
+        if (insertIndex == -1) insertIndex = usersModel!.data!.users!.length;
+
+        // Insert at correct position
+        usersModel?.data?.users?.insert(insertIndex, restoredUser);
+
+        // Update pagination metadata
+        usersModel?.data?.totalCount = (usersModel?.data?.totalCount ?? 0) + 1;
+        usersModel?.data?.totalPages = ((usersModel?.data?.totalCount ?? 0) /
+                (usersModel?.data?.pageSize ?? 10))
+            .ceil();
+      }
+
+      emit(RestoreUsersSuccessState(responseMessage));
     }).catchError((error) {
       emit(RestoreUsersErrorState(error.toString()));
     });

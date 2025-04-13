@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -23,6 +24,7 @@ class CategoryManagmentBody extends StatefulWidget {
 class _CategoryManagmentBodyState extends State<CategoryManagmentBody> {
   @override
   void initState() {
+    context.read<CategoryManagementCubit>().initialize();
     context.read<CategoryManagementCubit>().getCategoryList();
     context.read<CategoryManagementCubit>().getAllDeletedCategory();
 
@@ -68,9 +70,8 @@ class _CategoryManagmentBodyState extends State<CategoryManagmentBody> {
       body: BlocConsumer<CategoryManagementCubit, CategoryManagementState>(
         listener: (context, state) {
           if (state is DeleteCategorySuccessState) {
-            context.read<CategoryManagementCubit>().getCategoryList();
             context.read<CategoryManagementCubit>().getAllDeletedCategory();
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.deleteCategoryModel.message!, color: Colors.blue);
           }
           if (state is ForceDeleteCategorySuccessState) {
             context.read<CategoryManagementCubit>().getCategoryList();
@@ -78,8 +79,6 @@ class _CategoryManagmentBodyState extends State<CategoryManagmentBody> {
             toast(text: state.message, color: Colors.blue);
           }
           if (state is RestoreCategorySuccessState) {
-            context.read<CategoryManagementCubit>().getCategoryList();
-            context.read<CategoryManagementCubit>().getAllDeletedCategory();
             toast(text: state.message, color: Colors.blue);
           }
 
@@ -97,21 +96,16 @@ class _CategoryManagmentBodyState extends State<CategoryManagmentBody> {
           }
         },
         builder: (context, state) {
-          if (context.read<CategoryManagementCubit>().categoryManagementModel ==
-                  null &&
-              context
-                      .read<CategoryManagementCubit>()
-                      .deletedCategoryListModel ==
-                  null) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: AppColor.primaryColor,
-              ),
-            );
-          }
-
-          return SafeArea(
-            child: SingleChildScrollView(
+          return Skeletonizer(
+            enabled: (context
+                        .read<CategoryManagementCubit>()
+                        .categoryManagementModel ==
+                    null &&
+                context
+                        .read<CategoryManagementCubit>()
+                        .deletedCategoryListModel ==
+                    null),
+            child: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
@@ -200,7 +194,22 @@ class _CategoryManagmentBodyState extends State<CategoryManagmentBody> {
                     Divider(
                       color: Colors.grey[300],
                     ),
-                    categoryDetailsBuild(context, selectedIndex!),
+                    Expanded(
+                      child: state is CategoryManagementLoadingState &&
+                              (context
+                                          .read<CategoryManagementCubit>()
+                                          .categoryManagementModel ==
+                                      null &&
+                                  context
+                                          .read<CategoryManagementCubit>()
+                                          .deletedCategoryListModel ==
+                                      null)
+                          ? Center(
+                              child: CircularProgressIndicator(
+                                  color: AppColor.primaryColor))
+                          : categoryDetailsBuild(context, selectedIndex!),
+                    ),
+                    verticalSpace(10),
                   ],
                 ),
               ),

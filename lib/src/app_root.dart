@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/src/app_cubit/app_cubit.dart';
 import 'package:smart_cleaning_application/src/app_cubit/app_states.dart';
 import 'package:smart_cleaning_application/core/routing/app_router.dart';
@@ -26,6 +27,7 @@ class AppRoot extends StatelessWidget {
           child: BlocBuilder<AppCubit, AppStates>(
             builder: (context, state) {
               return MaterialApp(
+                navigatorKey: AppNavigator.navigatorKey,
                 debugShowCheckedModeBanner: false,
                 locale: context.read<AppCubit>().locale,
                 localizationsDelegates: const [

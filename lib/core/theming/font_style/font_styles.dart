@@ -156,4 +156,9 @@ class TextStyles {
     fontWeight: FontWeightHelper.light,
     color: Colors.black,
   );
+  static TextStyle font9PrimRegular = TextStyle(
+    fontSize: 9.sp,
+    fontWeight: FontWeightHelper.regular,
+    color: AppColor.primaryColor,
+  );
 }

@@ -40,7 +40,7 @@ class Data {
   bool? hasPreviousPage;
   bool? hasNextPage;
   bool? succeeded;
-  List<DataDetails>? data;
+  List<BuildingDataDetails>? data;
 
   Data({this.currentPage, this.totalPages, this.totalCount, this.meta, this.pageSize, this.hasPreviousPage, this.hasNextPage, this.succeeded, this.data});
 
@@ -54,7 +54,7 @@ class Data {
     hasNextPage = json['hasNextPage'];
     succeeded = json['succeeded'];
     if (json['data'] != null) {
-      data = (json['data'] as List).map((v) => DataDetails.fromJson(v)).toList();
+      data = (json['data'] as List).map((v) => BuildingDataDetails.fromJson(v)).toList();
     }
   }
 
@@ -75,7 +75,7 @@ class Data {
   }
 }
 
-class DataDetails {
+class BuildingDataDetails {
   int? id;
   String? name;
   String? number;
@@ -88,9 +88,9 @@ class DataDetails {
   String? areaName;
   String? countryName;
 
-  DataDetails({this.id, this.name, this.number, this.description, this.organizationId, this.organizationName, this.cityId, this.cityName, this.areaId, this.areaName, this.countryName});
+  BuildingDataDetails({this.id, this.name, this.number, this.description, this.organizationId, this.organizationName, this.cityId, this.cityName, this.areaId, this.areaName, this.countryName});
 
-  DataDetails.fromJson(Map<String, dynamic> json) {
+  BuildingDataDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     number = json['number'];

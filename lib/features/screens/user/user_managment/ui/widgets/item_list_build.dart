@@ -35,11 +35,13 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
         decoration: BoxDecoration(shape: BoxShape.circle),
         clipBehavior: Clip.hardEdge,
         child: Image.network(
-          '${ApiConstants.apiBaseUrl}${context.read<UserManagementCubit>().usersModel!.data!.users![index].image}',
+          selectedIndex == 0
+              ? '${ApiConstants.apiBaseUrlImage}${context.read<UserManagementCubit>().usersModel!.data!.users![index].image}'
+              : '${ApiConstants.apiBaseUrlImage}${context.read<UserManagementCubit>().deletedListModel!.data![index].image}',
           fit: BoxFit.fill,
           errorBuilder: (context, error, stackTrace) {
             return Image.asset(
-              'assets/images/noImage.png',
+              'assets/images/person.png',
               fit: BoxFit.fill,
             );
           },

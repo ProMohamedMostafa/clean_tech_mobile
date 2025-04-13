@@ -6,6 +6,7 @@ import 'package:smart_cleaning_application/core/networking/api_constants/api_con
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/gallary_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/category_management_model.dart';
+import 'package:smart_cleaning_application/features/screens/stock/material_management/data/model/delete_material_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/data/model/deleted_material_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/data/model/material_management_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/logic/material_mangement_state.dart';
@@ -27,26 +28,72 @@ class MaterialManagementCubit extends Cubit<MaterialManagementState> {
   TextEditingController providerIdController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
+  ScrollController scrollController = ScrollController();
+  int currentPage = 1;
 
   MaterialManagementModel? materialManagementModel;
   getMaterialList({int? categoryId}) {
     emit(MaterialManagementLoadingState());
     DioHelper.getData(url: ApiConstants.materialUrl, query: {
+      'pageNumber': currentPage,
+      'pageSize': 10,
       'Search': searchController.text,
       'category': categoryId,
     }).then((value) {
-      materialManagementModel = MaterialManagementModel.fromJson(value!.data);
+      final newMaterial = MaterialManagementModel.fromJson(value!.data);
+
+      if (materialManagementModel == null) {
+        materialManagementModel = newMaterial;
+      } else {
+        materialManagementModel?.data.materials
+            .addAll(newMaterial.data?.materials ?? []);
+        materialManagementModel?.data.currentPage =
+            newMaterial.data.currentPage;
+        materialManagementModel?.data.totalPages = newMaterial.data.totalPages;
+      }
       emit(MaterialManagementSuccessState(materialManagementModel!));
     }).catchError((error) {
       emit(MaterialManagementErrorState(error.toString()));
     });
   }
 
+  void initialize() {
+    scrollController = ScrollController()
+      ..addListener(() {
+        if (scrollController.position.atEdge &&
+            scrollController.position.pixels != 0) {
+          currentPage++;
+          getMaterialList();
+        }
+      });
+  }
+
+  DeleteMaterialModel? deleteMaterialModel;
+  List<MaterialModel> deletedMaterials = [];
   deleteMaterial(int id) {
     emit(DeleteMaterialLoadingState());
     DioHelper.postData(url: 'materials/delete/$id').then((value) {
-      final message = value?.data['message'] ?? "deleted successfully";
-      emit(DeleteMaterialSuccessState(message!));
+      deleteMaterialModel = DeleteMaterialModel.fromJson(value!.data);
+
+      final deletedUser = materialManagementModel?.data.materials.firstWhere(
+        (user) => user.id == id,
+      );
+
+      if (deletedUser != null) {
+        // Remove from main list
+        materialManagementModel?.data.materials
+            .removeWhere((user) => user.id == id);
+
+        // Add to deleted list
+        deletedMaterials.insert(0, deletedUser);
+
+        //  Reload current page to refill to 10 users
+        if (currentPage == 1) {
+          materialManagementModel = null;
+          getMaterialList();
+        }
+      }
+      emit(DeleteMaterialSuccessState(deleteMaterialModel!));
     }).catchError((error) {
       emit(DeleteMaterialErrorState(error.toString()));
     });
@@ -67,6 +114,44 @@ class MaterialManagementCubit extends Cubit<MaterialManagementState> {
     emit(RestoreMaterialLoadingState());
     DioHelper.postData(url: 'materials/restore/$id').then((value) {
       final message = value?.data['message'] ?? "restored successfully";
+
+      // Find and process the restored user
+      final restoredData = deletedMaterialListModel?.data?.firstWhere(
+        (data) => data.id == id,
+      );
+
+      if (restoredData != null) {
+        // Remove from deleted list
+        deletedMaterialListModel?.data?.removeWhere((data) => data.id == id);
+
+        // Initialize users list if null
+        materialManagementModel?.data?.materials ??= [];
+
+        // Convert to User object
+        final restoredUser = MaterialModel.fromJson(restoredData.toJson());
+
+        // Find the correct position to insert (sorted by ID)
+        int insertIndex = materialManagementModel!.data.materials
+            .indexWhere((user) => user.id > restoredUser.id);
+
+        // If not found, add to end
+        if (insertIndex == -1) {
+          insertIndex = materialManagementModel!.data.materials.length;
+        }
+
+        // Insert at correct position
+        materialManagementModel?.data.materials
+            .insert(insertIndex, restoredUser);
+
+        // Update pagination metadata
+        materialManagementModel?.data.totalCount =
+            (materialManagementModel?.data.totalCount ?? 0) + 1;
+        materialManagementModel?.data.totalPages =
+            ((materialManagementModel?.data.totalCount ?? 0) /
+                    (materialManagementModel?.data.pageSize ?? 10))
+                .ceil();
+      }
+
       emit(RestoreMaterialSuccessState(message));
     }).catchError((error) {
       emit(RestoreMaterialErrorState(error.toString()));

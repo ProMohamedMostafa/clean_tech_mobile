@@ -145,7 +145,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                                                     ?.path ==
                                                 null
                                             ? AssetImage(
-                                                'assets/images/noImage.png',
+                                                'assets/images/person.png',
                                               )
                                             : FileImage(
                                                 File(context
@@ -178,7 +178,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                                     context.read<AddUserCubit>().image?.path ==
                                             null
                                         ? Image.asset(
-                                            'assets/images/noImage.png',
+                                            'assets/images/person.png',
                                             fit: BoxFit.fill,
                                           )
                                         : Image.file(
@@ -190,7 +190,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                                             errorBuilder:
                                                 (context, error, stackTrace) {
                                               return Image.asset(
-                                                'assets/images/noImage.png',
+                                                'assets/images/person.png',
                                                 fit: BoxFit.fill,
                                               );
                                             },
@@ -756,7 +756,8 @@ class _AddUserBodyState extends State<AddUserBody> {
                         final selectedId = context
                             .read<AddUserCubit>()
                             .usersModel
-                            ?.data?.users!
+                            ?.data
+                            ?.users!
                             .firstWhere(
                                 (manager) => manager.userName == selectedValue)
                             .id
@@ -805,7 +806,8 @@ class _AddUserBodyState extends State<AddUserBody> {
                       items: context
                                   .read<AddUserCubit>()
                                   .usersModel
-                            ?.data?.users!
+                                  ?.data
+                                  ?.users!
                                   .isEmpty ??
                               true
                           ? [
@@ -842,8 +844,9 @@ class _AddUserBodyState extends State<AddUserBody> {
                             ]
                           : context
                                   .read<AddUserCubit>()
-                                .usersModel
-                            ?.data?.users!
+                                  .usersModel
+                                  ?.data
+                                  ?.users!
                                   .map((e) => e.userName ?? 'Unknown')
                                   .toList() ??
                               [],

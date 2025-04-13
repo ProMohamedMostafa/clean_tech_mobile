@@ -164,20 +164,6 @@ class UserTaskDetailsErrorState extends UserManagementState {
   final String error;
   UserTaskDetailsErrorState(this.error);
 }
-//****************** */
-
-class UserDeleteInDetailsLoadingState extends UserManagementState {}
-
-class UserDeleteInDetailsSuccessState extends UserManagementState {
-  final DeleteUserModel deleteUserDetailsModel;
-
-  UserDeleteInDetailsSuccessState(this.deleteUserDetailsModel);
-}
-
-class UserDeleteInDetailsErrorState extends UserManagementState {
-  final String error;
-  UserDeleteInDetailsErrorState(this.error);
-}
 
 //**************************** */
 class GetNationalityLoadingState extends UserManagementState {}
@@ -236,6 +222,7 @@ class GetCityErrorState extends UserManagementState {
   final String error;
   GetCityErrorState(this.error);
 }
+
 class GetOrganizationLoadingState extends UserManagementState {}
 
 class GetOrganizationSuccessState extends UserManagementState {
@@ -305,7 +292,6 @@ class GetPointErrorState extends UserManagementState {
   GetPointErrorState(this.error);
 }
 
-
 //********************** */
 class HistoryLoadingState extends UserManagementState {}
 
@@ -336,7 +322,6 @@ class LeavesErrorState extends UserManagementState {
 
 //********************************* */
 
-
 class GetAllAreaLoadingState extends UserManagementState {}
 
 class GetAllAreaSuccessState extends UserManagementState {
@@ -350,10 +335,7 @@ class GetAllAreaErrorState extends UserManagementState {
   GetAllAreaErrorState(this.error);
 }
 
-
-
 //********************************* */
-
 
 class UserStatusLoadingState extends UserManagementState {}
 
@@ -396,4 +378,3 @@ class ShiftErrorState extends UserManagementState {
   final String error;
   ShiftErrorState(this.error);
 }
-

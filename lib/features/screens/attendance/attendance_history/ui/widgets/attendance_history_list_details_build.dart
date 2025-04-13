@@ -18,6 +18,7 @@ Widget attendanceHistoryListDetailsBuild(BuildContext context) {
     );
   } else {
     return ListView.separated(
+      controller: context.read<AttendanceHistoryCubit>().scrollController,
       shrinkWrap: true,
       physics: const ClampingScrollPhysics(),
       scrollDirection: Axis.vertical,

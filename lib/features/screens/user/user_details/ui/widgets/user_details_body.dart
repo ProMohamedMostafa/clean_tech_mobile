@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -16,7 +15,6 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
-import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/attendance_list_item_build.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/filter_attendance_dialog.dart';
@@ -24,6 +22,7 @@ import 'package:smart_cleaning_application/features/screens/user/user_details/ui
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/filter_task_dialog_.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/leaves_list_item_build.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/pdf.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/shift_list_item_build.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/task_list_item_build.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/work_location_list_item_build.dart';
@@ -132,7 +131,6 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
           S.of(context).userDetailsTitle,
           style: TextStyles.font16BlackSemiBold,
         ),
-        centerTitle: true,
         leading: customBackButton(context),
         actions: [
           IconButton(
@@ -157,13 +155,13 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
       ),
       body: BlocConsumer<UserManagementCubit, UserManagementState>(
         listener: (context, state) {
-          if (state is UserDeleteInDetailsSuccessState) {
+          if (state is UserDeleteSuccessState) {
             toast(
-                text: state.deleteUserDetailsModel.message!,
+                text: state.deleteUserModel.message!,
                 color: Colors.blue);
             context.pushNamedAndRemoveLastTwo(Routes.userManagmentScreen);
           }
-          if (state is UserDeleteInDetailsErrorState) {
+          if (state is UserDeleteErrorState) {
             toast(text: state.error, color: Colors.red);
           }
         },
@@ -189,6 +187,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
               ),
             );
           }
+
           return SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -211,12 +210,12 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                                   body: Center(
                                     child: PhotoView(
                                       imageProvider: NetworkImage(
-                                        '${ApiConstants.apiBaseUrl}${context.read<UserManagementCubit>().userDetailsModel!.data!.image}',
+                                        '${ApiConstants.apiBaseUrlImage}${context.read<UserManagementCubit>().userDetailsModel!.data!.image}',
                                       ),
                                       errorBuilder:
                                           (context, error, stackTrace) {
                                         return Image.asset(
-                                          'assets/images/noImage.png',
+                                          'assets/images/person.png',
                                           fit: BoxFit.fill,
                                         );
                                       },
@@ -237,11 +236,11 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                             ),
                             child: ClipOval(
                               child: Image.network(
-                                '${ApiConstants.apiBaseUrl}${context.read<UserManagementCubit>().userDetailsModel!.data!.image}',
+                                '${ApiConstants.apiBaseUrlImage}${context.read<UserManagementCubit>().userDetailsModel!.data!.image}',
                                 fit: BoxFit.fill,
                                 errorBuilder: (context, error, stackTrace) {
                                   return Image.asset(
-                                    'assets/images/noImage.png',
+                                    'assets/images/person.png',
                                     fit: BoxFit.fill,
                                   );
                                 },
@@ -1227,8 +1226,8 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
     List<String> valuesAttendance = [
       userAttendanceDetails?.data?.map((e) => e.status).join("\n") ?? "",
       userAttendanceDetails?.data?.map((e) => e.date).join("\n") ?? "",
-      userAttendanceDetails?.data?.map((e) => e.shiftStart).join("\n") ?? "",
-      userAttendanceDetails?.data?.map((e) => e.shiftEnd).join("\n") ?? "",
+      userAttendanceDetails?.data?.map((e) => e.startShift).join("\n") ?? "",
+      userAttendanceDetails?.data?.map((e) => e.endShift).join("\n") ?? "",
       userAttendanceDetails?.data
               ?.map((e) => formatTime(e.clockIn))
               .join("\n") ??

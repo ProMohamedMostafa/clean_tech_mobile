@@ -4,6 +4,7 @@ class AttendanceHistoryModel {
   bool? succeeded;
   String? message;
   dynamic error;
+  dynamic businessErrorCode;
   Data? data;
 
   AttendanceHistoryModel({
@@ -12,6 +13,7 @@ class AttendanceHistoryModel {
     this.succeeded,
     this.message,
     this.error,
+    this.businessErrorCode,
     this.data,
   });
 
@@ -21,6 +23,7 @@ class AttendanceHistoryModel {
     succeeded = json['succeeded'];
     message = json['message'];
     error = json['error'];
+    businessErrorCode = json['businessErrorCode'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
@@ -31,6 +34,7 @@ class AttendanceHistoryModel {
     map['succeeded'] = succeeded;
     map['message'] = message;
     map['error'] = error;
+    map['businessErrorCode'] = businessErrorCode;
     if (data != null) {
       map['data'] = data!.toJson();
     }
@@ -98,12 +102,12 @@ class UserData {
   String? lastName;
   String? userName;
   String? role;
-  String? shiftStart;
-  String? shiftEnd;
-  String? date;
+  String? startShift;
+  String? endShift;
   String? clockIn;
   String? clockOut;
   String? duration;
+  String? date;
   String? status;
 
   UserData({
@@ -112,12 +116,12 @@ class UserData {
     this.lastName,
     this.userName,
     this.role,
-    this.shiftStart,
-    this.shiftEnd,
-    this.date,
+    this.startShift,
+    this.endShift,
     this.clockIn,
     this.clockOut,
     this.duration,
+    this.date,
     this.status,
   });
 
@@ -127,12 +131,12 @@ class UserData {
     lastName = json['lastName'];
     userName = json['userName'];
     role = json['role'];
-    shiftStart = json['shiftStart'];
-    shiftEnd = json['shiftEnd'];
-    date = json['date'];
+    startShift = json['startShift'];
+    endShift = json['endShift'];
     clockIn = json['clockIn'];
     clockOut = json['clockOut'];
     duration = json['duration'];
+    date = json['date'];
     status = json['status'];
   }
 
@@ -143,12 +147,12 @@ class UserData {
     map['lastName'] = lastName;
     map['userName'] = userName;
     map['role'] = role;
-    map['shiftStart'] = shiftStart;
-    map['shiftEnd'] = shiftEnd;
-    map['date'] = date;
+    map['startShift'] = startShift;
+    map['endShift'] = endShift;
     map['clockIn'] = clockIn;
     map['clockOut'] = clockOut;
     map['duration'] = duration;
+    map['date'] = date;
     map['status'] = status;
     return map;
   }

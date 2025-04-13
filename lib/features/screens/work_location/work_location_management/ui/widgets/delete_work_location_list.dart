@@ -38,8 +38,10 @@ Widget deleteOrganizationListBuild(BuildContext context, int selectedIndex) {
     );
   } else {
     return ListView.separated(
+      controller: selectedIndex == 0
+          ? context.read<WorkLocationCubit>().scrollController
+          : null,
       shrinkWrap: true,
-      physics: const ClampingScrollPhysics(),
       scrollDirection: Axis.vertical,
       itemCount: deletedListData.length,
       separatorBuilder: (context, index) {

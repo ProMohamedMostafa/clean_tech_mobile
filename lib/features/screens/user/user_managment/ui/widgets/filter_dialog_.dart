@@ -457,6 +457,23 @@ class CustomFilterUserDialog {
                           style: TextStyles.font16BlackRegular,
                         ),
                         CustomDropDownList(
+                          
+                      onPressed: (selectedValue) {
+                        final selectedId = context
+                            .read<UserManagementCubit>()
+                            .roleModel
+                            ?.data
+                            ?.firstWhere(
+                              (role) => role.name == selectedValue,
+                            )
+                            .id
+                            ?.toString();
+
+                        if (selectedId != null) {
+                          context.read<UserManagementCubit>().roleIdController.text =
+                              selectedId;
+                        }
+                      },
                           hint: 'Select Role',
                           items: context
                                       .read<UserManagementCubit>()

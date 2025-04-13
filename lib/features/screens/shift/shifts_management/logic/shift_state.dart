@@ -5,6 +5,7 @@ import 'package:smart_cleaning_application/features/screens/shift/shift_details/
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_section_details.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/all_shifts_deleted_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/all_shifts_model.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/delete_shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/shift_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/shift_users_details.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
@@ -61,8 +62,8 @@ class ShiftUsersDetailsErrorState extends ShiftState {
 class ShiftDeleteLoadingState extends ShiftState {}
 
 class ShiftDeleteSuccessState extends ShiftState {
-  final String message;
-  ShiftDeleteSuccessState(this.message);
+  final DeleteShiftModel deleteShiftModel;
+  ShiftDeleteSuccessState(this.deleteShiftModel);
 }
 
 class ShiftDeleteErrorState extends ShiftState {

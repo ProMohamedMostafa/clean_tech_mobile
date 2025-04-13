@@ -18,8 +18,10 @@ Widget userDetailsBuild(BuildContext context, int selectedIndex) {
     );
   } else {
     return ListView.builder(
+      controller: selectedIndex == 0
+          ? context.read<UserManagementCubit>().scrollController
+          : null,
       shrinkWrap: true,
-      physics: const ClampingScrollPhysics(),
       scrollDirection: Axis.vertical,
       itemCount: usersData.length,
       itemBuilder: (context, index) {

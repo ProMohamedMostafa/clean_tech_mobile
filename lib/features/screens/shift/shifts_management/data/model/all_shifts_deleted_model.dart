@@ -4,6 +4,7 @@ class AllShiftsDeletedModel {
   bool? succeeded;
   String? message;
   String? error;
+  String? businessErrorCode;
   List<Data>? data;
 
   AllShiftsDeletedModel(
@@ -12,6 +13,7 @@ class AllShiftsDeletedModel {
       this.succeeded,
       this.message,
       this.error,
+      this.businessErrorCode,
       this.data});
 
   AllShiftsDeletedModel.fromJson(Map<String, dynamic> json) {
@@ -20,21 +22,23 @@ class AllShiftsDeletedModel {
     succeeded = json['succeeded'];
     message = json['message'];
     error = json['error'];
+    businessErrorCode = json['businessErrorCode'];
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add( Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['statusCode'] = statusCode;
     data['meta'] = meta;
     data['succeeded'] = succeeded;
     data['message'] = message;
     data['error'] = error;
+    data['businessErrorCode'] = businessErrorCode;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -49,8 +53,6 @@ class Data {
   String? endDate;
   String? startTime;
   String? endTime;
-  String? createdAt;
-  String? updatedAt;
 
   Data(
       {this.id,
@@ -58,9 +60,7 @@ class Data {
       this.startDate,
       this.endDate,
       this.startTime,
-      this.endTime,
-      this.createdAt,
-      this.updatedAt});
+      this.endTime});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -69,20 +69,16 @@ class Data {
     endDate = json['endDate'];
     startTime = json['startTime'];
     endTime = json['endTime'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
     data['startDate'] = startDate;
     data['endDate'] = endDate;
     data['startTime'] = startTime;
     data['endTime'] = endTime;
-    data['createdAt'] = createdAt;
-    data['updatedAt'] = updatedAt;
     return data;
   }
 }

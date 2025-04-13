@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
@@ -20,7 +21,12 @@ class TransactionManagmentBody extends StatefulWidget {
 class _TransactionManagmentBodyState extends State<TransactionManagmentBody> {
   @override
   void initState() {
+    context.read<TransactionManagementCubit>().initialize();
+    context.read<TransactionManagementCubit>().initializeIn();
+    context.read<TransactionManagementCubit>().initializeOut();
     context.read<TransactionManagementCubit>().getTransactionList();
+    context.read<TransactionManagementCubit>().getTransactionInList();
+    context.read<TransactionManagementCubit>().getTransactionOutList();
     context.read<TransactionManagementCubit>().getUsers();
     context.read<TransactionManagementCubit>().getCategoryList();
     context.read<TransactionManagementCubit>().getProviders();
@@ -42,19 +48,20 @@ class _TransactionManagmentBodyState extends State<TransactionManagmentBody> {
           BlocConsumer<TransactionManagementCubit, TransactionManagementState>(
         listener: (context, state) {},
         builder: (context, state) {
-          if (context
-                  .read<TransactionManagementCubit>()
-                  .transactionManagementModel ==
-              null) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: AppColor.primaryColor,
-              ),
-            );
-          }
-
-          return SafeArea(
-            child: SingleChildScrollView(
+          return Skeletonizer(
+            enabled: (context
+                        .read<TransactionManagementCubit>()
+                        .transactionManagementModel ==
+                    null ||
+                context
+                        .read<TransactionManagementCubit>()
+                        .transactionManagementInModel ==
+                    null ||
+                context
+                        .read<TransactionManagementCubit>()
+                        .transactionManagementOutModel ==
+                    null),
+            child: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
@@ -105,10 +112,10 @@ class _TransactionManagmentBodyState extends State<TransactionManagmentBody> {
                                     children: [
                                       Text(
                                         index == 0
-                                            ? "${context.read<TransactionManagementCubit>().transactionManagementModel?.data!.transactions.length ?? 0}"
+                                            ? "${context.read<TransactionManagementCubit>().transactionManagementModel?.data.data.length ?? 0}"
                                             : index == 1
-                                                ? "${context.read<TransactionManagementCubit>().transactionManagementModel?.data!.transactions.where((type) => type.typeId == 0).length ?? 0}"
-                                                : "${context.read<TransactionManagementCubit>().transactionManagementModel?.data!.transactions.where((type) => type.typeId == 1).length ?? 0}",
+                                                ? "${context.read<TransactionManagementCubit>().transactionManagementInModel?.data.data.length ?? 0}"
+                                                : "${context.read<TransactionManagementCubit>().transactionManagementOutModel?.data.data.length ?? 0}",
                                         style: TextStyle(
                                           fontSize: 13.sp,
                                           color: isSelected
@@ -143,7 +150,26 @@ class _TransactionManagmentBodyState extends State<TransactionManagmentBody> {
                     Divider(
                       color: Colors.grey[300],
                     ),
-                    transactionDetailsBuild(context, selectedIndex!),
+                    Expanded(
+                      child: state is TransactionManagementLoadingState &&
+                              (context
+                                          .read<TransactionManagementCubit>()
+                                          .transactionManagementModel ==
+                                      null ||
+                                  context
+                                          .read<TransactionManagementCubit>()
+                                          .transactionManagementInModel ==
+                                      null ||
+                                  context
+                                          .read<TransactionManagementCubit>()
+                                          .transactionManagementOutModel ==
+                                      null)
+                          ? Center(
+                              child: CircularProgressIndicator(
+                                  color: AppColor.primaryColor))
+                          : transactionDetailsBuild(context, selectedIndex!),
+                    ),
+                    verticalSpace(10),
                   ],
                 ),
               ),

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/features/layout/main_layout/logic/bottom_navbar_states.dart';
-import 'package:smart_cleaning_application/features/screens/calendar/calendar_screen.dart';
+import 'package:smart_cleaning_application/features/screens/calendar/ui/calendar_screen.dart';
+import 'package:smart_cleaning_application/features/screens/calendar/logic/calendar_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/screen/home_screen.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/screen/integrations_screen.dart';
 import 'package:smart_cleaning_application/features/screens/settings/logic/settings_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/settings/ui/screen/settings_screen.dart';
-import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_cubit.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class BottomNavbarCubit extends Cubit<BottomNavbarStates> {
@@ -26,7 +26,7 @@ class BottomNavbarCubit extends Cubit<BottomNavbarStates> {
     ),
     const IntegrationsScreen(),
     BlocProvider(
-      create: (context) => TaskManagementCubit()..getAllTasks(),
+      create: (context) => CalendarCubit()..getAllTasks(),
       child: const CalendarScreen(),
     ),
     BlocProvider(

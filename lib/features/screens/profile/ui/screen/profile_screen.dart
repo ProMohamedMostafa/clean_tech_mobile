@@ -148,12 +148,12 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   body: Center(
                                     child: PhotoView(
                                       imageProvider: NetworkImage(
-                                        '${ApiConstants.apiBaseUrl}${context.read<ProfileCubit>().profileModel!.data!.image}',
+                                        '${ApiConstants.apiBaseUrlImage}${context.read<ProfileCubit>().profileModel!.data!.image}',
                                       ),
                                       errorBuilder:
                                           (context, error, stackTrace) {
                                         return Image.asset(
-                                          'assets/images/noImage.png',
+                                          'assets/images/person.png',
                                           fit: BoxFit.fill,
                                         );
                                       },

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
@@ -22,6 +23,8 @@ class AttendanceLeavesBody extends StatefulWidget {
 class _AttendanceLeavesBodyState extends State<AttendanceLeavesBody> {
   @override
   void initState() {
+    context.read<AttendanceLeavesCubit>().initialize();
+
     context.read<AttendanceLeavesCubit>()
       ..getAllLeaves()
       ..getRole()
@@ -78,20 +81,13 @@ class _AttendanceLeavesBodyState extends State<AttendanceLeavesBody> {
           body: BlocConsumer<AttendanceLeavesCubit, AttendanceLeavesState>(
             listener: (context, state) {},
             builder: (context, state) {
-              if (context
-                      .read<AttendanceLeavesCubit>()
-                      .attendanceLeavesModel
-                      ?.data ==
-                  null) {
-                return Center(
-                  child: CircularProgressIndicator(
-                    color: AppColor.primaryColor,
-                  ),
-                );
-              }
-              return SafeArea(
-                  child: SingleChildScrollView(
-                child: Column(
+              return Skeletonizer(
+                enabled: context
+                        .read<AttendanceLeavesCubit>()
+                        .attendanceLeavesModel ==
+                    null,
+                child: SafeArea(
+                    child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     verticalSpace(15),
@@ -100,12 +96,23 @@ class _AttendanceLeavesBodyState extends State<AttendanceLeavesBody> {
                       child: attendanceLeavesFilterAndSearchBuild(
                           context, context.read<AttendanceLeavesCubit>()),
                     ),
-                    verticalSpace(15),
-                    attendanceLeavesListDetailsBuild(context),
-                    verticalSpace(30)
+                    verticalSpace(10),
+                    Divider(color: Colors.grey[300]),
+                    Expanded(
+                      child: state is LeavesLoadingState &&
+                              (context
+                                      .read<AttendanceLeavesCubit>()
+                                      .attendanceLeavesModel ==
+                                  null)
+                          ? Center(
+                              child: CircularProgressIndicator(
+                                  color: AppColor.primaryColor))
+                          : attendanceLeavesListDetailsBuild(context),
+                    ),
+                    verticalSpace(10),
                   ],
-                ),
-              ));
+                )),
+              );
             },
           ),
         );

@@ -23,8 +23,10 @@ Widget categoryDetailsBuild(BuildContext context, int selectedIndex) {
     );
   } else {
     return ListView.separated(
+      controller: selectedIndex == 0
+          ? context.read<CategoryManagementCubit>().scrollController
+          : null,
       shrinkWrap: true,
-      physics: const ClampingScrollPhysics(),
       scrollDirection: Axis.vertical,
       itemCount: categoriesData.length,
       separatorBuilder: (context, index) {

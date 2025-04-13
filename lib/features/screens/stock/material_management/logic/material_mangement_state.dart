@@ -1,5 +1,6 @@
 import 'package:share_plus/share_plus.dart';
 import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/category_management_model.dart';
+import 'package:smart_cleaning_application/features/screens/stock/material_management/data/model/delete_material_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/data/model/deleted_material_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/data/model/material_management_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/view_material/data/model/material_details_model.dart';
@@ -26,9 +27,9 @@ class MaterialManagementErrorState extends MaterialManagementState {
 class DeleteMaterialLoadingState extends MaterialManagementState {}
 
 class DeleteMaterialSuccessState extends MaterialManagementState {
-  final String message;
+  final DeleteMaterialModel deleteMaterialModel;
 
-  DeleteMaterialSuccessState(this.message);
+  DeleteMaterialSuccessState(this.deleteMaterialModel);
 }
 
 class DeleteMaterialErrorState extends MaterialManagementState {
@@ -148,6 +149,7 @@ class ReduceMaterialErrorState extends MaterialManagementState {
   final String error;
   ReduceMaterialErrorState(this.error);
 }
+
 //*************************** */
 class ImageSelectedState extends MaterialManagementState {
   final XFile image;

@@ -578,9 +578,60 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
       ),
       body: BlocConsumer<WorkLocationCubit, WorkLocationState>(
         listener: (context, state) {
+          if (state is AreaDeleteSuccessState) {
+            toast(text: state.deleteAreaModel.message!, color: Colors.blue);
+            context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
+                arguments: 0);
+          }
+          if (state is AreaDeleteErrorState) {
+            toast(text: state.error, color: Colors.red);
+          }
+          if (state is CityDeleteSuccessState) {
+            toast(text: state.deleteCityModel.message!, color: Colors.blue);
+            context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
+                arguments: 1);
+          }
+          if (state is CityDeleteErrorState) {
+            toast(text: state.error, color: Colors.red);
+          }
+          if (state is OrganizationDeleteSuccessState) {
+            toast(
+                text: state.deleteOrganizationModel.message!,
+                color: Colors.blue);
+            context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
+                arguments: 2);
+          }
+          if (state is OrganizationDeleteErrorState) {
+            toast(text: state.error, color: Colors.red);
+          }
+          if (state is BuildingDeleteSuccessState) {
+            toast(text: state.deleteBuildingModel.message!, color: Colors.blue);
+            context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
+                arguments: 3);
+          }
+          if (state is BuildingDeleteErrorState) {
+            toast(text: state.error, color: Colors.red);
+          }
+          if (state is FloorDeleteSuccessState) {
+            toast(text: state.deleteFloorModel.message!, color: Colors.blue);
+            context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
+                arguments: 4);
+          }
+          if (state is FloorDeleteErrorState) {
+            toast(text: state.error, color: Colors.red);
+          }
+          if (state is SectionDeleteSuccessState) {
+            toast(text: state.deleteSectionModel.message!, color: Colors.blue);
+            context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
+                arguments: 5);
+          }
+          if (state is SectionDeleteErrorState) {
+            toast(text: state.error, color: Colors.red);
+          }
           if (state is PointDeleteSuccessState) {
-            toast(text: state.message, color: Colors.blue);
-            context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen);
+            toast(text: state.deletePointModel.message!, color: Colors.blue);
+            context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
+                arguments: 6);
           }
           if (state is PointDeleteErrorState) {
             toast(text: state.error, color: Colors.red);

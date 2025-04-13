@@ -51,6 +51,11 @@ class IntegrationsBody extends StatelessWidget {
           label: "Stock",
           image: 'assets/images/stock.png',
         ),
+      IntegrationItem(
+        onTap: () => context.pushNamed(Routes.activityScreen),
+        label: "Activity",
+        image: 'assets/images/activity.png',
+      ),
     ];
 
     return Scaffold(
@@ -58,15 +63,16 @@ class IntegrationsBody extends StatelessWidget {
         title: Text("Integrations"),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              verticalSpace(30),
-              Expanded(
-                child: GridView.builder(
-                  physics: const BouncingScrollPhysics(),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 40),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                verticalSpace(30),
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     mainAxisSpacing: 24.h,
@@ -83,8 +89,9 @@ class IntegrationsBody extends StatelessWidget {
                     );
                   },
                 ),
-              ),
-            ],
+                verticalSpace(30),
+              ],
+            ),
           ),
         ),
       ),

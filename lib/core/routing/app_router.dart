@@ -4,6 +4,8 @@ import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/features/layout/main_layout/logic/bottom_navbar_cubit.dart';
 import 'package:smart_cleaning_application/features/layout/main_layout/ui/screen/main_layout.dart';
 import 'package:smart_cleaning_application/features/layout/splash/splash_screen.dart';
+import 'package:smart_cleaning_application/features/screens/activity/logic/activity_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/activity/ui/screen/activity_screen.dart';
 import 'package:smart_cleaning_application/features/screens/assign/logic/assign_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/assign/ui/screen/assign_screen.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attedance_leaves_details/ui/screen/leaves_details_screen.dart';
@@ -88,7 +90,7 @@ import 'package:smart_cleaning_application/features/screens/auth/set_password/lo
 import 'package:smart_cleaning_application/features/screens/auth/set_password/ui/screen/set_password_screen.dart';
 import 'package:smart_cleaning_application/features/screens/auth/verify_account/logic/verify_account_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/auth/verify_account/ui/screen/verify_account.dart';
-import 'package:smart_cleaning_application/features/screens/calendar/calendar_screen.dart';
+import 'package:smart_cleaning_application/features/screens/calendar/ui/calendar_screen.dart';
 import 'package:smart_cleaning_application/features/screens/change_password/logic/change_password_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/change_password/ui/screen/change_password_screen.dart';
 import 'package:smart_cleaning_application/features/screens/user/edit_user/logic/edit_user_cubit.dart';
@@ -590,6 +592,14 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (context) => TransactionManagementCubit(),
             child: const TransactionManagmentScreen(),
+          ),
+        );
+
+      case Routes.activityScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => ActivityCubit(),
+            child: const ActivityScreen(),
           ),
         );
       default:

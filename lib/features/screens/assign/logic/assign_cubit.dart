@@ -128,7 +128,8 @@ class AssignCubit extends Cubit<AssignStates> {
     });
   }
 
-  assignUserShift(List<int>? selectedShiftsIds, List<int>? selectedUsersIds ,{int? selectedUserId}) {
+  assignUserShift(List<int>? selectedShiftsIds, List<int>? selectedUsersIds,
+      {int? selectedUserId}) {
     emit(AssignLoadingState());
     DioHelper.postData(url: ApiConstants.assignShiftUrl, data: {
       "shiftIds": selectedShiftsIds,
@@ -144,7 +145,7 @@ class AssignCubit extends Cubit<AssignStates> {
   assignOrganizationShift(int? locationId, List<int>? selectedShiftsIds) {
     emit(AssignLoadingState());
     DioHelper.postData(url: ApiConstants.assignOrganizationShiftUrl, data: {
-      "organizationId": [locationId],
+      "organizationId": locationId,
       "shiftIds": selectedShiftsIds,
     }).then((value) {
       assignModel = AssignModel.fromJson(value!.data);
@@ -157,7 +158,7 @@ class AssignCubit extends Cubit<AssignStates> {
   assignBuildingShift(int? locationId, List<int>? selectedShiftsIds) {
     emit(AssignLoadingState());
     DioHelper.postData(url: ApiConstants.assignBuildingShiftUrl, data: {
-      "buildingId": [locationId],
+      "buildingId": locationId,
       "shiftIds": selectedShiftsIds,
     }).then((value) {
       assignModel = AssignModel.fromJson(value!.data);
@@ -170,7 +171,7 @@ class AssignCubit extends Cubit<AssignStates> {
   assignFloorShift(int? locationId, List<int>? selectedShiftsIds) {
     emit(AssignLoadingState());
     DioHelper.postData(url: ApiConstants.assignFloorShiftUrl, data: {
-      "floorId": [locationId],
+      "floorId": locationId,
       "shiftIds": selectedShiftsIds,
     }).then((value) {
       assignModel = AssignModel.fromJson(value!.data);
@@ -183,7 +184,7 @@ class AssignCubit extends Cubit<AssignStates> {
   assignSectionShift(int? locationId, List<int>? selectedShiftsIds) {
     emit(AssignLoadingState());
     DioHelper.postData(url: ApiConstants.assignSectionShiftUrl, data: {
-      "sectionId": [locationId],
+      "sectionId": locationId,
       "shiftIds": selectedShiftsIds,
     }).then((value) {
       assignModel = AssignModel.fromJson(value!.data);
@@ -193,7 +194,7 @@ class AssignCubit extends Cubit<AssignStates> {
     });
   }
 
- AllShiftsModel? allShiftsModel;
+  AllShiftsModel? allShiftsModel;
   getAllShifts({
     int? areaId,
     int? cityId,
@@ -203,7 +204,9 @@ class AssignCubit extends Cubit<AssignStates> {
     int? sectionId,
   }) {
     emit(ShiftLoadingState());
-    DioHelper.getData(url: ApiConstants.allShiftsUrl,).then((value) {
+    DioHelper.getData(
+      url: ApiConstants.allShiftsUrl,
+    ).then((value) {
       allShiftsModel = AllShiftsModel.fromJson(value!.data);
       emit(ShiftSuccessState(allShiftsModel!));
     }).catchError((error) {

@@ -569,10 +569,10 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                 .image ==
                                             null
                                         ? AssetImage(
-                                            'assets/images/noImage.png',
+                                            'assets/images/person.png',
                                           )
                                         : NetworkImage(
-                                            '${ApiConstants.apiBaseUrl}${context.read<TaskManagementCubit>().usersModel!.data!.users![index].image}',
+                                            '${ApiConstants.apiBaseUrlImage}${context.read<TaskManagementCubit>().usersModel!.data!.users![index].image}',
                                           )),
                                 horizontalSpace(10),
                                 Column(
@@ -665,7 +665,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                     body: Center(
                                       child: PhotoView(
                                         imageProvider: NetworkImage(
-                                          '${ApiConstants.apiBaseUrl}${file.path}',
+                                          '${ApiConstants.apiBaseUrlImage}${file.path}',
                                         ),
                                         errorBuilder:
                                             (context, error, stackTrace) {
@@ -698,7 +698,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                   borderRadius: BorderRadius.circular(10.r),
                                 ),
                                 child: Image.network(
-                                  '${ApiConstants.apiBaseUrl}${file.path}',
+                                  '${ApiConstants.apiBaseUrlImage}${file.path}',
                                   fit: BoxFit.fill,
                                   errorBuilder: (context, error, stackTrace) {
                                     return Image.asset(
@@ -763,83 +763,81 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(5),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (contextt) => Scaffold(
-                                                appBar: AppBar(
-                                                  leading:
-                                                      customBackButton(context),
-                                                ),
-                                                body: Center(
-                                                  child: PhotoView(
-                                                    imageProvider: NetworkImage(
-                                                      '${ApiConstants.apiBaseUrl}${task.files}',
-                                                    ),
-                                                    errorBuilder: (context,
-                                                        error, stackTrace) {
-                                                      return Image.asset(
-                                                        'assets/images/noImage.png',
-                                                        fit: BoxFit.fill,
-                                                      );
-                                                    },
-                                                    backgroundDecoration:
-                                                        const BoxDecoration(
-                                                      color: Colors.white,
+                                      if (task.files != null &&
+                                          task.files!.isNotEmpty)
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (contextt) => Scaffold(
+                                                  appBar: AppBar(
+                                                    leading: customBackButton(
+                                                        context),
+                                                  ),
+                                                  body: Center(
+                                                    child: PhotoView(
+                                                      imageProvider:
+                                                          NetworkImage(
+                                                        '${ApiConstants.apiBaseUrlImage}${task.files!.first.path}',
+                                                      ),
+                                                      errorBuilder: (context,
+                                                          error, stackTrace) {
+                                                        return Image.asset(
+                                                          'assets/images/noImage.png',
+                                                          fit: BoxFit.fill,
+                                                        );
+                                                      },
+                                                      backgroundDecoration:
+                                                          const BoxDecoration(
+                                                        color: Colors.white,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
                                               ),
+                                            );
+                                          },
+                                          child: Container(
+                                            width: 50.w,
+                                            height: 50.h,
+                                            clipBehavior: Clip.hardEdge,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.grey[200],
                                             ),
-                                          );
-                                        },
-                                        child: Container(
-                                          width: 50.w,
-                                          height: 50.h,
-                                          clipBehavior: Clip.hardEdge,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Colors.purple,
-                                          ),
-                                          child: Image.network(
-                                            '${ApiConstants.apiBaseUrl}${task.files}',
-                                            fit: BoxFit.fill,
-                                            errorBuilder:
-                                                (context, error, stackTrace) {
-                                              return Image.asset(
-                                                'assets/images/noImage.png',
-                                                fit: BoxFit.fill,
-                                              );
-                                            },
+                                            child: Image.network(
+                                              '${ApiConstants.apiBaseUrlImage}${task.files!.first.path}',
+                                              fit: BoxFit.cover,
+                                              errorBuilder:
+                                                  (context, error, stackTrace) {
+                                                return Image.asset(
+                                                  'assets/images/noImage.png',
+                                                  fit: BoxFit.fill,
+                                                );
+                                              },
+                                            ),
                                           ),
                                         ),
-                                      ),
                                       horizontalSpace(10),
                                       Expanded(
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
                                           children: [
                                             Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  task.userName!,
+                                                  task.userName ?? '',
                                                   style: TextStyles
                                                       .font14BlackSemiBold,
                                                 ),
                                                 horizontalSpace(10),
                                                 Text(
-                                                  task.role!,
+                                                  task.role ?? '',
                                                   style: TextStyles
                                                       .font13greymedium,
                                                 ),
@@ -874,7 +872,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                               child: PhotoView(
                                                                 imageProvider:
                                                                     NetworkImage(
-                                                                  '${ApiConstants.apiBaseUrl}${task.files}',
+                                                                  '${ApiConstants.apiBaseUrlImage}${file.path}',
                                                                 ),
                                                                 errorBuilder:
                                                                     (context,
@@ -912,7 +910,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                                 Colors.black12),
                                                       ),
                                                       child: Image.network(
-                                                        '${ApiConstants.apiBaseUrl}${task.files}',
+                                                        '${ApiConstants.apiBaseUrlImage}${file.path}',
                                                         fit: BoxFit.fill,
                                                         errorBuilder: (context,
                                                             error, stackTrace) {
@@ -944,6 +942,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                 ),
                               );
                             }
+
                             return SizedBox.shrink();
                           },
                         ),

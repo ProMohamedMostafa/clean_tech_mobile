@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -21,34 +22,14 @@ class UserManagmentBody extends StatefulWidget {
 }
 
 class _UserManagmentBodyState extends State<UserManagmentBody> {
-  final ScrollController scrollController = ScrollController();
-
-  _onScroll() {
-    if (scrollController.position.pixels ==
-        scrollController.position.maxScrollExtent) {
-    //        int nextPage = (context.read<UserManagementCubit>().usersModel?.data?.pageNumber ?? 0) + 1;
-    // context.read<UserManagementCubit>().getAllUsersInUserManage(pageNumber: nextPage);
-  }
-      print('last************');
-      // if (!context.read<UserManagementCubit>().state.hasReachedMax) {
-      // context.read<UserManagementCubit>().getAllUsersInUserManage();
-      // }
-    }
-  
-
-  @override
-  void dispose() {
-    scrollController.removeListener(_onScroll);
-    scrollController.dispose();
-    super.dispose();
-  }
+  int? selectedIndex = 0;
 
   @override
   void initState() {
+    super.initState();
+    context.read<UserManagementCubit>().initialize();
     if (role == 'Admin') {
-      scrollController.addListener(_onScroll);
       context.read<UserManagementCubit>().getAllUsersInUserManage();
-
       context.read<UserManagementCubit>().getAllDeletedUser();
       context.read<UserManagementCubit>().getNationality();
       context.read<UserManagementCubit>().getRole();
@@ -63,18 +44,14 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
       context.read<UserManagementCubit>().getAllUsersInUserManage();
       context.read<UserManagementCubit>().getNationality();
     }
-    super.initState();
   }
 
-  int? selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: customBackButton(context),
-        title: Text(
-          'User Management',
-        ),
+        title: Text('User Management'),
       ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 30),
@@ -108,42 +85,28 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
             final errorMessage = state is AllUsersErrorState
                 ? state.error
                 : (state as DeletedUsersErrorState).error;
-
             toast(text: errorMessage, color: Colors.red);
-          } else if (state is UserDeleteSuccessState) {
-            toast(text: state.deleteUserModel.message!, color: Colors.blue);
-
-            context.read<UserManagementCubit>().getAllUsersInUserManage();
-            context.read<UserManagementCubit>().getAllDeletedUser();
           } else if (state is ForceDeleteUsersSuccessState ||
-              state is UserDeleteInDetailsSuccessState) {
+              state is UserDeleteSuccessState) {
             final message = (state is ForceDeleteUsersSuccessState)
                 ? state.message
-                : (state as UserDeleteInDetailsSuccessState)
-                    .deleteUserDetailsModel
-                    .message;
+                : (state as UserDeleteSuccessState).deleteUserModel.message;
             toast(text: message!, color: Colors.blue);
             context.read<UserManagementCubit>().getAllUsersInUserManage();
             context.read<UserManagementCubit>().getAllDeletedUser();
           }
           if (state is RestoreUsersSuccessState) {
             toast(text: state.message, color: Colors.blue);
-            context.read<UserManagementCubit>().getAllUsersInUserManage();
+          }
+          if (state is UserDeleteSuccessState) {
+            toast(text: state.deleteUserModel.message!, color: Colors.blue);
             context.read<UserManagementCubit>().getAllDeletedUser();
           }
         },
         builder: (context, state) {
-          if (context.read<UserManagementCubit>().usersModel == null &&
-              context.read<UserManagementCubit>().deletedListModel == null) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: AppColor.primaryColor,
-              ),
-            );
-          }
-
-          return SafeArea(
-            child: SingleChildScrollView(
+          return Skeletonizer(
+            enabled: context.read<UserManagementCubit>().usersModel == null,
+            child: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
@@ -157,11 +120,8 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
                       height: 45.h,
                       child: LayoutBuilder(
                         builder: (context, constraints) {
-                          // Total available width
                           double totalWidth = constraints.maxWidth;
-                          // Gap between the containers
                           double gap = 10;
-                          // Width for each container
                           double containerWidth = (totalWidth - gap) / 2;
 
                           return ListView.separated(
@@ -170,8 +130,7 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
                             shrinkWrap: true,
                             itemCount: (role == 'Admin') ? 2 : 1,
                             separatorBuilder: (context, index) {
-                              return SizedBox(
-                                  width: gap); // 10px gap between containers
+                              return SizedBox(width: gap);
                             },
                             itemBuilder: (context, index) {
                               bool isSelected = selectedIndex == index;
@@ -235,10 +194,17 @@ class _UserManagmentBodyState extends State<UserManagmentBody> {
                       ),
                     ),
                     verticalSpace(10),
-                    Divider(
-                      color: Colors.grey[300],
+                    Divider(color: Colors.grey[300]),
+                    Expanded(
+                      child: state is AllUsersLoadingState &&
+                              (context.read<UserManagementCubit>().usersModel ==
+                                  null)
+                          ? Center(
+                              child: CircularProgressIndicator(
+                                  color: AppColor.primaryColor))
+                          : userDetailsBuild(context, selectedIndex!),
                     ),
-                    userDetailsBuild(context, selectedIndex!),
+                    verticalSpace(10),
                   ],
                 ),
               ),

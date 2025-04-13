@@ -294,7 +294,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                           .taskDetailsModel!
                                           .data!
                                           .organizationName ??
-                                      '',
+                                      'Select organization',
                                   items: context
                                               .read<EditTaskCubit>()
                                               .allOrganizationModel
@@ -357,7 +357,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                           .taskDetailsModel!
                                           .data!
                                           .buildingName ??
-                                      '',
+                                      'Select building',
                                   items: context
                                               .read<EditTaskCubit>()
                                               .buildingModel
@@ -365,7 +365,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                               ?.data
                                               ?.isEmpty ??
                                           true
-                                      ? ['No building']
+                                      ? ['No buildings']
                                       : context
                                               .read<EditTaskCubit>()
                                               .buildingModel
@@ -542,7 +542,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                               ?.data
                                               ?.isEmpty ??
                                           true
-                                      ? ['No point']
+                                      ? ['No points']
                                       : context
                                               .read<EditTaskCubit>()
                                               .pointModel

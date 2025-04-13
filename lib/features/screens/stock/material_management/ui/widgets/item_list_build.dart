@@ -23,7 +23,7 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
             .read<MaterialManagementCubit>()
             .materialManagementModel!
             .data
-            .data[index]
+            .materials[index]
             .id,
       );
     },
@@ -50,7 +50,7 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                             .read<MaterialManagementCubit>()
                             .materialManagementModel!
                             .data
-                            .data[index]
+                            .materials[index]
                             .name
                         : context
                             .read<MaterialManagementCubit>()
@@ -68,7 +68,7 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                                   .read<MaterialManagementCubit>()
                                   .materialManagementModel!
                                   .data
-                                  .data[index]
+                                  .materials[index]
                                   .id,
                             );
                           },
@@ -145,7 +145,7 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                                   .read<MaterialManagementCubit>()
                                   .materialManagementModel!
                                   .data
-                                  .data[index]
+                                  .materials[index]
                                   .quantity
                                   .toString()
                               : context
@@ -158,7 +158,7 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                         ),
                         TextSpan(
                           text:
-                              ' ${selectedIndex == 0 ? context.read<MaterialManagementCubit>().materialManagementModel!.data.data[index].unit : context.read<MaterialManagementCubit>().deletedMaterialListModel!.data![index].unit}',
+                              ' ${selectedIndex == 0 ? context.read<MaterialManagementCubit>().materialManagementModel!.data.materials[index].unit : context.read<MaterialManagementCubit>().deletedMaterialListModel!.data![index].unit}',
                           style: TextStyles.font12GreyRegular
                               .copyWith(color: AppColor.primaryColor),
                         ),
@@ -179,7 +179,7 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                                   .read<MaterialManagementCubit>()
                                   .materialManagementModel!
                                   .data
-                                  .data[index]
+                                  .materials[index]
                                   .minThreshold
                                   .toString()
                               : context
@@ -192,7 +192,7 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                         ),
                         TextSpan(
                           text:
-                              ' ${selectedIndex == 0 ? context.read<MaterialManagementCubit>().materialManagementModel!.data.data[index].unit : context.read<MaterialManagementCubit>().deletedMaterialListModel!.data![index].unit}',
+                              ' ${selectedIndex == 0 ? context.read<MaterialManagementCubit>().materialManagementModel!.data.materials[index].unit : context.read<MaterialManagementCubit>().deletedMaterialListModel!.data![index].unit}',
                           style: TextStyles.font12GreyRegular
                               .copyWith(color: AppColor.primaryColor),
                         ),
@@ -218,7 +218,7 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                                   .read<MaterialManagementCubit>()
                                   .materialManagementModel!
                                   .data
-                                  .data[index]
+                                  .materials[index]
                                   .categoryName
                               : context
                                   .read<MaterialManagementCubit>()
@@ -243,7 +243,7 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                                       .read<MaterialManagementCubit>()
                                       .materialManagementModel!
                                       .data
-                                      .data[index]
+                                      .materials[index]
                                       .id,
                                 );
                               },
@@ -267,7 +267,7 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                                       .read<MaterialManagementCubit>()
                                       .materialManagementModel!
                                       .data
-                                      .data[index]
+                                      .materials[index]
                                       .id,
                                 );
                               },

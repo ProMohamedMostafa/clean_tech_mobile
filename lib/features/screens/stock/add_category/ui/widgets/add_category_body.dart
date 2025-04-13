@@ -148,8 +148,8 @@ class _AddCategoryBodyState extends State<AddCategoryBody> {
                           items: context
                                       .read<AddCategoryCubit>()
                                       .categoryManagementModel
-                                      ?.data
-                                      .categories
+                                      ?.data!
+                                      .categories!
                                       .isEmpty ??
                                   true
                               ? ['No category']
@@ -157,7 +157,7 @@ class _AddCategoryBodyState extends State<AddCategoryBody> {
                                       .read<AddCategoryCubit>()
                                       .categoryManagementModel
                                       ?.data
-                                      .categories
+                                      ?.categories!
                                       .map((e) => e.name)
                                       .toList() ??
                                   [],
@@ -165,8 +165,8 @@ class _AddCategoryBodyState extends State<AddCategoryBody> {
                             final selectedCategory = context
                                 .read<AddCategoryCubit>()
                                 .categoryManagementModel
-                                ?.data
-                                .categories
+                                ?.data!
+                                .categories!
                                 .firstWhere((category) =>
                                     category.name ==
                                     context

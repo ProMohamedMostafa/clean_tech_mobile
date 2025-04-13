@@ -47,7 +47,7 @@ class DataContainer {
   bool? hasPreviousPage;
   bool? hasNextPage;
   bool? succeeded;
-  List<DataItem>? data;
+  List<PointDataItem>? data;
 
   DataContainer({
     this.currentPage,
@@ -71,7 +71,7 @@ class DataContainer {
     hasNextPage = json['hasNextPage'];
     succeeded = json['succeeded'];
     if (json['data'] != null) {
-      data = (json['data'] as List).map((v) => DataItem.fromJson(v)).toList();
+      data = (json['data'] as List).map((v) => PointDataItem.fromJson(v)).toList();
     }
   }
 
@@ -92,7 +92,7 @@ class DataContainer {
   }
 }
 
-class DataItem {
+class PointDataItem {
   int? id;
   String? name;
   String? number;
@@ -114,7 +114,7 @@ class DataItem {
   String? areaName;
   String? countryName;
 
-  DataItem({
+  PointDataItem({
     this.id,
     this.name,
     this.number,
@@ -137,7 +137,7 @@ class DataItem {
     this.countryName,
   });
 
-  DataItem.fromJson(Map<String, dynamic> json) {
+  PointDataItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     number = json['number'];

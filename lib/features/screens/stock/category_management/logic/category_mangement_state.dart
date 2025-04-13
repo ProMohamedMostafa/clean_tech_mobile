@@ -1,4 +1,5 @@
 import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/category_management_model.dart';
+import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/delete_category_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/deleted_category_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/category_details_model.dart';
 
@@ -23,9 +24,9 @@ class CategoryManagementErrorState extends CategoryManagementState {
 class DeleteCategoryLoadingState extends CategoryManagementState {}
 
 class DeleteCategorySuccessState extends CategoryManagementState {
-  final String message;
+  final DeleteCategoryModel deleteCategoryModel;
 
-  DeleteCategorySuccessState(this.message);
+  DeleteCategorySuccessState(this.deleteCategoryModel);
 }
 
 class DeleteCategoryErrorState extends CategoryManagementState {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -23,6 +24,8 @@ class ShiftBody extends StatefulWidget {
 class _ShiftBodyState extends State<ShiftBody> {
   @override
   void initState() {
+    context.read<ShiftCubit>().initialize();
+
     if (role == 'Admin') {
       context.read<ShiftCubit>().getAllShifts();
       context.read<ShiftCubit>().getArea();
@@ -78,15 +81,12 @@ class _ShiftBodyState extends State<ShiftBody> {
             }
 
             if (state is ShiftDeleteSuccessState) {
-              toast(text: state.message, color: Colors.blue);
+              toast(text: state.deleteShiftModel.message!, color: Colors.blue);
 
-              context.read<ShiftCubit>().getAllShifts();
               context.read<ShiftCubit>().getAllDeletedShifts();
             }
             if (state is RestoreShiftSuccessState) {
               toast(text: state.message, color: Colors.blue);
-              context.read<ShiftCubit>().getAllShifts();
-              context.read<ShiftCubit>().getAllDeletedShifts();
             }
             if (state is ForceDeleteShiftSuccessState) {
               toast(text: state.message, color: Colors.blue);
@@ -95,16 +95,10 @@ class _ShiftBodyState extends State<ShiftBody> {
             }
           },
           builder: (context, state) {
-            final cubit = context.read<ShiftCubit>();
-            if (cubit.allShiftsModel == null ||
-                cubit.allShiftsDeletedModel == null) {
-              return const Center(
-                child: CircularProgressIndicator(color: AppColor.primaryColor),
-              );
-            }
-
-            return SafeArea(
-              child: SingleChildScrollView(
+            return Skeletonizer(
+              enabled: (context.read<ShiftCubit>().allShiftsModel == null &&
+                  context.read<ShiftCubit>().allShiftsDeletedModel == null),
+              child: SafeArea(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
@@ -128,7 +122,7 @@ class _ShiftBodyState extends State<ShiftBody> {
                               scrollDirection: Axis.horizontal,
                               physics: NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
-                              itemCount: role == 'Admin' ? 2 : 1,
+                              itemCount: (role == 'Admin') ? 2 : 1,
                               separatorBuilder: (context, index) {
                                 return SizedBox(
                                     width: gap); // 10px gap between containers
@@ -160,11 +154,11 @@ class _ShiftBodyState extends State<ShiftBody> {
                                           MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          role == 'Admin'
+                                          (role == 'Admin')
                                               ? index == 0
-                                                  ? "${context.read<ShiftCubit>().allShiftsModel!.data?.shifts!.length ?? 0}"
-                                                  : "${context.read<ShiftCubit>().allShiftsDeletedModel!.data?.length ?? 0}"
-                                              : "${context.read<ShiftCubit>().allShiftsModel!.data?.shifts!.length ?? 0}",
+                                                  ? "${context.read<ShiftCubit>().allShiftsModel?.data?.shifts!.length ?? 0}"
+                                                  : "${context.read<ShiftCubit>().allShiftsDeletedModel?.data?.length ?? 0}"
+                                              : "${context.read<ShiftCubit>().allShiftsModel?.data?.shifts!.length ?? 0}",
                                           style: TextStyle(
                                             fontSize: 13.sp,
                                             color: isSelected
@@ -199,7 +193,20 @@ class _ShiftBodyState extends State<ShiftBody> {
                       Divider(
                         color: Colors.grey[300],
                       ),
-                      shiftListDetailsBuild(context, selectedIndex!),
+                      Expanded(
+                        child: state is ShiftLoadingState &&
+                                (context.read<ShiftCubit>().allShiftsModel ==
+                                        null &&
+                                    context
+                                            .read<ShiftCubit>()
+                                            .allShiftsDeletedModel ==
+                                        null)
+                            ? Center(
+                                child: CircularProgressIndicator(
+                                    color: AppColor.primaryColor))
+                            : shiftListDetailsBuild(context, selectedIndex!),
+                      ),
+                      verticalSpace(10),
                     ],
                   ),
                 ),

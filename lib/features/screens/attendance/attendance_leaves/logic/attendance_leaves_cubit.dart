@@ -36,6 +36,8 @@ class AttendanceLeavesCubit extends Cubit<AttendanceLeavesState> {
   TextEditingController sectionController = TextEditingController();
   TextEditingController pointController = TextEditingController();
   TextEditingController providerController = TextEditingController();
+  ScrollController scrollController = ScrollController();
+  int currentPage = 1;
 
   AttendanceLeavesModel? attendanceLeavesModel;
   getAllLeaves({
@@ -51,6 +53,8 @@ class AttendanceLeavesCubit extends Cubit<AttendanceLeavesState> {
   }) {
     emit(LeavesLoadingState());
     DioHelper.getData(url: ApiConstants.leavesUrl, query: {
+      'pageNumber': currentPage,
+      'pageSize': 10,
       'Search': searchController.text,
       'History': false,
       'UserId': userId,
@@ -67,13 +71,30 @@ class AttendanceLeavesCubit extends Cubit<AttendanceLeavesState> {
       'PointId': pointId,
       'ProviderId': providerId
     }).then((value) {
-      attendanceLeavesModel = AttendanceLeavesModel.fromJson(value!.data);
+       final newLeaves = AttendanceLeavesModel.fromJson(value!.data);
+
+      if (attendanceLeavesModel == null) {
+        attendanceLeavesModel = newLeaves;
+      } else {
+        attendanceLeavesModel?.data?.leaves?.addAll(newLeaves.data?.leaves ?? []);
+        attendanceLeavesModel?.data?.currentPage = newLeaves.data?.currentPage;
+        attendanceLeavesModel?.data?.totalPages = newLeaves.data?.totalPages;
+      }
       emit(LeavesSuccessState(attendanceLeavesModel!));
     }).catchError((error) {
       emit(LeavesErrorState(error.toString()));
     });
   }
-
+  void initialize() {
+    scrollController = ScrollController()
+      ..addListener(() {
+        if (scrollController.position.atEdge &&
+            scrollController.position.pixels != 0) {
+          currentPage++;
+          getAllLeaves();
+        }
+      });
+  }
   UsersModel? usersModel;
   getAllUsers() {
     emit(AllUsersLoadingState());

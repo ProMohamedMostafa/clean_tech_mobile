@@ -4,77 +4,83 @@ class DeletedCategoryListModel {
   bool? succeeded;
   String? message;
   String? error;
-  String? businessErrorCode;
-  List<Data>? data;
+  int? businessErrorCode;
+  List<DeletedCategory>? data;
 
-  DeletedCategoryListModel(
-      {this.statusCode,
-      this.meta,
-      this.succeeded,
-      this.message,
-      this.error,
-      this.businessErrorCode,
-      this.data});
+  DeletedCategoryListModel({
+    this.statusCode,
+    this.meta,
+    this.succeeded,
+    this.message,
+    this.error,
+    this.businessErrorCode,
+    this.data,
+  });
 
-  DeletedCategoryListModel.fromJson(Map<String, dynamic> json) {
-    statusCode = json['statusCode'];
-    meta = json['meta'];
-    succeeded = json['succeeded'];
-    message = json['message'];
-    error = json['error'];
-    businessErrorCode = json['businessErrorCode'];
-    if (json['data'] != null) {
-      data = <Data>[];
-      json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
-      });
-    }
+  factory DeletedCategoryListModel.fromJson(Map<String, dynamic> json) {
+    return DeletedCategoryListModel(
+      statusCode: json['statusCode'],
+      meta: json['meta'],
+      succeeded: json['succeeded'],
+      message: json['message'],
+      error: json['error'],
+      businessErrorCode: json['businessErrorCode'],
+      data: json['data'] != null
+          ? List<DeletedCategory>.from(
+              json['data'].map((x) => DeletedCategory.fromJson(x)))
+          : [],
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['statusCode'] = statusCode;
-    data['meta'] = meta;
-    data['succeeded'] = succeeded;
-    data['message'] = message;
-    data['error'] = error;
-    data['businessErrorCode'] = businessErrorCode;
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
-    }
-    return data;
+    return {
+      'statusCode': statusCode,
+      'meta': meta,
+      'succeeded': succeeded,
+      'message': message,
+      'error': error,
+      'businessErrorCode': businessErrorCode,
+      'data': data?.map((x) => x.toJson()).toList(),
+    };
   }
 }
 
-class Data {
+class DeletedCategory {
   int? id;
   String? name;
   int? parentCategoryId;
   String? parentCategoryName;
   String? unit;
+  int? unitId;
 
-  Data(
-      {this.id,
-      this.name,
-      this.parentCategoryId,
-      this.parentCategoryName,
-      this.unit});
+  DeletedCategory({
+    this.id,
+    this.name,
+    this.parentCategoryId,
+    this.parentCategoryName,
+    this.unit,
+    this.unitId,
+  });
 
-  Data.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    parentCategoryId = json['parentCategoryId'];
-    parentCategoryName = json['parentCategoryName'];
-    unit = json['unit'];
+  factory DeletedCategory.fromJson(Map<String, dynamic> json) {
+    return DeletedCategory(
+      id: json['id'],
+      name: json['name'],
+      parentCategoryId: json['parentCategoryId'],
+      parentCategoryName: json['parentCategoryName'],
+      unit: json['unit'],
+      unitId: json['unitId'],
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['parentCategoryId'] = parentCategoryId;
-    data['parentCategoryName'] = parentCategoryName;
-    data['unit'] = unit;
-    return data;
+    return {
+      'id': id,
+      'name': name,
+      'parentCategoryId': parentCategoryId,
+      'parentCategoryName': parentCategoryName,
+      'unit': unit,
+      'unitId': unitId,
+    };
   }
 }

@@ -83,7 +83,7 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
       body: BlocConsumer<ShiftCubit, ShiftState>(
         listener: (context, state) {
           if (state is ShiftDeleteSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.deleteShiftModel.message!, color: Colors.blue);
             context.pushNamedAndRemoveLastTwo(Routes.shiftScreen);
           }
           if (state is ShiftDeleteErrorState) {

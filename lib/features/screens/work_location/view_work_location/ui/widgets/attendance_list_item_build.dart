@@ -392,57 +392,130 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                   style: TextStyles.font12GreyRegular,
                 ),
                 TextSpan(
-                  text:
-                      DateFormat('hh:mm a').format(DateFormat('HH:mm:ss').parse(
-                    selectedIndex == 0
-                        ? context
-                            .read<WorkLocationCubit>()
-                            .attendanceHistoryAreaModel!
-                            .data!
-                            .data![index]
-                            .shiftStart!
-                        : selectedIndex == 1
-                            ? context
-                                .read<WorkLocationCubit>()
-                                .attendanceHistoryCityModel!
-                                .data!
-                                .data![index]
-                                .shiftStart!
-                            : selectedIndex == 2
-                                ? context
-                                    .read<WorkLocationCubit>()
-                                    .attendanceHistoryOrganizationModel!
-                                    .data!
-                                    .data![index]
-                                    .shiftStart!
-                                : selectedIndex == 3
-                                    ? context
-                                        .read<WorkLocationCubit>()
-                                        .attendanceHistoryBuildingModel!
-                                        .data!
-                                        .data![index]
-                                        .shiftStart!
-                                    : selectedIndex == 4
-                                        ? context
-                                            .read<WorkLocationCubit>()
-                                            .attendanceHistoryFloorModel!
-                                            .data!
-                                            .data![index]
-                                            .shiftStart!
-                                        : selectedIndex == 5
-                                            ? context
-                                                .read<WorkLocationCubit>()
-                                                .attendanceHistorySectionModel!
-                                                .data!
-                                                .data![index]
-                                                .shiftStart!
-                                            : context
-                                                .read<WorkLocationCubit>()
-                                                .attendanceHistoryPointModel!
-                                                .data!
-                                                .data![index]
-                                                .shiftStart!,
-                  )),
+                  text: selectedIndex == 0
+                      ? context
+                          .read<WorkLocationCubit>()
+                          .attendanceHistoryAreaModel!
+                          .data!
+                          .data![index]
+                          .startShift
+                          ?.toString()
+                      : selectedIndex == 1
+                          ? context
+                              .read<WorkLocationCubit>()
+                              .attendanceHistoryCityModel!
+                              .data!
+                              .data![index]
+                              .startShift
+                              ?.toString()
+                          : selectedIndex == 2
+                              ? context
+                                  .read<WorkLocationCubit>()
+                                  .attendanceHistoryOrganizationModel!
+                                  .data!
+                                  .data![index]
+                                  .startShift
+                                  ?.toString()
+                              : selectedIndex == 3
+                                  ? context
+                                      .read<WorkLocationCubit>()
+                                      .attendanceHistoryBuildingModel!
+                                      .data!
+                                      .data![index]
+                                      .startShift
+                                      ?.toString()
+                                  : selectedIndex == 4
+                                      ? context
+                                          .read<WorkLocationCubit>()
+                                          .attendanceHistoryFloorModel!
+                                          .data!
+                                          .data![index]
+                                          .startShift
+                                          ?.toString()
+                                      : selectedIndex == 5
+                                          ? context
+                                              .read<WorkLocationCubit>()
+                                              .attendanceHistorySectionModel!
+                                              .data!
+                                              .data![index]
+                                              .startShift
+                                              ?.toString()
+                                          : context
+                                                      .read<WorkLocationCubit>()
+                                                      .attendanceHistoryPointModel!
+                                                      .data!
+                                                      .data![index]
+                                                      .startShift
+                                                      ?.toString() !=
+                                                  null
+                                              ? DateFormat('hh:mm a').format(DateFormat('HH:mm:ss').parse(selectedIndex ==
+                                                      0
+                                                  ? context
+                                                      .read<WorkLocationCubit>()
+                                                      .attendanceHistoryAreaModel!
+                                                      .data!
+                                                      .data![index]
+                                                      .startShift!
+                                                      .toString()
+                                                  : selectedIndex == 1
+                                                      ? context
+                                                          .read<
+                                                              WorkLocationCubit>()
+                                                          .attendanceHistoryCityModel!
+                                                          .data!
+                                                          .data![index]
+                                                          .startShift!
+                                                          .toString()
+                                                      : selectedIndex == 2
+                                                          ? context
+                                                              .read<
+                                                                  WorkLocationCubit>()
+                                                              .attendanceHistoryOrganizationModel!
+                                                              .data!
+                                                              .data![index]
+                                                              .startShift!
+                                                              .toString()
+                                                          : selectedIndex == 3
+                                                              ? context
+                                                                  .read<
+                                                                      WorkLocationCubit>()
+                                                                  .attendanceHistoryBuildingModel!
+                                                                  .data!
+                                                                  .data![index]
+                                                                  .startShift!
+                                                                  .toString()
+                                                              : selectedIndex ==
+                                                                      4
+                                                                  ? context
+                                                                      .read<
+                                                                          WorkLocationCubit>()
+                                                                      .attendanceHistoryFloorModel!
+                                                                      .data!
+                                                                      .data![
+                                                                          index]
+                                                                      .startShift!
+                                                                      .toString()
+                                                                  : selectedIndex ==
+                                                                          5
+                                                                      ? context
+                                                                          .read<
+                                                                              WorkLocationCubit>()
+                                                                          .attendanceHistorySectionModel!
+                                                                          .data!
+                                                                          .data![
+                                                                              index]
+                                                                          .startShift!
+                                                                          .toString()
+                                                                      : context
+                                                                          .read<
+                                                                              WorkLocationCubit>()
+                                                                          .attendanceHistoryPointModel!
+                                                                          .data!
+                                                                          .data![
+                                                                              index]
+                                                                          .startShift!
+                                                                          .toString()))
+                                              : '--',
                   style: TextStyles.font11WhiteSemiBold
                       .copyWith(color: AppColor.thirdColor),
                 ),
@@ -452,64 +525,130 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                       .copyWith(color: AppColor.thirdColor),
                 ),
                 TextSpan(
-                  text:
-                      DateFormat('hh:mm a').format(DateFormat('HH:mm:ss').parse(
-                    selectedIndex == 0
-                        ? context
-                                .read<WorkLocationCubit>()
-                                .attendanceHistoryAreaModel!
-                                .data!
-                                .data![index]
-                                .shiftEnd ??
-                            ''
-                        : selectedIndex == 1
-                            ? context
-                                    .read<WorkLocationCubit>()
-                                    .attendanceHistoryCityModel!
-                                    .data!
-                                    .data![index]
-                                    .shiftEnd ??
-                                ''
-                            : selectedIndex == 2
-                                ? context
-                                        .read<WorkLocationCubit>()
-                                        .attendanceHistoryOrganizationModel!
-                                        .data!
-                                        .data![index]
-                                        .shiftEnd ??
-                                    ''
-                                : selectedIndex == 3
-                                    ? context
-                                            .read<WorkLocationCubit>()
-                                            .attendanceHistoryBuildingModel!
-                                            .data!
-                                            .data![index]
-                                            .shiftEnd ??
-                                        ''
-                                    : selectedIndex == 4
-                                        ? context
-                                                .read<WorkLocationCubit>()
-                                                .attendanceHistoryFloorModel!
-                                                .data!
-                                                .data![index]
-                                                .shiftEnd ??
-                                            ''
-                                        : selectedIndex == 5
-                                            ? context
-                                                    .read<WorkLocationCubit>()
-                                                    .attendanceHistorySectionModel!
-                                                    .data!
-                                                    .data![index]
-                                                    .shiftEnd ??
-                                                ''
-                                            : context
-                                                    .read<WorkLocationCubit>()
-                                                    .attendanceHistoryPointModel!
-                                                    .data!
-                                                    .data![index]
-                                                    .shiftEnd ??
-                                                '',
-                  )),
+                  text: selectedIndex == 0
+                      ? context
+                          .read<WorkLocationCubit>()
+                          .attendanceHistoryAreaModel!
+                          .data!
+                          .data![index]
+                          .endShift
+                          ?.toString()
+                      : selectedIndex == 1
+                          ? context
+                              .read<WorkLocationCubit>()
+                              .attendanceHistoryCityModel!
+                              .data!
+                              .data![index]
+                              .endShift
+                              ?.toString()
+                          : selectedIndex == 2
+                              ? context
+                                  .read<WorkLocationCubit>()
+                                  .attendanceHistoryOrganizationModel!
+                                  .data!
+                                  .data![index]
+                                  .endShift
+                                  ?.toString()
+                              : selectedIndex == 3
+                                  ? context
+                                      .read<WorkLocationCubit>()
+                                      .attendanceHistoryBuildingModel!
+                                      .data!
+                                      .data![index]
+                                      .endShift
+                                      ?.toString()
+                                  : selectedIndex == 4
+                                      ? context
+                                          .read<WorkLocationCubit>()
+                                          .attendanceHistoryFloorModel!
+                                          .data!
+                                          .data![index]
+                                          .endShift
+                                          ?.toString()
+                                      : selectedIndex == 5
+                                          ? context
+                                              .read<WorkLocationCubit>()
+                                              .attendanceHistorySectionModel!
+                                              .data!
+                                              .data![index]
+                                              .endShift
+                                              ?.toString()
+                                          : context
+                                                      .read<WorkLocationCubit>()
+                                                      .attendanceHistoryPointModel!
+                                                      .data!
+                                                      .data![index]
+                                                      .endShift
+                                                      ?.toString() !=
+                                                  null
+                                              ? DateFormat('hh:mm a').format(DateFormat('HH:mm:ss').parse(selectedIndex ==
+                                                      0
+                                                  ? context
+                                                      .read<WorkLocationCubit>()
+                                                      .attendanceHistoryAreaModel!
+                                                      .data!
+                                                      .data![index]
+                                                      .endShift!
+                                                      .toString()
+                                                  : selectedIndex == 1
+                                                      ? context
+                                                          .read<
+                                                              WorkLocationCubit>()
+                                                          .attendanceHistoryCityModel!
+                                                          .data!
+                                                          .data![index]
+                                                          .endShift!
+                                                          .toString()
+                                                      : selectedIndex == 2
+                                                          ? context
+                                                              .read<
+                                                                  WorkLocationCubit>()
+                                                              .attendanceHistoryOrganizationModel!
+                                                              .data!
+                                                              .data![index]
+                                                              .endShift!
+                                                              .toString()
+                                                          : selectedIndex == 3
+                                                              ? context
+                                                                  .read<
+                                                                      WorkLocationCubit>()
+                                                                  .attendanceHistoryBuildingModel!
+                                                                  .data!
+                                                                  .data![index]
+                                                                  .endShift!
+                                                                  .toString()
+                                                              : selectedIndex ==
+                                                                      4
+                                                                  ? context
+                                                                      .read<
+                                                                          WorkLocationCubit>()
+                                                                      .attendanceHistoryFloorModel!
+                                                                      .data!
+                                                                      .data![
+                                                                          index]
+                                                                      .endShift!
+                                                                      .toString()
+                                                                  : selectedIndex ==
+                                                                          5
+                                                                      ? context
+                                                                          .read<
+                                                                              WorkLocationCubit>()
+                                                                          .attendanceHistorySectionModel!
+                                                                          .data!
+                                                                          .data![
+                                                                              index]
+                                                                          .endShift!
+                                                                          .toString()
+                                                                      : context
+                                                                          .read<
+                                                                              WorkLocationCubit>()
+                                                                          .attendanceHistoryPointModel!
+                                                                          .data!
+                                                                          .data![
+                                                                              index]
+                                                                          .endShift!
+                                                                          .toString()))
+                                              : '--',
                   style: TextStyles.font11WhiteSemiBold
                       .copyWith(color: AppColor.thirdColor),
                 ),

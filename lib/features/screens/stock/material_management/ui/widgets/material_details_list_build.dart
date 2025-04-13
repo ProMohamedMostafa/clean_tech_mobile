@@ -11,7 +11,7 @@ Widget materialDetailsBuild(BuildContext context, int selectedIndex) {
           .read<MaterialManagementCubit>()
           .materialManagementModel
           ?.data
-          .data
+          .materials
       : context.read<MaterialManagementCubit>().deletedMaterialListModel?.data;
 
   if (materialsData == null || materialsData.isEmpty) {
@@ -23,8 +23,10 @@ Widget materialDetailsBuild(BuildContext context, int selectedIndex) {
     );
   } else {
     return ListView.separated(
+      controller: selectedIndex == 0
+          ? context.read<MaterialManagementCubit>().scrollController
+          : null,
       shrinkWrap: true,
-      physics: const ClampingScrollPhysics(),
       scrollDirection: Axis.vertical,
       itemCount: materialsData.length,
       separatorBuilder: (context, index) {

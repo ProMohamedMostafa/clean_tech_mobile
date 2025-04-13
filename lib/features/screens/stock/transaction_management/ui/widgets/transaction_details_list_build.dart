@@ -10,21 +10,19 @@ Widget transactionDetailsBuild(BuildContext context, int selectedIndex) {
       ? context
           .read<TransactionManagementCubit>()
           .transactionManagementModel
-          ?.data!
-          .transactions
+          ?.data
+          .data
       : selectedIndex == 1
           ? context
               .read<TransactionManagementCubit>()
-              .transactionManagementModel
-              ?.data!
-              .transactions
-              .where((type) => type.typeId == 0)
+              .transactionManagementInModel
+              ?.data
+              .data
           : context
               .read<TransactionManagementCubit>()
-              .transactionManagementModel
-              ?.data!
-              .transactions
-              .where((type) => type.typeId == 1);
+              .transactionManagementOutModel
+              ?.data
+              .data;
 
   if (transactionsData == null || transactionsData.isEmpty) {
     return Center(
@@ -35,8 +33,12 @@ Widget transactionDetailsBuild(BuildContext context, int selectedIndex) {
     );
   } else {
     return ListView.separated(
+      controller: selectedIndex == 0
+          ? context.read<TransactionManagementCubit>().scrollController
+          : selectedIndex == 1
+              ? context.read<TransactionManagementCubit>().inScrollController
+              : context.read<TransactionManagementCubit>().outScrollController,
       shrinkWrap: true,
-      physics: const ClampingScrollPhysics(),
       scrollDirection: Axis.vertical,
       itemCount: transactionsData.length,
       separatorBuilder: (context, index) {

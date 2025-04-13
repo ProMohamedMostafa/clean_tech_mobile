@@ -20,8 +20,8 @@ final attendanceData =
     );
   } else {
     return ListView.separated(
+         controller: context.read<AttendanceLeavesCubit>().scrollController,
       shrinkWrap: true,
-      physics: const ClampingScrollPhysics(),
       scrollDirection: Axis.vertical,
       itemCount: attendanceData.length,
       separatorBuilder: (context, index) {
