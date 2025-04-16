@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/features/screens/stock/transaction_management/logic/transaction_mangement_cubit.dart';
 
 Widget listItemBuild(BuildContext context, selectedIndex, index) {
+  String getDateOnly(String dateTimeString) {
+    final dateTime = DateTime.parse(dateTimeString);
+    return DateFormat('yyyy-MM-dd').format(dateTime);
+  }
+
   final List<int> typeId = [0, 1];
   final List<Color> statusColor = [
     Colors.green,
@@ -48,7 +56,55 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
   }
   return InkWell(
     borderRadius: BorderRadius.circular(11.r),
-    onTap: () {},
+    onTap: () {
+      selectedIndex == 0
+          ? context.pushNamed(Routes.transactionDetailsScreen, arguments: {
+              'id': context
+                  .read<TransactionManagementCubit>()
+                  .transactionManagementModel!
+                  .data
+                  .data[index]
+                  .id,
+              'type': context
+                  .read<TransactionManagementCubit>()
+                  .transactionManagementModel!
+                  .data
+                  .data[index]
+                  .typeId
+            })
+          : selectedIndex == 1
+              ? context.pushNamed(Routes.transactionDetailsScreen, arguments: {
+                  'id': context
+                      .read<TransactionManagementCubit>()
+                      .transactionManagementInModel!
+                      .data
+                      .data[index]
+                      .id,
+                  'type': context
+                      .read<TransactionManagementCubit>()
+                      .transactionManagementInModel!
+                      .data
+                      .data[index]
+                      .typeId
+                })
+              : context.pushNamed(
+                  Routes.transactionDetailsScreen,
+                  arguments: {
+                    'id': context
+                        .read<TransactionManagementCubit>()
+                        .transactionManagementOutModel!
+                        .data
+                        .data[index]
+                        .id,
+                    'type': context
+                        .read<TransactionManagementCubit>()
+                        .transactionManagementOutModel!
+                        .data
+                        .data[index]
+                        .typeId,
+                  },
+                );
+    },
     child: Card(
       elevation: 1,
       margin: EdgeInsets.zero,
@@ -148,13 +204,13 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                 ),
                 horizontalSpace(3),
                 Text(
-                  selectedIndex == 0
+                  getDateOnly(selectedIndex == 0
                       ? context
                           .read<TransactionManagementCubit>()
                           .transactionManagementModel!
                           .data
                           .data[index]
-                          .date
+                          .createdAt
                       : selectedIndex == 1
                           ? context
                               .read<TransactionManagementCubit>()
@@ -163,7 +219,7 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                               .data
                               .where((type) => type.typeId == 0)
                               .toList()[index]
-                              .date
+                              .createdAt
                           : context
                               .read<TransactionManagementCubit>()
                               .transactionManagementModel!
@@ -171,7 +227,7 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                               .data
                               .where((type) => type.typeId == 1)
                               .toList()[index]
-                              .date,
+                              .createdAt),
                   style: TextStyles.font11WhiteSemiBold
                       .copyWith(color: AppColor.primaryColor),
                 ),

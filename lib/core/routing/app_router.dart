@@ -22,6 +22,8 @@ import 'package:smart_cleaning_application/features/screens/edit_profile/logic/e
 import 'package:smart_cleaning_application/features/screens/edit_profile/ui/screen/edit_profile_screen.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/languages/ui/screen/languages_screen.dart';
+import 'package:smart_cleaning_application/features/screens/notification/logic/notification_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/notification/ui/screen/notification_screen.dart';
 import 'package:smart_cleaning_application/features/screens/profile/logic/profile_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/profile/ui/screen/profile_screen.dart';
 import 'package:smart_cleaning_application/features/screens/settings/logic/settings_cubit.dart';
@@ -41,6 +43,7 @@ import 'package:smart_cleaning_application/features/screens/stock/material_manag
 import 'package:smart_cleaning_application/features/screens/stock/transaction_management/logic/transaction_mangement_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/stock/transaction_management/ui/screen/transaction_managment.dart';
 import 'package:smart_cleaning_application/features/screens/stock/view_material/ui/screen/material_details_screen.dart';
+import 'package:smart_cleaning_application/features/screens/stock/view_transaction/ui/screen/transaction_details_screen.dart';
 import 'package:smart_cleaning_application/features/screens/technical_support/ui/screen/technical_support_screen.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/logic/add_work_location_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/screens/add_area_screen.dart';
@@ -130,18 +133,24 @@ class AppRouter {
         );
 
       case Routes.verifyScreen:
+        var email = settings.arguments as String;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => VerifyAccountCubit(),
-            child: const VerifyAccountScreen(),
+            child: VerifyAccountScreen(
+              email: email,
+            ),
           ),
         );
 
       case Routes.setPassScreen:
+        final args = settings.arguments as Map<String, dynamic>;
+        var email = args['email'] as String;
+        var code = args['code'] as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => SetPasswordCubit(),
-            child: const SetPasswordScreen(),
+            child: SetPasswordScreen(email: email, code: code),
           ),
         );
       case Routes.doneScreen:
@@ -285,11 +294,11 @@ class AppRouter {
             child: const AddCityScreen(),
           ),
         );
-      case Routes.addOrganizationDetailsScreen:
+      case Routes.addOrganizationScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => AddWorkLocationCubit(),
-            child: const AddOrganizationDetailsScreen(),
+            child: const AddOrganizationScreen(),
           ),
         );
       case Routes.addBuildingScreen:
@@ -553,10 +562,11 @@ class AppRouter {
         );
 
       case Routes.materialScreen:
+        final id = settings.arguments is int ? settings.arguments as int : null;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => MaterialManagementCubit(),
-            child: const MaterialManagmentScreen(),
+            child: MaterialManagmentScreen(id: id),
           ),
         );
       case Routes.addMaterialScreen:
@@ -595,11 +605,33 @@ class AppRouter {
           ),
         );
 
+      case Routes.transactionDetailsScreen:
+        final args = settings.arguments as Map<String, dynamic>;
+        var id = args['id'] as int;
+        var type = args['type'] as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => TransactionManagementCubit(),
+            child: TransactionDetailsScreen(
+              id: id,
+              type: type,
+            ),
+          ),
+        );
+
       case Routes.activityScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => ActivityCubit(),
             child: const ActivityScreen(),
+          ),
+        );
+
+      case Routes.notificationScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => NotificationCubit(),
+            child: const NotificationScreen(),
           ),
         );
       default:

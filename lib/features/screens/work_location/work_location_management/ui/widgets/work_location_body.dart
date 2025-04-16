@@ -106,7 +106,7 @@ class _OrganizationsBodyState extends State<OrganizationsBody> {
                             ? context.pushNamed(Routes.addCityScreen)
                             : widget.selectedIndex == 2
                                 ? context.pushNamed(
-                                    Routes.addOrganizationDetailsScreen)
+                                    Routes.addOrganizationScreen)
                                 : widget.selectedIndex == 3
                                     ? context
                                         .pushNamed(Routes.addBuildingScreen)

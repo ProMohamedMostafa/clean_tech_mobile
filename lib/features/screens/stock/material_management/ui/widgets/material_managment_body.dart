@@ -14,7 +14,8 @@ import 'package:smart_cleaning_application/features/screens/stock/material_manag
 import 'package:smart_cleaning_application/features/screens/stock/material_management/ui/widgets/filter_search_build.dart';
 
 class MaterialManagmentBody extends StatefulWidget {
-  const MaterialManagmentBody({super.key});
+  final int? id;
+  const MaterialManagmentBody({super.key, this.id});
 
   @override
   State<MaterialManagmentBody> createState() => _MaterialManagmentBodyState();
@@ -24,7 +25,13 @@ class _MaterialManagmentBodyState extends State<MaterialManagmentBody> {
   @override
   void initState() {
     context.read<MaterialManagementCubit>().initialize();
-    context.read<MaterialManagementCubit>().getMaterialList();
+    if (widget.id != null) {
+      context
+          .read<MaterialManagementCubit>()
+          .getMaterialList(categoryId: widget.id);
+    } else {
+      context.read<MaterialManagementCubit>().getMaterialList();
+    }
     context.read<MaterialManagementCubit>().getAllDeletedMaterial();
     context.read<MaterialManagementCubit>().getProviders();
 
@@ -70,8 +77,8 @@ class _MaterialManagmentBodyState extends State<MaterialManagmentBody> {
       body: BlocConsumer<MaterialManagementCubit, MaterialManagementState>(
         listener: (context, state) {
           if (state is DeleteMaterialSuccessState) {
-            context.read<MaterialManagementCubit>().getAllDeletedMaterial();
             toast(text: state.deleteMaterialModel.message!, color: Colors.blue);
+            context.read<MaterialManagementCubit>().getAllDeletedMaterial();
           }
           if (state is ForceDeleteMaterialSuccessState) {
             context.read<MaterialManagementCubit>().getMaterialList();

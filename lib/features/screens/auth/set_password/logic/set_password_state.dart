@@ -5,9 +5,9 @@ class SetPasswordInitialState extends SetPasswordStates {}
 class SetPasswordLoadingState extends SetPasswordStates {}
 
 class SetPasswordSuccessState extends SetPasswordStates {
-  // final SignInModel signinmodel;
+  final String message;
 
-  // SetPasswordStateSuccessState(this.signinmodel);
+  SetPasswordSuccessState(this.message);
 }
 
 class SetPasswordErrorState extends SetPasswordStates {

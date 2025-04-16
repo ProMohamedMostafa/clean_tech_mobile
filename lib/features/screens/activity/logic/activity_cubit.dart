@@ -1,22 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/activity/data/model/activities_model.dart';
 import 'package:smart_cleaning_application/features/screens/activity/logic/activity_state.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_model.dart';
 
 class ActivityCubit extends Cubit<ActivityState> {
   ActivityCubit() : super(ActivityInitialState());
 
   static ActivityCubit get(context) => BlocProvider.of(context);
 
+  TextEditingController searchController = TextEditingController();
+  TextEditingController actionController = TextEditingController();
+  TextEditingController actionIdController = TextEditingController();
+  TextEditingController moduleController = TextEditingController();
+  TextEditingController moduleIdController = TextEditingController();
+  TextEditingController roleController = TextEditingController();
+  TextEditingController roleIdController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+
   ScrollController myActivitiesScrollController = ScrollController();
   ScrollController teamActivitiesScrollController = ScrollController();
-  TextEditingController searchController = TextEditingController();
 
   int myActivitiesCurrentPage = 1;
-  int teamActivitiesCurrentPage = 1;
   ActivitiesModel? myActivities;
-
   getMyActivities() {
     emit(ActivityLoadingState());
 
@@ -26,6 +34,9 @@ class ActivityCubit extends Cubit<ActivityState> {
         'PageNumber': myActivitiesCurrentPage,
         'PageSize': 10,
         'Search': searchController.text,
+        'RoleId': roleIdController.text,
+        'Action': actionIdController.text,
+        'Module': moduleIdController.text,
         'History': true,
       },
     ).then((value) {
@@ -45,17 +56,19 @@ class ActivityCubit extends Cubit<ActivityState> {
     });
   }
 
+  int teamActivitiesCurrentPage = 1;
   ActivitiesModel? teamActivities;
-
   getTeamActivities() {
     emit(ActivityLoadingState());
-
     DioHelper.getData(
       url: "logs",
       query: {
         'PageNumber': teamActivitiesCurrentPage,
         'PageSize': 10,
         'Search': searchController.text,
+        'RoleId': roleIdController.text,
+        'Action': actionIdController.text,
+        'Module': moduleIdController.text,
         'History': false,
       },
     ).then((value) {
@@ -95,5 +108,16 @@ class ActivityCubit extends Cubit<ActivityState> {
           getTeamActivities();
         }
       });
+  }
+
+  RoleModel? roleModel;
+  getRole() {
+    emit(RoleLoadingState());
+    DioHelper.getData(url: ApiConstants.rolesUrl).then((value) {
+      roleModel = RoleModel.fromJson(value!.data);
+      emit(RoleSuccessState(roleModel!));
+    }).catchError((error) {
+      emit(RoleErrorState(error.toString()));
+    });
   }
 }

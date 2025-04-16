@@ -6,6 +6,7 @@ import 'package:smart_cleaning_application/features/screens/integrations/data/mo
 import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/category_management_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/transaction_management/data/model/transaction_management_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/transaction_management/logic/transaction_mangement_state.dart';
+import 'package:smart_cleaning_application/features/screens/stock/view_transaction/data/model/transaction_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
 
 class TransactionManagementCubit extends Cubit<TransactionManagementState> {
@@ -31,6 +32,7 @@ class TransactionManagementCubit extends Cubit<TransactionManagementState> {
   TransactionManagementModel? transactionManagementModel;
   getTransactionList({int? userId, int? categoryId, int? providerId}) {
     emit(TransactionManagementLoadingState());
+    transactionManagementModel == null;
     DioHelper.getData(url: ApiConstants.transactionUrl, query: {
       'PageNumber': currentPage,
       'PageSize': 10,
@@ -191,6 +193,17 @@ class TransactionManagementCubit extends Cubit<TransactionManagementState> {
       emit(ProvidersSuccessState(providersModel!));
     }).catchError((error) {
       emit(ProvidersErrorState(error.toString()));
+    });
+  }
+
+  TransactionDetailsModel? transactionDetailsModel;
+  getTransactionDetails(int? id, int? type) {
+    emit(TransactionDetailsLoadingState());
+    DioHelper.getData(url: 'stock/transactions/$id/$type').then((value) {
+      transactionDetailsModel = TransactionDetailsModel.fromJson(value!.data);
+      emit(TransactionDetailsSuccessState(transactionDetailsModel!));
+    }).catchError((error) {
+      emit(TransactionDetailsErrorState(error.toString()));
     });
   }
 }

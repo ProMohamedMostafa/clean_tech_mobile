@@ -38,7 +38,7 @@ class MaterialManagementCubit extends Cubit<MaterialManagementState> {
       'pageNumber': currentPage,
       'pageSize': 10,
       'Search': searchController.text,
-      'category': categoryId,
+      'categoryId': categoryId,
     }).then((value) {
       final newMaterial = MaterialManagementModel.fromJson(value!.data);
 

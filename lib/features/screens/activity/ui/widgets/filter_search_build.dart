@@ -4,6 +4,7 @@ import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/features/screens/activity/logic/activity_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/activity/ui/widgets/filter_dialog_.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
 
 Widget filterAndSearchBuild(BuildContext context, ActivityCubit cubit) {
@@ -35,9 +36,9 @@ Widget filterAndSearchBuild(BuildContext context, ActivityCubit cubit) {
           // cubit.buildingController.clear();
           // cubit.pointController.clear();
           // cubit.roleController.clear();
-          // CustomFilterShiftDialog.show(
-          //   context: context,
-          // );
+          CustomFilterActivityDialog.show(
+            context: context,
+          );
         },
         child: Container(
           height: 49.h,

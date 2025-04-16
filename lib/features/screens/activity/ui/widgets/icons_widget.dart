@@ -73,7 +73,7 @@ Widget buildActionIcon(int actionId) {
       break;
     case 16: // EditSetting
       iconData = Icons.settings;
-      iconColor = Colors.grey;
+      iconColor = Colors.lightBlue;
       break;
     default:
       iconData = Icons.help;

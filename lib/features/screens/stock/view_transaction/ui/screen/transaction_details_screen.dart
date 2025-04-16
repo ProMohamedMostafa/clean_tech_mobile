@@ -3,13 +3,15 @@ import 'package:smart_cleaning_application/features/screens/stock/view_transacti
 
 class TransactionDetailsScreen extends StatelessWidget {
   final int id;
-  const TransactionDetailsScreen({super.key, required this.id});
+  final int type;
+  const TransactionDetailsScreen({super.key, required this.id, required this.type});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: TransactionDetailsBody(
         id: id,
+        type: type,
       ),
     );
   }

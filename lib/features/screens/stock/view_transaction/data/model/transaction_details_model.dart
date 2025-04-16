@@ -4,7 +4,7 @@ class TransactionDetailsModel {
   bool? succeeded;
   String? message;
   String? error;
-  String? businessErrorCode;
+  int? businessErrorCode;
   Data? data;
 
   TransactionDetailsModel(
@@ -44,31 +44,55 @@ class TransactionDetailsModel {
 class Data {
   int? id;
   String? name;
-  double? minThreshold;
-  String? description;
-  double? quantity;
+  String? createdAt;
+  String? category;
   int? categoryId;
-  String? categoryName;
-  String? unit;
+  String? provider;
+  int? providerId;
+  double? quantity;
+  double? price;
+  double? totalPrice;
+  String? file;
+  String? userName;
+  int? userId;
+  int? typeId;
+  String? type;
+  int? unit;
 
   Data(
       {this.id,
       this.name,
-      this.minThreshold,
-      this.description,
-      this.quantity,
+      this.createdAt,
+      this.category,
       this.categoryId,
-      this.categoryName,
+      this.provider,
+      this.providerId,
+      this.quantity,
+      this.price,
+      this.totalPrice,
+      this.file,
+      this.userName,
+      this.userId,
+      this.typeId,
+      this.type,
       this.unit});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
-    minThreshold = json['minThreshold'];
-    description = json['description'];
-    quantity = json['quantity'];
+    createdAt = json['createdAt'];
+    category = json['category'];
     categoryId = json['categoryId'];
-    categoryName = json['categoryName'];
+    provider = json['provider'];
+    providerId = json['providerId'];
+    quantity = json['quantity'];
+    price = json['price'];
+    totalPrice = json['totalPrice'];
+    file = json['file'];
+    userName = json['userName'];
+    userId = json['userId'];
+    typeId = json['typeId'];
+    type = json['type'];
     unit = json['unit'];
   }
 
@@ -76,11 +100,19 @@ class Data {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
-    data['minThreshold'] = minThreshold;
-    data['description'] = description;
-    data['quantity'] = quantity;
+    data['createdAt'] = createdAt;
+    data['category'] = category;
     data['categoryId'] = categoryId;
-    data['categoryName'] = categoryName;
+    data['provider'] = provider;
+    data['providerId'] = providerId;
+    data['quantity'] = quantity;
+    data['price'] = price;
+    data['totalPrice'] = totalPrice;
+    data['file'] = file;
+    data['userName'] = userName;
+    data['userId'] = userId;
+    data['typeId'] = typeId;
+    data['type'] = type;
     data['unit'] = unit;
     return data;
   }

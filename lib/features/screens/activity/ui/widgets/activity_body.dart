@@ -27,6 +27,7 @@ class _ActivityBodyState extends State<ActivityBody> {
     cubit.getTeamActivities();
     cubit.myInitialize();
     cubit.teamInitialize();
+    cubit.getRole();
     super.initState();
   }
 
@@ -71,7 +72,6 @@ class _ActivityBodyState extends State<ActivityBody> {
                           double totalWidth = constraints.maxWidth;
                           double gap = 10;
                           double containerWidth = (totalWidth - gap) / 2;
-
                           return ListView.separated(
                             scrollDirection: Axis.horizontal,
                             itemCount: 2,

@@ -637,7 +637,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                       .files!
                       .isNotEmpty)
                     SizedBox(
-                      height: 80,
+                      height: 80.h,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: context

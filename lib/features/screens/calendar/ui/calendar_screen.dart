@@ -32,10 +32,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
       body: BlocBuilder<CalendarCubit, CalendarState>(
         builder: (context, state) {
           if (state is GetAllTasksLoadingState) {
-            return const Center(
-                child: CircularProgressIndicator(
-              color: AppColor.primaryColor,
-            ));
+            return Center(
+              child: Image.asset(
+                'assets/images/loading.gif',
+                width: 100.w,
+                height: 100.h,
+                fit: BoxFit.contain,
+              ),
+            );
           } else if (state is GetAllTasksErrorState) {
             return Center(child: Text(state.error));
           } else if (state is GetAllTasksSuccessState) {

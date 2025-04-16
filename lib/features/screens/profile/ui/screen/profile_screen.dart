@@ -98,8 +98,11 @@ class _ProfileScreenState extends State<ProfileScreen>
         builder: (context, state) {
           if (context.read<ProfileCubit>().profileModel?.data == null) {
             return Center(
-              child: CircularProgressIndicator(
-                color: AppColor.primaryColor,
+              child: Image.asset(
+                'assets/images/loading.gif',
+                width: 100.w,
+                height: 100.h,
+                fit: BoxFit.contain,
               ),
             );
           }

@@ -73,7 +73,7 @@ class TransactionData {
 class TransactionItem {
   int id;
   String name;
-  String date;
+  String createdAt;
   String category;
   int categoryId;
   String provider;
@@ -91,7 +91,7 @@ class TransactionItem {
   TransactionItem({
     required this.id,
     required this.name,
-    required this.date,
+    required this.createdAt,
     required this.category,
     required this.categoryId,
     required this.provider,
@@ -111,7 +111,7 @@ class TransactionItem {
     return TransactionItem(
       id: json['id'],
       name: json['name'],
-      date: json['date'],
+      createdAt: json['createdAt'],
       category: json['category'],
       categoryId: json['categoryId'],
       provider: json['provider'],

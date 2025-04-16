@@ -7,6 +7,7 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
+import 'package:smart_cleaning_application/core/widgets/filter_top_widget/filter_top_widget.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_date_picker.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
@@ -38,10 +39,12 @@ class CustomFilterShiftDialog {
               child: SingleChildScrollView(
                 child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                                            buildHeader(context),
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -487,7 +490,7 @@ class CustomFilterShiftDialog {
                             width: double.infinity,
                             textStyles: TextStyles.font20Whitesemimedium),
                       ),
-                      verticalSpace(20),
+                      verticalSpace(10),
                     ],
                   ),
                 ),

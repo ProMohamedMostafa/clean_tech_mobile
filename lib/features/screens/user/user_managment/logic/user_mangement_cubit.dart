@@ -307,7 +307,7 @@ class UserManagementCubit extends Cubit<UserManagementState> {
     emit(GetNationalityLoadingState());
     DioHelper.getData(
         url: ApiConstants.countriesUrl,
-        query: {'userUsedOnly': true, 'areaUsedOnly': true}).then((value) {
+        query: {'UserUsedOnly': true, 'AreaUsedOnly': false}).then((value) {
       nationalityModel = NationalityModel.fromJson(value!.data);
       emit(GetNationalitySuccessState(nationalityModel!));
     }).catchError((error) {

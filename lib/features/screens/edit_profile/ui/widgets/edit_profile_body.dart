@@ -258,31 +258,77 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                       .phoneNumber!,
                 ),
                 verticalSpace(15),
-                CustomDropDownList(
-                  label: 'Gender',
-                  onPressed: (selectedValue) {
-                    final items = ['Male', 'Female'];
-                    final selectedIndex = items.indexOf(selectedValue);
-                    if (selectedIndex != -1) {
-                      context.read<EditProfileCubit>().genderIdController.text =
-                          selectedIndex.toString();
-                    }
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return S.of(context).validationGender;
-                    }
-                    return null;
-                  },
-                  hint: context
-                      .read<EditProfileCubit>()
-                      .profileModel!
-                      .data!
-                      .gender!,
-                  items: ['Male', 'Female'],
-                  controller: context.read<EditProfileCubit>().genderController,
-                  keyboardType: TextInputType.text,
-                  suffixIcon: IconBroken.arrowDown2,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: CustomDropDownList(
+                        label: 'Country Name',
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return S.of(context).validationNationality;
+                          }
+                          return null;
+                        },
+                        hint: context
+                            .read<EditProfileCubit>()
+                            .profileModel!
+                            .data!
+                            .countryName!,
+                        items: context
+                                    .read<EditProfileCubit>()
+                                    .nationalityModel
+                                    ?.data
+                                    ?.isEmpty ??
+                                true
+                            ? ['No countries']
+                            : context
+                                    .read<EditProfileCubit>()
+                                    .nationalityModel
+                                    ?.data
+                                    ?.map((e) => e.name ?? 'Unknown')
+                                    .toList() ??
+                                [],
+                        controller: context
+                            .read<EditProfileCubit>()
+                            .countryNameController,
+                        keyboardType: TextInputType.text,
+                        suffixIcon: IconBroken.arrowDown2,
+                      ),
+                    ),
+                    horizontalSpace(15),
+                    Expanded(
+                      child: CustomDropDownList(
+                        label: 'Gender',
+                        onPressed: (selectedValue) {
+                          final items = ['Male', 'Female'];
+                          final selectedIndex = items.indexOf(selectedValue);
+                          if (selectedIndex != -1) {
+                            context
+                                .read<EditProfileCubit>()
+                                .genderIdController
+                                .text = selectedIndex.toString();
+                          }
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return S.of(context).validationGender;
+                          }
+                          return null;
+                        },
+                        hint: context
+                            .read<EditProfileCubit>()
+                            .profileModel!
+                            .data!
+                            .gender!,
+                        items: ['Male', 'Female'],
+                        controller:
+                            context.read<EditProfileCubit>().genderController,
+                        keyboardType: TextInputType.text,
+                        suffixIcon: IconBroken.arrowDown2,
+                      ),
+                    ),
+                  ],
                 ),
                 verticalSpace(15),
                 Row(

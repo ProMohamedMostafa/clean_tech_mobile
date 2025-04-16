@@ -24,6 +24,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   TextEditingController emailController = TextEditingController();
   TextEditingController birthController = TextEditingController();
   TextEditingController nationalityController = TextEditingController();
+  TextEditingController countryNameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
   TextEditingController idNumberController = TextEditingController();
@@ -36,34 +37,37 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     emit(EditProfileLoadingState());
 
     Map<String, dynamic> formDataMap = {
-      "userName": userNameController.text.isEmpty
+      "UserName": userNameController.text.isEmpty
           ? profileModel!.data!.userName
           : userNameController.text,
-      "firstName": firstNameController.text.isEmpty
+      "FirstName": firstNameController.text.isEmpty
           ? profileModel!.data!.firstName
           : firstNameController.text,
-      "lastName": lastNameController.text.isEmpty
+      "LastName": lastNameController.text.isEmpty
           ? profileModel!.data!.lastName
           : lastNameController.text,
-      "email": emailController.text.isEmpty
+      "Email": emailController.text.isEmpty
           ? profileModel!.data!.email
           : emailController.text,
-      "phoneNumber": phoneController.text.isEmpty
+      "PhoneNumber": phoneController.text.isEmpty
           ? profileModel!.data!.phoneNumber
           : phoneController.text,
-      "image": image != null && image.isNotEmpty
+      "Image": image != null && image.isNotEmpty
           ? await MultipartFile.fromFile(image, filename: image.split('/').last)
           : profileModel!.data!.image,
-      "birthdate": birthController.text.isEmpty
+      "Birthdate": birthController.text.isEmpty
           ? profileModel!.data!.birthdate
           : birthController.text,
-      "idNumber": idNumberController.text.isEmpty
+      "IDNumber": idNumberController.text.isEmpty
           ? profileModel!.data!.idNumber
           : idNumberController.text,
-      "nationalityName": nationalityController.text.isEmpty
+      "NationalityName": nationalityController.text.isEmpty
           ? profileModel!.data!.nationalityName
           : nationalityController.text,
-      "gender": genderController.text.isEmpty
+      "CountryName": nationalityController.text.isEmpty
+          ? profileModel!.data!.countryName
+          : countryNameController.text,
+      "Gender": genderController.text.isEmpty
           ? (profileModel!.data!.gender == "Male" ? "0" : "1")
           : genderIdController.text,
     };
@@ -134,8 +138,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     });
   }
 
-
-
   GalleryModel? gellaryModel;
   XFile? image;
   Future<void> galleryFile() async {
@@ -148,5 +150,4 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       emit(ImageSelectedState(image!));
     }
   }
-
 }

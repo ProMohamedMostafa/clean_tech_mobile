@@ -1,6 +1,7 @@
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/category_management_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/transaction_management/data/model/transaction_management_model.dart';
+import 'package:smart_cleaning_application/features/screens/stock/view_transaction/data/model/transaction_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
 
 abstract class TransactionManagementState {}
@@ -62,4 +63,18 @@ class ProvidersSuccessState extends TransactionManagementState {
 class ProvidersErrorState extends TransactionManagementState {
   final String error;
   ProvidersErrorState(this.error);
+}
+//**************************** */
+
+class TransactionDetailsLoadingState extends TransactionManagementState {}
+
+class TransactionDetailsSuccessState extends TransactionManagementState {
+  final TransactionDetailsModel transactionDetailsModel;
+
+  TransactionDetailsSuccessState(this.transactionDetailsModel);
+}
+
+class TransactionDetailsErrorState extends TransactionManagementState {
+  final String error;
+  TransactionDetailsErrorState(this.error);
 }

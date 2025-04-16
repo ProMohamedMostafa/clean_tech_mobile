@@ -7,6 +7,7 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
+import 'package:smart_cleaning_application/core/widgets/filter_top_widget/filter_top_widget.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
@@ -35,10 +36,11 @@ class CustomFilterWorkLocationDialog {
               child: SingleChildScrollView(
                 child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      buildHeader(context),
                       if (selectedIndex == 0 || selectedIndex == 1) ...[
                         Text(
                           S.of(context).addUserText12,
@@ -589,7 +591,7 @@ class CustomFilterWorkLocationDialog {
                             width: double.infinity,
                             textStyles: TextStyles.font20Whitesemimedium),
                       ),
-                      verticalSpace(30),
+                      verticalSpace(10),
                     ],
                   ),
                 ),

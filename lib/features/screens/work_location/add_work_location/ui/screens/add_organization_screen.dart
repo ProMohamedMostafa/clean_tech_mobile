@@ -19,16 +19,16 @@ import 'package:smart_cleaning_application/features/screens/work_location/add_wo
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/logic/add_work_location_state.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
-class AddOrganizationDetailsScreen extends StatefulWidget {
-  const AddOrganizationDetailsScreen({super.key});
+class AddOrganizationScreen extends StatefulWidget {
+  const AddOrganizationScreen({super.key});
 
   @override
-  State<AddOrganizationDetailsScreen> createState() =>
-      _AddOrganizationDetailsScreenState();
+  State<AddOrganizationScreen> createState() =>
+      _AddOrganizationScreenState();
 }
 
-class _AddOrganizationDetailsScreenState
-    extends State<AddOrganizationDetailsScreen> {
+class _AddOrganizationScreenState
+    extends State<AddOrganizationScreen> {
   List<int> selectedManagersIds = [];
   List<int> selectedSupervisorsIds = [];
   List<int> selectedCleanersIds = [];

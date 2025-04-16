@@ -5,9 +5,9 @@ class VerifyAccountInitialState extends VerifyAccountState {}
 class VerifyAccountLoadingState extends VerifyAccountState {}
 
 class VerifyAccountSuccessState extends VerifyAccountState {
-  // final SignInModel signinmodel;
+  final String message;
 
-  // VerifyAccountStateSuccessState(this.signinmodel);
+  VerifyAccountSuccessState(this.message);
 }
 
 class VerifyAccountErrorState extends VerifyAccountState {

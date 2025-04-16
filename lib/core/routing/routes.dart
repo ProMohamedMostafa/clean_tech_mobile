@@ -27,21 +27,13 @@ class Routes {
       '/chooseViewWorkLocationScreen';
   static const String addAreaScreen = '/addAreaScreen';
   static const String addCityScreen = '/addCityScreen';
-  static const String addOrganizationDetailsScreen =
-      '/addOrganizationDetailsScreen';
+  static const String addOrganizationScreen = '/addOrganizationScreen';
   static const String addBuildingScreen = '/addBuildingScreen';
   static const String addFloorScreen = '/addFloorScreen';
   static const String addSectionScreen = '/addSectionScreen';
   static const String addPointScreen = '/addPointScreen';
 
   static const String workLocationDetailsScreen = '/workLocationDetailsScreen';
-
-  static const String areaDetailsScreen = '/areaDetailsScreen';
-  static const String cityDetailsScreen = '/cityDetailsScreen';
-  static const String organizationDetailsScreen = '/organizationDetailsScreen';
-  static const String buildingDetailsScreen = '/buildingDetailsScreen';
-  static const String floorDetailsScreen = '/floorDetailsScreen';
-  static const String pointDetailsScreen = '/pointDetailsScreen';
 
   static const String editAreaScreen = '/editAreaScreen';
   static const String editCityScreen = '/editCityScreen';
@@ -78,10 +70,9 @@ class Routes {
   static const String materialDetailsScreen = '/materialDetailsScreen';
 
   static const String transactionScreen = '/transactionScreen';
+  static const String transactionDetailsScreen = '/transactionDetailsScreen';
 
-
-  
   static const String activityScreen = '/activityScreen';
 
-
+  static const String notificationScreen = '/notificationScreen';
 }

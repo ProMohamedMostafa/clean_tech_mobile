@@ -5,9 +5,9 @@ class ForgotPasswordInitialState extends ForgotPasswordStates {}
 class ForgotPasswordLoadingState extends ForgotPasswordStates {}
 
 class ForgotPasswordSuccessState extends ForgotPasswordStates {
-  // final SignInModel signinmodel;
+  final String message;
 
-  // ForgotPasswordStateSuccessState(this.signinmodel);
+  ForgotPasswordSuccessState(this.message);
 }
 
 class ForgotPasswordErrorState extends ForgotPasswordStates {

@@ -8,6 +8,7 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
+import 'package:smart_cleaning_application/core/widgets/filter_top_widget/filter_top_widget.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
@@ -39,10 +40,11 @@ class CustomFilterUserDialog {
               child: SingleChildScrollView(
                 child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      buildHeader(context),
                       Text(
                         S.of(context).addUserText12,
                         style: TextStyles.font16BlackRegular,
@@ -309,7 +311,7 @@ class CustomFilterUserDialog {
                         keyboardType: TextInputType.text,
                       ),
                       verticalSpace(10),
-                        Text(
+                      Text(
                         'Section',
                         style: TextStyles.font16BlackRegular,
                       ),
@@ -350,8 +352,9 @@ class CustomFilterUserDialog {
                           sectionId = selectedSection.id;
                         },
                         suffixIcon: IconBroken.arrowDown2,
-                        controller:
-                            context.read<UserManagementCubit>().sectionController,
+                        controller: context
+                            .read<UserManagementCubit>()
+                            .sectionController,
                         keyboardType: TextInputType.text,
                       ),
                       verticalSpace(10),
@@ -400,9 +403,8 @@ class CustomFilterUserDialog {
                             context.read<UserManagementCubit>().pointController,
                         keyboardType: TextInputType.text,
                       ),
-                    
                       if (role == 'Admin') ...[
-                          verticalSpace(10),
+                        verticalSpace(10),
                         Text(
                           'Provider',
                           style: TextStyles.font16BlackRegular,
@@ -457,23 +459,24 @@ class CustomFilterUserDialog {
                           style: TextStyles.font16BlackRegular,
                         ),
                         CustomDropDownList(
-                          
-                      onPressed: (selectedValue) {
-                        final selectedId = context
-                            .read<UserManagementCubit>()
-                            .roleModel
-                            ?.data
-                            ?.firstWhere(
-                              (role) => role.name == selectedValue,
-                            )
-                            .id
-                            ?.toString();
+                          onPressed: (selectedValue) {
+                            final selectedId = context
+                                .read<UserManagementCubit>()
+                                .roleModel
+                                ?.data
+                                ?.firstWhere(
+                                  (role) => role.name == selectedValue,
+                                )
+                                .id
+                                ?.toString();
 
-                        if (selectedId != null) {
-                          context.read<UserManagementCubit>().roleIdController.text =
-                              selectedId;
-                        }
-                      },
+                            if (selectedId != null) {
+                              context
+                                  .read<UserManagementCubit>()
+                                  .roleIdController
+                                  .text = selectedId;
+                            }
+                          },
                           hint: 'Select Role',
                           items: context
                                       .read<UserManagementCubit>()
@@ -509,7 +512,7 @@ class CustomFilterUserDialog {
                                       organizationId: organizationId,
                                       buildingId: buildingId,
                                       floorId: floorId,
-                                      sectionId:sectionId,
+                                      sectionId: sectionId,
                                       pointId: pointId,
                                       providerId: providerId);
                               context.pop();
@@ -519,7 +522,7 @@ class CustomFilterUserDialog {
                             width: double.infinity,
                             textStyles: TextStyles.font20Whitesemimedium),
                       ),
-                      verticalSpace(30),
+                      verticalSpace(10),
                     ],
                   ),
                 ),

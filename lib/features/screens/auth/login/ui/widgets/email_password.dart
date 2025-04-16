@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
@@ -88,9 +89,13 @@ class _EmailAndPasswordState extends State<EmailAndPassword> {
               ),
               verticalSpace(60),
               state is LoginLoadingState
-                  ? const Center(
-                      child: CircularProgressIndicator(
-                          color: AppColor.primaryColor),
+                  ? Center(
+                      child: Image.asset(
+                        'assets/images/loading.gif',
+                        width: 120.w,
+                        height: 120.h,
+                        fit: BoxFit.contain,
+                      ),
                     )
                   : DefaultElevatedButton(
                       width: 310,

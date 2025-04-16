@@ -61,11 +61,13 @@ class _HomeBodyState extends State<HomeBody> {
             }
           },
           builder: (context, state) {
-            if (role == 'Admin' &&
-                context.read<HomeCubit>().profileModel == null) {
+            if (context.read<HomeCubit>().profileModel == null) {
               return Center(
-                child: CircularProgressIndicator(
-                  color: AppColor.primaryColor,
+                child: Image.asset(
+                  'assets/images/loading.gif',
+                  width: 120.w,
+                  height: 120.h,
+                  fit: BoxFit.contain,
                 ),
               );
             }
