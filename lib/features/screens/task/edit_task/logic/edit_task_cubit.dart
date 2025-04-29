@@ -5,17 +5,17 @@ import 'package:image_picker/image_picker.dart';
 import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/all_tasks_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/gallary_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/edit_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/logic/edit_task_state.dart';
-import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/task_details.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/point_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/section_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/view_task/data/model/task_details.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/point_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/section_list_model.dart';
 
 class EditTaskCubit extends Cubit<EditTaskState> {
   EditTaskCubit() : super(EditTaskInitialState());
@@ -36,7 +36,7 @@ class EditTaskCubit extends Cubit<EditTaskState> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController parentTaskController = TextEditingController();
   TextEditingController currentReadingController = TextEditingController();
-  final supervisorsController = MultiSelectController<User>();
+  final supervisorsController = MultiSelectController<UserItem>();
   final formKey = GlobalKey<FormState>();
 
   EditTaskModel? editTaskModel;
@@ -143,12 +143,12 @@ class EditTaskCubit extends Cubit<EditTaskState> {
     });
   }
 
-  AllOrganizationModel? allOrganizationModel;
+  OrganizationListModel? organizationListModel;
   getOrganization() {
     emit(GetOrganizationLoadingState());
     DioHelper.getData(url: ApiConstants.organizationUrl).then((value) {
-      allOrganizationModel = AllOrganizationModel.fromJson(value!.data);
-      emit(GetOrganizationSuccessState(allOrganizationModel!));
+      organizationListModel = OrganizationListModel.fromJson(value!.data);
+      emit(GetOrganizationSuccessState(organizationListModel!));
     }).catchError((error) {
       emit(GetOrganizationErrorState(error.toString()));
     });

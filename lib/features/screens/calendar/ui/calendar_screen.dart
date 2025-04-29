@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
@@ -52,51 +53,48 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   Widget _buildFullScreenCalendar(AllTasksModel allTasksModel) {
-    return SafeArea(
-      child: Column(
-        children: [
-          Expanded(
-            child: SfCalendar(
-              view: CalendarView.month,
-              dataSource: _getCalendarDataSource(allTasksModel),
-              todayHighlightColor: AppColor.primaryColor,
-              showNavigationArrow: true,
-              showDatePickerButton: true,
-              allowViewNavigation: false,
-              showCurrentTimeIndicator: false,
-              monthViewSettings: const MonthViewSettings(
-                appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
-                showAgenda: true,
-                agendaViewHeight: 200,
-                agendaItemHeight: 60,
-                numberOfWeeksInView: 6,
-              ),
-              headerHeight: 50.h,
-              headerStyle: CalendarHeaderStyle(
-                backgroundColor: Colors.white,
-                textAlign: TextAlign.center,
-                textStyle: TextStyles.font16PrimSemiBold,
-              ),
-              onTap: (CalendarTapDetails details) {
-                if (details.targetElement == CalendarElement.appointment) {
-                  final Appointment appointment = details.appointments!.first;
-
-                  TaskData? selectedTask = allTasksModel.data?.data
-                      ?.firstWhere((task) => task.id == appointment.id);
-
-                  if (selectedTask != null) {
-                    Navigator.pushNamed(
-                      context,
-                      Routes.taskDetailsScreen,
-                      arguments: selectedTask.id,
-                    );
-                  }
-                }
-              },
+    return Column(
+      children: [
+        Expanded(
+          child: SfCalendar(
+            view: CalendarView.month,
+            dataSource: _getCalendarDataSource(allTasksModel),
+            todayHighlightColor: AppColor.primaryColor,
+            showNavigationArrow: true,
+            showDatePickerButton: true,
+            allowViewNavigation: false,
+            showCurrentTimeIndicator: false,
+            monthViewSettings: const MonthViewSettings(
+              appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
+              showAgenda: true,
+              agendaViewHeight: 200,
+              agendaItemHeight: 60,
+              numberOfWeeksInView: 6,
             ),
+            headerHeight: 50.h,
+            headerStyle: CalendarHeaderStyle(
+              backgroundColor: Colors.white,
+              textAlign: TextAlign.center,
+              textStyle: TextStyles.font16PrimSemiBold,
+            ),
+            onTap: (CalendarTapDetails details) {
+              if (details.targetElement == CalendarElement.appointment) {
+                final Appointment appointment = details.appointments!.first;
+
+                TaskData? selectedTask = allTasksModel.data?.data
+                    ?.firstWhere((task) => task.id == appointment.id);
+
+                if (selectedTask != null) {
+                  context.pushNamed(
+                    Routes.taskDetailsScreen,
+                    arguments: selectedTask.id,
+                  );
+                }
+              }
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

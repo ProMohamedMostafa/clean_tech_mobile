@@ -16,6 +16,7 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_details/logic/cubit/user_details_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/attendance_list_item_build.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/filter_attendance_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/filter_leaves_dialog.dart';
@@ -26,8 +27,6 @@ import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custo
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/shift_list_item_build.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/task_list_item_build.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/work_location_list_item_build.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_state.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
@@ -83,33 +82,6 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
 
   @override
   void initState() {
-    if (role == 'Admin') {
-      context.read<UserManagementCubit>().getUserDetails(widget.id);
-      context.read<UserManagementCubit>().getUserShiftDetails(widget.id);
-      context.read<UserManagementCubit>().getUserTaskDetails(widget.id);
-      context.read<UserManagementCubit>().getUserWorkLocationDetails(widget.id);
-      context.read<UserManagementCubit>().getAllHistory(widget.id);
-      context.read<UserManagementCubit>().getAllLeaves(widget.id);
-      context.read<UserManagementCubit>().getUserStatus(widget.id);
-      context.read<UserManagementCubit>().getAllArea();
-      context.read<UserManagementCubit>().getProviders();
-      context.read<UserManagementCubit>().getRole();
-      context.read<UserManagementCubit>().getShifts();
-    }
-
-    if (role == 'Manager') {
-      context.read<UserManagementCubit>().getUserDetails(widget.id);
-      context.read<UserManagementCubit>().getUserShiftDetails(widget.id);
-      context.read<UserManagementCubit>().getUserTaskDetails(widget.id);
-      context.read<UserManagementCubit>().getUserWorkLocationDetails(widget.id);
-      context.read<UserManagementCubit>().getAllHistory(widget.id);
-      context.read<UserManagementCubit>().getAllLeaves(widget.id);
-      context.read<UserManagementCubit>().getUserStatus(widget.id);
-      context.read<UserManagementCubit>().getAllArea();
-      context.read<UserManagementCubit>().getRole();
-      context.read<UserManagementCubit>().getShifts();
-    }
-
     controller = TabController(length: 6, vsync: this);
     controller.addListener(() {
       setState(() {});
@@ -153,12 +125,10 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
               ))
         ],
       ),
-      body: BlocConsumer<UserManagementCubit, UserManagementState>(
+      body: BlocConsumer<UserDetailsCubit, UserDetailsState>(
         listener: (context, state) {
           if (state is UserDeleteSuccessState) {
-            toast(
-                text: state.deleteUserModel.message!,
-                color: Colors.blue);
+            toast(text: state.deleteUserModel.message!, color: Colors.blue);
             context.pushNamedAndRemoveLastTwo(Routes.userManagmentScreen);
           }
           if (state is UserDeleteErrorState) {
@@ -166,20 +136,20 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
           }
         },
         builder: (context, state) {
-          if ((context.read<UserManagementCubit>().userDetailsModel?.data ==
+          if ((context.read<UserDetailsCubit>().userDetailsModel?.data ==
                       null &&
-                  context.read<UserManagementCubit>().userStatusModel?.data ==
+                  context.read<UserDetailsCubit>().userStatusModel?.data ==
                       null) ||
-              context.read<UserManagementCubit>().userShiftDetailsModel?.data ==
+              context.read<UserDetailsCubit>().userShiftDetailsModel?.data ==
                   null ||
-              context.read<UserManagementCubit>().userTaskDetailsModel?.data ==
+              context.read<UserDetailsCubit>().userTaskDetailsModel?.data ==
                   null ||
               context
-                      .read<UserManagementCubit>()
+                      .read<UserDetailsCubit>()
                       .userWorkLocationDetailsModel
                       ?.data ==
                   null ||
-              context.read<UserManagementCubit>().attendanceLeavesModel?.data ==
+              context.read<UserDetailsCubit>().attendanceLeavesModel?.data ==
                   null) {
             return Center(
               child: CircularProgressIndicator(
@@ -210,7 +180,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                                   body: Center(
                                     child: PhotoView(
                                       imageProvider: NetworkImage(
-                                        '${ApiConstants.apiBaseUrlImage}${context.read<UserManagementCubit>().userDetailsModel!.data!.image}',
+                                        '${ApiConstants.apiBaseUrlImage}${context.read<UserDetailsCubit>().userDetailsModel!.data!.image}',
                                       ),
                                       errorBuilder:
                                           (context, error, stackTrace) {
@@ -236,7 +206,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                             ),
                             child: ClipOval(
                               child: Image.network(
-                                '${ApiConstants.apiBaseUrlImage}${context.read<UserManagementCubit>().userDetailsModel!.data!.image}',
+                                '${ApiConstants.apiBaseUrlImage}${context.read<UserDetailsCubit>().userDetailsModel!.data!.image}',
                                 fit: BoxFit.fill,
                                 errorBuilder: (context, error, stackTrace) {
                                   return Image.asset(
@@ -257,13 +227,13 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: context
-                                          .read<UserManagementCubit>()
+                                          .read<UserDetailsCubit>()
                                           .userStatusModel
                                           ?.data ==
                                       null
                                   ? Colors.red
                                   : context
-                                              .read<UserManagementCubit>()
+                                              .read<UserDetailsCubit>()
                                               .userStatusModel!
                                               .data!
                                               .clockOut ==
@@ -284,7 +254,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                     children: [
                       Text(
                         context
-                            .read<UserManagementCubit>()
+                            .read<UserDetailsCubit>()
                             .userDetailsModel!
                             .data!
                             .firstName!,
@@ -293,7 +263,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                       horizontalSpace(5),
                       Text(
                         context
-                            .read<UserManagementCubit>()
+                            .read<UserDetailsCubit>()
                             .userDetailsModel!
                             .data!
                             .lastName!,
@@ -304,7 +274,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                   verticalSpace(5),
                   Text(
                     context
-                        .read<UserManagementCubit>()
+                        .read<UserDetailsCubit>()
                         .userDetailsModel!
                         .data!
                         .role!,
@@ -415,7 +385,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                             showCustomDialog(
                                 context, S.of(context).deleteMessage, () {
                               context
-                                  .read<UserManagementCubit>()
+                                  .read<UserDetailsCubit>()
                                   .userDelete(widget.id);
                             });
                           },
@@ -434,7 +404,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
   }
 
   Widget userDetails() {
-    final userModel = context.read<UserManagementCubit>().userDetailsModel!;
+    final userModel = context.read<UserDetailsCubit>().userDetailsModel!;
 
     return SingleChildScrollView(
       child: Column(
@@ -523,7 +493,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
 
   Widget locationUserDetails() {
     final workLocationModel =
-        context.read<UserManagementCubit>().userWorkLocationDetailsModel!;
+        context.read<UserDetailsCubit>().userWorkLocationDetailsModel!;
     if (workLocationModel.data!.areas!.isEmpty &&
         workLocationModel.data!.cities!.isEmpty &&
         workLocationModel.data!.organizations!.isEmpty &&
@@ -542,8 +512,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
   }
 
   Widget userShiftsDetails() {
-    final shiftModel =
-        context.read<UserManagementCubit>().userShiftDetailsModel!;
+    final shiftModel = context.read<UserDetailsCubit>().userShiftDetailsModel!;
     if (shiftModel.data == null || shiftModel.data!.isEmpty) {
       return Center(
         child: Text(
@@ -578,7 +547,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
   }
 
   Widget userTasksDetails() {
-    final taskModel = context.read<UserManagementCubit>().userTaskDetailsModel!;
+    final taskModel = context.read<UserDetailsCubit>().userTaskDetailsModel!;
     if (taskModel.data!.data == null || taskModel.data!.data!.isEmpty) {
       return Center(
         child: Text(
@@ -603,55 +572,15 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                 ),
                 InkWell(
                   onTap: () {
-                    context
-                        .read<UserManagementCubit>()
-                        .createdByController
-                        .clear();
-                    context
-                        .read<UserManagementCubit>()
-                        .assignToController
-                        .clear();
-                    context
-                        .read<UserManagementCubit>()
-                        .statusController
-                        .clear();
-                    context
-                        .read<UserManagementCubit>()
-                        .startDateController
-                        .clear();
-                    context
-                        .read<UserManagementCubit>()
-                        .endDateController
-                        .clear();
-                    context
-                        .read<UserManagementCubit>()
-                        .priorityController
-                        .clear();
-                    context.read<UserManagementCubit>().roleController.clear();
-
-                    context
-                        .read<UserManagementCubit>()
-                        .startTimeController
-                        .clear();
-                    context
-                        .read<UserManagementCubit>()
-                        .endTimeController
-                        .clear();
-                    context.read<UserManagementCubit>().areaController.clear();
-                    context.read<UserManagementCubit>().cityController.clear();
-                    context
-                        .read<UserManagementCubit>()
-                        .organizationController
-                        .clear();
-                    context
-                        .read<UserManagementCubit>()
-                        .buildingController
-                        .clear();
-                    context.read<UserManagementCubit>().floorController.clear();
-                    context.read<UserManagementCubit>().pointController.clear();
-
-                    CustomFilterTaskDialog.show(
-                        context: context, id: widget.id);
+                    // context
+                    //     .read<UserDetailsCubit>()
+                    //     .createdByController
+                    //     .clear();
+                    // context.read<UserDetailsCubit>().assignToController.clear();
+                    // context.read<UserDetailsCubit>().statusController.clear();
+                    // context.read<UserDetailsCubit>().priorityController.clear();
+                    // CustomFilterTaskDialog.show(
+                    //     context: context, id: widget.id);
                   },
                   child: Container(
                     height: 49.h,
@@ -695,7 +624,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
 
   Widget userAttendanceDetails() {
     final attendanceData =
-        context.read<UserManagementCubit>().attendanceHistoryModel?.data?.data;
+        context.read<UserDetailsCubit>().attendanceHistoryModel?.data?.data;
 
     if (attendanceData == null || attendanceData.isEmpty) {
       return Center(
@@ -721,8 +650,8 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                 ),
                 InkWell(
                   onTap: () {
-                    CustomFilterAttedanceDialog.show(
-                        context: context, id: widget.id);
+                    // CustomFilterAttedanceDialog.show(
+                    //     context: context, id: widget.id);
                   },
                   child: Container(
                     height: 52,
@@ -766,7 +695,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
 
   Widget userLeavesDetails() {
     final attendanceData =
-        context.read<UserManagementCubit>().attendanceLeavesModel?.data?.leaves;
+        context.read<UserDetailsCubit>().attendanceLeavesModel?.data?.leaves;
 
     if (attendanceData == null || attendanceData.isEmpty) {
       return Center(
@@ -792,8 +721,8 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                 ),
                 InkWell(
                   onTap: () {
-                    CustomFilterLeavesDialog.show(
-                        context: context, id: widget.id);
+                    // CustomFilterLeavesDialog.show(
+                    //     context: context, id: widget.id);
                   },
                   child: Container(
                     height: 52,
@@ -843,18 +772,18 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
     final page4 = document.pages.add();
     final page5 = document.pages.add();
     final page6 = document.pages.add();
-    final user = context.read<UserManagementCubit>().userDetailsModel!.data!;
+    final user = context.read<UserDetailsCubit>().userDetailsModel!.data!;
     final userWorkLocationDetailsModel =
-        context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data;
+        context.read<UserDetailsCubit>().userWorkLocationDetailsModel!.data;
     final userShiftDetails =
-        context.read<UserManagementCubit>().userShiftDetailsModel!.data;
+        context.read<UserDetailsCubit>().userShiftDetailsModel!.data;
     final userTasksDetails =
-        context.read<UserManagementCubit>().userTaskDetailsModel!.data;
+        context.read<UserDetailsCubit>().userTaskDetailsModel!.data;
     final userAttendanceDetails =
-        context.read<UserManagementCubit>().attendanceHistoryModel!.data;
+        context.read<UserDetailsCubit>().attendanceHistoryModel!.data;
 
     final userLeaveDetails =
-        context.read<UserManagementCubit>().attendanceLeavesModel!.data;
+        context.read<UserDetailsCubit>().attendanceLeavesModel!.data;
     PdfBrush backgroundBrush = PdfSolidBrush(PdfColor(255, 255, 255));
 
 // Get page size

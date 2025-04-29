@@ -11,7 +11,7 @@ Widget materialDetailsBuild(BuildContext context, int selectedIndex) {
           .read<MaterialManagementCubit>()
           .materialManagementModel
           ?.data
-          .materials
+          ?.materials
       : context.read<MaterialManagementCubit>().deletedMaterialListModel?.data;
 
   if (materialsData == null || materialsData.isEmpty) {

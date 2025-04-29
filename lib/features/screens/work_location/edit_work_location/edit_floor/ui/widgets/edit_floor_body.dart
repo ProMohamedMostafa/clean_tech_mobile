@@ -129,14 +129,14 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                         items: context
                                     .read<EditFloorCubit>()
                                     .areasModel
-                                    ?.data?.areas
+                                    ?.data?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No areas']
                             : context
                                     .read<EditFloorCubit>()
                                   .areasModel
-                                    ?.data?.areas
+                                    ?.data?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
@@ -144,7 +144,7 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                           final selectedArea = context
                               .read<EditFloorCubit>()
                                   .areasModel
-                                    ?.data?.areas
+                                    ?.data?.data
                               ?.firstWhere((area) =>
                                   area.name ==
                                   context
@@ -740,7 +740,7 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                             ),
                       context.read<EditFloorCubit>().shiftModel?.data == null
                           ? SizedBox.shrink()
-                          : MultiDropdown<ShiftDetails>(
+                          : MultiDropdown<ShiftItem>(
                               items: context
                                           .read<EditFloorCubit>()
                                           .shiftModel
@@ -751,7 +751,7 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                                   ? [
                                       DropdownItem(
                                         label: 'No shifts available',
-                                        value: ShiftDetails(
+                                        value: ShiftItem(
                                             id: null,
                                             name: 'No shifts available'),
                                       )

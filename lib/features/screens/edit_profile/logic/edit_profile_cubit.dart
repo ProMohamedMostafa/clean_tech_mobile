@@ -8,12 +8,12 @@ import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper
 import 'package:smart_cleaning_application/features/screens/edit_profile/data/model/edit_profile_model.dart';
 import 'package:smart_cleaning_application/features/screens/edit_profile/logic/edit_profile_state.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/gallary_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/settings/data/model/profile_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_shift_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_shift_details_model.dart';
 
 class EditProfileCubit extends Cubit<EditProfileState> {
   EditProfileCubit() : super(EditProfileInitialState());
@@ -30,7 +30,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   TextEditingController idNumberController = TextEditingController();
   TextEditingController genderController = TextEditingController();
   TextEditingController genderIdController = TextEditingController();
-  final shiftController = MultiSelectController<ShiftDetails>();
+  final shiftController = MultiSelectController<ShiftItem>();
 
   EditProfileModel? editProfileModel;
   editProfile(String? image) async {
@@ -116,11 +116,11 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     });
   }
 
-  NationalityModel? nationalityModel;
+  NationalityListModel? nationalityModel;
   getNationality() {
     emit(GetNationalityLoadingState());
     DioHelper.getData(url: ApiConstants.countriesUrl).then((value) {
-      nationalityModel = NationalityModel.fromJson(value!.data);
+      nationalityModel = NationalityListModel.fromJson(value!.data);
       emit(GetNationalitySuccessState(nationalityModel!));
     }).catchError((error) {
       emit(GetNationalityErrorState(error.toString()));

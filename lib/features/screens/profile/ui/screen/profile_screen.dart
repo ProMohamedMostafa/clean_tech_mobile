@@ -177,7 +177,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                             ),
                             child: ClipOval(
                               child: Image.network(
-                                '${ApiConstants.apiBaseUrl}${context.read<ProfileCubit>().profileModel!.data!.image}',
+                                '${ApiConstants.apiBaseUrlImage}${context.read<ProfileCubit>().profileModel!.data!.image}',
                                 fit: BoxFit.fill,
                                 errorBuilder: (context, error, stackTrace) {
                                   return Image.asset(

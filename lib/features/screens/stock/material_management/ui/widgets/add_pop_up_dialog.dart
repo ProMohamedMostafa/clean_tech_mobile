@@ -51,7 +51,7 @@ class AddPopUpDialog {
                         hint: "Write Number",
                         controller: context
                             .read<MaterialManagementCubit>()
-                            .quantityController,
+                            !.quantityController,
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -140,6 +140,12 @@ class AddPopUpDialog {
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "provider is Required";
+                          }
+                          return null;
+                        },
                         controller: context
                             .read<MaterialManagementCubit>()
                             .providerController,
@@ -226,18 +232,22 @@ class AddPopUpDialog {
                           DefaultElevatedButton(
                             name: "Add",
                             onPressed: () {
-                              context
-                                  .read<MaterialManagementCubit>()
-                                  .addMaterial(
-                                      materialId: id,
-                                      providerId: providerId,
-                                      quantityId: quantityId,
-                                      priceId: price,
-                                      image: context
-                                          .read<MaterialManagementCubit>()
-                                          .image
-                                          ?.path);
-                              context.pop();
+                              if (providerId != null &&
+                                  quantityId != null &&
+                                  price != null) {
+                                context
+                                    .read<MaterialManagementCubit>()
+                                    .addMaterial(
+                                        materialId: id,
+                                        providerId: providerId,
+                                        quantityId: quantityId,
+                                        priceId: price,
+                                        image: context
+                                            .read<MaterialManagementCubit>()
+                                            .image
+                                            ?.path);
+                                context.pop();
+                              }
                             },
                             color: AppColor.primaryColor,
                             height: 47.h,

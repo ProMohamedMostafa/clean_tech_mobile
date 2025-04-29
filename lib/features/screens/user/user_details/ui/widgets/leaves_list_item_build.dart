@@ -7,14 +7,14 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_details/logic/cubit/user_details_cubit.dart';
 
 Widget buildLeavesCardItem(BuildContext context, index) {
   return InkWell(borderRadius: BorderRadius.circular(11.r),
     onTap: () {
       context.pushNamed(Routes.leavesDetailsScreen,
           arguments: context
-              .read<UserManagementCubit>()
+              .read<UserDetailsCubit>()
               .attendanceLeavesModel!
               .data!
               .leaves![index]
@@ -54,7 +54,7 @@ Widget buildLeavesCardItem(BuildContext context, index) {
                   child: Center(
                     child: Text(
                       context
-                          .read<UserManagementCubit>()
+                          .read<UserDetailsCubit>()
                           .attendanceLeavesModel!
                           .data!
                           .leaves![index]
@@ -77,7 +77,7 @@ Widget buildLeavesCardItem(BuildContext context, index) {
                   child: Center(
                     child: Text(
                       context
-                          .read<UserManagementCubit>()
+                          .read<UserDetailsCubit>()
                           .attendanceLeavesModel!
                           .data!
                           .leaves![index]
@@ -93,7 +93,7 @@ Widget buildLeavesCardItem(BuildContext context, index) {
                     // PopUpDialog.show(
                     //   context: context,
                     //   id: context
-                    //       .read<UserManagementCubit>()
+                    //       .read<UserDetailsCubit>()
                     //       .attendanceLeavesModel!
                     //       .data!
                     //       .data![index]
@@ -109,7 +109,7 @@ Widget buildLeavesCardItem(BuildContext context, index) {
             ),
             Text(
               context
-                  .read<UserManagementCubit>()
+                  .read<UserDetailsCubit>()
                   .attendanceLeavesModel!
                   .data!
                   .leaves![index]
@@ -119,7 +119,7 @@ Widget buildLeavesCardItem(BuildContext context, index) {
             verticalSpace(10),
             Text(
               context
-                  .read<UserManagementCubit>()
+                  .read<UserDetailsCubit>()
                   .attendanceLeavesModel!
                   .data!
                   .leaves![index]
@@ -143,7 +143,7 @@ Widget buildLeavesCardItem(BuildContext context, index) {
                     children: [
                       TextSpan(
                         text: context
-                                .read<UserManagementCubit>()
+                                .read<UserDetailsCubit>()
                                 .attendanceLeavesModel!
                                 .data!
                                 .leaves![index]
@@ -158,7 +158,7 @@ Widget buildLeavesCardItem(BuildContext context, index) {
                       ),
                       TextSpan(
                         text: context
-                                .read<UserManagementCubit>()
+                                .read<UserDetailsCubit>()
                                 .attendanceLeavesModel!
                                 .data!
                                 .leaves![index]

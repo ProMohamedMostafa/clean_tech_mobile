@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/points_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/add_shift/data/model/create_shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/add_shift/logic/add_shift_state.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/point_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/section_list_model.dart';
 
 class AddShiftCubit extends Cubit<AddShiftState> {
   AddShiftCubit() : super(AddShiftInitialState());
@@ -24,6 +25,8 @@ class AddShiftCubit extends Cubit<AddShiftState> {
   TextEditingController buildingIdController = TextEditingController();
   TextEditingController floorController = TextEditingController();
   TextEditingController floorIdController = TextEditingController();
+  TextEditingController sectionController = TextEditingController();
+  TextEditingController sectionIdController = TextEditingController();
   TextEditingController pointController = TextEditingController();
   TextEditingController pointIdController = TextEditingController();
   final formKey = GlobalKey<FormState>();
@@ -59,43 +62,77 @@ class AddShiftCubit extends Cubit<AddShiftState> {
   }
 
   OrganizationListModel? organizationModel;
+  List<OrganizationItem> organizationItem = [
+    OrganizationItem(name: 'No organizations')
+  ];
   getOrganization() {
     emit(OrganizationLoadingState());
-    DioHelper.getData(url: ApiConstants.organizationUrl).then((value) {
+    DioHelper.getData(url: "organizations/pagination").then((value) {
       organizationModel = OrganizationListModel.fromJson(value!.data);
+      organizationItem = organizationModel?.data?.data ??
+          [OrganizationItem(name: 'No organizations')];
       emit(OrganizationSuccessState(organizationModel!));
     }).catchError((error) {
       emit(OrganizationErrorState(error.toString()));
     });
   }
 
-  BuildingModel? buildingModel;
-  getBuilding(int buildingId) {
+  BuildingListModel? buildingModel;
+  List<BuildingItem> buildingItem = [BuildingItem(name: 'No building')];
+  getBuilding() {
     emit(GetBuildingLoadingState());
-    DioHelper.getData(url: 'buildings/organization/$buildingId').then((value) {
-      buildingModel = BuildingModel.fromJson(value!.data);
+    DioHelper.getData(
+        url: 'buildings/pagination',
+        query: {'OrganizationId': organizationIdController.text}).then((value) {
+      buildingModel = BuildingListModel.fromJson(value!.data);
+      buildingItem =
+          buildingModel?.data?.data ?? [BuildingItem(name: 'No building')];
       emit(GetBuildingSuccessState(buildingModel!));
     }).catchError((error) {
       emit(GetBuildingErrorState(error.toString()));
     });
   }
 
-  FloorModel? floorModel;
-  getFloor(int floorId) {
+  FloorListModel? floorModel;
+  List<FloorItem> floorItem = [FloorItem(name: 'No floors')];
+  getFloor() {
     emit(GetFloorLoadingState());
-    DioHelper.getData(url: 'floors/building/$floorId').then((value) {
-      floorModel = FloorModel.fromJson(value!.data);
+    DioHelper.getData(
+        url: 'floors/pagination',
+        query: {'BuildingId': buildingIdController.text}).then((value) {
+      floorModel = FloorListModel.fromJson(value!.data);
+      floorItem = floorModel?.data?.data ?? [FloorItem(name: 'No floors')];
       emit(GetFloorSuccessState(floorModel!));
     }).catchError((error) {
       emit(GetFloorErrorState(error.toString()));
     });
   }
 
-  PointsModel? pointModel;
-  getPoints(int pointId) {
+  SectionListModel? sectionModel;
+  List<SectionItem> sectionItem = [SectionItem(name: 'No sections')];
+  getSection() {
+    emit(GetSectionLoadingState());
+    DioHelper.getData(
+        url: 'sections/pagination',
+        query: {'FloorId': floorIdController.text}).then((value) {
+      sectionModel = SectionListModel.fromJson(value!.data);
+      sectionItem =
+          sectionModel?.data?.data ?? [SectionItem(name: 'No sections')];
+      emit(GetSectionSuccessState(sectionModel!));
+    }).catchError((error) {
+      emit(GetSectionErrorState(error.toString()));
+    });
+  }
+
+  PointListModel? pointModel;
+  List<PointItem> pointItem = [PointItem(name: 'No points')];
+  getPoint() {
     emit(GetPointLoadingState());
-    DioHelper.getData(url: 'points/floor/$pointId').then((value) {
-      pointModel = PointsModel.fromJson(value!.data);
+    DioHelper.getData(
+        url: 'points/pagination',
+        query: {'SectionId': sectionIdController.text}).then((value) {
+      pointModel = PointListModel.fromJson(value!.data);
+      pointItem = pointModel?.data?.data ?? [PointItem(name: 'No points')];
       emit(GetPointSuccessState(pointModel!));
     }).catchError((error) {
       emit(GetPointErrorState(error.toString()));

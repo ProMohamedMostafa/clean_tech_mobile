@@ -149,7 +149,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
                       .read<AddWorkLocationCubit>()
                       .areaModel
                       ?.data
-                      ?.areas
+                      ?.data
                       ?.isEmpty ??
                   true
               ? ['No area']
@@ -157,7 +157,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
                       .read<AddWorkLocationCubit>()
                       .areaModel
                       ?.data
-                      ?.areas
+                      ?.data
                       ?.map((e) => e.name ?? 'Unknown')
                       .toList() ??
                   [],
@@ -172,7 +172,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
                 .read<AddWorkLocationCubit>()
                 .areaModel
                 ?.data
-                ?.areas
+                ?.data
                 ?.firstWhere((area) =>
                     area.name ==
                     context.read<AddWorkLocationCubit>().areaController.text);
@@ -457,7 +457,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
               ),
         context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
-            : MultiDropdown<User>(
+            : MultiDropdown<UserItem>(
                 items: context
                         .read<AddWorkLocationCubit>()
                         .usersModel!
@@ -468,8 +468,8 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
                     ? [
                         DropdownItem(
                           label: 'No managers available',
-                          value:
-                              User(id: null, userName: 'No managers available'),
+                          value: UserItem(
+                              id: null, userName: 'No managers available'),
                         )
                       ]
                     : context
@@ -546,7 +546,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
               ),
         context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
-            : MultiDropdown<User>(
+            : MultiDropdown<UserItem>(
                 items: context
                         .read<AddWorkLocationCubit>()
                         .usersModel!
@@ -557,7 +557,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
                     ? [
                         DropdownItem(
                           label: 'No supervisors available',
-                          value: User(
+                          value: UserItem(
                               id: null, userName: 'No supervisors available'),
                         )
                       ]
@@ -636,7 +636,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
               ),
         context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
-            : MultiDropdown<User>(
+            : MultiDropdown<UserItem>(
                 items: context
                         .read<AddWorkLocationCubit>()
                         .usersModel!
@@ -647,8 +647,8 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
                     ? [
                         DropdownItem(
                           label: 'No cleaners available',
-                          value:
-                              User(id: null, userName: 'No cleaners available'),
+                          value: UserItem(
+                              id: null, userName: 'No cleaners available'),
                         )
                       ]
                     : context
@@ -725,7 +725,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
               ),
         context.read<AddWorkLocationCubit>().shiftModel?.data == null
             ? SizedBox.shrink()
-            : MultiDropdown<ShiftDetails>(
+            : MultiDropdown<ShiftItem>(
                 items: context
                             .read<AddWorkLocationCubit>()
                             .shiftModel
@@ -736,8 +736,8 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
                     ? [
                         DropdownItem(
                           label: 'No shifts available',
-                          value: ShiftDetails(
-                              id: null, name: 'No shifts available'),
+                          value:
+                              ShiftItem(id: null, name: 'No shifts available'),
                         )
                       ]
                     : context

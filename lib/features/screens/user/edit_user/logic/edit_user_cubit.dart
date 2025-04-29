@@ -5,15 +5,15 @@ import 'package:image_picker/image_picker.dart';
 import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/edit_user/data/model/edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/edit_user/logic/edit_user_state.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_shift_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_shift_details_model.dart';
 
 import '../../../integrations/data/models/gallary_model.dart';
 
@@ -41,7 +41,7 @@ class EditUserCubit extends Cubit<EditUserState> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordConfirmationController =
       TextEditingController();
-  final shiftController = MultiSelectController<ShiftDetails>();
+  final shiftController = MultiSelectController<ShiftItem>();
   final formKey = GlobalKey<FormState>();
 
   EditModel? editModel;
@@ -160,11 +160,11 @@ class EditUserCubit extends Cubit<EditUserState> {
     });
   }
 
-  NationalityModel? nationalityModel;
+  NationalityListModel? nationalityModel;
   getNationality() {
     emit(GetNationalityLoadingState());
     DioHelper.getData(url: ApiConstants.countriesUrl).then((value) {
-      nationalityModel = NationalityModel.fromJson(value!.data);
+      nationalityModel = NationalityListModel.fromJson(value!.data);
       emit(GetNationalitySuccessState(nationalityModel!));
     }).catchError((error) {
       emit(GetNationalityErrorState(error.toString()));
@@ -181,16 +181,19 @@ class EditUserCubit extends Cubit<EditUserState> {
       emit(RoleErrorState(error.toString()));
     });
   }
- UsersModel? usersModel;
+
+  UsersModel? usersModel;
   getAllUsers(int id) {
     emit(AllUsersLoadingState());
-    DioHelper.getData(url: "users/pagination",query: {'role':id}).then((value) {
+    DioHelper.getData(url: "users/pagination", query: {'role': id})
+        .then((value) {
       usersModel = UsersModel.fromJson(value!.data);
       emit(AllUsersSuccessState(usersModel!));
     }).catchError((error) {
       emit(AllUsersErrorState(error.toString()));
     });
   }
+
   GalleryModel? gellaryModel;
   XFile? image;
   Future<void> galleryFile() async {

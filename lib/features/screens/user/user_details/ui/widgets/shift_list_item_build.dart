@@ -7,7 +7,7 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_details/logic/cubit/user_details_cubit.dart';
 
 Widget listShiftItemBuild(BuildContext context, index) {
   return InkWell(
@@ -15,7 +15,7 @@ Widget listShiftItemBuild(BuildContext context, index) {
     onTap: () {
       context.pushNamed(Routes.shiftDetailsScreen,
           arguments: context
-              .read<UserManagementCubit>()
+              .read<UserDetailsCubit>()
               .shiftModel!
               .data!
               .data![index]
@@ -46,7 +46,7 @@ Widget listShiftItemBuild(BuildContext context, index) {
               children: [
                 Text(
                   context
-                      .read<UserManagementCubit>()
+                      .read<UserDetailsCubit>()
                       .userShiftDetailsModel!
                       .data!
                       [index]
@@ -59,7 +59,7 @@ Widget listShiftItemBuild(BuildContext context, index) {
                     // PopUpDialog.show(
                     //     context: context,
                     //     id: context
-                    //         .read<UserManagementCubit>()
+                    //         .read<UserDetailsCubit>()
                     //         .userTaskDetailsModel!
                     //         .data!
                     //         .data![index]
@@ -87,7 +87,7 @@ Widget listShiftItemBuild(BuildContext context, index) {
                     children: [
                       TextSpan(
                         text: context
-                            .read<UserManagementCubit>()
+                            .read<UserDetailsCubit>()
                             .userShiftDetailsModel!
                             .data!
                           [index]
@@ -100,7 +100,7 @@ Widget listShiftItemBuild(BuildContext context, index) {
                       ),
                       TextSpan(
                         text: context
-                            .read<UserManagementCubit>()
+                            .read<UserDetailsCubit>()
                             .userShiftDetailsModel!
                             .data!
                             [index]
@@ -123,7 +123,7 @@ Widget listShiftItemBuild(BuildContext context, index) {
                 horizontalSpace(5),
                 Text(
                   context
-                      .read<UserManagementCubit>()
+                      .read<UserDetailsCubit>()
                       .userShiftDetailsModel!
                       .data!
                      [index]
@@ -140,7 +140,7 @@ Widget listShiftItemBuild(BuildContext context, index) {
                 horizontalSpace(5),
                 Text(
                   context
-                      .read<UserManagementCubit>()
+                      .read<UserDetailsCubit>()
                       .userShiftDetailsModel!
                       .data!
                       [index]

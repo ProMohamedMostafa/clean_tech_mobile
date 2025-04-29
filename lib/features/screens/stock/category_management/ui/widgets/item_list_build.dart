@@ -20,7 +20,7 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                 .read<CategoryManagementCubit>()
                 .categoryManagementModel!
                 .data
-                .categories[index]
+                !.categories![index]
                 .id);
       }
     },
@@ -40,8 +40,8 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                   .read<CategoryManagementCubit>()
                   .categoryManagementModel!
                   .data
-                  .categories[index]
-                  .name
+                  !.categories![index]
+                  .name!
               : context
                   .read<CategoryManagementCubit>()
                   .deletedCategoryListModel!
@@ -62,7 +62,7 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                         .read<CategoryManagementCubit>()
                         .categoryManagementModel!
                         .data
-                        .categories[index]
+                        !.categories![index]
                         .unit
                     : context
                         .read<CategoryManagementCubit>()
@@ -87,7 +87,7 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                                 .read<CategoryManagementCubit>()
                                 .categoryManagementModel!
                                 .data
-                                .categories[index]
+                                !.categories![index]
                                 .id,
                           )
                         : showCustomDialog(
@@ -124,8 +124,8 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                                     .read<CategoryManagementCubit>()
                                     .categoryManagementModel!
                                     .data
-                                    .categories[index]
-                                    .id);
+                                    !.categories![index]
+                                    .id!);
                             context.pop();
                           })
                         : showCustomDialog(

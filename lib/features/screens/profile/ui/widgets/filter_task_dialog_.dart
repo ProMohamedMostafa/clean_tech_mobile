@@ -307,7 +307,7 @@ class CustomFilterTaskDialog {
                         hint: "Select area",
                         items: context
                                     .read<ProfileCubit>()
-                                    .allAreaModel
+                                    .areaListModel
                                     ?.data
                                     ?.data
                                     ?.isEmpty ??
@@ -315,7 +315,7 @@ class CustomFilterTaskDialog {
                             ? ['No organizations']
                             : context
                                     .read<ProfileCubit>()
-                                    .allAreaModel
+                                    .areaListModel
                                     ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
@@ -324,7 +324,7 @@ class CustomFilterTaskDialog {
                         onPressed: (value) {
                           final selectedArea = context
                               .read<ProfileCubit>()
-                              .allAreaModel
+                              .areaListModel
                               ?.data
                               ?.data
                               ?.firstWhere((area) =>

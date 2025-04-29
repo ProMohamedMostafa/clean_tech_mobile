@@ -1,130 +1,110 @@
 class ActivitiesModel {
-  int statusCode;
-  dynamic meta;
-  bool succeeded;
-  String message;
-  dynamic error;
-  dynamic businessErrorCode;
-  PaginatedActivityData data;
+  int? statusCode;
+  String? meta;
+  bool? succeeded;
+  String? message;
+  String? error;
+  int? businessErrorCode;
+  ActivitiesData? data;
 
   ActivitiesModel({
-    required this.statusCode,
+    this.statusCode,
     this.meta,
-    required this.succeeded,
-    required this.message,
+    this.succeeded,
+    this.message,
     this.error,
     this.businessErrorCode,
-    required this.data,
+    this.data,
   });
 
   factory ActivitiesModel.fromJson(Map<String, dynamic> json) {
     return ActivitiesModel(
-      statusCode: json['statusCode'] as int,
+      statusCode: json['statusCode'],
       meta: json['meta'],
-      succeeded: json['succeeded'] as bool,
-      message: json['message'] as String,
+      succeeded: json['succeeded'],
+      message: json['message'],
       error: json['error'],
       businessErrorCode: json['businessErrorCode'],
-      data:
-          PaginatedActivityData.fromJson(json['data'] as Map<String, dynamic>),
+      data: json['data'] != null ? ActivitiesData.fromJson(json['data']) : null,
     );
   }
 }
 
-class PaginatedActivityData {
-  int currentPage;
-  int totalPages;
-  int totalCount;
-  dynamic meta;
-  int pageSize;
-  bool hasPreviousPage;
-  bool hasNextPage;
-  bool succeeded;
-  List<Activity> data;
+class ActivitiesData {
+  int? currentPage;
+  int? totalPages;
+  int? totalCount;
+  String? meta;
+  int? pageSize;
+  bool? hasPreviousPage;
+  bool? hasNextPage;
+  bool? succeeded;
+  List<Activity>? activities;
 
-  PaginatedActivityData({
-    required this.currentPage,
-    required this.totalPages,
-    required this.totalCount,
+  ActivitiesData({
+    this.currentPage,
+    this.totalPages,
+    this.totalCount,
     this.meta,
-    required this.pageSize,
-    required this.hasPreviousPage,
-    required this.hasNextPage,
-    required this.succeeded,
-    required this.data,
+    this.pageSize,
+    this.hasPreviousPage,
+    this.hasNextPage,
+    this.succeeded,
+    this.activities,
   });
 
-  factory PaginatedActivityData.fromJson(Map<String, dynamic> json) {
-    return PaginatedActivityData(
-      currentPage: json['currentPage'] as int,
-      totalPages: json['totalPages'] as int,
-      totalCount: json['totalCount'] as int,
+  factory ActivitiesData.fromJson(Map<String, dynamic> json) {
+    return ActivitiesData(
+      currentPage: json['currentPage'],
+      totalPages: json['totalPages'],
+      totalCount: json['totalCount'],
       meta: json['meta'],
-      pageSize: json['pageSize'] as int,
-      hasPreviousPage: json['hasPreviousPage'] as bool,
-      hasNextPage: json['hasNextPage'] as bool,
-      succeeded: json['succeeded'] as bool,
-      data: (json['data'] as List)
-          .map((activityJson) => Activity.fromJson(activityJson))
-          .toList(),
+      pageSize: json['pageSize'],
+      hasPreviousPage: json['hasPreviousPage'],
+      hasNextPage: json['hasNextPage'],
+      succeeded: json['succeeded'],
+      activities: json['data'] != null
+          ? List<Activity>.from(json['data'].map((x) => Activity.fromJson(x)))
+          : [],
     );
   }
 }
 
 class Activity {
-  String message;
-  String module;
+  String? message;
+  String? module;
   int? moduleId;
+  String? actionType;
   int? actionTypeId;
-  String actionType;
-  String userName;
-  int userId;
-  String role;
-  DateTime createdAt;
+  String? userName;
+  int? userId;
+  String? role;
+  DateTime? createdAt;
 
   Activity({
-    required this.message,
-    required this.module,
+    this.message,
+    this.module,
     this.moduleId,
+    this.actionType,
     this.actionTypeId,
-    required this.actionType,
-    required this.userName,
-    required this.userId,
-    required this.role,
-    required this.createdAt,
+    this.userName,
+    this.userId,
+    this.role,
+    this.createdAt,
   });
 
   factory Activity.fromJson(Map<String, dynamic> json) {
     return Activity(
-      message: json['message'] as String,
-      module: json['module'] as String,
-      moduleId: json['moduleId'] as int?,
-      actionTypeId: json['actionTypeId'] as int?,
-      actionType: json['actionType'] as String,
-      userName: json['userName'] as String,
-      userId: json['userId'] as int,
-      role: json['role'] as String,
-      createdAt: DateTime.parse(json['createdAt'] as String),
+      message: json['message'],
+      module: json['module'],
+      moduleId: json['moduleId'],
+      actionType: json['actionType'],
+      actionTypeId: json['actionTypeId'],
+      userName: json['userName'],
+      userId: json['userId'],
+      role: json['role'],
+      createdAt:
+          json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
     );
-  }
-
-  // Helper method to get a simplified action description
-  String get actionDescription {
-    switch (actionType) {
-      case 'Login':
-        return 'logged in';
-      case 'ClockIn':
-        return 'clocked in';
-      case 'ClockOut':
-        return 'clocked out';
-      case 'ChangeStatus':
-        return 'changed task status';
-      case 'Edit':
-        return 'edited a task';
-      case 'Comment':
-        return 'added a comment';
-      default:
-        return actionType;
-    }
   }
 }

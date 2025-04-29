@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
+import 'package:smart_cleaning_application/core/widgets/two_buttons_in_integreat_screen/two_buttons_in_integration_screen.dart';
 import 'package:smart_cleaning_application/features/screens/stock/transaction_management/logic/transaction_mangement_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/stock/transaction_management/logic/transaction_mangement_state.dart';
 import 'package:smart_cleaning_application/features/screens/stock/transaction_management/ui/widgets/filter_search_build.dart';
@@ -20,23 +20,9 @@ class TransactionManagmentBody extends StatefulWidget {
 
 class _TransactionManagmentBodyState extends State<TransactionManagmentBody> {
   @override
-  void initState() {
-    context.read<TransactionManagementCubit>().initialize();
-    context.read<TransactionManagementCubit>().initializeIn();
-    context.read<TransactionManagementCubit>().initializeOut();
-    context.read<TransactionManagementCubit>().getTransactionList();
-    context.read<TransactionManagementCubit>().getTransactionInList();
-    context.read<TransactionManagementCubit>().getTransactionOutList();
-    context.read<TransactionManagementCubit>().getUsers();
-    context.read<TransactionManagementCubit>().getCategoryList();
-    context.read<TransactionManagementCubit>().getProviders();
-
-    super.initState();
-  }
-
-  int? selectedIndex = 0;
-  @override
   Widget build(BuildContext context) {
+    TransactionManagementCubit cubit =
+        context.read<TransactionManagementCubit>();
     return Scaffold(
       appBar: AppBar(
         leading: customBackButton(context),
@@ -48,103 +34,32 @@ class _TransactionManagmentBodyState extends State<TransactionManagmentBody> {
           BlocConsumer<TransactionManagementCubit, TransactionManagementState>(
         listener: (context, state) {},
         builder: (context, state) {
+          int allCount =
+              cubit.transactionManagementModel?.data?.data?.length ?? 0;
+          int inCount =
+              cubit.transactionManagementInModel?.data?.data?.length ?? 0;
+          int outCount =
+              cubit.transactionManagementOutModel?.data?.data?.length ?? 0;
           return Skeletonizer(
-            enabled: (context
-                        .read<TransactionManagementCubit>()
-                        .transactionManagementModel ==
-                    null ||
-                context
-                        .read<TransactionManagementCubit>()
-                        .transactionManagementInModel ==
-                    null ||
-                context
-                        .read<TransactionManagementCubit>()
-                        .transactionManagementOutModel ==
-                    null),
+            enabled: (cubit.transactionManagementModel == null),
             child: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    verticalSpace(15),
-                    filterAndSearchBuild(
-                        context, context.read<TransactionManagementCubit>()),
-                    verticalSpace(15),
-                    SizedBox(
-                      height: 45.h,
-                      child: LayoutBuilder(
-                        builder: (context, constraints) {
-                          double totalWidth = constraints.maxWidth;
-
-                          double containerWidth = (totalWidth - 5) / 3.05;
-                          return ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: 3,
-                            separatorBuilder: (context, index) {
-                              return horizontalSpace(5);
-                            },
-                            itemBuilder: (context, index) {
-                              bool isSelected = selectedIndex == index;
-                              return GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    selectedIndex = index;
-                                  });
-                                },
-                                child: Container(
-                                  height: 45.h,
-                                  width: containerWidth,
-                                  decoration: BoxDecoration(
-                                    color: isSelected
-                                        ? AppColor.primaryColor
-                                        : Colors.white,
-                                    borderRadius: BorderRadius.circular(8.r),
-                                    border: Border.all(
-                                      color: AppColor.secondaryColor,
-                                      width: 1,
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        index == 0
-                                            ? "${context.read<TransactionManagementCubit>().transactionManagementModel?.data.data.length ?? 0}"
-                                            : index == 1
-                                                ? "${context.read<TransactionManagementCubit>().transactionManagementInModel?.data.data.length ?? 0}"
-                                                : "${context.read<TransactionManagementCubit>().transactionManagementOutModel?.data.data.length ?? 0}",
-                                        style: TextStyle(
-                                          fontSize: 13.sp,
-                                          color: isSelected
-                                              ? Colors.white
-                                              : AppColor.primaryColor,
-                                        ),
-                                      ),
-                                      horizontalSpace(5),
-                                      Text(
-                                        index == 0
-                                            ? "All"
-                                            : index == 1
-                                                ? 'Inside'
-                                                : 'Outside',
-                                        style: TextStyle(
-                                          fontSize: 13.sp,
-                                          color: isSelected
-                                              ? Colors.white
-                                              : AppColor.primaryColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      ),
+                    verticalSpace(10),
+                    FilterAndSearchWidget(),
+                    verticalSpace(10),
+                    twoButtonsIntegration(
+                      selectedIndex: cubit.selectedIndex,
+                      onTap: cubit.changeTap,
+                      firstCount: allCount,
+                      firstLabel: 'All',
+                      secondCount: inCount,
+                      secondLabel: 'Inside',
+                      thirdCount: outCount,
+                      thirdLabel: 'Outside',
                     ),
                     verticalSpace(10),
                     Divider(
@@ -153,21 +68,14 @@ class _TransactionManagmentBodyState extends State<TransactionManagmentBody> {
                     Expanded(
                       child: state is TransactionManagementLoadingState &&
                               (context
-                                          .read<TransactionManagementCubit>()
-                                          .transactionManagementModel ==
-                                      null ||
-                                  context
-                                          .read<TransactionManagementCubit>()
-                                          .transactionManagementInModel ==
-                                      null ||
-                                  context
-                                          .read<TransactionManagementCubit>()
-                                          .transactionManagementOutModel ==
-                                      null)
+                                      .read<TransactionManagementCubit>()
+                                      .transactionManagementModel ==
+                                  null)
                           ? Center(
                               child: CircularProgressIndicator(
                                   color: AppColor.primaryColor))
-                          : transactionDetailsBuild(context, selectedIndex!),
+                          : transactionDetailsBuild(
+                              context, cubit.selectedIndex),
                     ),
                     verticalSpace(10),
                   ],

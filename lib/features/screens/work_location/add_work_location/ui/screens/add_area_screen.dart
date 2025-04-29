@@ -33,7 +33,7 @@ class _AddAreaScreenState extends State<AddAreaScreen> {
   @override
   void initState() {
     context.read<AddWorkLocationCubit>()
-      ..getNationality(userUsedOnly:false,areaUsedOnly: false )
+      ..getNationality(userUsedOnly: false, areaUsedOnly: false)
       ..getAllUsers();
 
     super.initState();
@@ -170,7 +170,7 @@ class _AddAreaScreenState extends State<AddAreaScreen> {
               ),
         context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
-            : MultiDropdown<User>(
+            : MultiDropdown<UserItem>(
                 items: context
                         .read<AddWorkLocationCubit>()
                         .usersModel!
@@ -181,8 +181,8 @@ class _AddAreaScreenState extends State<AddAreaScreen> {
                     ? [
                         DropdownItem(
                           label: 'No managers available',
-                          value:
-                              User(id: null, userName: 'No managers available'),
+                          value: UserItem(
+                              id: null, userName: 'No managers available'),
                         )
                       ]
                     : context
@@ -259,7 +259,7 @@ class _AddAreaScreenState extends State<AddAreaScreen> {
               ),
         context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
-            : MultiDropdown<User>(
+            : MultiDropdown<UserItem>(
                 items: context
                         .read<AddWorkLocationCubit>()
                         .usersModel!
@@ -270,7 +270,7 @@ class _AddAreaScreenState extends State<AddAreaScreen> {
                     ? [
                         DropdownItem(
                           label: 'No supervisors available',
-                          value: User(
+                          value: UserItem(
                               id: null, userName: 'No supervisors available'),
                         )
                       ]
@@ -349,7 +349,7 @@ class _AddAreaScreenState extends State<AddAreaScreen> {
               ),
         context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
-            : MultiDropdown<User>(
+            : MultiDropdown<UserItem>(
                 items: context
                         .read<AddWorkLocationCubit>()
                         .usersModel!
@@ -360,8 +360,8 @@ class _AddAreaScreenState extends State<AddAreaScreen> {
                     ? [
                         DropdownItem(
                           label: 'No cleaners available',
-                          value:
-                              User(id: null, userName: 'No cleaners available'),
+                          value: UserItem(
+                              id: null, userName: 'No cleaners available'),
                         )
                       ]
                     : context

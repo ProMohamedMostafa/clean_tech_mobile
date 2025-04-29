@@ -263,7 +263,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                           hint: "Select organizations",
                           items: context
                                       .read<AddTaskCubit>()
-                                      .allOrganizationModel
+                                      .organizationListModel
                                       ?.data
                                       ?.data
                                       ?.isEmpty ??
@@ -271,7 +271,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                               ? ['No organizations']
                               : context
                                       .read<AddTaskCubit>()
-                                      .allOrganizationModel
+                                      .organizationListModel
                                       ?.data
                                       ?.data
                                       ?.map((e) => e.name ?? 'Unknown')
@@ -280,7 +280,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                           onPressed: (value) {
                             final selectedOrganization = context
                                 .read<AddTaskCubit>()
-                                .allOrganizationModel
+                                .organizationListModel
                                 ?.data
                                 ?.data
                                 ?.firstWhere((organization) =>
@@ -788,7 +788,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                           ),
                         ),
                         verticalSpace(5),
-                        MultiDropdown<User>(
+                        MultiDropdown<UserItem>(
                           items: items!,
                           controller: context
                               .read<AddTaskCubit>()

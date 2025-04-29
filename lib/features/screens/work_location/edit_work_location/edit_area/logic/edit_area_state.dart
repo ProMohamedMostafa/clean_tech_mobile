@@ -1,8 +1,8 @@
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_area/data/model/area_details_in_edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_area/data/model/edit_area_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/area_users_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_list_model.dart';
 
 abstract class EditAreaState {}
 
@@ -25,7 +25,7 @@ class EditAreaErrorState extends EditAreaState {
 class GetNationalityLoadingState extends EditAreaState {}
 
 class GetNationalitySuccessState extends EditAreaState {
-  final NationalityModel nationalitymodel;
+  final NationalityListModel nationalitymodel;
 
   GetNationalitySuccessState(this.nationalitymodel);
 }

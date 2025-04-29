@@ -5,9 +5,9 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/ui/widgets/work_location_list_item_build.dart';
 
-Widget organizationDetailsBuild(BuildContext context, int selectedIndex) {
+Widget workLocationDetailsBuild(BuildContext context, int selectedIndex) {
   final workLocationData = selectedIndex == 0
-      ? context.read<WorkLocationCubit>().areaModel?.data?.areas
+      ? context.read<WorkLocationCubit>().areaModel?.data?.data
       : selectedIndex == 1
           ? context.read<WorkLocationCubit>().cityModel?.data?.data
           : selectedIndex == 2

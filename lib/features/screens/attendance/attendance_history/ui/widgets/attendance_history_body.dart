@@ -9,25 +9,8 @@ import 'package:smart_cleaning_application/features/screens/attendance/attendanc
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/ui/widgets/attendance_history_filter_search_build.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/ui/widgets/attendance_history_list_details_build.dart';
 
-class AttendanceHistoryBody extends StatefulWidget {
+class AttendanceHistoryBody extends StatelessWidget {
   const AttendanceHistoryBody({super.key});
-
-  @override
-  State<AttendanceHistoryBody> createState() => _AttendanceHistoryBodyState();
-}
-
-class _AttendanceHistoryBodyState extends State<AttendanceHistoryBody> {
-  @override
-  void initState() {
-    context.read<AttendanceHistoryCubit>().initialize();
-    context.read<AttendanceHistoryCubit>().getAllHistory();
-    context.read<AttendanceHistoryCubit>().getAllArea();
-    context.read<AttendanceHistoryCubit>().getProviders();
-    context.read<AttendanceHistoryCubit>().getRole();
-    context.read<AttendanceHistoryCubit>().getShifts();
-    context.read<AttendanceHistoryCubit>().getAllUsers();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,32 +27,30 @@ class _AttendanceHistoryBodyState extends State<AttendanceHistoryBody> {
                     .attendanceHistoryModel
                     ?.data ==
                 null,
-            child: SafeArea(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                verticalSpace(15),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: attendanceHistoryFilterAndSearchBuild(
-                      context, context.read<AttendanceHistoryCubit>()),
-                ),
-                verticalSpace(10),
-                Divider(color: Colors.grey[300]),
-                Expanded(
-                  child: state is HistoryLoadingState &&
-                          (context
-                                  .read<AttendanceHistoryCubit>()
-                                  .attendanceHistoryModel ==
-                              null)
-                      ? Center(
-                          child: CircularProgressIndicator(
-                              color: AppColor.primaryColor))
-                      : attendanceHistoryListDetailsBuild(context),
-                ),
-                verticalSpace(10),
-              ],
-            )),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  verticalSpace(10),
+                  FilterAndSearchWidget(),
+                  verticalSpace(10),
+                  Divider(color: Colors.grey[300]),
+                  Expanded(
+                    child: state is HistoryLoadingState &&
+                            (context
+                                    .read<AttendanceHistoryCubit>()
+                                    .attendanceHistoryModel ==
+                                null)
+                        ? Center(
+                            child: CircularProgressIndicator(
+                                color: AppColor.primaryColor))
+                        : attendanceHistoryListDetailsBuild(context),
+                  ),
+                  verticalSpace(10),
+                ],
+              ),
+            ),
           );
         },
       ),

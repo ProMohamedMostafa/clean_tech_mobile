@@ -23,12 +23,10 @@ class AddOrganizationScreen extends StatefulWidget {
   const AddOrganizationScreen({super.key});
 
   @override
-  State<AddOrganizationScreen> createState() =>
-      _AddOrganizationScreenState();
+  State<AddOrganizationScreen> createState() => _AddOrganizationScreenState();
 }
 
-class _AddOrganizationScreenState
-    extends State<AddOrganizationScreen> {
+class _AddOrganizationScreenState extends State<AddOrganizationScreen> {
   List<int> selectedManagersIds = [];
   List<int> selectedSupervisorsIds = [];
   List<int> selectedCleanersIds = [];
@@ -150,7 +148,7 @@ class _AddOrganizationScreenState
                       .read<AddWorkLocationCubit>()
                       .areaModel
                       ?.data
-                      ?.areas
+                      ?.data
                       ?.isEmpty ??
                   true
               ? ['No area']
@@ -158,7 +156,7 @@ class _AddOrganizationScreenState
                       .read<AddWorkLocationCubit>()
                       .areaModel
                       ?.data
-                      ?.areas
+                      ?.data
                       ?.map((e) => e.name ?? 'Unknown')
                       .toList() ??
                   [],
@@ -173,7 +171,7 @@ class _AddOrganizationScreenState
                 .read<AddWorkLocationCubit>()
                 .areaModel
                 ?.data
-                ?.areas
+                ?.data
                 ?.firstWhere((area) =>
                     area.name ==
                     context.read<AddWorkLocationCubit>().areaController.text);
@@ -271,7 +269,7 @@ class _AddOrganizationScreenState
               ),
         context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
-            : MultiDropdown<User>(
+            : MultiDropdown<UserItem>(
                 items: context
                         .read<AddWorkLocationCubit>()
                         .usersModel!
@@ -282,8 +280,8 @@ class _AddOrganizationScreenState
                     ? [
                         DropdownItem(
                           label: 'No managers available',
-                          value:
-                              User(id: null, userName: 'No managers available'),
+                          value: UserItem(
+                              id: null, userName: 'No managers available'),
                         )
                       ]
                     : context
@@ -360,7 +358,7 @@ class _AddOrganizationScreenState
               ),
         context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
-            : MultiDropdown<User>(
+            : MultiDropdown<UserItem>(
                 items: context
                         .read<AddWorkLocationCubit>()
                         .usersModel!
@@ -371,7 +369,7 @@ class _AddOrganizationScreenState
                     ? [
                         DropdownItem(
                           label: 'No supervisors available',
-                          value: User(
+                          value: UserItem(
                               id: null, userName: 'No supervisors available'),
                         )
                       ]
@@ -450,7 +448,7 @@ class _AddOrganizationScreenState
               ),
         context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
-            : MultiDropdown<User>(
+            : MultiDropdown<UserItem>(
                 items: context
                         .read<AddWorkLocationCubit>()
                         .usersModel!
@@ -461,8 +459,8 @@ class _AddOrganizationScreenState
                     ? [
                         DropdownItem(
                           label: 'No cleaners available',
-                          value:
-                              User(id: null, userName: 'No cleaners available'),
+                          value: UserItem(
+                              id: null, userName: 'No cleaners available'),
                         )
                       ]
                     : context
@@ -539,7 +537,7 @@ class _AddOrganizationScreenState
               ),
         context.read<AddWorkLocationCubit>().shiftModel?.data == null
             ? SizedBox.shrink()
-            : MultiDropdown<ShiftDetails>(
+            : MultiDropdown<ShiftItem>(
                 items: context
                             .read<AddWorkLocationCubit>()
                             .shiftModel
@@ -550,8 +548,8 @@ class _AddOrganizationScreenState
                     ? [
                         DropdownItem(
                           label: 'No shifts available',
-                          value: ShiftDetails(
-                              id: null, name: 'No shifts available'),
+                          value:
+                              ShiftItem(id: null, name: 'No shifts available'),
                         )
                       ]
                     : context

@@ -8,7 +8,7 @@ import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/ui/widget/pop_up_dialog.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_details/logic/cubit/user_details_cubit.dart';
 
 Widget buildTaskCardItem(BuildContext context, index) {
   final List<String> priority = ["High", "Medium", "Low"];
@@ -21,7 +21,7 @@ Widget buildTaskCardItem(BuildContext context, index) {
   Color priorityColorForTask;
 
   taskPriority = context
-      .read<UserManagementCubit>()
+      .read<UserDetailsCubit>()
       .userTaskDetailsModel!
       .data!
       .data![index]
@@ -37,7 +37,7 @@ Widget buildTaskCardItem(BuildContext context, index) {
     onTap: () {
       context.pushNamed(Routes.taskDetailsScreen,
           arguments: context
-              .read<UserManagementCubit>()
+              .read<UserDetailsCubit>()
               .userTaskDetailsModel!
               .data!
               .data![index]
@@ -77,7 +77,7 @@ Widget buildTaskCardItem(BuildContext context, index) {
                   child: Center(
                     child: Text(
                       context
-                          .read<UserManagementCubit>()
+                          .read<UserDetailsCubit>()
                           .userTaskDetailsModel!
                           .data!
                           .data![index]
@@ -100,7 +100,7 @@ Widget buildTaskCardItem(BuildContext context, index) {
                   child: Center(
                     child: Text(
                       context
-                          .read<UserManagementCubit>()
+                          .read<UserDetailsCubit>()
                           .userTaskDetailsModel!
                           .data!
                           .data![index]
@@ -116,7 +116,7 @@ Widget buildTaskCardItem(BuildContext context, index) {
                     PopUpDialog.show(
                         context: context,
                         id: context
-                            .read<UserManagementCubit>()
+                            .read<UserDetailsCubit>()
                             .userTaskDetailsModel!
                             .data!
                             .data![index]
@@ -131,7 +131,7 @@ Widget buildTaskCardItem(BuildContext context, index) {
             ),
             Text(
               context
-                  .read<UserManagementCubit>()
+                  .read<UserDetailsCubit>()
                   .userTaskDetailsModel!
                   .data!
                   .data![index]
@@ -141,7 +141,7 @@ Widget buildTaskCardItem(BuildContext context, index) {
             verticalSpace(10),
             Text(
               context
-                  .read<UserManagementCubit>()
+                  .read<UserDetailsCubit>()
                   .userTaskDetailsModel!
                   .data!
                   .data![index]
@@ -161,7 +161,7 @@ Widget buildTaskCardItem(BuildContext context, index) {
                 horizontalSpace(5),
                 Text(
                   context
-                      .read<UserManagementCubit>()
+                      .read<UserDetailsCubit>()
                       .userTaskDetailsModel!
                       .data!
                       .data![index]

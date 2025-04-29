@@ -3,7 +3,7 @@ class AllShiftsModel {
   bool? succeeded;
   String? message;
   String? error;
-  String? businessErrorCode;
+  int? businessErrorCode;
   String? meta;
   ShiftDataModel? data;
 
@@ -51,7 +51,7 @@ class ShiftDataModel {
   bool? hasNextPage;
   bool? succeeded;
   dynamic meta;
-  List<Shift>? shifts;
+  List<ShiftData>? shifts;
 
   ShiftDataModel({
     this.currentPage,
@@ -75,7 +75,8 @@ class ShiftDataModel {
     succeeded = json['succeeded'];
     meta = json['meta'];
     if (json['data'] != null) {
-      shifts = List<Shift>.from(json['data'].map((x) => Shift.fromJson(x)));
+      shifts =
+          List<ShiftData>.from(json['data'].map((x) => ShiftData.fromJson(x)));
     }
   }
 
@@ -96,7 +97,7 @@ class ShiftDataModel {
   }
 }
 
-class Shift {
+class ShiftData {
   int? id;
   String? name;
   String? startDate;
@@ -104,7 +105,7 @@ class Shift {
   String? startTime;
   String? endTime;
 
-  Shift({
+  ShiftData({
     this.id,
     this.name,
     this.startDate,
@@ -113,7 +114,7 @@ class Shift {
     this.endTime,
   });
 
-  Shift.fromJson(Map<String, dynamic> json) {
+  ShiftData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     startDate = json['startDate'];

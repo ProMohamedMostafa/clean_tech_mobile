@@ -3,16 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_floor/data/model/edit_floor_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_floor/data/model/floor_details_in_edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_floor/logic/edit_floor_state.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/floor_users_shifts_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
 
 class EditFloorCubit extends Cubit<EditFloorState> {
   EditFloorCubit() : super(EditFloorInitialState());
@@ -30,7 +30,7 @@ class EditFloorCubit extends Cubit<EditFloorState> {
   final allmanagersController = MultiSelectController<Users>();
   final allSupervisorsController = MultiSelectController<Users>();
   final allCleanersController = MultiSelectController<Users>();
-  final shiftController = MultiSelectController<ShiftDetails>();
+  final shiftController = MultiSelectController<ShiftItem>();
   final formKey = GlobalKey<FormState>();
 
   FloorEditModel? editFloorModel;
@@ -110,13 +110,13 @@ class EditFloorCubit extends Cubit<EditFloorState> {
     });
   }
 
-  NationalityModel? nationalityModel;
+  NationalityListModel? nationalityModel;
   getNationality() {
     emit(GetNationalityLoadingState());
     DioHelper.getData(
         url: ApiConstants.countriesUrl,
         query: {'userUsedOnly': false, 'areaUsedOnly': true}).then((value) {
-      nationalityModel = NationalityModel.fromJson(value!.data);
+      nationalityModel = NationalityListModel.fromJson(value!.data);
       emit(GetNationalitySuccessState(nationalityModel!));
     }).catchError((error) {
       emit(GetNationalityErrorState(error.toString()));

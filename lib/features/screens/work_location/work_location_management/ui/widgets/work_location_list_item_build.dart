@@ -22,7 +22,7 @@ Widget organizationsListItemBuild(
                 .read<WorkLocationCubit>()
                 .areaModel!
                 .data!
-                .areas![index]
+                .data![index]
                 .id!
                 .toInt()
             : selectedIndex == 1
@@ -107,7 +107,7 @@ Widget organizationsListItemBuild(
                   .read<WorkLocationCubit>()
                   .areaModel!
                   .data!
-                  .areas![index]
+                  .data![index]
                   .name!
               : selectedIndex == 1
                   ? context
@@ -154,7 +154,7 @@ Widget organizationsListItemBuild(
         ),
         subtitle: Text(
           selectedIndex == 0
-              ? "${context.read<WorkLocationCubit>().areaModel!.data!.areas![index].countryName}"
+              ? "${context.read<WorkLocationCubit>().areaModel!.data!.data![index].countryName}"
               : selectedIndex == 1
                   ? "${context.read<WorkLocationCubit>().cityModel!.data!.data![index].areaName}"
                   : selectedIndex == 2
@@ -195,7 +195,7 @@ Widget organizationsListItemBuild(
                                       .read<WorkLocationCubit>()
                                       .areaModel!
                                       .data!
-                                      .areas![index]
+                                      .data![index]
                                       .id
                                   : selectedIndex == 1
                                       ? context
@@ -255,7 +255,7 @@ Widget organizationsListItemBuild(
                                     .read<WorkLocationCubit>()
                                     .areaModel!
                                     .data!
-                                    .areas![index]
+                                    .data![index]
                                     .id!)
                                 : selectedIndex == 1
                                     ? context

@@ -22,8 +22,8 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
         arguments: context
             .read<MaterialManagementCubit>()
             .materialManagementModel!
-            .data
-            .materials[index]
+            .data!
+            .materials![index]
             .id,
       );
     },
@@ -49,9 +49,9 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                         ? context
                             .read<MaterialManagementCubit>()
                             .materialManagementModel!
-                            .data
-                            .materials[index]
-                            .name
+                            .data!
+                            .materials![index]
+                            .name!
                         : context
                             .read<MaterialManagementCubit>()
                             .deletedMaterialListModel!
@@ -67,9 +67,9 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                               id: context
                                   .read<MaterialManagementCubit>()
                                   .materialManagementModel!
-                                  .data
-                                  .materials[index]
-                                  .id,
+                                  .data!
+                                  .materials![index]
+                                  .id!,
                             );
                           },
                           icon: Icon(
@@ -144,8 +144,8 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                               ? context
                                   .read<MaterialManagementCubit>()
                                   .materialManagementModel!
-                                  .data
-                                  .materials[index]
+                                  .data!
+                                  .materials![index]
                                   .quantity
                                   .toString()
                               : context
@@ -158,7 +158,7 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                         ),
                         TextSpan(
                           text:
-                              ' ${selectedIndex == 0 ? context.read<MaterialManagementCubit>().materialManagementModel!.data.materials[index].unit : context.read<MaterialManagementCubit>().deletedMaterialListModel!.data![index].unit}',
+                              ' ${selectedIndex == 0 ? context.read<MaterialManagementCubit>().materialManagementModel!.data!.materials![index].unit : context.read<MaterialManagementCubit>().deletedMaterialListModel!.data![index].unit}',
                           style: TextStyles.font12GreyRegular
                               .copyWith(color: AppColor.primaryColor),
                         ),
@@ -178,8 +178,8 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                               ? context
                                   .read<MaterialManagementCubit>()
                                   .materialManagementModel!
-                                  .data
-                                  .materials[index]
+                                  .data!
+                                  .materials![index]
                                   .minThreshold
                                   .toString()
                               : context
@@ -192,7 +192,7 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                         ),
                         TextSpan(
                           text:
-                              ' ${selectedIndex == 0 ? context.read<MaterialManagementCubit>().materialManagementModel!.data.materials[index].unit : context.read<MaterialManagementCubit>().deletedMaterialListModel!.data![index].unit}',
+                              ' ${selectedIndex == 0 ? context.read<MaterialManagementCubit>().materialManagementModel!.data!.materials![index].unit : context.read<MaterialManagementCubit>().deletedMaterialListModel!.data![index].unit}',
                           style: TextStyles.font12GreyRegular
                               .copyWith(color: AppColor.primaryColor),
                         ),
@@ -217,8 +217,8 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                               ? context
                                   .read<MaterialManagementCubit>()
                                   .materialManagementModel!
-                                  .data
-                                  .materials[index]
+                                  .data!
+                                  .materials![index]
                                   .categoryName
                               : context
                                   .read<MaterialManagementCubit>()
@@ -242,9 +242,9 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                                   id: context
                                       .read<MaterialManagementCubit>()
                                       .materialManagementModel!
-                                      .data
-                                      .materials[index]
-                                      .id,
+                                      .data!
+                                      .materials![index]
+                                      .id!,
                                 );
                               },
                               child: Container(
@@ -266,9 +266,9 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                                   id: context
                                       .read<MaterialManagementCubit>()
                                       .materialManagementModel!
-                                      .data
-                                      .materials[index]
-                                      .id,
+                                      .data!
+                                      .materials![index]
+                                      .id!,
                                 );
                               },
                               child: Container(

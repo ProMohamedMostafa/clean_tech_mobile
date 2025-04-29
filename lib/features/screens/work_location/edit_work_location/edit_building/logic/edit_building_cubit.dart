@@ -3,15 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_building/data/model/building_details_in_edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_building/data/model/edit_building_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_building/logic/edit_building_state.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/building_users_shifts_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
 
 class EditBuildingCubit extends Cubit<EditBuildingState> {
   EditBuildingCubit() : super(EditBuildingInitialState());
@@ -28,7 +28,7 @@ class EditBuildingCubit extends Cubit<EditBuildingState> {
   final allmanagersController = MultiSelectController<Users>();
   final allSupervisorsController = MultiSelectController<Users>();
   final allCleanersController = MultiSelectController<Users>();
-  final shiftController = MultiSelectController<ShiftDetails>();
+  final shiftController = MultiSelectController<ShiftItem>();
   final formKey = GlobalKey<FormState>();
 
   BuildingEditModel? editBuildingModel;
@@ -42,20 +42,20 @@ class EditBuildingCubit extends Cubit<EditBuildingState> {
     try {
       final managersIds = selectedManagersIds?.isEmpty ?? true
           ? buildingUsersShiftsDetailsModel?.data?.users!
-           .where((user) => user.role == 'Manager')
-            .map((user) => user.id!)
+              .where((user) => user.role == 'Manager')
+              .map((user) => user.id!)
               .toList()
           : selectedManagersIds;
       final supervisorsIds = selectedSupervisorsIds?.isEmpty ?? true
           ? buildingUsersShiftsDetailsModel?.data?.users!
               .where((user) => user.role == 'Manager')
-            .map((user) => user.id!)
+              .map((user) => user.id!)
               .toList()
           : selectedSupervisorsIds;
       final cleanersIds = selectedCleanersIds?.isEmpty ?? true
           ? buildingUsersShiftsDetailsModel?.data?.users!
-            .where((user) => user.role == 'Manager')
-            .map((user) => user.id!)
+              .where((user) => user.role == 'Manager')
+              .map((user) => user.id!)
               .toList()
           : selectedCleanersIds;
       final response =
@@ -103,19 +103,20 @@ class EditBuildingCubit extends Cubit<EditBuildingState> {
         .then((value) {
       buildingUsersShiftsDetailsModel =
           BuildingUsersShiftsDetailsModel.fromJson(value!.data);
-      emit(BuildingManagersDetailsSuccessState(buildingUsersShiftsDetailsModel!));
+      emit(BuildingManagersDetailsSuccessState(
+          buildingUsersShiftsDetailsModel!));
     }).catchError((error) {
       emit(BuildingManagersDetailsErrorState(error.toString()));
     });
   }
 
-  NationalityModel? nationalityModel;
+  NationalityListModel? nationalityModel;
   getNationality() {
     emit(GetNationalityLoadingState());
     DioHelper.getData(
         url: ApiConstants.countriesUrl,
         query: {'userUsedOnly': false, 'areaUsedOnly': true}).then((value) {
-      nationalityModel = NationalityModel.fromJson(value!.data);
+      nationalityModel = NationalityListModel.fromJson(value!.data);
       emit(GetNationalitySuccessState(nationalityModel!));
     }).catchError((error) {
       emit(GetNationalityErrorState(error.toString()));

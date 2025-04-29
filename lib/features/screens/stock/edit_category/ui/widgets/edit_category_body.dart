@@ -166,7 +166,7 @@ class _EditCategoryBodyState extends State<EditCategoryBody> {
                                           .read<EditCategoryCubit>()
                                           .categoryManagementModel
                                           ?.data
-                                          .categories ??
+                                          ?.categories ??
                                       [])
                                   .where((e) => e.id != widget.id)
                                   .map((e) => e.name)
@@ -177,18 +177,18 @@ class _EditCategoryBodyState extends State<EditCategoryBody> {
                                           .read<EditCategoryCubit>()
                                           .categoryManagementModel
                                           ?.data
-                                          .categories ??
+                                          ?.categories ??
                                       [])
                                   .where((e) => e.id != widget.id)
-                                  .map((e) => e.name)
+                                  .map((e) => e.name!)
                                   .toList(),
                           onPressed: (value) {
                             final selectedCategory = context
                                 .read<EditCategoryCubit>()
                                 .categoryManagementModel
                                 ?.data
-                                .categories
-                                .firstWhere(
+                                ?.categories
+                                ?.firstWhere(
                                   (category) =>
                                       category.name ==
                                       context

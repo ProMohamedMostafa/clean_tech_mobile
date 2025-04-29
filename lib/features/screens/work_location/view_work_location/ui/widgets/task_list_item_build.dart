@@ -9,7 +9,7 @@ import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/ui/widget/pop_up_dialog.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/logic/cubit/work_location_details_cubit.dart';
 
 Widget buildTaskCardItem(BuildContext context, index, selectedIndex) {
   final List<String> priority = ["High", "Medium", "Low"];
@@ -23,48 +23,48 @@ Widget buildTaskCardItem(BuildContext context, index, selectedIndex) {
 
   taskPriority = selectedIndex == 0
       ? context
-          .read<WorkLocationCubit>()
+          .read<WorkLocationDetailsCubit>()
           .allareaTasksModel!
           .data!
           .data![index]
           .priority!
       : selectedIndex == 1
           ? context
-              .read<WorkLocationCubit>()
+              .read<WorkLocationDetailsCubit>()
               .allcityTasksModel!
               .data!
               .data![index]
               .priority!
           : selectedIndex == 2
               ? context
-                  .read<WorkLocationCubit>()
+                  .read<WorkLocationDetailsCubit>()
                   .allorganizationTasksModel!
                   .data!
                   .data![index]
                   .priority!
               : selectedIndex == 3
                   ? context
-                      .read<WorkLocationCubit>()
+                      .read<WorkLocationDetailsCubit>()
                       .allbuildingTasksModel!
                       .data!
                       .data![index]
                       .priority!
                   : selectedIndex == 4
                       ? context
-                          .read<WorkLocationCubit>()
+                          .read<WorkLocationDetailsCubit>()
                           .allfloorTasksModel!
                           .data!
                           .data![index]
                           .priority!
                       : selectedIndex == 5
                           ? context
-                              .read<WorkLocationCubit>()
+                              .read<WorkLocationDetailsCubit>()
                               .allSectionTasksModel!
                               .data!
                               .data![index]
                               .priority!
                           : context
-                              .read<WorkLocationCubit>()
+                              .read<WorkLocationDetailsCubit>()
                               .allPointTasksModel!
                               .data!
                               .data![index]
@@ -82,48 +82,48 @@ Widget buildTaskCardItem(BuildContext context, index, selectedIndex) {
       context.pushNamed(Routes.taskDetailsScreen,
           arguments: selectedIndex == 0
               ? context
-                  .read<WorkLocationCubit>()
+                  .read<WorkLocationDetailsCubit>()
                   .allareaTasksModel!
                   .data!
                   .data![index]
                   .id!
               : selectedIndex == 1
                   ? context
-                      .read<WorkLocationCubit>()
+                      .read<WorkLocationDetailsCubit>()
                       .allcityTasksModel!
                       .data!
                       .data![index]
                       .id!
                   : selectedIndex == 2
                       ? context
-                          .read<WorkLocationCubit>()
+                          .read<WorkLocationDetailsCubit>()
                           .allorganizationTasksModel!
                           .data!
                           .data![index]
                           .id!
                       : selectedIndex == 3
                           ? context
-                              .read<WorkLocationCubit>()
+                              .read<WorkLocationDetailsCubit>()
                               .allbuildingTasksModel!
                               .data!
                               .data![index]
                               .id!
                           : selectedIndex == 4
                               ? context
-                                  .read<WorkLocationCubit>()
+                                  .read<WorkLocationDetailsCubit>()
                                   .allfloorTasksModel!
                                   .data!
                                   .data![index]
                                   .id!
                               : selectedIndex == 5
                                   ? context
-                                      .read<WorkLocationCubit>()
+                                      .read<WorkLocationDetailsCubit>()
                                       .allSectionTasksModel!
                                       .data!
                                       .data![index]
                                       .id!
                                   : context
-                                      .read<WorkLocationCubit>()
+                                      .read<WorkLocationDetailsCubit>()
                                       .allPointTasksModel!
                                       .data!
                                       .data![index]
@@ -164,48 +164,48 @@ Widget buildTaskCardItem(BuildContext context, index, selectedIndex) {
                     child: Text(
                       selectedIndex == 0
                           ? context
-                              .read<WorkLocationCubit>()
+                              .read<WorkLocationDetailsCubit>()
                               .allareaTasksModel!
                               .data!
                               .data![index]
                               .priority!
                           : selectedIndex == 1
                               ? context
-                                  .read<WorkLocationCubit>()
+                                  .read<WorkLocationDetailsCubit>()
                                   .allcityTasksModel!
                                   .data!
                                   .data![index]
                                   .priority!
                               : selectedIndex == 2
                                   ? context
-                                      .read<WorkLocationCubit>()
+                                      .read<WorkLocationDetailsCubit>()
                                       .allorganizationTasksModel!
                                       .data!
                                       .data![index]
                                       .priority!
                                   : selectedIndex == 3
                                       ? context
-                                          .read<WorkLocationCubit>()
+                                          .read<WorkLocationDetailsCubit>()
                                           .allbuildingTasksModel!
                                           .data!
                                           .data![index]
                                           .priority!
                                       : selectedIndex == 4
                                           ? context
-                                              .read<WorkLocationCubit>()
+                                              .read<WorkLocationDetailsCubit>()
                                               .allfloorTasksModel!
                                               .data!
                                               .data![index]
                                               .priority!
                                           : selectedIndex == 5
                                               ? context
-                                                  .read<WorkLocationCubit>()
+                                                  .read<WorkLocationDetailsCubit>()
                                                   .allSectionTasksModel!
                                                   .data!
                                                   .data![index]
                                                   .priority!
                                               : context
-                                                  .read<WorkLocationCubit>()
+                                                  .read<WorkLocationDetailsCubit>()
                                                   .allPointTasksModel!
                                                   .data!
                                                   .data![index]
@@ -229,48 +229,48 @@ Widget buildTaskCardItem(BuildContext context, index, selectedIndex) {
                     child: Text(
                       selectedIndex == 0
                           ? context
-                              .read<WorkLocationCubit>()
+                              .read<WorkLocationDetailsCubit>()
                               .allareaTasksModel!
                               .data!
                               .data![index]
                               .status!
                           : selectedIndex == 1
                               ? context
-                                  .read<WorkLocationCubit>()
+                                  .read<WorkLocationDetailsCubit>()
                                   .allcityTasksModel!
                                   .data!
                                   .data![index]
                                   .status!
                               : selectedIndex == 2
                                   ? context
-                                      .read<WorkLocationCubit>()
+                                      .read<WorkLocationDetailsCubit>()
                                       .allorganizationTasksModel!
                                       .data!
                                       .data![index]
                                       .status!
                                   : selectedIndex == 3
                                       ? context
-                                          .read<WorkLocationCubit>()
+                                          .read<WorkLocationDetailsCubit>()
                                           .allbuildingTasksModel!
                                           .data!
                                           .data![index]
                                           .status!
                                       : selectedIndex == 4
                                           ? context
-                                              .read<WorkLocationCubit>()
+                                              .read<WorkLocationDetailsCubit>()
                                               .allfloorTasksModel!
                                               .data!
                                               .data![index]
                                               .status!
                                           : selectedIndex == 5
                                               ? context
-                                                  .read<WorkLocationCubit>()
+                                                  .read<WorkLocationDetailsCubit>()
                                                   .allSectionTasksModel!
                                                   .data!
                                                   .data![index]
                                                   .status!
                                               : context
-                                                  .read<WorkLocationCubit>()
+                                                  .read<WorkLocationDetailsCubit>()
                                                   .allPointTasksModel!
                                                   .data!
                                                   .data![index]
@@ -288,48 +288,48 @@ Widget buildTaskCardItem(BuildContext context, index, selectedIndex) {
                           context: context,
                           id: selectedIndex == 0
                               ? context
-                                  .read<WorkLocationCubit>()
+                                  .read<WorkLocationDetailsCubit>()
                                   .allareaTasksModel!
                                   .data!
                                   .data![index]
                                   .id!
                               : selectedIndex == 1
                                   ? context
-                                      .read<WorkLocationCubit>()
+                                      .read<WorkLocationDetailsCubit>()
                                       .allcityTasksModel!
                                       .data!
                                       .data![index]
                                       .id!
                                   : selectedIndex == 2
                                       ? context
-                                          .read<WorkLocationCubit>()
+                                          .read<WorkLocationDetailsCubit>()
                                           .allorganizationTasksModel!
                                           .data!
                                           .data![index]
                                           .id!
                                       : selectedIndex == 3
                                           ? context
-                                              .read<WorkLocationCubit>()
+                                              .read<WorkLocationDetailsCubit>()
                                               .allbuildingTasksModel!
                                               .data!
                                               .data![index]
                                               .id!
                                           : selectedIndex == 4
                                               ? context
-                                                  .read<WorkLocationCubit>()
+                                                  .read<WorkLocationDetailsCubit>()
                                                   .allfloorTasksModel!
                                                   .data!
                                                   .data![index]
                                                   .id!
                                               : selectedIndex == 5
                                                   ? context
-                                                      .read<WorkLocationCubit>()
+                                                      .read<WorkLocationDetailsCubit>()
                                                       .allSectionTasksModel!
                                                       .data!
                                                       .data![index]
                                                       .id!
                                                   : context
-                                                      .read<WorkLocationCubit>()
+                                                      .read<WorkLocationDetailsCubit>()
                                                       .allPointTasksModel!
                                                       .data!
                                                       .data![index]
@@ -345,48 +345,48 @@ Widget buildTaskCardItem(BuildContext context, index, selectedIndex) {
             Text(
               selectedIndex == 0
                   ? context
-                      .read<WorkLocationCubit>()
+                      .read<WorkLocationDetailsCubit>()
                       .allareaTasksModel!
                       .data!
                       .data![index]
                       .title!
                   : selectedIndex == 1
                       ? context
-                          .read<WorkLocationCubit>()
+                          .read<WorkLocationDetailsCubit>()
                           .allcityTasksModel!
                           .data!
                           .data![index]
                           .title!
                       : selectedIndex == 2
                           ? context
-                              .read<WorkLocationCubit>()
+                              .read<WorkLocationDetailsCubit>()
                               .allorganizationTasksModel!
                               .data!
                               .data![index]
                               .title!
                           : selectedIndex == 3
                               ? context
-                                  .read<WorkLocationCubit>()
+                                  .read<WorkLocationDetailsCubit>()
                                   .allbuildingTasksModel!
                                   .data!
                                   .data![index]
                                   .title!
                               : selectedIndex == 4
                                   ? context
-                                      .read<WorkLocationCubit>()
+                                      .read<WorkLocationDetailsCubit>()
                                       .allfloorTasksModel!
                                       .data!
                                       .data![index]
                                       .title!
                                   : selectedIndex == 5
                                       ? context
-                                          .read<WorkLocationCubit>()
+                                          .read<WorkLocationDetailsCubit>()
                                           .allSectionTasksModel!
                                           .data!
                                           .data![index]
                                           .title!
                                       : context
-                                          .read<WorkLocationCubit>()
+                                          .read<WorkLocationDetailsCubit>()
                                           .allPointTasksModel!
                                           .data!
                                           .data![index]
@@ -397,48 +397,48 @@ Widget buildTaskCardItem(BuildContext context, index, selectedIndex) {
             Text(
               selectedIndex == 0
                   ? context
-                      .read<WorkLocationCubit>()
+                      .read<WorkLocationDetailsCubit>()
                       .allareaTasksModel!
                       .data!
                       .data![index]
                       .description!
                   : selectedIndex == 1
                       ? context
-                          .read<WorkLocationCubit>()
+                          .read<WorkLocationDetailsCubit>()
                           .allcityTasksModel!
                           .data!
                           .data![index]
                           .description!
                       : selectedIndex == 2
                           ? context
-                              .read<WorkLocationCubit>()
+                              .read<WorkLocationDetailsCubit>()
                               .allorganizationTasksModel!
                               .data!
                               .data![index]
                               .description!
                           : selectedIndex == 3
                               ? context
-                                  .read<WorkLocationCubit>()
+                                  .read<WorkLocationDetailsCubit>()
                                   .allbuildingTasksModel!
                                   .data!
                                   .data![index]
                                   .description!
                               : selectedIndex == 4
                                   ? context
-                                      .read<WorkLocationCubit>()
+                                      .read<WorkLocationDetailsCubit>()
                                       .allfloorTasksModel!
                                       .data!
                                       .data![index]
                                       .description!
                                   : selectedIndex == 5
                                       ? context
-                                          .read<WorkLocationCubit>()
+                                          .read<WorkLocationDetailsCubit>()
                                           .allSectionTasksModel!
                                           .data!
                                           .data![index]
                                           .description!
                                       : context
-                                          .read<WorkLocationCubit>()
+                                          .read<WorkLocationDetailsCubit>()
                                           .allPointTasksModel!
                                           .data!
                                           .data![index]
@@ -459,48 +459,48 @@ Widget buildTaskCardItem(BuildContext context, index, selectedIndex) {
                 Text(
                   selectedIndex == 0
                       ? context
-                          .read<WorkLocationCubit>()
+                          .read<WorkLocationDetailsCubit>()
                           .allareaTasksModel!
                           .data!
                           .data![index]
                           .startTime!
                       : selectedIndex == 1
                           ? context
-                              .read<WorkLocationCubit>()
+                              .read<WorkLocationDetailsCubit>()
                               .allcityTasksModel!
                               .data!
                               .data![index]
                               .startTime!
                           : selectedIndex == 2
                               ? context
-                                  .read<WorkLocationCubit>()
+                                  .read<WorkLocationDetailsCubit>()
                                   .allorganizationTasksModel!
                                   .data!
                                   .data![index]
                                   .startTime!
                               : selectedIndex == 3
                                   ? context
-                                      .read<WorkLocationCubit>()
+                                      .read<WorkLocationDetailsCubit>()
                                       .allbuildingTasksModel!
                                       .data!
                                       .data![index]
                                       .startTime!
                                   : selectedIndex == 4
                                       ? context
-                                          .read<WorkLocationCubit>()
+                                          .read<WorkLocationDetailsCubit>()
                                           .allfloorTasksModel!
                                           .data!
                                           .data![index]
                                           .startTime!
                                       : selectedIndex == 5
                                           ? context
-                                              .read<WorkLocationCubit>()
+                                              .read<WorkLocationDetailsCubit>()
                                               .allSectionTasksModel!
                                               .data!
                                               .data![index]
                                               .startTime!
                                           : context
-                                              .read<WorkLocationCubit>()
+                                              .read<WorkLocationDetailsCubit>()
                                               .allPointTasksModel!
                                               .data!
                                               .data![index]

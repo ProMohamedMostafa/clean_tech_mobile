@@ -1,10 +1,10 @@
 import 'package:image_picker/image_picker.dart';
 import 'package:smart_cleaning_application/features/screens/edit_profile/data/model/edit_profile_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_model.dart';
 import 'package:smart_cleaning_application/features/screens/settings/data/model/profile_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_shift_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_shift_details_model.dart';
 
 abstract class EditProfileState {}
 
@@ -61,7 +61,7 @@ class ImageSelectedState extends EditProfileState {
 class GetNationalityLoadingState extends EditProfileState {}
 
 class GetNationalitySuccessState extends EditProfileState {
-  final NationalityModel nationalitymodel;
+  final NationalityListModel nationalitymodel;
 
   GetNationalitySuccessState(this.nationalitymodel);
 }
@@ -100,4 +100,3 @@ class AllProvidersErrorState extends EditProfileState {
   final String error;
   AllProvidersErrorState(this.error);
 }
-

@@ -122,16 +122,16 @@ class _EditMaterialBodyState extends State<EditMaterialBody> {
                                       .read<EditMaterialCubit>()
                                       .categoryManagementModel
                                       ?.data
-                                      .categories
-                                     .isEmpty ??
+                                      ?.categories
+                                     ?.isEmpty ??
                                   true
                               ? ['No category']
                               : context
                                       .read<EditMaterialCubit>()
                                       .categoryManagementModel
                                       ?.data
-                                      .categories
-                                      .map((e) => e.name)
+                                      ?.categories
+                                      ?.map((e) => e.name!)
                                       .toList() ??
                                   [],
                           onPressed: (value) {
@@ -139,8 +139,8 @@ class _EditMaterialBodyState extends State<EditMaterialBody> {
                                 .read<EditMaterialCubit>()
                                 .categoryManagementModel
                                 ?.data
-                                .categories
-                               .firstWhere((category) =>
+                                ?.categories
+                               ?.firstWhere((category) =>
                                     category.name ==
                                     context
                                         .read<EditMaterialCubit>()

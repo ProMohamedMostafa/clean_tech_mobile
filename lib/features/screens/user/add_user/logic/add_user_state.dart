@@ -1,5 +1,5 @@
 import 'package:image_picker/image_picker.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/all_deleted_providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
@@ -83,7 +83,7 @@ class RestoreProviderErrorState extends AddUserState {
 class GetNationalityLoadingState extends AddUserState {}
 
 class GetNationalitySuccessState extends AddUserState {
-  final NationalityModel nationalitymodel;
+  final NationalityListModel nationalitymodel;
 
   GetNationalitySuccessState(this.nationalitymodel);
 }

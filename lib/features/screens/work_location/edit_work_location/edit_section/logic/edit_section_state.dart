@@ -1,13 +1,13 @@
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_section/data/model/edit_section_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_section/data/model/section_details_in_edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/section_users_shifts_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
 
 abstract class EditSectionState {}
 
@@ -30,7 +30,7 @@ class EditSectionErrorState extends EditSectionState {
 class GetNationalityLoadingState extends EditSectionState {}
 
 class GetNationalitySuccessState extends EditSectionState {
-  final NationalityModel nationalitymodel;
+  final NationalityListModel nationalitymodel;
 
   GetNationalitySuccessState(this.nationalitymodel);
 }
@@ -152,4 +152,3 @@ class SectionUsersDetailsErrorState extends EditSectionState {
   final String error;
   SectionUsersDetailsErrorState(this.error);
 }
-

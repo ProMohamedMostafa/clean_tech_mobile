@@ -62,36 +62,34 @@ class IntegrationsBody extends StatelessWidget {
       appBar: AppBar(
         title: Text("Integrations"),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 40),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                verticalSpace(30),
-                GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 24.h,
-                    crossAxisSpacing: 24.w,
-                    childAspectRatio: 1,
-                  ),
-                  itemCount: integrationItems.length,
-                  itemBuilder: (context, index) {
-                    final item = integrationItems[index];
-                    return buildIntegrationItem(
-                      item.onTap,
-                      item.label,
-                      item.image,
-                    );
-                  },
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 40),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              verticalSpace(10),
+              GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 24.h,
+                  crossAxisSpacing: 24.w,
+                  childAspectRatio: 1,
                 ),
-                verticalSpace(30),
-              ],
-            ),
+                itemCount: integrationItems.length,
+                itemBuilder: (context, index) {
+                  final item = integrationItems[index];
+                  return buildIntegrationItem(
+                    item.onTap,
+                    item.label,
+                    item.image,
+                  );
+                },
+              ),
+              verticalSpace(30),
+            ],
           ),
         ),
       ),

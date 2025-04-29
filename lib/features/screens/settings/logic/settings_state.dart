@@ -1,5 +1,5 @@
 import 'package:smart_cleaning_application/features/screens/settings/data/model/profile_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_status_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_status_model.dart';
 
 abstract class SettingsState {}
 

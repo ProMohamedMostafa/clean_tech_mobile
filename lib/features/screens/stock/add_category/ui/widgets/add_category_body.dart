@@ -158,7 +158,7 @@ class _AddCategoryBodyState extends State<AddCategoryBody> {
                                       .categoryManagementModel
                                       ?.data
                                       ?.categories!
-                                      .map((e) => e.name)
+                                      .map((e) => e.name!)
                                       .toList() ??
                                   [],
                           onPressed: (value) {

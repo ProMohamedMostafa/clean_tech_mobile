@@ -7,7 +7,7 @@ import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
-import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/task/view_task/logic/cubit/task_details_cubit.dart';
 
 class CustomCurrentReadDialog {
   static Future<String?> show(
@@ -41,7 +41,7 @@ class CustomCurrentReadDialog {
                         onlyRead: false,
                         hint: "Write Currently reading",
                         controller: context
-                            .read<TaskManagementCubit>()
+                            .read<TaskDetailsCubit>()
                             .currentReadingController,
                         keyboardType: TextInputType.number,
                         validator: (value) {
@@ -61,10 +61,9 @@ class CustomCurrentReadDialog {
                         child: DefaultElevatedButton(
                             name: 'Confirm',
                             onPressed: () {
-                              context
-                                  .read<TaskManagementCubit>()
-                                  .changeTaskStatus(id, 2,
-                                      reading: currentReading);
+                              context.read<TaskDetailsCubit>().changeTaskStatus(
+                                  id, 2,
+                                  reading: currentReading);
                               context.pop();
                             },
                             color: AppColor.primaryColor,

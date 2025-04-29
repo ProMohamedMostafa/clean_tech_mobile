@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/settings/data/model/profile_model.dart';
 import 'package:smart_cleaning_application/features/screens/settings/logic/settings_state.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_status_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_status_model.dart';
 
 class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit() : super(SettingsInitialState());

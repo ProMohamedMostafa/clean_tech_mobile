@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/all_deleted_providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
@@ -42,7 +42,7 @@ class AddUserCubit extends Cubit<AddUserState> {
   TextEditingController providerController = TextEditingController();
   TextEditingController deletedProviderController = TextEditingController();
   TextEditingController restoreProviderController = TextEditingController();
-  final shiftController = MultiSelectController<ShiftDetails>();
+  final shiftController = MultiSelectController<ShiftItem>();
 
   final formKey = GlobalKey<FormState>();
   final formAddKey = GlobalKey<FormState>();
@@ -149,11 +149,11 @@ class AddUserCubit extends Cubit<AddUserState> {
     });
   }
 
-  NationalityModel? nationalityModel;
+  NationalityListModel? nationalityModel;
   getNationality() {
     emit(GetNationalityLoadingState());
     DioHelper.getData(url: ApiConstants.countriesUrl).then((value) {
-      nationalityModel = NationalityModel.fromJson(value!.data);
+      nationalityModel = NationalityListModel.fromJson(value!.data);
       emit(GetNationalitySuccessState(nationalityModel!));
     }).catchError((error) {
       emit(GetNationalityErrorState(error.toString()));
@@ -170,10 +170,12 @@ class AddUserCubit extends Cubit<AddUserState> {
       emit(RoleErrorState(error.toString()));
     });
   }
- UsersModel? usersModel;
+
+  UsersModel? usersModel;
   getAllUsers(int id) {
     emit(AllUsersLoadingState());
-    DioHelper.getData(url: "users/pagination",query: {'role':id}).then((value) {
+    DioHelper.getData(url: "users/pagination", query: {'RoleId': id})
+        .then((value) {
       usersModel = UsersModel.fromJson(value!.data);
       emit(AllUsersSuccessState(usersModel!));
     }).catchError((error) {

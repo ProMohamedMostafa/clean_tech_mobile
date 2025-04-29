@@ -1,20 +1,20 @@
 class MaterialManagementModel {
-  int statusCode;
+  int? statusCode;
   String? meta;
-  bool succeeded;
-  String message;
+  bool? succeeded;
+  String? message;
   String? error;
   int? businessErrorCode;
-  MaterialDataModel data;
+  MaterialDataModel? data;
 
   MaterialManagementModel({
-    required this.statusCode,
+    this.statusCode,
     this.meta,
-    required this.succeeded,
-    required this.message,
+    this.succeeded,
+    this.message,
     this.error,
     this.businessErrorCode,
-    required this.data,
+    this.data,
   });
 
   factory MaterialManagementModel.fromJson(Map<String, dynamic> json) {
@@ -31,26 +31,26 @@ class MaterialManagementModel {
 }
 
 class MaterialDataModel {
-  int currentPage;
-  int totalPages;
-  int totalCount;
+  int? currentPage;
+  int? totalPages;
+  int? totalCount;
   String? meta;
-  int pageSize;
-  bool hasPreviousPage;
-  bool hasNextPage;
-  bool succeeded;
-  List<MaterialModel> materials;
+  int? pageSize;
+  bool? hasPreviousPage;
+  bool? hasNextPage;
+  bool? succeeded;
+  List<MaterialModel>? materials;
 
   MaterialDataModel({
-    required this.currentPage,
-    required this.totalPages,
-    required this.totalCount,
+    this.currentPage,
+    this.totalPages,
+    this.totalCount,
     this.meta,
-    required this.pageSize,
-    required this.hasPreviousPage,
-    required this.hasNextPage,
-    required this.succeeded,
-    required this.materials,
+    this.pageSize,
+    this.hasPreviousPage,
+    this.hasNextPage,
+    this.succeeded,
+    this.materials,
   });
 
   factory MaterialDataModel.fromJson(Map<String, dynamic> json) {
@@ -70,24 +70,24 @@ class MaterialDataModel {
 }
 
 class MaterialModel {
-  int id;
-  String name;
-  double minThreshold;
-  String description;
-  double quantity;
-  int categoryId;
-  String categoryName;
-  String unit;
+  int? id;
+  String? name;
+  double? minThreshold;
+  String? description;
+  double? quantity;
+  int? categoryId;
+  String? categoryName;
+  String? unit;
 
   MaterialModel({
-    required this.id,
-    required this.name,
-    required this.minThreshold,
-    required this.description,
-    required this.quantity,
-    required this.categoryId,
-    required this.categoryName,
-    required this.unit,
+    this.id,
+    this.name,
+    this.minThreshold,
+    this.description,
+    this.quantity,
+    this.categoryId,
+    this.categoryName,
+    this.unit,
   });
 
   factory MaterialModel.fromJson(Map<String, dynamic> json) {

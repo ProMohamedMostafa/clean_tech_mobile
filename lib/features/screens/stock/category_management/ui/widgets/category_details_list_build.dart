@@ -11,7 +11,7 @@ Widget categoryDetailsBuild(BuildContext context, int selectedIndex) {
           .read<CategoryManagementCubit>()
           .categoryManagementModel
           ?.data
-          .categories
+          ?.categories
       : context.read<CategoryManagementCubit>().deletedCategoryListModel?.data;
 
   if (categoriesData == null || categoriesData.isEmpty) {

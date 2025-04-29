@@ -1,8 +1,9 @@
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/points_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/add_shift/data/model/create_shift_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/point_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/section_list_model.dart';
 
 abstract class AddShiftState {}
 
@@ -39,7 +40,7 @@ class OrganizationErrorState extends AddShiftState {
 class GetBuildingLoadingState extends AddShiftState {}
 
 class GetBuildingSuccessState extends AddShiftState {
-  final BuildingModel buildingModel;
+  final BuildingListModel buildingModel;
 
   GetBuildingSuccessState(this.buildingModel);
 }
@@ -53,7 +54,7 @@ class GetBuildingErrorState extends AddShiftState {
 class GetFloorLoadingState extends AddShiftState {}
 
 class GetFloorSuccessState extends AddShiftState {
-  final FloorModel floorModel;
+  final FloorListModel floorModel;
 
   GetFloorSuccessState(this.floorModel);
 }
@@ -62,12 +63,27 @@ class GetFloorErrorState extends AddShiftState {
   final String error;
   GetFloorErrorState(this.error);
 }
+
+//**************************** */
+
+class GetSectionLoadingState extends AddShiftState {}
+
+class GetSectionSuccessState extends AddShiftState {
+  final SectionListModel sectionsModel;
+
+  GetSectionSuccessState(this.sectionsModel);
+}
+
+class GetSectionErrorState extends AddShiftState {
+  final String error;
+  GetSectionErrorState(this.error);
+}
 //**************************** */
 
 class GetPointLoadingState extends AddShiftState {}
 
 class GetPointSuccessState extends AddShiftState {
-  final PointsModel pointModel;
+  final PointListModel pointModel;
 
   GetPointSuccessState(this.pointModel);
 }

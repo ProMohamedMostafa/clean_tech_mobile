@@ -1,20 +1,20 @@
 class TransactionManagementModel {
-  int statusCode;
+  int? statusCode;
   String? meta;
-  bool succeeded;
-  String message;
+  bool? succeeded;
+  String? message;
   String? error;
   int? businessErrorCode;
-  TransactionData data;
+  TransactionData? data;
 
   TransactionManagementModel({
-    required this.statusCode,
+     this.statusCode,
     this.meta,
-    required this.succeeded,
-    required this.message,
+     this.succeeded,
+     this.message,
     this.error,
     this.businessErrorCode,
-    required this.data,
+     this.data,
   });
 
   factory TransactionManagementModel.fromJson(Map<String, dynamic> json) {
@@ -31,26 +31,26 @@ class TransactionManagementModel {
 }
 
 class TransactionData {
-  int currentPage;
-  int totalPages;
-  int totalCount;
+  int? currentPage;
+  int? totalPages;
+  int? totalCount;
   String? meta;
-  int pageSize;
-  bool hasPreviousPage;
-  bool hasNextPage;
-  bool succeeded;
-  List<TransactionItem> data;
+  int? pageSize;
+  bool? hasPreviousPage;
+  bool? hasNextPage;
+  bool? succeeded;
+  List<TransactionItem>? data;
 
   TransactionData({
-    required this.currentPage,
-    required this.totalPages,
-    required this.totalCount,
+     this.currentPage,
+     this.totalPages,
+     this.totalCount,
     this.meta,
-    required this.pageSize,
-    required this.hasPreviousPage,
-    required this.hasNextPage,
-    required this.succeeded,
-    required this.data,
+     this.pageSize,
+     this.hasPreviousPage,
+     this.hasNextPage,
+     this.succeeded,
+     this.data,
   });
 
   factory TransactionData.fromJson(Map<String, dynamic> json) {
@@ -71,40 +71,40 @@ class TransactionData {
 }
 
 class TransactionItem {
-  int id;
-  String name;
-  String createdAt;
-  String category;
-  int categoryId;
-  String provider;
-  int providerId;
-  double quantity;
+  int? id;
+  String? name;
+  String? createdAt;
+  String? category;
+  int? categoryId;
+  String? provider;
+  int? providerId;
+  double? quantity;
   double? price;
   double? totalPrice;
   String? file;
-  String userName;
-  int userId;
-  int typeId;
-  String type;
-  int unit;
+  String? userName;
+  int? userId;
+  int? typeId;
+  String? type;
+  int? unitId;
 
   TransactionItem({
-    required this.id,
-    required this.name,
-    required this.createdAt,
-    required this.category,
-    required this.categoryId,
-    required this.provider,
-    required this.providerId,
-    required this.quantity,
+     this.id,
+     this.name,
+     this.createdAt,
+     this.category,
+     this.categoryId,
+     this.provider,
+     this.providerId,
+     this.quantity,
     this.price,
     this.totalPrice,
     this.file,
-    required this.userName,
-    required this.userId,
-    required this.typeId,
-    required this.type,
-    required this.unit,
+     this.userName,
+     this.userId,
+     this.typeId,
+     this.type,
+     this.unitId,
   });
 
   factory TransactionItem.fromJson(Map<String, dynamic> json) {
@@ -124,7 +124,7 @@ class TransactionItem {
       userId: json['userId'],
       typeId: json['typeId'],
       type: json['type'],
-      unit: json['unit'],
+      unitId: json['unitId'],
     );
   }
 }

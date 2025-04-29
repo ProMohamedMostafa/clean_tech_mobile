@@ -1,13 +1,12 @@
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/points_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_point/data/model/edit_point_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/point_users_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
 
 abstract class EditPointState {}
 
@@ -30,7 +29,7 @@ class EditPointErrorState extends EditPointState {
 class GetNationalityLoadingState extends EditPointState {}
 
 class GetNationalitySuccessState extends EditPointState {
-  final NationalityModel nationalitymodel;
+  final NationalityListModel nationalitymodel;
 
   GetNationalitySuccessState(this.nationalitymodel);
 }
@@ -108,20 +107,6 @@ class GetFloorSuccessState extends EditPointState {
 class GetFloorErrorState extends EditPointState {
   final String error;
   GetFloorErrorState(this.error);
-}
-//**************************** */
-
-class GetPointLoadingState extends EditPointState {}
-
-class GetPointSuccessState extends EditPointState {
-  final PointsModel pointModel;
-
-  GetPointSuccessState(this.pointModel);
-}
-
-class GetPointErrorState extends EditPointState {
-  final String error;
-  GetPointErrorState(this.error);
 }
 
 //**************************** */

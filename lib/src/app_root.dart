@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
+import 'package:smart_cleaning_application/core/theming/theme/logic/theme_cubit/theme_cubit.dart';
 import 'package:smart_cleaning_application/src/app_cubit/app_cubit.dart';
 import 'package:smart_cleaning_application/src/app_cubit/app_states.dart';
 import 'package:smart_cleaning_application/core/routing/app_router.dart';
@@ -22,8 +23,15 @@ class AppRoot extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (BuildContext context, Widget? child) {
-        return BlocProvider(
-          create: (context) => AppCubit()..getSavedLanguage(),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => AppCubit()..getSavedLanguage(),
+            ),
+            BlocProvider(
+              create: (context) => ThemeCubit(),
+            ),
+          ],
           child: BlocBuilder<AppCubit, AppStates>(
             builder: (context, state) {
               return MaterialApp(

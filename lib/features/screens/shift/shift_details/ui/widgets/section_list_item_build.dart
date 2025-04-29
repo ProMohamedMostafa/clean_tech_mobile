@@ -5,7 +5,7 @@ import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shifts_management/logic/shift_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shift_details/logic/cubit/shift_details_cubit.dart';
 
 Widget listPointItemBuild(BuildContext context, index) {
   return InkWell(
@@ -13,7 +13,7 @@ Widget listPointItemBuild(BuildContext context, index) {
     onTap: () {
       context.pushNamed(Routes.workLocationDetailsScreen, arguments: {
         'id': context
-            .read<ShiftCubit>()
+            .read<ShiftDetailsCubit>()
             .shiftSectionDetailsModel!
             .data![index]
             .id!
@@ -33,7 +33,7 @@ Widget listPointItemBuild(BuildContext context, index) {
         minTileHeight: 72.h,
         title: Text(
           context
-                  .read<ShiftCubit>()
+                  .read<ShiftDetailsCubit>()
                   .shiftSectionDetailsModel!
                   .data![index]
                   .name ??
@@ -42,7 +42,7 @@ Widget listPointItemBuild(BuildContext context, index) {
         ),
         subtitle: Text(
           context
-                  .read<ShiftCubit>()
+                  .read<ShiftDetailsCubit>()
                   .shiftSectionDetailsModel!
                   .data![index]
                   .floorName ??

@@ -6,14 +6,14 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_details/logic/cubit/user_details_cubit.dart';
 
 Widget listWorkLocationItemBuild(BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       if (context
-          .read<UserManagementCubit>()
+          .read<UserDetailsCubit>()
           .userWorkLocationDetailsModel!
           .data
          ! .areas
@@ -61,7 +61,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                   physics: const BouncingScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   itemCount: context
-                      .read<UserManagementCubit>()
+                      .read<UserDetailsCubit>()
                       .userWorkLocationDetailsModel!
                       .data
                      ! .areas
@@ -78,7 +78,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                             context.pushNamed(Routes.workLocationDetailsScreen,
                                 arguments: {
                                   'id': context
-                                      .read<UserManagementCubit>()
+                                      .read<UserDetailsCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
                                     !  .areas![index]
@@ -98,7 +98,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                               children: [
                                 Text(
                                   context
-                                      .read<UserManagementCubit>()
+                                      .read<UserDetailsCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
                                      ! .areas![index]
@@ -106,7 +106,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                   style: TextStyles.font14BlackSemiBold,
                                 ),
                                 Text(
-                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data!.areas![index].countryName})",
+                                  " (${context.read<UserDetailsCubit>().userWorkLocationDetailsModel!.data!.areas![index].countryName})",
                                   style: TextStyles.font12GreyRegular,
                                 ),
                                 Spacer(),
@@ -129,7 +129,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
         verticalSpace(10),
       ],
       if (context
-          .read<UserManagementCubit>()
+          .read<UserDetailsCubit>()
           .userWorkLocationDetailsModel!
           .data
         !  .cities
@@ -177,7 +177,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                   physics: const BouncingScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   itemCount: context
-                      .read<UserManagementCubit>()
+                      .read<UserDetailsCubit>()
                       .userWorkLocationDetailsModel!
                       .data
                       !.cities
@@ -194,7 +194,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                             context.pushNamed(Routes.workLocationDetailsScreen,
                                 arguments: {
                                   'id': context
-                                      .read<UserManagementCubit>()
+                                      .read<UserDetailsCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
                                     !  .cities![index]
@@ -214,7 +214,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                               children: [
                                 Text(
                                   context
-                                      .read<UserManagementCubit>()
+                                      .read<UserDetailsCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
                                      ! .cities![index]
@@ -222,7 +222,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                   style: TextStyles.font14BlackSemiBold,
                                 ),
                                 Text(
-                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data!.cities![index].areaName})",
+                                  " (${context.read<UserDetailsCubit>().userWorkLocationDetailsModel!.data!.cities![index].areaName})",
                                   style: TextStyles.font12GreyRegular,
                                 ),
                                 Spacer(),
@@ -245,7 +245,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
         verticalSpace(10)
       ],
       if (context
-          .read<UserManagementCubit>()
+          .read<UserDetailsCubit>()
           .userWorkLocationDetailsModel!
           .data
           !.organizations
@@ -293,7 +293,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                   physics: const BouncingScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   itemCount: context
-                      .read<UserManagementCubit>()
+                      .read<UserDetailsCubit>()
                       .userWorkLocationDetailsModel!
                       .data
                      ! .organizations
@@ -310,7 +310,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                             context.pushNamed(Routes.workLocationDetailsScreen,
                                 arguments: {
                                   'id': context
-                                      .read<UserManagementCubit>()
+                                      .read<UserDetailsCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
                                      ! .organizations![index]
@@ -330,7 +330,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                               children: [
                                 Text(
                                   context
-                                      .read<UserManagementCubit>()
+                                      .read<UserDetailsCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
                                  !     .organizations![index]
@@ -338,7 +338,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                   style: TextStyles.font14BlackSemiBold,
                                 ),
                                 Text(
-                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data!.organizations![index].cityName})",
+                                  " (${context.read<UserDetailsCubit>().userWorkLocationDetailsModel!.data!.organizations![index].cityName})",
                                   style: TextStyles.font12GreyRegular,
                                 ),
                                 Spacer(),
@@ -361,7 +361,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
         verticalSpace(10)
       ],
       if (context
-          .read<UserManagementCubit>()
+          .read<UserDetailsCubit>()
           .userWorkLocationDetailsModel!
           .data
           !.buildings
@@ -409,7 +409,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                   physics: const BouncingScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   itemCount: context
-                      .read<UserManagementCubit>()
+                      .read<UserDetailsCubit>()
                       .userWorkLocationDetailsModel!
                       .data
                      ! .buildings
@@ -426,7 +426,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                             context.pushNamed(Routes.workLocationDetailsScreen,
                                 arguments: {
                                   'id': context
-                                      .read<UserManagementCubit>()
+                                      .read<UserDetailsCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
                                       !.buildings![index]
@@ -446,7 +446,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                               children: [
                                 Text(
                                   context
-                                      .read<UserManagementCubit>()
+                                      .read<UserDetailsCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
                                      ! .buildings![index]
@@ -454,7 +454,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                   style: TextStyles.font14BlackSemiBold,
                                 ),
                                 Text(
-                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data!.buildings![index].organizationName})",
+                                  " (${context.read<UserDetailsCubit>().userWorkLocationDetailsModel!.data!.buildings![index].organizationName})",
                                   style: TextStyles.font12GreyRegular,
                                 ),
                                 Spacer(),
@@ -477,7 +477,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
         verticalSpace(10),
       ],
       if (context
-          .read<UserManagementCubit>()
+          .read<UserDetailsCubit>()
           .userWorkLocationDetailsModel!
           .data
       !    .floors
@@ -525,7 +525,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                   physics: const BouncingScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   itemCount: context
-                      .read<UserManagementCubit>()
+                      .read<UserDetailsCubit>()
                       .userWorkLocationDetailsModel!
                       .data
                     !  .floors
@@ -542,7 +542,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                             context.pushNamed(Routes.workLocationDetailsScreen,
                                 arguments: {
                                   'id': context
-                                      .read<UserManagementCubit>()
+                                      .read<UserDetailsCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
                                      ! .floors![index]
@@ -562,7 +562,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                               children: [
                                 Text(
                                   context
-                                      .read<UserManagementCubit>()
+                                      .read<UserDetailsCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
                                     !  .floors![index]
@@ -570,7 +570,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                   style: TextStyles.font14BlackSemiBold,
                                 ),
                                 Text(
-                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data!.floors![index].buildingName})",
+                                  " (${context.read<UserDetailsCubit>().userWorkLocationDetailsModel!.data!.floors![index].buildingName})",
                                   style: TextStyles.font12GreyRegular,
                                 ),
                                 Spacer(),
@@ -593,7 +593,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
         verticalSpace(10),
       ],
       if (context
-          .read<UserManagementCubit>()
+          .read<UserDetailsCubit>()
           .userWorkLocationDetailsModel!
           .data
           !.sections
@@ -641,7 +641,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                   physics: const BouncingScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   itemCount: context
-                      .read<UserManagementCubit>()
+                      .read<UserDetailsCubit>()
                       .userWorkLocationDetailsModel!
                       .data
                      ! .sections
@@ -658,7 +658,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                             context.pushNamed(Routes.workLocationDetailsScreen,
                                 arguments: {
                                   'id': context
-                                      .read<UserManagementCubit>()
+                                      .read<UserDetailsCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
                                    !   .sections![index]
@@ -678,7 +678,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                               children: [
                                 Text(
                                   context
-                                      .read<UserManagementCubit>()
+                                      .read<UserDetailsCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
                               !        .sections![index]
@@ -686,7 +686,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                   style: TextStyles.font14BlackSemiBold,
                                 ),
                                 Text(
-                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data!.sections![index].floorName})",
+                                  " (${context.read<UserDetailsCubit>().userWorkLocationDetailsModel!.data!.sections![index].floorName})",
                                   style: TextStyles.font12GreyRegular,
                                 ),
                                 Spacer(),
@@ -708,7 +708,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
         ),
       ],
       if (context
-          .read<UserManagementCubit>()
+          .read<UserDetailsCubit>()
           .userWorkLocationDetailsModel!
           .data
        !   .points
@@ -756,7 +756,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                   physics: const BouncingScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   itemCount: context
-                      .read<UserManagementCubit>()
+                      .read<UserDetailsCubit>()
                       .userWorkLocationDetailsModel!
                       .data
                    !   .points
@@ -773,7 +773,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                             context.pushNamed(Routes.workLocationDetailsScreen,
                                 arguments: {
                                   'id': context
-                                      .read<UserManagementCubit>()
+                                      .read<UserDetailsCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
                                    !   .points![index]
@@ -793,7 +793,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                               children: [
                                 Text(
                                   context
-                                      .read<UserManagementCubit>()
+                                      .read<UserDetailsCubit>()
                                       .userWorkLocationDetailsModel!
                                       .data
                                   !    .points![index]
@@ -801,7 +801,7 @@ Widget listWorkLocationItemBuild(BuildContext context) {
                                   style: TextStyles.font14BlackSemiBold,
                                 ),
                                 Text(
-                                  " (${context.read<UserManagementCubit>().userWorkLocationDetailsModel!.data!.points![index].sectionName})",
+                                  " (${context.read<UserDetailsCubit>().userWorkLocationDetailsModel!.data!.points![index].sectionName})",
                                   style: TextStyles.font12GreyRegular,
                                 ),
                                 Spacer(),

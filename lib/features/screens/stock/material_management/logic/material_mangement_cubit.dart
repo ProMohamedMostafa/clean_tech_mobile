@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
+import 'package:smart_cleaning_application/core/widgets/filter/data/model/filter_dialog_data_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/gallary_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/category_management_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/data/model/delete_material_model.dart';
@@ -29,27 +30,30 @@ class MaterialManagementCubit extends Cubit<MaterialManagementState> {
 
   final formKey = GlobalKey<FormState>();
   ScrollController scrollController = ScrollController();
-  int currentPage = 1;
 
+  int selectedIndex = 0;
+  int currentPage = 1;
+  FilterDialogDataModel? filterModel;
   MaterialManagementModel? materialManagementModel;
   getMaterialList({int? categoryId}) {
     emit(MaterialManagementLoadingState());
     DioHelper.getData(url: ApiConstants.materialUrl, query: {
-      'pageNumber': currentPage,
-      'pageSize': 10,
+      'PageNumber': currentPage,
+      'PageSize': 10,
       'Search': searchController.text,
-      'categoryId': categoryId,
+      'CategoryId': categoryId ?? filterModel?.categoryId,
     }).then((value) {
       final newMaterial = MaterialManagementModel.fromJson(value!.data);
 
-      if (materialManagementModel == null) {
+      if (currentPage == 1 || materialManagementModel == null) {
         materialManagementModel = newMaterial;
       } else {
-        materialManagementModel?.data.materials
-            .addAll(newMaterial.data?.materials ?? []);
-        materialManagementModel?.data.currentPage =
-            newMaterial.data.currentPage;
-        materialManagementModel?.data.totalPages = newMaterial.data.totalPages;
+        materialManagementModel?.data?.materials
+            ?.addAll(newMaterial.data?.materials ?? []);
+        materialManagementModel?.data?.currentPage =
+            newMaterial.data?.currentPage;
+        materialManagementModel?.data?.totalPages =
+            newMaterial.data?.totalPages;
       }
       emit(MaterialManagementSuccessState(materialManagementModel!));
     }).catchError((error) {
@@ -57,15 +61,37 @@ class MaterialManagementCubit extends Cubit<MaterialManagementState> {
     });
   }
 
-  void initialize() {
+  void initialize({int? id}) {
     scrollController = ScrollController()
       ..addListener(() {
         if (scrollController.position.atEdge &&
             scrollController.position.pixels != 0) {
           currentPage++;
-          getMaterialList();
+          getMaterialList(categoryId: id);
         }
       });
+    getMaterialList(categoryId: id);
+    getAllDeletedMaterial();
+  }
+
+  void changeTap(int index) {
+    selectedIndex = index;
+
+    if (index == 0) {
+      if (materialManagementModel == null) {
+        currentPage = 1;
+        materialManagementModel = null;
+        getMaterialList();
+      } else {
+        emit(MaterialManagementSuccessState(materialManagementModel!));
+      }
+    } else {
+      if (deletedMaterialListModel == null) {
+        getAllDeletedMaterial();
+      } else {
+        emit(DeletedMaterialSuccessState(deletedMaterialListModel!));
+      }
+    }
   }
 
   DeleteMaterialModel? deleteMaterialModel;
@@ -75,14 +101,14 @@ class MaterialManagementCubit extends Cubit<MaterialManagementState> {
     DioHelper.postData(url: 'materials/delete/$id').then((value) {
       deleteMaterialModel = DeleteMaterialModel.fromJson(value!.data);
 
-      final deletedUser = materialManagementModel?.data.materials.firstWhere(
+      final deletedUser = materialManagementModel?.data?.materials?.firstWhere(
         (user) => user.id == id,
       );
 
       if (deletedUser != null) {
         // Remove from main list
-        materialManagementModel?.data.materials
-            .removeWhere((user) => user.id == id);
+        materialManagementModel?.data?.materials
+            ?.removeWhere((user) => user.id == id);
 
         // Add to deleted list
         deletedMaterials.insert(0, deletedUser);
@@ -131,24 +157,24 @@ class MaterialManagementCubit extends Cubit<MaterialManagementState> {
         final restoredUser = MaterialModel.fromJson(restoredData.toJson());
 
         // Find the correct position to insert (sorted by ID)
-        int insertIndex = materialManagementModel!.data.materials
-            .indexWhere((user) => user.id > restoredUser.id);
+        int insertIndex = materialManagementModel!.data!.materials!
+            .indexWhere((user) => user.id! > restoredUser.id!);
 
         // If not found, add to end
         if (insertIndex == -1) {
-          insertIndex = materialManagementModel!.data.materials.length;
+          insertIndex = materialManagementModel!.data!.materials!.length;
         }
 
         // Insert at correct position
-        materialManagementModel?.data.materials
-            .insert(insertIndex, restoredUser);
+        materialManagementModel?.data?.materials
+            ?.insert(insertIndex, restoredUser);
 
         // Update pagination metadata
-        materialManagementModel?.data.totalCount =
-            (materialManagementModel?.data.totalCount ?? 0) + 1;
-        materialManagementModel?.data.totalPages =
-            ((materialManagementModel?.data.totalCount ?? 0) /
-                    (materialManagementModel?.data.pageSize ?? 10))
+        materialManagementModel?.data?.totalCount =
+            (materialManagementModel?.data?.totalCount ?? 0) + 1;
+        materialManagementModel?.data?.totalPages =
+            ((materialManagementModel?.data?.totalCount ?? 0) /
+                    (materialManagementModel?.data?.pageSize ?? 10))
                 .ceil();
       }
 

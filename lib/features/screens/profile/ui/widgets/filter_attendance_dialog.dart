@@ -238,7 +238,7 @@ class CustomFilterAttedanceDialog {
                         hint: "Select area",
                         items: context
                                     .read<ProfileCubit>()
-                                    .allAreaModel
+                                    .areaListModel
                                     ?.data
                                     ?.data
                                     ?.isEmpty ??
@@ -246,7 +246,7 @@ class CustomFilterAttedanceDialog {
                             ? ['No organizations']
                             : context
                                     .read<ProfileCubit>()
-                                    .allAreaModel
+                                    .areaListModel
                                     ?.data
                                     ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
@@ -255,7 +255,7 @@ class CustomFilterAttedanceDialog {
                         onPressed: (value) {
                           final selectedArea = context
                               .read<ProfileCubit>()
-                              .allAreaModel
+                              .areaListModel
                               ?.data
                               ?.data
                               ?.firstWhere((area) =>

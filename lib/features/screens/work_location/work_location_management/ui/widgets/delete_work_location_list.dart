@@ -5,7 +5,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/ui/widgets/delete_work_location_list_item.dart';
 
-Widget deleteOrganizationListBuild(BuildContext context, int selectedIndex) {
+Widget deleteWorkLocationListBuild(BuildContext context, int selectedIndex) {
   final deletedListData = selectedIndex == 0
       ? context.read<WorkLocationCubit>().deletedAreaList?.data!
       : selectedIndex == 1

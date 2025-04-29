@@ -11,9 +11,9 @@ import 'package:smart_cleaning_application/features/screens/activity/ui/widgets/
 
 Widget listItemBuild(BuildContext context, selectedIndex, index) {
   final activity = selectedIndex == 0
-      ? context.read<ActivityCubit>().myActivities!.data.data[index]
-      : context.read<ActivityCubit>().teamActivities!.data.data[index];
-  final module = activity.module;
+      ? context.read<ActivityCubit>().myActivities?.data?.activities![index]
+      : context.read<ActivityCubit>().teamActivities?.data?.activities![index];
+  final module = activity!.module;
   final moduleId = activity.moduleId;
 
   String getRouteName() {
@@ -133,14 +133,14 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                 ? context
                     .read<ActivityCubit>()
                     .myActivities!
-                    .data
-                    .data[index]
+                    .data!
+                    .activities![index]
                     .actionTypeId!
                 : context
                     .read<ActivityCubit>()
                     .teamActivities!
-                    .data
-                    .data[index]
+                    .data!
+                    .activities![index]
                     .actionTypeId!),
             title: Row(
               children: [
@@ -149,15 +149,15 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                         ? context
                             .read<ActivityCubit>()
                             .myActivities!
-                            .data
-                            .data[index]
-                            .userName
+                            .data!
+                            .activities![index]
+                            .userName!
                         : context
                             .read<ActivityCubit>()
                             .teamActivities!
-                            .data
-                            .data[index]
-                            .userName,
+                            .data!
+                            .activities![index]
+                            .userName!,
                     style: TextStyles.font14BlackRegular),
                 horizontalSpace(8),
                 Text(
@@ -165,15 +165,15 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                       ? context
                           .read<ActivityCubit>()
                           .myActivities!
-                          .data
-                          .data[index]
-                          .role
+                          .data!
+                          .activities![index]
+                          .role!
                       : context
                           .read<ActivityCubit>()
                           .teamActivities!
-                          .data
-                          .data[index]
-                          .role,
+                          .data!
+                          .activities![index]
+                          .role!,
                   style: TextStyles.font9PrimRegular,
                 ),
               ],
@@ -187,30 +187,30 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                       ? context
                           .read<ActivityCubit>()
                           .myActivities!
-                          .data
-                          .data[index]
-                          .actionType
+                          .data!
+                          .activities![index]
+                          .actionType!
                       : context
                           .read<ActivityCubit>()
                           .teamActivities!
-                          .data
-                          .data[index]
-                          .actionType,
+                          .data!
+                          .activities![index]
+                          .actionType!,
                   style: TextStyles.font12BlackSemi.copyWith(
                     color: getActionColor(
                       selectedIndex == 0
                           ? context
                               .read<ActivityCubit>()
                               .myActivities!
-                              .data
-                              .data[index]
-                              .actionType
+                              .data!
+                              .activities![index]
+                              .actionType!
                           : context
                               .read<ActivityCubit>()
                               .teamActivities!
-                              .data
-                              .data[index]
-                              .actionType,
+                              .data!
+                              .activities![index]
+                              .actionType!,
                     ),
                   ),
                 ),
@@ -219,15 +219,15 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                       ? context
                           .read<ActivityCubit>()
                           .myActivities!
-                          .data
-                          .data[index]
-                          .message
+                          .data!
+                          .activities![index]
+                          .message!
                       : context
                           .read<ActivityCubit>()
                           .teamActivities!
-                          .data
-                          .data[index]
-                          .message,
+                          .data!
+                          .activities![index]
+                          .message!,
                   style: TextStyles.font12GreyRegular,
                 ),
               ],
@@ -244,15 +244,15 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
                       ? _formatTimeDifference(context
                           .read<ActivityCubit>()
                           .myActivities!
-                          .data
-                          .data[index]
-                          .createdAt)
+                          .data!
+                          .activities![index]
+                          .createdAt!)
                       : _formatTimeDifference(context
                           .read<ActivityCubit>()
                           .teamActivities!
-                          .data
-                          .data[index]
-                          .createdAt),
+                          .data!
+                          .activities![index]
+                          .createdAt!),
                   style: TextStyles.font11GreyMedium),
             ],
           ),

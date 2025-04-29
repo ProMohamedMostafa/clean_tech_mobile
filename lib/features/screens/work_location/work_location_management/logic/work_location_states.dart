@@ -1,24 +1,6 @@
-import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/data/models/attendance_history_model.dart';
-import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/data/models/attendance_leaves_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_model.dart';
-import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/all_tasks_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/area_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/area_users_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/building_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/building_users_shifts_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/city_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/city_users_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/floor_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/floor_users_shifts_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/organization_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/section_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/section_users_shifts_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_tree_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_tree_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_tree_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/delete_area_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/delete_building_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/delete_city_model.dart';
@@ -33,18 +15,11 @@ import 'package:smart_cleaning_application/features/screens/work_location/work_l
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/deleted_organization_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/deleted_point_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/deleted_section_list_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_tree_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_tree_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/point_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/organization_users_shifts_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/point_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/point_users_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/section_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/section_tree_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/point_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/section_list_model.dart';
 
-import '../../../integrations/data/models/city_model.dart';
 
 abstract class WorkLocationState {}
 
@@ -157,222 +132,6 @@ class PointErrorState extends WorkLocationState {
   final String error;
   PointErrorState(this.error);
 }
-//******************************** */
-
-class GetCityLoadingState extends WorkLocationState {}
-
-class GetCitySuccessState extends WorkLocationState {
-  final CityListModel cityDetailsModel;
-
-  GetCitySuccessState(this.cityDetailsModel);
-}
-
-class GetCityErrorState extends WorkLocationState {
-  final String error;
-  GetCityErrorState(this.error);
-}
-
-//******************************** */
-
-class AreaDetailsLoadingState extends WorkLocationState {}
-
-class AreaDetailsSuccessState extends WorkLocationState {
-  final AreaDetailsModel areaDetailsModel;
-
-  AreaDetailsSuccessState(this.areaDetailsModel);
-}
-
-class AreaDetailsErrorState extends WorkLocationState {
-  final String error;
-  AreaDetailsErrorState(this.error);
-}
-//******************************** */
-
-class AreaUsersDetailsLoadingState extends WorkLocationState {}
-
-class AreaUsersDetailsSuccessState extends WorkLocationState {
-  final AreaUsersDetailsModel areaUsersDetailsModel;
-
-  AreaUsersDetailsSuccessState(this.areaUsersDetailsModel);
-}
-
-class AreaUsersDetailsErrorState extends WorkLocationState {
-  final String error;
-  AreaUsersDetailsErrorState(this.error);
-}
-//******************************** */
-
-class OrganizationDetailsLoadingState extends WorkLocationState {}
-
-class OrganizationDetailsSuccessState extends WorkLocationState {
-  final OrganizationDetailsModel organizationDetailsModel;
-
-  OrganizationDetailsSuccessState(this.organizationDetailsModel);
-}
-
-class OrganizationDetailsErrorState extends WorkLocationState {
-  final String error;
-  OrganizationDetailsErrorState(this.error);
-}
-//********************************* */
-
-class OrganizationUsersDetailsLoadingState extends WorkLocationState {}
-
-class OrganizationUsersDetailsSuccessState extends WorkLocationState {
-  final OrganizationUsersShiftsDetailsModel organizationUsersShiftsDetailsModel;
-
-  OrganizationUsersDetailsSuccessState(
-      this.organizationUsersShiftsDetailsModel);
-}
-
-class OrganizationUsersDetailsErrorState extends WorkLocationState {
-  final String error;
-  OrganizationUsersDetailsErrorState(this.error);
-}
-
-//******************************** */
-
-class CityDetailsLoadingState extends WorkLocationState {}
-
-class CityDetailsSuccessState extends WorkLocationState {
-  final CityDetailsModel cityDetailsModel;
-
-  CityDetailsSuccessState(this.cityDetailsModel);
-}
-
-class CityDetailsErrorState extends WorkLocationState {
-  final String error;
-  CityDetailsErrorState(this.error);
-}
-
-//********************************* */
-class CityUsersDetailsLoadingState extends WorkLocationState {}
-
-class CityUsersDetailsSuccessState extends WorkLocationState {
-  final CityUsersDetailsModel cityUsersDetailsModel;
-
-  CityUsersDetailsSuccessState(this.cityUsersDetailsModel);
-}
-
-class CityUsersDetailsErrorState extends WorkLocationState {
-  final String error;
-  CityUsersDetailsErrorState(this.error);
-}
-
-//******************************** */
-
-class BuildingDetailsLoadingState extends WorkLocationState {}
-
-class BuildingDetailsSuccessState extends WorkLocationState {
-  final BuildingDetailsModel buildingDetailsModel;
-
-  BuildingDetailsSuccessState(this.buildingDetailsModel);
-}
-
-class BuildingDetailsErrorState extends WorkLocationState {
-  final String error;
-  BuildingDetailsErrorState(this.error);
-}
-
-//********************************* */
-class BuildingUsersDetailsLoadingState extends WorkLocationState {}
-
-class BuildingUsersDetailsSuccessState extends WorkLocationState {
-  final BuildingUsersShiftsDetailsModel buildingUsersShiftsDetailsModel;
-
-  BuildingUsersDetailsSuccessState(this.buildingUsersShiftsDetailsModel);
-}
-
-class BuildingUsersDetailsErrorState extends WorkLocationState {
-  final String error;
-  BuildingUsersDetailsErrorState(this.error);
-}
-
-//******************************** */
-
-class FloorDetailsLoadingState extends WorkLocationState {}
-
-class FloorDetailsSuccessState extends WorkLocationState {
-  final FloorDetailsModel floorDetailsModel;
-
-  FloorDetailsSuccessState(this.floorDetailsModel);
-}
-
-class FloorDetailsErrorState extends WorkLocationState {
-  final String error;
-  FloorDetailsErrorState(this.error);
-}
-//******************************** */
-
-class SectionDetailsLoadingState extends WorkLocationState {}
-
-class SectionDetailsSuccessState extends WorkLocationState {
-  final SectionDetailsModel sectionDetailsModel;
-
-  SectionDetailsSuccessState(this.sectionDetailsModel);
-}
-
-class SectionDetailsErrorState extends WorkLocationState {
-  final String error;
-  SectionDetailsErrorState(this.error);
-}
-
-//********************************* */
-class FloorUsersDetailsLoadingState extends WorkLocationState {}
-
-class FloorUsersDetailsSuccessState extends WorkLocationState {
-  final FloorUsersShiftsDetailsModel floorUsersShiftsDetailsModel;
-
-  FloorUsersDetailsSuccessState(this.floorUsersShiftsDetailsModel);
-}
-
-class FloorUsersDetailsErrorState extends WorkLocationState {
-  final String error;
-  FloorUsersDetailsErrorState(this.error);
-}
-
-//********************************* */
-class SectionUserDetailsLoadingState extends WorkLocationState {}
-
-class SectionUserDetailsSuccessState extends WorkLocationState {
-  final SectionUsersShiftsDetailsModel sectionUsersShiftsDetailsModel;
-
-  SectionUserDetailsSuccessState(this.sectionUsersShiftsDetailsModel);
-  
-}
-
-class SectionUserDetailsErrorState extends WorkLocationState {
-  final String error;
-  SectionUserDetailsErrorState(this.error);
-}
-//******************************** */
-
-class PointDetailsLoadingState extends WorkLocationState {}
-
-class PointDetailsSuccessState extends WorkLocationState {
-  final PointDetailsModel pointDetailsModel;
-
-  PointDetailsSuccessState(this.pointDetailsModel);
-}
-
-class PointDetailsErrorState extends WorkLocationState {
-  final String error;
-  PointDetailsErrorState(this.error);
-}
-
-//********************************* */
-class PointUsersDetailsLoadingState extends WorkLocationState {}
-
-class PointUsersDetailsSuccessState extends WorkLocationState {
-  final PointUsersDetailsModel pointUsersDetailsModel;
-
-  PointUsersDetailsSuccessState(this.pointUsersDetailsModel);
-}
-
-class PointUsersDetailsErrorState extends WorkLocationState {
-  final String error;
-  PointUsersDetailsErrorState(this.error);
-}
 
 
 //******************************** */
@@ -474,19 +233,6 @@ class PointDeleteErrorState extends WorkLocationState {
   final String error;
   PointDeleteErrorState(this.error);
 }
-//********************************************************** */
-
-class DeleteOrganizationsLoadingState extends WorkLocationState {}
-
-class DeleteOrganizationsSuccessState extends WorkLocationState {
-  final String message;
-  DeleteOrganizationsSuccessState(this.message);
-}
-
-class DeleteOrganizationsErrorState extends WorkLocationState {
-  final String error;
-  DeleteOrganizationsErrorState(this.error);
-}
 
 //******************************** */
 
@@ -561,7 +307,7 @@ class DeletedFloorSuccessState extends WorkLocationState {
 class DeletedFloorErrorState extends WorkLocationState {
   final String error;
   DeletedFloorErrorState(this.error);
-}//******************************** */
+} //******************************** */
 
 class DeletedSectionLoadingState extends WorkLocationState {}
 
@@ -656,6 +402,7 @@ class DeleteRestoreFloorErrorState extends WorkLocationState {
   final String error;
   DeleteRestoreFloorErrorState(this.error);
 }
+
 //******************************** */
 class DeleteRestoreSectionLoadingState extends WorkLocationState {}
 
@@ -668,6 +415,7 @@ class DeleteRestoreSectionErrorState extends WorkLocationState {
   final String error;
   DeleteRestoreSectionErrorState(this.error);
 }
+
 //******************************** */
 class DeleteRestorePointLoadingState extends WorkLocationState {}
 
@@ -772,332 +520,223 @@ class DeleteForcePointErrorState extends WorkLocationState {
   final String error;
   DeleteForcePointErrorState(this.error);
 }
-//**************************** */
-class GetNationalityLoadingState extends WorkLocationState {}
+// //**************************** */
+// class GetNationalityLoadingState extends WorkLocationState {}
 
-class GetNationalitySuccessState extends WorkLocationState {
-  final NationalityModel nationalitymodel;
+// class GetNationalitySuccessState extends WorkLocationState {
+//   final NationalityModel nationalitymodel;
 
-  GetNationalitySuccessState(this.nationalitymodel);
-}
+//   GetNationalitySuccessState(this.nationalitymodel);
+// }
 
-class GetNationalityErrorState extends WorkLocationState {
-  final String error;
-  GetNationalityErrorState(this.error);
-}
+// class GetNationalityErrorState extends WorkLocationState {
+//   final String error;
+//   GetNationalityErrorState(this.error);
+// }
 
-//**************************** */
+// //**************************** */
 
-class GetAreaLoadingState extends WorkLocationState {}
+// class GetAreaLoadingState extends WorkLocationState {}
 
-class GetAreaSuccessState extends WorkLocationState {
-  final AreaListModel areaModel;
+// class GetAreaSuccessState extends WorkLocationState {
+//   final AreaListModel areaModel;
 
-  GetAreaSuccessState(this.areaModel);
-}
+//   GetAreaSuccessState(this.areaModel);
+// }
 
-class GetAreaErrorState extends WorkLocationState {
-  final String error;
-  GetAreaErrorState(this.error);
-}
-//**************************** */
+// class GetAreaErrorState extends WorkLocationState {
+//   final String error;
+//   GetAreaErrorState(this.error);
+// }
+// //**************************** */
 
-class GetCityyLoadingState extends WorkLocationState {}
+// class GetCityyLoadingState extends WorkLocationState {}
 
-class GetCityySuccessState extends WorkLocationState {
-  final CityModel cityModel;
+// class GetCityySuccessState extends WorkLocationState {
+//   final CityModel cityModel;
 
-  GetCityySuccessState(this.cityModel);
-}
+//   GetCityySuccessState(this.cityModel);
+// }
 
-class GetCityyErrorState extends WorkLocationState {
-  final String error;
-  GetCityyErrorState(this.error);
-}
+// class GetCityyErrorState extends WorkLocationState {
+//   final String error;
+//   GetCityyErrorState(this.error);
+// }
 
-class GetOrganizationLoadingState extends WorkLocationState {}
+// class GetOrganizationLoadingState extends WorkLocationState {}
 
-class GetOrganizationSuccessState extends WorkLocationState {
-  final OrganizationListModel organizationModel;
+// class GetOrganizationSuccessState extends WorkLocationState {
+//   final OrganizationListModel organizationModel;
 
-  GetOrganizationSuccessState(this.organizationModel);
-}
+//   GetOrganizationSuccessState(this.organizationModel);
+// }
 
-class GetOrganizationErrorState extends WorkLocationState {
-  final String error;
-  GetOrganizationErrorState(this.error);
-}
-//**************************** */
+// class GetOrganizationErrorState extends WorkLocationState {
+//   final String error;
+//   GetOrganizationErrorState(this.error);
+// }
+// //**************************** */
 
-class GetBuildingLoadingState extends WorkLocationState {}
+// class GetBuildingLoadingState extends WorkLocationState {}
 
-class GetBuildingSuccessState extends WorkLocationState {
-  final BuildingListModel buildingModel;
+// class GetBuildingSuccessState extends WorkLocationState {
+//   final BuildingListModel buildingModel;
 
-  GetBuildingSuccessState(this.buildingModel);
-}
+//   GetBuildingSuccessState(this.buildingModel);
+// }
 
-class GetBuildingErrorState extends WorkLocationState {
-  final String error;
-  GetBuildingErrorState(this.error);
-}
-//**************************** */
+// class GetBuildingErrorState extends WorkLocationState {
+//   final String error;
+//   GetBuildingErrorState(this.error);
+// }
+// //**************************** */
 
-class GetFloorLoadingState extends WorkLocationState {}
+// class GetFloorLoadingState extends WorkLocationState {}
 
-class GetFloorSuccessState extends WorkLocationState {
-  final FloorListModel floorModel;
+// class GetFloorSuccessState extends WorkLocationState {
+//   final FloorListModel floorModel;
 
-  GetFloorSuccessState(this.floorModel);
-}
+//   GetFloorSuccessState(this.floorModel);
+// }
 
-class GetFloorErrorState extends WorkLocationState {
-  final String error;
-  GetFloorErrorState(this.error);
-}
-//**************************** */
-class GetSectionLoadingState extends WorkLocationState {}
+// class GetFloorErrorState extends WorkLocationState {
+//   final String error;
+//   GetFloorErrorState(this.error);
+// }
+// //**************************** */
+// class GetSectionLoadingState extends WorkLocationState {}
 
-class GetSectionSuccessState extends WorkLocationState {
-  final SectionListModel sectionModel;
+// class GetSectionSuccessState extends WorkLocationState {
+//   final SectionListModel sectionModel;
 
-  GetSectionSuccessState(this.sectionModel);
-}
+//   GetSectionSuccessState(this.sectionModel);
+// }
 
-class GetSectionErrorState extends WorkLocationState {
-  final String error;
-  GetSectionErrorState(this.error);
-}
-//**************************** */
-class GetPointsLoadingState extends WorkLocationState {}
+// class GetSectionErrorState extends WorkLocationState {
+//   final String error;
+//   GetSectionErrorState(this.error);
+// }
+// //**************************** */
+// class GetPointsLoadingState extends WorkLocationState {}
 
-class GetPointsSuccessState extends WorkLocationState {
-  final PointListModel pointsModel;
+// class GetPointsSuccessState extends WorkLocationState {
+//   final PointListModel pointsModel;
 
-  GetPointsSuccessState(this.pointsModel);
-}
+//   GetPointsSuccessState(this.pointsModel);
+// }
 
-class GetPointsErrorState extends WorkLocationState {
-  final String error;
-  GetPointsErrorState(this.error);
-}
-//**************************** */
+// class GetPointsErrorState extends WorkLocationState {
+//   final String error;
+//   GetPointsErrorState(this.error);
+// }
 
-class AreaTreeLoadingState extends WorkLocationState {}
+// //******************************** */
+// //******************************** */
 
-class AreaTreeSuccessState extends WorkLocationState {
-  final AreaTreeModel areaTreeModel;
+// class AreaDetailsLoadingState extends WorkLocationState {}
 
-  AreaTreeSuccessState(this.areaTreeModel);
-}
+// class AreaDetailsSuccessState extends WorkLocationState {
+//   final AreaDetailsModel areaDetailsModel;
 
-class AreaTreeErrorState extends WorkLocationState {
-  final String error;
-  AreaTreeErrorState(this.error);
-}
+//   AreaDetailsSuccessState(this.areaDetailsModel);
+// }
 
-//**************************** */
+// class AreaDetailsErrorState extends WorkLocationState {
+//   final String error;
+//   AreaDetailsErrorState(this.error);
+// }
 
-class CityTreeLoadingState extends WorkLocationState {}
+// class OrganizationDetailsLoadingState extends WorkLocationState {}
 
-class CityTreeSuccessState extends WorkLocationState {
-  final CityTreeModel cityTreeModel;
+// class OrganizationDetailsSuccessState extends WorkLocationState {
+//   final OrganizationDetailsModel organizationDetailsModel;
 
-  CityTreeSuccessState(this.cityTreeModel);
-}
+//   OrganizationDetailsSuccessState(this.organizationDetailsModel);
+// }
 
-class CityTreeErrorState extends WorkLocationState {
-  final String error;
-  CityTreeErrorState(this.error);
-}
+// class OrganizationDetailsErrorState extends WorkLocationState {
+//   final String error;
+//   OrganizationDetailsErrorState(this.error);
+// }//******************************** */
 
-//**************************** */
+// class FloorDetailsLoadingState extends WorkLocationState {}
 
-class OrganizationTreeLoadingState extends WorkLocationState {}
+// class FloorDetailsSuccessState extends WorkLocationState {
+//   final FloorDetailsModel floorDetailsModel;
 
-class OrganizationTreeSuccessState extends WorkLocationState {
-  final OrganizationTreeModel organizationTreeModel;
+//   FloorDetailsSuccessState(this.floorDetailsModel);
+// }
 
-  OrganizationTreeSuccessState(this.organizationTreeModel);
-}
+// class FloorDetailsErrorState extends WorkLocationState {
+//   final String error;
+//   FloorDetailsErrorState(this.error);
+// }
+// //******************************** */
 
-class OrganizationTreeErrorState extends WorkLocationState {
-  final String error;
-  OrganizationTreeErrorState(this.error);
-}
+// class SectionDetailsLoadingState extends WorkLocationState {}
 
-//**************************** */
+// class SectionDetailsSuccessState extends WorkLocationState {
+//   final SectionDetailsModel sectionDetailsModel;
 
-class BuildingTreeLoadingState extends WorkLocationState {}
+//   SectionDetailsSuccessState(this.sectionDetailsModel);
+// }
 
-class BuildingTreeSuccessState extends WorkLocationState {
-  final BuildingTreeModel buildingTreeModel;
+// class SectionDetailsErrorState extends WorkLocationState {
+//   final String error;
+//   SectionDetailsErrorState(this.error);
+// }
+// //******************************** */
 
-  BuildingTreeSuccessState(this.buildingTreeModel);
-}
+// class BuildingDetailsLoadingState extends WorkLocationState {}
 
-class BuildingTreeErrorState extends WorkLocationState {
-  final String error;
-  BuildingTreeErrorState(this.error);
-}
+// class BuildingDetailsSuccessState extends WorkLocationState {
+//   final BuildingDetailsModel buildingDetailsModel;
 
-//**************************** */
+//   BuildingDetailsSuccessState(this.buildingDetailsModel);
+// }
 
-class FloorTreeLoadingState extends WorkLocationState {}
+// class BuildingDetailsErrorState extends WorkLocationState {
+//   final String error;
+//   BuildingDetailsErrorState(this.error);
+// }
+// //******************************** */
 
-class FloorTreeSuccessState extends WorkLocationState {
-  final FloorTreeModel floorTreeModel;
+// class CityDetailsLoadingState extends WorkLocationState {}
 
-  FloorTreeSuccessState(this.floorTreeModel);
-}
+// class CityDetailsSuccessState extends WorkLocationState {
+//   final CityDetailsModel cityDetailsModel;
 
-class FloorTreeErrorState extends WorkLocationState {
-  final String error;
-  FloorTreeErrorState(this.error);
-}
+//   CityDetailsSuccessState(this.cityDetailsModel);
+// }
 
-//**************************** */
+// class CityDetailsErrorState extends WorkLocationState {
+//   final String error;
+//   CityDetailsErrorState(this.error);
+// }//******************************** */
 
-class SectionTreeLoadingState extends WorkLocationState {}
+// class PointDetailsLoadingState extends WorkLocationState {}
 
-class SectionTreeSuccessState extends WorkLocationState {
-  final SectionTreeModel sectionTreeModel;
+// class PointDetailsSuccessState extends WorkLocationState {
+//   final PointDetailsModel pointDetailsModel;
 
-  SectionTreeSuccessState(this.sectionTreeModel);
-}
+//   PointDetailsSuccessState(this.pointDetailsModel);
+// }
 
-class SectionTreeErrorState extends WorkLocationState {
-  final String error;
-  SectionTreeErrorState(this.error);
-}
-//**************************************** */
+// class PointDetailsErrorState extends WorkLocationState {
+//   final String error;
+//   PointDetailsErrorState(this.error);
+// }
+// //******************************** */
 
-class GetAllTasksLoadingState extends WorkLocationState {}
+// class PointDeleteLoadingState extends WorkLocationState {}
 
-class GetAllTasksSuccessState extends WorkLocationState {
-  final AllTasksModel allPointTasksModel;
+// class PointDeleteSuccessState extends WorkLocationState {
+//   final DeletePointModel deletePointModel;
 
-  GetAllTasksSuccessState(this.allPointTasksModel);
-}
+//   PointDeleteSuccessState(this.deletePointModel);
+// }
 
-class GetAllTasksErrorState extends WorkLocationState {
-  final String error;
-  GetAllTasksErrorState(this.error);
-}
-
-//********************** */
-
-class AttendanceHistoryAreaLoadingState extends WorkLocationState {}
-
-class AttendanceHistoryAreaSuccessState extends WorkLocationState {
-  final AttendanceHistoryModel attendanceHistoryArea;
-
-  AttendanceHistoryAreaSuccessState(this.attendanceHistoryArea);
-}
-
-class AttendanceHistoryAreaErrorState extends WorkLocationState {
-  final String error;
-  AttendanceHistoryAreaErrorState(this.error);
-}
-
-//********************** */
-class AttendanceHistoryCityLoadingState extends WorkLocationState {}
-
-class AttendanceHistoryCitySuccessState extends WorkLocationState {
-  final AttendanceHistoryModel attendanceHistoryCity;
-
-  AttendanceHistoryCitySuccessState(this.attendanceHistoryCity);
-}
-
-class AttendanceHistoryCityErrorState extends WorkLocationState {
-  final String error;
-  AttendanceHistoryCityErrorState(this.error);
-}
-
-//********************** */
-
-class AttendanceHistoryOrganizationLoadingState extends WorkLocationState {}
-
-class AttendanceHistoryOrganizationSuccessState extends WorkLocationState {
-  final AttendanceHistoryModel attendanceHistoryOrganization;
-
-  AttendanceHistoryOrganizationSuccessState(this.attendanceHistoryOrganization);
-}
-
-class AttendanceHistoryOrganizationErrorState extends WorkLocationState {
-  final String error;
-  AttendanceHistoryOrganizationErrorState(this.error);
-}
-
-//********************** */
-class AttendanceHistoryBuildingLoadingState extends WorkLocationState {}
-
-class AttendanceHistoryBuildingSuccessState extends WorkLocationState {
-  final AttendanceHistoryModel attendanceHistoryBuilding;
-
-  AttendanceHistoryBuildingSuccessState(this.attendanceHistoryBuilding);
-}
-
-class AttendanceHistoryBuildingErrorState extends WorkLocationState {
-  final String error;
-  AttendanceHistoryBuildingErrorState(this.error);
-}
-
-//********************** */
-
-class AttendanceHistoryFloorLoadingState extends WorkLocationState {}
-
-class AttendanceHistoryFloorSuccessState extends WorkLocationState {
-  final AttendanceHistoryModel attendanceHistoryFloor;
-
-  AttendanceHistoryFloorSuccessState(this.attendanceHistoryFloor);
-}
-
-class AttendanceHistoryFloorErrorState extends WorkLocationState {
-  final String error;
-  AttendanceHistoryFloorErrorState(this.error);
-}
-
-//********************** */
-
-class AttendanceHistorySectionLoadingState extends WorkLocationState {}
-
-class AttendanceHistorySectionSuccessState extends WorkLocationState {
-  final AttendanceHistoryModel attendanceHistorySection;
-
-  AttendanceHistorySectionSuccessState(this.attendanceHistorySection);
-}
-
-class AttendanceHistorySectionErrorState extends WorkLocationState {
-  final String error;
-  AttendanceHistorySectionErrorState(this.error);
-}
-
-//********************** */
-
-class AttendanceHistoryPointLoadingState extends WorkLocationState {}
-
-class AttendanceHistoryPointSuccessState extends WorkLocationState {
-  final AttendanceHistoryModel attendanceHistoryPoint;
-
-  AttendanceHistoryPointSuccessState(this.attendanceHistoryPoint);
-}
-
-class AttendanceHistoryPointErrorState extends WorkLocationState {
-  final String error;
-  AttendanceHistoryPointErrorState(this.error);
-}
-
-//********************** */
-class LeavesLoadingState extends WorkLocationState {}
-
-class LeavesSuccessState extends WorkLocationState {
-  final AttendanceLeavesModel attendanceLeavesPointModel;
-
-  LeavesSuccessState(this.attendanceLeavesPointModel);
-}
-
-class LeavesErrorState extends WorkLocationState {
-  final String error;
-  LeavesErrorState(this.error);
-}
+// class PointDeleteErrorState extends WorkLocationState {
+//   final String error;
+//   PointDeleteErrorState(this.error);
+// }

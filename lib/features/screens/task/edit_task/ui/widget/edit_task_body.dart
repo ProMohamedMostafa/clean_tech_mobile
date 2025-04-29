@@ -297,7 +297,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                       'Select organization',
                                   items: context
                                               .read<EditTaskCubit>()
-                                              .allOrganizationModel
+                                              .organizationListModel
                                               ?.data
                                               ?.data
                                               ?.isEmpty ??
@@ -305,7 +305,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                       ? ['No organizations']
                                       : context
                                               .read<EditTaskCubit>()
-                                              .allOrganizationModel
+                                              .organizationListModel
                                               ?.data
                                               ?.data
                                               ?.map((e) => e.name ?? 'Unknown')
@@ -314,7 +314,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                   onChanged: (value) {
                                     final selectedOrganization = context
                                         .read<EditTaskCubit>()
-                                        .allOrganizationModel
+                                        .organizationListModel
                                         ?.data
                                         ?.data
                                         ?.firstWhere((organization) =>
@@ -842,7 +842,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                   ),
                                 ),
                                 verticalSpace(5),
-                                MultiDropdown<User>(
+                                MultiDropdown<UserItem>(
                                   items: items ?? [],
                                   controller: context
                                       .read<EditTaskCubit>()

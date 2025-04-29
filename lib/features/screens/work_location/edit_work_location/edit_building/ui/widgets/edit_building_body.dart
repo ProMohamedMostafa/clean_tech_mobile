@@ -130,7 +130,7 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                                     .read<EditBuildingCubit>()
                                     .areasModel
                                     ?.data
-                                    ?.areas
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No areas']
@@ -138,7 +138,7 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                                     .read<EditBuildingCubit>()
                                     .areasModel
                                     ?.data
-                                    ?.areas
+                                    ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
@@ -147,7 +147,7 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                               .read<EditBuildingCubit>()
                               .areasModel
                               ?.data
-                              ?.areas
+                              ?.data
                               ?.firstWhere((area) =>
                                   area.name ==
                                   context
@@ -709,7 +709,7 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                             ),
                       context.read<EditBuildingCubit>().shiftModel?.data == null
                           ? SizedBox.shrink()
-                          : MultiDropdown<ShiftDetails>(
+                          : MultiDropdown<ShiftItem>(
                               items: context
                                           .read<EditBuildingCubit>()
                                           .shiftModel
@@ -720,7 +720,7 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                                   ? [
                                       DropdownItem(
                                         label: 'No shifts available',
-                                        value: ShiftDetails(
+                                        value: ShiftItem(
                                             id: null,
                                             name: 'No shifts available'),
                                       )

@@ -272,49 +272,39 @@ class _AddShiftBodyState extends State<AddShiftBody> {
                         ),
                         verticalSpace(5),
                         CustomDropDownList(
-                          hint: "Select organizations",
+                          hint: 'Select organizations',
+                          controller: context
+                              .read<AddShiftCubit>()
+                              .organizationController,
                           items: context
-                                      .read<AddShiftCubit>()
-                                      .organizationModel
-                                      ?.data
-                                      ?.data
-                                      ?.isEmpty ??
-                                  true
-                              ? ['No organizations']
-                              : context
-                                      .read<AddShiftCubit>()
-                                      .organizationModel
-                                      ?.data
-                                      ?.data
-                                      ?.map((e) => e.name ?? 'Unknown')
-                                      .toList() ??
-                                  [],
-                          onPressed: (value) {
+                              .read<AddShiftCubit>()
+                              .organizationItem
+                              .map((e) => e.name ?? 'Unknown')
+                              .toList(),
+                          onChanged: (value) {
                             final selectedOrganization = context
                                 .read<AddShiftCubit>()
                                 .organizationModel
                                 ?.data
                                 ?.data
-                                ?.firstWhere((organization) =>
-                                    organization.name ==
+                                ?.firstWhere((org) =>
+                                    org.name ==
                                     context
                                         .read<AddShiftCubit>()
                                         .organizationController
-                                        .text);
+                                        .text)
+                                .id
+                                ?.toString();
 
-                            context
-                                .read<AddShiftCubit>()
-                                .getBuilding(selectedOrganization!.id!);
-                            context
-                                .read<AddShiftCubit>()
-                                .organizationIdController
-                                .text = selectedOrganization.id!.toString();
+                            if (selectedOrganization != null) {
+                              context
+                                  .read<AddShiftCubit>()
+                                  .organizationIdController
+                                  .text = selectedOrganization;
+                            }
+                            context.read<AddShiftCubit>().getBuilding();
                           },
                           suffixIcon: IconBroken.arrowDown2,
-                          controller: context
-                              .read<AddShiftCubit>()
-                              .organizationController,
-                          isRead: false,
                           keyboardType: TextInputType.text,
                         ),
                         verticalSpace(10),
@@ -335,44 +325,38 @@ class _AddShiftBodyState extends State<AddShiftBody> {
                         ),
                         verticalSpace(5),
                         CustomDropDownList(
-                          hint: "Select building",
+                          hint: 'Select building',
+                          controller:
+                              context.read<AddShiftCubit>().buildingController,
                           items: context
-                                      .read<AddShiftCubit>()
-                                      .buildingModel
-                                      ?.data
-                                      ?.isEmpty ??
-                                  true
-                              ? ['No building']
-                              : context
-                                      .read<AddShiftCubit>()
-                                      .buildingModel
-                                      ?.data
-                                      ?.map((e) => e.name ?? 'Unknown')
-                                      .toList() ??
-                                  [],
-                          onPressed: (value) {
+                              .read<AddShiftCubit>()
+                              .buildingItem
+                              .map((e) => e.name ?? 'Unknown')
+                              .toList(),
+                          onChanged: (value) {
                             final selectedBuilding = context
                                 .read<AddShiftCubit>()
                                 .buildingModel
                                 ?.data
-                                ?.firstWhere((building) =>
-                                    building.name ==
+                                ?.data
+                                ?.firstWhere((bld) =>
+                                    bld.name ==
                                     context
                                         .read<AddShiftCubit>()
                                         .buildingController
-                                        .text);
-                            context
-                                .read<AddShiftCubit>()
-                                .getFloor(selectedBuilding!.id!);
-                            context
-                                .read<AddShiftCubit>()
-                                .buildingIdController
-                                .text = selectedBuilding.id!.toString();
+                                        .text)
+                                .id
+                                ?.toString();
+
+                            if (selectedBuilding != null) {
+                              context
+                                  .read<AddShiftCubit>()
+                                  .buildingIdController
+                                  .text = selectedBuilding;
+                            }
+                            context.read<AddShiftCubit>().getFloor();
                           },
                           suffixIcon: IconBroken.arrowDown2,
-                          controller:
-                              context.read<AddShiftCubit>().buildingController,
-                          isRead: false,
                           keyboardType: TextInputType.text,
                         ),
                         verticalSpace(10),
@@ -393,45 +377,90 @@ class _AddShiftBodyState extends State<AddShiftBody> {
                         ),
                         verticalSpace(5),
                         CustomDropDownList(
-                          hint: "Select floor",
+                          hint: 'Select floor',
+                          controller:
+                              context.read<AddShiftCubit>().floorController,
                           items: context
-                                      .read<AddShiftCubit>()
-                                      .floorModel
-                                      ?.data
-                                      ?.isEmpty ??
-                                  true
-                              ? ['No floors']
-                              : context
-                                      .read<AddShiftCubit>()
-                                      .floorModel
-                                      ?.data
-                                      ?.map((e) => e.name ?? 'Unknown')
-                                      .toList() ??
-                                  [],
-                          onPressed: (value) {
+                              .read<AddShiftCubit>()
+                              .floorItem
+                              .map((e) => e.name ?? 'Unknown')
+                              .toList(),
+                          onChanged: (value) {
                             final selectedFloor = context
                                 .read<AddShiftCubit>()
                                 .floorModel
+                                ?.data
                                 ?.data
                                 ?.firstWhere((floor) =>
                                     floor.name ==
                                     context
                                         .read<AddShiftCubit>()
                                         .floorController
-                                        .text);
+                                        .text)
+                                .id
+                                ?.toString();
 
-                            context
-                                .read<AddShiftCubit>()
-                                .getPoints(selectedFloor!.id!);
-                            context
-                                .read<AddShiftCubit>()
-                                .floorIdController
-                                .text = selectedFloor.id!.toString();
+                            if (selectedFloor != null) {
+                              context
+                                  .read<AddShiftCubit>()
+                                  .floorIdController
+                                  .text = selectedFloor;
+                            }
+                            context.read<AddShiftCubit>().getSection();
                           },
                           suffixIcon: IconBroken.arrowDown2,
+                          keyboardType: TextInputType.text,
+                        ),
+                        verticalSpace(10),
+                        RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Section',
+                                style: TextStyles.font16BlackRegular,
+                              ),
+                              TextSpan(
+                                text: ' (Optional)',
+                                style: TextStyles.font14GreyRegular,
+                              ),
+                            ],
+                          ),
+                        ),
+                        verticalSpace(5),
+                        CustomDropDownList(
+                          hint: 'Select section',
                           controller:
-                              context.read<AddShiftCubit>().floorController,
-                          isRead: false,
+                              context.read<AddShiftCubit>().sectionController,
+                          items: context
+                              .read<AddShiftCubit>()
+                              .sectionItem
+                              .map((e) => e.name ?? 'Unknown')
+                              .toList(),
+                          onChanged: (value) {
+                            final selectedSection = context
+                                .read<AddShiftCubit>()
+                                .sectionModel
+                                ?.data
+                                ?.data
+                                ?.firstWhere((section) =>
+                                    section.name ==
+                                    context
+                                        .read<AddShiftCubit>()
+                                        .sectionController
+                                        .text)
+                                .id
+                                ?.toString();
+
+                            if (selectedSection != null) {
+                              context
+                                  .read<AddShiftCubit>()
+                                  .sectionIdController
+                                  .text = selectedSection;
+                            }
+                            context.read<AddShiftCubit>().getPoint();
+                          },
+                          suffixIcon: IconBroken.arrowDown2,
                           keyboardType: TextInputType.text,
                         ),
                         verticalSpace(10),
@@ -452,45 +481,37 @@ class _AddShiftBodyState extends State<AddShiftBody> {
                         ),
                         verticalSpace(5),
                         CustomDropDownList(
-                          hint: "Select point",
+                          hint: 'Select point',
+                          controller:
+                              context.read<AddShiftCubit>().pointController,
                           items: context
-                                      .read<AddShiftCubit>()
-                                      .pointModel
-                                      ?.data
-                                      ?.isEmpty ??
-                                  true
-                              ? ['No point']
-                              : context
-                                      .read<AddShiftCubit>()
-                                      .pointModel
-                                      ?.data
-                                      ?.map((e) => e.name ?? 'Unknown')
-                                      .toList() ??
-                                  [],
-                          onPressed: (value) {
+                              .read<AddShiftCubit>()
+                              .pointItem
+                              .map((e) => e.name ?? 'Unknown')
+                              .toList(),
+                          onChanged: (value) {
                             final selectedPoint = context
                                 .read<AddShiftCubit>()
                                 .pointModel
+                                ?.data
                                 ?.data
                                 ?.firstWhere((point) =>
                                     point.name ==
                                     context
                                         .read<AddShiftCubit>()
                                         .pointController
-                                        .text);
+                                        .text)
+                                .id
+                                ?.toString();
 
-                            context
-                                .read<AddShiftCubit>()
-                                .getPoints(selectedPoint!.id!);
-                            context
-                                .read<AddShiftCubit>()
-                                .pointIdController
-                                .text = selectedPoint.id!.toString();
+                            if (selectedPoint != null) {
+                              context
+                                  .read<AddShiftCubit>()
+                                  .pointIdController
+                                  .text = selectedPoint;
+                            }
                           },
                           suffixIcon: IconBroken.arrowDown2,
-                          controller:
-                              context.read<AddShiftCubit>().pointController,
-                          isRead: false,
                           keyboardType: TextInputType.text,
                         ),
                         verticalSpace(20),

@@ -1,15 +1,14 @@
 import 'package:smart_cleaning_application/features/screens/assign/data/assign_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_area_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/all_shifts_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/point_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/section_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/point_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/section_list_model.dart';
 
 abstract class AssignStates {}
 
@@ -75,9 +74,9 @@ class AllUsersErrorState extends AssignStates {
 class GetAreaLoadingState extends AssignStates {}
 
 class GetAreaSuccessState extends AssignStates {
-  final AllAreaModel allAreaModel;
+  final AreaListModel areaListModel;
 
-  GetAreaSuccessState(this.allAreaModel);
+  GetAreaSuccessState(this.areaListModel);
 }
 
 class GetAreaErrorState extends AssignStates {
@@ -173,9 +172,9 @@ class GetPointErrorState extends AssignStates {
 class AllOrganizationLoadingState extends AssignStates {}
 
 class AllOrganizationSuccessState extends AssignStates {
-  final AllOrganizationModel allOrganizationModel;
+  final OrganizationListModel organizationListModel;
 
-  AllOrganizationSuccessState(this.allOrganizationModel);
+  AllOrganizationSuccessState(this.organizationListModel);
 }
 
 class AllOrganizationErrorState extends AssignStates {

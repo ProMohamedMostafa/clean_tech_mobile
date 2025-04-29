@@ -1,20 +1,20 @@
 class CategoryManagementModel {
-  int statusCode;
+  int? statusCode;
   String? meta;
-  bool succeeded;
-  String message;
+  bool? succeeded;
+  String? message;
   String? error;
   int? businessErrorCode;
-  DataModel data;
+  DataModel? data;
 
   CategoryManagementModel({
-    required this.statusCode,
+     this.statusCode,
     this.meta,
-    required this.succeeded,
-    required this.message,
+     this.succeeded,
+     this.message,
     this.error,
     this.businessErrorCode,
-    required this.data,
+     this.data,
   });
 
   factory CategoryManagementModel.fromJson(Map<String, dynamic> json) {
@@ -31,26 +31,26 @@ class CategoryManagementModel {
 }
 
 class DataModel {
-  int currentPage;
-  int totalPages;
-  int totalCount;
+  int? currentPage;
+  int? totalPages;
+  int? totalCount;
   String? meta;
-  int pageSize;
-  bool hasPreviousPage;
-  bool hasNextPage;
-  bool succeeded;
-  List<CategoryModel> categories;
+  int? pageSize;
+  bool? hasPreviousPage;
+  bool? hasNextPage;
+  bool? succeeded;
+  List<CategoryModel>? categories;
 
   DataModel({
-    required this.currentPage,
-    required this.totalPages,
-    required this.totalCount,
+     this.currentPage,
+     this.totalPages,
+     this.totalCount,
     this.meta,
-    required this.pageSize,
-    required this.hasPreviousPage,
-    required this.hasNextPage,
-    required this.succeeded,
-    required this.categories,
+     this.pageSize,
+     this.hasPreviousPage,
+     this.hasNextPage,
+     this.succeeded,
+     this.categories,
   });
 
   factory DataModel.fromJson(Map<String, dynamic> json) {
@@ -70,20 +70,20 @@ class DataModel {
 }
 
 class CategoryModel {
-  int id;
-  String name;
+  int? id;
+  String? name;
   int? parentCategoryId;
   String? parentCategoryName;
-  String unit;
-  int unitId;
+  String? unit;
+  int? unitId;
 
   CategoryModel({
-    required this.id,
-    required this.name,
+     this.id,
+     this.name,
     this.parentCategoryId,
     this.parentCategoryName,
-    required this.unit,
-    required this.unitId,
+     this.unit,
+     this.unitId,
   });
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) {

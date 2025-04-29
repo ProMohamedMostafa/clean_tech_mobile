@@ -5,12 +5,12 @@ import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/logic/cubit/work_location_details_cubit.dart';
 
 Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
   List<int> cleanerIds = selectedIndex == 0
       ? context
-              .read<WorkLocationCubit>()
+              .read<WorkLocationDetailsCubit>()
               .areaUsersDetailsModel
               ?.data
               ?.users
@@ -20,7 +20,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
           []
       : selectedIndex == 1
           ? context
-                  .read<WorkLocationCubit>()
+                  .read<WorkLocationDetailsCubit>()
                   .cityUsersDetailsModel
                   ?.data
                   ?.users
@@ -30,7 +30,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
               []
           : selectedIndex == 2
               ? context
-                      .read<WorkLocationCubit>()
+                      .read<WorkLocationDetailsCubit>()
                       .organizationUsersShiftDetailsModel
                       ?.data
                       ?.users
@@ -40,7 +40,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                   []
               : selectedIndex == 3
                   ? context
-                          .read<WorkLocationCubit>()
+                          .read<WorkLocationDetailsCubit>()
                           .buildingUsersShiftDetailsModel
                           ?.data
                           ?.users
@@ -50,7 +50,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                       []
                   : selectedIndex == 4
                       ? context
-                              .read<WorkLocationCubit>()
+                              .read<WorkLocationDetailsCubit>()
                               .floorUsersShiftDetailsModel
                               ?.data
                               ?.users
@@ -60,7 +60,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                           []
                       : selectedIndex == 5
                           ? context
-                                  .read<WorkLocationCubit>()
+                                  .read<WorkLocationDetailsCubit>()
                                   .sectionUsersShiftDetailsModel
                                   ?.data
                                   ?.users
@@ -69,7 +69,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                                   .toList() ??
                               []
                           : context
-                                  .read<WorkLocationCubit>()
+                                  .read<WorkLocationDetailsCubit>()
                                   .pointUsersDetailsModel
                                   ?.data
                                   ?.users
@@ -95,7 +95,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
         decoration: BoxDecoration(shape: BoxShape.circle),
         clipBehavior: Clip.hardEdge,
         child: Image.network(
-          '${ApiConstants.apiBaseUrlImage}${selectedIndex == 0 ? context.read<WorkLocationCubit>().areaUsersDetailsModel!.data!.users!.where((user) => user.role == 'Supervisor').map((user) => user.image) : selectedIndex == 1 ? context.read<WorkLocationCubit>().cityUsersDetailsModel!.data!.users!.where((user) => user.role == 'Supervisor').map((user) => user.image) : selectedIndex == 2 ? context.read<WorkLocationCubit>().organizationUsersShiftDetailsModel!.data!.users!.where((user) => user.role == 'Supervisor').map((user) => user.image) : selectedIndex == 3 ? context.read<WorkLocationCubit>().buildingUsersShiftDetailsModel!.data!.users!.where((user) => user.role == 'Supervisor').map((user) => user.image) : selectedIndex == 4 ? context.read<WorkLocationCubit>().floorUsersShiftDetailsModel!.data!.users!.where((user) => user.role == 'Supervisor').map((user) => user.image) : selectedIndex == 5 ? context.read<WorkLocationCubit>().sectionUsersShiftDetailsModel!.data!.users!.where((user) => user.role == 'Supervisor').map((user) => user.image) : context.read<WorkLocationCubit>().pointUsersDetailsModel!.data!.users!.where((user) => user.role == 'Supervisor').map((user) => user.image)}',
+          '${ApiConstants.apiBaseUrlImage}${selectedIndex == 0 ? context.read<WorkLocationDetailsCubit>().areaUsersDetailsModel!.data!.users!.where((user) => user.role == 'Supervisor').map((user) => user.image) : selectedIndex == 1 ? context.read<WorkLocationDetailsCubit>().cityUsersDetailsModel!.data!.users!.where((user) => user.role == 'Supervisor').map((user) => user.image) : selectedIndex == 2 ? context.read<WorkLocationDetailsCubit>().organizationUsersShiftDetailsModel!.data!.users!.where((user) => user.role == 'Supervisor').map((user) => user.image) : selectedIndex == 3 ? context.read<WorkLocationDetailsCubit>().buildingUsersShiftDetailsModel!.data!.users!.where((user) => user.role == 'Supervisor').map((user) => user.image) : selectedIndex == 4 ? context.read<WorkLocationDetailsCubit>().floorUsersShiftDetailsModel!.data!.users!.where((user) => user.role == 'Supervisor').map((user) => user.image) : selectedIndex == 5 ? context.read<WorkLocationDetailsCubit>().sectionUsersShiftDetailsModel!.data!.users!.where((user) => user.role == 'Supervisor').map((user) => user.image) : context.read<WorkLocationDetailsCubit>().pointUsersDetailsModel!.data!.users!.where((user) => user.role == 'Supervisor').map((user) => user.image)}',
           fit: BoxFit.fill,
           errorBuilder: (context, error, stackTrace) {
             return Image.asset(
@@ -108,7 +108,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
       title: Text(
         selectedIndex == 0
             ? context
-                .read<WorkLocationCubit>()
+                .read<WorkLocationDetailsCubit>()
                 .areaUsersDetailsModel!
                 .data!
                 .users!
@@ -117,7 +117,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                 .join(", ")
             : selectedIndex == 1
                 ? context
-                    .read<WorkLocationCubit>()
+                    .read<WorkLocationDetailsCubit>()
                     .cityUsersDetailsModel!
                     .data!
                     .users!
@@ -126,7 +126,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                     .join(", ")
                 : selectedIndex == 2
                     ? context
-                        .read<WorkLocationCubit>()
+                        .read<WorkLocationDetailsCubit>()
                         .organizationUsersShiftDetailsModel!
                         .data!
                         .users!
@@ -135,7 +135,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                         .join(", ")
                     : selectedIndex == 3
                         ? context
-                            .read<WorkLocationCubit>()
+                            .read<WorkLocationDetailsCubit>()
                             .buildingUsersShiftDetailsModel!
                             .data!
                             .users!
@@ -144,7 +144,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                             .join(", ")
                         : selectedIndex == 4
                             ? context
-                                .read<WorkLocationCubit>()
+                                .read<WorkLocationDetailsCubit>()
                                 .floorUsersShiftDetailsModel!
                                 .data!
                                 .users!
@@ -153,7 +153,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                                 .join(", ")
                             : selectedIndex == 5
                                 ? context
-                                    .read<WorkLocationCubit>()
+                                    .read<WorkLocationDetailsCubit>()
                                     .sectionUsersShiftDetailsModel!
                                     .data!
                                     .users!
@@ -161,7 +161,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                                     .map((user) => user.userName!)
                                     .join(", ")
                                 : context
-                                    .read<WorkLocationCubit>()
+                                    .read<WorkLocationDetailsCubit>()
                                     .pointUsersDetailsModel!
                                     .data!
                                     .users!
@@ -173,7 +173,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
       subtitle: Text(
         selectedIndex == 0
             ? context
-                .read<WorkLocationCubit>()
+                .read<WorkLocationDetailsCubit>()
                 .areaUsersDetailsModel!
                 .data!
                 .users!
@@ -182,7 +182,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                 .join(", ")
             : selectedIndex == 1
                 ? context
-                    .read<WorkLocationCubit>()
+                    .read<WorkLocationDetailsCubit>()
                     .cityUsersDetailsModel!
                     .data!
                     .users!
@@ -191,7 +191,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                     .join(", ")
                 : selectedIndex == 2
                     ? context
-                        .read<WorkLocationCubit>()
+                        .read<WorkLocationDetailsCubit>()
                         .organizationUsersShiftDetailsModel!
                         .data!
                         .users!
@@ -200,7 +200,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                         .join(", ")
                     : selectedIndex == 3
                         ? context
-                            .read<WorkLocationCubit>()
+                            .read<WorkLocationDetailsCubit>()
                             .buildingUsersShiftDetailsModel!
                             .data!
                             .users!
@@ -209,7 +209,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                             .join(", ")
                         : selectedIndex == 4
                             ? context
-                                .read<WorkLocationCubit>()
+                                .read<WorkLocationDetailsCubit>()
                                 .floorUsersShiftDetailsModel!
                                 .data!
                                 .users!
@@ -218,7 +218,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                                 .join(", ")
                             : selectedIndex == 5
                                 ? context
-                                    .read<WorkLocationCubit>()
+                                    .read<WorkLocationDetailsCubit>()
                                     .sectionUsersShiftDetailsModel!
                                     .data!
                                     .users!
@@ -226,7 +226,7 @@ Widget supervisorListItemBuild(BuildContext context, index, selectedIndex) {
                                     .map((user) => user.email!)
                                     .join(", ")
                                 : context
-                                    .read<WorkLocationCubit>()
+                                    .read<WorkLocationDetailsCubit>()
                                     .pointUsersDetailsModel!
                                     .data!
                                     .users!

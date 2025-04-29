@@ -4,7 +4,7 @@ class RoleModel {
   bool? succeeded;
   String? message;
   String? error;
-  List<Data>? data;
+  List<RoleDataItem>? data;
 
   RoleModel(
       {this.statusCode,
@@ -21,9 +21,9 @@ class RoleModel {
     message = json['message'];
     error = json['error'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <RoleDataItem>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(RoleDataItem.fromJson(v));
       });
     }
   }
@@ -42,13 +42,13 @@ class RoleModel {
   }
 }
 
-class Data {
+class RoleDataItem {
   int? id;
   String? name;
 
-  Data({this.id, this.name});
+  RoleDataItem({this.id, this.name});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  RoleDataItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
   }

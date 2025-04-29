@@ -1,13 +1,13 @@
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/edit_shift/data/model/edit_shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_building_details.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_floor_details.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_organization_details.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_section_details.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/shift_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/section_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/section_list_model.dart';
 
 abstract class EditShiftState {}
 
@@ -91,9 +91,9 @@ class ShiftSectionDetailsErrorState extends EditShiftState {
 class OrganizationLoadingState extends EditShiftState {}
 
 class OrganizationSuccessState extends EditShiftState {
-  final AllOrganizationModel allOrganizationModel;
+  final OrganizationListModel organizationListModel;
 
-  OrganizationSuccessState(this.allOrganizationModel);
+  OrganizationSuccessState(this.organizationListModel);
 }
 
 class OrganizationErrorState extends EditShiftState {

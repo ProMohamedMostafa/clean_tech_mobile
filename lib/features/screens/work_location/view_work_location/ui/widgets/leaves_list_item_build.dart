@@ -8,7 +8,7 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/logic/cubit/work_location_details_cubit.dart';
 
 Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
   return InkWell(
@@ -17,48 +17,48 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
       context.pushNamed(Routes.leavesDetailsScreen,
           arguments: selectedIndex == 0
               ? context
-                  .read<WorkLocationCubit>()
+                  .read<WorkLocationDetailsCubit>()
                   .attendanceLeavesAreaModel!
                   .data!
                   .leaves![index]
                   .id!
               : selectedIndex == 1
                   ? context
-                      .read<WorkLocationCubit>()
+                      .read<WorkLocationDetailsCubit>()
                       .attendanceLeavesCityModel!
                       .data!
                       .leaves![index]
                       .id!
                   : selectedIndex == 2
                       ? context
-                          .read<WorkLocationCubit>()
+                          .read<WorkLocationDetailsCubit>()
                           .attendanceLeavesOrganizationModel!
                           .data!
                           .leaves![index]
                           .id!
                       : selectedIndex == 3
                           ? context
-                              .read<WorkLocationCubit>()
+                              .read<WorkLocationDetailsCubit>()
                               .attendanceLeavesBuildingModel!
                               .data!
                               .leaves![index]
                               .id!
                           : selectedIndex == 4
                               ? context
-                                  .read<WorkLocationCubit>()
+                                  .read<WorkLocationDetailsCubit>()
                                   .attendanceLeavesFloorModel!
                                   .data!
                                   .leaves![index]
                                   .id!
                               : selectedIndex == 5
                                   ? context
-                                      .read<WorkLocationCubit>()
+                                      .read<WorkLocationDetailsCubit>()
                                       .attendanceLeavesSectionModel!
                                       .data!
                                       .leaves![index]
                                       .id!
                                   : context
-                                      .read<WorkLocationCubit>()
+                                      .read<WorkLocationDetailsCubit>()
                                       .attendanceLeavesPointModel!
                                       .data!
                                       .leaves![index]
@@ -99,48 +99,48 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
                     child: Text(
                       selectedIndex == 0
                           ? context
-                              .read<WorkLocationCubit>()
+                              .read<WorkLocationDetailsCubit>()
                               .attendanceLeavesAreaModel!
                               .data!
                               .leaves![index]
                               .type!
                           : selectedIndex == 1
                               ? context
-                                  .read<WorkLocationCubit>()
+                                  .read<WorkLocationDetailsCubit>()
                                   .attendanceLeavesCityModel!
                                   .data!
                                   .leaves![index]
                                   .type!
                               : selectedIndex == 2
                                   ? context
-                                      .read<WorkLocationCubit>()
+                                      .read<WorkLocationDetailsCubit>()
                                       .attendanceLeavesOrganizationModel!
                                       .data!
                                       .leaves![index]
                                       .type!
                                   : selectedIndex == 3
                                       ? context
-                                          .read<WorkLocationCubit>()
+                                          .read<WorkLocationDetailsCubit>()
                                           .attendanceLeavesBuildingModel!
                                           .data!
                                           .leaves![index]
                                           .type!
                                       : selectedIndex == 4
                                           ? context
-                                              .read<WorkLocationCubit>()
+                                              .read<WorkLocationDetailsCubit>()
                                               .attendanceLeavesFloorModel!
                                               .data!
                                               .leaves![index]
                                               .type!
                                           : selectedIndex == 5
                                               ? context
-                                                  .read<WorkLocationCubit>()
+                                                  .read<WorkLocationDetailsCubit>()
                                                   .attendanceLeavesSectionModel!
                                                   .data!
                                                   .leaves![index]
                                                   .type!
                                               : context
-                                                  .read<WorkLocationCubit>()
+                                                  .read<WorkLocationDetailsCubit>()
                                                   .attendanceLeavesPointModel!
                                                   .data!
                                                   .leaves![index]
@@ -164,48 +164,48 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
                     child: Text(
                       selectedIndex == 0
                           ? context
-                              .read<WorkLocationCubit>()
+                              .read<WorkLocationDetailsCubit>()
                               .attendanceLeavesAreaModel!
                               .data!
                               .leaves![index]
                               .role!
                           : selectedIndex == 1
                               ? context
-                                  .read<WorkLocationCubit>()
+                                  .read<WorkLocationDetailsCubit>()
                                   .attendanceLeavesCityModel!
                                   .data!
                                   .leaves![index]
                                   .role!
                               : selectedIndex == 2
                                   ? context
-                                      .read<WorkLocationCubit>()
+                                      .read<WorkLocationDetailsCubit>()
                                       .attendanceLeavesOrganizationModel!
                                       .data!
                                       .leaves![index]
                                       .role!
                                   : selectedIndex == 3
                                       ? context
-                                          .read<WorkLocationCubit>()
+                                          .read<WorkLocationDetailsCubit>()
                                           .attendanceLeavesBuildingModel!
                                           .data!
                                           .leaves![index]
                                           .role!
                                       : selectedIndex == 4
                                           ? context
-                                              .read<WorkLocationCubit>()
+                                              .read<WorkLocationDetailsCubit>()
                                               .attendanceLeavesFloorModel!
                                               .data!
                                               .leaves![index]
                                               .role!
                                           : selectedIndex == 5
                                               ? context
-                                                  .read<WorkLocationCubit>()
+                                                  .read<WorkLocationDetailsCubit>()
                                                   .attendanceLeavesSectionModel!
                                                   .data!
                                                   .leaves![index]
                                                   .role!
                                               : context
-                                                  .read<WorkLocationCubit>()
+                                                  .read<WorkLocationDetailsCubit>()
                                                   .attendanceLeavesPointModel!
                                                   .data!
                                                   .leaves![index]
@@ -222,7 +222,7 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
                       // PopUpDialog.show(
                       //   context: context,
                       //   id: context
-                      //       .read<WorkLocationCubit>()
+                      //       .read<WorkLocationDetailsCubit>()
                       //       .attendanceLeavesPointModel!
                       //       .data!
                       //       .data![index]
@@ -239,48 +239,48 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
             Text(
               selectedIndex == 0
                   ? context
-                      .read<WorkLocationCubit>()
+                      .read<WorkLocationDetailsCubit>()
                       .attendanceLeavesAreaModel!
                       .data!
                       .leaves![index]
                       .userName!
                   : selectedIndex == 1
                       ? context
-                          .read<WorkLocationCubit>()
+                          .read<WorkLocationDetailsCubit>()
                           .attendanceLeavesCityModel!
                           .data!
                           .leaves![index]
                           .userName!
                       : selectedIndex == 2
                           ? context
-                              .read<WorkLocationCubit>()
+                              .read<WorkLocationDetailsCubit>()
                               .attendanceLeavesOrganizationModel!
                               .data!
                               .leaves![index]
                               .userName!
                           : selectedIndex == 3
                               ? context
-                                  .read<WorkLocationCubit>()
+                                  .read<WorkLocationDetailsCubit>()
                                   .attendanceLeavesBuildingModel!
                                   .data!
                                   .leaves![index]
                                   .userName!
                               : selectedIndex == 4
                                   ? context
-                                      .read<WorkLocationCubit>()
+                                      .read<WorkLocationDetailsCubit>()
                                       .attendanceLeavesFloorModel!
                                       .data!
                                       .leaves![index]
                                       .userName!
                                   : selectedIndex == 5
                                       ? context
-                                          .read<WorkLocationCubit>()
+                                          .read<WorkLocationDetailsCubit>()
                                           .attendanceLeavesSectionModel!
                                           .data!
                                           .leaves![index]
                                           .userName!
                                       : context
-                                          .read<WorkLocationCubit>()
+                                          .read<WorkLocationDetailsCubit>()
                                           .attendanceLeavesPointModel!
                                           .data!
                                           .leaves![index]
@@ -291,48 +291,48 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
             Text(
               selectedIndex == 0
                   ? context
-                      .read<WorkLocationCubit>()
+                      .read<WorkLocationDetailsCubit>()
                       .attendanceLeavesAreaModel!
                       .data!
                       .leaves![index]
                       .reason!
                   : selectedIndex == 1
                       ? context
-                          .read<WorkLocationCubit>()
+                          .read<WorkLocationDetailsCubit>()
                           .attendanceLeavesCityModel!
                           .data!
                           .leaves![index]
                           .reason!
                       : selectedIndex == 2
                           ? context
-                              .read<WorkLocationCubit>()
+                              .read<WorkLocationDetailsCubit>()
                               .attendanceLeavesOrganizationModel!
                               .data!
                               .leaves![index]
                               .reason!
                           : selectedIndex == 3
                               ? context
-                                  .read<WorkLocationCubit>()
+                                  .read<WorkLocationDetailsCubit>()
                                   .attendanceLeavesBuildingModel!
                                   .data!
                                   .leaves![index]
                                   .reason!
                               : selectedIndex == 4
                                   ? context
-                                      .read<WorkLocationCubit>()
+                                      .read<WorkLocationDetailsCubit>()
                                       .attendanceLeavesFloorModel!
                                       .data!
                                       .leaves![index]
                                       .reason!
                                   : selectedIndex == 5
                                       ? context
-                                          .read<WorkLocationCubit>()
+                                          .read<WorkLocationDetailsCubit>()
                                           .attendanceLeavesSectionModel!
                                           .data!
                                           .leaves![index]
                                           .reason!
                                       : context
-                                          .read<WorkLocationCubit>()
+                                          .read<WorkLocationDetailsCubit>()
                                           .attendanceLeavesPointModel!
                                           .data!
                                           .leaves![index]
@@ -357,7 +357,7 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
                       TextSpan(
                         text: selectedIndex == 0
                             ? context
-                                    .read<WorkLocationCubit>()
+                                    .read<WorkLocationDetailsCubit>()
                                     .attendanceLeavesAreaModel!
                                     .data!
                                     .leaves![index]
@@ -365,7 +365,7 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
                                 ''
                             : selectedIndex == 1
                                 ? context
-                                        .read<WorkLocationCubit>()
+                                        .read<WorkLocationDetailsCubit>()
                                         .attendanceLeavesCityModel!
                                         .data!
                                         .leaves![index]
@@ -373,7 +373,7 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
                                     ''
                                 : selectedIndex == 2
                                     ? context
-                                            .read<WorkLocationCubit>()
+                                            .read<WorkLocationDetailsCubit>()
                                             .attendanceLeavesOrganizationModel!
                                             .data!
                                             .leaves![index]
@@ -381,7 +381,7 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
                                         ''
                                     : selectedIndex == 3
                                         ? context
-                                                .read<WorkLocationCubit>()
+                                                .read<WorkLocationDetailsCubit>()
                                                 .attendanceLeavesBuildingModel!
                                                 .data!
                                                 .leaves![index]
@@ -389,7 +389,7 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
                                             ''
                                         : selectedIndex == 4
                                             ? context
-                                                    .read<WorkLocationCubit>()
+                                                    .read<WorkLocationDetailsCubit>()
                                                     .attendanceLeavesFloorModel!
                                                     .data!
                                                     .leaves![index]
@@ -398,7 +398,7 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
                                             : selectedIndex == 5
                                                 ? context
                                                         .read<
-                                                            WorkLocationCubit>()
+                                                            WorkLocationDetailsCubit>()
                                                         .attendanceLeavesSectionModel!
                                                         .data!
                                                         .leaves![index]
@@ -406,7 +406,7 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
                                                     ''
                                                 : context
                                                         .read<
-                                                            WorkLocationCubit>()
+                                                            WorkLocationDetailsCubit>()
                                                         .attendanceLeavesPointModel!
                                                         .data!
                                                         .leaves![index]
@@ -422,7 +422,7 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
                       TextSpan(
                         text: selectedIndex == 0
                             ? context
-                                    .read<WorkLocationCubit>()
+                                    .read<WorkLocationDetailsCubit>()
                                     .attendanceLeavesAreaModel!
                                     .data!
                                     .leaves![index]
@@ -430,7 +430,7 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
                                 ''
                             : selectedIndex == 1
                                 ? context
-                                        .read<WorkLocationCubit>()
+                                        .read<WorkLocationDetailsCubit>()
                                         .attendanceLeavesCityModel!
                                         .data!
                                         .leaves![index]
@@ -438,7 +438,7 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
                                     ''
                                 : selectedIndex == 2
                                     ? context
-                                            .read<WorkLocationCubit>()
+                                            .read<WorkLocationDetailsCubit>()
                                             .attendanceLeavesOrganizationModel!
                                             .data!
                                             .leaves![index]
@@ -446,7 +446,7 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
                                         ''
                                     : selectedIndex == 3
                                         ? context
-                                                .read<WorkLocationCubit>()
+                                                .read<WorkLocationDetailsCubit>()
                                                 .attendanceLeavesBuildingModel!
                                                 .data!
                                                 .leaves![index]
@@ -454,7 +454,7 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
                                             ''
                                         : selectedIndex == 4
                                             ? context
-                                                    .read<WorkLocationCubit>()
+                                                    .read<WorkLocationDetailsCubit>()
                                                     .attendanceLeavesFloorModel!
                                                     .data!
                                                     .leaves![index]
@@ -463,7 +463,7 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
                                             : selectedIndex == 5
                                                 ? context
                                                         .read<
-                                                            WorkLocationCubit>()
+                                                            WorkLocationDetailsCubit>()
                                                         .attendanceLeavesSectionModel!
                                                         .data!
                                                         .leaves![index]
@@ -471,7 +471,7 @@ Widget buildLeavesCardItem(BuildContext context, index, selectedIndex) {
                                                     ''
                                                 : context
                                                         .read<
-                                                            WorkLocationCubit>()
+                                                            WorkLocationDetailsCubit>()
                                                         .attendanceLeavesPointModel!
                                                         .data!
                                                         .leaves![index]

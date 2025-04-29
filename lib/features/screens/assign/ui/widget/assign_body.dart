@@ -78,8 +78,8 @@ class _AssignBodyState extends State<AssignBody> {
           final cubit = context.read<AssignCubit>();
           if (cubit.allShiftsModel == null ||
               cubit.roleModel == null ||
-              cubit.allAreaModel == null ||
-              cubit.allOrganizationModel == null) {
+              cubit.areaListModel == null ||
+              cubit.organizationModel == null) {
             return const Center(
               child: CircularProgressIndicator(color: AppColor.primaryColor),
             );
@@ -392,7 +392,7 @@ class _AssignBodyState extends State<AssignBody> {
                               (context.read<AssignCubit>().usersModel?.data ==
                                       null)
                                   ? SizedBox.shrink()
-                                  : MultiDropdown<User>(
+                                  : MultiDropdown<UserItem>(
                                       items: context
                                                   .read<AssignCubit>()
                                                   .usersModel!
@@ -403,7 +403,7 @@ class _AssignBodyState extends State<AssignBody> {
                                           ? [
                                               DropdownItem(
                                                 label: 'No users available',
-                                                value: User(
+                                                value: UserItem(
                                                     id: null,
                                                     userName:
                                                         'No users available'),
@@ -608,7 +608,7 @@ class _AssignBodyState extends State<AssignBody> {
                                 'Shift',
                                 style: TextStyles.font16BlackRegular,
                               ),
-                              MultiDropdown<Shift>(
+                              MultiDropdown<ShiftData>(
                                 items: context
                                             .read<AssignCubit>()
                                             .allShiftsModel!
@@ -619,7 +619,7 @@ class _AssignBodyState extends State<AssignBody> {
                                     ? [
                                         DropdownItem(
                                           label: 'No users available',
-                                          value: Shift(
+                                          value: ShiftData(
                                               id: null,
                                               name: 'No users available'),
                                         )
@@ -765,7 +765,7 @@ class _AssignBodyState extends State<AssignBody> {
                                     onPressed: (selectedValue) {
                                       final selectedArea = context
                                           .read<AssignCubit>()
-                                          .allAreaModel
+                                          .areaListModel
                                           ?.data
                                           ?.data
                                           ?.firstWhere((area) =>
@@ -779,7 +779,7 @@ class _AssignBodyState extends State<AssignBody> {
                                     hint: 'Select Area',
                                     items: context
                                                 .read<AssignCubit>()
-                                                .allAreaModel
+                                                .areaListModel
                                                 ?.data
                                                 ?.data
                                                 ?.isEmpty ??
@@ -787,7 +787,7 @@ class _AssignBodyState extends State<AssignBody> {
                                         ? ['No area available']
                                         : context
                                                 .read<AssignCubit>()
-                                                .allAreaModel
+                                                .areaListModel
                                                 ?.data
                                                 ?.data
                                                 ?.map(
@@ -872,7 +872,7 @@ class _AssignBodyState extends State<AssignBody> {
                                         onPressed: (selectedValue) {
                                           final selectedOrganization = context
                                               .read<AssignCubit>()
-                                              .allOrganizationModel
+                                              .organizationModel
                                               ?.data
                                               ?.data
                                               ?.firstWhere((organization) =>
@@ -889,7 +889,7 @@ class _AssignBodyState extends State<AssignBody> {
                                         hint: 'Select Organization',
                                         items: context
                                                     .read<AssignCubit>()
-                                                    .allOrganizationModel
+                                                    .organizationModel
                                                     ?.data
                                                     ?.data
                                                     ?.isEmpty ??
@@ -897,7 +897,7 @@ class _AssignBodyState extends State<AssignBody> {
                                             ? ['No organization available']
                                             : context
                                                     .read<AssignCubit>()
-                                                    .allOrganizationModel
+                                                    .organizationModel
                                                     ?.data
                                                     ?.data
                                                     ?.map((e) =>

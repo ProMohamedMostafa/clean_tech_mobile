@@ -8,6 +8,7 @@ import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
+import 'package:smart_cleaning_application/core/theme/cubit/theme_cubit.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
@@ -57,8 +58,11 @@ class _SettingsBodyState extends State<SettingsBody> {
           if (context.read<SettingsCubit>().profileModel == null ||
               context.read<SettingsCubit>().userStatusModel == null) {
             return Center(
-              child: CircularProgressIndicator(
-                color: AppColor.primaryColor,
+              child: Image.asset(
+                'assets/images/loading.gif',
+                width: 120.w,
+                height: 120.h,
+                fit: BoxFit.contain,
               ),
             );
           }
@@ -207,7 +211,10 @@ class _SettingsBodyState extends State<SettingsBody> {
                         }, S.of(context).settingTitle6, Icons.language),
                         toggleListTile(() {
                           setState(() {
-                            isNotOpenNotif = !isNotOpenNotif;
+                            // isNotOpenNotif = !isNotOpenNotif;
+                            context
+                                .read<ThemeCubit>()
+                                .changeApplicationTheme(context);
                           });
                         }, S.of(context).settingTitle7,
                             Icons.notifications_active, isNotOpenNotif),

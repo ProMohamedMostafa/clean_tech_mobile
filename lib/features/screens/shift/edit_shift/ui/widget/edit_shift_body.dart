@@ -288,7 +288,7 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                               '',
                           items: context
                                       .read<EditShiftCubit>()
-                                      .allOrganizationModel
+                                      .organizationListModel
                                       ?.data
                                       ?.data
                                       ?.isEmpty ??
@@ -296,7 +296,7 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                               ? ['No organizations']
                               : context
                                       .read<EditShiftCubit>()
-                                      .allOrganizationModel
+                                      .organizationListModel
                                       ?.data
                                       ?.data
                                       ?.map((e) => e.name ?? 'Unknown')
@@ -305,7 +305,7 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                           onPressed: (value) {
                             final selectedOrganization = context
                                 .read<EditShiftCubit>()
-                                .allOrganizationModel
+                                .organizationListModel
                                 ?.data
                                 ?.data
                                 ?.firstWhere((organization) =>

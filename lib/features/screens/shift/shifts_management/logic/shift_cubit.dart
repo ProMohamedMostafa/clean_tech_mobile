@@ -2,22 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_area_model.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_building_details.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_floor_details.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_organization_details.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_section_details.dart';
+import 'package:smart_cleaning_application/core/widgets/filter/data/model/filter_dialog_data_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/all_shifts_deleted_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/all_shifts_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/delete_shift_model.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/shift_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/logic/shift_state.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/point_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/section_model.dart';
+
 
 class ShiftCubit extends Cubit<ShiftState> {
   ShiftCubit() : super(ShiftInitialState());
@@ -40,100 +30,39 @@ class ShiftCubit extends Cubit<ShiftState> {
   final formKey = GlobalKey<FormState>();
   ScrollController scrollController = ScrollController();
 
-  ShiftDetailsModel? shiftDetailsModel;
-  getShiftDetails(int? id) {
-    emit(ShiftDetailsLoadingState());
-    DioHelper.getData(url: 'shifts/$id').then((value) {
-      shiftDetailsModel = ShiftDetailsModel.fromJson(value!.data);
-      emit(ShiftDetailsSuccessState(shiftDetailsModel!));
-    }).catchError((error) {
-      emit(ShiftDetailsErrorState(error.toString()));
-    });
-  }
+  
 
-  ShiftOrganizationDetailsModel? shiftOrganizationDetailsModel;
-  getShiftOrganizationDetails(int? id) {
-    emit(ShiftOrganizationDetailsLoadingState());
-    DioHelper.getData(url: 'shift/organization/$id').then((value) {
-      shiftOrganizationDetailsModel =
-          ShiftOrganizationDetailsModel.fromJson(value!.data);
-      emit(
-          ShiftOrganizationDetailsSuccessState(shiftOrganizationDetailsModel!));
-    }).catchError((error) {
-      emit(ShiftOrganizationDetailsErrorState(error.toString()));
-    });
-  }
-
-  ShiftBuildingsDetailsModel? shiftBuildingsDetailsModel;
-  getShiftBuildingDetails(int? id) {
-    emit(ShiftBuildingDetailsLoadingState());
-    DioHelper.getData(url: 'shift/building/$id').then((value) {
-      shiftBuildingsDetailsModel =
-          ShiftBuildingsDetailsModel.fromJson(value!.data);
-      emit(ShiftBuildingDetailsSuccessState(shiftBuildingsDetailsModel!));
-    }).catchError((error) {
-      emit(ShiftBuildingDetailsErrorState(error.toString()));
-    });
-  }
-
-  ShiftFloorDetailsModel? shiftFloorDetailsModel;
-  getShiftFloorDetails(int? id) {
-    emit(ShiftFloorDetailsLoadingState());
-    DioHelper.getData(url: 'shift/floor/$id').then((value) {
-      shiftFloorDetailsModel = ShiftFloorDetailsModel.fromJson(value!.data);
-      emit(ShiftFloorDetailsSuccessState(shiftFloorDetailsModel!));
-    }).catchError((error) {
-      emit(ShiftFloorDetailsErrorState(error.toString()));
-    });
-  }
-
-  ShiftSectionDetailsModel? shiftSectionDetailsModel;
-  getShiftSectionDetails(int? id) {
-    emit(ShiftSectionDetailsLoadingState());
-    DioHelper.getData(url: 'shift/section/$id').then((value) {
-      shiftSectionDetailsModel = ShiftSectionDetailsModel.fromJson(value!.data);
-      emit(ShiftSectionDetailsSuccessState(shiftSectionDetailsModel!));
-    }).catchError((error) {
-      emit(ShiftSectionDetailsErrorState(error.toString()));
-    });
-  }
-
+  int selectedIndex = 0;
   int currentPage = 1;
-
+  FilterDialogDataModel? filterModel;
   AllShiftsModel? allShiftsModel;
-  getAllShifts({
-    int? areaId,
-    int? cityId,
-    int? organizationId,
-    int? buildingId,
-    int? floorId,
-    int? sectionId,
-  }) {
+  getAllShifts() {
     emit(ShiftLoadingState());
     DioHelper.getData(url: ApiConstants.allShiftsUrl, query: {
       'pageNumber': currentPage,
       'pageSize': 10,
       'search': searchController.text,
-      'area': areaId,
-      'city': cityId,
-      'organization': organizationId,
-      'building': buildingId,
-      'floor': floorId,
-      'section': sectionId,
-      'startDate': startDateController.text,
-      'endDate': endDateController.text,
-      'startTime': startTimeController.text,
-      'endTime': endTimeController.text,
+      'StartDate': filterModel?.startDate,
+      'EndDate': filterModel?.endDate,
+      'StartTime': filterModel?.startTime,
+      'EndTime': filterModel?.endTime,
+      'AreaId': filterModel?.areaId,
+      'CityId': filterModel?.cityId,
+      'OrganizationId': filterModel?.organizationId,
+      'BuildingId': filterModel?.buildingId,
+      'FloorId': filterModel?.floorId,
+      'SectionId': filterModel?.sectionId,
     }).then((value) {
       final newShifts = AllShiftsModel.fromJson(value!.data);
 
-      if (allShiftsModel == null) {
+      if (currentPage == 1 || allShiftsModel == null) {
         allShiftsModel = newShifts;
       } else {
         allShiftsModel?.data?.shifts?.addAll(newShifts.data?.shifts ?? []);
         allShiftsModel?.data?.currentPage = newShifts.data?.currentPage;
         allShiftsModel?.data?.totalPages = newShifts.data?.totalPages;
       }
+
       emit(ShiftSuccessState(allShiftsModel!));
     }).catchError((error) {
       emit(ShiftErrorState(error.toString()));
@@ -149,9 +78,31 @@ class ShiftCubit extends Cubit<ShiftState> {
           getAllShifts();
         }
       });
+    getAllShifts();
+    getAllDeletedShifts();
   }
 
-  List<Shift> deletedShifts = [];
+  void changeTap(int index) {
+    selectedIndex = index;
+
+    if (index == 0) {
+      if (allShiftsModel == null) {
+        currentPage = 1;
+        allShiftsModel = null;
+        getAllShifts();
+      } else {
+        emit(ShiftSuccessState(allShiftsModel!));
+      }
+    } else {
+      if (allShiftsDeletedModel == null) {
+        getAllDeletedShifts();
+      } else {
+        emit(AllShiftDeleteSuccessState(allShiftsDeletedModel!));
+      }
+    }
+  }
+
+  List<ShiftData> deletedShifts = [];
   DeleteShiftModel? deleteShiftModel;
   shiftDelete(int id) {
     emit(ShiftDeleteLoadingState());
@@ -211,7 +162,7 @@ class ShiftCubit extends Cubit<ShiftState> {
         allShiftsModel?.data?.shifts ??= [];
 
         // Convert to User object
-        final restoredUser = Shift.fromJson(restoredData.toJson());
+        final restoredUser = ShiftData.fromJson(restoredData.toJson());
 
         // Find the correct position to insert (sorted by ID)
         int insertIndex = allShiftsModel!.data!.shifts!
@@ -249,87 +200,4 @@ class ShiftCubit extends Cubit<ShiftState> {
     });
   }
 
-  AllAreaModel? allAreaModel;
-  getArea() {
-    emit(GetAreaLoadingState());
-    DioHelper.getData(url: ApiConstants.areaUrl).then((value) {
-      allAreaModel = AllAreaModel.fromJson(value!.data);
-      emit(GetAreaSuccessState(allAreaModel!));
-    }).catchError((error) {
-      emit(GetAreaErrorState(error.toString()));
-    });
-  }
-
-  CityListModel? cityModel;
-  getCity(int areaId) {
-    emit(GetCityLoadingState());
-    DioHelper.getData(url: "cities/pagination", query: {'area': areaId})
-        .then((value) {
-      cityModel = CityListModel.fromJson(value!.data);
-      emit(GetCitySuccessState(cityModel!));
-    }).catchError((error) {
-      emit(GetCityErrorState(error.toString()));
-    });
-  }
-
-  OrganizationListModel? organizationModel;
-  getOrganization(int cityId) {
-    emit(GetOrganizationLoadingState());
-    DioHelper.getData(url: "organizations/pagination", query: {'city': cityId})
-        .then((value) {
-      organizationModel = OrganizationListModel.fromJson(value!.data);
-      emit(GetOrganizationSuccessState(organizationModel!));
-    }).catchError((error) {
-      emit(GetOrganizationErrorState(error.toString()));
-    });
-  }
-
-  BuildingListModel? buildingModel;
-  getBuilding(int organizationId) {
-    emit(GetBuildingLoadingState());
-    DioHelper.getData(
-        url: 'buildings/pagination',
-        query: {'organization': organizationId}).then((value) {
-      buildingModel = BuildingListModel.fromJson(value!.data);
-      emit(GetBuildingSuccessState(buildingModel!));
-    }).catchError((error) {
-      emit(GetBuildingErrorState(error.toString()));
-    });
-  }
-
-  FloorListModel? floorModel;
-  getFloor(int buildingId) {
-    emit(GetFloorLoadingState());
-    DioHelper.getData(url: 'floors/pagination', query: {'building': buildingId})
-        .then((value) {
-      floorModel = FloorListModel.fromJson(value!.data);
-      emit(GetFloorSuccessState(floorModel!));
-    }).catchError((error) {
-      emit(GetFloorErrorState(error.toString()));
-    });
-  }
-
-  SectionListModel? sectionModel;
-  getSection(int floorId) {
-    emit(GetSectionLoadingState());
-    DioHelper.getData(url: 'sections/pagination', query: {'floor': floorId})
-        .then((value) {
-      sectionModel = SectionListModel.fromJson(value!.data);
-      emit(GetSectionSuccessState(sectionModel!));
-    }).catchError((error) {
-      emit(GetSectionErrorState(error.toString()));
-    });
-  }
-
-  PointListModel? pointModel;
-  getPoint(int sectionId) {
-    emit(GetPointLoadingState());
-    DioHelper.getData(url: 'points/pagination', query: {'section': sectionId})
-        .then((value) {
-      pointModel = PointListModel.fromJson(value!.data);
-      emit(GetPointSuccessState(pointModel!));
-    }).catchError((error) {
-      emit(GetPointErrorState(error.toString()));
-    });
-  }
 }

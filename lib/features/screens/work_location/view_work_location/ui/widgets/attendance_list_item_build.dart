@@ -6,7 +6,7 @@ import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/logic/cubit/work_location_details_cubit.dart';
 
 Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
   String formatDuration(String? duration) {
@@ -57,48 +57,48 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
 
   historystatus = selectedIndex == 0
       ? context
-          .read<WorkLocationCubit>()
+          .read<WorkLocationDetailsCubit>()
           .attendanceHistoryAreaModel!
           .data!
           .data![index]
           .status!
       : selectedIndex == 1
           ? context
-              .read<WorkLocationCubit>()
+              .read<WorkLocationDetailsCubit>()
               .attendanceHistoryCityModel!
               .data!
               .data![index]
               .status!
           : selectedIndex == 2
               ? context
-                  .read<WorkLocationCubit>()
+                  .read<WorkLocationDetailsCubit>()
                   .attendanceHistoryOrganizationModel!
                   .data!
                   .data![index]
                   .status!
               : selectedIndex == 3
                   ? context
-                      .read<WorkLocationCubit>()
+                      .read<WorkLocationDetailsCubit>()
                       .attendanceHistoryBuildingModel!
                       .data!
                       .data![index]
                       .status!
                   : selectedIndex == 4
                       ? context
-                          .read<WorkLocationCubit>()
+                          .read<WorkLocationDetailsCubit>()
                           .attendanceHistoryFloorModel!
                           .data!
                           .data![index]
                           .status!
                       : selectedIndex == 5
                           ? context
-                              .read<WorkLocationCubit>()
+                              .read<WorkLocationDetailsCubit>()
                               .attendanceHistorySectionModel!
                               .data!
                               .data![index]
                               .status!
                           : context
-                              .read<WorkLocationCubit>()
+                              .read<WorkLocationDetailsCubit>()
                               .attendanceHistoryPointModel!
                               .data!
                               .data![index]
@@ -144,48 +144,48 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                   child: Text(
                     selectedIndex == 0
                         ? context
-                            .read<WorkLocationCubit>()
+                            .read<WorkLocationDetailsCubit>()
                             .attendanceHistoryAreaModel!
                             .data!
                             .data![index]
                             .status!
                         : selectedIndex == 1
                             ? context
-                                .read<WorkLocationCubit>()
+                                .read<WorkLocationDetailsCubit>()
                                 .attendanceHistoryCityModel!
                                 .data!
                                 .data![index]
                                 .status!
                             : selectedIndex == 2
                                 ? context
-                                    .read<WorkLocationCubit>()
+                                    .read<WorkLocationDetailsCubit>()
                                     .attendanceHistoryOrganizationModel!
                                     .data!
                                     .data![index]
                                     .status!
                                 : selectedIndex == 3
                                     ? context
-                                        .read<WorkLocationCubit>()
+                                        .read<WorkLocationDetailsCubit>()
                                         .attendanceHistoryBuildingModel!
                                         .data!
                                         .data![index]
                                         .status!
                                     : selectedIndex == 4
                                         ? context
-                                            .read<WorkLocationCubit>()
+                                            .read<WorkLocationDetailsCubit>()
                                             .attendanceHistoryFloorModel!
                                             .data!
                                             .data![index]
                                             .status!
                                         : selectedIndex == 5
                                             ? context
-                                                .read<WorkLocationCubit>()
+                                                .read<WorkLocationDetailsCubit>()
                                                 .attendanceHistorySectionModel!
                                                 .data!
                                                 .data![index]
                                                 .status!
                                             : context
-                                                .read<WorkLocationCubit>()
+                                                .read<WorkLocationDetailsCubit>()
                                                 .attendanceHistoryPointModel!
                                                 .data!
                                                 .data![index]
@@ -211,48 +211,48 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                       DateTime.parse(
                         selectedIndex == 0
                             ? context
-                                .read<WorkLocationCubit>()
+                                .read<WorkLocationDetailsCubit>()
                                 .attendanceHistoryAreaModel!
                                 .data!
                                 .data![index]
                                 .date!
                             : selectedIndex == 1
                                 ? context
-                                    .read<WorkLocationCubit>()
+                                    .read<WorkLocationDetailsCubit>()
                                     .attendanceHistoryCityModel!
                                     .data!
                                     .data![index]
                                     .date!
                                 : selectedIndex == 2
                                     ? context
-                                        .read<WorkLocationCubit>()
+                                        .read<WorkLocationDetailsCubit>()
                                         .attendanceHistoryOrganizationModel!
                                         .data!
                                         .data![index]
                                         .date!
                                     : selectedIndex == 3
                                         ? context
-                                            .read<WorkLocationCubit>()
+                                            .read<WorkLocationDetailsCubit>()
                                             .attendanceHistoryBuildingModel!
                                             .data!
                                             .data![index]
                                             .date!
                                         : selectedIndex == 4
                                             ? context
-                                                .read<WorkLocationCubit>()
+                                                .read<WorkLocationDetailsCubit>()
                                                 .attendanceHistoryFloorModel!
                                                 .data!
                                                 .data![index]
                                                 .date!
                                             : selectedIndex == 5
                                                 ? context
-                                                    .read<WorkLocationCubit>()
+                                                    .read<WorkLocationDetailsCubit>()
                                                     .attendanceHistorySectionModel!
                                                     .data!
                                                     .data![index]
                                                     .date!
                                                 : context
-                                                    .read<WorkLocationCubit>()
+                                                    .read<WorkLocationDetailsCubit>()
                                                     .attendanceHistoryPointModel!
                                                     .data!
                                                     .data![index]
@@ -277,48 +277,48 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                   child: Text(
                     selectedIndex == 0
                         ? context
-                            .read<WorkLocationCubit>()
+                            .read<WorkLocationDetailsCubit>()
                             .attendanceHistoryAreaModel!
                             .data!
                             .data![index]
                             .role!
                         : selectedIndex == 1
                             ? context
-                                .read<WorkLocationCubit>()
+                                .read<WorkLocationDetailsCubit>()
                                 .attendanceHistoryCityModel!
                                 .data!
                                 .data![index]
                                 .role!
                             : selectedIndex == 2
                                 ? context
-                                    .read<WorkLocationCubit>()
+                                    .read<WorkLocationDetailsCubit>()
                                     .attendanceHistoryOrganizationModel!
                                     .data!
                                     .data![index]
                                     .role!
                                 : selectedIndex == 3
                                     ? context
-                                        .read<WorkLocationCubit>()
+                                        .read<WorkLocationDetailsCubit>()
                                         .attendanceHistoryBuildingModel!
                                         .data!
                                         .data![index]
                                         .role!
                                     : selectedIndex == 4
                                         ? context
-                                            .read<WorkLocationCubit>()
+                                            .read<WorkLocationDetailsCubit>()
                                             .attendanceHistoryFloorModel!
                                             .data!
                                             .data![index]
                                             .role!
                                         : selectedIndex == 5
                                             ? context
-                                                .read<WorkLocationCubit>()
+                                                .read<WorkLocationDetailsCubit>()
                                                 .attendanceHistorySectionModel!
                                                 .data!
                                                 .data![index]
                                                 .role!
                                             : context
-                                                .read<WorkLocationCubit>()
+                                                .read<WorkLocationDetailsCubit>()
                                                 .attendanceHistoryPointModel!
                                                 .data!
                                                 .data![index]
@@ -334,48 +334,48 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
           Text(
             selectedIndex == 0
                 ? context
-                    .read<WorkLocationCubit>()
+                    .read<WorkLocationDetailsCubit>()
                     .attendanceHistoryAreaModel!
                     .data!
                     .data![index]
                     .userName!
                 : selectedIndex == 1
                     ? context
-                        .read<WorkLocationCubit>()
+                        .read<WorkLocationDetailsCubit>()
                         .attendanceHistoryCityModel!
                         .data!
                         .data![index]
                         .userName!
                     : selectedIndex == 2
                         ? context
-                            .read<WorkLocationCubit>()
+                            .read<WorkLocationDetailsCubit>()
                             .attendanceHistoryOrganizationModel!
                             .data!
                             .data![index]
                             .userName!
                         : selectedIndex == 3
                             ? context
-                                .read<WorkLocationCubit>()
+                                .read<WorkLocationDetailsCubit>()
                                 .attendanceHistoryBuildingModel!
                                 .data!
                                 .data![index]
                                 .userName!
                             : selectedIndex == 4
                                 ? context
-                                    .read<WorkLocationCubit>()
+                                    .read<WorkLocationDetailsCubit>()
                                     .attendanceHistoryFloorModel!
                                     .data!
                                     .data![index]
                                     .userName!
                                 : selectedIndex == 5
                                     ? context
-                                        .read<WorkLocationCubit>()
+                                        .read<WorkLocationDetailsCubit>()
                                         .attendanceHistorySectionModel!
                                         .data!
                                         .data![index]
                                         .userName!
                                     : context
-                                        .read<WorkLocationCubit>()
+                                        .read<WorkLocationDetailsCubit>()
                                         .attendanceHistoryPointModel!
                                         .data!
                                         .data![index]
@@ -394,7 +394,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                 TextSpan(
                   text: selectedIndex == 0
                       ? context
-                          .read<WorkLocationCubit>()
+                          .read<WorkLocationDetailsCubit>()
                           .attendanceHistoryAreaModel!
                           .data!
                           .data![index]
@@ -402,7 +402,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                           ?.toString()
                       : selectedIndex == 1
                           ? context
-                              .read<WorkLocationCubit>()
+                              .read<WorkLocationDetailsCubit>()
                               .attendanceHistoryCityModel!
                               .data!
                               .data![index]
@@ -410,7 +410,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                               ?.toString()
                           : selectedIndex == 2
                               ? context
-                                  .read<WorkLocationCubit>()
+                                  .read<WorkLocationDetailsCubit>()
                                   .attendanceHistoryOrganizationModel!
                                   .data!
                                   .data![index]
@@ -418,7 +418,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                   ?.toString()
                               : selectedIndex == 3
                                   ? context
-                                      .read<WorkLocationCubit>()
+                                      .read<WorkLocationDetailsCubit>()
                                       .attendanceHistoryBuildingModel!
                                       .data!
                                       .data![index]
@@ -426,7 +426,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                       ?.toString()
                                   : selectedIndex == 4
                                       ? context
-                                          .read<WorkLocationCubit>()
+                                          .read<WorkLocationDetailsCubit>()
                                           .attendanceHistoryFloorModel!
                                           .data!
                                           .data![index]
@@ -434,14 +434,14 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                           ?.toString()
                                       : selectedIndex == 5
                                           ? context
-                                              .read<WorkLocationCubit>()
+                                              .read<WorkLocationDetailsCubit>()
                                               .attendanceHistorySectionModel!
                                               .data!
                                               .data![index]
                                               .startShift
                                               ?.toString()
                                           : context
-                                                      .read<WorkLocationCubit>()
+                                                      .read<WorkLocationDetailsCubit>()
                                                       .attendanceHistoryPointModel!
                                                       .data!
                                                       .data![index]
@@ -451,7 +451,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                               ? DateFormat('hh:mm a').format(DateFormat('HH:mm:ss').parse(selectedIndex ==
                                                       0
                                                   ? context
-                                                      .read<WorkLocationCubit>()
+                                                      .read<WorkLocationDetailsCubit>()
                                                       .attendanceHistoryAreaModel!
                                                       .data!
                                                       .data![index]
@@ -460,7 +460,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                                   : selectedIndex == 1
                                                       ? context
                                                           .read<
-                                                              WorkLocationCubit>()
+                                                              WorkLocationDetailsCubit>()
                                                           .attendanceHistoryCityModel!
                                                           .data!
                                                           .data![index]
@@ -469,7 +469,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                                       : selectedIndex == 2
                                                           ? context
                                                               .read<
-                                                                  WorkLocationCubit>()
+                                                                  WorkLocationDetailsCubit>()
                                                               .attendanceHistoryOrganizationModel!
                                                               .data!
                                                               .data![index]
@@ -478,7 +478,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                                           : selectedIndex == 3
                                                               ? context
                                                                   .read<
-                                                                      WorkLocationCubit>()
+                                                                      WorkLocationDetailsCubit>()
                                                                   .attendanceHistoryBuildingModel!
                                                                   .data!
                                                                   .data![index]
@@ -488,7 +488,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                                                       4
                                                                   ? context
                                                                       .read<
-                                                                          WorkLocationCubit>()
+                                                                          WorkLocationDetailsCubit>()
                                                                       .attendanceHistoryFloorModel!
                                                                       .data!
                                                                       .data![
@@ -499,7 +499,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                                                           5
                                                                       ? context
                                                                           .read<
-                                                                              WorkLocationCubit>()
+                                                                              WorkLocationDetailsCubit>()
                                                                           .attendanceHistorySectionModel!
                                                                           .data!
                                                                           .data![
@@ -508,7 +508,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                                                           .toString()
                                                                       : context
                                                                           .read<
-                                                                              WorkLocationCubit>()
+                                                                              WorkLocationDetailsCubit>()
                                                                           .attendanceHistoryPointModel!
                                                                           .data!
                                                                           .data![
@@ -527,7 +527,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                 TextSpan(
                   text: selectedIndex == 0
                       ? context
-                          .read<WorkLocationCubit>()
+                          .read<WorkLocationDetailsCubit>()
                           .attendanceHistoryAreaModel!
                           .data!
                           .data![index]
@@ -535,7 +535,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                           ?.toString()
                       : selectedIndex == 1
                           ? context
-                              .read<WorkLocationCubit>()
+                              .read<WorkLocationDetailsCubit>()
                               .attendanceHistoryCityModel!
                               .data!
                               .data![index]
@@ -543,7 +543,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                               ?.toString()
                           : selectedIndex == 2
                               ? context
-                                  .read<WorkLocationCubit>()
+                                  .read<WorkLocationDetailsCubit>()
                                   .attendanceHistoryOrganizationModel!
                                   .data!
                                   .data![index]
@@ -551,7 +551,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                   ?.toString()
                               : selectedIndex == 3
                                   ? context
-                                      .read<WorkLocationCubit>()
+                                      .read<WorkLocationDetailsCubit>()
                                       .attendanceHistoryBuildingModel!
                                       .data!
                                       .data![index]
@@ -559,7 +559,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                       ?.toString()
                                   : selectedIndex == 4
                                       ? context
-                                          .read<WorkLocationCubit>()
+                                          .read<WorkLocationDetailsCubit>()
                                           .attendanceHistoryFloorModel!
                                           .data!
                                           .data![index]
@@ -567,14 +567,14 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                           ?.toString()
                                       : selectedIndex == 5
                                           ? context
-                                              .read<WorkLocationCubit>()
+                                              .read<WorkLocationDetailsCubit>()
                                               .attendanceHistorySectionModel!
                                               .data!
                                               .data![index]
                                               .endShift
                                               ?.toString()
                                           : context
-                                                      .read<WorkLocationCubit>()
+                                                      .read<WorkLocationDetailsCubit>()
                                                       .attendanceHistoryPointModel!
                                                       .data!
                                                       .data![index]
@@ -584,7 +584,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                               ? DateFormat('hh:mm a').format(DateFormat('HH:mm:ss').parse(selectedIndex ==
                                                       0
                                                   ? context
-                                                      .read<WorkLocationCubit>()
+                                                      .read<WorkLocationDetailsCubit>()
                                                       .attendanceHistoryAreaModel!
                                                       .data!
                                                       .data![index]
@@ -593,7 +593,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                                   : selectedIndex == 1
                                                       ? context
                                                           .read<
-                                                              WorkLocationCubit>()
+                                                              WorkLocationDetailsCubit>()
                                                           .attendanceHistoryCityModel!
                                                           .data!
                                                           .data![index]
@@ -602,7 +602,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                                       : selectedIndex == 2
                                                           ? context
                                                               .read<
-                                                                  WorkLocationCubit>()
+                                                                  WorkLocationDetailsCubit>()
                                                               .attendanceHistoryOrganizationModel!
                                                               .data!
                                                               .data![index]
@@ -611,7 +611,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                                           : selectedIndex == 3
                                                               ? context
                                                                   .read<
-                                                                      WorkLocationCubit>()
+                                                                      WorkLocationDetailsCubit>()
                                                                   .attendanceHistoryBuildingModel!
                                                                   .data!
                                                                   .data![index]
@@ -621,7 +621,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                                                       4
                                                                   ? context
                                                                       .read<
-                                                                          WorkLocationCubit>()
+                                                                          WorkLocationDetailsCubit>()
                                                                       .attendanceHistoryFloorModel!
                                                                       .data!
                                                                       .data![
@@ -632,7 +632,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                                                           5
                                                                       ? context
                                                                           .read<
-                                                                              WorkLocationCubit>()
+                                                                              WorkLocationDetailsCubit>()
                                                                           .attendanceHistorySectionModel!
                                                                           .data!
                                                                           .data![
@@ -641,7 +641,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                                                           .toString()
                                                                       : context
                                                                           .read<
-                                                                              WorkLocationCubit>()
+                                                                              WorkLocationDetailsCubit>()
                                                                           .attendanceHistoryPointModel!
                                                                           .data!
                                                                           .data![
@@ -671,7 +671,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                     TextSpan(
                       text: formatTime(selectedIndex == 0
                           ? context
-                                  .read<WorkLocationCubit>()
+                                  .read<WorkLocationDetailsCubit>()
                                   .attendanceHistoryAreaModel!
                                   .data!
                                   .data![index]
@@ -679,7 +679,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                               ''
                           : selectedIndex == 1
                               ? context
-                                      .read<WorkLocationCubit>()
+                                      .read<WorkLocationDetailsCubit>()
                                       .attendanceHistoryCityModel!
                                       .data!
                                       .data![index]
@@ -687,7 +687,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                   ''
                               : selectedIndex == 2
                                   ? context
-                                          .read<WorkLocationCubit>()
+                                          .read<WorkLocationDetailsCubit>()
                                           .attendanceHistoryOrganizationModel!
                                           .data!
                                           .data![index]
@@ -695,7 +695,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                       ''
                                   : selectedIndex == 3
                                       ? context
-                                              .read<WorkLocationCubit>()
+                                              .read<WorkLocationDetailsCubit>()
                                               .attendanceHistoryBuildingModel!
                                               .data!
                                               .data![index]
@@ -703,7 +703,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                           ''
                                       : selectedIndex == 4
                                           ? context
-                                                  .read<WorkLocationCubit>()
+                                                  .read<WorkLocationDetailsCubit>()
                                                   .attendanceHistoryFloorModel!
                                                   .data!
                                                   .data![index]
@@ -711,14 +711,14 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                               ''
                                           : selectedIndex == 5
                                               ? context
-                                                      .read<WorkLocationCubit>()
+                                                      .read<WorkLocationDetailsCubit>()
                                                       .attendanceHistorySectionModel!
                                                       .data!
                                                       .data![index]
                                                       .clockIn ??
                                                   ''
                                               : context
-                                                      .read<WorkLocationCubit>()
+                                                      .read<WorkLocationDetailsCubit>()
                                                       .attendanceHistoryPointModel!
                                                       .data!
                                                       .data![index]
@@ -735,7 +735,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                     TextSpan(
                       text: formatTime(selectedIndex == 0
                           ? context
-                                  .read<WorkLocationCubit>()
+                                  .read<WorkLocationDetailsCubit>()
                                   .attendanceHistoryAreaModel!
                                   .data!
                                   .data![index]
@@ -743,7 +743,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                               ''
                           : selectedIndex == 1
                               ? context
-                                      .read<WorkLocationCubit>()
+                                      .read<WorkLocationDetailsCubit>()
                                       .attendanceHistoryCityModel!
                                       .data!
                                       .data![index]
@@ -751,7 +751,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                   ''
                               : selectedIndex == 2
                                   ? context
-                                          .read<WorkLocationCubit>()
+                                          .read<WorkLocationDetailsCubit>()
                                           .attendanceHistoryOrganizationModel!
                                           .data!
                                           .data![index]
@@ -759,7 +759,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                       ''
                                   : selectedIndex == 3
                                       ? context
-                                              .read<WorkLocationCubit>()
+                                              .read<WorkLocationDetailsCubit>()
                                               .attendanceHistoryBuildingModel!
                                               .data!
                                               .data![index]
@@ -767,7 +767,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                           ''
                                       : selectedIndex == 4
                                           ? context
-                                                  .read<WorkLocationCubit>()
+                                                  .read<WorkLocationDetailsCubit>()
                                                   .attendanceHistoryFloorModel!
                                                   .data!
                                                   .data![index]
@@ -775,14 +775,14 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                               ''
                                           : selectedIndex == 5
                                               ? context
-                                                      .read<WorkLocationCubit>()
+                                                      .read<WorkLocationDetailsCubit>()
                                                       .attendanceHistorySectionModel!
                                                       .data!
                                                       .data![index]
                                                       .clockOut ??
                                                   ''
                                               : context
-                                                      .read<WorkLocationCubit>()
+                                                      .read<WorkLocationDetailsCubit>()
                                                       .attendanceHistoryPointModel!
                                                       .data!
                                                       .data![index]
@@ -808,7 +808,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                       text: formatDuration(
                         selectedIndex == 0
                             ? context
-                                    .read<WorkLocationCubit>()
+                                    .read<WorkLocationDetailsCubit>()
                                     .attendanceHistoryAreaModel!
                                     .data!
                                     .data![index]
@@ -816,7 +816,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                 ''
                             : selectedIndex == 1
                                 ? context
-                                        .read<WorkLocationCubit>()
+                                        .read<WorkLocationDetailsCubit>()
                                         .attendanceHistoryCityModel!
                                         .data!
                                         .data![index]
@@ -824,7 +824,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                     ''
                                 : selectedIndex == 2
                                     ? context
-                                            .read<WorkLocationCubit>()
+                                            .read<WorkLocationDetailsCubit>()
                                             .attendanceHistoryOrganizationModel!
                                             .data!
                                             .data![index]
@@ -832,7 +832,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                         ''
                                     : selectedIndex == 3
                                         ? context
-                                                .read<WorkLocationCubit>()
+                                                .read<WorkLocationDetailsCubit>()
                                                 .attendanceHistoryBuildingModel!
                                                 .data!
                                                 .data![index]
@@ -840,7 +840,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                             ''
                                         : selectedIndex == 4
                                             ? context
-                                                    .read<WorkLocationCubit>()
+                                                    .read<WorkLocationDetailsCubit>()
                                                     .attendanceHistoryFloorModel!
                                                     .data!
                                                     .data![index]
@@ -849,7 +849,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                             : selectedIndex == 5
                                                 ? context
                                                         .read<
-                                                            WorkLocationCubit>()
+                                                            WorkLocationDetailsCubit>()
                                                         .attendanceHistorySectionModel!
                                                         .data!
                                                         .data![index]
@@ -857,7 +857,7 @@ Widget buildAttendanceCardItem(BuildContext context, index, selectedIndex) {
                                                     ''
                                                 : context
                                                         .read<
-                                                            WorkLocationCubit>()
+                                                            WorkLocationDetailsCubit>()
                                                         .attendanceHistoryPointModel!
                                                         .data!
                                                         .data![index]

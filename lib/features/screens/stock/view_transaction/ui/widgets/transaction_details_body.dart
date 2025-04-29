@@ -160,21 +160,28 @@ class _TransactionDetailsBodyState extends State<TransactionDetailsBody> {
                     Divider(
                       height: 30,
                     ),
-                    rowDetailsBuild(
-                      context,
-                      'Total Price',
-                      double.parse(context
-                                  .read<TransactionManagementCubit>()
-                                  .transactionDetailsModel!
-                                  .data!
-                                  .totalPrice
-                                  ?.toString() ??
-                              '0.0')
-                          .toString(),
-                    ),
-                    Divider(
-                      height: 30,
-                    ),
+                    if (context
+                            .read<TransactionManagementCubit>()
+                            .transactionDetailsModel!
+                            .data!
+                            .typeId ==
+                        0) ...[
+                      rowDetailsBuild(
+                        context,
+                        'Total Price',
+                        double.parse(context
+                                    .read<TransactionManagementCubit>()
+                                    .transactionDetailsModel!
+                                    .data!
+                                    .totalPrice
+                                    ?.toString() ??
+                                '0.0')
+                            .toString(),
+                      ),
+                      Divider(
+                        height: 30,
+                      )
+                    ],
                     rowDetailsBuild(
                         context,
                         'Date',
@@ -197,80 +204,89 @@ class _TransactionDetailsBodyState extends State<TransactionDetailsBody> {
                     Divider(
                       height: 30,
                     ),
-                    rowDetailsBuild(
-                      context,
-                      'File',
-                      context
-                                  .read<TransactionManagementCubit>()
-                                  .transactionDetailsModel!
-                                  .data!
-                                  .file ==
-                              null
-                          ? 'No file uploaded'
-                          : '${context.read<TransactionManagementCubit>().transactionDetailsModel!.data!.file!.length} files uploaded',
-                    ),
-                    verticalSpace(10),
                     if (context
-                                .read<TransactionManagementCubit>()
-                                .transactionDetailsModel!
-                                .data!
-                                .file !=
-                            null &&
-                        context
                             .read<TransactionManagementCubit>()
                             .transactionDetailsModel!
                             .data!
-                            .file!
-                            .isNotEmpty) ...[
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (contextt) => Scaffold(
-                                appBar: AppBar(
-                                  leading: customBackButton(context),
-                                ),
-                                body: Center(
-                                  child: PhotoView(
-                                    imageProvider: NetworkImage(
-                                      '${ApiConstants.apiBaseUrlImage}${context.read<TransactionManagementCubit>().transactionDetailsModel!.data!.file}',
+                            .typeId ==
+                        0) ...[
+                      rowDetailsBuild(
+                        context,
+                        'File',
+                        context
+                                    .read<TransactionManagementCubit>()
+                                    .transactionDetailsModel!
+                                    .data!
+                                    .file ==
+                                null
+                            ? 'No file uploaded'
+                            : '${context.read<TransactionManagementCubit>().transactionDetailsModel?.data?.file != null ? 1 : 0} files uploaded',
+                      ),
+                      verticalSpace(10),
+                      if (context
+                                  .read<TransactionManagementCubit>()
+                                  .transactionDetailsModel!
+                                  .data!
+                                  .file !=
+                              null &&
+                          context
+                              .read<TransactionManagementCubit>()
+                              .transactionDetailsModel!
+                              .data!
+                              .file!
+                              .isNotEmpty) ...[
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (contextt) => Scaffold(
+                                  appBar: AppBar(
+                                    leading: customBackButton(context),
+                                  ),
+                                  body: Center(
+                                    child: PhotoView(
+                                      imageProvider: NetworkImage(
+                                        '${ApiConstants.apiBaseUrlImage}${context.read<TransactionManagementCubit>().transactionDetailsModel!.data!.file}',
+                                      ),
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Image.asset(
+                                            'assets/images/noImage.png',
+                                            fit: BoxFit.fill);
+                                      },
+                                      backgroundDecoration: const BoxDecoration(
+                                          color: Colors.white),
                                     ),
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Image.asset(
-                                          'assets/images/noImage.png',
-                                          fit: BoxFit.fill);
-                                    },
-                                    backgroundDecoration: const BoxDecoration(
-                                        color: Colors.white),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 5.h, horizontal: 10.w),
-                          child: Container(
-                            height: 70.h,
-                            width: 70.w,
-                            clipBehavior: Clip.hardEdge,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black12),
-                              borderRadius: BorderRadius.circular(10.r),
-                            ),
-                            child: Image.network(
-                              '${ApiConstants.apiBaseUrlImage}${context.read<TransactionManagementCubit>().transactionDetailsModel!.data!.file}',
-                              fit: BoxFit.fill,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Image.asset('assets/images/noImage.png',
-                                    fit: BoxFit.fill);
-                              },
+                            );
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 5.h, horizontal: 10.w),
+                            child: Container(
+                              height: 70.h,
+                              width: 70.w,
+                              clipBehavior: Clip.hardEdge,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black12),
+                                borderRadius: BorderRadius.circular(10.r),
+                              ),
+                              child: Image.network(
+                                '${ApiConstants.apiBaseUrlImage}${context.read<TransactionManagementCubit>().transactionDetailsModel!.data!.file}',
+                                fit: BoxFit.fill,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Image.asset(
+                                      'assets/images/noImage.png',
+                                      fit: BoxFit.fill);
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                      )
+                        )
+                      ]
                     ]
                   ],
                 ),

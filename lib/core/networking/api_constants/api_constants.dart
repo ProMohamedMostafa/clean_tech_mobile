@@ -5,6 +5,7 @@ class ApiConstants {
   static const changePasswordUrl = "auth/password/change";
   static const userCreateUrl = "users/create";
   static const userCreateProviderUrl = "providers/create";
+  static const nationalitiesUrl = "countries";
   static const countriesUrl = "countries";
   static const rolesUrl = "authorization/roles";
   static const allUsersUrl = "users";

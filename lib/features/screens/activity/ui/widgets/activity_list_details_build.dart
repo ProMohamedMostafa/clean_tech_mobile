@@ -6,37 +6,26 @@ import 'package:smart_cleaning_application/features/screens/activity/logic/activ
 import 'package:smart_cleaning_application/features/screens/activity/ui/widgets/list_item_build.dart';
 
 Widget activityListDetailsBuild(BuildContext context, int selectedIndex) {
+  final cubit = context.read<ActivityCubit>();
   final activitiesData = selectedIndex == 0
-      ? context.read<ActivityCubit>().myActivities?.data.data
-      : context.read<ActivityCubit>().teamActivities?.data.data;
+      ? cubit.myActivities?.data?.activities ?? []
+      : cubit.teamActivities?.data?.activities ?? [];
 
-  if (activitiesData == null || activitiesData.isEmpty) {
+  if (activitiesData.isEmpty) {
     return Center(
       child: Text(
         "There's no data",
         style: TextStyles.font13Blackmedium,
       ),
     );
-  } else {
-    return ListView.separated(
-      controller: selectedIndex == 0
-          ? context.read<ActivityCubit>().myActivitiesScrollController
-          : context.read<ActivityCubit>().teamActivitiesScrollController,
-      shrinkWrap: true,
-      scrollDirection: Axis.vertical,
-      itemCount: activitiesData.length,
-      separatorBuilder: (context, index) {
-        return verticalSpace(10);
-      },
-      itemBuilder: (context, index) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            listItemBuild(context, selectedIndex, index),
-          ],
-        );
-      },
-    );
   }
+
+  return ListView.separated(
+    controller: cubit.activitiesScrollController,
+    physics: const AlwaysScrollableScrollPhysics(),
+    itemCount: activitiesData.length,
+    separatorBuilder: (context, index) => verticalSpace(10),
+    itemBuilder: (context, index) =>
+        listItemBuild(context, selectedIndex, index),
+  );
 }

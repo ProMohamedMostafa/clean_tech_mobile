@@ -4,18 +4,17 @@ import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/assign/data/assign_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_area_model.dart';
 import 'package:smart_cleaning_application/features/screens/assign/logic/assign_state.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/all_shifts_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/point_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/section_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/point_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/section_list_model.dart';
 
 class AssignCubit extends Cubit<AssignStates> {
   AssignCubit() : super(AssignInitialState());
@@ -32,8 +31,8 @@ class AssignCubit extends Cubit<AssignStates> {
   TextEditingController pointController = TextEditingController();
   TextEditingController roleController = TextEditingController();
   TextEditingController userController = TextEditingController();
-  final usersController = MultiSelectController<User>();
-  final shiftController = MultiSelectController<Shift>();
+  final usersController = MultiSelectController<UserItem>();
+  final shiftController = MultiSelectController<ShiftData>();
   final formKey = GlobalKey<FormState>();
 
   AssignModel? assignModel;
@@ -237,12 +236,12 @@ class AssignCubit extends Cubit<AssignStates> {
     });
   }
 
-  AllAreaModel? allAreaModel;
+  AreaListModel? areaListModel;
   getArea() {
     emit(GetAreaLoadingState());
     DioHelper.getData(url: ApiConstants.areaUrl).then((value) {
-      allAreaModel = AllAreaModel.fromJson(value!.data);
-      emit(GetAreaSuccessState(allAreaModel!));
+      areaListModel = AreaListModel.fromJson(value!.data);
+      emit(GetAreaSuccessState(areaListModel!));
     }).catchError((error) {
       emit(GetAreaErrorState(error.toString()));
     });
@@ -321,12 +320,11 @@ class AssignCubit extends Cubit<AssignStates> {
     });
   }
 
-  AllOrganizationModel? allOrganizationModel;
   getAllOrganization() {
     emit(AllOrganizationLoadingState());
     DioHelper.getData(url: ApiConstants.organizationUrl).then((value) {
-      allOrganizationModel = AllOrganizationModel.fromJson(value!.data);
-      emit(AllOrganizationSuccessState(allOrganizationModel!));
+      organizationModel = OrganizationListModel.fromJson(value!.data);
+      emit(AllOrganizationSuccessState(organizationModel!));
     }).catchError((error) {
       emit(AllOrganizationErrorState(error.toString()));
     });

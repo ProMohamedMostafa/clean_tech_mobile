@@ -1,13 +1,13 @@
 import 'package:image_picker/image_picker.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/all_tasks_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/edit_task_model.dart';
-import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/task_details.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/point_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/section_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/view_task/data/model/task_details.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/point_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/section_list_model.dart';
 
 
 abstract class EditTaskState {}
@@ -60,9 +60,9 @@ class GetAllTasksErrorState extends EditTaskState {
 class GetOrganizationLoadingState extends EditTaskState {}
 
 class GetOrganizationSuccessState extends EditTaskState {
-  final AllOrganizationModel allOrganizationModel;
+  final OrganizationListModel organizationListModel;
 
-  GetOrganizationSuccessState(this.allOrganizationModel);
+  GetOrganizationSuccessState(this.organizationListModel);
 }
 
 class GetOrganizationErrorState extends EditTaskState {

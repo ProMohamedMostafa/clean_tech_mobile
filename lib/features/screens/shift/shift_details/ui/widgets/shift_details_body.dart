@@ -12,12 +12,11 @@ import 'package:smart_cleaning_application/core/widgets/default_button/default_e
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shift_details/logic/cubit/shift_details_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/ui/widgets/building_list_item_build.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/ui/widgets/floor_list_item_build.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/ui/widgets/organization_list_item_build.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/ui/widgets/section_list_item_build.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shifts_management/logic/shift_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shifts_management/logic/shift_state.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class ShiftDetailsBody extends StatefulWidget {
@@ -33,11 +32,11 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
   late TabController controller;
   @override
   void initState() {
-    context.read<ShiftCubit>().getShiftDetails(widget.id);
-    context.read<ShiftCubit>().getShiftOrganizationDetails(widget.id);
-    context.read<ShiftCubit>().getShiftBuildingDetails(widget.id);
-    context.read<ShiftCubit>().getShiftFloorDetails(widget.id);
-    context.read<ShiftCubit>().getShiftSectionDetails(widget.id);
+    context.read<ShiftDetailsCubit>().getShiftDetails(widget.id);
+    context.read<ShiftDetailsCubit>().getShiftOrganizationDetails(widget.id);
+    context.read<ShiftDetailsCubit>().getShiftBuildingDetails(widget.id);
+    context.read<ShiftDetailsCubit>().getShiftFloorDetails(widget.id);
+    context.read<ShiftDetailsCubit>().getShiftSectionDetails(widget.id);
     controller = TabController(length: 5, vsync: this);
     controller.addListener(() {
       setState(() {});
@@ -80,7 +79,7 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
               ))
         ],
       ),
-      body: BlocConsumer<ShiftCubit, ShiftState>(
+      body: BlocConsumer<ShiftDetailsCubit, ShiftDetailsState>(
         listener: (context, state) {
           if (state is ShiftDeleteSuccessState) {
             toast(text: state.deleteShiftModel.message!, color: Colors.blue);
@@ -91,7 +90,7 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
           }
         },
         builder: (context, state) {
-          if (context.read<ShiftCubit>().shiftDetailsModel == null) {
+          if (context.read<ShiftDetailsCubit>().shiftDetailsModel == null) {
             return const Center(
               child: CircularProgressIndicator(color: AppColor.primaryColor),
             );
@@ -196,7 +195,9 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
                       onPressed: () {
                         showCustomDialog(context, S.of(context).deleteMessage,
                             () {
-                          context.read<ShiftCubit>().shiftDelete(widget.id);
+                          context
+                              .read<ShiftDetailsCubit>()
+                              .shiftDelete(widget.id);
                         });
                       },
                       color: Colors.red,
@@ -215,7 +216,7 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
 
   Widget shiftsDetails() {
     final shiftDetailsModel =
-        context.read<ShiftCubit>().shiftDetailsModel?.data;
+        context.read<ShiftDetailsCubit>().shiftDetailsModel?.data;
 
     return SingleChildScrollView(
       child: Column(
@@ -254,7 +255,7 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
 
   Widget organizationDetails() {
     final organizationsData =
-        context.read<ShiftCubit>().shiftOrganizationDetailsModel?.data;
+        context.read<ShiftDetailsCubit>().shiftOrganizationDetailsModel?.data;
 
     if (organizationsData == null || organizationsData.isEmpty) {
       return Center(
@@ -287,7 +288,7 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
 
   Widget buildingDetails() {
     final buildingsData =
-        context.read<ShiftCubit>().shiftBuildingsDetailsModel?.data;
+        context.read<ShiftDetailsCubit>().shiftBuildingsDetailsModel?.data;
 
     if (buildingsData == null || buildingsData.isEmpty) {
       return Center(
@@ -320,7 +321,7 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
 
   Widget floorDetails() {
     final floorsData =
-        context.read<ShiftCubit>().shiftSectionDetailsModel?.data;
+        context.read<ShiftDetailsCubit>().shiftSectionDetailsModel?.data;
 
     if (floorsData == null || floorsData.isEmpty) {
       return Center(
@@ -353,7 +354,7 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
 
   Widget sectionDetails() {
     final sectiontsData =
-        context.read<ShiftCubit>().shiftSectionDetailsModel?.data;
+        context.read<ShiftDetailsCubit>().shiftSectionDetailsModel?.data;
 
     if (sectiontsData == null || sectiontsData.isEmpty) {
       return Center(

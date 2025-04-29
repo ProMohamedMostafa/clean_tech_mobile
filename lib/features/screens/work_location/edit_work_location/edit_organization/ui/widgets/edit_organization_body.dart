@@ -135,7 +135,7 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                                     .read<EditOrganizationCubit>()
                                     .areasModel
                                     ?.data
-                                    ?.areas
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No areas']
@@ -143,7 +143,7 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                                     .read<EditOrganizationCubit>()
                                     .areasModel
                                     ?.data
-                                    ?.areas
+                                    ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
@@ -152,7 +152,7 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                               .read<EditOrganizationCubit>()
                               .areasModel
                               ?.data
-                              ?.areas
+                              ?.data
                               ?.firstWhere((area) =>
                                   area.name ==
                                   context
@@ -610,7 +610,7 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                       context.read<EditOrganizationCubit>().shiftModel?.data ==
                               null
                           ? SizedBox.shrink()
-                          : MultiDropdown<ShiftDetails>(
+                          : MultiDropdown<ShiftItem>(
                               items: context
                                           .read<EditOrganizationCubit>()
                                           .shiftModel
@@ -621,7 +621,7 @@ class _EditOrganizationBodyState extends State<EditOrganizationBody> {
                                   ? [
                                       DropdownItem(
                                         label: 'No shifts available',
-                                        value: ShiftDetails(
+                                        value: ShiftItem(
                                             id: null,
                                             name: 'No shifts available'),
                                       )

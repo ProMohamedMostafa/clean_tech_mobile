@@ -126,7 +126,7 @@ class _EditPointBodyState extends State<EditPointBody> {
                                     .read<EditPointCubit>()
                                     .areasModel
                                     ?.data
-                                    ?.areas
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No areas']
@@ -134,7 +134,7 @@ class _EditPointBodyState extends State<EditPointBody> {
                                     .read<EditPointCubit>()
                                     .areasModel
                                     ?.data
-                                    ?.areas
+                                    ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
@@ -143,7 +143,7 @@ class _EditPointBodyState extends State<EditPointBody> {
                               .read<EditPointCubit>()
                               .areasModel
                               ?.data
-                              ?.areas
+                              ?.data
                               ?.firstWhere((area) =>
                                   area.name ==
                                   context

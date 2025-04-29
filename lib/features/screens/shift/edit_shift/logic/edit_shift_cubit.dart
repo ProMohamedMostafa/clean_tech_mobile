@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_organization_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/edit_shift/data/model/edit_shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/edit_shift/logic/edit_shift_state.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_building_details.dart';
@@ -10,9 +10,9 @@ import 'package:smart_cleaning_application/features/screens/shift/shift_details/
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_organization_details.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_section_details.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/shift_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/section_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/section_list_model.dart';
 
 class EditShiftCubit extends Cubit<EditShiftState> {
   EditShiftCubit() : super(EditShiftInitialState());
@@ -135,12 +135,12 @@ class EditShiftCubit extends Cubit<EditShiftState> {
     });
   }
 
-  AllOrganizationModel? allOrganizationModel;
+  OrganizationListModel? organizationListModel;
   getOrganization() {
     emit(OrganizationLoadingState());
     DioHelper.getData(url: ApiConstants.organizationUrl).then((value) {
-      allOrganizationModel = AllOrganizationModel.fromJson(value!.data);
-      emit(OrganizationSuccessState(allOrganizationModel!));
+      organizationListModel = OrganizationListModel.fromJson(value!.data);
+      emit(OrganizationSuccessState(organizationListModel!));
     }).catchError((error) {
       emit(OrganizationErrorState(error.toString()));
     });

@@ -8,7 +8,7 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/logic/cubit/work_location_details_cubit.dart';
 
 Widget listShiftItemBuild(BuildContext context, index, selectedIndex) {
   return InkWell(
@@ -17,28 +17,28 @@ Widget listShiftItemBuild(BuildContext context, index, selectedIndex) {
       context.pushNamed(Routes.shiftDetailsScreen,
           arguments: selectedIndex == 2
               ? context
-                  .read<WorkLocationCubit>()
+                  .read<WorkLocationDetailsCubit>()
                   .organizationUsersShiftDetailsModel!
                   .data!
                   .shifts![index]
                   .id
               : selectedIndex == 3
                   ? context
-                      .read<WorkLocationCubit>()
+                      .read<WorkLocationDetailsCubit>()
                       .buildingUsersShiftDetailsModel!
                       .data!
                       .shifts![index]
                       .id
                   : selectedIndex == 4
                       ? context
-                          .read<WorkLocationCubit>()
+                          .read<WorkLocationDetailsCubit>()
                           .floorUsersShiftDetailsModel!
                           .data!
                           .shifts![index]
                           .id
                       : selectedIndex == 5
                           ? context
-                              .read<WorkLocationCubit>()
+                              .read<WorkLocationDetailsCubit>()
                               .sectionUsersShiftDetailsModel!
                               .data!
                               .shifts![index]
@@ -71,28 +71,28 @@ Widget listShiftItemBuild(BuildContext context, index, selectedIndex) {
                 Text(
                   selectedIndex == 2
                       ? context
-                          .read<WorkLocationCubit>()
+                          .read<WorkLocationDetailsCubit>()
                           .organizationUsersShiftDetailsModel!
                           .data!
                           .shifts![index]
                           .name!
                       : selectedIndex == 3
                           ? context
-                              .read<WorkLocationCubit>()
+                              .read<WorkLocationDetailsCubit>()
                               .buildingUsersShiftDetailsModel!
                               .data!
                               .shifts![index]
                               .name!
                           : selectedIndex == 4
                               ? context
-                                  .read<WorkLocationCubit>()
+                                  .read<WorkLocationDetailsCubit>()
                                   .floorUsersShiftDetailsModel!
                                   .data!
                                   .shifts![index]
                                   .name!
                               : selectedIndex == 5
                                   ? context
-                                      .read<WorkLocationCubit>()
+                                      .read<WorkLocationDetailsCubit>()
                                       .sectionUsersShiftDetailsModel!
                                       .data!
                                       .shifts![index]
@@ -107,7 +107,7 @@ Widget listShiftItemBuild(BuildContext context, index, selectedIndex) {
                       // PopUpDialog.show(
                       //     context: context,
                       //     id: context
-                      //         .read<WorkLocationCubit>()
+                      //         .read<WorkLocationDetailsCubit>()
                       //         .userTaskDetailsModel!
                       //         .data!
                       //         .data![index]
@@ -136,28 +136,28 @@ Widget listShiftItemBuild(BuildContext context, index, selectedIndex) {
                       TextSpan(
                         text: selectedIndex == 2
                             ? context
-                                .read<WorkLocationCubit>()
+                                .read<WorkLocationDetailsCubit>()
                                 .organizationUsersShiftDetailsModel!
                                 .data!
                                 .shifts![index]
                                 .startTime!
                             : selectedIndex == 3
                                 ? context
-                                    .read<WorkLocationCubit>()
+                                    .read<WorkLocationDetailsCubit>()
                                     .buildingUsersShiftDetailsModel!
                                     .data!
                                     .shifts![index]
                                     .startTime!
                                 : selectedIndex == 4
                                     ? context
-                                        .read<WorkLocationCubit>()
+                                        .read<WorkLocationDetailsCubit>()
                                         .floorUsersShiftDetailsModel!
                                         .data!
                                         .shifts![index]
                                         .startTime!
                                     : selectedIndex == 5
                                         ? context
-                                            .read<WorkLocationCubit>()
+                                            .read<WorkLocationDetailsCubit>()
                                             .sectionUsersShiftDetailsModel!
                                             .data!
                                             .shifts![index]
@@ -172,28 +172,28 @@ Widget listShiftItemBuild(BuildContext context, index, selectedIndex) {
                       TextSpan(
                         text: selectedIndex == 2
                             ? context
-                                .read<WorkLocationCubit>()
+                                .read<WorkLocationDetailsCubit>()
                                 .organizationUsersShiftDetailsModel!
                                 .data!
                                 .shifts![index]
                                 .endTime!
                             : selectedIndex == 3
                                 ? context
-                                    .read<WorkLocationCubit>()
+                                    .read<WorkLocationDetailsCubit>()
                                     .buildingUsersShiftDetailsModel!
                                     .data!
                                     .shifts![index]
                                     .endTime!
                                 : selectedIndex == 4
                                     ? context
-                                        .read<WorkLocationCubit>()
+                                        .read<WorkLocationDetailsCubit>()
                                         .floorUsersShiftDetailsModel!
                                         .data!
                                         .shifts![index]
                                         .endTime!
                                     : selectedIndex == 5
                                         ? context
-                                            .read<WorkLocationCubit>()
+                                            .read<WorkLocationDetailsCubit>()
                                             .sectionUsersShiftDetailsModel!
                                             .data!
                                             .shifts![index]
@@ -218,28 +218,28 @@ Widget listShiftItemBuild(BuildContext context, index, selectedIndex) {
                 Text(
                   selectedIndex == 2
                       ? context
-                          .read<WorkLocationCubit>()
+                          .read<WorkLocationDetailsCubit>()
                           .organizationUsersShiftDetailsModel!
                           .data!
                           .shifts![index]
                           .startDate!
                       : selectedIndex == 3
                           ? context
-                              .read<WorkLocationCubit>()
+                              .read<WorkLocationDetailsCubit>()
                               .buildingUsersShiftDetailsModel!
                               .data!
                               .shifts![index]
                               .startDate!
                           : selectedIndex == 4
                               ? context
-                                  .read<WorkLocationCubit>()
+                                  .read<WorkLocationDetailsCubit>()
                                   .floorUsersShiftDetailsModel!
                                   .data!
                                   .shifts![index]
                                   .startDate!
                               : selectedIndex == 5
                                   ? context
-                                      .read<WorkLocationCubit>()
+                                      .read<WorkLocationDetailsCubit>()
                                       .sectionUsersShiftDetailsModel!
                                       .data!
                                       .shifts![index]
@@ -258,28 +258,28 @@ Widget listShiftItemBuild(BuildContext context, index, selectedIndex) {
                 Text(
                   selectedIndex == 2
                       ? context
-                          .read<WorkLocationCubit>()
+                          .read<WorkLocationDetailsCubit>()
                           .organizationUsersShiftDetailsModel!
                           .data!
                           .shifts![index]
                           .endDate!
                       : selectedIndex == 3
                           ? context
-                              .read<WorkLocationCubit>()
+                              .read<WorkLocationDetailsCubit>()
                               .buildingUsersShiftDetailsModel!
                               .data!
                               .shifts![index]
                               .endDate!
                           : selectedIndex == 4
                               ? context
-                                  .read<WorkLocationCubit>()
+                                  .read<WorkLocationDetailsCubit>()
                                   .floorUsersShiftDetailsModel!
                                   .data!
                                   .shifts![index]
                                   .endDate!
                               : selectedIndex == 5
                                   ? context
-                                      .read<WorkLocationCubit>()
+                                      .read<WorkLocationDetailsCubit>()
                                       .sectionUsersShiftDetailsModel!
                                       .data!
                                       .shifts![index]

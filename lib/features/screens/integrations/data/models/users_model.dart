@@ -51,7 +51,7 @@ class UserData {
   bool? hasPreviousPage;
   bool? hasNextPage;
   bool? succeeded;
-  List<User>? users;
+  List<UserItem>? users;
 
   UserData({
     this.currentPage,
@@ -75,7 +75,7 @@ class UserData {
     hasNextPage = json['hasNextPage'];
     succeeded = json['succeeded'];
     if (json['data'] != null) {
-      users = (json['data'] as List).map((v) => User.fromJson(v)).toList();
+      users = (json['data'] as List).map((v) => UserItem.fromJson(v)).toList();
     }
   }
 
@@ -96,7 +96,7 @@ class UserData {
   }
 }
 
-class User {
+class UserItem {
   int? id;
   String? userName;
   String? firstName;
@@ -119,7 +119,7 @@ class User {
   String? createdAt;
   String? updatedAt;
 
-  User({
+  UserItem({
     this.id,
     this.userName,
     this.firstName,
@@ -143,7 +143,7 @@ class User {
     this.updatedAt,
   });
 
-  User.fromJson(Map<String, dynamic> json) {
+  UserItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userName = json['userName'];
     firstName = json['firstName'];

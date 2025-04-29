@@ -6,7 +6,7 @@ import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_details/logic/cubit/user_details_cubit.dart';
 
 Widget buildAttendanceCardItem(BuildContext context, index) {
   String formatDuration(String? duration) {
@@ -56,7 +56,7 @@ Widget buildAttendanceCardItem(BuildContext context, index) {
   Color statusColorForTask;
 
   historystatus = context
-      .read<UserManagementCubit>()
+      .read<UserDetailsCubit>()
       .attendanceHistoryModel!
       .data!
       .data![index]
@@ -101,7 +101,7 @@ Widget buildAttendanceCardItem(BuildContext context, index) {
                 child: Center(
                   child: Text(
                     context
-                        .read<UserManagementCubit>()
+                        .read<UserDetailsCubit>()
                         .attendanceHistoryModel!
                         .data!
                         .data![index]
@@ -125,7 +125,7 @@ Widget buildAttendanceCardItem(BuildContext context, index) {
                   child: Text(
                     DateFormat('d MMM').format(
                       DateTime.parse(context
-                          .read<UserManagementCubit>()
+                          .read<UserDetailsCubit>()
                           .attendanceHistoryModel!
                           .data!
                           .data![index]
@@ -148,7 +148,7 @@ Widget buildAttendanceCardItem(BuildContext context, index) {
                 child: Center(
                   child: Text(
                     context
-                        .read<UserManagementCubit>()
+                        .read<UserDetailsCubit>()
                         .attendanceHistoryModel!
                         .data!
                         .data![index]
@@ -163,7 +163,7 @@ Widget buildAttendanceCardItem(BuildContext context, index) {
           verticalSpace(15),
           Text(
             context
-                .read<UserManagementCubit>()
+                .read<UserDetailsCubit>()
                 .attendanceHistoryModel!
                 .data!
                 .data![index]
@@ -181,7 +181,7 @@ Widget buildAttendanceCardItem(BuildContext context, index) {
                 ),
                 TextSpan(
                   text: context
-                              .read<UserManagementCubit>()
+                              .read<UserDetailsCubit>()
                               .attendanceHistoryModel!
                               .data!
                               .data![index]
@@ -189,7 +189,7 @@ Widget buildAttendanceCardItem(BuildContext context, index) {
                           null
                       ? DateFormat('hh:mm a').format(DateFormat('HH:mm:ss')
                           .parse(context
-                              .read<UserManagementCubit>()
+                              .read<UserDetailsCubit>()
                               .attendanceHistoryModel!
                               .data!
                               .data![index]
@@ -205,7 +205,7 @@ Widget buildAttendanceCardItem(BuildContext context, index) {
                 ),
                 TextSpan(
                   text: context
-                              .read<UserManagementCubit>()
+                              .read<UserDetailsCubit>()
                               .attendanceHistoryModel!
                               .data!
                               .data![index]
@@ -213,7 +213,7 @@ Widget buildAttendanceCardItem(BuildContext context, index) {
                           null
                       ? DateFormat('hh:mm a').format(DateFormat('HH:mm:ss')
                           .parse(context
-                              .read<UserManagementCubit>()
+                              .read<UserDetailsCubit>()
                               .attendanceHistoryModel!
                               .data!
                               .data![index]
@@ -240,7 +240,7 @@ Widget buildAttendanceCardItem(BuildContext context, index) {
                   children: [
                     TextSpan(
                       text: formatTime(context
-                              .read<UserManagementCubit>()
+                              .read<UserDetailsCubit>()
                               .attendanceHistoryModel!
                               .data!
                               .data![index]
@@ -256,7 +256,7 @@ Widget buildAttendanceCardItem(BuildContext context, index) {
                     ),
                     TextSpan(
                       text: formatTime(context
-                              .read<UserManagementCubit>()
+                              .read<UserDetailsCubit>()
                               .attendanceHistoryModel!
                               .data!
                               .data![index]
@@ -281,7 +281,7 @@ Widget buildAttendanceCardItem(BuildContext context, index) {
                     TextSpan(
                       text: formatDuration(
                         context
-                                .read<UserManagementCubit>()
+                                .read<UserDetailsCubit>()
                                 .attendanceHistoryModel!
                                 .data!
                                 .data![index]

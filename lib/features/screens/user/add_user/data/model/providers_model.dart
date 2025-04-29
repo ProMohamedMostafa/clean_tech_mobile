@@ -47,7 +47,7 @@ class ProviderData {
   bool? hasPreviousPage;
   bool? hasNextPage;
   bool? succeeded;
-  List<ShiftDetail>? data;
+  List<ProviderItem>? data;
 
   ProviderData({
     this.currentPage,
@@ -73,7 +73,7 @@ class ProviderData {
     if (json['data'] != null) {
       data = [];
       json['data'].forEach((v) {
-        data!.add(ShiftDetail.fromJson(v));
+        data!.add(ProviderItem.fromJson(v));
       });
     }
   }
@@ -95,13 +95,13 @@ class ProviderData {
   }
 }
 
-class ShiftDetail {
+class ProviderItem {
   int? id;
   String? name;
 
-  ShiftDetail({this.id, this.name});
+  ProviderItem({this.id, this.name});
 
-  ShiftDetail.fromJson(Map<String, dynamic> json) {
+  ProviderItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
   }

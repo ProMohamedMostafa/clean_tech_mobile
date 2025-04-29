@@ -99,6 +99,12 @@ class ReducePopUpDialog {
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "provider is Required";
+                          }
+                          return null;
+                        },
                         controller: context
                             .read<MaterialManagementCubit>()
                             .providerController,
@@ -112,14 +118,16 @@ class ReducePopUpDialog {
                           DefaultElevatedButton(
                             name: "Add",
                             onPressed: () {
-                              context
-                                  .read<MaterialManagementCubit>()
-                                  .reduceMaterial(
-                                    materialId: id,
-                                    providerId: providerId,
-                                    quantityId: quantityId,
-                                  );
-                              context.pop();
+                              if (providerId != null && quantityId != null) {
+                                context
+                                    .read<MaterialManagementCubit>()
+                                    .reduceMaterial(
+                                      materialId: id,
+                                      providerId: providerId,
+                                      quantityId: quantityId,
+                                    );
+                                context.pop();
+                              }
                             },
                             color: AppColor.primaryColor,
                             height: 47.h,

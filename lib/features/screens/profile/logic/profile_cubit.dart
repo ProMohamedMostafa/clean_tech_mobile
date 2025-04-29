@@ -4,7 +4,6 @@ import 'package:smart_cleaning_application/core/networking/api_constants/api_con
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/data/models/attendance_history_model.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/data/models/attendance_leaves_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/all_area_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
@@ -12,16 +11,16 @@ import 'package:smart_cleaning_application/features/screens/profile/logic/profil
 import 'package:smart_cleaning_application/features/screens/settings/data/model/profile_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/all_shifts_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_shift_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_status_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_task_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/user_work_location_details.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/area_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/building_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/city_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/floor_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/organization_model.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/data/model/point_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_shift_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_status_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_task_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_work_location_details.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/point_list_model.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
   ProfileCubit() : super(ProfileInitialState());
@@ -132,12 +131,12 @@ class ProfileCubit extends Cubit<ProfileState> {
     });
   }
 
-  AllAreaModel? allAreaModel;
+  AreaListModel? areaListModel;
   getAllArea() {
     emit(GetAllAreaLoadingState());
     DioHelper.getData(url: ApiConstants.areaUrl).then((value) {
-      allAreaModel = AllAreaModel.fromJson(value!.data);
-      emit(GetAllAreaSuccessState(allAreaModel!));
+      areaListModel = AreaListModel.fromJson(value!.data);
+      emit(GetAllAreaSuccessState(areaListModel!));
     }).catchError((error) {
       emit(GetAllAreaErrorState(error.toString()));
     });

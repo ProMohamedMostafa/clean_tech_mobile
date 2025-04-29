@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -606,15 +605,16 @@ class _AddUserBodyState extends State<AddUserBody> {
                             return S.of(context).validationPassword;
                           }
                         }),
-                    verticalSpace(10),
-                    if (isShow == true)
+                    if (isShow == true) ...[
+                      verticalSpace(10),
                       PasswordValidations(
                         hasLowerCase: hasLowercase,
                         hasUpperCase: hasUppercase,
                         hasSpecialCharacters: hasSpecialCharacters,
                         hasNumber: hasNumber,
                         hasMinLength: hasMinLength,
-                      ),
+                      )
+                    ],
                     verticalSpace(10),
                     Text(
                       S.of(context).addUserText11,

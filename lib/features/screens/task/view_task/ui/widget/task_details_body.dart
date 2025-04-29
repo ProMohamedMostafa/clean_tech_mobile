@@ -16,8 +16,7 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
-import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_state.dart';
+import 'package:smart_cleaning_application/features/screens/task/view_task/logic/cubit/task_details_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/task/view_task/ui/widget/current_read_dialog_.dart';
 import 'package:smart_cleaning_application/features/screens/task/view_task/ui/widget/upload_files_dialog.dart';
 
@@ -32,9 +31,9 @@ class TaskDetailsBody extends StatefulWidget {
 class _TaskDetailsBodyState extends State<TaskDetailsBody> {
   @override
   void initState() {
-    context.read<TaskManagementCubit>().getTaskDetails(widget.id);
+    context.read<TaskDetailsCubit>().getTaskDetails(widget.id);
     if (role != 'Cleaner') {
-      context.read<TaskManagementCubit>().getAllUsers();
+      context.read<TaskDetailsCubit>().getUsers();
     }
 
     super.initState();
@@ -107,21 +106,21 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                   ))
         ],
       ),
-      body: BlocConsumer<TaskManagementCubit, TaskManagementState>(
+      body: BlocConsumer<TaskDetailsCubit, TaskDetailsState>(
         listener: (context, state) {
           if (state is AddCommentsSuccessState) {
-            context.read<TaskManagementCubit>().commentController.clear();
-            context.read<TaskManagementCubit>().image = null;
+            context.read<TaskDetailsCubit>().commentController.clear();
+            context.read<TaskDetailsCubit>().image = null;
 
             toast(text: state.message, color: Colors.blue);
-            context.read<TaskManagementCubit>().getTaskDetails(widget.id);
-            context.read<TaskManagementCubit>().getAllUsers();
+            context.read<TaskDetailsCubit>().getTaskDetails(widget.id);
+            context.read<TaskDetailsCubit>().getUsers();
           }
           if (state is GetChangeTaskStatusSuccessState) {
             toast(
                 text: state.changeTaskStatusModel.message!, color: Colors.blue);
-            context.read<TaskManagementCubit>().getTaskDetails(widget.id);
-            context.read<TaskManagementCubit>().getAllUsers();
+            context.read<TaskDetailsCubit>().getTaskDetails(widget.id);
+            context.read<TaskDetailsCubit>().getUsers();
           }
           if (state is AddCommentsErrorState) {
             toast(text: state.error, color: Colors.red);
@@ -132,7 +131,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
           }
         },
         builder: (context, state) {
-          if (context.read<TaskManagementCubit>().taskDetailsModel == null) {
+          if (context.read<TaskDetailsCubit>().taskDetailsModel == null) {
             return Center(
               child: CircularProgressIndicator(
                 color: AppColor.primaryColor,
@@ -141,7 +140,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
           }
 
           String taskPriority = context
-              .read<TaskManagementCubit>()
+              .read<TaskDetailsCubit>()
               .taskDetailsModel!
               .data!
               .priority!;
@@ -166,7 +165,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                         children: [
                           TextSpan(
                             text: context
-                                        .read<TaskManagementCubit>()
+                                        .read<TaskDetailsCubit>()
                                         .taskDetailsModel!
                                         .data!
                                         .duration ==
@@ -181,13 +180,13 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                           ),
                           TextSpan(
                             text: context
-                                        .read<TaskManagementCubit>()
+                                        .read<TaskDetailsCubit>()
                                         .taskDetailsModel!
                                         .data!
                                         .duration ==
                                     null
                                 ? context
-                                            .read<TaskManagementCubit>()
+                                            .read<TaskDetailsCubit>()
                                             .taskDetailsModel!
                                             .data!
                                             .started ==
@@ -195,7 +194,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                     ? 'The task isn\'t start yet.'
                                     : 'The task isn\'t complete yet.'
                                 : formatDuration(context
-                                    .read<TaskManagementCubit>()
+                                    .read<TaskDetailsCubit>()
                                     .taskDetailsModel!
                                     .data!
                                     .duration!),
@@ -219,7 +218,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                         child: Center(
                           child: Text(
                             context
-                                .read<TaskManagementCubit>()
+                                .read<TaskDetailsCubit>()
                                 .taskDetailsModel!
                                 .data!
                                 .priority!,
@@ -241,7 +240,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                         child: Center(
                           child: Text(
                             context
-                                .read<TaskManagementCubit>()
+                                .read<TaskDetailsCubit>()
                                 .taskDetailsModel!
                                 .data!
                                 .status!,
@@ -255,7 +254,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                   verticalSpace(10),
                   Text(
                     context
-                        .read<TaskManagementCubit>()
+                        .read<TaskDetailsCubit>()
                         .taskDetailsModel!
                         .data!
                         .title!,
@@ -264,7 +263,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                   verticalSpace(10),
                   Text(
                     context
-                        .read<TaskManagementCubit>()
+                        .read<TaskDetailsCubit>()
                         .taskDetailsModel!
                         .data!
                         .description!,
@@ -324,7 +323,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                           children: [
                             TextSpan(
                               text: context
-                                  .read<TaskManagementCubit>()
+                                  .read<TaskDetailsCubit>()
                                   .taskDetailsModel!
                                   .data!
                                   .startDate!,
@@ -336,7 +335,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                             ),
                             TextSpan(
                               text: formatTime(context
-                                  .read<TaskManagementCubit>()
+                                  .read<TaskDetailsCubit>()
                                   .taskDetailsModel!
                                   .data!
                                   .startTime!),
@@ -352,7 +351,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                           children: [
                             TextSpan(
                               text: context
-                                  .read<TaskManagementCubit>()
+                                  .read<TaskDetailsCubit>()
                                   .taskDetailsModel!
                                   .data!
                                   .endDate!,
@@ -364,7 +363,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                             ),
                             TextSpan(
                               text: formatTime(context
-                                  .read<TaskManagementCubit>()
+                                  .read<TaskDetailsCubit>()
                                   .taskDetailsModel!
                                   .data!
                                   .endTime!),
@@ -381,7 +380,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                       context,
                       'Created By',
                       context
-                          .read<TaskManagementCubit>()
+                          .read<TaskDetailsCubit>()
                           .taskDetailsModel!
                           .data!
                           .createdUserName!),
@@ -391,7 +390,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                         context,
                         'Parent Task',
                         context
-                                .read<TaskManagementCubit>()
+                                .read<TaskDetailsCubit>()
                                 .taskDetailsModel!
                                 .data!
                                 .parentTitle ??
@@ -402,7 +401,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                       context,
                       'Organization',
                       context
-                              .read<TaskManagementCubit>()
+                              .read<TaskDetailsCubit>()
                               .taskDetailsModel!
                               .data!
                               .organizationName ??
@@ -412,7 +411,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                       context,
                       'Building',
                       context
-                              .read<TaskManagementCubit>()
+                              .read<TaskDetailsCubit>()
                               .taskDetailsModel!
                               .data!
                               .buildingName ??
@@ -422,7 +421,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                       context,
                       'Floor',
                       context
-                              .read<TaskManagementCubit>()
+                              .read<TaskDetailsCubit>()
                               .taskDetailsModel!
                               .data!
                               .floorName ??
@@ -432,7 +431,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                       context,
                       'Section',
                       context
-                              .read<TaskManagementCubit>()
+                              .read<TaskDetailsCubit>()
                               .taskDetailsModel!
                               .data!
                               .sectionName ??
@@ -442,14 +441,14 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                       context,
                       'Point',
                       context
-                              .read<TaskManagementCubit>()
+                              .read<TaskDetailsCubit>()
                               .taskDetailsModel!
                               .data!
                               .pointName ??
                           "No item selected"),
                   Divider(),
                   if (context
-                          .read<TaskManagementCubit>()
+                          .read<TaskDetailsCubit>()
                           .taskDetailsModel
                           ?.data
                           ?.currentReading !=
@@ -458,7 +457,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                       context,
                       'Current Reading',
                       context
-                          .read<TaskManagementCubit>()
+                          .read<TaskDetailsCubit>()
                           .taskDetailsModel!
                           .data!
                           .currentReading
@@ -467,7 +466,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                     Divider()
                   ],
                   if (context
-                          .read<TaskManagementCubit>()
+                          .read<TaskDetailsCubit>()
                           .taskDetailsModel
                           ?.data
                           ?.readingAfter !=
@@ -476,7 +475,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                       context,
                       'After Reading',
                       context
-                          .read<TaskManagementCubit>()
+                          .read<TaskDetailsCubit>()
                           .taskDetailsModel!
                           .data!
                           .readingAfter
@@ -493,7 +492,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                       ),
                       Text(
                         context
-                                .read<TaskManagementCubit>()
+                                .read<TaskDetailsCubit>()
                                 .taskDetailsModel!
                                 .data!
                                 .users!
@@ -506,7 +505,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                   ),
                   if (role != 'Cleaner' &&
                       context
-                              .read<TaskManagementCubit>()
+                              .read<TaskDetailsCubit>()
                               .taskDetailsModel!
                               .data!
                               .users !=
@@ -522,7 +521,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                       childAspectRatio: 1 / 0.3,
                       children: List.generate(
                         context
-                            .read<TaskManagementCubit>()
+                            .read<TaskDetailsCubit>()
                             .taskDetailsModel!
                             .data!
                             .users!
@@ -532,7 +531,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                           onTap: () {
                             (uId ==
                                         context
-                                            .read<TaskManagementCubit>()
+                                            .read<TaskDetailsCubit>()
                                             .usersModel!
                                             .data!
                                             .users![index]
@@ -542,7 +541,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                 : context.pushNamed(
                                     Routes.userDetailsScreen,
                                     arguments: context
-                                        .read<TaskManagementCubit>()
+                                        .read<TaskDetailsCubit>()
                                         .usersModel!
                                         .data!
                                         .users![index]
@@ -562,7 +561,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                 CircleAvatar(
                                     radius: 20.r,
                                     backgroundImage: context
-                                                .read<TaskManagementCubit>()
+                                                .read<TaskDetailsCubit>()
                                                 .usersModel!
                                                 .data!
                                                 .users![index]
@@ -572,7 +571,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                             'assets/images/person.png',
                                           )
                                         : NetworkImage(
-                                            '${ApiConstants.apiBaseUrlImage}${context.read<TaskManagementCubit>().usersModel!.data!.users![index].image}',
+                                            '${ApiConstants.apiBaseUrlImage}${context.read<TaskDetailsCubit>().usersModel!.data!.users![index].image}',
                                           )),
                                 horizontalSpace(10),
                                 Column(
@@ -581,7 +580,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                   children: [
                                     Text(
                                       context
-                                              .read<TaskManagementCubit>()
+                                              .read<TaskDetailsCubit>()
                                               .usersModel!
                                               .data!
                                               .users![index]
@@ -591,7 +590,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                     ),
                                     Text(
                                       context
-                                              .read<TaskManagementCubit>()
+                                              .read<TaskDetailsCubit>()
                                               .usersModel!
                                               .data!
                                               .users![index]
@@ -618,20 +617,20 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                       ),
                       Text(
                         context
-                                .read<TaskManagementCubit>()
+                                .read<TaskDetailsCubit>()
                                 .taskDetailsModel!
                                 .data!
                                 .files!
                                 .isEmpty
                             ? 'No file uploaded'
-                            : '${context.read<TaskManagementCubit>().taskDetailsModel!.data!.files!.length} files uploaded',
+                            : '${context.read<TaskDetailsCubit>().taskDetailsModel!.data!.files!.length} files uploaded',
                         style: TextStyles.font13greymedium,
                       ),
                     ],
                   ),
                   verticalSpace(10),
                   if (context
-                      .read<TaskManagementCubit>()
+                      .read<TaskDetailsCubit>()
                       .taskDetailsModel!
                       .data!
                       .files!
@@ -641,14 +640,14 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: context
-                            .read<TaskManagementCubit>()
+                            .read<TaskDetailsCubit>()
                             .taskDetailsModel!
                             .data!
                             .files!
                             .length,
                         itemBuilder: (context, index) {
                           final file = context
-                              .read<TaskManagementCubit>()
+                              .read<TaskDetailsCubit>()
                               .taskDetailsModel!
                               .data!
                               .files![index];
@@ -720,7 +719,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                   ),
                   verticalSpace(5),
                   context
-                          .read<TaskManagementCubit>()
+                          .read<TaskDetailsCubit>()
                           .taskDetailsModel!
                           .data!
                           .comments!
@@ -737,14 +736,14 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           itemCount: context
-                              .read<TaskManagementCubit>()
+                              .read<TaskDetailsCubit>()
                               .taskDetailsModel!
                               .data!
                               .comments!
                               .length,
                           itemBuilder: (context, index) {
                             final task = context
-                                .read<TaskManagementCubit>()
+                                .read<TaskDetailsCubit>()
                                 .taskDetailsModel!
                                 .data!
                                 .comments![index];
@@ -964,14 +963,14 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                   ),
                   verticalSpace(5),
                   Form(
-                    key: context.read<TaskManagementCubit>().formKey,
+                    key: context.read<TaskDetailsCubit>().formKey,
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           child: TextFormField(
                             controller: context
-                                .read<TaskManagementCubit>()
+                                .read<TaskDetailsCubit>()
                                 .commentController,
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
@@ -991,14 +990,14 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                 onPressed: () {
                                   UploadFilesBottomDialog().showBottomDialog(
                                       context,
-                                      context.read<TaskManagementCubit>());
+                                      context.read<TaskDetailsCubit>());
                                 },
                                 icon: Icon(Icons.attach_file_rounded,
                                     color: AppColor.thirdColor),
                               ),
                             ),
                             validator: (value) {
-                              final cubit = context.read<TaskManagementCubit>();
+                              final cubit = context.read<TaskDetailsCubit>();
 
                               if ((value == null || value.trim().isEmpty) &&
                                   (cubit.image == null)) {
@@ -1022,12 +1021,12 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                               padding: EdgeInsets.zero,
                               onPressed: () {
                                 if (context
-                                    .read<TaskManagementCubit>()
+                                    .read<TaskDetailsCubit>()
                                     .formKey
                                     .currentState!
                                     .validate()) {
                                   final taskCubit =
-                                      context.read<TaskManagementCubit>();
+                                      context.read<TaskDetailsCubit>();
                                   final imagePath = taskCubit.image?.path ?? "";
 
                                   taskCubit.addComment(
@@ -1060,7 +1059,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                     child: PhotoView(
                                       imageProvider: FileImage(
                                         File(context
-                                            .read<TaskManagementCubit>()
+                                            .read<TaskDetailsCubit>()
                                             .image!
                                             .path),
                                       ),
@@ -1081,7 +1080,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                 borderRadius: BorderRadius.circular(10.r)),
                             child: Image.file(
                               File(context
-                                  .read<TaskManagementCubit>()
+                                  .read<TaskDetailsCubit>()
                                   .image!
                                   .path),
                               fit: BoxFit.cover,
@@ -1102,21 +1101,21 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                     children: [
                                       (context
                                                       .read<
-                                                          TaskManagementCubit>()
+                                                          TaskDetailsCubit>()
                                                       .taskDetailsModel!
                                                       .data!
                                                       .status! ==
                                                   "Waiting For Approval" ||
                                               context
                                                       .read<
-                                                          TaskManagementCubit>()
+                                                          TaskDetailsCubit>()
                                                       .taskDetailsModel!
                                                       .data!
                                                       .status! ==
                                                   "Not Resolved" ||
                                               context
                                                       .read<
-                                                          TaskManagementCubit>()
+                                                          TaskDetailsCubit>()
                                                       .taskDetailsModel!
                                                       .data!
                                                       .status! ==
@@ -1124,7 +1123,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                           ? SizedBox.shrink()
                                           : (context
                                                       .read<
-                                                          TaskManagementCubit>()
+                                                          TaskDetailsCubit>()
                                                       .taskDetailsModel!
                                                       .data!
                                                       .status! ==
@@ -1139,7 +1138,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                       onPressed: () {
                                                         context
                                                             .read<
-                                                                TaskManagementCubit>()
+                                                                TaskDetailsCubit>()
                                                             .changeTaskStatus(
                                                               widget.id,
                                                               1,
@@ -1157,7 +1156,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                       onPressed: () {
                                                         context
                                                             .read<
-                                                                TaskManagementCubit>()
+                                                                TaskDetailsCubit>()
                                                             .changeTaskStatus(
                                                               widget.id,
                                                               5,
@@ -1174,21 +1173,21 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                 )
                                               : (context
                                                               .read<
-                                                                  TaskManagementCubit>()
+                                                                  TaskDetailsCubit>()
                                                               .taskDetailsModel!
                                                               .data!
                                                               .status! ==
                                                           "In Progress" ||
                                                       context
                                                               .read<
-                                                                  TaskManagementCubit>()
+                                                                  TaskDetailsCubit>()
                                                               .taskDetailsModel!
                                                               .data!
                                                               .status! ==
                                                           "Rejected" ||
                                                       context
                                                               .read<
-                                                                  TaskManagementCubit>()
+                                                                  TaskDetailsCubit>()
                                                               .taskDetailsModel!
                                                               .data!
                                                               .status! ==
@@ -1203,14 +1202,14 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                           onPressed: () {
                                                             context
                                                                         .read<
-                                                                            TaskManagementCubit>()
+                                                                            TaskDetailsCubit>()
                                                                         .taskDetailsModel!
                                                                         .data!
                                                                         .currentReading ==
                                                                     null
                                                                 ? context
                                                                     .read<
-                                                                        TaskManagementCubit>()
+                                                                        TaskDetailsCubit>()
                                                                     .changeTaskStatus(
                                                                         widget
                                                                             .id,
@@ -1233,7 +1232,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                           onPressed: () {
                                                             context
                                                                 .read<
-                                                                    TaskManagementCubit>()
+                                                                    TaskDetailsCubit>()
                                                                 .changeTaskStatus(
                                                                   widget.id,
                                                                   5,
@@ -1254,7 +1253,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                 : Column(
                                     children: [
                                       (context
-                                                  .read<TaskManagementCubit>()
+                                                  .read<TaskDetailsCubit>()
                                                   .taskDetailsModel!
                                                   .data!
                                                   .status! ==
@@ -1269,7 +1268,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                   onPressed: () {
                                                     context
                                                         .read<
-                                                            TaskManagementCubit>()
+                                                            TaskDetailsCubit>()
                                                         .changeTaskStatus(
                                                           widget.id,
                                                           3,
@@ -1286,7 +1285,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                   onPressed: () {
                                                     context
                                                         .read<
-                                                            TaskManagementCubit>()
+                                                            TaskDetailsCubit>()
                                                         .changeTaskStatus(
                                                           widget.id,
                                                           4,
@@ -1303,14 +1302,14 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                             )
                                           : (context
                                                           .read<
-                                                              TaskManagementCubit>()
+                                                              TaskDetailsCubit>()
                                                           .taskDetailsModel!
                                                           .data!
                                                           .status! ==
                                                       "Pending" ||
                                                   context
                                                           .read<
-                                                              TaskManagementCubit>()
+                                                              TaskDetailsCubit>()
                                                           .taskDetailsModel!
                                                           .data!
                                                           .status! ==
@@ -1326,21 +1325,21 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                 )
                                               : (context
                                                               .read<
-                                                                  TaskManagementCubit>()
+                                                                  TaskDetailsCubit>()
                                                               .taskDetailsModel!
                                                               .data!
                                                               .status! ==
                                                           "In Progress" ||
                                                       context
                                                               .read<
-                                                                  TaskManagementCubit>()
+                                                                  TaskDetailsCubit>()
                                                               .taskDetailsModel!
                                                               .data!
                                                               .status! ==
                                                           "Rejected" ||
                                                       context
                                                               .read<
-                                                                  TaskManagementCubit>()
+                                                                  TaskDetailsCubit>()
                                                               .taskDetailsModel!
                                                               .data!
                                                               .status! ==
@@ -1350,7 +1349,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                       onPressed: () {
                                                         context
                                                             .read<
-                                                                TaskManagementCubit>()
+                                                                TaskDetailsCubit>()
                                                             .changeTaskStatus(
                                                               widget.id,
                                                               5,
@@ -1365,7 +1364,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                     )
                                                   : (context
                                                               .read<
-                                                                  TaskManagementCubit>()
+                                                                  TaskDetailsCubit>()
                                                               .taskDetailsModel!
                                                               .data!
                                                               .status! ==
@@ -1389,7 +1388,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                               onPressed: () {
                                                                 context
                                                                     .read<
-                                                                        TaskManagementCubit>()
+                                                                        TaskDetailsCubit>()
                                                                     .changeTaskStatus(
                                                                       widget.id,
                                                                       4,
