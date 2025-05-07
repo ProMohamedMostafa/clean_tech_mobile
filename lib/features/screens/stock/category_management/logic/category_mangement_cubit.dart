@@ -28,7 +28,7 @@ class CategoryManagementCubit extends Cubit<CategoryManagementState> {
     emit(CategoryManagementLoadingState());
     DioHelper.getData(url: ApiConstants.categoryUrl, query: {
       'PageNumber': currentPage,
-      'PageSize': 10,
+      'PageSize': 15,
       'Search': searchController.text,
       'ParentCategoryId': filterModel?.categoryId,
       'Unit': filterModel?.unitId,

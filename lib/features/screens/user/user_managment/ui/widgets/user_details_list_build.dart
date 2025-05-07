@@ -5,9 +5,10 @@ import 'package:smart_cleaning_application/features/screens/user/user_managment/
 import 'package:smart_cleaning_application/features/screens/user/user_managment/ui/widgets/item_list_build.dart';
 
 Widget userDetailsBuild(BuildContext context, int selectedIndex) {
+  final cubit = context.read<UserManagementCubit>();
   final usersData = selectedIndex == 0
-      ? context.read<UserManagementCubit>().usersModel?.data!.users
-      : context.read<UserManagementCubit>().deletedListModel?.data;
+      ? cubit.usersModel?.data?.users
+      : cubit.deletedListModel?.data;
 
   if (usersData == null || usersData.isEmpty) {
     return Center(
@@ -17,23 +18,21 @@ Widget userDetailsBuild(BuildContext context, int selectedIndex) {
       ),
     );
   } else {
-    return ListView.builder(
-      controller: selectedIndex == 0
-          ? context.read<UserManagementCubit>().scrollController
-          : null,
+    return ListView.separated(
+      controller: selectedIndex == 0 ? cubit.scrollController : null,
+      physics: const AlwaysScrollableScrollPhysics(),
       shrinkWrap: true,
-      scrollDirection: Axis.vertical,
       itemCount: usersData.length,
+      separatorBuilder: (context, index) {
+        return Divider(
+          color: Colors.grey[300],
+          height: 0.1,
+        );
+      },
       itemBuilder: (context, index) {
         return Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             listItemBuild(context, selectedIndex, index),
-            Divider(
-              color: Colors.grey[300],
-              height: 0.1,
-            ),
           ],
         );
       },

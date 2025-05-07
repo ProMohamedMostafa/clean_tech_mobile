@@ -6,8 +6,8 @@ import 'package:smart_cleaning_application/features/screens/attendance/attendanc
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/ui/widgets/list_item_build.dart';
 
 Widget attendanceHistoryListDetailsBuild(BuildContext context) {
-  final attendanceData =
-      context.read<AttendanceHistoryCubit>().attendanceHistoryModel?.data!.data;
+  final cubit = context.read<AttendanceHistoryCubit>();
+  final attendanceData = cubit.attendanceHistoryModel?.data!.data;
 
   if (attendanceData == null || attendanceData.isEmpty) {
     return Center(
@@ -18,10 +18,9 @@ Widget attendanceHistoryListDetailsBuild(BuildContext context) {
     );
   } else {
     return ListView.separated(
-      controller: context.read<AttendanceHistoryCubit>().scrollController,
+      controller: cubit.scrollController,
       shrinkWrap: true,
       physics: const ClampingScrollPhysics(),
-      scrollDirection: Axis.vertical,
       itemCount: attendanceData.length,
       separatorBuilder: (context, index) {
         return verticalSpace(10);

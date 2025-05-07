@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
-import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_state.dart';
@@ -9,14 +8,6 @@ import 'package:smart_cleaning_application/features/screens/task/task_management
 
 Widget taskListDetailsBuild(BuildContext context, TaskManagementState state,
     TaskManagementCubit cubit) {
-  if (state is GetAllTasksLoadingState || state is TaskDeleteListLoadingState) {
-    return Center(
-      child: CircularProgressIndicator(
-        color: AppColor.primaryColor,
-      ),
-    );
-  }
-
   final itemCount = cubit.selectedIndex == 8
       ? cubit.deleteTaskListModel?.data?.length ?? 0
       : cubit.allTasksModel?.data?.data?.length ?? 0;
@@ -30,16 +21,15 @@ Widget taskListDetailsBuild(BuildContext context, TaskManagementState state,
     );
   }
 
-  return Skeletonizer(
-    enabled: cubit.allTasksModel == null,
-    child: ListView.separated(
-      controller: cubit.selectedIndex == 8 ? null : cubit.scrollController,
-      shrinkWrap: true,
-      physics: BouncingScrollPhysics(),
-      scrollDirection: Axis.vertical,
-      separatorBuilder: (context, index) => verticalSpace(10),
-      itemCount: itemCount,
-      itemBuilder: (context, index) => buildCardItem(context, index),
-    ),
+  return ListView.separated(
+    controller: cubit.selectedIndex == 8 ? null : cubit.scrollController,
+    shrinkWrap: true,
+    physics: BouncingScrollPhysics(),
+    scrollDirection: Axis.vertical,
+    separatorBuilder: (context, index) => verticalSpace(10),
+    itemCount: itemCount,
+    itemBuilder: (context, index) => Skeletonizer(
+        enabled: cubit.allTasksModel == null,
+        child: buildCardItem(context, index)),
   );
 }

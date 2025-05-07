@@ -4,7 +4,6 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
-import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/floating_action_button/floating_action_button.dart';
@@ -40,7 +39,7 @@ class _ShiftBodyState extends State<ShiftBody> {
           listener: (context, state) {
             if (state is ShiftDeleteSuccessState) {
               toast(text: state.deleteShiftModel.message!, color: Colors.blue);
-              context.read<ShiftCubit>().getAllDeletedShifts();
+              cubit.getAllDeletedShifts();
             }
             if (state is ShiftDeleteErrorState) {
               toast(text: state.error, color: Colors.red);
@@ -53,13 +52,13 @@ class _ShiftBodyState extends State<ShiftBody> {
             }
             if (state is ForceDeleteShiftSuccessState) {
               toast(text: state.message, color: Colors.blue);
-              context.read<ShiftCubit>().getAllShifts();
-              context.read<ShiftCubit>().getAllDeletedShifts();
+              cubit.getAllShifts();
+              cubit.getAllDeletedShifts();
             }
           },
           builder: (context, state) {
             return Skeletonizer(
-              enabled: context.read<ShiftCubit>().allShiftsModel == null,
+              enabled: cubit.allShiftsModel == null,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
@@ -71,8 +70,7 @@ class _ShiftBodyState extends State<ShiftBody> {
                     twoButtonsIntegration(
                       selectedIndex: cubit.selectedIndex,
                       onTap: (index) => cubit.changeTap(index),
-                      firstCount:
-                          cubit.allShiftsModel?.data?.shifts?.length ?? 0,
+                      firstCount: cubit.allShiftsModel?.data?.totalCount ?? 0,
                       firstLabel: 'Total Shifts',
                       secondCount:
                           cubit.allShiftsDeletedModel?.data?.length ?? 0,
@@ -81,17 +79,8 @@ class _ShiftBodyState extends State<ShiftBody> {
                     verticalSpace(10),
                     Divider(color: Colors.grey[300]),
                     Expanded(
-                      child: state is ShiftLoadingState &&
-                              (context.read<ShiftCubit>().allShiftsModel ==
-                                      null &&
-                                  context
-                                          .read<ShiftCubit>()
-                                          .allShiftsDeletedModel ==
-                                      null)
-                          ? Center(
-                              child: CircularProgressIndicator(
-                                  color: AppColor.primaryColor))
-                          : shiftListDetailsBuild(context, cubit.selectedIndex),
+                      child:
+                          shiftListDetailsBuild(context, cubit.selectedIndex),
                     ),
                     verticalSpace(10),
                   ],

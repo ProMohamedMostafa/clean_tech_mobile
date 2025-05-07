@@ -7,7 +7,6 @@ import 'package:smart_cleaning_application/features/screens/attendance/attendanc
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/logic/attendance_leaves_state.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_edit/data/models/leaves_details_model.dart';
 
-
 class AttendanceLeavesCubit extends Cubit<AttendanceLeavesState> {
   AttendanceLeavesCubit() : super(AttendanceLeavesInitialState());
 
@@ -20,21 +19,11 @@ class AttendanceLeavesCubit extends Cubit<AttendanceLeavesState> {
   int currentPage = 1;
   FilterDialogDataModel? filterModel;
   AttendanceLeavesModel? attendanceLeavesModel;
-  getAllLeaves({
-    int? areaId,
-    int? cityId,
-    int? organizationId,
-    int? buildingId,
-    int? floorId,
-    int? sectionId,
-    int? pointId,
-    int? providerId,
-    int? userId,
-  }) {
+  getAllLeaves() {
     emit(LeavesLoadingState());
     DioHelper.getData(url: ApiConstants.leavesUrl, query: {
       'PageNumber': currentPage,
-      'PageSize': 10,
+      'PageSize': 15,
       'Search': searchController.text,
       'History': false,
       'UserId': filterModel?.userId,

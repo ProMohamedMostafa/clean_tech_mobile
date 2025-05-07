@@ -29,7 +29,7 @@ class TransactionManagementCubit extends Cubit<TransactionManagementState> {
     transactionManagementModel == null;
     DioHelper.getData(url: ApiConstants.transactionUrl, query: {
       'PageNumber': currentPage,
-      'PageSize': 10,
+      'PageSize': 15,
       'Search': searchController.text,
       'CategoryId': filterModel?.categoryId,
       'ProviderId': filterModel?.providerId,

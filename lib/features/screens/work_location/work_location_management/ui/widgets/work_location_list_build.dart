@@ -6,27 +6,20 @@ import 'package:smart_cleaning_application/features/screens/work_location/work_l
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/ui/widgets/work_location_list_item_build.dart';
 
 Widget workLocationDetailsBuild(BuildContext context, int selectedIndex) {
+  final cubit = context.read<WorkLocationCubit>();
   final workLocationData = selectedIndex == 0
-      ? context.read<WorkLocationCubit>().areaModel?.data?.data
+      ? cubit.areaModel?.data?.data
       : selectedIndex == 1
-          ? context.read<WorkLocationCubit>().cityModel?.data?.data
+          ? cubit.cityModel?.data?.data
           : selectedIndex == 2
-              ? context.read<WorkLocationCubit>().organizationModel?.data?.data
+              ? cubit.organizationModel?.data?.data
               : selectedIndex == 3
-                  ? context.read<WorkLocationCubit>().buildingModel?.data?.data
+                  ? cubit.buildingModel?.data?.data
                   : selectedIndex == 4
-                      ? context.read<WorkLocationCubit>().floorModel?.data?.data
+                      ? cubit.floorModel?.data?.data
                       : selectedIndex == 5
-                          ? context
-                              .read<WorkLocationCubit>()
-                              .sectionModel
-                              ?.data
-                              ?.data
-                          : context
-                              .read<WorkLocationCubit>()
-                              .pointModel
-                              ?.data
-                              ?.data;
+                          ? cubit.sectionModel?.data?.data
+                          : cubit.pointModel?.data?.data;
 
   if (workLocationData == null || workLocationData.isEmpty) {
     return Center(
@@ -37,19 +30,17 @@ Widget workLocationDetailsBuild(BuildContext context, int selectedIndex) {
     );
   } else {
     return ListView.separated(
+      controller: selectedIndex == 8 ? null : cubit.scrollController,
+      physics: const AlwaysScrollableScrollPhysics(),
       shrinkWrap: true,
-      physics: const ClampingScrollPhysics(),
-      scrollDirection: Axis.vertical,
       itemCount: workLocationData.length,
       separatorBuilder: (context, index) {
         return verticalSpace(10);
       },
       itemBuilder: (context, index) {
         return Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            organizationsListItemBuild(context, selectedIndex, index),
+            workLocationListItemBuild(context, selectedIndex, index),
           ],
         );
       },

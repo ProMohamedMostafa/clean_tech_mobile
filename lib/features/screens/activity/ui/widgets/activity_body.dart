@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
-import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/two_buttons_in_integreat_screen/two_buttons_in_integration_screen.dart';
@@ -47,24 +46,16 @@ class ActivityBody extends StatelessWidget {
                   twoButtonsIntegration(
                     selectedIndex: cubit.selectedIndex,
                     onTap: cubit.changeTap,
-                    firstCount:
-                        cubit.myActivities?.data?.activities?.length ?? 0,
+                    firstCount: cubit.myActivities?.data?.totalCount ?? 0,
                     firstLabel: 'My Activity',
-                    secondCount:
-                        cubit.teamActivities?.data?.activities?.length ?? 0,
+                    secondCount: cubit.teamActivities?.data?.totalCount ?? 0,
                     secondLabel: 'My Team Activity',
                   ),
                   verticalSpace(10),
                   Divider(color: Colors.grey[300]),
                   Expanded(
-                    child: isLoading
-                        ? Center(
-                            child: CircularProgressIndicator(
-                              color: AppColor.primaryColor,
-                            ),
-                          )
-                        : activityListDetailsBuild(
-                            context, cubit.selectedIndex),
+                    child:
+                        activityListDetailsBuild(context, cubit.selectedIndex),
                   ),
                   verticalSpace(10),
                 ],

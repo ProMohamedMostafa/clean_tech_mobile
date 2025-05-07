@@ -26,116 +26,7 @@ class FilterDialogWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final FilterDialogCubit cubit = context.read<FilterDialogCubit>();
-    Map<String, List<String>> moduleActions = {
-      'Provider': ['Create', 'Edit', 'Delete', 'Restore', 'ForceDelete'],
-      'User': [
-        'Create',
-        'Edit',
-        'Delete',
-        'Restore',
-        'ForceDelete',
-        'Login',
-        'Logout',
-        'ClockIn',
-        'ClockOut',
-        'ChangePassword',
-        'EditProfile',
-        'Assign',
-        'RemoveAssign',
-        'EditSetting'
-      ],
-      'UserSetting': ['EditSetting'],
-      'Area': [
-        'Create',
-        'Edit',
-        'Delete',
-        'Restore',
-        'ForceDelete',
-        'Assign',
-        'RemoveAssign'
-      ],
-      'City': [
-        'Create',
-        'Edit',
-        'Delete',
-        'Restore',
-        'ForceDelete',
-        'Assign',
-        'RemoveAssign'
-      ],
-      'Organization': [
-        'Create',
-        'Edit',
-        'Delete',
-        'Restore',
-        'ForceDelete',
-        'Assign',
-        'RemoveAssign'
-      ],
-      'Building': [
-        'Create',
-        'Edit',
-        'Delete',
-        'Restore',
-        'ForceDelete',
-        'Assign',
-        'RemoveAssign'
-      ],
-      'Floor': [
-        'Create',
-        'Edit',
-        'Delete',
-        'Restore',
-        'ForceDelete',
-        'Assign',
-        'RemoveAssign'
-      ],
-      'Section': [
-        'Create',
-        'Edit',
-        'Delete',
-        'Restore',
-        'ForceDelete',
-        'Assign',
-        'RemoveAssign'
-      ],
-      'Point': [
-        'Create',
-        'Edit',
-        'Delete',
-        'Restore',
-        'ForceDelete',
-        'Assign',
-        'RemoveAssign'
-      ],
-      'Task': [
-        'Create',
-        'Edit',
-        'Delete',
-        'Restore',
-        'ForceDelete',
-        'ChangeStatus',
-        'Comment'
-      ],
-      'Shift': [
-        'Create',
-        'Edit',
-        'Delete',
-        'Restore',
-        'ForceDelete',
-        'Assign',
-        'RemoveAssign'
-      ],
-      'Attendacne': ['ClockIn', 'ClockOut'],
-      'Leave': ['Create', 'Edit', 'Delete'],
-      'Category': ['Create', 'Edit', 'Delete', 'Restore', 'ForceDelete'],
-      'Material': ['Create', 'Edit', 'Delete', 'Restore', 'ForceDelete'],
-      'Stock': ['StockIn', 'StockOut'],
-    };
 
-    final List<String> allModules = moduleActions.keys.toList();
-    final List<String> allActions =
-        moduleActions.values.expand((actions) => actions).toSet().toList();
     final List<String> filteredLevelOrder = cubit.levelOrder
         .where((level) =>
             !((index == 'A-h' || index == 'A-l' || index == 'T') &&
@@ -505,17 +396,18 @@ class FilterDialogWidget extends StatelessWidget {
                         CustomDropDownList(
                           hint: 'Select module',
                           controller: cubit.moduleController,
-                          items: allModules,
+                          items: cubit.allModules,
                           onChanged: (selectedValue) {
                             final selectedIndex =
-                                allModules.indexOf(selectedValue!);
+                                cubit.allModules.indexOf(selectedValue!);
                             if (selectedIndex != -1) {
                               cubit
                                 ..moduleIdController.text =
                                     selectedIndex.toString()
                                 ..moduleController.text = selectedValue
                                 ..actionController.text = ''
-                                ..actionIdController.text = '';
+                                ..actionIdController.text = ''
+                                ..updateActionsForModule(selectedValue);
                             }
                           },
                           keyboardType: TextInputType.text,
@@ -529,11 +421,10 @@ class FilterDialogWidget extends StatelessWidget {
                         CustomDropDownList(
                           hint: 'Select action',
                           controller: cubit.actionController,
-                          items:
-                              moduleActions[cubit.moduleController.text] ?? [],
+                          items: cubit.currentActions,
                           onChanged: (selectedValue) {
                             final selectedIndex =
-                                allActions.indexOf(selectedValue!);
+                                cubit.allActions.indexOf(selectedValue!);
                             if (selectedIndex != -1) {
                               cubit.actionIdController.text =
                                   selectedIndex.toString();

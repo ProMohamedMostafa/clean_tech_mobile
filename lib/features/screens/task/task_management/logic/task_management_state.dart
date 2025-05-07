@@ -88,3 +88,4 @@ class TaskDeleteListErrorState extends TaskManagementState {
   final String error;
   TaskDeleteListErrorState(this.error);
 }
+

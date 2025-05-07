@@ -1,5 +1,6 @@
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/data/models/attendance_history_model.dart';
 import 'package:smart_cleaning_application/features/screens/settings/data/model/profile_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/task_status_model.dart';
 
 abstract class HomeState {}
 
@@ -57,4 +58,18 @@ class UserStatusSuccessState extends HomeState {
 class UserStatusErrorState extends HomeState {
   final String error;
   UserStatusErrorState(this.error);
+}
+//**************************************** */
+
+class TaskStatusListLoadingState extends HomeState {}
+
+class TaskStatusListSuccessState extends HomeState {
+  final TaskStatusModel taskStatusModel;
+
+  TaskStatusListSuccessState(this.taskStatusModel);
+}
+
+class TaskStatusListErrorState extends HomeState {
+  final String error;
+  TaskStatusListErrorState(this.error);
 }

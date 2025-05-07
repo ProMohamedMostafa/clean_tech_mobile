@@ -27,7 +27,7 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
     emit(GetAllTasksLoadingState());
     DioHelper.getData(url: "tasks/pagination", query: {
       'PageNumber': currentPage,
-      'PageSize': 10,
+      'PageSize': 15,
       'SearchQuery': searchController.text,
       'Status': filterModel?.taskStatusId ??
           (selectedIndex == 0 ? null : selectedIndex - 1),
@@ -106,6 +106,8 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
       emit(TaskDeleteListErrorState(error.toString()));
     });
   }
+
+
 
   DeleteTaskModel? deleteTaskModel;
   List<TaskData> deletedTasks = [];

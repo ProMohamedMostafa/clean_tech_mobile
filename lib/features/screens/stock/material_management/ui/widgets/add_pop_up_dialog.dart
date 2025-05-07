@@ -51,7 +51,7 @@ class AddPopUpDialog {
                         hint: "Write Number",
                         controller: context
                             .read<MaterialManagementCubit>()
-                            !.quantityController,
+                            .quantityController,
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {

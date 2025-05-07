@@ -3,6 +3,7 @@ import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/data/models/attendance_history_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_state.dart';
 import 'package:smart_cleaning_application/features/screens/settings/data/model/profile_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/task_status_model.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitialState());
@@ -39,6 +40,17 @@ class HomeCubit extends Cubit<HomeState> {
       emit(UserStatusSuccessState(attendanceHistoryModel!));
     }).catchError((error) {
       emit(UserStatusErrorState(error.toString()));
+    });
+  }
+
+  TaskStatusModel? taskStatusModel;
+  getTaskStatus() {
+    emit(TaskStatusListLoadingState());
+    DioHelper.getData(url: 'tasks/status').then((value) {
+      taskStatusModel = TaskStatusModel.fromJson(value!.data);
+      emit(TaskStatusListSuccessState(taskStatusModel!));
+    }).catchError((error) {
+      emit(TaskStatusListErrorState(error.toString()));
     });
   }
 }

@@ -19,7 +19,7 @@ Widget shiftListDetailsBuild(BuildContext context, int selectedIndex) {
     );
   } else {
     return ListView.separated(
-    controller: selectedIndex == 0
+      controller: selectedIndex == 0
           ? context.read<ShiftCubit>().scrollController
           : null,
       shrinkWrap: true,

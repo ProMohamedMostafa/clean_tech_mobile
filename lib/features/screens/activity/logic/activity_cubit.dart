@@ -26,7 +26,7 @@ class ActivityCubit extends Cubit<ActivityState> {
       url: "logs",
       query: {
         'PageNumber': currentPage,
-        'PageSize': 10,
+        'PageSize': 15,
         'Search': searchController.text,
         'RoleId': filterModel?.roleId,
         'Action': filterModel?.actionId,

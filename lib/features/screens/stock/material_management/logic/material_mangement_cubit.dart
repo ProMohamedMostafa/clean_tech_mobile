@@ -20,9 +20,6 @@ class MaterialManagementCubit extends Cubit<MaterialManagementState> {
   static MaterialManagementCubit get(context) => BlocProvider.of(context);
 
   TextEditingController searchController = TextEditingController();
-  TextEditingController categoryController = TextEditingController();
-  TextEditingController unitController = TextEditingController();
-  TextEditingController unitIdController = TextEditingController();
   TextEditingController quantityController = TextEditingController();
   TextEditingController priceController = TextEditingController();
   TextEditingController providerController = TextEditingController();
@@ -39,7 +36,7 @@ class MaterialManagementCubit extends Cubit<MaterialManagementState> {
     emit(MaterialManagementLoadingState());
     DioHelper.getData(url: ApiConstants.materialUrl, query: {
       'PageNumber': currentPage,
-      'PageSize': 10,
+      'PageSize': 15,
       'Search': searchController.text,
       'CategoryId': categoryId ?? filterModel?.categoryId,
     }).then((value) {

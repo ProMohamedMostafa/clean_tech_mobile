@@ -23,7 +23,7 @@ void main() async {
   runApp(AppRoot(
     appRouter: AppRouter(),
   ));
-}
+} 
 
 class MyHttpOverrides extends HttpOverrides {
   @override

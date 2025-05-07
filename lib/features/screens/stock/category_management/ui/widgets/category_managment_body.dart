@@ -4,7 +4,6 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
-import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/floating_action_button/floating_action_button.dart';
@@ -78,9 +77,8 @@ class CategoryManagmentBody extends StatelessWidget {
                   twoButtonsIntegration(
                     selectedIndex: cubit.selectedIndex,
                     onTap: (index) => cubit.changeTap(index),
-                    firstCount: cubit.categoryManagementModel?.data?.categories
-                            ?.length ??
-                        0,
+                    firstCount:
+                        cubit.categoryManagementModel?.data?.totalCount ?? 0,
                     firstLabel: 'Total Categories',
                     secondCount:
                         cubit.deletedCategoryListModel?.data?.length ?? 0,
@@ -91,19 +89,7 @@ class CategoryManagmentBody extends StatelessWidget {
                     color: Colors.grey[300],
                   ),
                   Expanded(
-                    child: state is CategoryManagementLoadingState &&
-                            (context
-                                        .read<CategoryManagementCubit>()
-                                        .categoryManagementModel ==
-                                    null &&
-                                context
-                                        .read<CategoryManagementCubit>()
-                                        .deletedCategoryListModel ==
-                                    null)
-                        ? Center(
-                            child: CircularProgressIndicator(
-                                color: AppColor.primaryColor))
-                        : categoryDetailsBuild(context, cubit.selectedIndex),
+                    child: categoryDetailsBuild(context, cubit.selectedIndex),
                   ),
                   verticalSpace(10),
                 ],

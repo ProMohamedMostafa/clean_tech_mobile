@@ -11,7 +11,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
 
-Widget organizationsListItemBuild(
+Widget workLocationListItemBuild(
     BuildContext context, int selectedIndex, index) {
   return InkWell(
     borderRadius: BorderRadius.circular(11.r),

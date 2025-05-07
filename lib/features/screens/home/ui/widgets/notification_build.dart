@@ -13,7 +13,7 @@ Widget notificationBuild(BuildContext context) {
         padding: const EdgeInsets.all(5),
         child: Icon(
           IconBroken.notification,
-          size: 27.sp,
+          size: 24.sp,
           color: Colors.black,
         ),
       ),
@@ -28,8 +28,8 @@ Widget notificationBuild(BuildContext context) {
                   shape: BoxShape.circle,
                 ),
                 constraints: const BoxConstraints(
-                  minWidth: 16,
-                  minHeight: 16,
+                  minWidth: 12,
+                  minHeight: 12,
                 ),
                 child: Center(
                   child: Text(
@@ -41,7 +41,7 @@ Widget notificationBuild(BuildContext context) {
               ),
             )
           : Positioned(
-              right: 0,
+              right: 3,
               top: 2,
               child: Container(
                 decoration: const BoxDecoration(
@@ -49,8 +49,8 @@ Widget notificationBuild(BuildContext context) {
                   shape: BoxShape.circle,
                 ),
                 constraints: const BoxConstraints(
-                  minWidth: 16,
-                  minHeight: 16,
+                  minWidth: 12,
+                  minHeight: 12,
                 ),
                 child: Center(
                   child: Text(

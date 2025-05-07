@@ -44,7 +44,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
     emit(AreaLoadingState());
     DioHelper.getData(url: ApiConstants.areaUrl, query: {
       'PageNumber': currentPage,
-      'PageSize': 10,
+      'PageSize': 15,
       "SearchQuery": searchController.text,
       "Country": filterModel?.country
     }).then((value) {
@@ -68,7 +68,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
     emit(CityLoadingState());
     DioHelper.getData(url: ApiConstants.cityUrl, query: {
       'PageNumber': currentPage,
-      'PageSize': 10,
+      'PageSize': 15,
       "SearchQuery": searchController.text,
       "Country": filterModel?.country,
       "Area": filterModel?.areaId
@@ -93,7 +93,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
     emit(OrganizationLoadingState());
     DioHelper.getData(url: ApiConstants.organizationUrl, query: {
       'PageNumber': currentPage,
-      'PageSize': 10,
+      'PageSize': 15,
       "SearchQuery": searchController.text,
       "Area": filterModel?.areaId,
       "City": filterModel?.cityId,
@@ -120,7 +120,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
     emit(BuildingLoadingState());
     DioHelper.getData(url: ApiConstants.buildingUrl, query: {
       'PageNumber': currentPage,
-      'PageSize': 10,
+      'PageSize': 15,
       "SearchQuery": searchController.text,
       "CityId": filterModel?.cityId,
       "OrganizationId": filterModel?.organizationId,
@@ -145,7 +145,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
     emit(FloorLoadingState());
     DioHelper.getData(url: ApiConstants.floorUrl, query: {
       'PageNumber': currentPage,
-      'PageSize': 10,
+      'PageSize': 15,
       "SearchQuery": searchController.text,
       "OrganizationId": filterModel?.organizationId,
       "BuildingId": filterModel?.buildingId,
@@ -170,7 +170,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
     emit(SectionLoadingState());
     DioHelper.getData(url: ApiConstants.sectionUrl, query: {
       'PageNumber': currentPage,
-      'PageSize': 10,
+      'PageSize': 15,
       "SearchQuery": searchController.text,
       "BuildingId": filterModel?.buildingId,
       "FloorId": filterModel?.floorId,
@@ -195,7 +195,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
     emit(PointLoadingState());
     DioHelper.getData(url: ApiConstants.pointUrl, query: {
       'PageNumber': currentPage,
-      'PageSize': 10,
+      'PageSize': 15,
       "SearchQuery": searchController.text,
       "FloorId": filterModel?.floorId,
       "SectionId": filterModel?.sectionId,
@@ -384,19 +384,19 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
   int getActiveCount(int selectedIndex) {
     switch (selectedIndex) {
       case 0:
-        return areaModel?.data?.data?.length ?? 0;
+        return areaModel?.data?.totalCount ?? 0;
       case 1:
-        return cityModel?.data?.data?.length ?? 0;
+        return cityModel?.data?.totalCount ?? 0;
       case 2:
-        return organizationModel?.data?.data?.length ?? 0;
+        return organizationModel?.data?.totalCount ?? 0;
       case 3:
-        return buildingModel?.data?.data?.length ?? 0;
+        return buildingModel?.data?.totalCount ?? 0;
       case 4:
-        return floorModel?.data?.data?.length ?? 0;
+        return floorModel?.data?.totalCount ?? 0;
       case 5:
-        return sectionModel?.data?.data?.length ?? 0;
+        return sectionModel?.data?.totalCount ?? 0;
       case 6:
-        return pointModel?.data?.data?.length ?? 0;
+        return pointModel?.data?.totalCount ?? 0;
       default:
         return 0;
     }

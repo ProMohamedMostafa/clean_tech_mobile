@@ -24,7 +24,9 @@ class AttendanceLeavesModel {
     message = json['message'];
     error = json['error'];
     businessErrorCode = json['businessErrorCode'];
-    data = json['data'] != null ? AttendanceLeavesData.fromJson(json['data']) : null;
+    data = json['data'] != null
+        ? AttendanceLeavesData.fromJson(json['data'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -73,7 +75,8 @@ class AttendanceLeavesData {
     hasNextPage = json['hasNextPage'];
     succeeded = json['succeeded'];
     if (json['data'] != null) {
-      leaves = (json['data'] as List).map((v) => LeaveRecord.fromJson(v)).toList();
+      leaves =
+          (json['data'] as List).map((v) => LeaveRecord.fromJson(v)).toList();
     }
   }
 
@@ -99,6 +102,7 @@ class LeaveRecord {
   String? userName;
   String? firstName;
   String? lastName;
+  String? image;
   String? startDate;
   String? endDate;
   String? reason;
@@ -112,6 +116,7 @@ class LeaveRecord {
     this.userName,
     this.firstName,
     this.lastName,
+    this.image,
     this.startDate,
     this.endDate,
     this.reason,
@@ -126,6 +131,7 @@ class LeaveRecord {
     userName = json['userName'];
     firstName = json['firstName'];
     lastName = json['lastName'];
+    image = json['image'];
     startDate = json['startDate'];
     endDate = json['endDate'];
     reason = json['reason'];
@@ -141,6 +147,7 @@ class LeaveRecord {
       'userName': userName,
       'firstName': firstName,
       'lastName': lastName,
+      'image': image,
       'startDate': startDate,
       'endDate': endDate,
       'reason': reason,

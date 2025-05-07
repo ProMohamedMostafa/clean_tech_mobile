@@ -5,11 +5,10 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/logic/attendance_leaves_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/ui/widgets/list_item_build.dart';
 
-Widget attendanceLeavesListDetailsBuild(
-    BuildContext context) {
-  
-final attendanceData =
-      context.read<AttendanceLeavesCubit>().attendanceLeavesModel?.data!.leaves;
+Widget attendanceLeavesListDetailsBuild(BuildContext context) {
+  final cubit = context.read<AttendanceLeavesCubit>();
+
+  final attendanceData = cubit.attendanceLeavesModel?.data!.leaves;
 
   if (attendanceData == null || attendanceData.isEmpty) {
     return Center(
@@ -20,7 +19,7 @@ final attendanceData =
     );
   } else {
     return ListView.separated(
-         controller: context.read<AttendanceLeavesCubit>().scrollController,
+      controller: cubit.scrollController,
       shrinkWrap: true,
       scrollDirection: Axis.vertical,
       itemCount: attendanceData.length,
@@ -31,7 +30,7 @@ final attendanceData =
         return Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            buildCardItem(context,index),
+            buildCardItem(context, index),
           ],
         );
       },

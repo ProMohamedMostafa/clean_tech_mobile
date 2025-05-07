@@ -306,4 +306,119 @@ class FilterDialogCubit extends Cubit<FilterDialogState> {
     final levelIndex = levelOrder.indexOf(level);
     return selectedIndex >= levelIndex;
   }
+
+  Map<String, List<String>> moduleActions = {
+    'Provider': ['Create', 'Edit', 'Delete', 'Restore', 'ForceDelete'],
+    'User': [
+      'Create',
+      'Edit',
+      'Delete',
+      'Restore',
+      'ForceDelete',
+      'Login',
+      'Logout',
+      'ClockIn',
+      'ClockOut',
+      'ChangePassword',
+      'EditProfile',
+      'Assign',
+      'RemoveAssign',
+      'EditSetting'
+    ],
+    'UserSetting': ['EditSetting'],
+    'Area': [
+      'Create',
+      'Edit',
+      'Delete',
+      'Restore',
+      'ForceDelete',
+      'Assign',
+      'RemoveAssign'
+    ],
+    'City': [
+      'Create',
+      'Edit',
+      'Delete',
+      'Restore',
+      'ForceDelete',
+      'Assign',
+      'RemoveAssign'
+    ],
+    'Organization': [
+      'Create',
+      'Edit',
+      'Delete',
+      'Restore',
+      'ForceDelete',
+      'Assign',
+      'RemoveAssign'
+    ],
+    'Building': [
+      'Create',
+      'Edit',
+      'Delete',
+      'Restore',
+      'ForceDelete',
+      'Assign',
+      'RemoveAssign'
+    ],
+    'Floor': [
+      'Create',
+      'Edit',
+      'Delete',
+      'Restore',
+      'ForceDelete',
+      'Assign',
+      'RemoveAssign'
+    ],
+    'Section': [
+      'Create',
+      'Edit',
+      'Delete',
+      'Restore',
+      'ForceDelete',
+      'Assign',
+      'RemoveAssign'
+    ],
+    'Point': [
+      'Create',
+      'Edit',
+      'Delete',
+      'Restore',
+      'ForceDelete',
+      'Assign',
+      'RemoveAssign'
+    ],
+    'Task': [
+      'Create',
+      'Edit',
+      'Delete',
+      'Restore',
+      'ForceDelete',
+      'ChangeStatus',
+      'Comment'
+    ],
+    'Shift': [
+      'Create',
+      'Edit',
+      'Delete',
+      'Restore',
+      'ForceDelete',
+      'Assign',
+      'RemoveAssign'
+    ],
+    'Attendacne': ['ClockIn', 'ClockOut'],
+    'Leave': ['Create', 'Edit', 'Delete'],
+    'Category': ['Create', 'Edit', 'Delete', 'Restore', 'ForceDelete'],
+    'Material': ['Create', 'Edit', 'Delete', 'Restore', 'ForceDelete'],
+    'Stock': ['StockIn', 'StockOut'],
+  };
+  List<String> get allModules => moduleActions.keys.toList();
+  List<String> get allActions =>
+      moduleActions.values.expand((actions) => actions).toSet().toList();
+  List<String> currentActions = [];
+  void updateActionsForModule(String module) {
+    currentActions = moduleActions[module] ?? [];
+    emit(ChangeActionsState());
+  }
 }

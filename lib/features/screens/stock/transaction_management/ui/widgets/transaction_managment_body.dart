@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
-import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/two_buttons_in_integreat_screen/two_buttons_in_integration_screen.dart';
 import 'package:smart_cleaning_application/features/screens/stock/transaction_management/logic/transaction_mangement_cubit.dart';
@@ -35,11 +34,11 @@ class _TransactionManagmentBodyState extends State<TransactionManagmentBody> {
         listener: (context, state) {},
         builder: (context, state) {
           int allCount =
-              cubit.transactionManagementModel?.data?.data?.length ?? 0;
+              cubit.transactionManagementModel?.data?.totalCount ?? 0;
           int inCount =
-              cubit.transactionManagementInModel?.data?.data?.length ?? 0;
+              cubit.transactionManagementInModel?.data?.totalCount ?? 0;
           int outCount =
-              cubit.transactionManagementOutModel?.data?.data?.length ?? 0;
+              cubit.transactionManagementOutModel?.data?.totalCount ?? 0;
           return Skeletonizer(
             enabled: (cubit.transactionManagementModel == null),
             child: SafeArea(
@@ -66,16 +65,8 @@ class _TransactionManagmentBodyState extends State<TransactionManagmentBody> {
                       color: Colors.grey[300],
                     ),
                     Expanded(
-                      child: state is TransactionManagementLoadingState &&
-                              (context
-                                      .read<TransactionManagementCubit>()
-                                      .transactionManagementModel ==
-                                  null)
-                          ? Center(
-                              child: CircularProgressIndicator(
-                                  color: AppColor.primaryColor))
-                          : transactionDetailsBuild(
-                              context, cubit.selectedIndex),
+                      child:
+                          transactionDetailsBuild(context, cubit.selectedIndex),
                     ),
                     verticalSpace(10),
                   ],

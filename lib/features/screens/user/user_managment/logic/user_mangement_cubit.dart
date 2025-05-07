@@ -28,7 +28,7 @@ class UserManagementCubit extends Cubit<UserManagementState> {
 
     DioHelper.getData(url: "users/pagination", query: {
       'PageNumber': currentPage,
-      'PageSize': 10,
+      'PageSize': 15,
       'Search': searchController.text,
       'Country': filterModel?.country,
       'AreaId': filterModel?.areaId,

@@ -4,7 +4,6 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
-import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/floating_action_button/floating_action_button.dart';
@@ -49,7 +48,7 @@ class AttendanceLeavesBody extends StatelessWidget {
           return Skeletonizer(
             enabled: cubit.attendanceLeavesModel == null,
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -58,15 +57,7 @@ class AttendanceLeavesBody extends StatelessWidget {
                   verticalSpace(10),
                   Divider(color: Colors.grey[300]),
                   Expanded(
-                    child: state is LeavesLoadingState &&
-                            (context
-                                    .read<AttendanceLeavesCubit>()
-                                    .attendanceLeavesModel ==
-                                null)
-                        ? Center(
-                            child: CircularProgressIndicator(
-                                color: AppColor.primaryColor))
-                        : attendanceLeavesListDetailsBuild(context),
+                    child: attendanceLeavesListDetailsBuild(context),
                   ),
                   verticalSpace(10),
                 ],

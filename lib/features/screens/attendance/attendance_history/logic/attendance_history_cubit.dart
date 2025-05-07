@@ -24,7 +24,7 @@ class AttendanceHistoryCubit extends Cubit<AttendanceHistoryState> {
     emit(HistoryLoadingState());
     DioHelper.getData(url: ApiConstants.hisotryUrl, query: {
       'PageNumber': currentPage,
-      'PageSize': 10,
+      'PageSize': 15,
       'Search': searchController.text,
       'UserId': filterModel?.userId,
       'History': false,

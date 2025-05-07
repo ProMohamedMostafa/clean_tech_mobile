@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
-import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/logic/attendance_history_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/logic/attendance_history_state.dart';
@@ -22,11 +21,9 @@ class AttendanceHistoryBody extends StatelessWidget {
       body: BlocBuilder<AttendanceHistoryCubit, AttendanceHistoryState>(
         builder: (context, state) {
           return Skeletonizer(
-            enabled: context
-                    .read<AttendanceHistoryCubit>()
-                    .attendanceHistoryModel
-                    ?.data ==
-                null,
+            enabled:
+                context.read<AttendanceHistoryCubit>().attendanceHistoryModel ==
+                    null,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
@@ -37,15 +34,7 @@ class AttendanceHistoryBody extends StatelessWidget {
                   verticalSpace(10),
                   Divider(color: Colors.grey[300]),
                   Expanded(
-                    child: state is HistoryLoadingState &&
-                            (context
-                                    .read<AttendanceHistoryCubit>()
-                                    .attendanceHistoryModel ==
-                                null)
-                        ? Center(
-                            child: CircularProgressIndicator(
-                                color: AppColor.primaryColor))
-                        : attendanceHistoryListDetailsBuild(context),
+                    child: attendanceHistoryListDetailsBuild(context),
                   ),
                   verticalSpace(10),
                 ],

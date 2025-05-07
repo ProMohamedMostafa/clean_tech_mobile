@@ -8,29 +8,15 @@ import 'package:smart_cleaning_application/features/screens/shift/shifts_managem
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/delete_shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/logic/shift_state.dart';
 
-
 class ShiftCubit extends Cubit<ShiftState> {
   ShiftCubit() : super(ShiftInitialState());
 
   static ShiftCubit get(context) => BlocProvider.of(context);
 
   TextEditingController searchController = TextEditingController();
-  TextEditingController startDateController = TextEditingController();
-  TextEditingController endDateController = TextEditingController();
-  TextEditingController startTimeController = TextEditingController();
-  TextEditingController endTimeController = TextEditingController();
-  TextEditingController areaController = TextEditingController();
-  TextEditingController cityController = TextEditingController();
-  TextEditingController organizationController = TextEditingController();
-  TextEditingController buildingController = TextEditingController();
-  TextEditingController floorController = TextEditingController();
-  TextEditingController sectionController = TextEditingController();
-  TextEditingController pointController = TextEditingController();
-  TextEditingController providerController = TextEditingController();
+
   final formKey = GlobalKey<FormState>();
   ScrollController scrollController = ScrollController();
-
-  
 
   int selectedIndex = 0;
   int currentPage = 1;
@@ -40,7 +26,7 @@ class ShiftCubit extends Cubit<ShiftState> {
     emit(ShiftLoadingState());
     DioHelper.getData(url: ApiConstants.allShiftsUrl, query: {
       'pageNumber': currentPage,
-      'pageSize': 10,
+      'pageSize': 15,
       'search': searchController.text,
       'StartDate': filterModel?.startDate,
       'EndDate': filterModel?.endDate,
@@ -199,5 +185,4 @@ class ShiftCubit extends Cubit<ShiftState> {
       emit(ForceDeleteShiftErrorState(error.toString()));
     });
   }
-
 }
