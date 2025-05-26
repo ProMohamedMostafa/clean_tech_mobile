@@ -499,7 +499,7 @@ class CustomFilterAttedanceDialog {
                           items: context
                                       .read<ProfileCubit>()
                                       .providersModel
-                                        ?.data?.data
+                                        ?.data?.providers
                                      
                                       ?.isEmpty ??
                                   true
@@ -508,7 +508,7 @@ class CustomFilterAttedanceDialog {
                                       .read<ProfileCubit>()
                                       .providersModel
                                       ?.data
-                                      ?.data
+                                      ?.providers
                                       ?.map((e) => e.name ?? 'Unknown')
                                       .toList() ??
                                   [],
@@ -517,7 +517,7 @@ class CustomFilterAttedanceDialog {
                                 .read<ProfileCubit>()
                                 .providersModel
                                 ?.data
-                                ?.data
+                                ?.providers
                                 ?.firstWhere((provider) =>
                                     provider.name ==
                                     context

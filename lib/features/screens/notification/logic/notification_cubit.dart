@@ -8,10 +8,9 @@ class NotificationCubit extends Cubit<NotificationState> {
   NotificationCubit() : super(NotificationInitialState());
 
   static NotificationCubit get(context) => BlocProvider.of(context);
-
   ScrollController scrollController = ScrollController();
   ScrollController unreadScrollController = ScrollController();
-
+  int selectedIndex = 0;
   int readNotificationCurrentPage = 1;
   NotificationModel? notificationModel;
   getNotification() {
@@ -87,9 +86,31 @@ class NotificationCubit extends Cubit<NotificationState> {
         if (unreadScrollController.position.atEdge &&
             unreadScrollController.position.pixels != 0) {
           unReadNotificationCurrentPage++;
-          getNotification();
+          getUnReadNotification();
         }
       });
+  }
+
+  void changeTap(int index) {
+    selectedIndex = index;
+
+    if (index == 0) {
+      if (notificationModel == null) {
+        readNotificationCurrentPage = 1;
+        notificationModel = null;
+        getNotification();
+      } else {
+        emit(NotificationSuccessState(notificationModel!));
+      }
+    } else {
+      if (unReadNotificationModel == null) {
+        unReadNotificationCurrentPage = 1;
+        unReadNotificationModel = null;
+        getUnReadNotification();
+      } else {
+        emit(UnReadNotificationSuccessState(unReadNotificationModel!));
+      }
+    }
   }
 
   markRead() {

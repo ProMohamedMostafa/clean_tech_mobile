@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
-import 'package:smart_cleaning_application/features/layout/main_layout/logic/bottom_navbar_cubit.dart';
 import 'package:smart_cleaning_application/features/layout/main_layout/ui/screen/main_layout.dart';
 import 'package:smart_cleaning_application/features/layout/splash/splash_screen.dart';
 import 'package:smart_cleaning_application/features/screens/activity/logic/activity_cubit.dart';
@@ -20,13 +19,11 @@ import 'package:smart_cleaning_application/features/screens/attendance/attendanc
 import 'package:smart_cleaning_application/features/screens/attendance/ui/attendance_screen.dart';
 import 'package:smart_cleaning_application/features/screens/edit_profile/logic/edit_profile_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/edit_profile/ui/screen/edit_profile_screen.dart';
-import 'package:smart_cleaning_application/features/screens/home/logic/home_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/languages/ui/screen/languages_screen.dart';
 import 'package:smart_cleaning_application/features/screens/notification/logic/notification_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/notification/ui/screen/notification_screen.dart';
 import 'package:smart_cleaning_application/features/screens/profile/logic/profile_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/profile/ui/screen/profile_screen.dart';
-import 'package:smart_cleaning_application/features/screens/settings/logic/settings_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/logic/cubit/shift_details_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/stock/add_category/logic/add_category_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/stock/add_category/ui/screen/add_category_screen.dart';
@@ -97,17 +94,13 @@ import 'package:smart_cleaning_application/features/screens/auth/set_password/lo
 import 'package:smart_cleaning_application/features/screens/auth/set_password/ui/screen/set_password_screen.dart';
 import 'package:smart_cleaning_application/features/screens/auth/verify_account/logic/verify_account_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/auth/verify_account/ui/screen/verify_account.dart';
-import 'package:smart_cleaning_application/features/screens/calendar/ui/calendar_screen.dart';
 import 'package:smart_cleaning_application/features/screens/change_password/logic/change_password_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/change_password/ui/screen/change_password_screen.dart';
 import 'package:smart_cleaning_application/features/screens/user/edit_user/logic/edit_user_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user/edit_user/ui/screen/edit_user_screen.dart';
-import 'package:smart_cleaning_application/features/screens/home/ui/screen/home_screen.dart';
 import 'package:smart_cleaning_application/features/screens/auth/login/ui/screen/login_screen.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/ui/screen/integrations_screen.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/ui/screen/work_location_screen.dart';
-import 'package:smart_cleaning_application/features/screens/settings/ui/screen/settings_screen.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/screen/user_details_screen.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/ui/screen/user_managment.dart';
@@ -163,35 +156,7 @@ class AppRouter {
         );
       case Routes.mainLayoutScreen:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => BottomNavbarCubit(),
-            child: const MainLayout(),
-          ),
-        );
-      case Routes.homeScreen:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => HomeCubit(),
-            child: const HomeScreen(),
-          ),
-        );
-      case Routes.settingsScreen:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => SettingsCubit(),
-            child: const SettingsScreen(),
-          ),
-        );
-      case Routes.calendarScreen:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => TaskManagementCubit(),
-            child: const CalendarScreen(),
-          ),
-        );
-      case Routes.integrationsScreen:
-        return MaterialPageRoute(
-          builder: (_) => const IntegrationsScreen(),
+          builder: (_) => const MainLayout(),
         );
       case Routes.languageScreen:
         return MaterialPageRoute(
@@ -219,9 +184,10 @@ class AppRouter {
           ),
         );
       case Routes.userManagmentScreen:
+        final roleId = settings.arguments as int?;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => UserManagementCubit()..initialize(),
+            create: (context) => UserManagementCubit()..initialize(roleId),
             lazy: false,
             child: const UserManagmentScreen(),
           ),
@@ -506,9 +472,10 @@ class AppRouter {
         );
 
       case Routes.historyScreen:
+        final status = settings.arguments as int?;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => AttendanceHistoryCubit()..initialize(),
+            create: (context) => AttendanceHistoryCubit()..initialize(status),
             child: AttendanceHistoryScreen(),
           ),
         );
@@ -648,7 +615,9 @@ class AppRouter {
       case Routes.notificationScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => NotificationCubit(),
+            create: (context) => NotificationCubit()
+              ..getNotification()
+              ..getUnReadNotification(),
             child: const NotificationScreen(),
           ),
         );

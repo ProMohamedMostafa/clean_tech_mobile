@@ -7,9 +7,9 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 Widget twoButtonsIntegration({
   required int selectedIndex,
   required Function(int index) onTap,
-  required int firstCount,
+  int? firstCount,
   required String firstLabel,
-  required int secondCount,
+  int? secondCount,
   required String secondLabel,
   int? thirdCount,
   String? thirdLabel,
@@ -48,11 +48,12 @@ Widget twoButtonsIntegration({
 Widget _buildButton({
   required int index,
   required int selectedIndex,
-  required int count,
+  int? count,
   required String label,
   required Function(int) onTap,
 }) {
   final bool isSelected = selectedIndex == index;
+  final String displayText = count != null ? "$count $label" : label;
 
   return Expanded(
     child: GestureDetector(
@@ -68,24 +69,12 @@ Widget _buildButton({
           ),
         ),
         child: Center(
-          child: RichText(
+          child: Text(
+            displayText,
             textAlign: TextAlign.center,
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: "$count",
-                  style: isSelected
-                      ? TextStyles.font14WhiteRegular
-                      : TextStyles.font14PrimRegular,
-                ),
-                TextSpan(
-                  text: " $label",
-                  style: isSelected
-                      ? TextStyles.font14WhiteRegular
-                      : TextStyles.font14PrimRegular,
-                ),
-              ],
-            ),
+            style: isSelected
+                ? TextStyles.font14WhiteRegular
+                : TextStyles.font14PrimRegular,
           ),
         ),
       ),

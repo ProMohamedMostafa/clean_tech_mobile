@@ -499,12 +499,14 @@ class FilterDialogWidget extends StatelessWidget {
                               .map((e) => e.name ?? 'Unknown')
                               .toList(),
                           onChanged: (selectedValue) {
-                            final selectedId = cubit.providersModel?.data?.data
-                                ?.firstWhere(
-                                  (provider) => provider.name == selectedValue,
-                                )
-                                .id
-                                ?.toString();
+                            final selectedId =
+                                cubit.providersModel?.data?.providers
+                                    ?.firstWhere(
+                                      (provider) =>
+                                          provider.name == selectedValue,
+                                    )
+                                    .id
+                                    ?.toString();
 
                             if (selectedId != null) {
                               cubit.providerIdController.text = selectedId;

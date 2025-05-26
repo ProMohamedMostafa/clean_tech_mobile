@@ -146,7 +146,7 @@ class AddProviderBottomDialog {
             child: CustomDropDownList(
               hint: 'Delete provider',
               onPressed: (selectedValue) {
-                final selectedId = cubit.providersModel?.data?.data
+                final selectedId = cubit.providersModel?.data?.providers
                     ?.firstWhere(
                       (provider) => provider.name == selectedValue,
                     )
@@ -157,9 +157,9 @@ class AddProviderBottomDialog {
                   cubit.providerIdController.text = selectedId;
                 }
               },
-              items: cubit.providersModel?.data?.data?.isEmpty ?? true
+              items: cubit.providersModel?.data?.providers?.isEmpty ?? true
                   ? ['No Providers available']
-                  : cubit.providersModel?.data?.data
+                  : cubit.providersModel?.data?.providers
                           ?.map((e) => e.name ?? 'Unknown')
                           .toList() ??
                       [],

@@ -3,10 +3,8 @@
     "loginTitle2": "Login to access your Clean Tech  account",
     "labelEmail": "Email or userName",
     "labelPassword": "Password",
-    "validationEmailAndUser": "Invalid email address or userName",
     "validationEmail": "Invalid email address",
     "validationVerify": "Invalid code",
-    "validationPassword": "Invalid password",
     "validationUserName": "User name is required",
     "validationFirstName": "First name is required",
     "validationLastName": "Last name is required",
@@ -93,5 +91,16 @@
     "editUserTitle": "Edit User",
     "userDetailsTitle": "User Details",
     "deleteButton": "Delete",
-    "editButton": "Edit"
+    "editButton": "Edit",
+    "welcome": "Welcome!",
+    "experienceDescription": "Experience a seamless way to manage\ncleaning services with just a few taps on your phone!",
+    "nextButton": "Next",
+    "loginMessage": "Login to access your Clean Tech\naccount",
+    "validationEmailAndUser": "Invalid email address or userName",
+    "validationUsernameTooLong": "Username or email is too long",
+    "validationUsernameTooShort": "Username or email is too short",
+    "validationPassword": "Invalid password",
+    "validationPasswordIncorrect": "Password is incorrect",
+    "validationEmailTooLong": "Email is too long",
+    "validationEmailTooShort": "Email is too short"
 }

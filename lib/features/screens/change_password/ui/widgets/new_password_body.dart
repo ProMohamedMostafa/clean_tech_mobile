@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/regx_validations/regx_validations.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/features/layout/main_layout/logic/bottom_navbar_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/change_password/logic/change_password_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/change_password/logic/change_password_state.dart';
 import 'package:smart_cleaning_application/features/screens/change_password/ui/widgets/password_validation.dart';
@@ -59,7 +59,9 @@ class _ChangeToNewPasswordBodyState extends State<ChangeToNewPasswordBody> {
         if (state is ChangePasswordSuccessState) {
           toast(text: state.changePasswordModel.message!, color: Colors.blue);
 
-          context.pop();
+          context
+              .read<BottomNavbarCubit>()
+              .changeBottomNavbarWithRoute(context, 3);
         }
         if (state is ChangePasswordErrorState) {
           toast(text: state.error, color: Colors.red);

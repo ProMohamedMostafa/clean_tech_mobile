@@ -29,230 +29,192 @@ class SettingsBody extends StatefulWidget {
 }
 
 class _SettingsBodyState extends State<SettingsBody> {
-  bool isNotOpenNotif = true;
-  bool isNotDark = true;
-
   @override
   void initState() {
-    context.read<SettingsCubit>().getUserDetails();
-    context.read<SettingsCubit>().getUserStatus();
+    context.read<SettingsCubit>()
+      ..getUserDetails()
+      ..getUserStatus()
+      ..initializeNotificationStatus()
+      ..getDarkModeStatus();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Settings"),
-      ),
-      body: BlocConsumer<SettingsCubit, SettingsState>(
-        listener: (context, state) {
-          if (state is LogOutSuccessState) {
-            toast(text: state.messsage, color: Colors.blue);
-            context.pushNamedAndRemoveUntil(Routes.loginScreen,
-                predicate: (route) => false);
-          }
-        },
-        builder: (context, state) {
-          if (context.read<SettingsCubit>().profileModel == null ||
-              context.read<SettingsCubit>().userStatusModel == null) {
-            return Center(
-              child: Image.asset(
-                'assets/images/loading.gif',
-                width: 120.w,
-                height: 120.h,
-                fit: BoxFit.contain,
-              ),
-            );
-          }
-          return SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Center(
-                    child: Stack(
-                      children: [
-                        GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (contextt) => Scaffold(
-                                    appBar: AppBar(
-                                      leading: customBackButton(context),
-                                    ),
-                                    body: Center(
-                                      child: PhotoView(
-                                        imageProvider: NetworkImage(
-                                          '${ApiConstants.apiBaseUrlImage}${context.read<SettingsCubit>().profileModel!.data!.image}',
-                                        ),
-                                        errorBuilder:
-                                            (context, error, stackTrace) {
-                                          return Image.asset(
-                                            'assets/images/person.png',
-                                            fit: BoxFit.fill,
-                                          );
-                                        },
-                                        backgroundDecoration:
-                                            const BoxDecoration(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+    return BlocConsumer<SettingsCubit, SettingsState>(
+      listener: (context, state) {
+        if (state is LogOutSuccessState) {
+          toast(text: state.messsage, color: Colors.blue);
+          context.pushNamedAndRemoveUntil(Routes.loginScreen,
+              predicate: (route) => false);
+        }
+      },
+      builder: (context, state) {
+        final cubit = context.read<SettingsCubit>();
+
+        if (cubit.profileModel == null || cubit.userStatusModel == null) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: AppColor.primaryColor,
+            ),
+          );
+        }
+        return SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Center(
+                child: Stack(
+                  children: [
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (contextt) => Scaffold(
+                                appBar: AppBar(
+                                  leading: customBackButton(context),
                                 ),
-                              );
-                            },
-                            child: Container(
-                                width: 80.w,
-                                height: 80.h,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                ),
-                                child: ClipOval(
-                                  child: Image.network(
-                                    '${ApiConstants.apiBaseUrlImage}${context.read<SettingsCubit>().profileModel!.data!.image}',
-                                    fit: BoxFit.fill,
+                                body: Center(
+                                  child: PhotoView(
+                                    imageProvider: NetworkImage(
+                                      '${ApiConstants.apiBaseUrlImage}${cubit.profileModel?.data?.image}',
+                                    ),
                                     errorBuilder: (context, error, stackTrace) {
                                       return Image.asset(
                                         'assets/images/person.png',
                                         fit: BoxFit.fill,
                                       );
                                     },
+                                    backgroundDecoration: const BoxDecoration(
+                                      color: Colors.white,
+                                    ),
                                   ),
-                                ))),
-                        if (role != 'Admin')
-                          Positioned(
-                            bottom: 1,
-                            right: 10,
-                            child: Container(
-                              width: 15.w,
-                              height: 15.h,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: context
-                                              .read<SettingsCubit>()
-                                              .userStatusModel
-                                              ?.data ==
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                            width: 80.w,
+                            height: 80.h,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            child: ClipOval(
+                              child: Image.network(
+                                '${ApiConstants.apiBaseUrlImage}${cubit.profileModel!.data!.image}',
+                                fit: BoxFit.fill,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Image.asset(
+                                    'assets/images/person.png',
+                                    fit: BoxFit.fill,
+                                  );
+                                },
+                              ),
+                            ))),
+                    if (role != 'Admin')
+                      Positioned(
+                        bottom: 1,
+                        right: 10,
+                        child: Container(
+                          width: 15.w,
+                          height: 15.h,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: cubit.userStatusModel?.data == null
+                                  ? Colors.red
+                                  : cubit.userStatusModel!.data!.clockOut ==
                                           null
-                                      ? Colors.red
-                                      : context
-                                                  .read<SettingsCubit>()
-                                                  .userStatusModel!
-                                                  .data!
-                                                  .clockOut ==
-                                              null
-                                          ? Colors.green
-                                          : Colors.red,
-                                  border: Border.all(
-                                      color: Colors.white, width: 2.w)),
-                            ),
-                          )
-                      ],
-                    ),
-                  ),
-                  verticalSpace(5),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                          context
-                              .read<SettingsCubit>()
-                              .profileModel!
-                              .data!
-                              .firstName!,
-                          style: TextStyles.font14Redbold
-                              .copyWith(color: Colors.black)),
-                      horizontalSpace(5),
-                      Text(
-                          context
-                              .read<SettingsCubit>()
-                              .profileModel!
-                              .data!
-                              .lastName!,
-                          style: TextStyles.font14Redbold
-                              .copyWith(color: Colors.black)),
-                    ],
-                  ),
-                  Text(context.read<SettingsCubit>().profileModel!.data!.role!,
-                      style: TextStyles.font12GreyRegular
-                          .copyWith(color: AppColor.primaryColor)),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Divider(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: Column(
-                      children: [
-                        listTileWidget(() {
-                          context.pushNamed(Routes.profileScreen);
-                        }, 'Profile', Icons.person),
-                        listTileWidget(() {
-                          context.pushNamed(Routes.changepasswordScreen);
-                        }, S.of(context).settingTitle2, Icons.password_sharp),
-                        listTileWidget(() {
-                          context.pushNamed(Routes.technicalSupportScreen);
-                        }, S.of(context).settingTitle4, Icons.phone),
-                        listTileWidget(() async {
-                          Uri url = Uri.https('aicloud.sa');
-                          await launchUrl(url);
-                        }, S.of(context).settingTitle5,
-                            Icons.desktop_windows_outlined),
-                        listTileWidget(() {
-                          Share.share(
-                              'check out my website https://example.com');
-                        }, S.of(context).settingTitle3, Icons.share),
-                        listTileWidget(() {
-                          context.pushNamed(Routes.languageScreen);
-                        }, S.of(context).settingTitle6, Icons.language),
-                        toggleListTile(() {
-                          setState(() {
-                            // isNotOpenNotif = !isNotOpenNotif;
-                            // context
-                            //     .read<ThemeCubit>()
-                            //     .changeApplicationTheme(context);
-                          });
-                        }, S.of(context).settingTitle7,
-                            Icons.notifications_active, isNotOpenNotif),
-                        toggleListTile(() {
-                          setState(() {
-                            isNotDark = !isNotDark;
-                          });
-                        }, S.of(context).settingTitle8,
-                            Icons.brightness_4_outlined, isNotDark),
-                        ListTile(
-                          onTap: () {
-                            context.read<SettingsCubit>().logout();
-                          },
-                          leading: Transform.flip(
-                            flipX: context.read<AppCubit>().isArabic()
-                                ? false
-                                : true,
-                            child: Icon(
-                              Icons.logout_outlined,
-                              size: 20.sp,
-                              color: Colors.red,
-                            ),
-                          ),
-                          title: Text(
-                            S.of(context).settingTitle9,
-                            style: TextStyles.font14GreyRegular
-                                .copyWith(color: Colors.red),
-                          ),
-                          dense: false,
+                                      ? Colors.green
+                                      : Colors.red,
+                              border:
+                                  Border.all(color: Colors.white, width: 2.w)),
                         ),
-                      ],
-                    ),
-                  ),
+                      )
+                  ],
+                ),
+              ),
+              verticalSpace(5),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(cubit.profileModel?.data?.firstName ?? '',
+                      style: TextStyles.font14Redbold
+                          .copyWith(color: Colors.black)),
+                  horizontalSpace(5),
+                  Text(cubit.profileModel?.data?.lastName ?? '',
+                      style: TextStyles.font14Redbold
+                          .copyWith(color: Colors.black)),
                 ],
               ),
-            ),
-          );
-        },
-      ),
+              Text(cubit.profileModel?.data?.role ?? '',
+                  style: TextStyles.font12GreyRegular
+                      .copyWith(color: AppColor.primaryColor)),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Divider(),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Column(
+                  children: [
+                    listTileWidget(() {
+                      context.pushNamed(Routes.profileScreen);
+                    }, 'Profile', Icons.person),
+                    listTileWidget(() {
+                      context.pushNamed(Routes.changepasswordScreen);
+                    }, S.of(context).settingTitle2, Icons.password_sharp),
+                    listTileWidget(() {
+                      context.pushNamed(Routes.technicalSupportScreen);
+                    }, S.of(context).settingTitle4, Icons.phone),
+                    listTileWidget(() async {
+                      Uri url = Uri.https('aicloud.sa');
+                      await launchUrl(url);
+                    }, S.of(context).settingTitle5,
+                        Icons.desktop_windows_outlined),
+                    listTileWidget(() {
+                      Share.share('check out my website https://example.com');
+                    }, S.of(context).settingTitle3, Icons.share),
+                    listTileWidget(() {
+                      context.pushNamed(Routes.languageScreen);
+                    }, S.of(context).settingTitle6, Icons.language),
+                    toggleListTile(() {
+                      cubit.toggleNotification();
+                    }, S.of(context).settingTitle7, Icons.notifications_active,
+                        cubit.isNotOpenNotif),
+                    toggleListTile(() {
+                      cubit.toggleDarkMode();
+                    }, S.of(context).settingTitle8, Icons.brightness_4_outlined,
+                        cubit.isNotDark),
+                    ListTile(
+                      onTap: () {
+                        cubit.logout();
+                      },
+                      leading: Transform.flip(
+                        flipX:
+                            context.read<AppCubit>().isArabic() ? false : true,
+                        child: Icon(
+                          Icons.logout_outlined,
+                          size: 20.sp,
+                          color: Colors.red,
+                        ),
+                      ),
+                      title: Text(
+                        S.of(context).settingTitle9,
+                        style: TextStyles.font14GreyRegular
+                            .copyWith(color: Colors.red),
+                      ),
+                      dense: false,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

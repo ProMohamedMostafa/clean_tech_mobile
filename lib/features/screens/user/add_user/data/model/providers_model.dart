@@ -1,10 +1,11 @@
 class ProvidersModel {
   int? statusCode;
-  dynamic meta;
+  String? meta;
   bool? succeeded;
   String? message;
-  dynamic error;
-  ProviderData? data;
+  String? error;
+  int? businessErrorCode;
+  ProvidersData? data;
 
   ProvidersModel({
     this.statusCode,
@@ -12,44 +13,35 @@ class ProvidersModel {
     this.succeeded,
     this.message,
     this.error,
+    this.businessErrorCode,
     this.data,
   });
 
-  ProvidersModel.fromJson(Map<String, dynamic> json) {
-    statusCode = json['statusCode'];
-    meta = json['meta'];
-    succeeded = json['succeeded'];
-    message = json['message'];
-    error = json['error'];
-    data = json['data'] != null ? ProviderData.fromJson(json['data']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-    data['statusCode'] = statusCode;
-    data['meta'] = meta;
-    data['succeeded'] = succeeded;
-    data['message'] = message;
-    data['error'] = error;
-    if (this.data != null) {
-      data['data'] = this.data!.toJson();
-    }
-    return data;
+  factory ProvidersModel.fromJson(Map<String, dynamic> json) {
+    return ProvidersModel(
+      statusCode: json['statusCode'],
+      meta: json['meta'],
+      succeeded: json['succeeded'],
+      message: json['message'],
+      error: json['error'],
+      businessErrorCode: json['businessErrorCode'],
+      data: ProvidersData.fromJson(json['data']),
+    );
   }
 }
 
-class ProviderData {
+class ProvidersData {
   int? currentPage;
   int? totalPages;
   int? totalCount;
-  dynamic meta;
+  String? meta;
   int? pageSize;
   bool? hasPreviousPage;
   bool? hasNextPage;
   bool? succeeded;
-  List<ProviderItem>? data;
+  List<Provider>? providers;
 
-  ProviderData({
+  ProvidersData({
     this.currentPage,
     this.totalPages,
     this.totalCount,
@@ -58,58 +50,41 @@ class ProviderData {
     this.hasPreviousPage,
     this.hasNextPage,
     this.succeeded,
-    this.data,
+    this.providers,
   });
 
-  ProviderData.fromJson(Map<String, dynamic> json) {
-    currentPage = json['currentPage'];
-    totalPages = json['totalPages'];
-    totalCount = json['totalCount'];
-    meta = json['meta'];
-    pageSize = json['pageSize'];
-    hasPreviousPage = json['hasPreviousPage'];
-    hasNextPage = json['hasNextPage'];
-    succeeded = json['succeeded'];
-    if (json['data'] != null) {
-      data = [];
-      json['data'].forEach((v) {
-        data!.add(ProviderItem.fromJson(v));
-      });
-    }
-  }
+  factory ProvidersData.fromJson(Map<String, dynamic> json) {
+    var providersList = json['data'] as List;
+    List<Provider> providers =
+        providersList.map((provider) => Provider.fromJson(provider)).toList();
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-    data['currentPage'] = currentPage;
-    data['totalPages'] = totalPages;
-    data['totalCount'] = totalCount;
-    data['meta'] = meta;
-    data['pageSize'] = pageSize;
-    data['hasPreviousPage'] = hasPreviousPage;
-    data['hasNextPage'] = hasNextPage;
-    data['succeeded'] = succeeded;
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
-    }
-    return data;
+    return ProvidersData(
+      currentPage: json['currentPage'],
+      totalPages: json['totalPages'],
+      totalCount: json['totalCount'],
+      meta: json['meta'],
+      pageSize: json['pageSize'],
+      hasPreviousPage: json['hasPreviousPage'],
+      hasNextPage: json['hasNextPage'],
+      succeeded: json['succeeded'],
+      providers: providers,
+    );
   }
 }
 
-class ProviderItem {
+class Provider {
   int? id;
   String? name;
 
-  ProviderItem({this.id, this.name});
+  Provider({
+    this.id,
+    this.name,
+  });
 
-  ProviderItem.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-    data['id'] = id;
-    data['name'] = name;
-    return data;
+  factory Provider.fromJson(Map<String, dynamic> json) {
+    return Provider(
+      id: json['id'],
+      name: json['name'],
+    );
   }
 }

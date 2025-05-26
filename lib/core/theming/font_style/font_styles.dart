@@ -167,6 +167,11 @@ class TextStyles {
     fontWeight: FontWeightHelper.light,
     color: AppColor.primaryColor,
   );
+   static TextStyle font11lightRed = TextStyle(
+    fontSize: 11.sp,
+    fontWeight: FontWeightHelper.light,
+    color: Colors.red,
+  );
   static TextStyle font10lightPrimary = TextStyle(
     fontSize: 10.sp,
     fontWeight: FontWeightHelper.light,

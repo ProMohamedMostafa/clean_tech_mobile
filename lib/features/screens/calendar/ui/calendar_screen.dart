@@ -67,9 +67,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
             monthViewSettings: const MonthViewSettings(
               appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
               showAgenda: true,
-              agendaViewHeight: 200,
+              agendaViewHeight: 350,
               agendaItemHeight: 60,
-              numberOfWeeksInView: 6,
+              numberOfWeeksInView: 2,
             ),
             headerHeight: 50.h,
             headerStyle: CalendarHeaderStyle(

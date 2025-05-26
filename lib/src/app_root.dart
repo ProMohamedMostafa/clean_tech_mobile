@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/core/theming/theme/logic/theme_cubit/theme_cubit.dart';
+import 'package:smart_cleaning_application/features/layout/main_layout/logic/bottom_navbar_cubit.dart';
 import 'package:smart_cleaning_application/src/app_cubit/app_cubit.dart';
 import 'package:smart_cleaning_application/src/app_cubit/app_states.dart';
 import 'package:smart_cleaning_application/core/routing/app_router.dart';
@@ -30,6 +31,9 @@ class AppRoot extends StatelessWidget {
             ),
             BlocProvider(
               create: (context) => ThemeCubit(),
+            ),
+            BlocProvider(
+              create: (context) => BottomNavbarCubit(),
             ),
           ],
           child: BlocBuilder<AppCubit, AppStates>(

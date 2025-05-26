@@ -107,8 +107,6 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
     });
   }
 
-
-
   DeleteTaskModel? deleteTaskModel;
   List<TaskData> deletedTasks = [];
   taskDelete(int id) {

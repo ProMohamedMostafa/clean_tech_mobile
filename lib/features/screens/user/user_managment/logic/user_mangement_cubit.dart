@@ -23,7 +23,7 @@ class UserManagementCubit extends Cubit<UserManagementState> {
   int currentPage = 1;
   FilterDialogDataModel? filterModel;
   UsersModel? usersModel;
-  getAllUsersInUserManage() {
+  getAllUsersInUserManage({int? roleId}) {
     emit(AllUsersLoadingState());
 
     DioHelper.getData(url: "users/pagination", query: {
@@ -38,7 +38,7 @@ class UserManagementCubit extends Cubit<UserManagementState> {
       'FloorId': filterModel?.floorId,
       'SectionId': filterModel?.sectionId,
       'PointId': filterModel?.pointId,
-      'RoleId': filterModel?.roleId,
+      'RoleId': roleId ?? filterModel?.roleId,
       'ProviderId': filterModel?.providerId,
       'Gender': filterModel?.genderId,
       'Nationality': filterModel?.nationality
@@ -59,16 +59,16 @@ class UserManagementCubit extends Cubit<UserManagementState> {
     });
   }
 
-  void initialize() {
+  void initialize(int? roleId) {
     scrollController = ScrollController()
       ..addListener(() {
         if (scrollController.position.atEdge &&
             scrollController.position.pixels != 0) {
           currentPage++;
-          getAllUsersInUserManage();
+          getAllUsersInUserManage(roleId: roleId);
         }
       });
-    getAllUsersInUserManage();
+    getAllUsersInUserManage(roleId: roleId);
     getAllDeletedUser();
   }
 

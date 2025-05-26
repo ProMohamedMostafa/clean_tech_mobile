@@ -31,7 +31,6 @@ class UserDetailsErrorState extends SettingsState {
 
 //********************************* */
 
-
 class UserStatusLoadingState extends SettingsState {}
 
 class UserStatusSuccessState extends SettingsState {
@@ -47,7 +46,6 @@ class UserStatusErrorState extends SettingsState {
 
 //********************************* */
 
-
 class LogOutLoadingState extends SettingsState {}
 
 class LogOutSuccessState extends SettingsState {
@@ -58,5 +56,11 @@ class LogOutSuccessState extends SettingsState {
 
 class LogOutErrorState extends SettingsState {
   final String error;
- LogOutErrorState(this.error);
+  LogOutErrorState(this.error);
 }
+
+//********************************* */
+
+class NotificationToggleChangedState extends SettingsState {}
+
+class DarkModeToggleChangedState extends SettingsState {}

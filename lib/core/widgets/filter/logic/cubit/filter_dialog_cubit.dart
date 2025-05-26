@@ -253,15 +253,15 @@ class FilterDialogCubit extends Cubit<FilterDialogState> {
   }
 
   ProvidersModel? providersModel;
-  List<ProviderItem> providerItem = [
-    ProviderItem(name: 'No providers available')
+  List<Provider> providerItem = [
+    Provider(name: 'No providers available')
   ];
   getProviders() {
     emit(FilterDialogLoading<ProvidersModel>());
     DioHelper.getData(url: ApiConstants.allProvidersUrl).then((value) {
       providersModel = ProvidersModel.fromJson(value!.data);
-      providerItem = providersModel?.data?.data ??
-          [ProviderItem(name: 'No providers available')];
+      providerItem = providersModel?.data?.providers ??
+          [Provider(name: 'No providers available')];
       emit(FilterDialogSuccess<ProvidersModel>());
     }).catchError((error) {
       emit(FilterDialogError<ProvidersModel>());

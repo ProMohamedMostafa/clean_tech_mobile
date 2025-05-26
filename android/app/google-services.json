@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "406729164942",
+    "project_id": "cleantech-e2a77",
+    "storage_bucket": "cleantech-e2a77.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:406729164942:android:c12def4e25f29a67d461df",
+        "android_client_info": {
+          "package_name": "com.example.smart_cleaning_application"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBp95kxPIk26rStMfTzeNWDAbs9FXbHllg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

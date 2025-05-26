@@ -20,7 +20,7 @@ class AttendanceHistoryCubit extends Cubit<AttendanceHistoryState> {
 
   FilterDialogDataModel? filterModel;
   AttendanceHistoryModel? attendanceHistoryModel;
-  getAllHistory() {
+  getAllHistory({int? status}) {
     emit(HistoryLoadingState());
     DioHelper.getData(url: ApiConstants.hisotryUrl, query: {
       'PageNumber': currentPage,
@@ -32,7 +32,7 @@ class AttendanceHistoryCubit extends Cubit<AttendanceHistoryState> {
       'Shift': filterModel?.shiftId,
       'StartDate': filterModel?.startDate,
       'EndDate': filterModel?.endDate,
-      'Status': filterModel?.statusId,
+      'Status': status ?? filterModel?.statusId,
       'AreaId': filterModel?.areaId,
       'CityId': filterModel?.cityId,
       'OrganizationId': filterModel?.organizationId,
@@ -58,15 +58,15 @@ class AttendanceHistoryCubit extends Cubit<AttendanceHistoryState> {
     });
   }
 
-  void initialize() {
+  void initialize(int? status) {
     scrollController = ScrollController()
       ..addListener(() {
         if (scrollController.position.atEdge &&
             scrollController.position.pixels != 0) {
           currentPage++;
-          getAllHistory();
+          getAllHistory(status: status);
         }
       });
-    getAllHistory();
+    getAllHistory(status: status);
   }
 }

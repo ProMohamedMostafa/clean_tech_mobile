@@ -19,3 +19,13 @@ class LoginErrorState extends LoginStates {
 
 //************ */
 class ChangeSuffixIconVisiabiltyState extends LoginStates {}
+
+//****************** */
+class NotificationLoadingState extends LoginStates {}
+
+class NotificationSuccessState extends LoginStates {}
+
+class NotificationErrorState extends LoginStates {
+  final String error;
+  NotificationErrorState(this.error);
+}

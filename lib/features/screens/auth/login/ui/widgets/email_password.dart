@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
@@ -13,14 +12,9 @@ import 'package:smart_cleaning_application/features/screens/auth/login/logic/log
 import 'package:smart_cleaning_application/features/screens/auth/login/logic/login_cubit_state.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
-class EmailAndPassword extends StatefulWidget {
+class EmailAndPassword extends StatelessWidget {
   const EmailAndPassword({super.key});
 
-  @override
-  State<EmailAndPassword> createState() => _EmailAndPasswordState();
-}
-
-class _EmailAndPasswordState extends State<EmailAndPassword> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<LoginCubit, LoginStates>(
@@ -50,9 +44,9 @@ class _EmailAndPasswordState extends State<EmailAndPassword> {
                   if (value == null || value.isEmpty) {
                     return S.of(context).validationEmailAndUser;
                   } else if (value.length > 55) {
-                    return 'UserName or Email too long';
+                    return S.of(context).validationUsernameTooLong;
                   } else if (value.length < 3) {
-                    return 'UserName or Email too short';
+                    return S.of(context).validationUsernameTooShort;
                   }
                 },
               ),
@@ -70,7 +64,7 @@ class _EmailAndPasswordState extends State<EmailAndPassword> {
                     if (value == null || value.isEmpty) {
                       return S.of(context).validationPassword;
                     } else if (value.length < 8) {
-                      return 'Password is incorrect';
+                      return S.of(context).validationAddPasswordConfirmation;
                     }
                   }),
               verticalSpace(15),
@@ -89,13 +83,9 @@ class _EmailAndPasswordState extends State<EmailAndPassword> {
               ),
               verticalSpace(60),
               state is LoginLoadingState
-                  ? Center(
-                      child: Image.asset(
-                        'assets/images/loading.gif',
-                        width: 120.w,
-                        height: 120.h,
-                        fit: BoxFit.contain,
-                      ),
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                          color: AppColor.primaryColor),
                     )
                   : DefaultElevatedButton(
                       width: 310,
@@ -109,7 +99,7 @@ class _EmailAndPasswordState extends State<EmailAndPassword> {
                             .formKey
                             .currentState!
                             .validate()) {
-                          context.read<LoginCubit>().userLogin();
+                          context.read<LoginCubit>().userLogin(context);
                         }
                       },
                     )

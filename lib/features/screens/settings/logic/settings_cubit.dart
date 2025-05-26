@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_cleaning_application/core/helpers/cache_helper/cache_helper.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/settings/data/model/profile_model.dart';
 import 'package:smart_cleaning_application/features/screens/settings/logic/settings_state.dart';
@@ -9,9 +10,43 @@ class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit() : super(SettingsInitialState());
 
   static SettingsCubit get(context) => BlocProvider.of(context);
+  bool isNotOpenNotif = true;
+  bool isNotDark = true;
 
-  TextEditingController titleController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
+  Future<void> toggleNotification() async {
+    isNotOpenNotif = !isNotOpenNotif;
+    await CacheHelper.setData(key: 'notification', value: isNotOpenNotif);
+
+    // Only manage Firebase subscription here
+    if (isNotOpenNotif) {
+      await FirebaseMessaging.instance.unsubscribeFromTopic('notifications');
+    } else {
+      await FirebaseMessaging.instance.subscribeToTopic('notifications');
+    }
+
+    emit(NotificationToggleChangedState());
+  }
+
+  // Initialize notification status
+  Future<void> initializeNotificationStatus() async {
+    isNotOpenNotif = await CacheHelper.getBool('notification') ?? false;
+    // Set initial subscription state
+    if (isNotOpenNotif) {
+      await FirebaseMessaging.instance.unsubscribeFromTopic('notifications');
+    }
+    emit(NotificationToggleChangedState());
+  }
+
+  getDarkModeStatus() async {
+    isNotDark = await CacheHelper.getBool('darkMode') ?? false;
+    emit(DarkModeToggleChangedState());
+  }
+
+  toggleDarkMode() async {
+    isNotDark = !isNotDark;
+    await CacheHelper.setData(key: 'darkMode', value: isNotDark);
+    emit(DarkModeToggleChangedState());
+  }
 
   ProfileModel? profileModel;
   getUserDetails() {

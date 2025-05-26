@@ -114,7 +114,7 @@ class AddPopUpDialog {
                               .read<MaterialManagementCubit>()
                               .providersModel
                               ?.data
-                              ?.data
+                              ?.providers
                               ?.firstWhere(
                                 (provider) => provider.name == selectedValue,
                               )
@@ -128,7 +128,7 @@ class AddPopUpDialog {
                                     .read<MaterialManagementCubit>()
                                     .providersModel
                                     ?.data
-                                    ?.data
+                                    ?.providers
                                     ?.isEmpty ??
                                 true
                             ? ['No Providers available']
@@ -136,7 +136,7 @@ class AddPopUpDialog {
                                     .read<MaterialManagementCubit>()
                                     .providersModel
                                     ?.data
-                                    ?.data
+                                    ?.providers
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],

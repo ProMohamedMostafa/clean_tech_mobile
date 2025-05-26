@@ -1,10 +1,10 @@
 class ProfileModel {
   int? statusCode;
-  dynamic meta;
+  String? meta;
   bool? succeeded;
   String? message;
-  dynamic error;
-  dynamic businessErrorCode;
+  String? error;
+  int? businessErrorCode;
   Data? data;
 
   ProfileModel({

@@ -18,8 +18,10 @@ class S {
   static S? _current;
 
   static S get current {
-    assert(_current != null,
-        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
+    assert(
+      _current != null,
+      'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.',
+    );
     return _current!;
   }
 
@@ -41,8 +43,10 @@ class S {
 
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
-    assert(instance != null,
-        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
+    assert(
+      instance != null,
+      'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?',
+    );
     return instance!;
   }
 
@@ -52,12 +56,7 @@ class S {
 
   /// `Login`
   String get loginTitle1 {
-    return Intl.message(
-      'Login',
-      name: 'loginTitle1',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Login', name: 'loginTitle1', desc: '', args: []);
   }
 
   /// `Login to access your Clean Tech  account`
@@ -82,22 +81,7 @@ class S {
 
   /// `Password`
   String get labelPassword {
-    return Intl.message(
-      'Password',
-      name: 'labelPassword',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Invalid email address or userName`
-  String get validationEmailAndUser {
-    return Intl.message(
-      'Invalid email address or userName',
-      name: 'validationEmailAndUser',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Password', name: 'labelPassword', desc: '', args: []);
   }
 
   /// `Invalid email address`
@@ -115,16 +99,6 @@ class S {
     return Intl.message(
       'Invalid code',
       name: 'validationVerify',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Invalid password`
-  String get validationPassword {
-    return Intl.message(
-      'Invalid password',
-      name: 'validationPassword',
       desc: '',
       args: [],
     );
@@ -210,10 +184,10 @@ class S {
     );
   }
 
-  /// `Nationality is required`
+  /// `Country is required`
   String get validationNationality {
     return Intl.message(
-      'Nationality is required',
+      'Country is required',
       name: 'validationNationality',
       desc: '',
       args: [],
@@ -312,12 +286,7 @@ class S {
 
   /// `Login`
   String get loginButton {
-    return Intl.message(
-      'Login',
-      name: 'loginButton',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Login', name: 'loginButton', desc: '', args: []);
   }
 
   /// `Terms & Conditions and Conditions`
@@ -362,12 +331,7 @@ class S {
 
   /// `Submit`
   String get submitButton {
-    return Intl.message(
-      'Submit',
-      name: 'submitButton',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Submit', name: 'submitButton', desc: '', args: []);
   }
 
   /// `Verify code`
@@ -412,22 +376,12 @@ class S {
 
   /// ` Resend`
   String get resendButton {
-    return Intl.message(
-      ' Resend',
-      name: 'resendButton',
-      desc: '',
-      args: [],
-    );
+    return Intl.message(' Resend', name: 'resendButton', desc: '', args: []);
   }
 
   /// `Verify`
   String get verifyButton {
-    return Intl.message(
-      'Verify',
-      name: 'verifyButton',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Verify', name: 'verifyButton', desc: '', args: []);
   }
 
   /// `Set a new password`
@@ -562,32 +516,17 @@ class S {
 
   /// `Home`
   String get botNavTitle1 {
-    return Intl.message(
-      'Home',
-      name: 'botNavTitle1',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Home', name: 'botNavTitle1', desc: '', args: []);
   }
 
   /// `Analytics`
   String get botNavTitle2 {
-    return Intl.message(
-      'Analytics',
-      name: 'botNavTitle2',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Analytics', name: 'botNavTitle2', desc: '', args: []);
   }
 
   /// `Calendar`
   String get botNavTitle3 {
-    return Intl.message(
-      'Calendar',
-      name: 'botNavTitle3',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Calendar', name: 'botNavTitle3', desc: '', args: []);
   }
 
   /// `Integrations`
@@ -602,52 +541,27 @@ class S {
 
   /// `User Management`
   String get integ1 {
-    return Intl.message(
-      'User Management',
-      name: 'integ1',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('User Management', name: 'integ1', desc: '', args: []);
   }
 
   /// `Organizations`
   String get integ2 {
-    return Intl.message(
-      'Organizations',
-      name: 'integ2',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Organizations', name: 'integ2', desc: '', args: []);
   }
 
   /// `Add Task`
   String get integ3 {
-    return Intl.message(
-      'Add Task',
-      name: 'integ3',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Add Task', name: 'integ3', desc: '', args: []);
   }
 
   /// `Reports`
   String get integ4 {
-    return Intl.message(
-      'Reports',
-      name: 'integ4',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Reports', name: 'integ4', desc: '', args: []);
   }
 
   /// `Settings`
   String get integ5 {
-    return Intl.message(
-      'Settings',
-      name: 'integ5',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Settings', name: 'integ5', desc: '', args: []);
   }
 
   /// `Change personal information`
@@ -702,12 +616,7 @@ class S {
 
   /// `Languages`
   String get settingTitle6 {
-    return Intl.message(
-      'Languages',
-      name: 'settingTitle6',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Languages', name: 'settingTitle6', desc: '', args: []);
   }
 
   /// `Notification`
@@ -732,92 +641,47 @@ class S {
 
   /// `Log out`
   String get settingTitle9 {
-    return Intl.message(
-      'Log out',
-      name: 'settingTitle9',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Log out', name: 'settingTitle9', desc: '', args: []);
   }
 
   /// `Add User`
   String get addUserTitle {
-    return Intl.message(
-      'Add User',
-      name: 'addUserTitle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Add User', name: 'addUserTitle', desc: '', args: []);
   }
 
   /// `First Name`
   String get addUserText1 {
-    return Intl.message(
-      'First Name',
-      name: 'addUserText1',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('First Name', name: 'addUserText1', desc: '', args: []);
   }
 
   /// `Last Name`
   String get addUserText2 {
-    return Intl.message(
-      'Last Name',
-      name: 'addUserText2',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Last Name', name: 'addUserText2', desc: '', args: []);
   }
 
   /// `Email`
   String get addUserText3 {
-    return Intl.message(
-      'Email',
-      name: 'addUserText3',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Email', name: 'addUserText3', desc: '', args: []);
   }
 
   /// `Birthdate`
   String get addUserText4 {
-    return Intl.message(
-      'Birthdate',
-      name: 'addUserText4',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Birthdate', name: 'addUserText4', desc: '', args: []);
   }
 
   /// `User Name`
   String get addUserText5 {
-    return Intl.message(
-      'User Name',
-      name: 'addUserText5',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('User Name', name: 'addUserText5', desc: '', args: []);
   }
 
   /// `Password`
   String get addUserText6 {
-    return Intl.message(
-      'Password',
-      name: 'addUserText6',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Password', name: 'addUserText6', desc: '', args: []);
   }
 
   /// `ID Number`
   String get addUserText7 {
-    return Intl.message(
-      'ID Number',
-      name: 'addUserText7',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('ID Number', name: 'addUserText7', desc: '', args: []);
   }
 
   /// `Nationality`
@@ -832,12 +696,7 @@ class S {
 
   /// `Gender`
   String get addUserText9 {
-    return Intl.message(
-      'Gender',
-      name: 'addUserText9',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Gender', name: 'addUserText9', desc: '', args: []);
   }
 
   /// `Phone Number`
@@ -862,52 +721,27 @@ class S {
 
   /// `Country`
   String get addUserText12 {
-    return Intl.message(
-      'Country',
-      name: 'addUserText12',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Country', name: 'addUserText12', desc: '', args: []);
   }
 
   /// `Role`
   String get addUserText13 {
-    return Intl.message(
-      'Role',
-      name: 'addUserText13',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Role', name: 'addUserText13', desc: '', args: []);
   }
 
   /// `Manager`
   String get addUserText14 {
-    return Intl.message(
-      'Manager',
-      name: 'addUserText14',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Manager', name: 'addUserText14', desc: '', args: []);
   }
 
   /// `Provider`
   String get addUserText15 {
-    return Intl.message(
-      'Provider',
-      name: 'addUserText15',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Provider', name: 'addUserText15', desc: '', args: []);
   }
 
   /// `Add User`
   String get addUserButton {
-    return Intl.message(
-      'Add User',
-      name: 'addUserButton',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Add User', name: 'addUserButton', desc: '', args: []);
   }
 
   /// `Add Another`
@@ -922,22 +756,12 @@ class S {
 
   /// `Save`
   String get saveButtton {
-    return Intl.message(
-      'Save',
-      name: 'saveButtton',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Save', name: 'saveButtton', desc: '', args: []);
   }
 
   /// `NO`
   String get noButtton {
-    return Intl.message(
-      'NO',
-      name: 'noButtton',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('NO', name: 'noButtton', desc: '', args: []);
   }
 
   /// `Yes, i’m sure`
@@ -962,12 +786,7 @@ class S {
 
   /// `Edit User`
   String get editUserTitle {
-    return Intl.message(
-      'Edit User',
-      name: 'editUserTitle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Edit User', name: 'editUserTitle', desc: '', args: []);
   }
 
   /// `User Details`
@@ -982,19 +801,109 @@ class S {
 
   /// `Delete`
   String get deleteButton {
+    return Intl.message('Delete', name: 'deleteButton', desc: '', args: []);
+  }
+
+  /// `Edit`
+  String get editButton {
+    return Intl.message('Edit', name: 'editButton', desc: '', args: []);
+  }
+
+  /// `Welcome!`
+  String get welcome {
+    return Intl.message('Welcome!', name: 'welcome', desc: '', args: []);
+  }
+
+  /// `Experience a seamless way to manage\ncleaning services with just a few taps on your phone!`
+  String get experienceDescription {
     return Intl.message(
-      'Delete',
-      name: 'deleteButton',
+      'Experience a seamless way to manage\ncleaning services with just a few taps on your phone!',
+      name: 'experienceDescription',
       desc: '',
       args: [],
     );
   }
 
-  /// `Edit`
-  String get editButton {
+  /// `Next`
+  String get nextButton {
+    return Intl.message('Next', name: 'nextButton', desc: '', args: []);
+  }
+
+  /// `Login to access your Clean Tech\naccount`
+  String get loginMessage {
     return Intl.message(
-      'Edit',
-      name: 'editButton',
+      'Login to access your Clean Tech\naccount',
+      name: 'loginMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid email address or userName`
+  String get validationEmailAndUser {
+    return Intl.message(
+      'Invalid email address or userName',
+      name: 'validationEmailAndUser',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Username or email is too long`
+  String get validationUsernameTooLong {
+    return Intl.message(
+      'Username or email is too long',
+      name: 'validationUsernameTooLong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Username or email is too short`
+  String get validationUsernameTooShort {
+    return Intl.message(
+      'Username or email is too short',
+      name: 'validationUsernameTooShort',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid password`
+  String get validationPassword {
+    return Intl.message(
+      'Invalid password',
+      name: 'validationPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password is incorrect`
+  String get validationPasswordIncorrect {
+    return Intl.message(
+      'Password is incorrect',
+      name: 'validationPasswordIncorrect',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email is too long`
+  String get validationEmailTooLong {
+    return Intl.message(
+      'Email is too long',
+      name: 'validationEmailTooLong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email is too short`
+  String get validationEmailTooShort {
+    return Intl.message(
+      'Email is too short',
+      name: 'validationEmailTooShort',
       desc: '',
       args: [],
     );

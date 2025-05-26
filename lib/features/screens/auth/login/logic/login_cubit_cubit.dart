@@ -16,8 +16,7 @@ class LoginCubit extends Cubit<LoginStates> {
   final formKey = GlobalKey<FormState>();
 
   LogInModel? logInModel;
-
-  userLogin() {
+  userLogin(BuildContext context) {
     emit(LoginLoadingState());
     DioHelper.postData(url: ApiConstants.loginUrl, data: {
       'emailOrUserName': emailController.text,
@@ -28,6 +27,7 @@ class LoginCubit extends Cubit<LoginStates> {
       await saveUserId(logInModel!.data!.id!);
       await saveRole(logInModel!.data!.role!);
       await saveOnBoarding('isOnBoarding');
+      await sendTokenToServer();
       emit(LoginSuccessState(logInModel!));
     }).catchError((error) {
       emit(LoginErrorState(error.toString()));
@@ -53,6 +53,17 @@ class LoginCubit extends Cubit<LoginStates> {
     await CacheHelper.setData(
         key: SharedPrefKeys.isOnBoarding, value: onBoarding);
     isBoarding = await CacheHelper.getString(SharedPrefKeys.isOnBoarding);
+  }
+
+  Future<void> sendTokenToServer() async {
+    emit(NotificationLoadingState());
+    try {
+      await DioHelper.postData(
+          url: 'device/token', data: {'token': deviceToken});
+      emit(NotificationSuccessState());
+    } catch (error) {
+      emit(NotificationErrorState(error.toString()));
+    }
   }
 
   IconData suffixIcon = Icons.visibility_outlined;

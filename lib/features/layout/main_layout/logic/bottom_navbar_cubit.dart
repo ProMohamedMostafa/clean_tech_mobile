@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/features/layout/main_layout/logic/bottom_navbar_states.dart';
 import 'package:smart_cleaning_application/features/screens/calendar/ui/calendar_screen.dart';
@@ -21,7 +22,22 @@ class BottomNavbarCubit extends Cubit<BottomNavbarStates> {
 
   List<Widget> bottomNavbarScreens = [
     BlocProvider(
-      create: (context) => HomeCubit(),
+      create: (context) => HomeCubit()
+        ..getUserDetails()
+        ..getMyActivities()
+        ..getTeamActivities()
+        ..getQuantity()
+        ..getCompleteiontask()
+        ..getMaterialCount()
+        ..getStockTotalPriceCount()
+        ..getUsersCount()
+        ..getAttendanceStatus()
+        ..getShiftsCount()
+        ..getTaskData()
+        ..initializeUser()
+        ..initialize()
+        ..getUnReadNotification(),
+      // ..getUserStatus()
       child: const HomeScreen(),
     ),
     const IntegrationsScreen(),
@@ -51,6 +67,12 @@ class BottomNavbarCubit extends Cubit<BottomNavbarStates> {
   }
 
   void changeBottomNavbar(int index) {
+    currentIndex = index;
+    emit(ChangeBottomNavbarState());
+  }
+
+  void changeBottomNavbarWithRoute(BuildContext context, int index) {
+    context.popUntilFirst();
     currentIndex = index;
     emit(ChangeBottomNavbarState());
   }

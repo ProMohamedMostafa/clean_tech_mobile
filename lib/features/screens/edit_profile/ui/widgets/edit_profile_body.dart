@@ -9,13 +9,13 @@ import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
-import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
+import 'package:smart_cleaning_application/features/layout/main_layout/logic/bottom_navbar_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/edit_profile/logic/edit_profile_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/edit_profile/logic/edit_profile_state.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
@@ -55,7 +55,9 @@ class _EditProfileBodyState extends State<EditProfileBody> {
           listener: (context, state) {
         if (state is EditProfileSuccessState) {
           toast(text: state.editProfileModel.message!, color: Colors.blue);
-          context.pushNamedAndRemoveLastTwo(Routes.settingsScreen);
+          context
+              .read<BottomNavbarCubit>()
+              .changeBottomNavbarWithRoute(context, 3);
         }
         if (state is EditProfileErrorState) {
           toast(text: state.error, color: Colors.red);

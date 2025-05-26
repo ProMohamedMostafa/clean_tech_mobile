@@ -1,4 +1,5 @@
 String? token;
+String? deviceToken;
 String? role;
 int? uId;
 String? isBoarding;

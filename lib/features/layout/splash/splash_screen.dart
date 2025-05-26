@@ -4,11 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
-import 'package:smart_cleaning_application/features/layout/main_layout/logic/bottom_navbar_cubit.dart';
 import 'package:smart_cleaning_application/features/layout/main_layout/ui/screen/main_layout.dart';
 import 'package:smart_cleaning_application/features/layout/on_boarding/ui/screen/on_boarding_screen.dart';
 import 'package:smart_cleaning_application/features/screens/auth/login/logic/login_cubit_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/auth/login/ui/screen/login_screen.dart';
+import 'package:smart_cleaning_application/src/app_cubit/app_cubit.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -95,15 +95,15 @@ class _SplashScreenState extends State<SplashScreen>
         ),
         nextScreen: isBoarding!.isNotEmpty
             ? token != null
-                ? BlocProvider(
-                    create: (context) => BottomNavbarCubit(),
-                    child: const MainLayout(),
-                  )
+                ? const MainLayout()
                 : BlocProvider(
                     create: (context) => LoginCubit(),
                     child: const LoginScreen(),
                   )
-            : const OnBoardingScreen(),
+            : BlocProvider(
+                create: (context) => AppCubit()..initNotifications(context),
+                child: const OnBoardingScreen(),
+              ),
         splashIconSize: 600,
         duration: 3000,
         splashTransition: SplashTransition.sizeTransition,

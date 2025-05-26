@@ -584,7 +584,7 @@ class CustomFilterTaskDialog {
                                       .read<ProfileCubit>()
                                       .providersModel
                                       ?.data
-                                      ?.data
+                                      ?.providers
                                       ?.isEmpty ??
                                   true
                               ? ['No providers available']
@@ -592,7 +592,7 @@ class CustomFilterTaskDialog {
                                       .read<ProfileCubit>()
                                       .providersModel
                                       ?.data
-                                      ?.data
+                                      ?.providers
                                       ?.map((e) => e.name ?? 'Unknown')
                                       .toList() ??
                                   [],

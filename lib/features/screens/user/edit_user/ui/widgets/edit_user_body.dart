@@ -802,7 +802,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                           .read<EditUserCubit>()
                           .providersModel
                           ?.data
-                          ?.data
+                          ?.providers
                           ?.firstWhere(
                             (provider) => provider.name == selectedValue,
                           )
@@ -820,7 +820,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                                 .read<EditUserCubit>()
                                 .providersModel
                                 ?.data
-                                ?.data
+                                ?.providers
                                 ?.isEmpty ??
                             true
                         ? ['No Providers available']
@@ -828,7 +828,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                                 .read<EditUserCubit>()
                                 .providersModel
                                 ?.data
-                                ?.data
+                                ?.providers
                                 ?.map((e) => e.name ?? 'Unknown')
                                 .toList() ??
                             [],
