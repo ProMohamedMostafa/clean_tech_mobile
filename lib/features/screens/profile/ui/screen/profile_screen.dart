@@ -11,17 +11,14 @@ import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
 import 'package:smart_cleaning_application/features/screens/profile/logic/profile_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/profile/logic/profile_state.dart';
-import 'package:smart_cleaning_application/features/screens/profile/ui/widgets/attendance_list_item_build.dart';
-import 'package:smart_cleaning_application/features/screens/profile/ui/widgets/filter_attendance_dialog.dart';
-import 'package:smart_cleaning_application/features/screens/profile/ui/widgets/filter_leaves_dialog.dart';
-import 'package:smart_cleaning_application/features/screens/profile/ui/widgets/filter_task_dialog_.dart';
-import 'package:smart_cleaning_application/features/screens/profile/ui/widgets/leaves_list_item_build.dart';
-import 'package:smart_cleaning_application/features/screens/profile/ui/widgets/shift_list_item_build.dart';
-import 'package:smart_cleaning_application/features/screens/profile/ui/widgets/task_list_item_build.dart';
-import 'package:smart_cleaning_application/features/screens/profile/ui/widgets/work_location_list_item_build.dart';
+import 'package:smart_cleaning_application/features/screens/profile/ui/widgets/history/user_attendance_details.dart';
+import 'package:smart_cleaning_application/features/screens/profile/ui/widgets/leaves/user_leaves_details.dart';
+import 'package:smart_cleaning_application/features/screens/profile/ui/widgets/shifts/user_shift_details.dart';
+import 'package:smart_cleaning_application/features/screens/profile/ui/widgets/tasks/user_tasks_details.dart';
+import 'package:smart_cleaning_application/features/screens/profile/ui/widgets/user_details.dart/user_details.dart';
+import 'package:smart_cleaning_application/features/screens/profile/ui/widgets/work_location.dart/work_location_user_details.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -37,18 +34,6 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   @override
   void initState() {
-    context.read<ProfileCubit>().getUserProfileDetails();
-    if (role != 'Admin') {
-      context.read<ProfileCubit>().getUserShiftDetails(uId);
-      context.read<ProfileCubit>().getUserTaskDetails(uId);
-      context.read<ProfileCubit>().getUserWorkLocationDetails(uId);
-      context.read<ProfileCubit>().getAllHistory(uId);
-      context.read<ProfileCubit>().getAllLeaves(uId);
-      context.read<ProfileCubit>().getUserProfileStatus();
-      context.read<ProfileCubit>().getAllArea();
-      context.read<ProfileCubit>().getShifts();
-    }
-
     controller = TabController(length: role != 'Admin' ? 6 : 1, vsync: this);
     controller.addListener(() {
       setState(() {});
@@ -64,6 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<ProfileCubit>();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -96,7 +82,7 @@ class _ProfileScreenState extends State<ProfileScreen>
       body: BlocConsumer<ProfileCubit, ProfileState>(
         listener: (context, state) {},
         builder: (context, state) {
-          if (context.read<ProfileCubit>().profileModel?.data == null) {
+          if (cubit.profileModel?.data == null) {
             return Center(
               child: Image.asset(
                 'assets/images/loading.gif',
@@ -107,20 +93,11 @@ class _ProfileScreenState extends State<ProfileScreen>
             );
           }
           if (role != 'Admin') {
-            if ((context.read<ProfileCubit>().profileModel?.data == null &&
-                    context.read<ProfileCubit>().userStatusProfileModel?.data ==
-                        null) ||
-                context.read<ProfileCubit>().userShiftDetailsModel?.data ==
-                    null ||
-                context.read<ProfileCubit>().userTaskDetailsModel?.data ==
-                    null ||
-                context
-                        .read<ProfileCubit>()
-                        .userWorkLocationDetailsModel
-                        ?.data ==
-                    null ||
-                context.read<ProfileCubit>().attendanceLeavesModel?.data ==
-                    null) {
+            if (cubit.profileModel?.data == null ||
+                cubit.userShiftDetailsModel?.data == null ||
+                cubit.userTaskDetailsModel?.data == null ||
+                cubit.userWorkLocationDetailsModel?.data == null ||
+                cubit.attendanceLeavesModel?.data == null) {
               return Center(
                 child: CircularProgressIndicator(
                   color: AppColor.primaryColor,
@@ -129,17 +106,16 @@ class _ProfileScreenState extends State<ProfileScreen>
             }
           }
 
-          return SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Center(
-                    child: Stack(
-                      children: [
-                        GestureDetector(
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Center(
+                  child: Stack(
+                    children: [
+                      GestureDetector(
                           onTap: () {
                             Navigator.push(
                               context,
@@ -151,7 +127,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   body: Center(
                                     child: PhotoView(
                                       imageProvider: NetworkImage(
-                                        '${ApiConstants.apiBaseUrlImage}${context.read<ProfileCubit>().profileModel!.data!.image}',
+                                        '${ApiConstants.apiBaseUrlImage}${cubit.profileModel?.data?.image}',
                                       ),
                                       errorBuilder:
                                           (context, error, stackTrace) {
@@ -170,551 +146,171 @@ class _ProfileScreenState extends State<ProfileScreen>
                             );
                           },
                           child: Container(
-                            width: 80.w,
-                            height: 80.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                            ),
-                            child: ClipOval(
-                              child: Image.network(
-                                '${ApiConstants.apiBaseUrlImage}${context.read<ProfileCubit>().profileModel!.data!.image}',
-                                fit: BoxFit.fill,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Image.asset(
-                                    'assets/images/noImage.png',
-                                    fit: BoxFit.fill,
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                        if (role != 'Admin')
-                          Positioned(
-                            bottom: 1,
-                            right: 10,
-                            child: Container(
-                              width: 15.w,
-                              height: 15.h,
+                              width: 80.w,
+                              height: 80.h,
                               decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: context
-                                              .read<ProfileCubit>()
-                                              .userStatusProfileModel!
-                                              .data!
-                                              .status ==
-                                          'not working'
-                                      ? Colors.red
-                                      : Colors.green,
-                                  border: Border.all(
-                                      color: Colors.white, width: 2.w)),
-                            ),
-                          )
-                      ],
-                    ),
-                  ),
-                  verticalSpace(5),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        context
-                            .read<ProfileCubit>()
-                            .profileModel!
-                            .data!
-                            .firstName!,
-                        style: TextStyles.font16BlackSemiBold,
-                      ),
-                      horizontalSpace(5),
-                      Text(
-                        context
-                            .read<ProfileCubit>()
-                            .profileModel!
-                            .data!
-                            .lastName!,
-                        style: TextStyles.font16BlackSemiBold,
-                      ),
+                                shape: BoxShape.circle,
+                              ),
+                              child: ClipOval(
+                                child: Image.network(
+                                  '${ApiConstants.apiBaseUrlImage}${cubit.profileModel!.data!.image}',
+                                  fit: BoxFit.fill,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Image.asset(
+                                      'assets/images/person.png',
+                                      fit: BoxFit.fill,
+                                    );
+                                  },
+                                ),
+                              ))),
+                      if (role != 'Admin')
+                        Positioned(
+                          bottom: 1,
+                          right: 10,
+                          child: Container(
+                            width: 15.w,
+                            height: 15.h,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: cubit.profileModel!.data == null
+                                    ? Colors.red
+                                    : cubit.profileModel!.data!.isWorking ==
+                                            true
+                                        ? Colors.green
+                                        : Colors.red,
+                                border: Border.all(
+                                    color: Colors.white, width: 2.w)),
+                          ),
+                        )
                     ],
                   ),
-                  verticalSpace(5),
-                  Text(
-                    context.read<ProfileCubit>().profileModel!.data!.role!,
-                    style: TextStyles.font11GreyMedium,
-                  ),
-                  verticalSpace(15),
-                  SizedBox(
-                    height: 42.h,
-                    width: double.infinity,
-                    child: TabBar(
-                        tabAlignment: TabAlignment.center,
-                        isScrollable: true,
-                        indicatorSize: TabBarIndicatorSize.tab,
-                        controller: controller,
-                        dividerColor: Colors.transparent,
-                        indicator: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(5.r)),
-                          color: controller.index == controller.index
-                              ? AppColor.primaryColor
-                              : Colors.transparent,
+                ),
+                verticalSpace(5),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(cubit.profileModel?.data?.firstName ?? '',
+                        style: TextStyles.font14Redbold
+                            .copyWith(color: Colors.black)),
+                    horizontalSpace(5),
+                    Text(cubit.profileModel?.data?.lastName ?? '',
+                        style: TextStyles.font14Redbold
+                            .copyWith(color: Colors.black)),
+                  ],
+                ),
+                verticalSpace(5),
+                Text(cubit.profileModel!.data!.role!,
+                    style: TextStyles.font12GreyRegular
+                        .copyWith(color: AppColor.primaryColor)),
+                verticalSpace(15),
+                SizedBox(
+                  height: 42.h,
+                  width: double.infinity,
+                  child: TabBar(
+                      tabAlignment: TabAlignment.center,
+                      isScrollable: true,
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      controller: controller,
+                      dividerColor: Colors.transparent,
+                      indicator: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(5.r)),
+                        color: controller.index == controller.index
+                            ? AppColor.primaryColor
+                            : Colors.transparent,
+                      ),
+                      tabs: [
+                        Tab(
+                          child: Text(
+                            S.of(context).userDetails,
+                            style: TextStyle(
+                                color: controller.index == 0
+                                    ? Colors.white
+                                    : Colors.black,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14.sp),
+                          ),
                         ),
-                        tabs: [
+                        if (role != 'Admin') ...[
                           Tab(
                             child: Text(
-                              "User Details",
+                              S.of(context).integ2,
                               style: TextStyle(
-                                  color: controller.index == 0
+                                  color: controller.index == 1
                                       ? Colors.white
                                       : Colors.black,
                                   fontWeight: FontWeight.w400,
                                   fontSize: 14.sp),
                             ),
                           ),
-                          if (role != 'Admin') ...[
-                            Tab(
-                              child: Text(
-                                " Work Location",
-                                style: TextStyle(
-                                    color: controller.index == 1
-                                        ? Colors.white
-                                        : Colors.black,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14.sp),
-                              ),
+                          Tab(
+                            child: Text(
+                              S.of(context).integ4,
+                              style: TextStyle(
+                                  color: controller.index == 2
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14.sp),
                             ),
-                            Tab(
-                              child: Text(
-                                "Shifts",
-                                style: TextStyle(
-                                    color: controller.index == 2
-                                        ? Colors.white
-                                        : Colors.black,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14.sp),
-                              ),
+                          ),
+                          Tab(
+                            child: Text(
+                              S.of(context).integ5,
+                              style: TextStyle(
+                                  color: controller.index == 3
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14.sp),
                             ),
-                            Tab(
-                              child: Text(
-                                "Tasks",
-                                style: TextStyle(
-                                    color: controller.index == 3
-                                        ? Colors.white
-                                        : Colors.black,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14.sp),
-                              ),
+                          ),
+                          Tab(
+                            child: Text(
+                              S.of(context).attendance,
+                              style: TextStyle(
+                                  color: controller.index == 4
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14.sp),
                             ),
-                            Tab(
-                              child: Text(
-                                "Attendance",
-                                style: TextStyle(
-                                    color: controller.index == 4
-                                        ? Colors.white
-                                        : Colors.black,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14.sp),
-                              ),
+                          ),
+                          Tab(
+                            child: Text(
+                              S.of(context).leaves,
+                              style: TextStyle(
+                                  color: controller.index == 5
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14.sp),
                             ),
-                            Tab(
-                              child: Text(
-                                "Leaves",
-                                style: TextStyle(
-                                    color: controller.index == 5
-                                        ? Colors.white
-                                        : Colors.black,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14.sp),
-                              ),
-                            ),
-                          ]
-                        ]),
-                  ),
-                  verticalSpace(20),
-                  Expanded(
-                    child: TabBarView(controller: controller, children: [
-                      userDetails(),
-                      if (role != 'Admin') ...[
-                        locationUserDetails(),
-                        userShiftsDetails(),
-                        userTasksDetails(),
-                        userAttendanceDetails(),
-                        userLeavesDetails()
-                      ]
-                    ]),
-                  ),
-                  verticalSpace(20),
-                ],
-              ),
+                          ),
+                        ]
+                      ]),
+                ),
+                Divider(
+                  color: Colors.grey[300],
+                  height: 2,
+                ),
+                verticalSpace(5),
+                Expanded(
+                  child: TabBarView(controller: controller, children: [
+                    UserDetails(),
+                    if (role != 'Admin') ...[
+                      WorkLocationUserDetails(),
+                      UserShiftDetails(),
+                      UserTasksDetails(),
+                      UserAttendanceDetails(),
+                      UserLeavesDetails()
+                    ]
+                  ]),
+                ),
+                verticalSpace(20),
+              ],
             ),
           );
         },
-      ),
-    );
-  }
-
-  Widget userDetails() {
-    final userModel = context.read<ProfileCubit>().profileModel!;
-
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          rowDetailsBuild(
-              context, S.of(context).addUserText5, userModel.data!.userName!),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(
-              context, S.of(context).addUserText1, userModel.data!.firstName!),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(
-              context, S.of(context).addUserText2, userModel.data!.lastName!),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(
-              context, S.of(context).addUserText3, userModel.data!.email!),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(context, S.of(context).addUserText10,
-              userModel.data!.phoneNumber!),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(
-              context, S.of(context).addUserText4, userModel.data!.birthdate!),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(
-              context, S.of(context).addUserText7, userModel.data!.idNumber!),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(context, S.of(context).addUserText8,
-              userModel.data!.nationalityName!),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(context, S.of(context).addUserText12,
-              userModel.data!.countryName!),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(
-              context, S.of(context).addUserText9, userModel.data!.gender!),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(context, 'Role', userModel.data!.role!),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(
-              context, 'Manager', userModel.data!.managerName ?? 'No Manager'),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(context, S.of(context).addUserText15,
-              userModel.data!.providerName ?? 'No provider'),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget locationUserDetails() {
-    final workLocationModel =
-        context.read<ProfileCubit>().userWorkLocationDetailsModel!;
-    if (workLocationModel.data == null ||
-        (workLocationModel.data!.areas!.isEmpty &&
-            workLocationModel.data!.cities!.isEmpty &&
-            workLocationModel.data!.organizations!.isEmpty &&
-            workLocationModel.data!.buildings!.isEmpty &&
-            workLocationModel.data!.floors!.isEmpty &&
-            workLocationModel.data!.points!.isEmpty)) {
-      return Center(
-        child: Text(
-          "There's no data",
-          style: TextStyles.font13Blackmedium,
-        ),
-      );
-    }
-    return SingleChildScrollView(child: listWorkLocationItemBuild(context));
-  }
-
-  Widget userShiftsDetails() {
-    final shiftModel = context.read<ProfileCubit>().userShiftDetailsModel!;
-    if (shiftModel.data == null || shiftModel.data!.isEmpty) {
-      return Center(
-        child: Text(
-          "There's no data",
-          style: TextStyles.font13Blackmedium,
-        ),
-      );
-    } else {
-      return Column(
-        children: [
-          Expanded(
-            child: ListView.separated(
-              physics: const BouncingScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              itemCount: shiftModel.data!.length,
-              separatorBuilder: (context, index) {
-                return verticalSpace(10);
-              },
-              itemBuilder: (context, index) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    listShiftItemBuild(context, index),
-                  ],
-                );
-              },
-            ),
-          ),
-        ],
-      );
-    }
-  }
-
-  Widget userTasksDetails() {
-    final taskModel = context.read<ProfileCubit>().userTaskDetailsModel!;
-    if (taskModel.data!.data == null || taskModel.data!.data!.isEmpty) {
-      return Center(
-        child: Text(
-          "There's no data",
-          style: TextStyles.font13Blackmedium,
-        ),
-      );
-    }
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Divider(),
-          verticalSpace(5),
-          SizedBox(
-            height: 45.h,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Filter',
-                  style: TextStyles.font16BlackSemiBold,
-                ),
-                InkWell(
-                  onTap: () {
-                    context.read<ProfileCubit>().createdByController.clear();
-                    context.read<ProfileCubit>().assignToController.clear();
-                    context.read<ProfileCubit>().statusController.clear();
-                    context.read<ProfileCubit>().startDateController.clear();
-                    context.read<ProfileCubit>().endDateController.clear();
-                    context.read<ProfileCubit>().priorityController.clear();
-                    context.read<ProfileCubit>().roleController.clear();
-
-                    context.read<ProfileCubit>().startTimeController.clear();
-                    context.read<ProfileCubit>().endTimeController.clear();
-                    context.read<ProfileCubit>().areaController.clear();
-                    context.read<ProfileCubit>().cityController.clear();
-                    context.read<ProfileCubit>().organizationController.clear();
-                    context.read<ProfileCubit>().buildingController.clear();
-                    context.read<ProfileCubit>().floorController.clear();
-                    context.read<ProfileCubit>().pointController.clear();
-
-                    CustomFilterTaskDialog.show(context: context, id: uId);
-                  },
-                  child: Container(
-                    height: 49.h,
-                    width: 49.w,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.r),
-                      border: Border.all(color: AppColor.secondaryColor),
-                    ),
-                    child: Icon(
-                      Icons.tune,
-                      color: AppColor.primaryColor,
-                      size: 25.sp,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          verticalSpace(10),
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const BouncingScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            itemCount: taskModel.data!.data!.length,
-            separatorBuilder: (context, index) {
-              return verticalSpace(10);
-            },
-            itemBuilder: (context, index) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  buildTaskCardItem(context, index),
-                ],
-              );
-            },
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget userAttendanceDetails() {
-    final attendanceData =
-        context.read<ProfileCubit>().attendanceHistoryModel?.data?.data;
-
-    if (attendanceData == null || attendanceData.isEmpty) {
-      return Center(
-        child: Text(
-          "There's no data",
-          style: TextStyles.font13Blackmedium,
-        ),
-      );
-    }
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Divider(),
-          verticalSpace(5),
-          SizedBox(
-            height: 45.h,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Filter',
-                  style: TextStyles.font16BlackSemiBold,
-                ),
-                InkWell(
-                  onTap: () {
-                    CustomFilterAttedanceDialog.show(context: context, id: uId);
-                  },
-                  child: Container(
-                    height: 52,
-                    width: 52,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.r),
-                      border: Border.all(color: AppColor.secondaryColor),
-                    ),
-                    child: Icon(
-                      Icons.tune,
-                      color: AppColor.primaryColor,
-                      size: 25.sp,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          verticalSpace(10),
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const ClampingScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            itemCount: attendanceData.length,
-            separatorBuilder: (context, index) {
-              return verticalSpace(10);
-            },
-            itemBuilder: (context, index) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  buildAttendanceCardItem(context, index),
-                ],
-              );
-            },
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget userLeavesDetails() {
-    final attendanceData =
-        context.read<ProfileCubit>().attendanceLeavesModel?.data?.leaves;
-
-    if (attendanceData == null || attendanceData.isEmpty) {
-      return Center(
-        child: Text(
-          "There's no data",
-          style: TextStyles.font13Blackmedium,
-        ),
-      );
-    }
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Divider(),
-          verticalSpace(5),
-          SizedBox(
-            height: 45.h,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Filter',
-                  style: TextStyles.font16BlackSemiBold,
-                ),
-                InkWell(
-                  onTap: () {
-                    CustomFilterLeavesDialog.show(context: context, id: uId);
-                  },
-                  child: Container(
-                    height: 52,
-                    width: 52,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.r),
-                      border: Border.all(color: AppColor.secondaryColor),
-                    ),
-                    child: Icon(
-                      Icons.tune,
-                      color: AppColor.primaryColor,
-                      size: 25.sp,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          verticalSpace(10),
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const ClampingScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            itemCount: attendanceData.length,
-            separatorBuilder: (context, index) {
-              return verticalSpace(10);
-            },
-            itemBuilder: (context, index) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  buildLeavesCardItem(context, index),
-                ],
-              );
-            },
-          )
-        ],
       ),
     );
   }

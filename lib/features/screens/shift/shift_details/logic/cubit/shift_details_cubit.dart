@@ -24,52 +24,7 @@ class ShiftDetailsCubit extends Cubit<ShiftDetailsState> {
     });
   }
 
-  ShiftOrganizationDetailsModel? shiftOrganizationDetailsModel;
-  getShiftOrganizationDetails(int? id) {
-    emit(ShiftOrganizationDetailsLoadingState());
-    DioHelper.getData(url: 'shift/organization/$id').then((value) {
-      shiftOrganizationDetailsModel =
-          ShiftOrganizationDetailsModel.fromJson(value!.data);
-      emit(
-          ShiftOrganizationDetailsSuccessState(shiftOrganizationDetailsModel!));
-    }).catchError((error) {
-      emit(ShiftOrganizationDetailsErrorState(error.toString()));
-    });
-  }
-
-  ShiftBuildingsDetailsModel? shiftBuildingsDetailsModel;
-  getShiftBuildingDetails(int? id) {
-    emit(ShiftBuildingDetailsLoadingState());
-    DioHelper.getData(url: 'shift/building/$id').then((value) {
-      shiftBuildingsDetailsModel =
-          ShiftBuildingsDetailsModel.fromJson(value!.data);
-      emit(ShiftBuildingDetailsSuccessState(shiftBuildingsDetailsModel!));
-    }).catchError((error) {
-      emit(ShiftBuildingDetailsErrorState(error.toString()));
-    });
-  }
-
-  ShiftFloorDetailsModel? shiftFloorDetailsModel;
-  getShiftFloorDetails(int? id) {
-    emit(ShiftFloorDetailsLoadingState());
-    DioHelper.getData(url: 'shift/floor/$id').then((value) {
-      shiftFloorDetailsModel = ShiftFloorDetailsModel.fromJson(value!.data);
-      emit(ShiftFloorDetailsSuccessState(shiftFloorDetailsModel!));
-    }).catchError((error) {
-      emit(ShiftFloorDetailsErrorState(error.toString()));
-    });
-  }
-
-  ShiftSectionDetailsModel? shiftSectionDetailsModel;
-  getShiftSectionDetails(int? id) {
-    emit(ShiftSectionDetailsLoadingState());
-    DioHelper.getData(url: 'shift/section/$id').then((value) {
-      shiftSectionDetailsModel = ShiftSectionDetailsModel.fromJson(value!.data);
-      emit(ShiftSectionDetailsSuccessState(shiftSectionDetailsModel!));
-    }).catchError((error) {
-      emit(ShiftSectionDetailsErrorState(error.toString()));
-    });
-  }
+  
 
   DeleteShiftModel? deleteShiftModel;
   shiftDelete(int id) {

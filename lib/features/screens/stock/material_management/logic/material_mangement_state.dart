@@ -1,5 +1,4 @@
 import 'package:share_plus/share_plus.dart';
-import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/category_management_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/data/model/delete_material_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/data/model/deleted_material_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/data/model/material_management_model.dart';
@@ -106,20 +105,7 @@ class AllProvidersErrorState extends MaterialManagementState {
   final String error;
   AllProvidersErrorState(this.error);
 }
-//***************************** */
 
-class CategoriesLoadingState extends MaterialManagementState {}
-
-class CategoriesSuccessState extends MaterialManagementState {
-  final CategoryManagementModel catergoriesModel;
-
-  CategoriesSuccessState(this.catergoriesModel);
-}
-
-class CategoriesErrorState extends MaterialManagementState {
-  final String error;
-  CategoriesErrorState(this.error);
-}
 
 //***************************** */
 

@@ -1,29 +1,21 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/core/widgets/filter/data/model/filter_dialog_data_model.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/data/models/attendance_history_model.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/data/models/attendance_leaves_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_list_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/all_tasks_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/delete_user_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_shift_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_status_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_task_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_work_location_details.dart';
 part 'user_details_state.dart';
 
 class UserDetailsCubit extends Cubit<UserDetailsState> {
   UserDetailsCubit() : super(UserDetailsInitial());
-
-  TextEditingController createdByController = TextEditingController();
-  TextEditingController assignToController = TextEditingController();
-  TextEditingController statusController = TextEditingController();
-  TextEditingController shiftController = TextEditingController();
-  TextEditingController shiftIdController = TextEditingController();
-  TextEditingController priorityController = TextEditingController();
 
   FilterDialogDataModel? filterModel;
 
@@ -73,38 +65,30 @@ class UserDetailsCubit extends Cubit<UserDetailsState> {
     });
   }
 
-  UserTaskDetailsModel? userTaskDetailsModel;
-  getUserTaskDetails(
-    int? id, {
-    int? createdBy,
-    int? status,
-    int? priority,
-    int? areaId,
-    int? cityId,
-    int? organizationId,
-    int? buildingId,
-    int? floorId,
-    int? pointId,
-    int? providerId,
-  }) {
+  AllTasksModel? userTaskDetailsModel;
+  getUserTaskDetails(int? id) {
     emit(UserTaskDetailsLoadingState());
-    DioHelper.getData(url: 'tasks/pagination', query: {
-      'assignTo': id,
-      'startDate': filterModel?.startDate,
-      'endDate': filterModel?.endDate,
-      'startTime': filterModel?.startTime,
-      'endTime': filterModel?.endTime,
-      'created': createdBy,
-      'status': status,
-      'priority': priority,
-      'area': areaId,
-      'city': cityId,
-      'organization': organizationId,
-      'building': buildingId,
-      'floor': floorId,
-      'point': pointId,
+    DioHelper.getData(url: "tasks/pagination", query: {
+      'Status': filterModel?.taskStatusId,
+      'Priority': filterModel?.priorityId,
+      'CreatedBy': filterModel?.createdBy,
+      'AssignTo': id,
+      'AreaId': filterModel?.areaId,
+      'CityId': filterModel?.cityId,
+      'OrganizationId': filterModel?.organizationId,
+      'BuildingId': filterModel?.buildingId,
+      'FloorId': filterModel?.floorId,
+      'SectionId': filterModel?.sectionId,
+      'PointId': filterModel?.pointId,
+      'ProviderId': filterModel?.providerId,
+      'StartDate': filterModel?.startDate != null
+          ? DateFormat('yyyy-MM-dd').format(filterModel!.startDate!)
+          : null,
+      'EndDate': filterModel?.endDate,
+      'StartTime': filterModel?.startTime,
+      'EndTime': filterModel?.endTime,
     }).then((value) {
-      userTaskDetailsModel = UserTaskDetailsModel.fromJson(value!.data);
+      userTaskDetailsModel = AllTasksModel.fromJson(value!.data);
       emit(UserTaskDetailsSuccessState(userTaskDetailsModel!));
     }).catchError((error) {
       emit(UserTaskDetailsErrorState(error.toString()));
@@ -112,34 +96,24 @@ class UserDetailsCubit extends Cubit<UserDetailsState> {
   }
 
   AttendanceHistoryModel? attendanceHistoryModel;
-  getAllHistory(
-    int? id, {
-    int? status,
-    int? areaId,
-    int? cityId,
-    int? organizationId,
-    int? buildingId,
-    int? floorId,
-    int? pointId,
-    int? providerId,
-    int? shiftId,
-  }) {
+  getAllHistory(int? id) {
     emit(HistoryLoadingState());
     DioHelper.getData(url: ApiConstants.hisotryUrl, query: {
-      'userId': id,
-      'history': false,
-      'role': filterModel?.roleId,
-      'shift': shiftId,
-      'startDate': filterModel?.startDate,
-      'endDate': filterModel?.endDate,
-      'status': status,
-      'areaId': areaId,
-      'cityId': cityId,
-      'organizationId': organizationId,
-      'buildingId': buildingId,
-      'floorId': floorId,
-      'pointId': pointId,
-      'providerId': providerId
+      'UserId': id,
+      'History': false,
+      'RoleId': filterModel?.roleId,
+      'Shift': filterModel?.shiftId,
+      'StartDate': filterModel?.startDate,
+      'EndDate': filterModel?.endDate,
+      'Status': filterModel?.statusId,
+      'AreaId': filterModel?.areaId,
+      'CityId': filterModel?.cityId,
+      'OrganizationId': filterModel?.organizationId,
+      'BuildingId': filterModel?.buildingId,
+      'FloorId': filterModel?.floorId,
+      'SectionId': filterModel?.sectionId,
+      'PointId': filterModel?.pointId,
+      'ProviderId': filterModel?.providerId
     }).then((value) {
       attendanceHistoryModel = AttendanceHistoryModel.fromJson(value!.data);
       emit(HistorySuccessState(attendanceHistoryModel!));
@@ -149,58 +123,28 @@ class UserDetailsCubit extends Cubit<UserDetailsState> {
   }
 
   AttendanceLeavesModel? attendanceLeavesModel;
-  getAllLeaves(
-    int? id, {
-    int? areaId,
-    int? cityId,
-    int? organizationId,
-    int? buildingId,
-    int? floorId,
-    int? pointId,
-    int? providerId,
-  }) {
+  getAllLeaves(int? id) {
     emit(LeavesLoadingState());
     DioHelper.getData(url: ApiConstants.leavesUrl, query: {
-      'assignTo': id,
-      'history': false,
-      'role': filterModel?.roleId,
-      'startDate': filterModel?.startDate,
-      'endDate': filterModel?.endDate,
-      'type': filterModel?.typeId,
-      'area': areaId,
-      'city': cityId,
-      'organization': organizationId,
-      'building': buildingId,
-      'floor': floorId,
-      'point': pointId,
-      'provider': providerId
+      'History': false,
+      'UserId': id,
+      'RoleId': filterModel?.roleId,
+      'StartDate': filterModel?.startDate,
+      'EndDate': filterModel?.endDate,
+      'Type': filterModel?.typeId,
+      'AreaId': filterModel?.areaId,
+      'CityId': filterModel?.cityId,
+      'OrganizationId': filterModel?.organizationId,
+      'BuildingId': filterModel?.buildingId,
+      'FloorId': filterModel?.floorId,
+      'SectionId': filterModel?.sectionId,
+      'PointId': filterModel?.pointId,
+      'ProviderId': filterModel?.providerId
     }).then((value) {
       attendanceLeavesModel = AttendanceLeavesModel.fromJson(value!.data);
       emit(LeavesSuccessState(attendanceLeavesModel!));
     }).catchError((error) {
       emit(LeavesErrorState(error.toString()));
-    });
-  }
-
-  AreaListModel? areaListModel;
-  getAllArea() {
-    emit(GetAllAreaLoadingState());
-    DioHelper.getData(url: ApiConstants.areaUrl).then((value) {
-      areaListModel = AreaListModel.fromJson(value!.data);
-      emit(GetAllAreaSuccessState(areaListModel!));
-    }).catchError((error) {
-      emit(GetAllAreaErrorState(error.toString()));
-    });
-  }
-
-  ShiftModel? shiftModel;
-  getShifts() {
-    emit(ShiftLoadingState());
-    DioHelper.getData(url: ApiConstants.allShiftsUrl).then((value) {
-      shiftModel = ShiftModel.fromJson(value!.data);
-      emit(ShiftSuccessState(shiftModel!));
-    }).catchError((error) {
-      emit(ShiftErrorState(error.toString()));
     });
   }
 
@@ -213,5 +157,63 @@ class UserDetailsCubit extends Cubit<UserDetailsState> {
     }).catchError((error) {
       emit(UserDeleteErrorState(error.toString()));
     });
+  }
+
+  static const List<String> statusList = ["Absent", "Late", "Present"];
+  static const List<Color> statusColors = [
+    Colors.red,
+    Colors.orange,
+    Colors.green,
+  ];
+
+  // Priority related constants
+  static const List<String> priorityList = ["High", "Medium", "Low"];
+  static const List<Color> priorityColors = [
+    Colors.red,
+    Colors.orange,
+    Colors.green,
+  ];
+
+  // Format duration string
+  String formatDuration(String? duration) {
+    if (duration == null || duration.isEmpty) return "    ";
+    final parts = duration.split(':');
+    if (parts.length != 3) return "Invalid Format";
+
+    try {
+      final hours = int.tryParse(parts[0]) ?? 0;
+      final minutes = int.tryParse(parts[1]) ?? 0;
+      if (hours > 0) return '$hours hr';
+      if (minutes > 0) return '$minutes min';
+      return '${(double.tryParse(parts[2])?.floor() ?? 0)} sec';
+    } catch (e) {
+      return "Invalid Data";
+    }
+  }
+
+  // Format time string
+  String formatTime(String? time) {
+    if (time == null || time.isEmpty) return " ";
+    try {
+      return DateFormat('HH:mm').format(DateTime.parse(time));
+    } catch (e) {
+      return "Invalid Time";
+    }
+  }
+
+  // Get status color based on status string
+  Color getStatusColor(String status) {
+    if (statusList.contains(status)) {
+      return statusColors[statusList.indexOf(status)];
+    }
+    return Colors.black;
+  }
+
+  // Get priority color based on priority string
+  Color getPriorityColor(String priority) {
+    if (priorityList.contains(priority)) {
+      return priorityColors[priorityList.indexOf(priority)];
+    }
+    return Colors.black;
   }
 }

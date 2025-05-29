@@ -54,6 +54,10 @@ class AddWorkLocationCubit extends Cubit<AddWorkLocationState> {
   final formKey = GlobalKey<FormState>();
   final formAddKey = GlobalKey<FormState>();
 
+   List<int> selectedManagersIds = [];
+  List<int> selectedSupervisorsIds = [];
+  List<int> selectedCleanersIds = [];
+
   UsersModel? usersModel;
   getAllUsers() {
     emit(AllUsersLoadingState());

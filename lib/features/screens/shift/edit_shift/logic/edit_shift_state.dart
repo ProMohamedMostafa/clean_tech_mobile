@@ -1,9 +1,5 @@
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/edit_shift/data/model/edit_shift_model.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_building_details.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_floor_details.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_organization_details.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_section_details.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/shift_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_list_model.dart';
@@ -36,55 +32,6 @@ class ShiftDetailsSuccessState extends EditShiftState {
 class ShiftDetailsErrorState extends EditShiftState {
   final String error;
   ShiftDetailsErrorState(this.error);
-}
-
-//******************** */
-class ShiftOrganizationDetailsLoadingState extends EditShiftState {}
-
-class ShiftOrganizationDetailsSuccessState extends EditShiftState {
-  final ShiftOrganizationDetailsModel shiftOrganizationDetailsModel;
-  ShiftOrganizationDetailsSuccessState(this.shiftOrganizationDetailsModel);
-}
-
-class ShiftOrganizationDetailsErrorState extends EditShiftState {
-  final String error;
-  ShiftOrganizationDetailsErrorState(this.error);
-} //******************** */
-
-class ShiftBuildingDetailsLoadingState extends EditShiftState {}
-
-class ShiftBuildingDetailsSuccessState extends EditShiftState {
-  final ShiftBuildingsDetailsModel shiftBuildingsDetailsModel;
-  ShiftBuildingDetailsSuccessState(this.shiftBuildingsDetailsModel);
-}
-
-class ShiftBuildingDetailsErrorState extends EditShiftState {
-  final String error;
-  ShiftBuildingDetailsErrorState(this.error);
-} //******************** */
-
-class ShiftFloorDetailsLoadingState extends EditShiftState {}
-
-class ShiftFloorDetailsSuccessState extends EditShiftState {
-  final ShiftFloorDetailsModel shiftFloorDetailsModel;
-  ShiftFloorDetailsSuccessState(this.shiftFloorDetailsModel);
-}
-
-class ShiftFloorDetailsErrorState extends EditShiftState {
-  final String error;
-  ShiftFloorDetailsErrorState(this.error);
-} //******************** */
-
-class ShiftSectionDetailsLoadingState extends EditShiftState {}
-
-class ShiftSectionDetailsSuccessState extends EditShiftState {
-  final ShiftSectionDetailsModel shiftSectionDetailsModel;
-  ShiftSectionDetailsSuccessState(this.shiftSectionDetailsModel);
-}
-
-class ShiftSectionDetailsErrorState extends EditShiftState {
-  final String error;
-  ShiftSectionDetailsErrorState(this.error);
 }
 
 //**************************** */

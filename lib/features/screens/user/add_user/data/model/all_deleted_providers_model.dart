@@ -4,7 +4,7 @@ class AllDeletedProvidersModel {
   bool? succeeded;
   String? message;
   String? error;
-  List<Data>? data;
+  List<DeletedProviderData>? data;
 
   AllDeletedProvidersModel(
       {this.statusCode,
@@ -21,9 +21,9 @@ class AllDeletedProvidersModel {
     message = json['message'];
     error = json['error'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <DeletedProviderData>[];
       json['data'].forEach((v) {
-        data!.add( Data.fromJson(v));
+        data!.add( DeletedProviderData.fromJson(v));
       });
     }
   }
@@ -42,13 +42,13 @@ class AllDeletedProvidersModel {
   }
 }
 
-class Data {
+class DeletedProviderData {
   int? id;
   String? name;
 
-  Data({this.id, this.name});
+  DeletedProviderData({this.id, this.name});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  DeletedProviderData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
   }

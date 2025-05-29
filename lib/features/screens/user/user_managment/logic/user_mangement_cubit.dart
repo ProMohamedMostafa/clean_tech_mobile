@@ -106,16 +106,20 @@ class UserManagementCubit extends Cubit<UserManagementState> {
       );
 
       if (deletedUser != null) {
-        // Remove from main list
         usersModel?.data?.users?.removeWhere((user) => user.id == id);
-
-        // Add to deleted list
         deletedUsers.insert(0, deletedUser);
 
-        //  Reload current page to refill to 10 users
+        // Decrement totalCount
+        if (usersModel?.data?.totalCount != null &&
+            usersModel!.data!.totalCount! > 0) {
+          usersModel!.data!.totalCount = usersModel!.data!.totalCount! - 1;
+        }
+
         if (currentPage == 1) {
           usersModel = null;
           getAllUsersInUserManage();
+        } else {
+          emit(AllUsersSuccessState(usersModel!));
         }
       }
 

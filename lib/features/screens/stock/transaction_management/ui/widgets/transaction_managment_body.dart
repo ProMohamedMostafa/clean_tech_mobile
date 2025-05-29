@@ -9,25 +9,16 @@ import 'package:smart_cleaning_application/features/screens/stock/transaction_ma
 import 'package:smart_cleaning_application/features/screens/stock/transaction_management/ui/widgets/filter_search_build.dart';
 import 'package:smart_cleaning_application/features/screens/stock/transaction_management/ui/widgets/transaction_details_list_build.dart';
 
-class TransactionManagmentBody extends StatefulWidget {
+class TransactionManagmentBody extends StatelessWidget {
   const TransactionManagmentBody({super.key});
 
   @override
-  State<TransactionManagmentBody> createState() =>
-      _TransactionManagmentBodyState();
-}
-
-class _TransactionManagmentBodyState extends State<TransactionManagmentBody> {
-  @override
   Widget build(BuildContext context) {
-    TransactionManagementCubit cubit =
-        context.read<TransactionManagementCubit>();
+    final cubit = context.read<TransactionManagementCubit>();
     return Scaffold(
       appBar: AppBar(
+        title: Text('Transaction Management'),
         leading: customBackButton(context),
-        title: Text(
-          'Transaction Management',
-        ),
       ),
       body:
           BlocConsumer<TransactionManagementCubit, TransactionManagementState>(
@@ -41,16 +32,15 @@ class _TransactionManagmentBodyState extends State<TransactionManagmentBody> {
               cubit.transactionManagementOutModel?.data?.totalCount ?? 0;
           return Skeletonizer(
             enabled: (cubit.transactionManagementModel == null),
-            child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    verticalSpace(10),
-                    FilterAndSearchWidget(),
-                    verticalSpace(10),
-                    twoButtonsIntegration(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  verticalSpace(10),
+                  FilterAndSearchWidget(),
+                  verticalSpace(10),
+                  twoButtonsIntegration(
                       selectedIndex: cubit.selectedIndex,
                       onTap: cubit.changeTap,
                       firstCount: allCount,
@@ -58,19 +48,12 @@ class _TransactionManagmentBodyState extends State<TransactionManagmentBody> {
                       secondCount: inCount,
                       secondLabel: 'Inside',
                       thirdCount: outCount,
-                      thirdLabel: 'Outside',
-                    ),
-                    verticalSpace(10),
-                    Divider(
-                      color: Colors.grey[300],
-                    ),
-                    Expanded(
-                      child:
-                          transactionDetailsBuild(context, cubit.selectedIndex),
-                    ),
-                    verticalSpace(10),
-                  ],
-                ),
+                      thirdLabel: 'Outside'),
+                  verticalSpace(5),
+                  Divider(color: Colors.grey[300]),
+                  Expanded(child: TransactionDetailsListBuild()),
+                  verticalSpace(10),
+                ],
               ),
             ),
           );

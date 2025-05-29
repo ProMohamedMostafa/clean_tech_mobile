@@ -265,91 +265,127 @@ class _FilterDropdownForm extends StatefulWidget {
 
 class _FilterDropdownFormState extends State<_FilterDropdownForm> {
   bool isOpen = false;
+  OverlayEntry? _overlayEntry;
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        GestureDetector(
-          onTap: () {
-            setState(() {
-              isOpen = !isOpen;
-            });
-          },
-          child: Container(
-            width: widget.width,
-            height: 24.h,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.black12),
-              borderRadius: BorderRadius.circular(6.r),
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 4.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(widget.label, style: TextStyles.font12PrimSemi),
-                RotatedBox(
-                  quarterTurns: isOpen ? 3 : 1,
-                  child: Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    color: AppColor.primaryColor,
-                    size: 16.sp,
-                  ),
+  final LayerLink _layerLink = LayerLink();
+
+  void _toggleDropdown() {
+    if (isOpen) {
+      _removeOverlay();
+    } else {
+      _showOverlay();
+    }
+    setState(() {
+      isOpen = !isOpen;
+    });
+  }
+
+  void _showOverlay() {
+    _overlayEntry = _createOverlayEntry();
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void _removeOverlay() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+  }
+
+  OverlayEntry _createOverlayEntry() {
+    RenderBox renderBox = context.findRenderObject() as RenderBox;
+    var size = renderBox.size;
+    var offset = renderBox.localToGlobal(Offset.zero);
+
+    return OverlayEntry(
+      builder: (context) => Positioned(
+        width: widget.width ?? size.width,
+        left: offset.dx,
+        top: offset.dy + size.height,
+        child: CompositedTransformFollower(
+          link: _layerLink,
+          showWhenUnlinked: false,
+          offset: Offset(0.0, size.height + 5.0),
+          child: Material(
+            elevation: 4.0,
+            borderRadius: BorderRadius.circular(6.r),
+            child: Container(
+              constraints: BoxConstraints(
+                maxHeight: 120,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(6.r),
+                border: Border.all(color: Colors.black12),
+              ),
+              child: ListView.separated(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                itemCount: widget.items.length,
+                separatorBuilder: (_, __) => Divider(
+                  color: Colors.black12,
+                  height: 1,
+                  thickness: 1,
                 ),
-              ],
+                itemBuilder: (context, index) {
+                  final item = widget.items[index];
+                  return InkWell(
+                    onTap: () {
+                      widget.onSelected?.call(item.$1);
+                      _toggleDropdown(); // closes dropdown and removes overlay
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(6, 4, 4, 4),
+                      child: Text(
+                        item.$2,
+                        style: TextStyles.font12BlackSemi,
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
           ),
         ),
-        if (isOpen)
-          Container(
-            width: widget.width,
-            constraints: BoxConstraints(
-              maxHeight: 120,
-            ),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.black12),
-              borderRadius: BorderRadius.circular(6.r),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 4,
-                  offset: Offset(0, 2),
-                ),
-              ],
-            ),
-            child: ListView.separated(
-              controller: widget.controller,
-              padding: EdgeInsets.zero,
-              shrinkWrap: true,
-              itemCount: widget.items.length,
-              separatorBuilder: (_, __) => Divider(
-                color: Colors.black12,
-                height: 1,
-                thickness: 1,
-              ),
-              itemBuilder: (context, index) {
-                final item = widget.items[index];
-                return InkWell(
-                  onTap: () {
-                    widget.onSelected?.call(item.$1);
-                    setState(() => isOpen = false);
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(6, 4, 4, 4),
-                    child: Text(
-                      item.$2,
-                      style: TextStyles.font12BlackSemi,
-                    ),
-                  ),
-                );
-              },
-            ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _removeOverlay();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CompositedTransformTarget(
+      link: _layerLink,
+      child: GestureDetector(
+        onTap: _toggleDropdown,
+        child: Container(
+          width: widget.width,
+          height: 24.h,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: Colors.black12),
+            borderRadius: BorderRadius.circular(6.r),
           ),
-      ],
+          padding: EdgeInsets.symmetric(horizontal: 4.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(widget.label, style: TextStyles.font12PrimSemi),
+              RotatedBox(
+                quarterTurns: isOpen ? 3 : 1,
+                child: Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  color: AppColor.primaryColor,
+                  size: 16.sp,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

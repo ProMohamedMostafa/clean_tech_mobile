@@ -7,9 +7,8 @@ class WorkLocationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body:WorkLocationBody(
+    return WorkLocationBody(
       selectedIndex: selectedIndex,
-    ));
+    );
   }
 }

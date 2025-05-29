@@ -2,9 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:multi_dropdown/multi_dropdown.dart';
+import 'package:smart_cleaning_application/core/helpers/regx_validations/regx_validations.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/country_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/all_deleted_providers_model.dart';
@@ -14,7 +15,6 @@ import 'package:smart_cleaning_application/features/screens/user/add_user/logic/
 
 import '../../../integrations/data/models/gallary_model.dart';
 import '../../../integrations/data/models/role_model.dart';
-import '../../../integrations/data/models/shift_model.dart';
 
 class AddUserCubit extends Cubit<AddUserState> {
   AddUserCubit() : super(AddUserInitialState());
@@ -42,10 +42,10 @@ class AddUserCubit extends Cubit<AddUserState> {
   TextEditingController providerController = TextEditingController();
   TextEditingController deletedProviderController = TextEditingController();
   TextEditingController restoreProviderController = TextEditingController();
-  final shiftController = MultiSelectController<ShiftItem>();
 
   final formKey = GlobalKey<FormState>();
   final formAddKey = GlobalKey<FormState>();
+  List<int> selectedShiftsIds = [];
 
   UserCreateModel? userCreateModel;
   addUser({String? image, List<int>? selectedShiftsIds}) async {
@@ -128,10 +128,15 @@ class AddUserCubit extends Cubit<AddUserState> {
   }
 
   AllDeletedProvidersModel? allDeletedProvidersModel;
+  List<DeletedProviderData> deletedproviderItem = [
+    DeletedProviderData(name: 'No Deleted Provider Item')
+  ];
   getAllDeletedProviders() {
     emit(AllDeletedrovidersLoadingState());
     DioHelper.getData(url: ApiConstants.deletedProvidersListUrl).then((value) {
       allDeletedProvidersModel = AllDeletedProvidersModel.fromJson(value!.data);
+      deletedproviderItem = allDeletedProvidersModel?.data ??
+          [DeletedProviderData(name: 'No Deleted Provider Item')];
       emit(AllDeletedrovidersSuccessState(allDeletedProvidersModel!));
     }).catchError((error) {
       emit(AllDeletedrovidersErrorState(error.toString()));
@@ -139,32 +144,47 @@ class AddUserCubit extends Cubit<AddUserState> {
   }
 
   ProvidersModel? providersModel;
+  List<Provider> providerItem = [Provider(name: 'No providers available')];
   getProviders() {
     emit(AllProvidersLoadingState());
     DioHelper.getData(url: ApiConstants.allProvidersUrl).then((value) {
       providersModel = ProvidersModel.fromJson(value!.data);
+      providerItem = providersModel?.data?.providers ??
+          [Provider(name: 'No providers available')];
       emit(AllProvidersSuccessState(providersModel!));
     }).catchError((error) {
       emit(AllProvidersErrorState(error.toString()));
     });
   }
 
-  NationalityListModel? nationalityModel;
+  CountryListModel? countryModel;
+  List<CountryModel> countryData = [CountryModel(name: 'No countries')];
+  NationalityListModel? nationalityListModel;
+  List<NationalityDataModel> nationalityData = [
+    NationalityDataModel(name: 'No nationalities')
+  ];
   getNationality() {
     emit(GetNationalityLoadingState());
     DioHelper.getData(url: ApiConstants.countriesUrl).then((value) {
-      nationalityModel = NationalityListModel.fromJson(value!.data);
-      emit(GetNationalitySuccessState(nationalityModel!));
+      countryModel = CountryListModel.fromJson(value!.data);
+      countryData = countryModel?.data ?? [CountryModel(name: 'No countries')];
+      nationalityListModel = NationalityListModel.fromJson(value.data);
+      nationalityData = nationalityListModel?.data ??
+          [NationalityDataModel(name: 'No nationalities')];
+      emit(GetNationalitySuccessState(nationalityListModel!));
     }).catchError((error) {
       emit(GetNationalityErrorState(error.toString()));
     });
   }
 
   RoleModel? roleModel;
+  List<RoleDataItem> roleDataItem = [RoleDataItem(name: 'No roles available')];
   getRole() {
     emit(RoleLoadingState());
     DioHelper.getData(url: ApiConstants.rolesUrl).then((value) {
       roleModel = RoleModel.fromJson(value!.data);
+      roleDataItem =
+          roleModel?.data ?? [RoleDataItem(name: 'No roles available')];
       emit(RoleSuccessState(roleModel!));
     }).catchError((error) {
       emit(RoleErrorState(error.toString()));
@@ -172,15 +192,36 @@ class AddUserCubit extends Cubit<AddUserState> {
   }
 
   UsersModel? usersModel;
+  List<UserItem> userItem = [UserItem(userName: 'No users available')];
   getAllUsers(int id) {
     emit(AllUsersLoadingState());
     DioHelper.getData(url: "users/pagination", query: {'RoleId': id})
         .then((value) {
       usersModel = UsersModel.fromJson(value!.data);
+      userItem =
+          usersModel?.data?.users ?? [UserItem(userName: 'No users available')];
       emit(AllUsersSuccessState(usersModel!));
     }).catchError((error) {
       emit(AllUsersErrorState(error.toString()));
     });
+  }
+
+  bool isShow = false;
+  // Password validation flags
+  bool hasLowercase = false;
+  bool hasUppercase = false;
+  bool hasSpecialCharacters = false;
+  bool hasNumber = false;
+  bool hasMinLength = false;
+
+  void validatePassword(String password) {
+    hasLowercase = AppRegex.hasLowerCase(password);
+    hasUppercase = AppRegex.hasUpperCase(password);
+    hasSpecialCharacters = AppRegex.hasSpecialCharacter(password);
+    hasNumber = AppRegex.hasNumber(password);
+    hasMinLength = AppRegex.hasMinLength(password);
+    isShow = password.isNotEmpty;
+    emit(PasswordValidationChangedState());
   }
 
   IconData suffixIcon = Icons.visibility_outlined;

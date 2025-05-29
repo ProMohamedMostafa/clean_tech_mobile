@@ -25,13 +25,10 @@ class _ChooseViewStockState extends State<ChooseViewStock> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Stock',
-        ),
+        title: Text('Stock'),
         leading: customBackButton(context),
       ),
-      body: SafeArea(
-          child: SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
@@ -80,7 +77,7 @@ class _ChooseViewStockState extends State<ChooseViewStock> {
             ],
           ),
         ),
-      )),
+      ),
     );
   }
 }

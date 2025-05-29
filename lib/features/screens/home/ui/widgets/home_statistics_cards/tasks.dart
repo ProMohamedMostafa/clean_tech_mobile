@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
@@ -9,6 +10,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/features/screens/home/logic/home_cubit.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_state.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class Tasks extends StatefulWidget {
   const Tasks({super.key});
@@ -18,23 +20,25 @@ class Tasks extends StatefulWidget {
 }
 
 class _TasksState extends State<Tasks> {
-  String selectedPriority = 'High';
-
-  final List<String> priorities = ['High', 'Medium', 'Low'];
-  final Map<String, Color> priorityColors = {
-    'High': Colors.red,
-    'Medium': Colors.orange,
-    'Low': Colors.green,
-  };
-
   @override
   Widget build(BuildContext context) {
+    String selectedPriority = S.of(context).high;
+
+    final List<String> priorities = [
+      S.of(context).high,
+      S.of(context).medium,
+      S.of(context).low
+    ];
+    final Map<String, Color> priorityColors = {
+      S.of(context).high: Colors.red,
+      S.of(context).medium: Colors.orange,
+      S.of(context).low: Colors.green,
+    };
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
         final cubit = context.read<HomeCubit>();
 
-        final isLoading = cubit.attendanceStatus?.data == null ||
-            cubit.usersCountModel?.data == null;
+        final isLoading = cubit.usersCountModel?.data == null;
 
         return Skeletonizer(
           enabled: isLoading,
@@ -64,7 +68,7 @@ class _TasksState extends State<Tasks> {
                             ),
                             horizontalSpace(8),
                             Text(
-                              'Tasks  ',
+                              S.of(context).tasks,
                               style: TextStyles.font14BlackSemiBold,
                             ),
                           ],
@@ -148,31 +152,50 @@ class _TasksState extends State<Tasks> {
                     ],
                   ),
                   verticalSpace(8),
-                  StatusCountWidget(
-                    label: 'Pending',
-                    count: cubit.usersCountModel?.data?.values?[0] ?? 0,
-                    onTap: () {},
-                  ),
-                  StatusCountWidget(
-                    label: 'In Progress',
-                    count: cubit.usersCountModel?.data?.values?[1] ?? 0,
-                    onTap: () {},
-                  ),
-                  StatusCountWidget(
-                    label: 'Waiting for Approvable',
-                    count: cubit.usersCountModel?.data?.values?[2] ?? 0,
-                    onTap: () {},
-                  ),
-                  StatusCountWidget(
-                    label: 'Complete',
-                    count: cubit.usersCountModel?.data?.values?[3] ?? 0,
-                    onTap: () {},
-                  ),
-                  StatusCountWidget(
-                    label: 'Not Resolved',
-                    count: cubit.usersCountModel?.data?.values?[3] ?? 0,
-                    onTap: () {},
-                  ),
+                  if (role == 'Cleaner') ...[
+                    StatusCountWidget(
+                      label: S.of(context).pending,
+                      count: cubit.taskStatusModel?.data?.values?[0] ?? 0,
+                      onTap: () {},
+                    ),
+                    StatusCountWidget(
+                      label: S.of(context).overdue,
+                      count: cubit.taskStatusModel?.data?.values?[6] ?? 0,
+                      onTap: () {},
+                    ),
+                    StatusCountWidget(
+                      label: S.of(context).complete,
+                      count: cubit.taskStatusModel?.data?.values?[3] ?? 0,
+                      onTap: () {},
+                    ),
+                  ],
+                  if (role != 'Cleaner') ...[
+                    StatusCountWidget(
+                      label: S.of(context).pending,
+                      count: cubit.taskStatusModel?.data?.values?[0] ?? 0,
+                      onTap: () {},
+                    ),
+                    StatusCountWidget(
+                      label: S.of(context).inProgress,
+                      count: cubit.taskStatusModel?.data?.values?[1] ?? 0,
+                      onTap: () {},
+                    ),
+                    StatusCountWidget(
+                      label: S.of(context).waitingForApproval,
+                      count: cubit.taskStatusModel?.data?.values?[2] ?? 0,
+                      onTap: () {},
+                    ),
+                    StatusCountWidget(
+                      label: S.of(context).complete,
+                      count: cubit.taskStatusModel?.data?.values?[3] ?? 0,
+                      onTap: () {},
+                    ),
+                    StatusCountWidget(
+                      label: S.of(context).notResolved,
+                      count: cubit.taskStatusModel?.data?.values?[5] ?? 0,
+                      onTap: () {},
+                    ),
+                  ]
                 ],
               ),
             ),

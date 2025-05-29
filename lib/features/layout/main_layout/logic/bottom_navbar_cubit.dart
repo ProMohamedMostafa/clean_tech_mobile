@@ -25,7 +25,7 @@ class BottomNavbarCubit extends Cubit<BottomNavbarStates> {
       create: (context) => HomeCubit()
         ..getUserDetails()
         ..getMyActivities()
-        ..getTeamActivities()
+        // ..getTeamActivities()
         ..getQuantity()
         ..getCompleteiontask()
         ..getMaterialCount()
@@ -36,8 +36,8 @@ class BottomNavbarCubit extends Cubit<BottomNavbarStates> {
         ..getTaskData()
         ..initializeUser()
         ..initialize()
-        ..getUnReadNotification(),
-      // ..getUserStatus()
+        ..getUnReadNotification()
+        ..getUserStatus(),
       child: const HomeScreen(),
     ),
     const IntegrationsScreen(),
@@ -46,7 +46,10 @@ class BottomNavbarCubit extends Cubit<BottomNavbarStates> {
       child: const CalendarScreen(),
     ),
     BlocProvider(
-      create: (context) => SettingsCubit(),
+      create: (context) => SettingsCubit()
+        ..getUserDetails()
+        ..initializeNotificationStatus()
+        ..getDarkModeStatus(),
       child: const SettingsScreen(),
     )
   ];
@@ -59,10 +62,11 @@ class BottomNavbarCubit extends Cubit<BottomNavbarStates> {
           ),
           label: S.of(context).botNavTitle1),
       BottomNavigationBarItem(
-          icon: Icon(IconBroken.category), label: S.of(context).botNavTitle4),
+          icon: Icon(IconBroken.category), label: S.of(context).botNavTitle2),
       BottomNavigationBarItem(
           icon: Icon(IconBroken.calendar), label: S.of(context).botNavTitle3),
-      BottomNavigationBarItem(icon: Icon(Icons.menu), label: 'Settings'),
+      BottomNavigationBarItem(
+          icon: Icon(Icons.menu), label: S.of(context).botNavTitle4),
     ];
   }
 

@@ -7,7 +7,6 @@ import 'package:smart_cleaning_application/features/screens/shift/add_shift/logi
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/point_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/section_list_model.dart';
 
 class AddShiftCubit extends Cubit<AddShiftState> {
@@ -27,8 +26,6 @@ class AddShiftCubit extends Cubit<AddShiftState> {
   TextEditingController floorIdController = TextEditingController();
   TextEditingController sectionController = TextEditingController();
   TextEditingController sectionIdController = TextEditingController();
-  TextEditingController pointController = TextEditingController();
-  TextEditingController pointIdController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   CreateShiftModel? createShiftModel;
@@ -51,8 +48,8 @@ class AddShiftCubit extends Cubit<AddShiftState> {
             : [buildingIdController.text],
         "floorsIds":
             floorIdController.text.isEmpty ? null : [floorIdController.text],
-        "pointsIds":
-            pointIdController.text.isEmpty ? null : [pointIdController.text]
+        "sectionIds":
+            sectionIdController.text.isEmpty ? null : [sectionIdController.text]
       });
       createShiftModel = CreateShiftModel.fromJson(response!.data);
       emit(AddShiftSuccessState(createShiftModel!));
@@ -121,21 +118,6 @@ class AddShiftCubit extends Cubit<AddShiftState> {
       emit(GetSectionSuccessState(sectionModel!));
     }).catchError((error) {
       emit(GetSectionErrorState(error.toString()));
-    });
-  }
-
-  PointListModel? pointModel;
-  List<PointItem> pointItem = [PointItem(name: 'No points')];
-  getPoint() {
-    emit(GetPointLoadingState());
-    DioHelper.getData(
-        url: 'points/pagination',
-        query: {'SectionId': sectionIdController.text}).then((value) {
-      pointModel = PointListModel.fromJson(value!.data);
-      pointItem = pointModel?.data?.data ?? [PointItem(name: 'No points')];
-      emit(GetPointSuccessState(pointModel!));
-    }).catchError((error) {
-      emit(GetPointErrorState(error.toString()));
     });
   }
 }

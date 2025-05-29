@@ -7,7 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
-import 'package:smart_cleaning_application/core/helpers/regx_validations/regx_validations.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
@@ -31,46 +30,9 @@ class AddUserBody extends StatefulWidget {
 }
 
 class _AddUserBodyState extends State<AddUserBody> {
-  List<int> selectedShiftsIds = [];
-
-  bool isShow = false;
-  bool isObscureText = true;
-  bool hasLowercase = false;
-  bool hasUppercase = false;
-  bool hasSpecialCharacters = false;
-  bool hasNumber = false;
-  bool hasMinLength = false;
-
-  @override
-  void initState() {
-    context.read<AddUserCubit>()
-      ..getNationality()
-      ..getRole()
-      ..getProviders()
-      ..getAllDeletedProviders();
-    setupPasswordControllerListener();
-    super.initState();
-  }
-
-  void setupPasswordControllerListener() {
-    context.read<AddUserCubit>().passwordController.addListener(() {
-      setState(() {
-        hasLowercase = AppRegex.hasLowerCase(
-            context.read<AddUserCubit>().passwordController.text);
-        hasUppercase = AppRegex.hasUpperCase(
-            context.read<AddUserCubit>().passwordController.text);
-        hasSpecialCharacters = AppRegex.hasSpecialCharacter(
-            context.read<AddUserCubit>().passwordController.text);
-        hasNumber = AppRegex.hasNumber(
-            context.read<AddUserCubit>().passwordController.text);
-        hasMinLength = AppRegex.hasMinLength(
-            context.read<AddUserCubit>().passwordController.text);
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<AddUserCubit>();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -89,7 +51,7 @@ class _AddUserBodyState extends State<AddUserBody> {
           }
           if (state is AddProviderSuccessState) {
             toast(text: state.message, color: Colors.blue);
-            context.read<AddUserCubit>().getProviders();
+            cubit.getProviders();
           }
           if (state is AddProviderErrorState) {
             toast(text: state.error, color: Colors.red);
@@ -97,8 +59,8 @@ class _AddUserBodyState extends State<AddUserBody> {
 
           if (state is DeletedProviderSuccessState) {
             toast(text: state.message, color: Colors.blue);
-            context.read<AddUserCubit>().getProviders();
-            context.read<AddUserCubit>().getAllDeletedProviders();
+            cubit.getProviders();
+            cubit.getAllDeletedProviders();
           }
           if (state is DeletedProviderErrorState) {
             toast(text: state.error, color: Colors.red);
@@ -106,18 +68,17 @@ class _AddUserBodyState extends State<AddUserBody> {
 
           if (state is RestoreProviderSuccessState) {
             toast(text: state.message, color: Colors.blue);
-            context.read<AddUserCubit>().getAllDeletedProviders();
-            context.read<AddUserCubit>().getProviders();
+            cubit.getAllDeletedProviders();
+            cubit.getProviders();
           }
           if (state is RestoreProviderErrorState) {
             toast(text: state.error, color: Colors.red);
           }
         },
         builder: (context, state) {
-          return SafeArea(
-              child: SingleChildScrollView(
+          return SingleChildScrollView(
             child: Form(
-              key: context.read<AddUserCubit>().formKey,
+              key: cubit.formKey,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
@@ -138,19 +99,12 @@ class _AddUserBodyState extends State<AddUserBody> {
                                     ),
                                     body: Center(
                                       child: PhotoView(
-                                        imageProvider: context
-                                                    .read<AddUserCubit>()
-                                                    .image
-                                                    ?.path ==
-                                                null
+                                        imageProvider: cubit.image?.path == null
                                             ? AssetImage(
                                                 'assets/images/person.png',
                                               )
                                             : FileImage(
-                                                File(context
-                                                    .read<AddUserCubit>()
-                                                    .image!
-                                                    .path),
+                                                File(cubit.image!.path),
                                               ),
                                         backgroundDecoration:
                                             const BoxDecoration(
@@ -173,27 +127,22 @@ class _AddUserBodyState extends State<AddUserBody> {
                                 ),
                               ),
                               child: ClipOval(
-                                child:
-                                    context.read<AddUserCubit>().image?.path ==
-                                            null
-                                        ? Image.asset(
+                                child: cubit.image?.path == null
+                                    ? Image.asset(
+                                        'assets/images/person.png',
+                                        fit: BoxFit.fill,
+                                      )
+                                    : Image.file(
+                                        File(cubit.image!.path),
+                                        fit: BoxFit.fill,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return Image.asset(
                                             'assets/images/person.png',
                                             fit: BoxFit.fill,
-                                          )
-                                        : Image.file(
-                                            File(context
-                                                .read<AddUserCubit>()
-                                                .image!
-                                                .path),
-                                            fit: BoxFit.fill,
-                                            errorBuilder:
-                                                (context, error, stackTrace) {
-                                              return Image.asset(
-                                                'assets/images/person.png',
-                                                fit: BoxFit.fill,
-                                              );
-                                            },
-                                          ),
+                                          );
+                                        },
+                                      ),
                               ),
                             ),
                           ),
@@ -202,7 +151,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                             right: 10,
                             child: InkWell(
                               onTap: () {
-                                context.read<AddUserCubit>().galleryFile();
+                                cubit.galleryFile();
                               },
                               child: Container(
                                   width: 22.w,
@@ -233,9 +182,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                                 style: TextStyles.font16BlackRegular,
                               ),
                               AddUserTextFormField(
-                                controller: context
-                                    .read<AddUserCubit>()
-                                    .firstNameController,
+                                controller: cubit.firstNameController,
                                 obscureText: false,
                                 readOnly: false,
                                 keyboardType: TextInputType.text,
@@ -243,12 +190,18 @@ class _AddUserBodyState extends State<AddUserBody> {
                                   if (value == null || value.isEmpty) {
                                     return S.of(context).validationFirstName;
                                   } else if (value.length > 55) {
-                                    return 'First name too long';
+                                    return S
+                                        .of(context)
+                                        .validationFirstNameTooLong;
                                   } else if (value.length < 3) {
-                                    return 'First name too short';
+                                    return S
+                                        .of(context)
+                                        .validationFirstNameTooShort;
                                   } else if (!RegExp(r"^[a-zA-Z\s]+$")
                                       .hasMatch(value)) {
-                                    return 'Only letters';
+                                    return S
+                                        .of(context)
+                                        .validationFirstNameOnlyLetters;
                                   }
                                 },
                               ),
@@ -265,9 +218,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                                 style: TextStyles.font16BlackRegular,
                               ),
                               AddUserTextFormField(
-                                controller: context
-                                    .read<AddUserCubit>()
-                                    .lastNameController,
+                                controller: cubit.lastNameController,
                                 obscureText: false,
                                 readOnly: false,
                                 keyboardType: TextInputType.text,
@@ -275,12 +226,18 @@ class _AddUserBodyState extends State<AddUserBody> {
                                   if (value == null || value.isEmpty) {
                                     return S.of(context).validationLastName;
                                   } else if (value.length > 55) {
-                                    return 'Last name too long';
+                                    return S
+                                        .of(context)
+                                        .validationLastNameTooLong;
                                   } else if (value.length < 3) {
-                                    return 'Last name too short';
+                                    return S
+                                        .of(context)
+                                        .validationLastNameTooShort;
                                   } else if (!RegExp(r"^[a-zA-Z\s]+$")
                                       .hasMatch(value)) {
-                                    return 'Only letters';
+                                    return S
+                                        .of(context)
+                                        .validationLastNameOnlyLetters;
                                   }
                                 },
                               ),
@@ -295,8 +252,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                       style: TextStyles.font16BlackRegular,
                     ),
                     AddUserTextFormField(
-                      controller:
-                          context.read<AddUserCubit>().userNameController,
+                      controller: cubit.userNameController,
                       obscureText: false,
                       readOnly: false,
                       keyboardType: TextInputType.text,
@@ -304,9 +260,9 @@ class _AddUserBodyState extends State<AddUserBody> {
                         if (value == null || value.isEmpty) {
                           return S.of(context).validationUserName;
                         } else if (value.length > 55) {
-                          return 'User name too long';
+                          return S.of(context).validationUserNameTooLong;
                         } else if (value.length < 3) {
-                          return 'User name too short';
+                          return S.of(context).validationUserNameTooShort;
                         }
                       },
                     ),
@@ -316,7 +272,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                       style: TextStyles.font16BlackRegular,
                     ),
                     AddUserTextFormField(
-                      controller: context.read<AddUserCubit>().emailController,
+                      controller: cubit.emailController,
                       obscureText: false,
                       readOnly: false,
                       keyboardType: TextInputType.emailAddress,
@@ -326,7 +282,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                         } else if (!RegExp(
                                 r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                             .hasMatch(value)) {
-                          return 'Enter valid email';
+                          return S.of(context).validationValidEmail;
                         }
                       },
                     ),
@@ -336,14 +292,14 @@ class _AddUserBodyState extends State<AddUserBody> {
                       style: TextStyles.font16BlackRegular,
                     ),
                     AddUserTextFormField(
-                      controller: context.read<AddUserCubit>().phoneController,
+                      controller: cubit.phoneController,
                       keyboardType: TextInputType.phone,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return S.of(context).validationPhoneNumber;
                         } else if (!RegExp(r'(^(?:[+0])?[0-9]{9}$)')
                             .hasMatch(value)) {
-                          return 'Please enter valid mobile number';
+                          return S.of(context).validationValidMobileNumber;
                         }
                         return null;
                       },
@@ -355,7 +311,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                               TextStyle(color: Colors.black, fontSize: 14.sp),
                         ),
                       ),
-                      hint: '123456789',
+                      hint: S.of(context).hintPhoneNumber,
                       obscureText: false,
                       readOnly: false,
                     ),
@@ -373,32 +329,13 @@ class _AddUserBodyState extends State<AddUserBody> {
                                 style: TextStyles.font16BlackRegular,
                               ),
                               CustomDropDownList(
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return S.of(context).validationCountry;
-                                  }
-                                  return null;
-                                },
-                                hint: 'Select Country',
-                                items: context
-                                            .read<AddUserCubit>()
-                                            .nationalityModel
-                                            ?.data
-                                            ?.isEmpty ??
-                                        true
-                                    ? ['No countries']
-                                    : context
-                                            .read<AddUserCubit>()
-                                            .nationalityModel
-                                            ?.data
-                                            ?.map((e) => e.name ?? 'Unknown')
-                                            .toList() ??
-                                        [],
-                                controller: context
-                                    .read<AddUserCubit>()
-                                    .countryController,
-                                keyboardType: TextInputType.text,
+                                hint: S.of(context).hintSelectCountry,
+                                controller: cubit.countryController,
+                                items: cubit.countryData
+                                    .map((e) => e.name)
+                                    .toList(),
                                 suffixIcon: IconBroken.arrowDown2,
+                                keyboardType: TextInputType.text,
                               ),
                             ],
                           ),
@@ -414,14 +351,15 @@ class _AddUserBodyState extends State<AddUserBody> {
                               ),
                               CustomDropDownList(
                                 onPressed: (selectedValue) {
-                                  final items = ['Male', 'Female'];
+                                  final items = [
+                                    S.of(context).genderMale,
+                                    S.of(context).genderFemale
+                                  ];
                                   final selectedIndex =
                                       items.indexOf(selectedValue);
                                   if (selectedIndex != -1) {
-                                    context
-                                        .read<AddUserCubit>()
-                                        .genderIdController
-                                        .text = selectedIndex.toString();
+                                    cubit.genderIdController.text =
+                                        selectedIndex.toString();
                                   }
                                 },
                                 validator: (value) {
@@ -430,11 +368,12 @@ class _AddUserBodyState extends State<AddUserBody> {
                                   }
                                   return null;
                                 },
-                                hint: 'Gender',
-                                items: ['Male', 'Female'],
-                                controller: context
-                                    .read<AddUserCubit>()
-                                    .genderController,
+                                hint: S.of(context).hintSelectGender,
+                                items: [
+                                  S.of(context).genderMale,
+                                  S.of(context).genderFemale
+                                ],
+                                controller: cubit.genderController,
                                 keyboardType: TextInputType.text,
                                 suffixIcon: IconBroken.arrowDown2,
                               ),
@@ -457,32 +396,13 @@ class _AddUserBodyState extends State<AddUserBody> {
                                 style: TextStyles.font16BlackRegular,
                               ),
                               CustomDropDownList(
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return S.of(context).validationNationality;
-                                  }
-                                  return null;
-                                },
-                                hint: 'Select Nationality',
-                                items: context
-                                            .read<AddUserCubit>()
-                                            .nationalityModel
-                                            ?.data
-                                            ?.isEmpty ??
-                                        true
-                                    ? ['No nationalities']
-                                    : context
-                                            .read<AddUserCubit>()
-                                            .nationalityModel
-                                            ?.data
-                                            ?.map((e) => e.name ?? 'Unknown')
-                                            .toList() ??
-                                        [],
-                                controller: context
-                                    .read<AddUserCubit>()
-                                    .nationalityController,
-                                keyboardType: TextInputType.text,
+                                hint: S.of(context).hintSelectNationality,
+                                controller: cubit.nationalityController,
+                                items: cubit.nationalityData
+                                    .map((e) => e.name ?? 'un known')
+                                    .toList(),
                                 suffixIcon: IconBroken.arrowDown2,
+                                keyboardType: TextInputType.text,
                               ),
                             ],
                           ),
@@ -497,9 +417,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                                 style: TextStyles.font16BlackRegular,
                               ),
                               AddUserTextFormField(
-                                controller: context
-                                    .read<AddUserCubit>()
-                                    .birthController,
+                                controller: cubit.birthController,
                                 obscureText: false,
                                 readOnly: true,
                                 suffixIcon: Icons.calendar_today,
@@ -531,17 +449,17 @@ class _AddUserBodyState extends State<AddUserBody> {
                                         DateFormat('yyyy-MM-dd')
                                             .format(pickedDate);
                                     setState(() {
-                                      context
-                                          .read<AddUserCubit>()
-                                          .birthController
-                                          .text = formattedDate;
+                                      cubit.birthController.text =
+                                          formattedDate;
                                     });
                                   }
                                 },
                                 keyboardType: TextInputType.none,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Birth Date is required';
+                                    return S
+                                        .of(context)
+                                        .validationBirthDateRequired;
                                   }
                                 },
                               ),
@@ -556,8 +474,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                       style: TextStyles.font16BlackRegular,
                     ),
                     AddUserTextFormField(
-                      controller:
-                          context.read<AddUserCubit>().idNumberController,
+                      controller: cubit.idNumberController,
                       obscureText: false,
                       readOnly: false,
                       keyboardType: TextInputType.number,
@@ -565,9 +482,9 @@ class _AddUserBodyState extends State<AddUserBody> {
                         if (value == null || value.isEmpty) {
                           return S.of(context).validationIdNumber;
                         } else if (value.length > 20) {
-                          return 'ID Number too long';
+                          return S.of(context).validationIdNumberTooLong;
                         } else if (value.length < 5) {
-                          return 'ID Number too short';
+                          return S.of(context).validationIdNumberTooShort;
                         }
                       },
                     ),
@@ -577,43 +494,42 @@ class _AddUserBodyState extends State<AddUserBody> {
                       style: TextStyles.font16BlackRegular,
                     ),
                     AddUserTextFormField(
-                        controller:
-                            context.read<AddUserCubit>().passwordController,
-                        readOnly: false,
-                        keyboardType: TextInputType.text,
-                        suffixIcon: context.read<AddUserCubit>().suffixIcon,
-                        suffixPressed: () {
-                          context
-                              .read<AddUserCubit>()
-                              .changeSuffixIconVisiability();
-                        },
-                        onChanged: (value) {
-                          if (value!.isNotEmpty) {
-                            isShow = true;
-                          } else {
-                            isShow = false;
-                          }
-                        },
-                        obscureText: context.read<AddUserCubit>().ispassword,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return S.of(context).validationAddPassword;
-                          }
-                          if (!RegExp(
-                                  r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~`)\%\-(_+=;:,.<>/?"[{\]}\|^]).{8,}$')
-                              .hasMatch(value)) {
-                            return S.of(context).validationPassword;
-                          }
-                        }),
-                    if (isShow == true) ...[
-                      verticalSpace(10),
+                      controller: cubit.passwordController,
+                      readOnly: false,
+                      keyboardType: TextInputType.text,
+                      suffixIcon: cubit.suffixIcon,
+                      suffixPressed: () {
+                        cubit.changeSuffixIconVisiability();
+                      },
+                      onChanged: (value) {
+                        if (value!.isNotEmpty) {
+                          cubit.isShow = true;
+                        } else {
+                          cubit.isShow = false;
+                        }
+                        cubit.validatePassword(value);
+                      },
+                      obscureText: cubit.ispassword,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return S.of(context).validationAddPassword;
+                        }
+                        if (!RegExp(
+                                r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~`)\%\-(_+=;:,.<>/?"[{\]}\|^]).{8,}$')
+                            .hasMatch(value)) {
+                          return S.of(context).validationPassword;
+                        }
+                      },
+                    ),
+                    if (cubit.isShow == true) ...[
                       PasswordValidations(
-                        hasLowerCase: hasLowercase,
-                        hasUpperCase: hasUppercase,
-                        hasSpecialCharacters: hasSpecialCharacters,
-                        hasNumber: hasNumber,
-                        hasMinLength: hasMinLength,
-                      )
+                        hasLowerCase: cubit.hasLowercase,
+                        hasUpperCase: cubit.hasUppercase,
+                        hasSpecialCharacters: cubit.hasSpecialCharacters,
+                        hasNumber: cubit.hasNumber,
+                        hasMinLength: cubit.hasMinLength,
+                      ),
+                      verticalSpace(10)
                     ],
                     verticalSpace(10),
                     Text(
@@ -621,24 +537,16 @@ class _AddUserBodyState extends State<AddUserBody> {
                       style: TextStyles.font16BlackRegular,
                     ),
                     AddUserTextFormField(
-                      controller: context
-                          .read<AddUserCubit>()
-                          .passwordConfirmationController,
-                      suffixIcon: context.read<AddUserCubit>().suffixIcon,
+                      controller: cubit.passwordConfirmationController,
+                      suffixIcon: cubit.suffixIcon,
                       suffixPressed: () {
-                        context
-                            .read<AddUserCubit>()
-                            .changeSuffixIconVisiability();
+                        cubit.changeSuffixIconVisiability();
                       },
-                      obscureText: context.read<AddUserCubit>().ispassword,
+                      obscureText: cubit.ispassword,
                       readOnly: false,
                       keyboardType: TextInputType.text,
                       validator: (value) {
-                        if (value! !=
-                            context
-                                .read<AddUserCubit>()
-                                .passwordController
-                                .text) {
+                        if (value! != cubit.passwordController.text) {
                           return S.of(context).validationRepeatPassword;
                         }
                       },
@@ -650,25 +558,19 @@ class _AddUserBodyState extends State<AddUserBody> {
                     ),
                     CustomDropDownList(
                       onChanged: (selectedValue) {
-                        final selectedRole = context
-                            .read<AddUserCubit>()
-                            .roleModel
-                            ?.data
+                        final selectedRole = cubit.roleModel?.data
                             ?.firstWhere((role) => role.name == selectedValue);
-                        context.read<AddUserCubit>().managerController.clear();
+                        cubit.managerController.clear();
                         int? managerId;
                         if (selectedRole!.id! == 1) {
                           managerId = 1;
                         } else {
                           managerId = selectedRole.id! - 1;
                         }
-                        context.read<AddUserCubit>().getAllUsers(managerId);
+                        cubit.getAllUsers(managerId);
                       },
                       onPressed: (selectedValue) {
-                        final selectedId = context
-                            .read<AddUserCubit>()
-                            .roleModel
-                            ?.data
+                        final selectedId = cubit.roleModel?.data
                             ?.firstWhere(
                               (role) => role.name == selectedValue,
                             )
@@ -676,34 +578,22 @@ class _AddUserBodyState extends State<AddUserBody> {
                             ?.toString();
 
                         if (selectedId != null) {
-                          context.read<AddUserCubit>().roleIdController.text =
-                              selectedId;
+                          cubit.roleIdController.text = selectedId;
                         }
                       },
                       validator: (value) {
                         if (value == null ||
                             value.isEmpty ||
-                            value == 'No roles available') {
+                            value == S.of(context).noRolesAvailable) {
                           return S.of(context).validationRole;
                         }
                         return null;
                       },
-                      hint: 'Select Role',
-                      items: context
-                                  .read<AddUserCubit>()
-                                  .roleModel
-                                  ?.data
-                                  ?.isEmpty ??
-                              true
-                          ? ['No roles available']
-                          : context
-                                  .read<AddUserCubit>()
-                                  .roleModel
-                                  ?.data
-                                  ?.map((e) => e.name ?? 'Unknown')
-                                  .toList() ??
-                              [],
-                      controller: context.read<AddUserCubit>().roleController,
+                      hint: S.of(context).hintSelectRole,
+                      items: cubit.providerItem
+                          .map((e) => e.name ?? 'Unknown')
+                          .toList(),
+                      controller: cubit.roleController,
                       keyboardType: TextInputType.text,
                       suffixIcon: IconBroken.arrowDown2,
                     ),
@@ -713,39 +603,19 @@ class _AddUserBodyState extends State<AddUserBody> {
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: (context
-                                            .read<AddUserCubit>()
-                                            .roleIdController
-                                            .text ==
-                                        '1' ||
-                                    context
-                                            .read<AddUserCubit>()
-                                            .roleIdController
-                                            .text ==
-                                        '2' ||
-                                    context
-                                            .read<AddUserCubit>()
-                                            .roleIdController
-                                            .text ==
-                                        '5')
-                                ? 'Admin'
-                                : (context
-                                            .read<AddUserCubit>()
-                                            .roleIdController
-                                            .text ==
-                                        '3')
-                                    ? 'Manager'
-                                    : (context
-                                                .read<AddUserCubit>()
-                                                .roleIdController
-                                                .text ==
-                                            '4')
-                                        ? 'Supervisor'
-                                        : 'Users',
+                            text: (cubit.roleIdController.text == '1' ||
+                                    cubit.roleIdController.text == '2' ||
+                                    cubit.roleIdController.text == '5')
+                                ? S.of(context).roleAdmin
+                                : (cubit.roleIdController.text == '3')
+                                    ? S.of(context).roleManager
+                                    : (cubit.roleIdController.text == '4')
+                                        ? S.of(context).roleSupervisor
+                                        : S.of(context).roleUsers,
                             style: TextStyles.font16BlackRegular,
                           ),
                           TextSpan(
-                            text: ' (Optional)',
+                            text: S.of(context).labelOptional,
                             style: TextStyles.font14GreyRegular,
                           ),
                         ],
@@ -753,101 +623,44 @@ class _AddUserBodyState extends State<AddUserBody> {
                     ),
                     CustomDropDownList(
                       onPressed: (selectedValue) {
-                        final selectedId = context
-                            .read<AddUserCubit>()
-                            .usersModel
-                            ?.data
-                            ?.users!
+                        final selectedId = cubit.usersModel?.data?.users!
                             .firstWhere(
                                 (manager) => manager.userName == selectedValue)
                             .id
                             ?.toString();
 
                         if (selectedId != null) {
-                          context
-                              .read<AddUserCubit>()
-                              .managerIdController
-                              .text = selectedId;
+                          cubit.managerIdController.text = selectedId;
                         }
                       },
-                      controller:
-                          context.read<AddUserCubit>().managerController,
+                      controller: cubit.managerController,
                       keyboardType: TextInputType.text,
                       suffixIcon: IconBroken.arrowDown2,
-                      hint: (context
-                                      .read<AddUserCubit>()
-                                      .roleIdController
-                                      .text ==
-                                  '1' ||
-                              context
-                                      .read<AddUserCubit>()
-                                      .roleIdController
-                                      .text ==
-                                  '2' ||
-                              context
-                                      .read<AddUserCubit>()
-                                      .roleIdController
-                                      .text ==
-                                  '5')
-                          ? 'Admin'
-                          : (context
-                                      .read<AddUserCubit>()
-                                      .roleIdController
-                                      .text ==
-                                  '3')
-                              ? 'Manager'
-                              : (context
-                                          .read<AddUserCubit>()
-                                          .roleIdController
-                                          .text ==
-                                      '4')
-                                  ? 'Supervisor'
-                                  : 'Users',
-                      items: context
-                                  .read<AddUserCubit>()
-                                  .usersModel
-                                  ?.data
-                                  ?.users!
-                                  .isEmpty ??
-                              true
+                      hint: (cubit.roleIdController.text == '1' ||
+                              cubit.roleIdController.text == '2' ||
+                              cubit.roleIdController.text == '5')
+                          ? S.of(context).roleAdmin
+                          : (cubit.roleIdController.text == '3')
+                              ? S.of(context).roleManager
+                              : (cubit.roleIdController.text == '4')
+                                  ? S.of(context).roleSupervisor
+                                  : S.of(context).roleUsers,
+                      items: cubit.usersModel?.data?.users!.isEmpty ?? true
                           ? [
-                              if (context
-                                          .read<AddUserCubit>()
-                                          .roleIdController
-                                          .text ==
-                                      '1' ||
-                                  context
-                                          .read<AddUserCubit>()
-                                          .roleIdController
-                                          .text ==
-                                      '2' ||
-                                  context
-                                          .read<AddUserCubit>()
-                                          .roleIdController
-                                          .text ==
-                                      '5')
-                                'No Admins available'
-                              else if (context
-                                      .read<AddUserCubit>()
-                                      .roleIdController
-                                      .text ==
-                                  '3')
-                                'No Managers available'
-                              else if (context
-                                      .read<AddUserCubit>()
-                                      .roleIdController
-                                      .text ==
-                                  '4')
-                                'No Supervisors available'
+                              if (cubit.roleIdController.text == '1' ||
+                                  cubit.roleIdController.text == '2' ||
+                                  cubit.roleIdController.text == '5')
+                                S.of(context).noAdminsAvailable
+                              else if (cubit.roleIdController.text == '3')
+                                S.of(context).noManagersAvailable
+                              else if (cubit.roleIdController.text == '4')
+                                S.of(context).noSupervisorsAvailable
                               else
-                                'No Users available'
+                                S.of(context).noUsersAvailable
                             ]
-                          : context
-                                  .read<AddUserCubit>()
-                                  .usersModel
-                                  ?.data
-                                  ?.users!
-                                  .map((e) => e.userName ?? 'Unknown')
+                          : cubit.usersModel?.data?.users!
+                                  .map((e) =>
+                                      e.userName ?? S.of(context).roleUsers)
                                   .toList() ??
                               [],
                     ),
@@ -861,7 +674,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                             style: TextStyles.font16BlackRegular,
                           ),
                           TextSpan(
-                            text: ' (Optional)',
+                            text: S.of(context).labelOptional,
                             style: TextStyles.font14GreyRegular,
                           ),
                         ],
@@ -873,45 +686,23 @@ class _AddUserBodyState extends State<AddUserBody> {
                         Expanded(
                           flex: 5,
                           child: CustomDropDownList(
-                            hint: 'Select provider',
-                            onPressed: (selectedValue) {
-                              final selectedId = context
-                                  .read<AddUserCubit>()
-                                  .providersModel
-                                  ?.data
-                                  ?.providers
-                                  ?.firstWhere(
-                                    (provider) =>
-                                        provider.name == selectedValue,
-                                  )
+                            hint: S.of(context).hintSelectProvider,
+                            controller: cubit.providerController,
+                            items: cubit.providerItem
+                                .map((e) => e.name ?? 'Unknown')
+                                .toList(),
+                            onChanged: (selectedValue) {
+                              final selectedId = cubit
+                                  .providersModel?.data?.providers
+                                  ?.firstWhere((provider) =>
+                                      provider.name == selectedValue)
                                   .id
                                   ?.toString();
 
                               if (selectedId != null) {
-                                context
-                                    .read<AddUserCubit>()
-                                    .providerIdController
-                                    .text = selectedId;
+                                cubit.providerIdController.text = selectedId;
                               }
                             },
-                            items: context
-                                        .read<AddUserCubit>()
-                                        .providersModel
-                                        ?.data
-                                        ?.providers
-                                        ?.isEmpty ??
-                                    true
-                                ? ['No Providers available']
-                                : context
-                                        .read<AddUserCubit>()
-                                        .providersModel
-                                        ?.data
-                                        ?.providers
-                                        ?.map((e) => e.name ?? 'Unknown')
-                                        .toList() ??
-                                    [],
-                            controller:
-                                context.read<AddUserCubit>().providerController,
                             keyboardType: TextInputType.text,
                             suffixIcon: IconBroken.arrowDown2,
                           ),
@@ -921,8 +712,8 @@ class _AddUserBodyState extends State<AddUserBody> {
                           flex: 1,
                           child: InkWell(
                             onTap: () {
-                              AddProviderBottomDialog().showBottomDialog(
-                                  context, context.read<AddUserCubit>());
+                              AddProviderBottomDialog()
+                                  .showBottomDialog(context, cubit);
                             },
                             child: Container(
                               height: 48,
@@ -951,17 +742,11 @@ class _AddUserBodyState extends State<AddUserBody> {
                             child: DefaultElevatedButton(
                                 name: S.of(context).saveButtton,
                                 onPressed: () {
-                                  if (context
-                                      .read<AddUserCubit>()
-                                      .formKey
-                                      .currentState!
-                                      .validate()) {
-                                    context.read<AddUserCubit>().addUser(
-                                        image: context
-                                            .read<AddUserCubit>()
-                                            .image
-                                            ?.path,
-                                        selectedShiftsIds: selectedShiftsIds);
+                                  if (cubit.formKey.currentState!.validate()) {
+                                    cubit.addUser(
+                                        image: cubit.image?.path,
+                                        selectedShiftsIds:
+                                            cubit.selectedShiftsIds);
                                   }
                                 },
                                 color: AppColor.primaryColor,
@@ -974,7 +759,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                 ),
               ),
             ),
-          ));
+          );
         },
       ),
     );

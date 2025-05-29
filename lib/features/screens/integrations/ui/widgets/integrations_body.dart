@@ -21,46 +21,46 @@ class IntegrationsBody extends StatelessWidget {
         ),
       IntegrationItem(
         onTap: () => context.pushNamed(Routes.chooseViewWorkLocationScreen),
-        label: 'Work Location',
+        label: S.of(context).integ2,
         image: 'assets/images/location.png',
       ),
       if (role == 'Admin')
         IntegrationItem(
           onTap: () => context.pushNamed(Routes.assignScreen),
-          label: "Assign Management",
+          label: S.of(context).integ3,
           image: 'assets/images/assign.png',
         ),
       IntegrationItem(
         onTap: () => context.pushNamed(Routes.shiftScreen),
-        label: "Shift",
+        label: S.of(context).integ4,
         image: 'assets/images/shift.png',
       ),
       IntegrationItem(
         onTap: () => context.pushNamed(Routes.taskManagementScreen),
-        label: 'Task',
+        label: S.of(context).integ5,
         image: 'assets/images/task.png',
       ),
       IntegrationItem(
         onTap: () => context.pushNamed(Routes.attendanceScreen),
-        label: "Attendance",
+        label: S.of(context).integ6,
         image: 'assets/images/attendance.png',
       ),
       if (role == 'Admin')
         IntegrationItem(
           onTap: () => context.pushNamed(Routes.viewStockScreen),
-          label: "Stock",
+          label: S.of(context).integ7,
           image: 'assets/images/stock.png',
         ),
       IntegrationItem(
         onTap: () => context.pushNamed(Routes.activityScreen),
-        label: "Activity",
+        label: S.of(context).integ8,
         image: 'assets/images/activity.png',
       ),
     ];
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Integrations"),
+        title: Text(S.of(context).botNavTitle2),
       ),
       body: SingleChildScrollView(
         child: Padding(

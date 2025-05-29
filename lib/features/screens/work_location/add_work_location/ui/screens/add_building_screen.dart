@@ -33,14 +33,7 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
   List<int> selectedCleanersIds = [];
   List<int> selectedShiftsIds = [];
   int? organizationId;
-  @override
-  void initState() {
-    context.read<AddWorkLocationCubit>()
-      ..getNationality(userUsedOnly: false, areaUsedOnly: true)
-      ..getAllUsers()
-      ..getShifts();
-    super.initState();
-  }
+ 
 
   @override
   Widget build(BuildContext context) {

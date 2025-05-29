@@ -502,12 +502,14 @@ class HomeCubit extends Cubit<HomeState> {
   String selectedDateRangeTask = '..... - ..... ${DateTime.now().year}';
 
   TaskStatusModel? taskStatusModel;
-  getTaskData({int? userId, String? startDate, String? endDate}) {
+  getTaskData(
+      {int? userId, String? startDate, String? endDate, int? priority}) {
     emit(TaskStatusLoadingState());
     DioHelper.getData(url: 'tasks/status', query: {
       'UserId': userId,
       'StartDate': startDate,
       'EndDate': endDate,
+      'Priority': priority
     }).then((value) {
       taskStatusModel = TaskStatusModel.fromJson(value!.data);
       emit(TaskStatusSuccessState(taskStatusModel!));

@@ -4,7 +4,6 @@ import 'package:smart_cleaning_application/core/helpers/cache_helper/cache_helpe
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/settings/data/model/profile_model.dart';
 import 'package:smart_cleaning_application/features/screens/settings/logic/settings_state.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_status_model.dart';
 
 class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit() : super(SettingsInitialState());
@@ -56,17 +55,6 @@ class SettingsCubit extends Cubit<SettingsState> {
       emit(UserDetailsSuccessState(profileModel!));
     }).catchError((error) {
       emit(UserDetailsErrorState(error.toString()));
-    });
-  }
-
-  UserStatusModel? userStatusModel;
-  getUserStatus() {
-    emit(UserStatusLoadingState());
-    DioHelper.getData(url: 'attendance/status').then((value) {
-      userStatusModel = UserStatusModel.fromJson(value!.data);
-      emit(UserStatusSuccessState(userStatusModel!));
-    }).catchError((error) {
-      emit(UserStatusErrorState(error.toString()));
     });
   }
 

@@ -5,7 +5,6 @@ import 'package:smart_cleaning_application/features/screens/integrations/data/mo
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/edit_user/data/model/edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_shift_details_model.dart';
 
 abstract class EditUserState {}
 
@@ -36,26 +35,6 @@ class UserSuccessState extends EditUserState {
 class UserErrorState extends EditUserState {
   final String error;
   UserErrorState(this.error);
-}
-//*********************** */
-
-class UserShiftDetailsLoadingState extends EditUserState {}
-
-class UserShiftDetailsSuccessState extends EditUserState {
-  final UserShiftDetailsModel userShiftDetailsModel;
-
-  UserShiftDetailsSuccessState(this.userShiftDetailsModel);
-}
-
-class UserShiftDetailsErrorState extends EditUserState {
-  final String error;
-  UserShiftDetailsErrorState(this.error);
-}
-
-//*************************** */
-class ImageSelectedState extends EditUserState {
-  final XFile image;
-  ImageSelectedState(this.image);
 }
 
 //**************************** */
@@ -118,3 +97,12 @@ class AllUsersErrorState extends EditUserState {
 //*************************** */
 
 class ChangeSuffixIconVisiabiltyState extends EditUserState {}
+
+//*************************** */
+class ImageSelectedState extends EditUserState {
+  final XFile image;
+  ImageSelectedState(this.image);
+}
+//*************************** */
+
+class PasswordValidationChangedState extends EditUserState {}

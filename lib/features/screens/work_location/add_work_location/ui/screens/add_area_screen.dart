@@ -18,81 +18,60 @@ import 'package:smart_cleaning_application/features/screens/work_location/add_wo
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/logic/add_work_location_state.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
-class AddAreaScreen extends StatefulWidget {
+class AddAreaScreen extends StatelessWidget {
   const AddAreaScreen({super.key});
 
   @override
-  State<AddAreaScreen> createState() => _AddAreaScreenState();
-}
-
-class _AddAreaScreenState extends State<AddAreaScreen> {
-  List<int> selectedManagersIds = [];
-  List<int> selectedSupervisorsIds = [];
-  List<int> selectedCleanersIds = [];
-
-  @override
-  void initState() {
-    context.read<AddWorkLocationCubit>()
-      ..getNationality(userUsedOnly: false, areaUsedOnly: false)
-      ..getAllUsers();
-
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final cubit = context.read<AddWorkLocationCubit>();
     return Scaffold(
       appBar: AppBar(
         leading: customBackButton(context),
-        title: Text('Add Area', style: TextStyles.font16BlackSemiBold),
-        centerTitle: true,
+        title: Text('Add Area'),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-            child: BlocConsumer<AddWorkLocationCubit, AddWorkLocationState>(
-          listener: (context, state) {
-            if (state is CreateAreaSuccessState) {
-              toast(text: state.message, color: Colors.blue);
-              context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
-                  arguments: 0);
-            }
-            if (state is CreateAreaErrorState) {
-              toast(text: state.error, color: Colors.red);
-            }
-          },
-          builder: (context, state) {
-            if (context.read<AddWorkLocationCubit>().usersModel == null ||
-                context.read<AddWorkLocationCubit>().nationalityModel == null) {
-              return Center(
-                child: CircularProgressIndicator(
-                  color: AppColor.primaryColor,
-                ),
-              );
-            }
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Form(
-                key: context.read<AddWorkLocationCubit>().formAddKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    verticalSpace(20),
-                    _buildDetailsField(),
-                    verticalSpace(20),
-                    _buildContinueButton(state),
-                    verticalSpace(20),
-                  ],
-                ),
+      body: SingleChildScrollView(
+          child: BlocConsumer<AddWorkLocationCubit, AddWorkLocationState>(
+        listener: (context, state) {
+          if (state is CreateAreaSuccessState) {
+            toast(text: state.message, color: Colors.blue);
+            context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
+                arguments: 0);
+          }
+          if (state is CreateAreaErrorState) {
+            toast(text: state.error, color: Colors.red);
+          }
+        },
+        builder: (context, state) {
+          if (cubit.usersModel == null || cubit.nationalityModel == null) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: AppColor.primaryColor,
               ),
             );
-          },
-        )),
-      ),
+          }
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Form(
+              key: cubit.formAddKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  verticalSpace(20),
+                  _buildDetailsField(context, cubit),
+                  verticalSpace(20),
+                  _buildContinueButton(context, cubit, state),
+                  verticalSpace(20),
+                ],
+              ),
+            ),
+          );
+        },
+      )),
     );
   }
 
-  Widget _buildDetailsField() {
+  Widget _buildDetailsField(BuildContext context, AddWorkLocationCubit cubit) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,8 +103,7 @@ class _AddAreaScreenState extends State<AddAreaScreen> {
             return null;
           },
           suffixIcon: IconBroken.arrowDown2,
-          controller:
-              context.read<AddWorkLocationCubit>().nationalityController,
+          controller: cubit.nationalityController,
           isRead: false,
           keyboardType: TextInputType.text,
         ),
@@ -135,7 +113,7 @@ class _AddAreaScreenState extends State<AddAreaScreen> {
           style: TextStyles.font16BlackRegular,
         ),
         CustomTextFormField(
-          controller: context.read<AddWorkLocationCubit>().addAreaController,
+          controller: cubit.addAreaController,
           keyboardType: TextInputType.text,
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -151,7 +129,7 @@ class _AddAreaScreenState extends State<AddAreaScreen> {
           onlyRead: false,
         ),
         verticalSpace(10),
-        context.read<AddWorkLocationCubit>().usersModel!.data == null
+        cubit.usersModel!.data == null
             ? SizedBox.shrink()
             : RichText(
                 textAlign: TextAlign.center,
@@ -168,7 +146,7 @@ class _AddAreaScreenState extends State<AddAreaScreen> {
                   ],
                 ),
               ),
-        context.read<AddWorkLocationCubit>().usersModel!.data == null
+        cubit.usersModel!.data == null
             ? SizedBox.shrink()
             : MultiDropdown<UserItem>(
                 items: context
@@ -196,8 +174,7 @@ class _AddAreaScreenState extends State<AddAreaScreen> {
                               value: manager,
                             ))
                         .toList(),
-                controller:
-                    context.read<AddWorkLocationCubit>().allmanagersController,
+                controller: cubit.allmanagersController,
                 enabled: true,
                 chipDecoration: ChipDecoration(
                   backgroundColor: Colors.grey[300],
@@ -235,12 +212,12 @@ class _AddAreaScreenState extends State<AddAreaScreen> {
                   selectedIcon: const Icon(Icons.check_box, color: Colors.blue),
                 ),
                 onSelectionChange: (selectedItems) {
-                  selectedManagersIds =
+                  cubit.selectedManagersIds =
                       selectedItems.map((item) => (item).id!).toList();
                 },
               ),
         verticalSpace(10),
-        context.read<AddWorkLocationCubit>().usersModel!.data == null
+        cubit.usersModel!.data == null
             ? SizedBox.shrink()
             : RichText(
                 textAlign: TextAlign.center,
@@ -257,7 +234,7 @@ class _AddAreaScreenState extends State<AddAreaScreen> {
                   ],
                 ),
               ),
-        context.read<AddWorkLocationCubit>().usersModel!.data == null
+        cubit.usersModel!.data == null
             ? SizedBox.shrink()
             : MultiDropdown<UserItem>(
                 items: context
@@ -325,12 +302,12 @@ class _AddAreaScreenState extends State<AddAreaScreen> {
                   selectedIcon: const Icon(Icons.check_box, color: Colors.blue),
                 ),
                 onSelectionChange: (selectedItems) {
-                  selectedSupervisorsIds =
+                  cubit.selectedSupervisorsIds =
                       selectedItems.map((item) => (item).id!).toList();
                 },
               ),
         verticalSpace(10),
-        context.read<AddWorkLocationCubit>().usersModel!.data == null
+        cubit.usersModel!.data == null
             ? SizedBox.shrink()
             : RichText(
                 textAlign: TextAlign.center,
@@ -347,7 +324,7 @@ class _AddAreaScreenState extends State<AddAreaScreen> {
                   ],
                 ),
               ),
-        context.read<AddWorkLocationCubit>().usersModel!.data == null
+        cubit.usersModel!.data == null
             ? SizedBox.shrink()
             : MultiDropdown<UserItem>(
                 items: context
@@ -375,8 +352,7 @@ class _AddAreaScreenState extends State<AddAreaScreen> {
                               value: cleaner,
                             ))
                         .toList(),
-                controller:
-                    context.read<AddWorkLocationCubit>().allCleanersController,
+                controller: cubit.allCleanersController,
                 enabled: true,
                 chipDecoration: ChipDecoration(
                   backgroundColor: Colors.grey[300],
@@ -414,7 +390,7 @@ class _AddAreaScreenState extends State<AddAreaScreen> {
                   selectedIcon: const Icon(Icons.check_box, color: Colors.blue),
                 ),
                 onSelectionChange: (selectedItems) {
-                  selectedCleanersIds =
+                  cubit.selectedCleanersIds =
                       selectedItems.map((item) => (item).id!).toList();
                 },
               ),
@@ -423,7 +399,8 @@ class _AddAreaScreenState extends State<AddAreaScreen> {
     );
   }
 
-  Widget _buildContinueButton(state) {
+  Widget _buildContinueButton(BuildContext context, AddWorkLocationCubit cubit,
+      AddWorkLocationState state) {
     return state is CreateCityLoadingState
         ? const Center(
             child: CircularProgressIndicator(color: AppColor.primaryColor),
@@ -436,14 +413,14 @@ class _AddAreaScreenState extends State<AddAreaScreen> {
                   .formAddKey
                   .currentState!
                   .validate()) {
-                context.read<AddWorkLocationCubit>().createArea(
+                cubit.createArea(
                     context
                         .read<AddWorkLocationCubit>()
                         .nationalityController
                         .text,
-                    selectedManagersIds,
-                    selectedSupervisorsIds,
-                    selectedCleanersIds);
+                    cubit.selectedManagersIds,
+                    cubit.selectedSupervisorsIds,
+                    cubit.selectedCleanersIds);
               }
             },
             color: AppColor.primaryColor,

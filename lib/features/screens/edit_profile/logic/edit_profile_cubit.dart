@@ -2,18 +2,14 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/edit_profile/data/model/edit_profile_model.dart';
 import 'package:smart_cleaning_application/features/screens/edit_profile/logic/edit_profile_state.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/data/models/country_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/gallary_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_list_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/settings/data/model/profile_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_shift_details_model.dart';
 
 class EditProfileCubit extends Cubit<EditProfileState> {
   EditProfileCubit() : super(EditProfileInitialState());
@@ -24,14 +20,15 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   TextEditingController emailController = TextEditingController();
   TextEditingController birthController = TextEditingController();
   TextEditingController nationalityController = TextEditingController();
-  TextEditingController countryNameController = TextEditingController();
+  TextEditingController countryController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
   TextEditingController idNumberController = TextEditingController();
   TextEditingController genderController = TextEditingController();
   TextEditingController genderIdController = TextEditingController();
-  final shiftController = MultiSelectController<ShiftItem>();
 
+  final formKey = GlobalKey<FormState>();
+  List<int> selectedShiftsIds = [];
   EditProfileModel? editProfileModel;
   editProfile(String? image) async {
     emit(EditProfileLoadingState());
@@ -66,7 +63,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           : nationalityController.text,
       "CountryName": nationalityController.text.isEmpty
           ? profileModel!.data!.countryName
-          : countryNameController.text,
+          : countryController.text,
       "Gender": genderController.text.isEmpty
           ? (profileModel!.data!.gender == "Male" ? "0" : "1")
           : genderIdController.text,
@@ -94,47 +91,23 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     });
   }
 
-  UserShiftDetailsModel? userShiftDetailsModel;
-  getProfileShiftDetails(int? id) {
-    emit(UserShiftDetailsLoadingState());
-    DioHelper.getData(url: 'user/shift/$id').then((value) {
-      userShiftDetailsModel = UserShiftDetailsModel.fromJson(value!.data);
-      emit(UserShiftDetailsSuccessState(userShiftDetailsModel!));
-    }).catchError((error) {
-      emit(UserShiftDetailsErrorState(error.toString()));
-    });
-  }
-
-  ProvidersModel? providersModel;
-  getProviders() {
-    emit(AllProvidersLoadingState());
-    DioHelper.getData(url: ApiConstants.allProvidersUrl).then((value) {
-      providersModel = ProvidersModel.fromJson(value!.data);
-      emit(AllProvidersSuccessState(providersModel!));
-    }).catchError((error) {
-      emit(AllProvidersErrorState(error.toString()));
-    });
-  }
-
-  NationalityListModel? nationalityModel;
+  CountryListModel? countryModel;
+  List<CountryModel> countryData = [CountryModel(name: 'No countries')];
+  NationalityListModel? nationalityListModel;
+  List<NationalityDataModel> nationalityData = [
+    NationalityDataModel(name: 'No nationalities')
+  ];
   getNationality() {
     emit(GetNationalityLoadingState());
     DioHelper.getData(url: ApiConstants.countriesUrl).then((value) {
-      nationalityModel = NationalityListModel.fromJson(value!.data);
-      emit(GetNationalitySuccessState(nationalityModel!));
+      countryModel = CountryListModel.fromJson(value!.data);
+      countryData = countryModel?.data ?? [CountryModel(name: 'No countries')];
+      nationalityListModel = NationalityListModel.fromJson(value.data);
+      nationalityData = nationalityListModel?.data ??
+          [NationalityDataModel(name: 'No nationalities')];
+      emit(GetNationalitySuccessState(nationalityListModel!));
     }).catchError((error) {
       emit(GetNationalityErrorState(error.toString()));
-    });
-  }
-
-  RoleModel? roleModel;
-  getRole() {
-    emit(RoleLoadingState());
-    DioHelper.getData(url: ApiConstants.rolesUrl).then((value) {
-      roleModel = RoleModel.fromJson(value!.data);
-      emit(RoleSuccessState(roleModel!));
-    }).catchError((error) {
-      emit(RoleErrorState(error.toString()));
     });
   }
 

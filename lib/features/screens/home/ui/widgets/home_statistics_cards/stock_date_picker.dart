@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class CustomStockMonthPicker {
@@ -85,7 +86,7 @@ class CustomStockMonthPicker {
                             Navigator.pop(dialogContext);
                           },
                           child: Text(
-                            "Cancel",
+                             S.of(context).cancelButton,
                             style:
                                 TextStyle(fontSize: 14.sp, color: Colors.black),
                           ),
@@ -108,7 +109,7 @@ class CustomStockMonthPicker {
                             Navigator.pop(dialogContext, selectedDate);
                           },
                           child: Text(
-                            "Save",
+                            S.of(context).saveButton,
                             style:
                                 TextStyle(fontSize: 14.sp, color: Colors.white),
                           ),

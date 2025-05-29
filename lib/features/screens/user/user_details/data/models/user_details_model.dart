@@ -4,6 +4,7 @@ class UserDetailsModel {
   bool? succeeded;
   String? message;
   String? error;
+  int? businessErrorCode;
   Data? data;
 
   UserDetailsModel(
@@ -12,6 +13,7 @@ class UserDetailsModel {
       this.succeeded,
       this.message,
       this.error,
+      this.businessErrorCode,
       this.data});
 
   UserDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class UserDetailsModel {
     succeeded = json['succeeded'];
     message = json['message'];
     error = json['error'];
+    businessErrorCode = json['businessErrorCode'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
@@ -30,6 +33,7 @@ class UserDetailsModel {
     data['succeeded'] = succeeded;
     data['message'] = message;
     data['error'] = error;
+    data['businessErrorCode'] = businessErrorCode;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -54,10 +58,9 @@ class Data {
   int? providerId;
   String? providerName;
   String? gender;
+  int? genderId;
   String? role;
   int? roleId;
-  String? createdAt;
-  String? updatedAt;
 
   Data(
       {this.id,
@@ -76,10 +79,9 @@ class Data {
       this.providerId,
       this.providerName,
       this.gender,
+      this.genderId,
       this.role,
-      this.roleId,
-      this.createdAt,
-      this.updatedAt});
+      this.roleId});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -98,10 +100,9 @@ class Data {
     providerId = json['providerId'];
     providerName = json['providerName'];
     gender = json['gender'];
+    genderId = json['genderId'];
     role = json['role'];
     roleId = json['roleId'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
   }
 
   Map<String, dynamic> toJson() {
@@ -122,10 +123,9 @@ class Data {
     data['providerId'] = providerId;
     data['providerName'] = providerName;
     data['gender'] = gender;
+    data['genderId'] = genderId;
     data['role'] = role;
     data['roleId'] = roleId;
-    data['createdAt'] = createdAt;
-    data['updatedAt'] = updatedAt;
     return data;
   }
 }

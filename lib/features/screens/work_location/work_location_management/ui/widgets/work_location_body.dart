@@ -225,20 +225,28 @@ class WorkLocationBody extends StatelessWidget {
                     onTap: (index) => cubit.changeTap(index),
                     firstCount: cubit.getActiveCount(selectedIndex),
                     firstLabel: "Total ${cubit.tapList[selectedIndex]}",
-                    secondCount: cubit.getDeletedCount(selectedIndex),
-                    secondLabel: "Deleted ${cubit.tapList[selectedIndex]}",
+                    secondCount: role == 'Admin'
+                        ? cubit.getDeletedCount(selectedIndex)
+                        : null,
+                    secondLabel: role == 'Admin'
+                        ? "Deleted ${cubit.tapList[selectedIndex]}"
+                        : null,
                   ),
                   verticalSpace(10),
                   Divider(
                     color: Colors.grey[300],
+                    height: 0,
                   ),
+                  verticalSpace(10),
                   cubit.tapIndex == 0
                       ? Expanded(
-                          child:
-                              workLocationDetailsBuild(context, selectedIndex))
-                      : Expanded(
-                          child: deleteWorkLocationListBuild(
-                              context, selectedIndex)),
+                          child: WorkLocationListBuild(
+                              selectedIndex: selectedIndex))
+                      : role == 'Admin'
+                          ? Expanded(
+                              child: DeleteWorkLocationList(
+                                  selectedIndex: selectedIndex))
+                          : SizedBox.shrink(),
                   verticalSpace(10),
                 ],
               ),

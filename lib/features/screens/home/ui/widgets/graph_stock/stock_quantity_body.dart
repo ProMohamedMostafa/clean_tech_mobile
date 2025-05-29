@@ -5,13 +5,14 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_state.dart';
-import 'package:smart_cleaning_application/features/screens/home/ui/widgets/build_legend.dart';
+import 'package:smart_cleaning_application/features/screens/home/ui/widgets/graph_stock/build_legend.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/home_filter_header.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/graph_stock/stock_bar_chart.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/graph_stock/stock_line_chart.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/graph_stock/stock_pie_chart.dart';
 
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class StockQuantityBody extends StatelessWidget {
   const StockQuantityBody({super.key});
@@ -53,7 +54,7 @@ class StockQuantityBody extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   FilterHeader(
-                    title: 'Stock Quantity',
+                    title: S.of(context).stockQuantity,
                     count1: totalIn,
                     count2: totalOut,
                     chartType: cubit.selectedChartTypeProvider,
@@ -71,8 +72,16 @@ class StockQuantityBody extends StatelessWidget {
                     },
                     scrollController: cubit.providerScrollController,
                   ),
-                  _buildChart(cubit, isLoading),
-                  _buildLegends(),
+                  _buildChart(context, cubit, isLoading),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      buildLegend(S.of(context).inSide, AppColor.primaryColor),
+                      horizontalSpace(16),
+                      buildLegend(
+                          S.of(context).outSide, const Color(0xff46B749)),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -82,29 +91,24 @@ class StockQuantityBody extends StatelessWidget {
     );
   }
 
-  Widget _buildChart(HomeCubit cubit, bool isLoading) {
+  Widget _buildChart(BuildContext context, HomeCubit cubit, bool isLoading) {
     final stockData = cubit.totalStockModel?.data;
 
     switch (cubit.selectedChartTypeProvider) {
       case 'Line':
+      case 'خط':
+      case 'لکیر':
         return StockLineChart(stockData: stockData);
       case 'Bar':
+      case 'شريط':
+      case 'بار':
         return StockBarChart(stockData: stockData);
       case 'Pie':
+      case 'دائري':
+      case 'پائی':
         return StockPieChart(stockData: stockData);
       default:
         return StockLineChart(stockData: stockData);
     }
-  }
-
-  Widget _buildLegends() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        buildLegend('In side', AppColor.primaryColor),
-        horizontalSpace(16),
-        buildLegend('Out side', const Color(0xff46B749)),
-      ],
-    );
   }
 }

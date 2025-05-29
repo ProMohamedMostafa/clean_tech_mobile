@@ -11,6 +11,7 @@ import 'package:smart_cleaning_application/features/layout/main_layout/logic/bot
 import 'package:smart_cleaning_application/features/screens/home/logic/home_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_state.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/notification_build.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class HomeAppBar extends StatelessWidget {
   const HomeAppBar({super.key});
@@ -72,7 +73,7 @@ class HomeAppBar extends StatelessWidget {
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: 'Hey, ',
+                            text: S.of(context).hey,
                             style: TextStyles.font12BlackSemi,
                           ),
                           TextSpan(

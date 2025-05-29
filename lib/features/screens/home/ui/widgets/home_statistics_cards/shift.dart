@@ -8,6 +8,7 @@ import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_cubit.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class Shift extends StatelessWidget {
   const Shift({super.key});
@@ -50,7 +51,7 @@ class Shift extends StatelessWidget {
                     ),
                     horizontalSpace(8),
                     Text(
-                      'Total Shifts',
+                      S.of(context).totalShifts,
                       style: TextStyles.font14BlackSemiBold,
                     ),
                     const Spacer(),
@@ -82,13 +83,13 @@ class Shift extends StatelessWidget {
                     horizontalSpace(30),
                     _statusBox(
                       color: Colors.redAccent,
-                      text: 'In Active $inactiveCount',
+                      text: '${S.of(context).inactive} $inactiveCount',
                       iconColor: Colors.redAccent,
                     ),
                     const Spacer(),
                     _statusBox(
                       color: AppColor.primaryColor,
-                      text: 'Active $activeCount',
+                      text: '${S.of(context).active} $activeCount',
                       iconColor: AppColor.primaryColor,
                     ),
                   ],

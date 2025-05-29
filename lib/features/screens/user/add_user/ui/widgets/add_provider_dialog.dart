@@ -208,27 +208,25 @@ class AddProviderBottomDialog {
             flex: 5,
             child: CustomDropDownList(
               hint: 'Restore provider',
-              onPressed: (selectedValue) {
+              controller: cubit.restoreProviderController,
+              items: cubit.deletedproviderItem
+                  .map((e) => e.name ?? 'Unknown')
+                  .toList(),
+              onChanged: (selectedValue) {
                 final selectedId = cubit.allDeletedProvidersModel?.data
                     ?.firstWhere(
-                      (provider) => provider.name == selectedValue,
+                      (provider) =>
+                          provider.name == cubit.deletedProviderController.text,
                     )
                     .id
                     ?.toString();
 
                 if (selectedId != null) {
-                  cubit.providerIdController.text = selectedId;
+                  cubit.deletedProviderController.text = selectedId;
                 }
               },
-              items: cubit.allDeletedProvidersModel?.data?.isEmpty ?? true
-                  ? ['No Providers available']
-                  : cubit.allDeletedProvidersModel?.data
-                          ?.map((e) => e.name ?? 'Unknown')
-                          .toList() ??
-                      [],
-              controller: cubit.restoreProviderController,
-              keyboardType: TextInputType.text,
               suffixIcon: IconBroken.arrowDown2,
+              keyboardType: TextInputType.text,
             ),
           ),
           horizontalSpace(10),

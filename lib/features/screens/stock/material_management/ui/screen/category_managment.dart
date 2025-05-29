@@ -8,10 +8,6 @@ class MaterialManagmentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: MaterialManagmentBody(
-        id: id,
-      ),
-    );
+    return MaterialManagmentBody(id: id);
   }
 }

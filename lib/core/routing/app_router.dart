@@ -169,18 +169,23 @@ class AppRouter {
       case Routes.profileScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => ProfileCubit(),
+            create: (context) => ProfileCubit()
+              ..getUserProfileDetails()
+              ..getUserWorkLocationDetails()
+              ..getUserShiftDetails()
+              ..getUserTaskDetails()
+              ..getAllHistory()
+              ..getAllLeaves(),
             child: const ProfileScreen(),
           ),
         );
       case Routes.editProfileScreen:
-        var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => EditProfileCubit(),
-            child: EditProfileScreen(
-              id: id,
-            ),
+            create: (context) => EditProfileCubit()
+              ..getUserProfileDetails()
+              ..getNationality(),
+            child: EditProfileScreen(),
           ),
         );
       case Routes.userManagmentScreen:
@@ -218,7 +223,11 @@ class AppRouter {
       case Routes.addUserScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => AddUserCubit(),
+            create: (context) => AddUserCubit()
+              ..getNationality()
+              ..getRole()
+              ..getProviders()
+              ..getAllDeletedProviders(),
             child: const AddUserScreen(),
           ),
         );
@@ -233,9 +242,7 @@ class AppRouter {
               ..getUserWorkLocationDetails(id)
               ..getAllHistory(id)
               ..getAllLeaves(id)
-              ..getUserStatus(id)
-              ..getAllArea()
-              ..getShifts(),
+              ..getUserStatus(id),
             child: UserDetailsScreen(
               id: id,
             ),
@@ -245,7 +252,12 @@ class AppRouter {
         var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => EditUserCubit(),
+            create: (context) => EditUserCubit()
+              ..getUserDetailsInEdit(id)
+              ..getAllUsers(id)
+              ..getNationality()
+              ..getRole()
+              ..getProviders(),
             child: EditUserScreen(
               id: id,
             ),
@@ -263,7 +275,9 @@ class AppRouter {
       case Routes.addAreaScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => AddWorkLocationCubit(),
+            create: (context) => AddWorkLocationCubit()
+              ..getNationality(userUsedOnly: false, areaUsedOnly: false)
+              ..getAllUsers(),
             child: const AddAreaScreen(),
           ),
         );
@@ -397,7 +411,7 @@ class AppRouter {
       case Routes.addShiftScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => AddShiftCubit(),
+            create: (context) => AddShiftCubit()..getOrganization(),
             child: AddShiftScreen(),
           ),
         );
@@ -405,7 +419,7 @@ class AppRouter {
         var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => ShiftDetailsCubit(),
+            create: (context) => ShiftDetailsCubit()..getShiftDetails(id),
             child: ShiftDetailsScreen(
               id: id,
             ),
@@ -415,7 +429,9 @@ class AppRouter {
         var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => EditShiftCubit(),
+            create: (context) => EditShiftCubit()
+              ..getShiftDetails(id)
+              ..getOrganization(),
             child: EditShiftScreen(
               id: id,
             ),

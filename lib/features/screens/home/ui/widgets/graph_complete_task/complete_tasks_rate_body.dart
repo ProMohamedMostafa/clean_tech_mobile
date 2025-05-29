@@ -8,6 +8,7 @@ import 'package:smart_cleaning_application/features/screens/home/ui/widgets/grap
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/graph_complete_task/complete_tasks_line_chart.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/graph_complete_task/complete_tasks_bar_chart.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/home_filter_header.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class CompleteTasksRateBody extends StatelessWidget {
   const CompleteTasksRateBody({super.key});
@@ -40,7 +41,7 @@ class CompleteTasksRateBody extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   FilterHeader(
-                    title: 'Task completion rate',
+                    title: S.of(context).taskCompletionRate,
                     chartType: cubit.selectedChartTypeCompleteTask,
                     dateRange: cubit.selectedDateRangeCompleteTask,
                     onChartTypeSelected: (value) {
@@ -70,14 +71,20 @@ class CompleteTasksRateBody extends StatelessWidget {
     final completeTaskData = cubit.completetionTaskModel;
     switch (cubit.selectedChartTypeCompleteTask) {
       case 'Line':
+      case 'خط':
+      case 'لکیر':
         return CompleteTasksLineChart(
           completeTaskData: completeTaskData,
         );
       case 'Bar':
+      case 'شريط':
+      case 'بار':
         return CompleteTasksBarChart(
           completeTaskData: completeTaskData,
         );
       case 'Pie':
+      case 'دائري':
+      case 'پائی':
         return CompleteTasksPieChart(
           completeTaskData: completeTaskData,
         );

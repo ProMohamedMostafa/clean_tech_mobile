@@ -2,7 +2,6 @@ import 'package:smart_cleaning_application/features/screens/shift/add_shift/data
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/point_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/section_list_model.dart';
 
 abstract class AddShiftState {}
@@ -78,17 +77,4 @@ class GetSectionErrorState extends AddShiftState {
   final String error;
   GetSectionErrorState(this.error);
 }
-//**************************** */
 
-class GetPointLoadingState extends AddShiftState {}
-
-class GetPointSuccessState extends AddShiftState {
-  final PointListModel pointModel;
-
-  GetPointSuccessState(this.pointModel);
-}
-
-class GetPointErrorState extends AddShiftState {
-  final String error;
-  GetPointErrorState(this.error);
-}

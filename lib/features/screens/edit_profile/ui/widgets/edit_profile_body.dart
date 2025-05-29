@@ -23,25 +23,16 @@ import 'package:smart_cleaning_application/features/screens/user/edit_user/ui/wi
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class EditProfileBody extends StatefulWidget {
-  final int id;
-  const EditProfileBody({super.key, required this.id});
+  const EditProfileBody({super.key});
 
   @override
   State<EditProfileBody> createState() => _EditProfileBodyState();
 }
 
 class _EditProfileBodyState extends State<EditProfileBody> {
-  List<int> selectedShiftsIds = [];
-
-  @override
-  void initState() {
-    context.read<EditProfileCubit>().getUserProfileDetails();
-
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<EditProfileCubit>();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -70,402 +61,372 @@ class _EditProfileBodyState extends State<EditProfileBody> {
             ),
           );
         }
-        return SafeArea(
-            child: SingleChildScrollView(
+        return SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Stack(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (contextt) => Scaffold(
-                                appBar: AppBar(
-                                  leading: customBackButton(context),
-                                ),
-                                body: Center(
-                                  child: PhotoView(
-                                    imageProvider: (context
-                                                    .read<EditProfileCubit>()
-                                                    .image !=
-                                                null &&
-                                            context
-                                                .read<EditProfileCubit>()
-                                                .image!
-                                                .path
-                                                .isNotEmpty)
-                                        ? FileImage(
-                                            File(context
-                                                .read<EditProfileCubit>()
-                                                .image!
-                                                .path),
-                                          )
-                                        : NetworkImage(
-                                            '${ApiConstants.apiBaseUrl}${context.read<EditProfileCubit>().profileModel!.data!.image}',
-                                          ),
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Image.asset(
-                                        'assets/images/noImage.png',
-                                        fit: BoxFit.fill,
-                                      );
-                                    },
-                                    backgroundDecoration: const BoxDecoration(
-                                      color: Colors.white,
+            child: Form(
+              key: cubit.formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Stack(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (contextt) => Scaffold(
+                                  appBar: AppBar(
+                                    leading: customBackButton(context),
+                                  ),
+                                  body: Center(
+                                    child: PhotoView(
+                                      imageProvider: (cubit.image != null &&
+                                              cubit.image!.path.isNotEmpty)
+                                          ? FileImage(
+                                              File(cubit.image!.path),
+                                            )
+                                          : NetworkImage(
+                                              '${ApiConstants.apiBaseUrlImage}${cubit.profileModel!.data!.image}',
+                                            ),
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Image.asset(
+                                          'assets/images/person.png',
+                                          fit: BoxFit.fill,
+                                        );
+                                      },
+                                      backgroundDecoration: const BoxDecoration(
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          width: 100.w,
-                          height: 100.h,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: AppColor.primaryColor,
-                              width: 2.w,
-                            ),
-                          ),
-                          child: ClipOval(
-                            child: context.read<EditProfileCubit>().image !=
-                                        null &&
-                                    context
-                                        .read<EditProfileCubit>()
-                                        .image!
-                                        .path
-                                        .isNotEmpty
-                                ? Image.file(
-                                    File(context
-                                        .read<EditProfileCubit>()
-                                        .image!
-                                        .path),
-                                    fit: BoxFit.fill,
-                                  )
-                                : Image.network(
-                                    '${ApiConstants.apiBaseUrl}${context.read<EditProfileCubit>().profileModel!.data!.image}',
-                                    fit: BoxFit.fill,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Image.asset(
-                                        'assets/images/noImage.png',
-                                        fit: BoxFit.fill,
-                                      );
-                                    },
-                                  ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 1,
-                        right: 10,
-                        child: InkWell(
-                          onTap: () {
-                            context.read<EditProfileCubit>().galleryFile();
+                            );
                           },
                           child: Container(
-                              width: 22.w,
-                              height: 22.h,
-                              decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: AppColor.primaryColor),
-                              child: Icon(
-                                Icons.camera_alt_outlined,
-                                color: Colors.white,
-                                size: 20.sp,
-                              )),
+                            width: 100.w,
+                            height: 100.h,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: AppColor.primaryColor,
+                                width: 2.w,
+                              ),
+                            ),
+                            child: ClipOval(
+                              child: (cubit.image != null &&
+                                      cubit.image!.path.isNotEmpty)
+                                  ? Image.file(
+                                      File(cubit.image!.path),
+                                      fit: BoxFit.fill,
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Image.asset(
+                                          'assets/images/person.png',
+                                          fit: BoxFit.fill,
+                                        );
+                                      },
+                                    )
+                                  : Image.network(
+                                      '${ApiConstants.apiBaseUrlImage}${cubit.profileModel!.data!.image}',
+                                      fit: BoxFit.fill,
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Image.asset(
+                                          'assets/images/person.png',
+                                          fit: BoxFit.fill,
+                                        );
+                                      },
+                                    ),
+                            ),
+                          ),
                         ),
-                      )
+                        Positioned(
+                          bottom: 1,
+                          right: 10,
+                          child: InkWell(
+                            onTap: () {
+                              cubit.galleryFile();
+                            },
+                            child: Container(
+                                width: 22.w,
+                                height: 22.h,
+                                decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColor.primaryColor),
+                                child: Icon(
+                                  Icons.camera_alt_outlined,
+                                  color: Colors.white,
+                                  size: 20.sp,
+                                )),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  verticalSpace(35),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: EditUserTextField(
+                          controller: cubit.firstNameController
+                            ..text = cubit.profileModel!.data!.firstName!,
+                          obscureText: false,
+                          keyboardType: TextInputType.text,
+                          label: S.of(context).addUserText1,
+                          validator: (value) {
+                            if (value!.length > 55) {
+                              return S.of(context).validationFirstNameTooLong;
+                            } else if (value.length < 3) {
+                              return S.of(context).validationFirstNameTooShort;
+                            } else if (!RegExp(r"^[a-zA-Z\s]+$")
+                                .hasMatch(value)) {
+                              return S
+                                  .of(context)
+                                  .validationFirstNameOnlyLetters;
+                            }
+                          },
+                          hint: cubit.profileModel!.data!.firstName!,
+                        ),
+                      ),
+                      horizontalSpace(10),
+                      Expanded(
+                        child: EditUserTextField(
+                          controller: cubit.lastNameController
+                            ..text = cubit.profileModel!.data!.lastName!,
+                          obscureText: false,
+                          keyboardType: TextInputType.text,
+                          label: S.of(context).addUserText2,
+                          validator: (value) {
+                            if (value!.length > 55) {
+                              return S.of(context).validationLastNameTooLong;
+                            } else if (value.length < 3) {
+                              return S.of(context).validationLastNameTooShort;
+                            } else if (!RegExp(r"^[a-zA-Z\s]+$")
+                                .hasMatch(value)) {
+                              return S
+                                  .of(context)
+                                  .validationLastNameOnlyLetters;
+                            }
+                          },
+                          hint: cubit.profileModel!.data!.lastName!,
+                        ),
+                      ),
                     ],
                   ),
-                ),
-                verticalSpace(35),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: EditUserTextField(
-                        controller: context
-                            .read<EditProfileCubit>()
-                            .firstNameController,
-                        obscureText: false,
-                        keyboardType: TextInputType.text,
-                        label: S.of(context).addUserText1,
-                        hint: context
-                            .read<EditProfileCubit>()
-                            .profileModel!
-                            .data!
-                            .firstName!,
+                  verticalSpace(15),
+                  EditUserTextField(
+                    controller: cubit.userNameController
+                      ..text = cubit.profileModel!.data!.userName!,
+                    obscureText: false,
+                    keyboardType: TextInputType.text,
+                    label: S.of(context).addUserText5,
+                    validator: (value) {
+                      if (value!.length > 55) {
+                        return S.of(context).validationUserNameTooLong;
+                      } else if (value.length < 3) {
+                        return S.of(context).validationUserNameTooShort;
+                      }
+                    },
+                    hint: cubit.profileModel!.data!.userName!,
+                  ),
+                  verticalSpace(15),
+                  EditUserTextField(
+                    controller: cubit.emailController
+                      ..text = cubit.profileModel!.data!.email!,
+                    obscureText: false,
+                    keyboardType: TextInputType.emailAddress,
+                    label: S.of(context).addUserText3,
+                    validator: (value) {
+                      if (!RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          .hasMatch(value!)) {
+                        return S.of(context).validationValidEmail;
+                      }
+                    },
+                    hint: cubit.profileModel!.data!.email!,
+                  ),
+                  verticalSpace(15),
+                  EditUserTextField(
+                    controller: cubit.phoneController
+                      ..text = cubit.profileModel!.data!.phoneNumber!
+                          .replaceFirst('+966', ''),
+                    obscureText: false,
+                    keyboardType: TextInputType.phone,
+                    label: S.of(context).addUserText10,
+                    validator: (value) {
+                      if (!RegExp(r'^(?:[+0])?[0-9]{9}$').hasMatch(value!)) {
+                        return S.of(context).validationValidMobileNumber;
+                      }
+                      return null;
+                    },
+                    prefixIcon: Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 13, 5, 13),
+                      child: Text(
+                        '+966 |',
+                        style: TextStyle(color: Colors.black, fontSize: 14.sp),
                       ),
                     ),
-                    horizontalSpace(10),
-                    Expanded(
-                      child: EditUserTextField(
-                        controller:
-                            context.read<EditProfileCubit>().lastNameController,
-                        obscureText: false,
-                        keyboardType: TextInputType.text,
-                        label: S.of(context).addUserText2,
-                        hint: context
-                            .read<EditProfileCubit>()
-                            .profileModel!
-                            .data!
-                            .lastName!,
+                    hint: cubit.profileModel!.data!.phoneNumber!,
+                  ),
+                  verticalSpace(15),
+                  EditUserTextField(
+                    controller: cubit.idNumberController
+                      ..text = cubit.profileModel!.data!.idNumber!,
+                    obscureText: false,
+                    keyboardType: TextInputType.number,
+                    label: S.of(context).addUserText7,
+                    validator: (value) {
+                      if (value!.length > 20) {
+                        return S.of(context).validationIdNumberTooLong;
+                      } else if (value.length < 5) {
+                        return S.of(context).validationIdNumberTooShort;
+                      }
+                    },
+                    hint: cubit.profileModel!.data!.idNumber!,
+                  ),
+                  verticalSpace(15),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: CustomDropDownList(
+                          label: S.of(context).addUserText12,
+                          hint: cubit.profileModel!.data!.countryName!,
+                          items: cubit.countryData.map((e) => e.name).toList(),
+                          controller: cubit.countryController,
+                          keyboardType: TextInputType.text,
+                          suffixIcon: IconBroken.arrowDown2,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                verticalSpace(15),
-                EditUserTextField(
-                  controller:
-                      context.read<EditProfileCubit>().userNameController,
-                  obscureText: false,
-                  keyboardType: TextInputType.text,
-                  label: S.of(context).addUserText5,
-                  hint: context
-                      .read<EditProfileCubit>()
-                      .profileModel!
-                      .data!
-                      .userName!,
-                ),
-                verticalSpace(15),
-                EditUserTextField(
-                  controller: context.read<EditProfileCubit>().emailController,
-                  obscureText: false,
-                  keyboardType: TextInputType.emailAddress,
-                  label: S.of(context).addUserText3,
-                  hint: context
-                      .read<EditProfileCubit>()
-                      .profileModel!
-                      .data!
-                      .email!,
-                ),
-                verticalSpace(15),
-                EditUserTextField(
-                  controller: context.read<EditProfileCubit>().phoneController,
-                  obscureText: false,
-                  keyboardType: TextInputType.phone,
-                  label: S.of(context).addUserText10,
-                  hint: context
-                      .read<EditProfileCubit>()
-                      .profileModel!
-                      .data!
-                      .phoneNumber!,
-                ),
-                verticalSpace(15),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: CustomDropDownList(
-                        label: 'Country Name',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return S.of(context).validationNationality;
-                          }
-                          return null;
-                        },
-                        hint: context
-                            .read<EditProfileCubit>()
-                            .profileModel!
-                            .data!
-                            .countryName!,
-                        items: context
-                                    .read<EditProfileCubit>()
-                                    .nationalityModel
-                                    ?.data
-                                    ?.isEmpty ??
-                                true
-                            ? ['No countries']
-                            : context
-                                    .read<EditProfileCubit>()
-                                    .nationalityModel
-                                    ?.data
-                                    ?.map((e) => e.name ?? 'Unknown')
-                                    .toList() ??
-                                [],
-                        controller: context
-                            .read<EditProfileCubit>()
-                            .countryNameController,
-                        keyboardType: TextInputType.text,
-                        suffixIcon: IconBroken.arrowDown2,
+                      horizontalSpace(10),
+                      Expanded(
+                        child: CustomDropDownList(
+                          label: S.of(context).addUserText9,
+                          onPressed: (selectedValue) {
+                            final items = [
+                              S.of(context).genderMale,
+                              S.of(context).genderFemale
+                            ];
+                            final selectedIndex = items.indexOf(selectedValue);
+                            if (selectedIndex != -1) {
+                              cubit.genderIdController.text =
+                                  selectedIndex.toString();
+                            }
+                          },
+                          hint: cubit.profileModel!.data!.gender!,
+                          items: [
+                            S.of(context).genderMale,
+                            S.of(context).genderFemale
+                          ],
+                          controller: cubit.genderController,
+                          keyboardType: TextInputType.text,
+                          suffixIcon: IconBroken.arrowDown2,
+                        ),
                       ),
-                    ),
-                    horizontalSpace(15),
-                    Expanded(
-                      child: CustomDropDownList(
-                        label: 'Gender',
-                        onPressed: (selectedValue) {
-                          final items = ['Male', 'Female'];
-                          final selectedIndex = items.indexOf(selectedValue);
-                          if (selectedIndex != -1) {
-                            context
-                                .read<EditProfileCubit>()
-                                .genderIdController
-                                .text = selectedIndex.toString();
-                          }
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return S.of(context).validationGender;
-                          }
-                          return null;
-                        },
-                        hint: context
-                            .read<EditProfileCubit>()
-                            .profileModel!
-                            .data!
-                            .gender!,
-                        items: ['Male', 'Female'],
-                        controller:
-                            context.read<EditProfileCubit>().genderController,
-                        keyboardType: TextInputType.text,
-                        suffixIcon: IconBroken.arrowDown2,
+                    ],
+                  ),
+                  verticalSpace(15),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: CustomDropDownList(
+                          label: S.of(context).addUserText8,
+                          hint: cubit.profileModel!.data!.nationalityName!,
+                          items: cubit.nationalityData
+                              .map((e) => e.name ?? 'un known')
+                              .toList(),
+                          controller: cubit.nationalityController,
+                          keyboardType: TextInputType.text,
+                          suffixIcon: IconBroken.arrowDown2,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                verticalSpace(15),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: CustomDropDownList(
-                        label: 'Nationality',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return S.of(context).validationNationality;
-                          }
-                          return null;
-                        },
-                        hint: context
-                            .read<EditProfileCubit>()
-                            .profileModel!
-                            .data!
-                            .nationalityName!,
-                        items: context
-                                    .read<EditProfileCubit>()
-                                    .nationalityModel
-                                    ?.data
-                                    ?.isEmpty ??
-                                true
-                            ? ['No nationalities']
-                            : context
-                                    .read<EditProfileCubit>()
-                                    .nationalityModel
-                                    ?.data
-                                    ?.map((e) => e.name ?? 'Unknown')
-                                    .toList() ??
-                                [],
-                        controller: context
-                            .read<EditProfileCubit>()
-                            .nationalityController,
-                        keyboardType: TextInputType.text,
-                        suffixIcon: IconBroken.arrowDown2,
-                      ),
-                    ),
-                    horizontalSpace(15),
-                    Expanded(
-                      child: EditUserTextField(
-                        controller:
-                            context.read<EditProfileCubit>().birthController,
-                        obscureText: false,
-                        suffixIcon: Icons.calendar_today,
-                        suffixPressed: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now()
-                                .subtract(Duration(days: 12 * 365)),
-                            firstDate: DateTime(1900),
-                            lastDate: DateTime.now()
-                                .subtract(Duration(days: 12 * 365)),
-                            builder: (BuildContext context, Widget? child) {
-                              return Theme(
-                                data: Theme.of(context).copyWith(
-                                  dialogBackgroundColor: Colors.white,
-                                  colorScheme: ColorScheme.light(
-                                    primary: AppColor.primaryColor,
-                                    onPrimary: Colors.white,
-                                    onSurface: Colors.black,
+                      horizontalSpace(15),
+                      Expanded(
+                        child: EditUserTextField(
+                          controller: cubit.birthController,
+                          obscureText: false,
+                          suffixIcon: Icons.calendar_today,
+                          suffixPressed: () async {
+                            DateTime? pickedDate = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now()
+                                  .subtract(Duration(days: 12 * 365)),
+                              firstDate: DateTime(1900),
+                              lastDate: DateTime.now()
+                                  .subtract(Duration(days: 12 * 365)),
+                              builder: (BuildContext context, Widget? child) {
+                                return Theme(
+                                  data: Theme.of(context).copyWith(
+                                    dialogBackgroundColor: Colors.white,
+                                    colorScheme: ColorScheme.light(
+                                      primary: AppColor.primaryColor,
+                                      onPrimary: Colors.white,
+                                      onSurface: Colors.black,
+                                    ),
                                   ),
-                                ),
-                                child: child!,
-                              );
-                            },
-                          );
-                          if (pickedDate != null) {
-                            String formattedDate =
-                                DateFormat('yyyy-MM-dd').format(pickedDate);
-                            setState(() {
-                              context
-                                  .read<EditProfileCubit>()
-                                  .birthController
-                                  .text = formattedDate;
-                            });
-                          }
-                        },
-                        keyboardType: TextInputType.none,
-                        label: S.of(context).addUserText4,
-                        hint: context
-                            .read<EditProfileCubit>()
-                            .profileModel!
-                            .data!
-                            .birthdate!,
+                                  child: child!,
+                                );
+                              },
+                            );
+                            if (pickedDate != null) {
+                              String formattedDate =
+                                  DateFormat('yyyy-MM-dd').format(pickedDate);
+                              setState(() {
+                                cubit.birthController.text = formattedDate;
+                              });
+                            }
+                          },
+                          keyboardType: TextInputType.none,
+                          label: S.of(context).addUserText4,
+                          hint: cubit.profileModel!.data!.birthdate!,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                verticalSpace(15),
-                EditUserTextField(
-                  controller:
-                      context.read<EditProfileCubit>().idNumberController,
-                  obscureText: false,
-                  keyboardType: TextInputType.number,
-                  label: S.of(context).addUserText7,
-                  hint: context
-                      .read<EditProfileCubit>()
-                      .profileModel!
-                      .data!
-                      .idNumber!,
-                ),
-                verticalSpace(20),
-                state is EditProfileLoadingState
-                    ? const Center(
-                        child: CircularProgressIndicator(
-                            color: AppColor.primaryColor),
-                      )
-                    : Center(
-                        child: DefaultElevatedButton(
-                            name: S.of(context).saveButtton,
-                            onPressed: () {
-                              showCustomDialog(context,
-                                  "Are you Sure you want save the edit your profile ?",
-                                  () {
-                                context.read<EditProfileCubit>().editProfile(
+                    ],
+                  ),
+                  verticalSpace(20),
+                  state is EditProfileLoadingState
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                              color: AppColor.primaryColor),
+                        )
+                      : Center(
+                          child: DefaultElevatedButton(
+                              name: S.of(context).saveButtton,
+                              onPressed: () {
+                                if (cubit.formKey.currentState!.validate()) {
+                                  showCustomDialog(context,
+                                      "Are you Sure you want save the edit your profile ?",
+                                      () {
                                     context
                                         .read<EditProfileCubit>()
-                                        .image
-                                        ?.path);
-                                context.pop();
-                              });
-                            },
-                            color: AppColor.primaryColor,
-                            height: 47,
-                            width: double.infinity,
-                            textStyles: TextStyles.font20Whitesemimedium),
-                      ),
-                verticalSpace(30),
-              ],
+                                        .editProfile(context
+                                            .read<EditProfileCubit>()
+                                            .image
+                                            ?.path);
+                                    context.pop();
+                                  });
+                                }
+                              },
+                              color: AppColor.primaryColor,
+                              height: 47,
+                              width: double.infinity,
+                              textStyles: TextStyles.font20Whitesemimedium),
+                        ),
+                  verticalSpace(30),
+                ],
+              ),
             ),
           ),
-        ));
+        );
       }),
     );
   }

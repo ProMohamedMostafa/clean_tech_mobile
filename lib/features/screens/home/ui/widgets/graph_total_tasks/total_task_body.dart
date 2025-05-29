@@ -8,6 +8,7 @@ import 'package:smart_cleaning_application/features/screens/home/ui/widgets/grap
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/graph_total_tasks/total_task_line_chart.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/graph_total_tasks/total_task_pie_chart.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/home_filter_header.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class TotalTaskBody extends StatelessWidget {
   const TotalTaskBody({super.key});
@@ -44,7 +45,7 @@ class TotalTaskBody extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   FilterHeader(
-                    title: 'Total Task',
+                    title: S.of(context).totalTask,
                     count1: totalTask,
                     chartType: cubit.selectedChartTypeTask,
                     dateRange: cubit.selectedDateRangeTask,
@@ -75,14 +76,20 @@ class TotalTaskBody extends StatelessWidget {
     final taskData = cubit.taskStatusModel;
     switch (cubit.selectedChartTypeTask) {
       case 'Line':
+      case 'خط':
+      case 'لکیر':
         return TotalTaskLineChart(
           taskData: taskData,
         );
       case 'Bar':
+      case 'شريط':
+      case 'بار':
         return TotalTaskBarChart(
           taskData: taskData,
         );
       case 'Pie':
+      case 'دائري':
+      case 'پائی':
         return TotalTaskPieChart(
           taskData: taskData,
         );

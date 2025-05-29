@@ -7,7 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
-import 'package:smart_cleaning_application/core/helpers/regx_validations/regx_validations.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
@@ -34,44 +33,6 @@ class EditUserBody extends StatefulWidget {
 }
 
 class _EditUserBodyState extends State<EditUserBody> {
-  List<int> selectedShiftsIds = [];
-  bool isShow = false;
-  bool isObscureText = true;
-  bool hasLowercase = false;
-  bool hasUppercase = false;
-  bool hasSpecialCharacters = false;
-  bool hasNumber = false;
-  bool hasMinLength = false;
-  @override
-  void initState() {
-    context.read<EditUserCubit>().getUserDetailsInEdit(widget.id);
-    context.read<EditUserCubit>().getUserShiftDetails(widget.id);
-    context.read<EditUserCubit>().getAllUsers(widget.id);
-    context.read<EditUserCubit>()
-      ..getNationality()
-      ..getRole()
-      ..getProviders();
-    setupPasswordControllerListener();
-    super.initState();
-  }
-
-  void setupPasswordControllerListener() {
-    context.read<EditUserCubit>().passwordController.addListener(() {
-      setState(() {
-        hasLowercase = AppRegex.hasLowerCase(
-            context.read<EditUserCubit>().passwordController.text);
-        hasUppercase = AppRegex.hasUpperCase(
-            context.read<EditUserCubit>().passwordController.text);
-        hasSpecialCharacters = AppRegex.hasSpecialCharacter(
-            context.read<EditUserCubit>().passwordController.text);
-        hasNumber = AppRegex.hasNumber(
-            context.read<EditUserCubit>().passwordController.text);
-        hasMinLength = AppRegex.hasMinLength(
-            context.read<EditUserCubit>().passwordController.text);
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,7 +54,8 @@ class _EditUserBodyState extends State<EditUserBody> {
           toast(text: state.error, color: Colors.red);
         }
       }, builder: (context, state) {
-        if (context.read<EditUserCubit>().userDetailsModel?.data! == null) {
+        final cubit = context.read<EditUserCubit>();
+        if (cubit.userDetailsModel?.data! == null) {
           return Center(
             child: CircularProgressIndicator(
               color: AppColor.primaryColor,
@@ -105,7 +67,7 @@ class _EditUserBodyState extends State<EditUserBody> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Form(
-              key: context.read<EditUserCubit>().formKey,
+              key: cubit.formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,23 +86,13 @@ class _EditUserBodyState extends State<EditUserBody> {
                                   ),
                                   body: Center(
                                     child: PhotoView(
-                                      imageProvider: (context
-                                                      .read<EditUserCubit>()
-                                                      .image !=
-                                                  null &&
-                                              context
-                                                  .read<EditUserCubit>()
-                                                  .image!
-                                                  .path
-                                                  .isNotEmpty)
+                                      imageProvider: (cubit.image != null &&
+                                              cubit.image!.path.isNotEmpty)
                                           ? FileImage(
-                                              File(context
-                                                  .read<EditUserCubit>()
-                                                  .image!
-                                                  .path),
+                                              File(cubit.image!.path),
                                             )
                                           : NetworkImage(
-                                              '${ApiConstants.apiBaseUrlImage}${context.read<EditUserCubit>().userDetailsModel!.data!.image}',
+                                              '${ApiConstants.apiBaseUrlImage}${cubit.userDetailsModel!.data!.image}',
                                             ),
                                       errorBuilder:
                                           (context, error, stackTrace) {
@@ -169,18 +121,10 @@ class _EditUserBodyState extends State<EditUserBody> {
                               ),
                             ),
                             child: ClipOval(
-                              child: (context.read<EditUserCubit>().image !=
-                                          null &&
-                                      context
-                                          .read<EditUserCubit>()
-                                          .image!
-                                          .path
-                                          .isNotEmpty)
+                              child: (cubit.image != null &&
+                                      cubit.image!.path.isNotEmpty)
                                   ? Image.file(
-                                      File(context
-                                          .read<EditUserCubit>()
-                                          .image!
-                                          .path),
+                                      File(cubit.image!.path),
                                       fit: BoxFit.fill,
                                       errorBuilder:
                                           (context, error, stackTrace) {
@@ -191,7 +135,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                                       },
                                     )
                                   : Image.network(
-                                      '${ApiConstants.apiBaseUrlImage}${context.read<EditUserCubit>().userDetailsModel!.data!.image}',
+                                      '${ApiConstants.apiBaseUrlImage}${cubit.userDetailsModel!.data!.image}',
                                       fit: BoxFit.fill,
                                       errorBuilder:
                                           (context, error, stackTrace) {
@@ -209,7 +153,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                           right: 10,
                           child: InkWell(
                             onTap: () {
-                              context.read<EditUserCubit>().galleryFile();
+                              cubit.galleryFile();
                             },
                             child: Container(
                                 width: 22.w,
@@ -233,127 +177,97 @@ class _EditUserBodyState extends State<EditUserBody> {
                     children: [
                       Expanded(
                         child: EditUserTextField(
-                          controller:
-                              context.read<EditUserCubit>().firstNameController
-                                ..text = context
-                                    .read<EditUserCubit>()
-                                    .userDetailsModel!
-                                    .data!
-                                    .firstName!,
+                          controller: cubit.firstNameController
+                            ..text = cubit.userDetailsModel!.data!.firstName!,
                           obscureText: false,
                           keyboardType: TextInputType.text,
                           label: S.of(context).addUserText1,
                           validator: (value) {
                             if (value!.length > 55) {
-                              return 'First name too long';
+                              return S.of(context).validationFirstNameTooLong;
                             } else if (value.length < 3) {
-                              return 'First name too short';
+                              return S.of(context).validationFirstNameTooShort;
                             } else if (!RegExp(r"^[a-zA-Z\s]+$")
                                 .hasMatch(value)) {
-                              return 'Only letters';
+                              return S
+                                  .of(context)
+                                  .validationFirstNameOnlyLetters;
                             }
                           },
-                          hint: context
-                              .read<EditUserCubit>()
-                              .userDetailsModel!
-                              .data!
-                              .firstName!,
+                          hint: cubit.userDetailsModel!.data!.firstName!,
                         ),
                       ),
                       horizontalSpace(10),
                       Expanded(
                         child: EditUserTextField(
-                          controller:
-                              context.read<EditUserCubit>().lastNameController
-                                ..text = context
-                                    .read<EditUserCubit>()
-                                    .userDetailsModel!
-                                    .data!
-                                    .lastName!,
+                          controller: cubit.lastNameController
+                            ..text = cubit.userDetailsModel!.data!.lastName!,
                           obscureText: false,
                           keyboardType: TextInputType.text,
                           label: S.of(context).addUserText2,
                           validator: (value) {
                             if (value!.length > 55) {
-                              return 'Last name too long';
-                            } else if (value.length < 3) {
-                              return 'Last name too short';
-                            } else if (!RegExp(r"^[a-zA-Z\s]+$")
-                                .hasMatch(value)) {
-                              return 'Only letters';
-                            }
+                                    return S
+                                        .of(context)
+                                        .validationLastNameTooLong;
+                                  } else if (value.length < 3) {
+                                    return S
+                                        .of(context)
+                                        .validationLastNameTooShort;
+                                  } else if (!RegExp(r"^[a-zA-Z\s]+$")
+                                      .hasMatch(value)) {
+                                    return S
+                                        .of(context)
+                                        .validationLastNameOnlyLetters;
+                                  }
                           },
-                          hint: context
-                              .read<EditUserCubit>()
-                              .userDetailsModel!
-                              .data!
-                              .lastName!,
+                          hint: cubit.userDetailsModel!.data!.lastName!,
                         ),
                       ),
                     ],
                   ),
                   verticalSpace(15),
                   EditUserTextField(
-                    controller: context.read<EditUserCubit>().userNameController
-                      ..text = context
-                          .read<EditUserCubit>()
-                          .userDetailsModel!
-                          .data!
-                          .userName!,
+                    controller: cubit.userNameController
+                      ..text = cubit.userDetailsModel!.data!.userName!,
                     obscureText: false,
                     keyboardType: TextInputType.text,
                     label: S.of(context).addUserText5,
                     validator: (value) {
                       if (value!.length > 55) {
-                        return 'User name too long';
-                      } else if (value.length < 3) {
-                        return 'User name too short';
-                      }
+                          return S.of(context).validationUserNameTooLong;
+                        } else if (value.length < 3) {
+                          return S.of(context).validationUserNameTooShort;
+                        }
                     },
-                    hint: context
-                        .read<EditUserCubit>()
-                        .userDetailsModel!
-                        .data!
-                        .userName!,
+                    hint: cubit.userDetailsModel!.data!.userName!,
                   ),
                   verticalSpace(15),
                   EditUserTextField(
-                    controller: context.read<EditUserCubit>().emailController
-                      ..text = context
-                          .read<EditUserCubit>()
-                          .userDetailsModel!
-                          .data!
-                          .email!,
+                    controller: cubit.emailController
+                      ..text = cubit.userDetailsModel!.data!.email!,
                     obscureText: false,
                     keyboardType: TextInputType.emailAddress,
                     label: S.of(context).addUserText3,
                     validator: (value) {
                       if (!RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                           .hasMatch(value!)) {
-                        return 'Enter valid email';
+                        return S.of(context).validationValidEmail;
                       }
                     },
-                    hint: context
-                        .read<EditUserCubit>()
-                        .userDetailsModel!
-                        .data!
-                        .email!,
+                    hint: cubit.userDetailsModel!.data!.email!,
                   ),
                   verticalSpace(15),
                   EditUserTextField(
-                    controller: context.read<EditUserCubit>().phoneController
-                      ..text = context
-                          .read<EditUserCubit>()
-                          .userDetailsModel!
-                          .data!
-                          .phoneNumber!
+                    controller: cubit.phoneController
+                      ..text = cubit.userDetailsModel!.data!.phoneNumber!
                           .replaceFirst('+966', ''),
                     obscureText: false,
                     keyboardType: TextInputType.phone,
                     label: S.of(context).addUserText10,
                     validator: (value) {
                       if (!RegExp(r'^(?:[+0])?[0-9]{9}$').hasMatch(value!)) {
-                        return 'Please enter a valid mobile number';
+                        return  S.of(context).validationValidMobileNumber;
                       }
                       return null;
                     },
@@ -364,92 +278,65 @@ class _EditUserBodyState extends State<EditUserBody> {
                         style: TextStyle(color: Colors.black, fontSize: 14.sp),
                       ),
                     ),
-                    hint: context
-                        .read<EditUserCubit>()
-                        .userDetailsModel!
-                        .data!
-                        .phoneNumber!,
+                    hint: cubit.userDetailsModel!.data!.phoneNumber!,
                   ),
                   verticalSpace(15),
                   EditUserTextField(
-                    controller: context.read<EditUserCubit>().idNumberController
-                      ..text = context
-                          .read<EditUserCubit>()
-                          .userDetailsModel!
-                          .data!
-                          .idNumber!,
+                    controller: cubit.idNumberController
+                      ..text = cubit.userDetailsModel!.data!.idNumber!,
                     obscureText: false,
                     keyboardType: TextInputType.number,
                     label: S.of(context).addUserText7,
                     validator: (value) {
                       if (value!.length > 20) {
-                        return 'ID Number too long';
-                      } else if (value.length < 5) {
-                        return 'ID Number too short';
-                      }
+                          return S.of(context).validationIdNumberTooLong;
+                        } else if (value.length < 5) {
+                          return S.of(context).validationIdNumberTooShort;
+                        }
                     },
-                    hint: context
-                        .read<EditUserCubit>()
-                        .userDetailsModel!
-                        .data!
-                        .idNumber!,
+                    hint: cubit.userDetailsModel!.data!.idNumber!,
                   ),
                   verticalSpace(15),
                   EditUserTextField(
-                    controller:
-                        context.read<EditUserCubit>().passwordController,
-                    suffixIcon: context.read<EditUserCubit>().suffixIcon,
+                    controller: cubit.passwordController,
+                    suffixIcon: cubit.suffixIcon,
                     suffixPressed: () {
-                      context
-                          .read<EditUserCubit>()
-                          .changeSuffixIconVisiability();
+                      cubit.changeSuffixIconVisiability();
                     },
                     onChanged: (value) {
-                      if (value!.isNotEmpty) {
-                        isShow = true;
-                      } else {
-                        isShow = false;
-                      }
+                      cubit.validatePassword(value!);
                     },
-                    obscureText: context.read<EditUserCubit>().ispassword,
+                    obscureText: cubit.ispassword,
                     keyboardType: TextInputType.text,
-                    label: 'Password',
+                    label:  S.of(context).addUserText6,
                     hint: '',
                   ),
                   verticalSpace(15),
-                  if (isShow == true) ...[
+                  if (cubit.isShow == true) ...[
                     PasswordValidations(
-                      hasLowerCase: hasLowercase,
-                      hasUpperCase: hasUppercase,
-                      hasSpecialCharacters: hasSpecialCharacters,
-                      hasNumber: hasNumber,
-                      hasMinLength: hasMinLength,
+                      hasLowerCase: cubit.hasLowercase,
+                      hasUpperCase: cubit.hasUppercase,
+                      hasSpecialCharacters: cubit.hasSpecialCharacters,
+                      hasNumber: cubit.hasNumber,
+                      hasMinLength: cubit.hasMinLength,
                     ),
-                    verticalSpace(15),
+                    verticalSpace(10)
                   ],
                   EditUserTextField(
-                    controller: context
-                        .read<EditUserCubit>()
-                        .passwordConfirmationController,
+                    controller: cubit.passwordConfirmationController,
                     keyboardType: TextInputType.text,
-                    suffixIcon: context.read<EditUserCubit>().suffixIcon,
+                    suffixIcon: cubit.suffixIcon,
                     suffixPressed: () {
-                      context
-                          .read<EditUserCubit>()
-                          .changeSuffixIconVisiability();
+                      cubit.changeSuffixIconVisiability();
                     },
                     validator: (value) {
-                      if (value !=
-                          context
-                              .read<EditUserCubit>()
-                              .passwordController
-                              .text) {
+                      if (value != cubit.passwordController.text) {
                         return S.of(context).validationRepeatPassword;
                       }
                       return null;
                     },
-                    obscureText: context.read<EditUserCubit>().ispassword,
-                    label: 'Password Confirm',
+                    obscureText: cubit.ispassword,
+                    label:  S.of(context).addUserText11,
                     hint: '',
                   ),
                   verticalSpace(15),
@@ -459,28 +346,10 @@ class _EditUserBodyState extends State<EditUserBody> {
                     children: [
                       Expanded(
                         child: CustomDropDownList(
-                          label: 'Country',
-                          hint: context
-                              .read<EditUserCubit>()
-                              .userDetailsModel!
-                              .data!
-                              .countryName!,
-                          items: context
-                                      .read<EditUserCubit>()
-                                      .nationalityModel
-                                      ?.data
-                                      ?.isEmpty ??
-                                  true
-                              ? ['No countries']
-                              : context
-                                      .read<EditUserCubit>()
-                                      .nationalityModel
-                                      ?.data
-                                      ?.map((e) => e.name ?? 'Unknown')
-                                      .toList() ??
-                                  [],
-                          controller:
-                              context.read<EditUserCubit>().countryController,
+                          label: S.of(context).addUserText12,
+                          hint: cubit.userDetailsModel!.data!.countryName!,
+                          items: cubit.countryData.map((e) => e.name).toList(),
+                          controller: cubit.countryController,
                           keyboardType: TextInputType.text,
                           suffixIcon: IconBroken.arrowDown2,
                         ),
@@ -488,25 +357,20 @@ class _EditUserBodyState extends State<EditUserBody> {
                       horizontalSpace(10),
                       Expanded(
                         child: CustomDropDownList(
-                          label: 'Gender',
+                          label: S.of(context).addUserText9,
                           onPressed: (selectedValue) {
-                            final items = ['Male', 'Female'];
+                            final items = [ S.of(context).genderMale,
+                                    S.of(context).genderFemale];
                             final selectedIndex = items.indexOf(selectedValue);
                             if (selectedIndex != -1) {
-                              context
-                                  .read<EditUserCubit>()
-                                  .genderIdController
-                                  .text = selectedIndex.toString();
+                              cubit.genderIdController.text =
+                                  selectedIndex.toString();
                             }
                           },
-                          hint: context
-                              .read<EditUserCubit>()
-                              .userDetailsModel!
-                              .data!
-                              .gender!,
-                          items: ['Male', 'Female'],
-                          controller:
-                              context.read<EditUserCubit>().genderController,
+                          hint: cubit.userDetailsModel!.data!.gender!,
+                          items: [ S.of(context).genderMale,
+                                    S.of(context).genderFemale],
+                          controller: cubit.genderController,
                           keyboardType: TextInputType.text,
                           suffixIcon: IconBroken.arrowDown2,
                         ),
@@ -520,29 +384,12 @@ class _EditUserBodyState extends State<EditUserBody> {
                     children: [
                       Expanded(
                         child: CustomDropDownList(
-                          label: 'Nationality',
-                          hint: context
-                              .read<EditUserCubit>()
-                              .userDetailsModel!
-                              .data!
-                              .nationalityName!,
-                          items: context
-                                      .read<EditUserCubit>()
-                                      .nationalityModel
-                                      ?.data
-                                      ?.isEmpty ??
-                                  true
-                              ? ['No nationalities']
-                              : context
-                                      .read<EditUserCubit>()
-                                      .nationalityModel
-                                      ?.data
-                                      ?.map((e) => e.name ?? 'Unknown')
-                                      .toList() ??
-                                  [],
-                          controller: context
-                              .read<EditUserCubit>()
-                              .nationalityController,
+                          label: S.of(context).addUserText8,
+                          hint: cubit.userDetailsModel!.data!.nationalityName!,
+                          items: cubit.nationalityData
+                              .map((e) => e.name ?? 'un known')
+                              .toList(),
+                          controller: cubit.nationalityController,
                           keyboardType: TextInputType.text,
                           suffixIcon: IconBroken.arrowDown2,
                         ),
@@ -550,8 +397,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                       horizontalSpace(15),
                       Expanded(
                         child: EditUserTextField(
-                          controller:
-                              context.read<EditUserCubit>().birthController,
+                          controller: cubit.birthController,
                           obscureText: false,
                           suffixIcon: Icons.calendar_today,
                           suffixPressed: () async {
@@ -580,20 +426,13 @@ class _EditUserBodyState extends State<EditUserBody> {
                               String formattedDate =
                                   DateFormat('yyyy-MM-dd').format(pickedDate);
                               setState(() {
-                                context
-                                    .read<EditUserCubit>()
-                                    .birthController
-                                    .text = formattedDate;
+                                cubit.birthController.text = formattedDate;
                               });
                             }
                           },
                           keyboardType: TextInputType.none,
                           label: S.of(context).addUserText4,
-                          hint: context
-                              .read<EditUserCubit>()
-                              .userDetailsModel!
-                              .data!
-                              .birthdate!,
+                          hint: cubit.userDetailsModel!.data!.birthdate!,
                         ),
                       ),
                     ],
@@ -602,25 +441,19 @@ class _EditUserBodyState extends State<EditUserBody> {
                   CustomDropDownList(
                     label: S.of(context).addUserText13,
                     onChanged: (selectedValue) {
-                      final selectedRole = context
-                          .read<EditUserCubit>()
-                          .roleModel
-                          ?.data
+                      final selectedRole = cubit.roleModel?.data
                           ?.firstWhere((role) => role.name == selectedValue);
-                      context.read<EditUserCubit>().managerController.clear();
+                      cubit.managerController.clear();
                       int? managerId;
                       if (selectedRole!.id! == 1) {
                         managerId = 1;
                       } else {
                         managerId = selectedRole.id! - 1;
                       }
-                      context.read<EditUserCubit>().getAllUsers(managerId);
+                      cubit.getAllUsers(managerId);
                     },
                     onPressed: (selectedValue) {
-                      final selectedId = context
-                          .read<EditUserCubit>()
-                          .roleModel
-                          ?.data
+                      final selectedId = cubit.roleModel?.data
                           ?.firstWhere(
                             (role) => role.name == selectedValue,
                           )
@@ -628,212 +461,89 @@ class _EditUserBodyState extends State<EditUserBody> {
                           ?.toString();
 
                       if (selectedId != null) {
-                        context.read<EditUserCubit>().roleIdController.text =
-                            selectedId;
+                        cubit.roleIdController.text = selectedId;
                       }
                     },
-                    hint: context
-                        .read<EditUserCubit>()
-                        .userDetailsModel!
-                        .data!
-                        .role!,
-                    items: context
-                                .read<EditUserCubit>()
-                                .roleModel
-                                ?.data
-                                ?.isEmpty ??
-                            true
-                        ? ['No roles available']
-                        : context
-                                .read<EditUserCubit>()
-                                .roleModel
-                                ?.data
-                                ?.map((e) => e.name ?? 'Unknown')
-                                .toList() ??
-                            [],
-                    controller: context.read<EditUserCubit>().roleController,
+                    hint: cubit.userDetailsModel!.data!.role!,
+                    items: cubit.providerItem
+                          .map((e) => e.name ?? 'Unknown')
+                          .toList(),
+                    controller: cubit.roleController,
                     keyboardType: TextInputType.text,
                     suffixIcon: IconBroken.arrowDown2,
                   ),
                   verticalSpace(15),
                   CustomDropDownList(
-                    label:
-                        (context.read<EditUserCubit>().roleIdController.text ==
-                                    '1' ||
-                                context
-                                        .read<EditUserCubit>()
-                                        .roleIdController
-                                        .text ==
-                                    '2' ||
-                                context
-                                        .read<EditUserCubit>()
-                                        .roleIdController
-                                        .text ==
-                                    '5')
-                            ? 'Admin'
-                            : (context
-                                        .read<EditUserCubit>()
-                                        .roleIdController
-                                        .text ==
-                                    '3')
-                                ? 'Manager'
-                                : (context
-                                            .read<EditUserCubit>()
-                                            .roleIdController
-                                            .text ==
-                                        '4')
-                                    ? 'Supervisor'
-                                    : context
-                                            .read<EditUserCubit>()
-                                            .userDetailsModel!
-                                            .data!
-                                            .managerName ??
-                                        'User',
+                    label: (cubit.roleIdController.text == '1' ||
+                            cubit.roleIdController.text == '2' ||
+                            cubit.roleIdController.text == '5')
+                        ? S.of(context).roleAdmin
+                        : (cubit.roleIdController.text == '3')
+                            ? S.of(context).roleManager
+                            : (cubit.roleIdController.text == '4')
+                                ? S.of(context).roleSupervisor
+                                : cubit.userDetailsModel!.data!.managerName ??
+                                    
+                                         S.of(context).roleUsers,
                     onPressed: (selectedValue) {
-                      final selectedId = context
-                          .read<EditUserCubit>()
-                          .usersModel
-                          ?.data
-                          ?.users!
+                      final selectedId = cubit.usersModel?.data?.users!
                           .firstWhere(
                               (manager) => manager.userName == selectedValue)
                           .id
                           ?.toString();
 
                       if (selectedId != null) {
-                        context.read<EditUserCubit>().managerIdController.text =
-                            selectedId;
+                        cubit.managerIdController.text = selectedId;
                       }
                     },
-                    controller: context.read<EditUserCubit>().managerController,
+                    controller: cubit.managerController,
                     keyboardType: TextInputType.text,
                     suffixIcon: IconBroken.arrowDown2,
-                    hint:
-                        (context.read<EditUserCubit>().roleIdController.text ==
-                                    '1' ||
-                                context
-                                        .read<EditUserCubit>()
-                                        .roleIdController
-                                        .text ==
-                                    '2' ||
-                                context
-                                        .read<EditUserCubit>()
-                                        .roleIdController
-                                        .text ==
-                                    '5')
-                            ? 'Admin'
-                            : (context
-                                        .read<EditUserCubit>()
-                                        .roleIdController
-                                        .text ==
-                                    '3')
-                                ? 'Manager'
-                                : (context
-                                            .read<EditUserCubit>()
-                                            .roleIdController
-                                            .text ==
-                                        '4')
-                                    ? 'Supervisor'
-                                    : context
-                                            .read<EditUserCubit>()
-                                            .userDetailsModel!
-                                            .data!
-                                            .managerName ??
-                                        'user',
-                    items: context
-                                .read<EditUserCubit>()
-                                .usersModel
-                                ?.data
-                                ?.users!
-                                .isEmpty ??
-                            true
+                    hint: (cubit.roleIdController.text == '1' ||
+                            cubit.roleIdController.text == '2' ||
+                            cubit.roleIdController.text == '5')
+                        ? S.of(context).roleAdmin
+                        : (cubit.roleIdController.text == '3')
+                            ? S.of(context).roleManager
+                            : (cubit.roleIdController.text == '4')
+                                ? S.of(context).roleSupervisor
+                                : cubit.userDetailsModel!.data!.managerName ??
+                                    S.of(context).roleUsers,
+                    items: cubit.usersModel?.data?.users?.isEmpty ?? true
                         ? [
-                            if (context
-                                        .read<EditUserCubit>()
-                                        .roleIdController
-                                        .text ==
-                                    '1' ||
-                                context
-                                        .read<EditUserCubit>()
-                                        .roleIdController
-                                        .text ==
-                                    '2' ||
-                                context
-                                        .read<EditUserCubit>()
-                                        .roleIdController
-                                        .text ==
-                                    '5')
-                              'No Admins available'
-                            else if (context
-                                    .read<EditUserCubit>()
-                                    .roleIdController
-                                    .text ==
-                                '3')
-                              'No Managers available'
-                            else if (context
-                                    .read<EditUserCubit>()
-                                    .roleIdController
-                                    .text ==
-                                '4')
-                              'No Supervisors available'
+                            if (['1', '2', '5']
+                                .contains(cubit.roleIdController.text))
+                              S.of(context).noAdminsAvailable
+                            else if (cubit.roleIdController.text == '3')
+                              S.of(context).noManagersAvailable
+                            else if (cubit.roleIdController.text == '4')
+                             S.of(context).noSupervisorsAvailable
                             else
-                              'No Users available'
+                              S.of(context).noUsersAvailable
                           ]
-                        : context
-                                .read<EditUserCubit>()
-                                .usersModel
-                                ?.data
-                                ?.users!
-                                .map((e) => e.userName ?? 'Unknown')
-                                .toList() ??
-                            [],
+                        : cubit.usersModel!.data!.users!
+                            .map((e) => e.userName ?? 'Unknown')
+                            .toList(),
                   ),
                   verticalSpace(15),
                   CustomDropDownList(
                     label: S.of(context).addUserText15,
-                    hint: context
-                            .read<EditUserCubit>()
-                            .userDetailsModel!
-                            .data!
-                            .providerName ??
-                        '',
-                    onPressed: (selectedValue) {
-                      final selectedId = context
-                          .read<EditUserCubit>()
-                          .providersModel
-                          ?.data
-                          ?.providers
+                    hint: cubit.userDetailsModel!.data!.providerName ?? '',
+                    onChanged: (selectedValue) {
+                      final selectedId = cubit.providersModel?.data?.providers
                           ?.firstWhere(
-                            (provider) => provider.name == selectedValue,
-                          )
+                              (provider) => provider.name == selectedValue)
                           .id
                           ?.toString();
 
                       if (selectedId != null) {
-                        context
-                            .read<EditUserCubit>()
-                            .providerIdController
-                            .text = selectedId;
+                        cubit.providerIdController.text = selectedId;
                       }
                     },
-                    items: context
-                                .read<EditUserCubit>()
-                                .providersModel
-                                ?.data
-                                ?.providers
-                                ?.isEmpty ??
-                            true
-                        ? ['No Providers available']
-                        : context
-                                .read<EditUserCubit>()
-                                .providersModel
-                                ?.data
-                                ?.providers
-                                ?.map((e) => e.name ?? 'Unknown')
-                                .toList() ??
-                            [],
-                    controller:
-                        context.read<EditUserCubit>().providerController,
+                    items: cubit.providerItem
+                        .map((e) => e.name ?? 'Unknown')
+                        .toList(),
+                    controller: cubit.providerController,
                     keyboardType: TextInputType.text,
                     suffixIcon: IconBroken.arrowDown2,
                   ),
@@ -847,21 +557,12 @@ class _EditUserBodyState extends State<EditUserBody> {
                           child: DefaultElevatedButton(
                               name: S.of(context).saveButtton,
                               onPressed: () {
-                                if (context
-                                    .read<EditUserCubit>()
-                                    .formKey
-                                    .currentState!
-                                    .validate()) {
+                                if (cubit.formKey.currentState!.validate()) {
                                   showCustomDialog(context,
-                                      "Are you Sure you want save the edit of this user ?",
+                                      S.of(context).confirmSaveEdit,
                                       () {
-                                    context.read<EditUserCubit>().editUser(
-                                        widget.id,
-                                        context
-                                            .read<EditUserCubit>()
-                                            .image
-                                            ?.path,
-                                        selectedShiftsIds);
+                                    cubit.editUser(
+                                        widget.id, cubit.image?.path);
                                     context.pop();
                                   });
                                 }

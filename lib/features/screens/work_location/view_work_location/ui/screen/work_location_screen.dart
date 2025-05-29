@@ -560,7 +560,7 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
               size: 22.sp,
             ),
           ),
-          if (role == 'Admin')
+          if (role == 'Admin') ...[
             IconButton(
                 onPressed: () {
                   widget.selectedIndex == 0
@@ -591,6 +591,7 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                   Icons.edit,
                   color: AppColor.primaryColor,
                 ))
+          ]
         ],
       ),
       body: BlocConsumer<WorkLocationDetailsCubit, WorkLocationDetailsState>(
@@ -821,7 +822,7 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                     ]),
                   ),
                   verticalSpace(15),
-                  if (role == 'Admin')
+                  if (role == 'Admin') ...[
                     DefaultElevatedButton(
                         name: S.of(context).deleteButton,
                         onPressed: () {
@@ -865,6 +866,7 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                         height: 48,
                         width: double.infinity,
                         textStyles: TextStyles.font20Whitesemimedium),
+                  ],
                   verticalSpace(20),
                 ],
               ),

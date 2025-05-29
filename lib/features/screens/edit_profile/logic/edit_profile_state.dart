@@ -1,10 +1,8 @@
 import 'package:image_picker/image_picker.dart';
 import 'package:smart_cleaning_application/features/screens/edit_profile/data/model/edit_profile_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_list_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_model.dart';
 import 'package:smart_cleaning_application/features/screens/settings/data/model/profile_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_shift_details_model.dart';
+
 
 abstract class EditProfileState {}
 
@@ -36,26 +34,6 @@ class UserProfileDetailsErrorState extends EditProfileState {
   final String error;
   UserProfileDetailsErrorState(this.error);
 }
-//*********************** */
-
-class UserShiftDetailsLoadingState extends EditProfileState {}
-
-class UserShiftDetailsSuccessState extends EditProfileState {
-  final UserShiftDetailsModel userShiftDetailsModel;
-
-  UserShiftDetailsSuccessState(this.userShiftDetailsModel);
-}
-
-class UserShiftDetailsErrorState extends EditProfileState {
-  final String error;
-  UserShiftDetailsErrorState(this.error);
-}
-
-//*************************** */
-class ImageSelectedState extends EditProfileState {
-  final XFile image;
-  ImageSelectedState(this.image);
-}
 
 //**************************** */
 class GetNationalityLoadingState extends EditProfileState {}
@@ -71,32 +49,8 @@ class GetNationalityErrorState extends EditProfileState {
   GetNationalityErrorState(this.error);
 }
 
-//**************************** */
-
-class RoleLoadingState extends EditProfileState {}
-
-class RoleSuccessState extends EditProfileState {
-  final RoleModel rolemodel;
-
-  RoleSuccessState(this.rolemodel);
-}
-
-class RoleErrorState extends EditProfileState {
-  final String error;
-  RoleErrorState(this.error);
-}
-
-//**************************** */
-
-class AllProvidersLoadingState extends EditProfileState {}
-
-class AllProvidersSuccessState extends EditProfileState {
-  final ProvidersModel providersModel;
-
-  AllProvidersSuccessState(this.providersModel);
-}
-
-class AllProvidersErrorState extends EditProfileState {
-  final String error;
-  AllProvidersErrorState(this.error);
+//*************************** */
+class ImageSelectedState extends EditProfileState {
+  final XFile image;
+  ImageSelectedState(this.image);
 }

@@ -21,26 +21,12 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../core/widgets/default_toast/default_toast.dart';
 
-class SettingsBody extends StatefulWidget {
+class SettingsBody extends StatelessWidget {
   const SettingsBody({super.key});
 
   @override
-  State<SettingsBody> createState() => _SettingsBodyState();
-}
-
-class _SettingsBodyState extends State<SettingsBody> {
-  @override
-  void initState() {
-    context.read<SettingsCubit>()
-      ..getUserDetails()
-      ..getUserStatus()
-      ..initializeNotificationStatus()
-      ..getDarkModeStatus();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final cubit = context.read<SettingsCubit>();
     return BlocConsumer<SettingsCubit, SettingsState>(
       listener: (context, state) {
         if (state is LogOutSuccessState) {
@@ -50,9 +36,7 @@ class _SettingsBodyState extends State<SettingsBody> {
         }
       },
       builder: (context, state) {
-        final cubit = context.read<SettingsCubit>();
-
-        if (cubit.profileModel == null || cubit.userStatusModel == null) {
+        if (cubit.profileModel == null) {
           return Center(
             child: CircularProgressIndicator(
               color: AppColor.primaryColor,
@@ -123,10 +107,9 @@ class _SettingsBodyState extends State<SettingsBody> {
                           height: 15.h,
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: cubit.userStatusModel?.data == null
+                              color: cubit.profileModel!.data == null
                                   ? Colors.red
-                                  : cubit.userStatusModel!.data!.clockOut ==
-                                          null
+                                  : cubit.profileModel!.data!.isWorking == true
                                       ? Colors.green
                                       : Colors.red,
                               border:
@@ -162,7 +145,7 @@ class _SettingsBodyState extends State<SettingsBody> {
                   children: [
                     listTileWidget(() {
                       context.pushNamed(Routes.profileScreen);
-                    }, 'Profile', Icons.person),
+                    }, S.of(context).settingTitle1, Icons.person),
                     listTileWidget(() {
                       context.pushNamed(Routes.changepasswordScreen);
                     }, S.of(context).settingTitle2, Icons.password_sharp),

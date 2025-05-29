@@ -147,3 +147,9 @@ class ImageSelectedState extends AddUserState {
   final XFile image;
   ImageSelectedState(this.image);
 }
+
+//*************************** */
+class PasswordValidationChangedState extends AddUserState {}
+
+//*************************** */
+class DateSelectedState extends AddUserState {}

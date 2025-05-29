@@ -9,6 +9,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/features/screens/home/logic/home_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/home_statistics_cards/stock_date_picker.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class Stock extends StatelessWidget {
   const Stock({super.key});
@@ -62,7 +63,7 @@ class Stock extends StatelessWidget {
                           ),
                           horizontalSpace(8),
                           Text(
-                            'Material Count',
+                            S.of(context).materialCount,
                             style: TextStyles.font14BlackSemiBold,
                           ),
                         ],
@@ -129,7 +130,7 @@ class Stock extends StatelessWidget {
                           ),
                           horizontalSpace(2),
                           Text(
-                            'In Cost',
+                            S.of(context).inCost,
                             style: TextStyles.font14BlackSemiBold,
                           ),
                           Expanded(child: SizedBox()),

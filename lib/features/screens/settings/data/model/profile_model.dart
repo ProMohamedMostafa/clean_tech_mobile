@@ -7,34 +7,38 @@ class ProfileModel {
   int? businessErrorCode;
   Data? data;
 
-  ProfileModel({
-    this.statusCode,
-    this.meta,
-    this.succeeded,
-    this.message,
-    this.error,
-    this.businessErrorCode,
-    this.data,
-  });
+  ProfileModel(
+      {this.statusCode,
+      this.meta,
+      this.succeeded,
+      this.message,
+      this.error,
+      this.businessErrorCode,
+      this.data});
 
-  ProfileModel.fromJson(Map<String, dynamic> json)
-      : statusCode = json['statusCode'],
-        meta = json['meta'],
-        succeeded = json['succeeded'],
-        message = json['message'],
-        error = json['error'],
-        businessErrorCode = json['businessErrorCode'],
-        data = json['data'] != null ? Data.fromJson(json['data']) : null;
+  ProfileModel.fromJson(Map<String, dynamic> json) {
+    statusCode = json['statusCode'];
+    meta = json['meta'];
+    succeeded = json['succeeded'];
+    message = json['message'];
+    error = json['error'];
+    businessErrorCode = json['businessErrorCode'];
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+  }
 
-  Map<String, dynamic> toJson() => {
-        'statusCode': statusCode,
-        'meta': meta,
-        'succeeded': succeeded,
-        'message': message,
-        'error': error,
-        'businessErrorCode': businessErrorCode,
-        if (data != null) 'data': data!.toJson(),
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['statusCode'] = statusCode;
+    data['meta'] = meta;
+    data['succeeded'] = succeeded;
+    data['message'] = message;
+    data['error'] = error;
+    data['businessErrorCode'] = businessErrorCode;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
+    return data;
+  }
 }
 
 class Data {
@@ -42,7 +46,7 @@ class Data {
   String? userName;
   String? firstName;
   String? lastName;
-  dynamic image;
+  String? image;
   String? gender;
   String? countryName;
   String? nationalityName;
@@ -50,88 +54,74 @@ class Data {
   String? phoneNumber;
   String? birthdate;
   String? idNumber;
-  dynamic providerName;
-  dynamic managerName;
-  dynamic role;
-  List<dynamic>? shifts;
-  List<dynamic>? areas;
-  List<dynamic>? cities;
-  List<dynamic>? organizations;
-  List<dynamic>? buildings;
-  List<dynamic>? floors;
-  List<dynamic>? points;
+  String? providerName;
+  String? managerName;
+  String? role;
+  int? roleId;
+  int? providerId;
+  bool? isWorking;
 
-  Data({
-    this.id,
-    this.userName,
-    this.firstName,
-    this.lastName,
-    this.image,
-    this.gender,
-    this.countryName,
-    this.nationalityName,
-    this.email,
-    this.phoneNumber,
-    this.birthdate,
-    this.idNumber,
-    this.providerName,
-    this.managerName,
-    this.role,
-    this.shifts,
-    this.areas,
-    this.cities,
-    this.organizations,
-    this.buildings,
-    this.floors,
-    this.points,
-  });
+  Data(
+      {this.id,
+      this.userName,
+      this.firstName,
+      this.lastName,
+      this.image,
+      this.gender,
+      this.countryName,
+      this.nationalityName,
+      this.email,
+      this.phoneNumber,
+      this.birthdate,
+      this.idNumber,
+      this.providerName,
+      this.managerName,
+      this.role,
+      this.roleId,
+      this.providerId,
+      this.isWorking});
 
-  Data.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        userName = json['userName'],
-        firstName = json['firstName'],
-        lastName = json['lastName'],
-        image = json['image'],
-        gender = json['gender'],
-        countryName = json['countryName'],
-        nationalityName = json['nationalityName'],
-        email = json['email'],
-        phoneNumber = json['phoneNumber'],
-        birthdate = json['birthdate'],
-        idNumber = json['idNumber'],
-        providerName = json['providerName'],
-        managerName = json['managerName'],
-        role = json['role'],
-        shifts = json['shifts'] ?? [],
-        areas = json['areas'] ?? [],
-        cities = json['cities'] ?? [],
-        organizations = json['organizations'] ?? [],
-        buildings = json['buildings'] ?? [],
-        floors = json['floors'] ?? [],
-        points = json['points'] ?? [];
+  Data.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userName = json['userName'];
+    firstName = json['firstName'];
+    lastName = json['lastName'];
+    image = json['image'];
+    gender = json['gender'];
+    countryName = json['countryName'];
+    nationalityName = json['nationalityName'];
+    email = json['email'];
+    phoneNumber = json['phoneNumber'];
+    birthdate = json['birthdate'];
+    idNumber = json['idNumber'];
+    providerName = json['providerName'];
+    managerName = json['managerName'];
+    role = json['role'];
+    roleId = json['roleId'];
+    providerId = json['providerId'];
+    isWorking = json['isWorking'];
+  }
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'userName': userName,
-        'firstName': firstName,
-        'lastName': lastName,
-        'image': image,
-        'gender': gender,
-        'countryName': countryName,
-        'nationalityName': nationalityName,
-        'email': email,
-        'phoneNumber': phoneNumber,
-        'birthdate': birthdate,
-        'idNumber': idNumber,
-        'providerName': providerName,
-        'managerName': managerName,
-        'role': role,
-        'shifts': shifts,
-        'areas': areas,
-        'cities': cities,
-        'organizations': organizations,
-        'buildings': buildings,
-        'floors': floors,
-        'points': points,
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['userName'] = userName;
+    data['firstName'] = firstName;
+    data['lastName'] = lastName;
+    data['image'] = image;
+    data['gender'] = gender;
+    data['countryName'] = countryName;
+    data['nationalityName'] = nationalityName;
+    data['email'] = email;
+    data['phoneNumber'] = phoneNumber;
+    data['birthdate'] = birthdate;
+    data['idNumber'] = idNumber;
+    data['providerName'] = providerName;
+    data['managerName'] = managerName;
+    data['role'] = role;
+    data['roleId'] = roleId;
+    data['providerId'] = providerId;
+    data['isWorking'] = isWorking;
+    return data;
+  }
 }

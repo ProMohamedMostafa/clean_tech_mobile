@@ -19,9 +19,7 @@ class ActivityBody extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Activity'),
-        leading: customBackButton(context),
-      ),
+          title: const Text('Activity'), leading: customBackButton(context)),
       body: BlocConsumer<ActivityCubit, ActivityState>(
         listener: (context, state) {
           if (state is ActivityErrorState) {
@@ -51,11 +49,11 @@ class ActivityBody extends StatelessWidget {
                     secondCount: cubit.teamActivities?.data?.totalCount ?? 0,
                     secondLabel: 'My Team Activity',
                   ),
-                  verticalSpace(10),
+                  verticalSpace(5),
                   Divider(color: Colors.grey[300]),
                   Expanded(
                     child:
-                        activityListDetailsBuild(context, cubit.selectedIndex),
+                        ActivityListDetailsBuild(),
                   ),
                   verticalSpace(10),
                 ],

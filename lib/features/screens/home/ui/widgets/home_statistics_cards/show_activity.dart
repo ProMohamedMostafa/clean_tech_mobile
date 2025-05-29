@@ -10,6 +10,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/two_buttons_in_integreat_screen/two_buttons_in_integration_screen.dart';
 import 'package:smart_cleaning_application/features/screens/activity/ui/widgets/icons_widget.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_cubit.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class ShowActivity extends StatelessWidget {
   const ShowActivity({super.key});
@@ -41,7 +42,7 @@ class ShowActivity extends StatelessWidget {
                   size: 22.sp,
                 ),
                 title: Text(
-                  'Show Activity',
+                  S.of(context).showActivity,
                   style: TextStyles.font14BlackSemiBold,
                 ),
                 trailing: RotatedBox(
@@ -62,8 +63,8 @@ class ShowActivity extends StatelessWidget {
                     onTap: (index) {
                       cubit.changeTap(index);
                     },
-                    firstLabel: 'My Activity',
-                    secondLabel: 'My Team Activity',
+                    firstLabel: S.of(context).myActivity,
+                    secondLabel: S.of(context).myTeamActivity,
                   ),
                 ),
                 Divider(height: 1.h),
@@ -190,7 +191,7 @@ class ShowActivity extends StatelessWidget {
                             ),
                             SizedBox(width: 10),
                             Text(
-                              'See All',
+                              S.of(context).seeMoreButton,
                               style: TextStyles.font12PrimSemi,
                             ),
                             SizedBox(width: 10),

@@ -5,27 +5,32 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/features/screens/activity/logic/activity_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/activity/ui/widgets/list_item_build.dart';
 
-Widget activityListDetailsBuild(BuildContext context, int selectedIndex) {
-  final cubit = context.read<ActivityCubit>();
-  final activitiesData = selectedIndex == 0
-      ? cubit.myActivities?.data?.activities ?? []
-      : cubit.teamActivities?.data?.activities ?? [];
+class ActivityListDetailsBuild extends StatelessWidget {
+  const ActivityListDetailsBuild({super.key});
 
-  if (activitiesData.isEmpty) {
-    return Center(
-      child: Text(
-        "There's no data",
-        style: TextStyles.font13Blackmedium,
-      ),
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<ActivityCubit>();
+    final activitiesData = cubit.selectedIndex == 0
+        ? cubit.myActivities?.data?.activities ?? []
+        : cubit.teamActivities?.data?.activities ?? [];
+
+    if (activitiesData.isEmpty) {
+      return Center(
+        child: Text(
+          "There's no data",
+          style: TextStyles.font13Blackmedium,
+        ),
+      );
+    }
+
+    return ListView.separated(
+      controller: cubit.activitiesScrollController,
+      physics: const AlwaysScrollableScrollPhysics(),
+      itemCount: activitiesData.length,
+      separatorBuilder: (context, index) => verticalSpace(10),
+      itemBuilder: (context, index) =>
+         ActivityListItemBuild(index: index),
     );
   }
-
-  return ListView.separated(
-    controller: cubit.activitiesScrollController,
-    physics: const AlwaysScrollableScrollPhysics(),
-    itemCount: activitiesData.length,
-    separatorBuilder: (context, index) => verticalSpace(10),
-    itemBuilder: (context, index) =>
-        listItemBuild(context, selectedIndex, index),
-  );
 }

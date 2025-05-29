@@ -6,7 +6,6 @@ import 'package:smart_cleaning_application/core/networking/api_constants/api_con
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/core/widgets/filter/data/model/filter_dialog_data_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/gallary_model.dart';
-import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/category_management_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/data/model/delete_material_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/data/model/deleted_material_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/data/model/material_management_model.dart';
@@ -214,16 +213,6 @@ class MaterialManagementCubit extends Cubit<MaterialManagementState> {
     });
   }
 
-  CategoryManagementModel? categoryManagementModel;
-  getCategoryList() {
-    emit(CategoriesLoadingState());
-    DioHelper.getData(url: ApiConstants.categoryUrl).then((value) {
-      categoryManagementModel = CategoryManagementModel.fromJson(value!.data);
-      emit(CategoriesSuccessState(categoryManagementModel!));
-    }).catchError((error) {
-      emit(CategoriesErrorState(error.toString()));
-    });
-  }
 
   addMaterial({
     int? materialId,

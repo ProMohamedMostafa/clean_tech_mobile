@@ -7,10 +7,6 @@ class ShiftDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ShiftDetailsBody(
-        id: id,
-      ),
-    );
+    return ShiftDetailsBody(id: id);
   }
 }

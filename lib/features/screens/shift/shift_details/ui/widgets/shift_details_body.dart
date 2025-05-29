@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
@@ -11,12 +12,12 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/logic/cubit/shift_details_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shift_details/ui/widgets/building_list_item_build.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shift_details/ui/widgets/floor_list_item_build.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shift_details/ui/widgets/organization_list_item_build.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shift_details/ui/widgets/section_list_item_build.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shift_details/ui/widgets/buildings/building_list_build.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shift_details/ui/widgets/floor/floor_list_build.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shift_details/ui/widgets/organization/organization_list_build.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shift_details/ui/widgets/sections/section_list_build.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shift_details/ui/widgets/shift_details/shift_details.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class ShiftDetailsBody extends StatefulWidget {
@@ -32,11 +33,6 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
   late TabController controller;
   @override
   void initState() {
-    context.read<ShiftDetailsCubit>().getShiftDetails(widget.id);
-    context.read<ShiftDetailsCubit>().getShiftOrganizationDetails(widget.id);
-    context.read<ShiftDetailsCubit>().getShiftBuildingDetails(widget.id);
-    context.read<ShiftDetailsCubit>().getShiftFloorDetails(widget.id);
-    context.read<ShiftDetailsCubit>().getShiftSectionDetails(widget.id);
     controller = TabController(length: 5, vsync: this);
     controller.addListener(() {
       setState(() {});
@@ -54,9 +50,7 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Shift details",
-        ),
+        title: Text("Shift details"),
         leading: customBackButton(context),
         actions: [
           IconButton(
@@ -69,14 +63,16 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
               size: 22.sp,
             ),
           ),
-          IconButton(
-              onPressed: () {
-                context.pushNamed(Routes.editShiftScreen, arguments: widget.id);
-              },
-              icon: Icon(
-                Icons.edit,
-                color: AppColor.primaryColor,
-              ))
+          if (role == 'Admin')
+            IconButton(
+                onPressed: () {
+                  context.pushNamed(Routes.editShiftScreen,
+                      arguments: widget.id);
+                },
+                icon: Icon(
+                  Icons.edit,
+                  color: AppColor.primaryColor,
+                ))
         ],
       ),
       body: BlocConsumer<ShiftDetailsCubit, ShiftDetailsState>(
@@ -104,7 +100,7 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    height: 40.h,
+                    height: 42.h,
                     width: double.infinity,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(5.r)),
@@ -182,28 +178,29 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
                   verticalSpace(20),
                   Expanded(
                     child: TabBarView(controller: controller, children: [
-                      shiftsDetails(),
-                      organizationDetails(),
-                      buildingDetails(),
-                      floorDetails(),
-                      sectionDetails(),
+                      ShiftDetails(),
+                      OrganizationListBuild(),
+                      BuildingListBuild(),
+                      FloorListBuild(),
+                      SectionListBuild(),
                     ]),
                   ),
                   verticalSpace(15),
-                  DefaultElevatedButton(
-                      name: S.of(context).deleteButton,
-                      onPressed: () {
-                        showCustomDialog(context, S.of(context).deleteMessage,
-                            () {
-                          context
-                              .read<ShiftDetailsCubit>()
-                              .shiftDelete(widget.id);
-                        });
-                      },
-                      color: Colors.red,
-                      height: 48,
-                      width: double.infinity,
-                      textStyles: TextStyles.font20Whitesemimedium),
+                  if (role == 'Admin')
+                    DefaultElevatedButton(
+                        name: S.of(context).deleteButton,
+                        onPressed: () {
+                          showCustomDialog(context, S.of(context).deleteMessage,
+                              () {
+                            context
+                                .read<ShiftDetailsCubit>()
+                                .shiftDelete(widget.id);
+                          });
+                        },
+                        color: Colors.red,
+                        height: 48,
+                        width: double.infinity,
+                        textStyles: TextStyles.font20Whitesemimedium),
                   verticalSpace(20),
                 ],
               ),
@@ -212,176 +209,5 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
         },
       ),
     );
-  }
-
-  Widget shiftsDetails() {
-    final shiftDetailsModel =
-        context.read<ShiftDetailsCubit>().shiftDetailsModel?.data;
-
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          rowDetailsBuild(context, "Name Shift", shiftDetailsModel!.name!,
-              color: AppColor.primaryColor),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(context, "Start Date", shiftDetailsModel.startDate!),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(context, "End Date", shiftDetailsModel.endDate!),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(context, "Start Time", shiftDetailsModel.startTime!),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-          rowDetailsBuild(context, "End Time", shiftDetailsModel.endTime!),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Divider(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget organizationDetails() {
-    final organizationsData =
-        context.read<ShiftDetailsCubit>().shiftOrganizationDetailsModel?.data;
-
-    if (organizationsData == null || organizationsData.isEmpty) {
-      return Center(
-        child: Text(
-          "There's no data",
-          style: TextStyles.font13Blackmedium,
-        ),
-      );
-    } else {
-      return ListView.separated(
-        shrinkWrap: true,
-        physics: const ClampingScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        itemCount: organizationsData.length,
-        separatorBuilder: (context, index) {
-          return verticalSpace(10);
-        },
-        itemBuilder: (context, index) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              listOrganizationItemBuild(context, index),
-            ],
-          );
-        },
-      );
-    }
-  }
-
-  Widget buildingDetails() {
-    final buildingsData =
-        context.read<ShiftDetailsCubit>().shiftBuildingsDetailsModel?.data;
-
-    if (buildingsData == null || buildingsData.isEmpty) {
-      return Center(
-        child: Text(
-          "There's no data",
-          style: TextStyles.font13Blackmedium,
-        ),
-      );
-    } else {
-      return ListView.separated(
-        shrinkWrap: true,
-        physics: const ClampingScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        itemCount: buildingsData.length,
-        separatorBuilder: (context, index) {
-          return verticalSpace(10);
-        },
-        itemBuilder: (context, index) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              listBuildingItemBuild(context, index),
-            ],
-          );
-        },
-      );
-    }
-  }
-
-  Widget floorDetails() {
-    final floorsData =
-        context.read<ShiftDetailsCubit>().shiftSectionDetailsModel?.data;
-
-    if (floorsData == null || floorsData.isEmpty) {
-      return Center(
-        child: Text(
-          "There's no data",
-          style: TextStyles.font13Blackmedium,
-        ),
-      );
-    } else {
-      return ListView.separated(
-        shrinkWrap: true,
-        physics: const ClampingScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        itemCount: floorsData.length,
-        separatorBuilder: (context, index) {
-          return verticalSpace(10);
-        },
-        itemBuilder: (context, index) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              listFloorItemBuild(context, index),
-            ],
-          );
-        },
-      );
-    }
-  }
-
-  Widget sectionDetails() {
-    final sectiontsData =
-        context.read<ShiftDetailsCubit>().shiftSectionDetailsModel?.data;
-
-    if (sectiontsData == null || sectiontsData.isEmpty) {
-      return Center(
-        child: Text(
-          "There's no data",
-          style: TextStyles.font13Blackmedium,
-        ),
-      );
-    } else {
-      return ListView.separated(
-        shrinkWrap: true,
-        physics: const ClampingScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        itemCount: sectiontsData.length,
-        separatorBuilder: (context, index) {
-          return verticalSpace(10);
-        },
-        itemBuilder: (context, index) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              listPointItemBuild(context, index),
-            ],
-          );
-        },
-      );
-    }
   }
 }

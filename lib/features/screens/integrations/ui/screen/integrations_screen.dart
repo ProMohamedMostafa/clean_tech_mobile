@@ -6,8 +6,6 @@ class IntegrationsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: IntegrationsBody(),
-    );
+    return const IntegrationsBody();
   }
 }

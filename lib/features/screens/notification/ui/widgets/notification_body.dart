@@ -10,6 +10,7 @@ import 'package:smart_cleaning_application/core/widgets/two_buttons_in_integreat
 import 'package:smart_cleaning_application/features/screens/notification/logic/notification_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/notification/logic/notification_state.dart';
 import 'package:smart_cleaning_application/features/screens/notification/ui/widgets/notification_list_details_build.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class NotificationBody extends StatelessWidget {
   const NotificationBody({super.key});
@@ -31,7 +32,7 @@ class NotificationBody extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             leading: customBackButton(context),
-            title: Text('Notifications'),
+            title: Text(S.of(context).notifications),
             actions: [
               InkWell(
                 borderRadius: BorderRadius.circular(20),
@@ -41,7 +42,7 @@ class NotificationBody extends StatelessWidget {
                     context.read<NotificationCubit>().markRead();
                   } else {
                     toast(
-                      text: "Already marked as read",
+                      text: S.of(context).alreadyMarkedAsRead,
                       color: Colors.blue,
                     );
                   }
@@ -95,10 +96,10 @@ class NotificationBody extends StatelessWidget {
                     onTap: (index) => cubit.changeTap(index),
                     firstCount:
                         cubit.notificationModel?.data?.data?.length ?? 0,
-                    firstLabel: 'All',
+                    firstLabel: S.of(context).all,
                     secondCount:
                         cubit.unReadNotificationModel?.data?.data?.length ?? 0,
-                    secondLabel: 'Unread',
+                    secondLabel: S.of(context).unread,
                   ),
                   verticalSpace(10),
                   Divider(color: Colors.grey[300]),

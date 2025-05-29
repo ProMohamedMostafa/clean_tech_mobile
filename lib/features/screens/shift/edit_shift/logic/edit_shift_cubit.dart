@@ -5,10 +5,6 @@ import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/edit_shift/data/model/edit_shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/edit_shift/logic/edit_shift_state.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_building_details.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_floor_details.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_organization_details.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_section_details.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/shift_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_list_model.dart';
@@ -37,7 +33,6 @@ class EditShiftCubit extends Cubit<EditShiftState> {
   EditShiftDetailsModel? editShiftDetailsModel;
   editShift(int? id) async {
     emit(EditShiftLoadingState());
-
     try {
       final response =
           await DioHelper.putData(url: ApiConstants.editShiftsUrl, data: {
@@ -58,16 +53,16 @@ class EditShiftCubit extends Cubit<EditShiftState> {
             ? shiftDetailsModel!.data!.endTime
             : endTimeController.text,
         "organizationIds": organizationController.text.isEmpty
-            ? shiftOrganizationDetailsModel!.data!.map((e) => e.id).toList()
+            ? shiftDetailsModel!.data!.organizations!.map((e) => e.id).toList()
             : [int.parse(organizationIdController.text)],
         "buildingIds": buildingController.text.isEmpty
-            ? shiftBuildingsDetailsModel!.data!.map((e) => e.id).toList()
+            ? shiftDetailsModel!.data!.building!.map((e) => e.id).toList()
             : [int.parse(buildingIdController.text)],
         "floorIds": floorController.text.isEmpty
-            ? shiftFloorDetailsModel!.data!.map((e) => e.id).toList()
+            ? shiftDetailsModel!.data!.floors!.map((e) => e.id).toList()
             : [int.parse(floorIdController.text)],
         "sectionIds": sectionController.text.isEmpty
-            ? shiftSectionDetailsModel!.data!.map((e) => e.id).toList()
+            ? shiftDetailsModel!.data!.sections!.map((e) => e.id).toList()
             : [int.parse(sectionIdController.text)],
       });
       editShiftDetailsModel = EditShiftDetailsModel.fromJson(response!.data);
@@ -88,71 +83,32 @@ class EditShiftCubit extends Cubit<EditShiftState> {
     });
   }
 
-  ShiftOrganizationDetailsModel? shiftOrganizationDetailsModel;
-  getShiftOrganizationDetails(int? id) {
-    emit(ShiftOrganizationDetailsLoadingState());
-    DioHelper.getData(url: 'shift/organization/$id').then((value) {
-      shiftOrganizationDetailsModel =
-          ShiftOrganizationDetailsModel.fromJson(value!.data);
-      emit(
-          ShiftOrganizationDetailsSuccessState(shiftOrganizationDetailsModel!));
-    }).catchError((error) {
-      emit(ShiftOrganizationDetailsErrorState(error.toString()));
-    });
-  }
-
-  ShiftBuildingsDetailsModel? shiftBuildingsDetailsModel;
-  getShiftBuildingDetails(int? id) {
-    emit(ShiftBuildingDetailsLoadingState());
-    DioHelper.getData(url: 'shift/building/$id').then((value) {
-      shiftBuildingsDetailsModel =
-          ShiftBuildingsDetailsModel.fromJson(value!.data);
-      emit(ShiftBuildingDetailsSuccessState(shiftBuildingsDetailsModel!));
-    }).catchError((error) {
-      emit(ShiftBuildingDetailsErrorState(error.toString()));
-    });
-  }
-
-  ShiftFloorDetailsModel? shiftFloorDetailsModel;
-  getShiftFloorDetails(int? id) {
-    emit(ShiftFloorDetailsLoadingState());
-    DioHelper.getData(url: 'shift/floor/$id').then((value) {
-      shiftFloorDetailsModel = ShiftFloorDetailsModel.fromJson(value!.data);
-      emit(ShiftFloorDetailsSuccessState(shiftFloorDetailsModel!));
-    }).catchError((error) {
-      emit(ShiftFloorDetailsErrorState(error.toString()));
-    });
-  }
-
-  ShiftSectionDetailsModel? shiftSectionDetailsModel;
-  getShiftSectionDetails(int? id) {
-    emit(ShiftSectionDetailsLoadingState());
-    DioHelper.getData(url: 'shift/section/$id').then((value) {
-      shiftSectionDetailsModel = ShiftSectionDetailsModel.fromJson(value!.data);
-      emit(ShiftSectionDetailsSuccessState(shiftSectionDetailsModel!));
-    }).catchError((error) {
-      emit(ShiftSectionDetailsErrorState(error.toString()));
-    });
-  }
-
-  OrganizationListModel? organizationListModel;
+  OrganizationListModel? organizationModel;
+  List<OrganizationItem> organizationItem = [
+    OrganizationItem(name: 'No organizations')
+  ];
   getOrganization() {
     emit(OrganizationLoadingState());
-    DioHelper.getData(url: ApiConstants.organizationUrl).then((value) {
-      organizationListModel = OrganizationListModel.fromJson(value!.data);
-      emit(OrganizationSuccessState(organizationListModel!));
+    DioHelper.getData(url: "organizations/pagination").then((value) {
+      organizationModel = OrganizationListModel.fromJson(value!.data);
+      organizationItem = organizationModel?.data?.data ??
+          [OrganizationItem(name: 'No organizations')];
+      emit(OrganizationSuccessState(organizationModel!));
     }).catchError((error) {
       emit(OrganizationErrorState(error.toString()));
     });
   }
 
   BuildingListModel? buildingModel;
-  getBuilding(int organizationId) {
+  List<BuildingItem> buildingItem = [BuildingItem(name: 'No building')];
+  getBuilding() {
     emit(GetBuildingLoadingState());
     DioHelper.getData(
         url: 'buildings/pagination',
-        query: {'organization': organizationId}).then((value) {
+        query: {'OrganizationId': organizationIdController.text}).then((value) {
       buildingModel = BuildingListModel.fromJson(value!.data);
+      buildingItem =
+          buildingModel?.data?.data ?? [BuildingItem(name: 'No building')];
       emit(GetBuildingSuccessState(buildingModel!));
     }).catchError((error) {
       emit(GetBuildingErrorState(error.toString()));
@@ -160,11 +116,14 @@ class EditShiftCubit extends Cubit<EditShiftState> {
   }
 
   FloorListModel? floorModel;
-  getFloor(int buildingId) {
+  List<FloorItem> floorItem = [FloorItem(name: 'No floors')];
+  getFloor() {
     emit(GetFloorLoadingState());
-    DioHelper.getData(url: 'floors/pagination', query: {'building': buildingId})
-        .then((value) {
+    DioHelper.getData(
+        url: 'floors/pagination',
+        query: {'BuildingId': buildingIdController.text}).then((value) {
       floorModel = FloorListModel.fromJson(value!.data);
+      floorItem = floorModel?.data?.data ?? [FloorItem(name: 'No floors')];
       emit(GetFloorSuccessState(floorModel!));
     }).catchError((error) {
       emit(GetFloorErrorState(error.toString()));
@@ -172,14 +131,19 @@ class EditShiftCubit extends Cubit<EditShiftState> {
   }
 
   SectionListModel? sectionModel;
-  getSection(int floorId) {
+  List<SectionItem> sectionItem = [SectionItem(name: 'No sections')];
+  getSection() {
     emit(GetSectionLoadingState());
-    DioHelper.getData(url: 'sections/pagination', query: {'floor': floorId})
-        .then((value) {
+    DioHelper.getData(
+        url: 'sections/pagination',
+        query: {'FloorId': floorIdController.text}).then((value) {
       sectionModel = SectionListModel.fromJson(value!.data);
+      sectionItem =
+          sectionModel?.data?.data ?? [SectionItem(name: 'No sections')];
       emit(GetSectionSuccessState(sectionModel!));
     }).catchError((error) {
       emit(GetSectionErrorState(error.toString()));
     });
   }
+
 }

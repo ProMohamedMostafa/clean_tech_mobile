@@ -27,9 +27,7 @@ class _TechnicalSupportScreenState extends State<TechnicalSupportScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Technical Support'),
-        leading: customBackButton(context),
-      ),
+          title: Text('Technical Support'), leading: customBackButton(context)),
       body: BlocProvider(
         create: (context) => TechnicalSupportCubit(),
         child: BlocConsumer<TechnicalSupportCubit, TechnicalSupportState>(

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
@@ -18,35 +17,16 @@ import 'package:smart_cleaning_application/features/screens/integrations/ui/widg
 import 'package:smart_cleaning_application/features/screens/shift/edit_shift/logic/edit_shift_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/shift/edit_shift/logic/edit_shift_state.dart';
 
-class EditShiftBody extends StatefulWidget {
+class EditShiftBody extends StatelessWidget {
   final int id;
   const EditShiftBody({super.key, required this.id});
 
   @override
-  State<EditShiftBody> createState() => _EditShiftBodyState();
-}
-
-class _EditShiftBodyState extends State<EditShiftBody> {
-  @override
-  void initState() {
-    context.read<EditShiftCubit>().getShiftDetails(widget.id);
-    context.read<EditShiftCubit>().getShiftOrganizationDetails(widget.id);
-    context.read<EditShiftCubit>().getShiftBuildingDetails(widget.id);
-    context.read<EditShiftCubit>().getShiftFloorDetails(widget.id);
-    context.read<EditShiftCubit>().getShiftSectionDetails(widget.id);
-    context.read<EditShiftCubit>().getOrganization();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final cubit = context.read<EditShiftCubit>();
     return Scaffold(
         appBar: AppBar(
-          title: Text(
-            "Edit Shift",
-          ),
-          leading: customBackButton(context),
-        ),
+            title: Text("Edit Shift"), leading: customBackButton(context)),
         body: BlocConsumer<EditShiftCubit, EditShiftState>(
           listener: (context, state) {
             if (state is EditShiftSuccessState) {
@@ -60,21 +40,16 @@ class _EditShiftBodyState extends State<EditShiftBody> {
             }
           },
           builder: (context, state) {
-            final cubit = context.read<EditShiftCubit>();
             if (cubit.shiftDetailsModel == null ||
-                cubit.shiftOrganizationDetailsModel == null ||
-                cubit.shiftBuildingsDetailsModel == null ||
-                cubit.shiftFloorDetailsModel == null ||
-                cubit.shiftSectionDetailsModel == null) {
+                cubit.organizationModel == null) {
               return const Center(
                 child: CircularProgressIndicator(color: AppColor.primaryColor),
               );
             }
 
-            return SafeArea(
-                child: SingleChildScrollView(
-                    child: Form(
-              key: context.read<EditShiftCubit>().formKey,
+            return SingleChildScrollView(
+                child: Form(
+              key: cubit.formKey,
               child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
@@ -88,11 +63,7 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                         verticalSpace(5),
                         CustomTextFormField(
                           onlyRead: false,
-                          hint: context
-                              .read<EditShiftCubit>()
-                              .shiftDetailsModel!
-                              .data!
-                              .name!,
+                          hint: cubit.shiftDetailsModel!.data!.name!,
                           validator: (value) {
                             if (value!.length > 55) {
                               return 'Shift name too long';
@@ -101,13 +72,8 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                             }
                             return null;
                           },
-                          controller:
-                              context.read<EditShiftCubit>().shiftNameController
-                                ..text = context
-                                    .read<EditShiftCubit>()
-                                    .shiftDetailsModel!
-                                    .data!
-                                    .name!,
+                          controller: cubit.shiftNameController
+                            ..text = cubit.shiftDetailsModel!.data!.name!,
                           keyboardType: TextInputType.text,
                         ),
                         verticalSpace(10),
@@ -125,14 +91,9 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                                 verticalSpace(5),
                                 CustomTextFormField(
                                   onlyRead: true,
-                                  hint: context
-                                      .read<EditShiftCubit>()
-                                      .shiftDetailsModel!
-                                      .data!
-                                      .startDate!,
-                                  controller: context
-                                      .read<EditShiftCubit>()
-                                      .startDateController,
+                                  hint:
+                                      cubit.shiftDetailsModel!.data!.startDate!,
+                                  controller: cubit.startDateController,
                                   suffixIcon: Icons.calendar_today,
                                   suffixPressed: () async {
                                     final selectedDate =
@@ -141,10 +102,8 @@ class _EditShiftBodyState extends State<EditShiftBody> {
 
                                     if (selectedDate != null &&
                                         context.mounted) {
-                                      context
-                                          .read<EditShiftCubit>()
-                                          .startDateController
-                                          .text = selectedDate;
+                                      cubit.startDateController.text =
+                                          selectedDate;
                                     }
                                   },
                                   keyboardType: TextInputType.none,
@@ -163,14 +122,8 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                                 verticalSpace(5),
                                 CustomTextFormField(
                                   onlyRead: true,
-                                  hint: context
-                                      .read<EditShiftCubit>()
-                                      .shiftDetailsModel!
-                                      .data!
-                                      .endDate!,
-                                  controller: context
-                                      .read<EditShiftCubit>()
-                                      .endDateController,
+                                  hint: cubit.shiftDetailsModel!.data!.endDate!,
+                                  controller: cubit.endDateController,
                                   suffixIcon: Icons.calendar_today,
                                   suffixPressed: () async {
                                     final selectedDate =
@@ -179,10 +132,8 @@ class _EditShiftBodyState extends State<EditShiftBody> {
 
                                     if (selectedDate != null &&
                                         context.mounted) {
-                                      context
-                                          .read<EditShiftCubit>()
-                                          .endDateController
-                                          .text = selectedDate;
+                                      cubit.endDateController.text =
+                                          selectedDate;
                                     }
                                   },
                                   keyboardType: TextInputType.none,
@@ -206,14 +157,9 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                                 verticalSpace(5),
                                 CustomTextFormField(
                                   onlyRead: true,
-                                  hint: context
-                                      .read<EditShiftCubit>()
-                                      .shiftDetailsModel!
-                                      .data!
-                                      .startTime!,
-                                  controller: context
-                                      .read<EditShiftCubit>()
-                                      .startTimeController,
+                                  hint:
+                                      cubit.shiftDetailsModel!.data!.startTime!,
+                                  controller: cubit.startTimeController,
                                   suffixIcon: Icons.timer_sharp,
                                   suffixPressed: () async {
                                     final selectedTime =
@@ -222,10 +168,8 @@ class _EditShiftBodyState extends State<EditShiftBody> {
 
                                     if (selectedTime != null &&
                                         context.mounted) {
-                                      context
-                                          .read<EditShiftCubit>()
-                                          .startTimeController
-                                          .text = selectedTime;
+                                      cubit.startTimeController.text =
+                                          selectedTime;
                                     }
                                   },
                                   keyboardType: TextInputType.none,
@@ -244,14 +188,8 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                                 verticalSpace(5),
                                 CustomTextFormField(
                                   onlyRead: true,
-                                  hint: context
-                                      .read<EditShiftCubit>()
-                                      .shiftDetailsModel!
-                                      .data!
-                                      .endTime!,
-                                  controller: context
-                                      .read<EditShiftCubit>()
-                                      .endTimeController,
+                                  hint: cubit.shiftDetailsModel!.data!.endTime!,
+                                  controller: cubit.endTimeController,
                                   suffixIcon: Icons.timer_sharp,
                                   suffixPressed: () async {
                                     final selectedTime =
@@ -260,10 +198,8 @@ class _EditShiftBodyState extends State<EditShiftBody> {
 
                                     if (selectedTime != null &&
                                         context.mounted) {
-                                      context
-                                          .read<EditShiftCubit>()
-                                          .endTimeController
-                                          .text = selectedTime;
+                                      cubit.endTimeController.text =
+                                          selectedTime;
                                     }
                                   },
                                   keyboardType: TextInputType.none,
@@ -279,54 +215,30 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                         ),
                         verticalSpace(5),
                         CustomDropDownList(
-                          hint: context
-                                  .read<EditShiftCubit>()
-                                  .shiftOrganizationDetailsModel!
-                                  .data?[0]
-                                  .name
-                                  .toString() ??
+                          hint: cubit.shiftDetailsModel!.data!.organizations
+                                  ?.map((e) => e.name)
+                                  .join(', ') ??
                               '',
-                          items: context
-                                      .read<EditShiftCubit>()
-                                      .organizationListModel
-                                      ?.data
-                                      ?.data
-                                      ?.isEmpty ??
-                                  true
-                              ? ['No organizations']
-                              : context
-                                      .read<EditShiftCubit>()
-                                      .organizationListModel
-                                      ?.data
-                                      ?.data
-                                      ?.map((e) => e.name ?? 'Unknown')
-                                      .toList() ??
-                                  [],
-                          onPressed: (value) {
-                            final selectedOrganization = context
-                                .read<EditShiftCubit>()
-                                .organizationListModel
-                                ?.data
-                                ?.data
-                                ?.firstWhere((organization) =>
-                                    organization.name ==
-                                    context
-                                        .read<EditShiftCubit>()
-                                        .organizationController
-                                        .text);
+                          items: cubit.organizationItem
+                              .map((e) => e.name ?? 'Unknown')
+                              .toList(),
+                          onChanged: (value) {
+                            final selectedOrganization = cubit
+                                .organizationModel?.data?.data
+                                ?.firstWhere((org) =>
+                                    org.name ==
+                                    cubit.organizationController.text)
+                                .id;
 
-                            context
-                                .read<EditShiftCubit>()
-                                .getBuilding(selectedOrganization!.id!);
-                            context
-                                .read<EditShiftCubit>()
-                                .organizationIdController
-                                .text = selectedOrganization.id!.toString();
+                            if (selectedOrganization != null) {
+                              cubit.organizationIdController.text =
+                                  selectedOrganization.toString();
+                            }
+
+                            cubit.getBuilding();
                           },
                           suffixIcon: IconBroken.arrowDown2,
-                          controller: context
-                              .read<EditShiftCubit>()
-                              .organizationController,
+                          controller: cubit.organizationController,
                           isRead: false,
                           keyboardType: TextInputType.text,
                         ),
@@ -337,52 +249,29 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                         ),
                         verticalSpace(5),
                         CustomDropDownList(
-                          hint: context
-                                  .read<EditShiftCubit>()
-                                  .shiftBuildingsDetailsModel!
-                                  .data?[0]
-                                  .name
-                                  .toString() ??
+                          hint: cubit.shiftDetailsModel!.data!.building
+                                  ?.map((e) => e.name)
+                                  .join(', ') ??
                               '',
-                          items: context
-                                      .read<EditShiftCubit>()
-                                      .buildingModel
-                                      ?.data
-                                      ?.data
-                                      ?.isEmpty ??
-                                  true
-                              ? ['No building']
-                              : context
-                                      .read<EditShiftCubit>()
-                                      .buildingModel
-                                      ?.data
-                                      ?.data
-                                      ?.map((e) => e.name ?? 'Unknown')
-                                      .toList() ??
-                                  [],
-                          onPressed: (value) {
-                            final selectedBuilding = context
-                                .read<EditShiftCubit>()
-                                .buildingModel
-                                ?.data
-                                ?.data
-                                ?.firstWhere((building) =>
-                                    building.name ==
-                                    context
-                                        .read<EditShiftCubit>()
-                                        .buildingController
-                                        .text);
-                            context
-                                .read<EditShiftCubit>()
-                                .getFloor(selectedBuilding!.id!);
-                            context
-                                .read<EditShiftCubit>()
-                                .buildingIdController
-                                .text = selectedBuilding.id!.toString();
+                          items: cubit.buildingItem
+                              .map((e) => e.name ?? 'Unknown')
+                              .toList(),
+                          onChanged: (value) {
+                            final selectedBuilding = cubit
+                                .buildingModel?.data?.data
+                                ?.firstWhere((bld) =>
+                                    bld.name == cubit.buildingController.text)
+                                .id
+                                ?.toString();
+
+                            if (selectedBuilding != null) {
+                              cubit.buildingIdController.text =
+                                  selectedBuilding;
+                            }
+                            cubit.getFloor();
                           },
                           suffixIcon: IconBroken.arrowDown2,
-                          controller:
-                              context.read<EditShiftCubit>().buildingController,
+                          controller: cubit.buildingController,
                           isRead: false,
                           keyboardType: TextInputType.text,
                         ),
@@ -393,53 +282,27 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                         ),
                         verticalSpace(5),
                         CustomDropDownList(
-                          hint: context
-                                  .read<EditShiftCubit>()
-                                  .shiftFloorDetailsModel!
-                                  .data?[0]
-                                  .name
-                                  .toString() ??
+                          hint: cubit.shiftDetailsModel!.data!.floors
+                                  ?.map((e) => e.name)
+                                  .join(', ') ??
                               '',
-                          items: context
-                                      .read<EditShiftCubit>()
-                                      .floorModel
-                                      ?.data
-                                      ?.data
-                                      ?.isEmpty ??
-                                  true
-                              ? ['No floors']
-                              : context
-                                      .read<EditShiftCubit>()
-                                      .floorModel
-                                      ?.data
-                                      ?.data
-                                      ?.map((e) => e.name ?? 'Unknown')
-                                      .toList() ??
-                                  [],
-                          onPressed: (value) {
-                            final selectedFloor = context
-                                .read<EditShiftCubit>()
-                                .floorModel
-                                ?.data
-                                ?.data
+                          items: cubit.floorItem
+                              .map((e) => e.name ?? 'Unknown')
+                              .toList(),
+                          onChanged: (value) {
+                            final selectedFloor = cubit.floorModel?.data?.data
                                 ?.firstWhere((floor) =>
-                                    floor.name ==
-                                    context
-                                        .read<EditShiftCubit>()
-                                        .floorController
-                                        .text);
+                                    floor.name == cubit.floorController.text)
+                                .id
+                                ?.toString();
 
-                            context
-                                .read<EditShiftCubit>()
-                                .getSection(selectedFloor!.id!);
-                            context
-                                .read<EditShiftCubit>()
-                                .floorIdController
-                                .text = selectedFloor.id!.toString();
+                            if (selectedFloor != null) {
+                              cubit.floorIdController.text = selectedFloor;
+                            }
+                            cubit.getSection();
                           },
                           suffixIcon: IconBroken.arrowDown2,
-                          controller:
-                              context.read<EditShiftCubit>().floorController,
+                          controller: cubit.floorController,
                           isRead: false,
                           keyboardType: TextInputType.text,
                         ),
@@ -450,50 +313,28 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                         ),
                         verticalSpace(5),
                         CustomDropDownList(
-                          hint: context
-                                  .read<EditShiftCubit>()
-                                  .shiftSectionDetailsModel!
-                                  .data?[0]
-                                  .name
-                                  .toString() ??
+                          hint: cubit.shiftDetailsModel!.data!.sections
+                                  ?.map((e) => e.name)
+                                  .join(', ') ??
                               '',
-                          items: context
-                                      .read<EditShiftCubit>()
-                                      .sectionModel
-                                      ?.data
-                                      ?.data
-                                      ?.isEmpty ??
-                                  true
-                              ? ['No section']
-                              : context
-                                      .read<EditShiftCubit>()
-                                      .sectionModel
-                                      ?.data
-                                      ?.data
-                                      ?.map((e) => e.name ?? 'Unknown')
-                                      .toList() ??
-                                  [],
-                          onPressed: (value) {
-                            final selectedSection = context
-                                .read<EditShiftCubit>()
-                                .sectionModel
-                                ?.data
-                                ?.data
+                          items: cubit.sectionItem
+                              .map((e) => e.name ?? 'Unknown')
+                              .toList(),
+                          onChanged: (value) {
+                            final selectedSection = cubit
+                                .sectionModel?.data?.data
                                 ?.firstWhere((section) =>
                                     section.name ==
-                                    context
-                                        .read<EditShiftCubit>()
-                                        .sectionController
-                                        .text);
+                                    cubit.sectionController.text)
+                                .id
+                                ?.toString();
 
-                            context
-                                .read<EditShiftCubit>()
-                                .sectionIdController
-                                .text = selectedSection!.id!.toString();
+                            if (selectedSection != null) {
+                              cubit.sectionIdController.text = selectedSection;
+                            }
                           },
                           suffixIcon: IconBroken.arrowDown2,
-                          controller:
-                              context.read<EditShiftCubit>().sectionController,
+                          controller: cubit.sectionController,
                           isRead: false,
                           keyboardType: TextInputType.text,
                         ),
@@ -507,17 +348,14 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                                 child: DefaultElevatedButton(
                                     name: "Edit",
                                     onPressed: () {
-                                      if (context
-                                          .read<EditShiftCubit>()
-                                          .formKey
-                                          .currentState!
+                                      if (cubit.formKey.currentState!
                                           .validate()) {
                                         showCustomDialog(context,
                                             "Are you Sure you want save the edit of this shift ?",
                                             () {
                                           context
                                               .read<EditShiftCubit>()
-                                              .editShift(widget.id);
+                                              .editShift(id);
                                           context.pop();
                                         });
                                       }
@@ -530,7 +368,7 @@ class _EditShiftBodyState extends State<EditShiftBody> {
                               ),
                         verticalSpace(30),
                       ])),
-            )));
+            ));
           },
         ));
   }

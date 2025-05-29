@@ -8,27 +8,17 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/features/screens/calendar/logic/calendar_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/calendar/logic/calendar_state.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/all_tasks_model.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-class CalendarScreen extends StatefulWidget {
+class CalendarScreen extends StatelessWidget {
   const CalendarScreen({super.key});
-
-  @override
-  State<CalendarScreen> createState() => _CalendarScreenState();
-}
-
-class _CalendarScreenState extends State<CalendarScreen> {
-  @override
-  void initState() {
-    context.read<CalendarCubit>().getAllTasks();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Calendar'),
+        title: Text(S.of(context).botNavTitle3),
       ),
       body: BlocBuilder<CalendarCubit, CalendarState>(
         builder: (context, state) {
@@ -44,15 +34,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
           } else if (state is GetAllTasksErrorState) {
             return Center(child: Text(state.error));
           } else if (state is GetAllTasksSuccessState) {
-            return _buildFullScreenCalendar(state.allTasksModel);
+            return _buildFullScreenCalendar(context, state.allTasksModel);
           }
-          return const Center(child: Text('No tasks available'));
+          return Center(child: Text(S.of(context).noTasksAvailable));
         },
       ),
     );
   }
 
-  Widget _buildFullScreenCalendar(AllTasksModel allTasksModel) {
+  Widget _buildFullScreenCalendar(
+      BuildContext context, AllTasksModel allTasksModel) {
     return Column(
       children: [
         Expanded(

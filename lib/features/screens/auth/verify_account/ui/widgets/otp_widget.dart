@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class CustomPinCodeField extends StatelessWidget {
   const CustomPinCodeField({super.key, required this.pinCodeController});
@@ -13,7 +14,7 @@ class CustomPinCodeField extends StatelessWidget {
       animationType: AnimationType.fade,
       validator: (value) {
         if (value!.isEmpty) {
-          return "Please Enter Your Pin Code";
+          return S.of(context).validationPinCodeEmpty;
         }
         return null;
       },

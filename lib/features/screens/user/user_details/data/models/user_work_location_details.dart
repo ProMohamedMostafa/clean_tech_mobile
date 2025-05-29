@@ -4,7 +4,7 @@ class UserWorkLocationDetailsModel {
   bool? succeeded;
   String? message;
   String? error;
-  String? businessErrorCode;
+  int? businessErrorCode;
   Data? data;
 
   UserWorkLocationDetailsModel(

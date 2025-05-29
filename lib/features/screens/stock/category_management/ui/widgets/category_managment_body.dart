@@ -18,16 +18,11 @@ class CategoryManagmentBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CategoryManagementCubit cubit =
-        context.read<CategoryManagementCubit>();
-
+    final cubit = context.read<CategoryManagementCubit>();
     return Scaffold(
       appBar: AppBar(
-        leading: customBackButton(context),
-        title: Text(
-          'Category Management',
-        ),
-      ),
+          title: Text('Category Management'),
+          leading: customBackButton(context)),
       floatingActionButton: floatingActionButton(
         icon: Icons.post_add_rounded,
         onPressed: () {
@@ -58,14 +53,8 @@ class CategoryManagmentBody extends StatelessWidget {
         },
         builder: (context, state) {
           return Skeletonizer(
-            enabled: (context
-                        .read<CategoryManagementCubit>()
-                        .categoryManagementModel ==
-                    null &&
-                context
-                        .read<CategoryManagementCubit>()
-                        .deletedCategoryListModel ==
-                    null),
+            enabled: (cubit.categoryManagementModel == null &&
+                cubit.deletedCategoryListModel == null),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
@@ -84,13 +73,9 @@ class CategoryManagmentBody extends StatelessWidget {
                         cubit.deletedCategoryListModel?.data?.length ?? 0,
                     secondLabel: 'Deleted Categories',
                   ),
-                  verticalSpace(10),
-                  Divider(
-                    color: Colors.grey[300],
-                  ),
-                  Expanded(
-                    child: categoryDetailsBuild(context, cubit.selectedIndex),
-                  ),
+                  verticalSpace(5),
+                  Divider(color: Colors.grey[300]),
+                  Expanded(child: CategoryDetailsBuild()),
                   verticalSpace(10),
                 ],
               ),

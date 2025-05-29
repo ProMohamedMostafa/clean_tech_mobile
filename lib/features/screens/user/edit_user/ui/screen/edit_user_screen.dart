@@ -7,6 +7,6 @@ class EditUserScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: EditUserBody(id: id,));
+    return EditUserBody(id: id,);
   }
 }

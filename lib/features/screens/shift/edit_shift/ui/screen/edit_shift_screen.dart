@@ -7,6 +7,6 @@ class EditShiftScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: EditShiftBody(id: id));
+    return EditShiftBody(id: id);
   }
 }

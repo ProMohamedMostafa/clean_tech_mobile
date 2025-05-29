@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
@@ -13,28 +14,22 @@ import 'package:smart_cleaning_application/features/screens/shift/shifts_managem
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/ui/widgets/filter_search_build.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/ui/widgets/shift_list_details_build.dart';
 
-class ShiftBody extends StatefulWidget {
+class ShiftBody extends StatelessWidget {
   const ShiftBody({super.key});
 
-  @override
-  State<ShiftBody> createState() => _ShiftBodyState();
-}
-
-class _ShiftBodyState extends State<ShiftBody> {
   @override
   Widget build(BuildContext context) {
     final ShiftCubit cubit = context.read<ShiftCubit>();
     return Scaffold(
-        appBar: AppBar(
-          leading: customBackButton(context),
-          title: Text('Shifts'),
-        ),
-        floatingActionButton: floatingActionButton(
-          icon: Icons.post_add_outlined,
-          onPressed: () {
-            context.pushNamed(Routes.addShiftScreen);
-          },
-        ),
+        appBar:
+            AppBar(title: Text('Shifts'), leading: customBackButton(context)),
+        floatingActionButton: role == 'Admin'
+            ? floatingActionButton(
+                icon: Icons.post_add_outlined,
+                onPressed: () {
+                  context.pushNamed(Routes.addShiftScreen);
+                })
+            : SizedBox.shrink(),
         body: BlocConsumer<ShiftCubit, ShiftState>(
           listener: (context, state) {
             if (state is ShiftDeleteSuccessState) {
@@ -72,16 +67,15 @@ class _ShiftBodyState extends State<ShiftBody> {
                       onTap: (index) => cubit.changeTap(index),
                       firstCount: cubit.allShiftsModel?.data?.totalCount ?? 0,
                       firstLabel: 'Total Shifts',
-                      secondCount:
-                          cubit.allShiftsDeletedModel?.data?.length ?? 0,
-                      secondLabel: 'Deleted Shifts',
+                      secondCount: role == 'Admin'
+                          ? cubit.allShiftsDeletedModel?.data?.length ?? 0
+                          : null,
+                      secondLabel: role == 'Admin' ? 'Deleted Shifts' : null,
                     ),
                     verticalSpace(10),
-                    Divider(color: Colors.grey[300]),
-                    Expanded(
-                      child:
-                          shiftListDetailsBuild(context, cubit.selectedIndex),
-                    ),
+                    Divider(color: Colors.grey[300], height: 0),
+                    verticalSpace(10),
+                    Expanded(child: ShiftListDetailsBuild()),
                     verticalSpace(10),
                   ],
                 ),

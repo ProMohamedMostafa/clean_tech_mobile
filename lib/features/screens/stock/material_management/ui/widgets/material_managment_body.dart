@@ -19,14 +19,11 @@ class MaterialManagmentBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MaterialManagementCubit cubit =
-        context.read<MaterialManagementCubit>();
+    final cubit = context.read<MaterialManagementCubit>();
     return Scaffold(
       appBar: AppBar(
+        title: Text('Material Management'),
         leading: customBackButton(context),
-        title: Text(
-          'Material Management',
-        ),
       ),
       floatingActionButton: floatingActionButton(
         icon: Icons.library_add,
@@ -68,14 +65,8 @@ class MaterialManagmentBody extends StatelessWidget {
         },
         builder: (context, state) {
           return Skeletonizer(
-            enabled: (context
-                        .read<MaterialManagementCubit>()
-                        .materialManagementModel ==
-                    null &&
-                context
-                        .read<MaterialManagementCubit>()
-                        .deletedMaterialListModel ==
-                    null),
+            enabled: (cubit.materialManagementModel == null &&
+                cubit.deletedMaterialListModel == null),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
@@ -87,21 +78,16 @@ class MaterialManagmentBody extends StatelessWidget {
                   twoButtonsIntegration(
                     selectedIndex: cubit.selectedIndex,
                     onTap: (index) => cubit.changeTap(index),
-                    firstCount: cubit
-                            .materialManagementModel?.data?.totalCount ??
-                        0,
+                    firstCount:
+                        cubit.materialManagementModel?.data?.totalCount ?? 0,
                     firstLabel: 'Total Materials',
                     secondCount:
                         cubit.deletedMaterialListModel?.data?.length ?? 0,
                     secondLabel: 'Deleted Materials',
                   ),
-                  verticalSpace(10),
-                  Divider(
-                    color: Colors.grey[300],
-                  ),
-                  Expanded(
-                    child:  materialDetailsBuild(context, cubit.selectedIndex),
-                  ),
+                  verticalSpace(5),
+                  Divider(color: Colors.grey[300]),
+                  Expanded(child: MaterialDetailsListBuild()),
                   verticalSpace(10),
                 ],
               ),

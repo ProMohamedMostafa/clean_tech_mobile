@@ -7,6 +7,6 @@ class UserDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: UserDetailsBody(id: id,));
+    return UserDetailsBody(id: id,);
   }
 }

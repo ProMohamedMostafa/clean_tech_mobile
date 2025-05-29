@@ -14,9 +14,8 @@ class ShiftCubit extends Cubit<ShiftState> {
   static ShiftCubit get(context) => BlocProvider.of(context);
 
   TextEditingController searchController = TextEditingController();
-
-  final formKey = GlobalKey<FormState>();
   ScrollController scrollController = ScrollController();
+  final formKey = GlobalKey<FormState>();
 
   int selectedIndex = 0;
   int currentPage = 1;
@@ -25,9 +24,9 @@ class ShiftCubit extends Cubit<ShiftState> {
   getAllShifts() {
     emit(ShiftLoadingState());
     DioHelper.getData(url: ApiConstants.allShiftsUrl, query: {
-      'pageNumber': currentPage,
-      'pageSize': 15,
-      'search': searchController.text,
+      'PageNumber': currentPage,
+      'PageSize': 15,
+      'Search': searchController.text,
       'StartDate': filterModel?.startDate,
       'EndDate': filterModel?.endDate,
       'StartTime': filterModel?.startTime,

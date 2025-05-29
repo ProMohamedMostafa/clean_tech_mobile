@@ -5,46 +5,42 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/features/screens/stock/material_management/logic/material_mangement_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/ui/widgets/item_list_build.dart';
 
-Widget materialDetailsBuild(BuildContext context, int selectedIndex) {
-  final materialsData = selectedIndex == 0
-      ? context
-          .read<MaterialManagementCubit>()
-          .materialManagementModel
-          ?.data
-          ?.materials
-      : context.read<MaterialManagementCubit>().deletedMaterialListModel?.data;
+class MaterialDetailsListBuild extends StatelessWidget {
+  const MaterialDetailsListBuild({super.key});
 
-  if (materialsData == null || materialsData.isEmpty) {
-    return Center(
-      child: Text(
-        "There's no data",
-        style: TextStyles.font13Blackmedium,
-      ),
-    );
-  } else {
-    return ListView.separated(
-      controller: selectedIndex == 0
-          ? context.read<MaterialManagementCubit>().scrollController
-          : null,
-      shrinkWrap: true,
-      scrollDirection: Axis.vertical,
-      itemCount: materialsData.length,
-      separatorBuilder: (context, index) {
-        return verticalSpace(10);
-      },
-      itemBuilder: (context, index) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            listItemBuild(context, selectedIndex, index),
-            Divider(
-              color: Colors.grey[300],
-              height: 0.1,
-            ),
-          ],
-        );
-      },
-    );
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<MaterialManagementCubit>();
+    final materialsData = cubit.selectedIndex == 0
+        ? cubit.materialManagementModel?.data?.materials
+        : cubit.deletedMaterialListModel?.data;
+
+    if (materialsData == null || materialsData.isEmpty) {
+      return Center(
+        child: Text(
+          "There's no data",
+          style: TextStyles.font13Blackmedium,
+        ),
+      );
+    } else {
+      return ListView.separated(
+        controller: cubit.selectedIndex == 0 ? cubit.scrollController : null,
+        shrinkWrap: true,
+        scrollDirection: Axis.vertical,
+        itemCount: materialsData.length,
+        separatorBuilder: (context, index) {
+          return verticalSpace(10);
+        },
+        itemBuilder: (context, index) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              MaterialListItemBuild(index: index),
+            ],
+          );
+        },
+      );
+    }
   }
 }

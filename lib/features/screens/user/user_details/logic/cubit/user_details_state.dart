@@ -65,7 +65,7 @@ class UserWorkLocationDetailsErrorState extends UserDetailsState {
 class UserTaskDetailsLoadingState extends UserDetailsState {}
 
 class UserTaskDetailsSuccessState extends UserDetailsState {
-  final UserTaskDetailsModel userTaskDetailsModel;
+  final AllTasksModel userTaskDetailsModel;
 
   UserTaskDetailsSuccessState(this.userTaskDetailsModel);
 }
@@ -101,34 +101,6 @@ class LeavesSuccessState extends UserDetailsState {
 class LeavesErrorState extends UserDetailsState {
   final String error;
   LeavesErrorState(this.error);
-}
-
-//********************************* */
-
-class GetAllAreaLoadingState extends UserDetailsState {}
-
-class GetAllAreaSuccessState extends UserDetailsState {
-  final AreaListModel areaListModel;
-
-  GetAllAreaSuccessState(this.areaListModel);
-}
-
-class GetAllAreaErrorState extends UserDetailsState {
-  final String error;
-  GetAllAreaErrorState(this.error);
-}
-//*************************************** */
-
-class ShiftLoadingState extends UserDetailsState {}
-
-class ShiftSuccessState extends UserDetailsState {
-  final ShiftModel shiftModel;
-  ShiftSuccessState(this.shiftModel);
-}
-
-class ShiftErrorState extends UserDetailsState {
-  final String error;
-  ShiftErrorState(this.error);
 }
 
 //***************** */
