@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
+import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/chart_data.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/total_stock.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -13,11 +14,7 @@ class StockLineChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (stockData == null) {
-      return Center(
-        child: CircularProgressIndicator(
-          color: AppColor.primaryColor,
-        ),
-      );
+      return Loading();
     }
     return SizedBox(
       width: double.infinity,

@@ -14,12 +14,12 @@ class CalendarCubit extends Cubit<CalendarState> {
       DateTime.now().subtract(Duration(days: DateTime.now().weekday % 7));
 
   AllTasksModel? allTasksModel;
-  getAllTasks() {
+  getAllTasks({DateTime? startDate, DateTime? endDate}) {
     emit(GetAllTasksLoadingState());
     DioHelper.getData(url: "tasks/pagination", query: {
-      'StartDate': DateFormat('yyyy-MM-dd').format(startOfWeek),
+      'StartDate': DateFormat('yyyy-MM-dd').format(startDate ?? startOfWeek),
       'EndDate': DateFormat('yyyy-MM-dd')
-          .format(startOfWeek.add(const Duration(days: 6))),
+          .format(endDate ?? startOfWeek.add(const Duration(days: 6))),
     }).then((value) {
       allTasksModel = AllTasksModel.fromJson(value!.data);
       emit(GetAllTasksSuccessState(allTasksModel!));

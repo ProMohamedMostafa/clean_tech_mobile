@@ -20,15 +20,22 @@ class Tasks extends StatefulWidget {
 }
 
 class _TasksState extends State<Tasks> {
+  late String selectedPriority;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedPriority = S.current.high;
+  }
+
   @override
   Widget build(BuildContext context) {
-    String selectedPriority = S.of(context).high;
-
     final List<String> priorities = [
       S.of(context).high,
       S.of(context).medium,
       S.of(context).low
     ];
+
     final Map<String, Color> priorityColors = {
       S.of(context).high: Colors.red,
       S.of(context).medium: Colors.orange,
@@ -38,7 +45,7 @@ class _TasksState extends State<Tasks> {
       builder: (context, state) {
         final cubit = context.read<HomeCubit>();
 
-        final isLoading = cubit.usersCountModel?.data == null;
+        final isLoading = cubit.taskStatusModel?.data == null;
 
         return Skeletonizer(
           enabled: isLoading,
@@ -142,6 +149,21 @@ class _TasksState extends State<Tasks> {
                             setState(() {
                               selectedPriority = value;
                             });
+                            int? convertPriorityToInt(String priority) {
+                              switch (priority) {
+                                case 'High':
+                                  return 0;
+                                case 'Medium':
+                                  return 1;
+                                case 'Low':
+                                  return 2;
+                                default:
+                                  return null;
+                              }
+                            }
+
+                            int? priorityValue = convertPriorityToInt(value);
+                            cubit.getTaskData(priority: priorityValue);
                           },
                           offset: Offset(10, 22.h),
                           shape: RoundedRectangleBorder(

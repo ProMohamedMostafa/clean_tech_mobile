@@ -26,6 +26,12 @@ class IntegrationsBody extends StatelessWidget {
       ),
       if (role == 'Admin')
         IntegrationItem(
+          onTap: () => context.pushNamed(Routes.sensorScreen),
+          label: 'Sensor',
+          image: 'assets/images/sensor.png',
+        ),
+      if (role == 'Admin')
+        IntegrationItem(
           onTap: () => context.pushNamed(Routes.assignScreen),
           label: S.of(context).integ3,
           image: 'assets/images/assign.png',

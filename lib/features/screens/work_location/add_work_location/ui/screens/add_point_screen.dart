@@ -11,6 +11,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_description_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
@@ -38,7 +39,8 @@ class _AddPointScreenState extends State<AddPointScreen> {
   void initState() {
     context.read<AddWorkLocationCubit>()
       ..getNationality(userUsedOnly: false, areaUsedOnly: true)
-      ..getAllUsers();
+      ..getAllUsers()
+      ..getSensorsData();
     super.initState();
   }
 
@@ -66,11 +68,7 @@ class _AddPointScreenState extends State<AddPointScreen> {
           builder: (context, state) {
             if (context.read<AddWorkLocationCubit>().usersModel == null ||
                 context.read<AddWorkLocationCubit>().nationalityModel == null) {
-              return Center(
-                child: CircularProgressIndicator(
-                  color: AppColor.primaryColor,
-                ),
-              );
+             return Loading();
             }
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -486,6 +484,50 @@ class _AddPointScreenState extends State<AddPointScreen> {
           },
         ),
         verticalSpace(10),
+        RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'Sensor',
+                style: TextStyles.font16BlackRegular,
+              ),
+              TextSpan(
+                text: ' (Optional)',
+                style: TextStyles.font14GreyRegular,
+              ),
+            ],
+          ),
+        ),
+        CustomDropDownList(
+          hint: 'Select sensor',
+          controller: context.read<AddWorkLocationCubit>().sensorController,
+          items: context
+              .read<AddWorkLocationCubit>()
+              .sensorItem
+              .map((e) => e.name ?? 'Unknown')
+              .toList(),
+          onChanged: (value) {
+            final selectedsensor = context
+                .read<AddWorkLocationCubit>()
+                .sensorModel
+                ?.data
+                ?.data
+                ?.firstWhere((sensor) =>
+                    sensor.name ==
+                    context.read<AddWorkLocationCubit>().sensorController.text)
+                .id
+                ?.toString();
+
+            if (selectedsensor != null) {
+              context.read<AddWorkLocationCubit>().sensorIdController.text =
+                  selectedsensor;
+            }
+          },
+          suffixIcon: IconBroken.arrowDown2,
+          keyboardType: TextInputType.text,
+        ),
+        verticalSpace(10),
         context.read<AddWorkLocationCubit>().usersModel!.data == null
             ? SizedBox.shrink()
             : RichText(
@@ -849,9 +891,7 @@ class _AddPointScreenState extends State<AddPointScreen> {
 
   Widget _buildContinueButton(state) {
     return state is CreateCityLoadingState
-        ? const Center(
-            child: CircularProgressIndicator(color: AppColor.primaryColor),
-          )
+        ? Loading()
         : DefaultElevatedButton(
             name: "Add",
             onPressed: () {

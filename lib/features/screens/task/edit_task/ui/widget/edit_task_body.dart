@@ -14,6 +14,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_date_picker.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_description_text_form_field.dart';
@@ -85,11 +86,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                 //     context.read<EditTaskCubit>().usersModel == null ||
                 //     context.read<EditTaskCubit>().allOrganizationModel == null
                 ) {
-              return Center(
-                child: CircularProgressIndicator(
-                  color: AppColor.primaryColor,
-                ),
-              );
+              return Loading();
             }
             if (selectedPriority == null &&
                 context
@@ -1066,10 +1063,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                     : const SizedBox.shrink(),
                                 verticalSpace(20),
                                 state is EditTaskLoadingState
-                                    ? const Center(
-                                        child: CircularProgressIndicator(
-                                            color: AppColor.primaryColor),
-                                      )
+                                    ? Loading()
                                     : Center(
                                         child: DefaultElevatedButton(
                                             name: "Edit",

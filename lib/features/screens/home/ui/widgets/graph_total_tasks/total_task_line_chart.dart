@@ -2,27 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
+import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/chart_data.dart';
-import 'package:smart_cleaning_application/features/screens/home/data/model/task_status_model.dart';
+import 'package:smart_cleaning_application/features/screens/home/data/model/task_chart_status_model.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class TotalTaskLineChart extends StatelessWidget {
-  final TaskStatusModel? taskData;
+  final TaskChartStatusModel? taskData;
 
   const TotalTaskLineChart({super.key, this.taskData});
 
   @override
   Widget build(BuildContext context) {
     if (taskData == null) {
-      return SizedBox(
-        width: double.infinity,
-        height: 200.h,
-        child: Center(
-          child: CircularProgressIndicator(
-            color: AppColor.primaryColor,
-          ),
-        ),
-      );
+      return Loading();
     }
     final List<String> labels = taskData?.data?.labels ?? [];
     final List<int> values = taskData?.data?.values ?? [];

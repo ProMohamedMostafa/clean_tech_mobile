@@ -8,6 +8,7 @@ import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
+import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_description_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/technical_support/logic/technical_support_cubit.dart';
@@ -173,10 +174,7 @@ class _TechnicalSupportScreenState extends State<TechnicalSupportScreen> {
                         : const SizedBox.shrink(),
                     verticalSpace(20),
                     state is TechnicalSupportLoadingState
-                        ? const Center(
-                            child: CircularProgressIndicator(
-                                color: AppColor.primaryColor),
-                          )
+                        ? Loading()
                         : Center(
                             child: DefaultElevatedButton(
                                 name: "Send",

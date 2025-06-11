@@ -9,6 +9,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/assign/logic/assign_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/assign/logic/assign_state.dart';
@@ -80,9 +81,7 @@ class _AssignBodyState extends State<AssignBody> {
               cubit.roleModel == null ||
               cubit.areaListModel == null ||
               cubit.organizationModel == null) {
-            return const Center(
-              child: CircularProgressIndicator(color: AppColor.primaryColor),
-            );
+            return Loading();
           }
           return CustomScrollView(
             slivers: [
@@ -1142,10 +1141,7 @@ class _AssignBodyState extends State<AssignBody> {
                       ),
                       verticalSpace(20),
                       state is AssignLoadingState
-                          ? const Center(
-                              child: CircularProgressIndicator(
-                                  color: AppColor.primaryColor),
-                            )
+                          ? Loading()
                           : Center(
                               child: DefaultElevatedButton(
                                   name: "Assign",

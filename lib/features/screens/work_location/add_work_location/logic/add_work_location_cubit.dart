@@ -6,6 +6,7 @@ import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
+import 'package:smart_cleaning_application/features/screens/sensor/sensor_managment/data/model/sensor_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/logic/add_work_location_state.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_list_model.dart';
@@ -46,6 +47,8 @@ class AddWorkLocationCubit extends Cubit<AddWorkLocationState> {
   TextEditingController sectionDiscriptionController = TextEditingController();
   TextEditingController pointNumberController = TextEditingController();
   TextEditingController pointDiscriptionController = TextEditingController();
+  TextEditingController sensorController = TextEditingController();
+  TextEditingController sensorIdController = TextEditingController();
   final allmanagersController = MultiSelectController<UserItem>();
   final allSupervisorsController = MultiSelectController<UserItem>();
   final allCleanersController = MultiSelectController<UserItem>();
@@ -54,7 +57,7 @@ class AddWorkLocationCubit extends Cubit<AddWorkLocationState> {
   final formKey = GlobalKey<FormState>();
   final formAddKey = GlobalKey<FormState>();
 
-   List<int> selectedManagersIds = [];
+  List<int> selectedManagersIds = [];
   List<int> selectedSupervisorsIds = [];
   List<int> selectedCleanersIds = [];
 
@@ -371,6 +374,7 @@ class AddWorkLocationCubit extends Cubit<AddWorkLocationState> {
       "capacity": capacity,
       "unit": unit,
       "sectionId": sectionId,
+      "deviceId": int.tryParse(sensorIdController.text),
       "userIds": [
         ...?selectedManagersIds,
         ...?selectedSupervisorsIds,
@@ -391,6 +395,20 @@ class AddWorkLocationCubit extends Cubit<AddWorkLocationState> {
       addPointController.clear();
     }).catchError((error) {
       emit(CreatePointErrorState(error.toString()));
+    });
+  }
+
+  SensorModel? sensorModel;
+  List<SensorItem> sensorItem = [SensorItem(name: 'No sensors')];
+  getSensorsData() {
+    emit(SensorManagementLoading());
+    DioHelper.getData(url: "devices", query: {'IsAsign': false}).then((value) {
+      sensorModel = SensorModel.fromJson(value!.data);
+      sensorItem = sensorModel?.data?.data ?? [SensorItem(name: 'No sensors')];
+
+      emit(SensorManagementSuccess(sensorModel!));
+    }).catchError((error) {
+      emit(SensorManagementError(error.toString()));
     });
   }
 }

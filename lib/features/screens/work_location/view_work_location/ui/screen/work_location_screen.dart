@@ -11,6 +11,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/logic/cubit/work_location_details_cubit.dart';
@@ -685,11 +686,7 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
               (widget.selectedIndex == 6 &&
                   (context.read<WorkLocationDetailsCubit>().pointUsersDetailsModel ==
                       null))) {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: AppColor.primaryColor,
-              ),
-            );
+           return Loading();
           }
 
           return SafeArea(
@@ -1045,6 +1042,10 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
             Divider(),
           ],
           if (widget.selectedIndex >= 6) ...[
+            rowDetailsBuild(context, "Point", workLocationDetailsModel.name!,
+                color:
+                    widget.selectedIndex == 6 ? AppColor.primaryColor : null),
+            Divider(),
             if (context
                     .read<WorkLocationDetailsCubit>()
                     .pointUsersDetailsModel
@@ -1071,12 +1072,17 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                     .data!
                     .unit!,
               ),
+              Divider(),
+              rowDetailsBuild(
+                  context,
+                  "Device",
+                  context
+                      .read<WorkLocationDetailsCubit>()
+                      .pointUsersDetailsModel!
+                      .data!
+                      .deviceName!),
               Divider()
             ],
-            rowDetailsBuild(context, "Point", workLocationDetailsModel.name!,
-                color:
-                    widget.selectedIndex == 6 ? AppColor.primaryColor : null),
-            Divider()
           ],
           if (widget.selectedIndex >= 3) ...[
             Text(

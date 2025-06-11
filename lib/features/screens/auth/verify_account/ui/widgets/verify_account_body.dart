@@ -8,6 +8,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/screens/auth/verify_account/logic/verify_account_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/auth/verify_account/logic/verify_account_state.dart';
 import 'package:smart_cleaning_application/features/screens/auth/verify_account/ui/widgets/otp_widget.dart';
@@ -82,10 +83,7 @@ class VerifyAccountScreenBody extends StatelessWidget {
                             child: ReceiveCodeText()),
                         verticalSpace(60),
                         state is VerifyAccountLoadingState
-                            ? const Center(
-                                child: CircularProgressIndicator(
-                                    color: AppColor.primaryColor),
-                              )
+                            ? Loading()
                             : DefaultElevatedButton(
                                 width: 310,
                                 height: 50,

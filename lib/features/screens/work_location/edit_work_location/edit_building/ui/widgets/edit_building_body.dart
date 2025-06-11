@@ -11,6 +11,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_description_text_form_field.dart';
@@ -67,9 +68,7 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
           builder: (context, state) {
             final cubit = context.read<EditBuildingCubit>();
             if (cubit.buildingDetailsInEditModel == null) {
-              return const Center(
-                child: CircularProgressIndicator(color: AppColor.primaryColor),
-              );
+             return Loading();
             }
 
             return Padding(
@@ -791,10 +790,7 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                             ),
                       verticalSpace(15),
                       state is EditBuildingLoadingState
-                          ? const Center(
-                              child: CircularProgressIndicator(
-                                  color: AppColor.primaryColor),
-                            )
+                          ? Loading()
                           : DefaultElevatedButton(
                               name: "Edit",
                               onPressed: () {

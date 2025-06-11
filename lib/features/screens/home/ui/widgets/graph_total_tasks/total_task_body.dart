@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_state.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/graph_total_tasks/total_task_bar_chart.dart';
@@ -20,9 +21,9 @@ class TotalTaskBody extends StatelessWidget {
       builder: (context, state) {
         final cubit = context.read<HomeCubit>();
         final isLoading =
-            state is TaskStatusLoadingState || cubit.taskStatusModel == null;
+            state is TaskStatusLoadingState || cubit.taskChartStatusModel == null;
 
-        final totalTask = cubit.taskStatusModel?.data?.values
+        final totalTask = cubit.taskChartStatusModel?.data?.values
                 ?.fold<int>(0, (a, b) => a + b) ??
             0;
         List<(String, String)> userDropdownItems = cubit.usersModel?.data?.users
@@ -61,6 +62,12 @@ class TotalTaskBody extends StatelessWidget {
                       cubit.changeSelectedUsertask(int.parse(value));
                     },
                     scrollController: cubit.userScrollController,
+                    extraWidget: PrioritySelector(
+                      role: role!,
+                      onPrioritySelected: (priorityValue) {
+                        cubit.getChartTaskData(priority: priorityValue);
+                      },
+                    ),
                   ),
                   _buildChart(cubit),
                 ],
@@ -73,7 +80,7 @@ class TotalTaskBody extends StatelessWidget {
   }
 
   Widget _buildChart(HomeCubit cubit) {
-    final taskData = cubit.taskStatusModel;
+    final taskData = cubit.taskChartStatusModel;
     switch (cubit.selectedChartTypeTask) {
       case 'Line':
       case 'خط':
@@ -98,5 +105,93 @@ class TotalTaskBody extends StatelessWidget {
           taskData: taskData,
         );
     }
+  }
+}
+
+class PrioritySelector extends StatelessWidget {
+  final String role;
+  final Function(int priority)? onPrioritySelected;
+
+  const PrioritySelector({
+    super.key,
+    required this.role,
+    this.onPrioritySelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<HomeCubit>();
+
+    if (role != 'Cleaner') return const SizedBox.shrink();
+
+    return Container(
+      height: 21.h,
+      padding: EdgeInsets.symmetric(horizontal: 8.w),
+      decoration: BoxDecoration(
+        color: cubit.priorityColors[cubit.selectedPriority]!.withOpacity(0.1),
+        border:
+            Border.all(color: cubit.priorityColors[cubit.selectedPriority]!),
+        borderRadius: BorderRadius.circular(5.r),
+      ),
+      child: PopupMenuButton<String>(
+        padding: EdgeInsets.zero,
+        color: Colors.white,
+        icon: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 4.w),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                cubit.selectedPriority,
+                style: TextStyle(
+                  color: cubit.priorityColors[cubit.selectedPriority],
+                  fontWeight: FontWeight.w500,
+                  fontSize: 12.sp,
+                ),
+              ),
+              SizedBox(width: 4.w),
+              RotatedBox(
+                quarterTurns: 3,
+                child: Icon(
+                  Icons.arrow_back_ios_new,
+                  color: cubit.priorityColors[cubit.selectedPriority],
+                  size: 14.sp,
+                ),
+              ),
+            ],
+          ),
+        ),
+        menuPadding: EdgeInsets.zero,
+        itemBuilder: (context) {
+          return cubit.priorities.map((priority) {
+            return PopupMenuItem<String>(
+              value: priority,
+              height: 28.h,
+              padding: EdgeInsets.symmetric(horizontal: 5.w),
+              child: Text(
+                priority,
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w600,
+                  color: cubit.priorityColors[priority],
+                ),
+              ),
+            );
+          }).toList();
+        },
+        onSelected: (value) {
+          cubit.selectedPriority = value;
+
+          final int? priorityValue = cubit.convertPriorityToInt(value);
+          if (priorityValue != null && onPrioritySelected != null) {
+            onPrioritySelected!(priorityValue);
+          }
+        },
+        offset: Offset(10, 22.h),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5.r),
+        ),
+      ),
+    );
   }
 }

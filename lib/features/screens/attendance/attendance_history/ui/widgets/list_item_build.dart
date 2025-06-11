@@ -51,249 +51,246 @@ Widget buildCardItem(BuildContext context, index) {
   } else {
     statusColorForTask = Colors.black;
   }
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 20),
-    child: Card(
-      elevation: 1,
-      margin: EdgeInsets.zero,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(11.r),
+  return Card(
+    elevation: 1,
+    margin: EdgeInsets.zero,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(11.r),
+    ),
+    child: Container(
+      constraints: BoxConstraints(
+        minHeight: 145.h,
       ),
-      child: Container(
-        constraints: BoxConstraints(
-          minHeight: 145.h,
-        ),
-        width: double.infinity,
-        padding: EdgeInsets.fromLTRB(10, 12, 10, 0),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(11.r),
-          border: Border.all(color: AppColor.secondaryColor),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  height: 23.h,
-                  margin: EdgeInsets.zero,
-                  padding: EdgeInsets.symmetric(horizontal: 5),
-                  decoration: BoxDecoration(
-                    color: statusColorForTask.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(4.r),
+      width: double.infinity,
+      padding: EdgeInsets.fromLTRB(10, 12, 10, 0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(11.r),
+        border: Border.all(color: AppColor.secondaryColor),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                height: 23.h,
+                margin: EdgeInsets.zero,
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                decoration: BoxDecoration(
+                  color: statusColorForTask.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(4.r),
+                ),
+                child: Center(
+                  child: Text(
+                    context
+                        .read<AttendanceHistoryCubit>()
+                        .attendanceHistoryModel!
+                        .data!
+                        .data![index]
+                        .status!,
+                    style: TextStyles.font11WhiteSemiBold.copyWith(
+                      color: statusColorForTask,
+                    ),
                   ),
-                  child: Center(
-                    child: Text(
-                      context
+                ),
+              ),
+              horizontalSpace(5),
+              Container(
+                height: 23.h,
+                margin: EdgeInsets.zero,
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(4.r),
+                ),
+                child: Center(
+                  child: Text(
+                    DateFormat('d MMM').format(
+                      DateTime.parse(context
                           .read<AttendanceHistoryCubit>()
                           .attendanceHistoryModel!
                           .data!
                           .data![index]
-                          .status!,
-                      style: TextStyles.font11WhiteSemiBold.copyWith(
-                        color: statusColorForTask,
-                      ),
+                          .date!),
                     ),
+                    style: TextStyles.font11WhiteSemiBold
+                        .copyWith(color: AppColor.primaryColor),
                   ),
                 ),
-                horizontalSpace(5),
-                Container(
-                  height: 23.h,
-                  margin: EdgeInsets.zero,
-                  padding: EdgeInsets.symmetric(horizontal: 5),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(4.r),
+              ),
+              Spacer(),
+              Container(
+                height: 23.h,
+                margin: EdgeInsets.zero,
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                decoration: BoxDecoration(
+                  color: AppColor.secondaryColor,
+                  borderRadius: BorderRadius.circular(4.r),
+                ),
+                child: Center(
+                  child: Text(
+                    context
+                        .read<AttendanceHistoryCubit>()
+                        .attendanceHistoryModel!
+                        .data!
+                        .data![index]
+                        .role!,
+                    style: TextStyles.font11WhiteSemiBold
+                        .copyWith(color: AppColor.primaryColor),
                   ),
-                  child: Center(
-                    child: Text(
-                      DateFormat('d MMM').format(
+                ),
+              ),
+            ],
+          ),
+          verticalSpace(15),
+          Text(
+            context
+                .read<AttendanceHistoryCubit>()
+                .attendanceHistoryModel!
+                .data!
+                .data![index]
+                .userName!,
+            style: TextStyles.font16BlackSemiBold,
+          ),
+          verticalSpace(5),
+          RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: 'Shift : ',
+                  style: TextStyles.font12GreyRegular,
+                ),
+                TextSpan(
+                  text: context
+                              .read<AttendanceHistoryCubit>()
+                              .attendanceHistoryModel!
+                              .data!
+                              .data![index]
+                              .startShift !=
+                          null
+                      ? DateFormat('hh:mm a').format(DateFormat('HH:mm:ss')
+                          .parse(context
+                              .read<AttendanceHistoryCubit>()
+                              .attendanceHistoryModel!
+                              .data!
+                              .data![index]
+                              .startShift!
+                              .toString()))
+                      : '--',
+                  style: TextStyles.font11WhiteSemiBold
+                      .copyWith(color: AppColor.thirdColor),
+                ),
+                TextSpan(
+                  text: '  -  ',
+                  style: TextStyles.font11WhiteSemiBold
+                      .copyWith(color: AppColor.thirdColor),
+                ),
+                TextSpan(
+                  text: context
+                              .read<AttendanceHistoryCubit>()
+                              .attendanceHistoryModel!
+                              .data!
+                              .data![index]
+                              .endShift !=
+                          null
+                      ? DateFormat('hh:mm a').format(DateFormat('HH:mm:ss')
+                          .parse(context
+                              .read<AttendanceHistoryCubit>()
+                              .attendanceHistoryModel!
+                              .data!
+                              .data![index]
+                              .endShift!
+                              .toString()))
+                      : '--',
+                  style: TextStyles.font11WhiteSemiBold
+                      .copyWith(color: AppColor.thirdColor),
+                ),
+              ],
+            ),
+          ),
+          verticalSpace(20),
+          Row(
+            children: [
+              Icon(
+                IconBroken.timeCircle,
+                color: AppColor.primaryColor,
+                size: 18.sp,
+              ),
+              horizontalSpace(5),
+              RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: DateFormat('HH:mm').format(
                         DateTime.parse(context
                             .read<AttendanceHistoryCubit>()
                             .attendanceHistoryModel!
                             .data!
                             .data![index]
-                            .date!),
+                            .clockIn!),
                       ),
-                      style: TextStyles.font11WhiteSemiBold
+                      style: TextStyles.font12GreyRegular
                           .copyWith(color: AppColor.primaryColor),
                     ),
-                  ),
-                ),
-                Spacer(),
-                Container(
-                  height: 23.h,
-                  margin: EdgeInsets.zero,
-                  padding: EdgeInsets.symmetric(horizontal: 5),
-                  decoration: BoxDecoration(
-                    color: AppColor.secondaryColor,
-                    borderRadius: BorderRadius.circular(4.r),
-                  ),
-                  child: Center(
-                    child: Text(
-                      context
-                          .read<AttendanceHistoryCubit>()
-                          .attendanceHistoryModel!
-                          .data!
-                          .data![index]
-                          .role!,
-                      style: TextStyles.font11WhiteSemiBold
+                    TextSpan(
+                      text: '  -  ',
+                      style: TextStyles.font12GreyRegular
                           .copyWith(color: AppColor.primaryColor),
                     ),
-                  ),
+                    TextSpan(
+                      text: context
+                                  .read<AttendanceHistoryCubit>()
+                                  .attendanceHistoryModel
+                                  ?.data
+                                  ?.data?[index]
+                                  .clockOut !=
+                              null
+                          ? DateFormat('HH:mm').format(
+                              DateTime.parse(context
+                                  .read<AttendanceHistoryCubit>()
+                                  .attendanceHistoryModel!
+                                  .data!
+                                  .data![index]
+                                  .clockOut!),
+                            )
+                          : '  :  ',
+                      style: TextStyles.font12GreyRegular
+                          .copyWith(color: AppColor.primaryColor),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            verticalSpace(15),
-            Text(
-              context
-                  .read<AttendanceHistoryCubit>()
-                  .attendanceHistoryModel!
-                  .data!
-                  .data![index]
-                  .userName!,
-              style: TextStyles.font16BlackSemiBold,
-            ),
-            verticalSpace(5),
-            RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'Shift : ',
-                    style: TextStyles.font12GreyRegular,
-                  ),
-                  TextSpan(
-                    text: context
-                                .read<AttendanceHistoryCubit>()
-                                .attendanceHistoryModel!
-                                .data!
-                                .data![index]
-                                .startShift !=
-                            null
-                        ? DateFormat('hh:mm a').format(DateFormat('HH:mm:ss')
-                            .parse(context
-                                .read<AttendanceHistoryCubit>()
-                                .attendanceHistoryModel!
-                                .data!
-                                .data![index]
-                                .startShift!
-                                .toString()))
-                        : '--',
-                    style: TextStyles.font11WhiteSemiBold
-                        .copyWith(color: AppColor.thirdColor),
-                  ),
-                  TextSpan(
-                    text: '  -  ',
-                    style: TextStyles.font11WhiteSemiBold
-                        .copyWith(color: AppColor.thirdColor),
-                  ),
-                  TextSpan(
-                    text: context
-                                .read<AttendanceHistoryCubit>()
-                                .attendanceHistoryModel!
-                                .data!
-                                .data![index]
-                                .endShift !=
-                            null
-                        ? DateFormat('hh:mm a').format(DateFormat('HH:mm:ss')
-                            .parse(context
-                                .read<AttendanceHistoryCubit>()
-                                .attendanceHistoryModel!
-                                .data!
-                                .data![index]
-                                .endShift!
-                                .toString()))
-                        : '--',
-                    style: TextStyles.font11WhiteSemiBold
-                        .copyWith(color: AppColor.thirdColor),
-                  ),
-                ],
               ),
-            ),
-            verticalSpace(20),
-            Row(
-              children: [
-                Icon(
-                  IconBroken.timeCircle,
-                  color: AppColor.primaryColor,
-                  size: 18.sp,
+              Spacer(),
+              RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'Duration : ',
+                      style: TextStyles.font12GreyRegular
+                          .copyWith(color: AppColor.primaryColor),
+                    ),
+                    TextSpan(
+                      text: formatDuration(
+                        context
+                            .read<AttendanceHistoryCubit>()
+                            .attendanceHistoryModel!
+                            .data!
+                            .data![index]
+                            .duration,
+                      ),
+                      style: TextStyles.font12GreyRegular,
+                    ),
+                  ],
                 ),
-                horizontalSpace(5),
-                RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: DateFormat('HH:mm').format(
-                          DateTime.parse(context
-                              .read<AttendanceHistoryCubit>()
-                              .attendanceHistoryModel!
-                              .data!
-                              .data![index]
-                              .clockIn!),
-                        ),
-                        style: TextStyles.font12GreyRegular
-                            .copyWith(color: AppColor.primaryColor),
-                      ),
-                      TextSpan(
-                        text: '  -  ',
-                        style: TextStyles.font12GreyRegular
-                            .copyWith(color: AppColor.primaryColor),
-                      ),
-                      TextSpan(
-                        text: context
-                                    .read<AttendanceHistoryCubit>()
-                                    .attendanceHistoryModel
-                                    ?.data
-                                    ?.data?[index]
-                                    .clockOut !=
-                                null
-                            ? DateFormat('HH:mm').format(
-                                DateTime.parse(context
-                                    .read<AttendanceHistoryCubit>()
-                                    .attendanceHistoryModel!
-                                    .data!
-                                    .data![index]
-                                    .clockOut!),
-                              )
-                            : '  :  ',
-                        style: TextStyles.font12GreyRegular
-                            .copyWith(color: AppColor.primaryColor),
-                      ),
-                    ],
-                  ),
-                ),
-                Spacer(),
-                RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: 'Duration : ',
-                        style: TextStyles.font12GreyRegular
-                            .copyWith(color: AppColor.primaryColor),
-                      ),
-                      TextSpan(
-                        text: formatDuration(
-                          context
-                              .read<AttendanceHistoryCubit>()
-                              .attendanceHistoryModel!
-                              .data!
-                              .data![index]
-                              .duration,
-                        ),
-                        style: TextStyles.font12GreyRegular,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
     ),
   );

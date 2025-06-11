@@ -12,6 +12,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/logic/attendance_leaves_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/logic/attendance_leaves_state.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
@@ -67,11 +68,7 @@ class _LeavesDetailsBodyState extends State<LeavesDetailsBody> {
         builder: (context, state) {
           if (context.read<AttendanceLeavesCubit>().leavesDetailsModel ==
               null) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: AppColor.primaryColor,
-              ),
-            );
+           return Loading();
           }
 
           return SingleChildScrollView(
@@ -304,9 +301,7 @@ class _LeavesDetailsBodyState extends State<LeavesDetailsBody> {
                   verticalSpace(20),
                   if (role == 'Admin')
                     state is LeavesDeleteLoadingState
-                        ? CircularProgressIndicator(
-                            color: AppColor.primaryColor,
-                          )
+                        ? Loading()
                         : Center(
                             child: DefaultElevatedButton(
                                 name: 'Delete',

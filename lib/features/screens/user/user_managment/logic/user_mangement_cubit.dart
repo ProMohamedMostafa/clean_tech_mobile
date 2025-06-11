@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/core/widgets/filter/data/model/filter_dialog_data_model.dart';
@@ -15,9 +16,7 @@ class UserManagementCubit extends Cubit<UserManagementState> {
   static UserManagementCubit get(context) => BlocProvider.of(context);
 
   TextEditingController searchController = TextEditingController();
-
   ScrollController scrollController = ScrollController();
-  final formKey = GlobalKey<FormState>();
 
   int selectedIndex = 0;
   int currentPage = 1;
@@ -69,7 +68,9 @@ class UserManagementCubit extends Cubit<UserManagementState> {
         }
       });
     getAllUsersInUserManage(roleId: roleId);
-    getAllDeletedUser();
+    if (role == "Admin") {
+      getAllDeletedUser();
+    }
   }
 
   void changeTap(int index) {
@@ -187,9 +188,9 @@ class UserManagementCubit extends Cubit<UserManagementState> {
 
   forcedDeletedUser(int id) {
     emit(ForceDeleteUsersLoadingState());
-    DioHelper.deleteData(url: 'users/forcedelete/$id', data: {'id': id})
+    DioHelper.deleteData(url: 'users/forcedelete/$id')
         .then((value) {
-      final message = value?.data['message'] ?? "restored successfully";
+      final message = value?.data['message'] ?? "deleted successfully";
       emit(ForceDeleteUsersSuccessState(message));
     }).catchError((error) {
       emit(ForceDeleteUsersErrorState(error.toString()));

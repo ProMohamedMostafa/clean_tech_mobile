@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
@@ -17,6 +18,7 @@ class FilterHeader extends StatelessWidget {
   final String filterDropdownLabel;
   final List<(String, String)> filterDropdownItems;
   final ScrollController? scrollController;
+  final Widget? extraWidget;
 
   const FilterHeader({
     super.key,
@@ -31,6 +33,7 @@ class FilterHeader extends StatelessWidget {
     required this.filterDropdownLabel,
     required this.filterDropdownItems,
     this.scrollController,
+    this.extraWidget,
   });
 
   @override
@@ -62,13 +65,18 @@ class FilterHeader extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            _FilterDropdownForm(
-              width: 123.w,
-              label: ' $filterDropdownLabel',
-              onSelected: onFilterSelected,
-              items: filterDropdownItems,
-              controller: scrollController!,
-            ),
+            if (role != 'Cleaner')
+              _FilterDropdownForm(
+                width: 123.w,
+                label: ' $filterDropdownLabel',
+                onSelected: onFilterSelected,
+                items: filterDropdownItems,
+                controller: scrollController!,
+              ),
+            if (extraWidget != null) ...[
+              verticalSpace(10),
+              extraWidget!,
+            ]
           ],
         ),
         verticalSpace(8),

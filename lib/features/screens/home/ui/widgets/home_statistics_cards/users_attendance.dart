@@ -21,8 +21,10 @@ class UsersAttendance extends StatelessWidget {
       builder: (context, state) {
         final cubit = context.read<HomeCubit>();
 
-        final isLoading = cubit.attendanceStatus?.data == null ||
-            cubit.usersCountModel?.data == null;
+        final isLoading = role == 'Cleaner'
+            ? cubit.attendanceStatus?.data == null
+            : cubit.attendanceStatus?.data == null ||
+                cubit.usersCountModel?.data == null;
 
         return Skeletonizer(
           enabled: isLoading,

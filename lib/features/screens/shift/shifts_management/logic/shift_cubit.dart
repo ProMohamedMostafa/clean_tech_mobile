@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/core/widgets/filter/data/model/filter_dialog_data_model.dart';
@@ -64,7 +65,9 @@ class ShiftCubit extends Cubit<ShiftState> {
         }
       });
     getAllShifts();
-    getAllDeletedShifts();
+    if (role == "Admin") {
+      getAllDeletedShifts();
+    }
   }
 
   void changeTap(int index) {

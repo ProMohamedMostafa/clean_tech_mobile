@@ -8,6 +8,7 @@ import 'package:smart_cleaning_application/features/screens/integrations/data/mo
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/point_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/section_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/sensor/sensor_managment/data/model/sensor_model.dart';
 
 abstract class AddWorkLocationState {}
 
@@ -260,4 +261,17 @@ class ShiftSuccessState extends AddWorkLocationState {
 class ShiftErrorState extends AddWorkLocationState {
   final String error;
   ShiftErrorState(this.error);
+}
+//**************************** */
+
+class SensorManagementLoading extends AddWorkLocationState {}
+
+class SensorManagementSuccess extends AddWorkLocationState {
+  final SensorModel sensorModel;
+  SensorManagementSuccess(this.sensorModel);
+}
+
+class SensorManagementError extends AddWorkLocationState {
+  final String error;
+  SensorManagementError(this.error);
 }

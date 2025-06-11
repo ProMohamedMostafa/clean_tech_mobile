@@ -11,6 +11,7 @@ import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
+import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/screens/profile/logic/profile_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/profile/logic/profile_state.dart';
 import 'package:smart_cleaning_application/features/screens/profile/ui/widgets/history/user_attendance_details.dart';
@@ -98,11 +99,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                 cubit.userTaskDetailsModel?.data == null ||
                 cubit.userWorkLocationDetailsModel?.data == null ||
                 cubit.attendanceLeavesModel?.data == null) {
-              return Center(
-                child: CircularProgressIndicator(
-                  color: AppColor.primaryColor,
-                ),
-              );
+              return Loading();
             }
           }
 

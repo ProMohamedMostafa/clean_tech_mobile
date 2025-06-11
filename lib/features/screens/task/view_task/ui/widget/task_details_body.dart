@@ -15,6 +15,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
 import 'package:smart_cleaning_application/features/screens/task/view_task/logic/cubit/task_details_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/task/view_task/ui/widget/current_read_dialog_.dart';
@@ -132,11 +133,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
         },
         builder: (context, state) {
           if (context.read<TaskDetailsCubit>().taskDetailsModel == null) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: AppColor.primaryColor,
-              ),
-            );
+           return Loading();
           }
 
           String taskPriority = context
@@ -579,14 +576,27 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      context
-                                              .read<TaskDetailsCubit>()
-                                              .usersModel!
-                                              .data!
-                                              .users![index]
-                                              .firstName ??
-                                          '',
+                                      (context
+                                                  .read<TaskDetailsCubit>()
+                                                  .usersModel
+                                                  ?.data
+                                                  ?.users?[index]
+                                                  .firstName ??
+                                              '')
+                                          .substring(
+                                              0,
+                                              (context
+                                                          .read<
+                                                              TaskDetailsCubit>()
+                                                          .usersModel
+                                                          ?.data
+                                                          ?.users?[index]
+                                                          .firstName ??
+                                                      '')
+                                                  .length
+                                                  .clamp(0, 15)),
                                       style: TextStyles.font12BlackSemi,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                     Text(
                                       context
@@ -945,106 +955,115 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                             return SizedBox.shrink();
                           },
                         ),
-                  verticalSpace(10),
-                  RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'Add Comment',
-                          style: TextStyles.font16BlackRegular,
-                        ),
-                        TextSpan(
-                          text: ' (Optional)',
-                          style: TextStyles.font14GreyRegular,
-                        ),
-                      ],
+                  if (context
+                          .read<TaskDetailsCubit>()
+                          .taskDetailsModel!
+                          .data!
+                          .statusId ==
+                      3) ...[
+                    verticalSpace(10),
+                    RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Add Comment',
+                            style: TextStyles.font16BlackRegular,
+                          ),
+                          TextSpan(
+                            text: ' (Optional)',
+                            style: TextStyles.font14GreyRegular,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  verticalSpace(5),
-                  Form(
-                    key: context.read<TaskDetailsCubit>().formKey,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            controller: context
-                                .read<TaskDetailsCubit>()
-                                .commentController,
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              isDense: true,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(8.r),
-                                  bottomLeft: Radius.circular(8.r),
+                    verticalSpace(5),
+                    Form(
+                      key: context.read<TaskDetailsCubit>().formKey,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                              controller: context
+                                  .read<TaskDetailsCubit>()
+                                  .commentController,
+                              keyboardType: TextInputType.text,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(8.r),
+                                    bottomLeft: Radius.circular(8.r),
+                                  ),
+                                  borderSide: BorderSide(
+                                    color: AppColor.thirdColor,
+                                  ),
                                 ),
-                                borderSide: BorderSide(
-                                  color: AppColor.thirdColor,
+                                hintText: 'write your comment',
+                                helperStyle: TextStyles.font12GreyRegular,
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    UploadFilesBottomDialog().showBottomDialog(
+                                        context,
+                                        context.read<TaskDetailsCubit>());
+                                  },
+                                  icon: Icon(Icons.attach_file_rounded,
+                                      color: AppColor.thirdColor),
                                 ),
                               ),
-                              hintText: 'write your comment',
-                              helperStyle: TextStyles.font12GreyRegular,
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  UploadFilesBottomDialog().showBottomDialog(
-                                      context,
-                                      context.read<TaskDetailsCubit>());
-                                },
-                                icon: Icon(Icons.attach_file_rounded,
-                                    color: AppColor.thirdColor),
-                              ),
-                            ),
-                            validator: (value) {
-                              final cubit = context.read<TaskDetailsCubit>();
+                              validator: (value) {
+                                final cubit = context.read<TaskDetailsCubit>();
 
-                              if ((value == null || value.trim().isEmpty) &&
-                                  (cubit.image == null)) {
-                                return "Comment or Image is required";
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        Container(
-                          width: 50.w,
-                          height: 47.h,
-                          decoration: BoxDecoration(
-                            color: Colors.blue,
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(8.r),
-                              bottomRight: Radius.circular(8.r),
-                            ),
-                          ),
-                          child: MaterialButton(
-                              padding: EdgeInsets.zero,
-                              onPressed: () {
-                                if (context
-                                    .read<TaskDetailsCubit>()
-                                    .formKey
-                                    .currentState!
-                                    .validate()) {
-                                  final taskCubit =
-                                      context.read<TaskDetailsCubit>();
-                                  final imagePath = taskCubit.image?.path ?? "";
-
-                                  taskCubit.addComment(
-                                    imagePath,
-                                    widget.id,
-                                    taskCubit.taskDetailsModel!.data!.statusId!,
-                                  );
+                                if ((value == null || value.trim().isEmpty) &&
+                                    (cubit.image == null)) {
+                                  return "Comment or Image is required";
                                 }
+                                return null;
                               },
-                              child: Icon(
-                                IconBroken.send,
-                                color: Colors.white,
-                              )),
-                        )
-                      ],
+                            ),
+                          ),
+                          Container(
+                            width: 50.w,
+                            height: 47.h,
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(8.r),
+                                bottomRight: Radius.circular(8.r),
+                              ),
+                            ),
+                            child: MaterialButton(
+                                padding: EdgeInsets.zero,
+                                onPressed: () {
+                                  if (context
+                                      .read<TaskDetailsCubit>()
+                                      .formKey
+                                      .currentState!
+                                      .validate()) {
+                                    final taskCubit =
+                                        context.read<TaskDetailsCubit>();
+                                    final imagePath =
+                                        taskCubit.image?.path ?? "";
+
+                                    taskCubit.addComment(
+                                      imagePath,
+                                      widget.id,
+                                      taskCubit
+                                          .taskDetailsModel!.data!.statusId!,
+                                    );
+                                  }
+                                },
+                                child: Icon(
+                                  IconBroken.send,
+                                  color: Colors.white,
+                                )),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  verticalSpace(10),
+                    verticalSpace(10),
+                  ],
                   (state is ImageSelectedState || state is CameraSelectedState)
                       ? GestureDetector(
                           onTap: () {
@@ -1079,10 +1098,8 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10.r)),
                             child: Image.file(
-                              File(context
-                                  .read<TaskDetailsCubit>()
-                                  .image!
-                                  .path),
+                              File(
+                                  context.read<TaskDetailsCubit>().image!.path),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -1090,40 +1107,33 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                       : const SizedBox.shrink(),
                   verticalSpace(20),
                   state is GetChangeTaskStatusLoadingState
-                      ? const Center(
-                          child: CircularProgressIndicator(
-                              color: AppColor.primaryColor),
-                        )
+                      ? Loading()
                       : Column(
                           children: [
                             role == 'Cleaner'
                                 ? Column(
                                     children: [
                                       (context
-                                                      .read<
-                                                          TaskDetailsCubit>()
+                                                      .read<TaskDetailsCubit>()
                                                       .taskDetailsModel!
                                                       .data!
                                                       .status! ==
                                                   "Waiting For Approval" ||
                                               context
-                                                      .read<
-                                                          TaskDetailsCubit>()
+                                                      .read<TaskDetailsCubit>()
                                                       .taskDetailsModel!
                                                       .data!
                                                       .status! ==
                                                   "Not Resolved" ||
                                               context
-                                                      .read<
-                                                          TaskDetailsCubit>()
+                                                      .read<TaskDetailsCubit>()
                                                       .taskDetailsModel!
                                                       .data!
                                                       .status! ==
                                                   "Completed")
                                           ? SizedBox.shrink()
                                           : (context
-                                                      .read<
-                                                          TaskDetailsCubit>()
+                                                      .read<TaskDetailsCubit>()
                                                       .taskDetailsModel!
                                                       .data!
                                                       .status! ==

@@ -9,6 +9,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_description_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
@@ -59,11 +60,7 @@ class _EditMaterialBodyState extends State<EditMaterialBody> {
                     null ||
                 context.read<EditMaterialCubit>().categoryManagementModel ==
                     null) {
-              return Center(
-                child: CircularProgressIndicator(
-                  color: AppColor.primaryColor,
-                ),
-              );
+             return Loading();
             }
             return SafeArea(
                 child: SingleChildScrollView(
@@ -219,10 +216,7 @@ class _EditMaterialBodyState extends State<EditMaterialBody> {
                                 "description..."),
                         verticalSpace(20),
                         state is EditMaterialLoadingState
-                            ? const Center(
-                                child: CircularProgressIndicator(
-                                    color: AppColor.primaryColor),
-                              )
+                            ? Loading()
                             : Center(
                                 child: DefaultElevatedButton(
                                     name: "Edit",

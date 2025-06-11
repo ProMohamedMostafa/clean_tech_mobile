@@ -24,6 +24,12 @@ import 'package:smart_cleaning_application/features/screens/notification/logic/n
 import 'package:smart_cleaning_application/features/screens/notification/ui/screen/notification_screen.dart';
 import 'package:smart_cleaning_application/features/screens/profile/logic/profile_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/profile/ui/screen/profile_screen.dart';
+import 'package:smart_cleaning_application/features/screens/sensor/sensor_edit/logic/cubit/assign_sensor_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/sensor/sensor_edit/ui/screen/sensor_assign.dart';
+import 'package:smart_cleaning_application/features/screens/sensor/sensor_details/logic/cubit/sensor_details_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/sensor/sensor_details/ui/screen/sensor_details.dart';
+import 'package:smart_cleaning_application/features/screens/sensor/sensor_managment/logic/cubit/sensor_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/sensor/sensor_managment/ui/screen/sensor_screen.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/logic/cubit/shift_details_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/stock/add_category/logic/add_category_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/stock/add_category/ui/screen/add_category_screen.dart';
@@ -218,6 +224,31 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (context) => ShiftCubit()..initialize(),
             child: const ShiftScreen(),
+          ),
+        );
+      case Routes.sensorScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => SensorCubit()..initialize(),
+            child: const SensorScreen(),
+          ),
+        );
+      case Routes.sensorAssignScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => AssignSensorCubit()
+              ..getSensorDetails(id)
+              ..getOrganization(),
+            child: SensorAssignScreen(id: id),
+          ),
+        );
+      case Routes.sensorDetailsScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => SensorDetailsCubit()..getSensorDetails(id),
+            child: SensorDetailsScreen(id: id),
           ),
         );
       case Routes.addUserScreen:

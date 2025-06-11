@@ -24,11 +24,16 @@ class FilterDialogDataModel {
   int? unitId;
   int? categoryId;
   int? transactionTypeId;
+  int? applicationId;
+  String? activityStatus;
+  int? minBattery;
+  int? maxBattery;
   DateTime? date;
   DateTime? startDate;
   DateTime? endDate;
   String? startTime;
   String? endTime;
+  String? isAsign;
 
   FilterDialogDataModel({
     this.nationality,
@@ -56,11 +61,16 @@ class FilterDialogDataModel {
     this.actionId,
     this.assignTo,
     this.transactionTypeId,
+    this.applicationId,
+    this.activityStatus,
+    this.minBattery,
+    this.maxBattery,
     this.date,
     this.startDate,
     this.endDate,
     this.startTime,
     this.endTime,
+    this.isAsign,
   });
 
   factory FilterDialogDataModel.fromJson(Map<String, dynamic> json) {
@@ -90,11 +100,16 @@ class FilterDialogDataModel {
       unitId: json['unitId'],
       categoryId: json['categoryId'],
       transactionTypeId: json['transactionTypeId'],
+      applicationId: json['applicationId'],
+      activityStatus: json['activityStatus'],
+      minBattery: json['minBattery'],
+      maxBattery: json['maxBattery'],
       date: json['date'],
       startDate: json['startDate'],
       endDate: json['endDate'],
       startTime: json['startTime'],
       endTime: json['endTime'],
+      isAsign: json['isAsign'],
     );
   }
 
@@ -125,11 +140,16 @@ class FilterDialogDataModel {
       'unitId': unitId,
       'categoryId': categoryId,
       'transactionTypeId': transactionTypeId,
+      'applicationId': applicationId,
+      'activityStatus': activityStatus,
+      'minBattery': minBattery,
+      'maxBattery': maxBattery,
       'date': date,
       'startDate': startDate,
       'endDate': endDate,
       'startTime': startTime,
       'endTime': endTime,
+      'isAsign': isAsign,
     };
   }
 }

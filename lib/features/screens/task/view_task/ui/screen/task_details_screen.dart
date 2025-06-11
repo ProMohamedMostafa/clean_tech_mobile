@@ -7,6 +7,6 @@ class TaskDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: TaskDetailsBody(id:id),);
+    return TaskDetailsBody(id: id);
   }
 }

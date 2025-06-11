@@ -5,9 +5,9 @@ import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
-import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
+import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
 import 'package:smart_cleaning_application/features/screens/stock/transaction_management/logic/transaction_mangement_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/stock/transaction_management/logic/transaction_mangement_state.dart';
@@ -60,11 +60,7 @@ class _TransactionDetailsBodyState extends State<TransactionDetailsBody> {
                 .transactionDetailsModel
                 ?.data ==
             null) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: AppColor.primaryColor,
-            ),
-          );
+          return Loading();
         }
         return Scaffold(
             appBar: AppBar(

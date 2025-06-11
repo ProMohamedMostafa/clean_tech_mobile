@@ -9,6 +9,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/logic/material_mangement_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/logic/material_mangement_state.dart';
@@ -63,11 +64,7 @@ class _MaterialDetailsBodyState extends State<MaterialDetailsBody> {
         builder: (context, state) {
           if (context.read<MaterialManagementCubit>().materialDetailsModel ==
               null) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: AppColor.primaryColor,
-              ),
-            );
+           return Loading();
           }
 
           return SingleChildScrollView(
@@ -166,11 +163,7 @@ class _MaterialDetailsBodyState extends State<MaterialDetailsBody> {
                                 ))),
                   verticalSpace(20),
                   state is DeleteMaterialLoadingState
-                      ? Center(
-                          child: CircularProgressIndicator(
-                            color: AppColor.primaryColor,
-                          ),
-                        )
+                      ? Loading()
                       : Center(
                           child: DefaultElevatedButton(
                               name: 'Delete',

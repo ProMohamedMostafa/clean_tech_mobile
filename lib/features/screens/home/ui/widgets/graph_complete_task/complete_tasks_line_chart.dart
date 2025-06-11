@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
+import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/chart_data.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/completetion_task.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -14,15 +15,7 @@ class CompleteTasksLineChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (completeTaskData == null) {
-      return SizedBox(
-        width: double.infinity,
-        height: 200.h,
-        child: Center(
-          child: CircularProgressIndicator(
-            color: AppColor.primaryColor,
-          ),
-        ),
-      );
+      return Loading();
     }
     return SizedBox(
       width: double.infinity,

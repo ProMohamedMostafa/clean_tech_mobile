@@ -60,9 +60,7 @@ class ShowActivity extends StatelessWidget {
                   padding: const EdgeInsets.all(8),
                   child: twoButtonsIntegration(
                     selectedIndex: cubit.selectedIndex,
-                    onTap: (index) {
-                      cubit.changeTap(index);
-                    },
+                    onTap: cubit.changeTap,
                     firstLabel: S.of(context).myActivity,
                     secondLabel: S.of(context).myTeamActivity,
                   ),
@@ -175,7 +173,9 @@ class ShowActivity extends StatelessWidget {
                     ],
                   ),
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      context.pushNamed(Routes.activityScreen);
+                    },
                     child: SizedBox(
                       height: 30.h,
                       child: Padding(

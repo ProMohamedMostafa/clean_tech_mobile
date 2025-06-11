@@ -11,6 +11,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
@@ -66,11 +67,7 @@ class _AddOrganizationScreenState extends State<AddOrganizationScreen> {
             if (context.read<AddWorkLocationCubit>().usersModel == null ||
                 context.read<AddWorkLocationCubit>().nationalityModel == null ||
                 context.read<AddWorkLocationCubit>().shiftModel == null) {
-              return Center(
-                child: CircularProgressIndicator(
-                  color: AppColor.primaryColor,
-                ),
-              );
+              return Loading();
             }
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -612,9 +609,7 @@ class _AddOrganizationScreenState extends State<AddOrganizationScreen> {
 
   Widget _buildContinueButton(state) {
     return state is CreateCityLoadingState
-        ? const Center(
-            child: CircularProgressIndicator(color: AppColor.primaryColor),
-          )
+        ? Loading()
         : DefaultElevatedButton(
             name: "Add",
             onPressed: () {

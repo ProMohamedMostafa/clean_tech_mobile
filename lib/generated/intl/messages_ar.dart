@@ -22,10 +22,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "Filter": MessageLookupByLibrary.simpleMessage("تصفية"),
     "absent": MessageLookupByLibrary.simpleMessage("غائب"),
     "active": MessageLookupByLibrary.simpleMessage("نشط"),
     "addAnotherButton": MessageLookupByLibrary.simpleMessage("إضافة آخر"),
-    "addUserButton": MessageLookupByLibrary.simpleMessage("إضافة مستخدم"),
+    "addUserButton": MessageLookupByLibrary.simpleMessage("إضافة المستخدم"),
     "addUserText1": MessageLookupByLibrary.simpleMessage("الاسم الأول"),
     "addUserText10": MessageLookupByLibrary.simpleMessage("رقم الهاتف"),
     "addUserText11": MessageLookupByLibrary.simpleMessage("تأكيد كلمة المرور"),
@@ -40,12 +41,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "addUserText6": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
     "addUserText7": MessageLookupByLibrary.simpleMessage("رقم الهوية"),
     "addUserText8": MessageLookupByLibrary.simpleMessage("الجنسية"),
-    "addUserText9": MessageLookupByLibrary.simpleMessage("الجنس"),
+    "addUserText9": MessageLookupByLibrary.simpleMessage("النوع"),
     "addUserTitle": MessageLookupByLibrary.simpleMessage("إضافة مستخدم"),
-    "admin": MessageLookupByLibrary.simpleMessage("مدير"),
+    "admin": MessageLookupByLibrary.simpleMessage("مسؤول"),
     "all": MessageLookupByLibrary.simpleMessage("الكل"),
     "alreadyMarkedAsRead": MessageLookupByLibrary.simpleMessage(
-      "تم التعليم كمقروء بالفعل",
+      "تم التحديد كمقروء",
     ),
     "attendance": MessageLookupByLibrary.simpleMessage("الحضور"),
     "botNavTitle1": MessageLookupByLibrary.simpleMessage("الرئيسية"),
@@ -54,27 +55,34 @@ class MessageLookup extends MessageLookupByLibrary {
     "botNavTitle4": MessageLookupByLibrary.simpleMessage("الإعدادات"),
     "calendar": MessageLookupByLibrary.simpleMessage("التقويم"),
     "cancelButton": MessageLookupByLibrary.simpleMessage("إلغاء"),
-    "chartBar": MessageLookupByLibrary.simpleMessage("عمودي"),
+    "chartBar": MessageLookupByLibrary.simpleMessage("أعمدة"),
     "chartLine": MessageLookupByLibrary.simpleMessage("خط"),
     "chartPie": MessageLookupByLibrary.simpleMessage("دائري"),
     "cleaner": MessageLookupByLibrary.simpleMessage("عامل نظافة"),
-    "complete": MessageLookupByLibrary.simpleMessage("مكتمل"),
+    "complete": MessageLookupByLibrary.simpleMessage("مكتملة"),
+    "confirmForcedDelete": MessageLookupByLibrary.simpleMessage(
+      "حذف المستخدم بشكل نهائي؟",
+    ),
+    "confirmRestoreUser": MessageLookupByLibrary.simpleMessage(
+      "هل أنت متأكد من استعادة هذا المستخدم؟",
+    ),
+    "confirmSaveEdit": MessageLookupByLibrary.simpleMessage(
+      "هل أنت متأكد من حفظ تعديل هذا المستخدم؟",
+    ),
     "createPass1": MessageLookupByLibrary.simpleMessage(
-      "على الأقل حرف صغير واحد",
+      "حرف صغير واحد على الأقل",
     ),
     "createPass2": MessageLookupByLibrary.simpleMessage(
-      "على الأقل حرف كبير واحد",
+      "حرف كبير واحد على الأقل",
     ),
     "createPass3": MessageLookupByLibrary.simpleMessage(
-      "على الأقل رمز خاص واحد",
+      "رمز خاص واحد على الأقل",
     ),
-    "createPass4": MessageLookupByLibrary.simpleMessage("على الأقل رقم واحد"),
-    "createPass5": MessageLookupByLibrary.simpleMessage(
-      "أن تكون 8 أحرف على الأقل",
-    ),
+    "createPass4": MessageLookupByLibrary.simpleMessage("رقم واحد على الأقل"),
+    "createPass5": MessageLookupByLibrary.simpleMessage("لا يقل عن 8 أحرف"),
     "deleteButton": MessageLookupByLibrary.simpleMessage("حذف"),
     "deleteMessage": MessageLookupByLibrary.simpleMessage(
-      "هل أنت متأكد من إزالة هذا المستخدم؟",
+      "هل أنت متأكد من أنك تريد حذف هذا المستخدم؟",
     ),
     "deletedUsers": MessageLookupByLibrary.simpleMessage(
       "المستخدمين المحذوفين",
@@ -87,11 +95,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "editButton": MessageLookupByLibrary.simpleMessage("تعديل"),
     "editUserTitle": MessageLookupByLibrary.simpleMessage("تعديل المستخدم"),
     "experienceDescription": MessageLookupByLibrary.simpleMessage(
-      "استمتع بطريقة سهلة لإدارة خدمات التنظيف ببضع نقرات فقط!",
+      "اختبر طريقة سلسة لإدارة خدمات التنظيف\nبضغطة زر على هاتفك!",
     ),
     "findSomeone": MessageLookupByLibrary.simpleMessage("ابحث عن شخص"),
     "forgotPassButton": MessageLookupByLibrary.simpleMessage(
-      "هل نسيت كلمة المرور؟",
+      "نسيت كلمة المرور؟",
     ),
     "forgotPassScreenTextField": MessageLookupByLibrary.simpleMessage(
       "البريد الإلكتروني",
@@ -100,28 +108,28 @@ class MessageLookup extends MessageLookupByLibrary {
       "هل نسيت كلمة المرور؟",
     ),
     "forgotPassScreenTitle2": MessageLookupByLibrary.simpleMessage(
-      "لا تقلق، يحدث ذلك. أدخل بريدك الإلكتروني لاستعادة كلمة المرور",
+      "لا تقلق، يحدث لنا جميعًا. أدخل بريدك الإلكتروني أدناه لاستعادة كلمة المرور.",
     ),
     "genderFemale": MessageLookupByLibrary.simpleMessage("أنثى"),
     "genderMale": MessageLookupByLibrary.simpleMessage("ذكر"),
     "hey": MessageLookupByLibrary.simpleMessage("مرحبًا، "),
-    "high": MessageLookupByLibrary.simpleMessage("عالي"),
+    "high": MessageLookupByLibrary.simpleMessage("مرتفع"),
     "hintPhoneNumber": MessageLookupByLibrary.simpleMessage("123456789"),
     "hintSelectCountry": MessageLookupByLibrary.simpleMessage("اختر الدولة"),
-    "hintSelectGender": MessageLookupByLibrary.simpleMessage("الجنس"),
+    "hintSelectGender": MessageLookupByLibrary.simpleMessage("النوع"),
     "hintSelectNationality": MessageLookupByLibrary.simpleMessage(
       "اختر الجنسية",
     ),
     "hintSelectProvider": MessageLookupByLibrary.simpleMessage("اختر المزود"),
     "hintSelectRole": MessageLookupByLibrary.simpleMessage("اختر الدور"),
-    "inCost": MessageLookupByLibrary.simpleMessage("في التكلفة"),
+    "inCost": MessageLookupByLibrary.simpleMessage("التكلفة"),
     "inProgress": MessageLookupByLibrary.simpleMessage("قيد التنفيذ"),
-    "inSide": MessageLookupByLibrary.simpleMessage("داخل"),
+    "inSide": MessageLookupByLibrary.simpleMessage("داخلي"),
     "inactive": MessageLookupByLibrary.simpleMessage("غير نشط"),
     "integ1": MessageLookupByLibrary.simpleMessage("إدارة المستخدمين"),
-    "integ2": MessageLookupByLibrary.simpleMessage("مكان العمل"),
+    "integ2": MessageLookupByLibrary.simpleMessage("موقع العمل"),
     "integ3": MessageLookupByLibrary.simpleMessage("إدارة التعيينات"),
-    "integ4": MessageLookupByLibrary.simpleMessage("الوردية"),
+    "integ4": MessageLookupByLibrary.simpleMessage("الورديات"),
     "integ5": MessageLookupByLibrary.simpleMessage("المهام"),
     "integ6": MessageLookupByLibrary.simpleMessage("الحضور"),
     "integ7": MessageLookupByLibrary.simpleMessage("المخزون"),
@@ -136,11 +144,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "leaves": MessageLookupByLibrary.simpleMessage("إجازات"),
     "loginButton": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "loginMessage": MessageLookupByLibrary.simpleMessage(
-      "سجل الدخول للوصول إلى حساب كلين تك",
+      "سجل الدخول للوصول إلى حساب Clean Tech\nالخاص بك",
     ),
     "loginTitle1": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "loginTitle2": MessageLookupByLibrary.simpleMessage(
-      "قم بتسجيل الدخول للوصول إلى حساب كلين تك",
+      "سجل الدخول للوصول إلى حساب Clean Tech الخاص بك",
     ),
     "low": MessageLookupByLibrary.simpleMessage("منخفض"),
     "manager": MessageLookupByLibrary.simpleMessage("مدير"),
@@ -149,34 +157,39 @@ class MessageLookup extends MessageLookupByLibrary {
     "myActivity": MessageLookupByLibrary.simpleMessage("نشاطي"),
     "myTeamActivity": MessageLookupByLibrary.simpleMessage("نشاط فريقي"),
     "nextButton": MessageLookupByLibrary.simpleMessage("التالي"),
-    "noAdminsAvailable": MessageLookupByLibrary.simpleMessage("لا يوجد مدراء"),
+    "noAdminsAvailable": MessageLookupByLibrary.simpleMessage(
+      "لا يوجد مسؤولون",
+    ),
     "noButtton": MessageLookupByLibrary.simpleMessage("لا"),
     "noData": MessageLookupByLibrary.simpleMessage("لا توجد بيانات"),
+    "noManager": MessageLookupByLibrary.simpleMessage("لا يوجد مدير"),
     "noManagersAvailable": MessageLookupByLibrary.simpleMessage(
-      "لا يوجد مدراء",
+      "لا يوجد مديرون",
     ),
+    "noProvider": MessageLookupByLibrary.simpleMessage("لا يوجد مزود"),
     "noRolesAvailable": MessageLookupByLibrary.simpleMessage(
       "لا توجد أدوار متاحة",
     ),
     "noSupervisorsAvailable": MessageLookupByLibrary.simpleMessage(
-      "لا يوجد مشرفين",
+      "لا يوجد مشرفون",
     ),
     "noTasksAvailable": MessageLookupByLibrary.simpleMessage(
       "لا توجد مهام متاحة",
     ),
     "noUsersAvailable": MessageLookupByLibrary.simpleMessage(
-      "لا يوجد مستخدمين",
+      "لا يوجد مستخدمون",
     ),
     "notResolved": MessageLookupByLibrary.simpleMessage("غير محلولة"),
     "notifications": MessageLookupByLibrary.simpleMessage("الإشعارات"),
-    "outSide": MessageLookupByLibrary.simpleMessage("خارج"),
+    "outSide": MessageLookupByLibrary.simpleMessage("خارجي"),
+    "overdue": MessageLookupByLibrary.simpleMessage("متأخرة"),
     "pending": MessageLookupByLibrary.simpleMessage("قيد الانتظار"),
     "present": MessageLookupByLibrary.simpleMessage("حاضر"),
     "resendButton": MessageLookupByLibrary.simpleMessage("إعادة الإرسال"),
-    "roleAdmin": MessageLookupByLibrary.simpleMessage("مدير"),
+    "roleAdmin": MessageLookupByLibrary.simpleMessage("مسؤول"),
     "roleManager": MessageLookupByLibrary.simpleMessage("مدير"),
     "roleSupervisor": MessageLookupByLibrary.simpleMessage("مشرف"),
-    "roleUsers": MessageLookupByLibrary.simpleMessage("مستخدمون"),
+    "roleUsers": MessageLookupByLibrary.simpleMessage("مستخدمين"),
     "saveButton": MessageLookupByLibrary.simpleMessage("حفظ"),
     "saveButtton": MessageLookupByLibrary.simpleMessage("حفظ"),
     "seeMoreButton": MessageLookupByLibrary.simpleMessage("عرض المزيد"),
@@ -184,7 +197,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "إعادة تعيين كلمة المرور",
     ),
     "setPassTextField1": MessageLookupByLibrary.simpleMessage(
-      "إنشاء كلمة مرور جديدة",
+      "أنشئ كلمة مرور جديدة",
     ),
     "setPassTextField2": MessageLookupByLibrary.simpleMessage(
       "أعد إدخال كلمة المرور",
@@ -199,7 +212,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "settingTitle2": MessageLookupByLibrary.simpleMessage("تغيير كلمة المرور"),
     "settingTitle3": MessageLookupByLibrary.simpleMessage("مشاركة التطبيق"),
     "settingTitle4": MessageLookupByLibrary.simpleMessage("الدعم الفني"),
-    "settingTitle5": MessageLookupByLibrary.simpleMessage("موقعنا"),
+    "settingTitle5": MessageLookupByLibrary.simpleMessage("موقعنا الإلكتروني"),
     "settingTitle6": MessageLookupByLibrary.simpleMessage("اللغات"),
     "settingTitle7": MessageLookupByLibrary.simpleMessage("الإشعارات"),
     "settingTitle8": MessageLookupByLibrary.simpleMessage("الوضع الليلي"),
@@ -209,7 +222,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "submitButton": MessageLookupByLibrary.simpleMessage("إرسال"),
     "supervisor": MessageLookupByLibrary.simpleMessage("مشرف"),
     "taskCompletionRate": MessageLookupByLibrary.simpleMessage(
-      "معدل إنجاز المهام",
+      "نسبة إنجاز المهام",
     ),
     "tasks": MessageLookupByLibrary.simpleMessage("المهام"),
     "termsConditions": MessageLookupByLibrary.simpleMessage("الشروط والأحكام"),
@@ -217,9 +230,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "totalTask": MessageLookupByLibrary.simpleMessage("إجمالي المهام"),
     "totalUsers": MessageLookupByLibrary.simpleMessage("إجمالي المستخدمين"),
     "unread": MessageLookupByLibrary.simpleMessage("غير مقروء"),
+    "userDetails": MessageLookupByLibrary.simpleMessage("تفاصيل المستخدم"),
     "userDetailsTitle": MessageLookupByLibrary.simpleMessage("تفاصيل المستخدم"),
     "userManagement": MessageLookupByLibrary.simpleMessage("إدارة المستخدمين"),
-    "users": MessageLookupByLibrary.simpleMessage("المستخدمين"),
+    "users": MessageLookupByLibrary.simpleMessage("المستخدمون"),
     "validationAddEmail": MessageLookupByLibrary.simpleMessage(
       "البريد الإلكتروني مطلوب",
     ),
@@ -239,13 +253,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "تاريخ الميلاد مطلوب",
     ),
     "validationCountry": MessageLookupByLibrary.simpleMessage(
-      "الدولة المختارة مطلوبة",
+      "يجب اختيار الدولة",
     ),
     "validationEmail": MessageLookupByLibrary.simpleMessage(
       "عنوان البريد الإلكتروني غير صالح",
     ),
     "validationEmailAndUser": MessageLookupByLibrary.simpleMessage(
-      "البريد الإلكتروني أو اسم المستخدم غير صالح",
+      "البريد الإلكتروني أو اسم المستخدم غير صحيح",
     ),
     "validationEmailTooLong": MessageLookupByLibrary.simpleMessage(
       "البريد الإلكتروني طويل جدًا",
@@ -257,44 +271,44 @@ class MessageLookup extends MessageLookupByLibrary {
       "الاسم الأول مطلوب",
     ),
     "validationFirstNameOnlyLetters": MessageLookupByLibrary.simpleMessage(
-      "يجب أن يحتوي الاسم الأول على أحرف فقط",
+      "يجب أن يحتوي الاسم الأول على حروف فقط",
     ),
     "validationFirstNameTooLong": MessageLookupByLibrary.simpleMessage(
       "يجب ألا يزيد الاسم الأول عن 55 حرفًا",
     ),
     "validationFirstNameTooShort": MessageLookupByLibrary.simpleMessage(
-      "يجب أن يحتوي الاسم الأول على 3 أحرف على الأقل",
+      "يجب ألا يقل الاسم الأول عن 3 أحرف",
     ),
-    "validationGender": MessageLookupByLibrary.simpleMessage("الجنس مطلوب"),
+    "validationGender": MessageLookupByLibrary.simpleMessage("النوع مطلوب"),
     "validationIdNumber": MessageLookupByLibrary.simpleMessage(
       "رقم الهوية مطلوب",
     ),
     "validationIdNumberTooLong": MessageLookupByLibrary.simpleMessage(
-      "يجب ألا يزيد رقم الهوية عن 20 رقمًا",
+      "يجب ألا يزيد رقم الهوية عن 20 حرفًا",
     ),
     "validationIdNumberTooShort": MessageLookupByLibrary.simpleMessage(
-      "يجب ألا يقل رقم الهوية عن 5 أرقام",
+      "يجب ألا يقل رقم الهوية عن 5 أحرف",
     ),
     "validationLastName": MessageLookupByLibrary.simpleMessage(
       "اسم العائلة مطلوب",
     ),
     "validationLastNameOnlyLetters": MessageLookupByLibrary.simpleMessage(
-      "يجب أن يحتوي اسم العائلة على أحرف فقط",
+      "يجب أن يحتوي اسم العائلة على حروف فقط",
     ),
     "validationLastNameTooLong": MessageLookupByLibrary.simpleMessage(
       "يجب ألا يزيد اسم العائلة عن 55 حرفًا",
     ),
     "validationLastNameTooShort": MessageLookupByLibrary.simpleMessage(
-      "يجب أن يحتوي اسم العائلة على 3 أحرف على الأقل",
+      "يجب ألا يقل اسم العائلة عن 3 أحرف",
     ),
     "validationManager": MessageLookupByLibrary.simpleMessage(
-      "المدير المختار مطلوب",
+      "يجب اختيار المدير",
     ),
     "validationNationality": MessageLookupByLibrary.simpleMessage(
       "الجنسية مطلوبة",
     ),
     "validationPassword": MessageLookupByLibrary.simpleMessage(
-      "كلمة المرور غير صالحة",
+      "كلمة مرور غير صالحة",
     ),
     "validationPasswordIncorrect": MessageLookupByLibrary.simpleMessage(
       "كلمة المرور غير صحيحة",
@@ -303,15 +317,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "رقم الهاتف مطلوب",
     ),
     "validationPinCodeEmpty": MessageLookupByLibrary.simpleMessage(
-      "الرجاء إدخال رمز التحقق",
+      "يرجى إدخال رمز التحقق",
     ),
     "validationProvider": MessageLookupByLibrary.simpleMessage("المزود مطلوب"),
     "validationRepeatPassword": MessageLookupByLibrary.simpleMessage(
       "كلمة المرور غير متطابقة",
     ),
-    "validationRole": MessageLookupByLibrary.simpleMessage(
-      "الدور المختار مطلوب",
-    ),
+    "validationRole": MessageLookupByLibrary.simpleMessage("يجب اختيار الدور"),
     "validationUserName": MessageLookupByLibrary.simpleMessage(
       "اسم المستخدم مطلوب",
     ),
@@ -319,7 +331,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "يجب ألا يزيد اسم المستخدم عن 55 حرفًا",
     ),
     "validationUserNameTooShort": MessageLookupByLibrary.simpleMessage(
-      "يجب أن يحتوي اسم المستخدم على 3 أحرف على الأقل",
+      "يجب ألا يقل اسم المستخدم عن 3 أحرف",
     ),
     "validationUsernameTooLong": MessageLookupByLibrary.simpleMessage(
       "اسم المستخدم أو البريد الإلكتروني طويل جدًا",
@@ -328,19 +340,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "اسم المستخدم أو البريد الإلكتروني قصير جدًا",
     ),
     "validationValidEmail": MessageLookupByLibrary.simpleMessage(
-      "الرجاء إدخال بريد إلكتروني صالح",
+      "يرجى إدخال بريد إلكتروني صالح",
     ),
     "validationValidMobileNumber": MessageLookupByLibrary.simpleMessage(
-      "الرجاء إدخال رقم هاتف صالح",
+      "يرجى إدخال رقم هاتف صالح",
     ),
-    "validationVerify": MessageLookupByLibrary.simpleMessage(
-      "رمز التحقق غير صالح",
-    ),
+    "validationVerify": MessageLookupByLibrary.simpleMessage("رمز غير صالح"),
     "verifyAccountScreenTextField": MessageLookupByLibrary.simpleMessage(
       "أدخل الرمز",
     ),
     "verifyAccountScreenTitle1": MessageLookupByLibrary.simpleMessage(
-      "تأكيد الرمز",
+      "التحقق من الرمز",
     ),
     "verifyAccountScreenTitle2": MessageLookupByLibrary.simpleMessage(
       "تم إرسال رمز التحقق إلى بريدك الإلكتروني.",
@@ -348,7 +358,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "verifyAccountScreenTitle3": MessageLookupByLibrary.simpleMessage(
       "لم تستلم الرمز؟",
     ),
-    "verifyButton": MessageLookupByLibrary.simpleMessage("تأكيد"),
+    "verifyButton": MessageLookupByLibrary.simpleMessage("تحقق"),
     "waitingForApproval": MessageLookupByLibrary.simpleMessage(
       "بانتظار الموافقة",
     ),

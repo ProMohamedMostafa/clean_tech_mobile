@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_state.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/graph_complete_task/complete_tasks_pie_chart.dart';
@@ -37,8 +38,8 @@ class CompleteTasksRateBody extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.all(10),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   FilterHeader(
                     title: S.of(context).taskCompletionRate,
@@ -57,7 +58,10 @@ class CompleteTasksRateBody extends StatelessWidget {
                     },
                     scrollController: cubit.userScrollController,
                   ),
-                  _buildChart(cubit),
+                  verticalSpace(10),
+                  Expanded(
+                    child: _buildChart(cubit),
+                  ),
                 ],
               ),
             ),

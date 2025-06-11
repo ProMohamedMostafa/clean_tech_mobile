@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/core/widgets/filter/data/model/filter_dialog_data_model.dart';
@@ -199,6 +200,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
       "SearchQuery": searchController.text,
       "FloorId": filterModel?.floorId,
       "SectionId": filterModel?.sectionId,
+      "AssignToDevice":filterModel?.isAsign
     }).then((value) {
       final newPoints = PointListModel.fromJson(value!.data);
 
@@ -240,25 +242,39 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
       });
     if (selectedIndex == 0) {
       getArea();
-      getAllDeletedArea();
+      if (role == "Admin") {
+        getAllDeletedArea();
+      }
     } else if (selectedIndex == 1) {
       getCity();
-      getAllDeletedCity();
+      if (role == "Admin") {
+        getAllDeletedCity();
+      }
     } else if (selectedIndex == 2) {
       getOrganization();
-      getAllDeletedOrganization();
+      if (role == "Admin") {
+        getAllDeletedOrganization();
+      }
     } else if (selectedIndex == 3) {
       getBuilding();
-      getAllDeletedBuilding();
+      if (role == "Admin") {
+        getAllDeletedBuilding();
+      }
     } else if (selectedIndex == 4) {
       getFloor();
-      getAllDeletedFloor();
+      if (role == "Admin") {
+        getAllDeletedFloor();
+      }
     } else if (selectedIndex == 5) {
       getSection();
-      getAllDeletedSection();
+      if (role == "Admin") {
+        getAllDeletedSection();
+      }
     } else {
       getPoint();
-      getAllDeletedPoint();
+      if (role == "Admin") {
+        getAllDeletedPoint();
+      }
     }
   }
 

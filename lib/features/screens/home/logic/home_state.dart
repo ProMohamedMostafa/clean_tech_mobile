@@ -5,6 +5,7 @@ import 'package:smart_cleaning_application/features/screens/home/data/model/comp
 import 'package:smart_cleaning_application/features/screens/home/data/model/material_count_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/shifts_count_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/stock_total_price_model.dart';
+import 'package:smart_cleaning_application/features/screens/home/data/model/task_chart_status_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/task_status_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/total_stock.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/users_count_model.dart';
@@ -83,6 +84,21 @@ class ActivityErrorState extends HomeState {
   final String error;
   ActivityErrorState(this.error);
 }
+
+//******************************** */
+
+class ActivityTeamLoadingState extends HomeState {}
+
+class ActivityTeamSuccessState extends HomeState {
+  final ActivitiesModel activitiesTeamModel;
+
+  ActivityTeamSuccessState(this.activitiesTeamModel);
+}
+
+class ActivityTeamErrorState extends HomeState {
+  final String error;
+  ActivityTeamErrorState(this.error);
+}
 //********************************* */
 
 class TotalStockLoadingState extends HomeState {}
@@ -124,6 +140,20 @@ class TaskStatusSuccessState extends HomeState {
 class TaskStatusErrorState extends HomeState {
   final String error;
   TaskStatusErrorState(this.error);
+}
+//********************************* */
+
+class TaskChartStatusLoadingState extends HomeState {}
+
+class TaskChartStatusSuccessState extends HomeState {
+  final TaskChartStatusModel taskChartStatusModel;
+
+  TaskChartStatusSuccessState(this.taskChartStatusModel);
+}
+
+class TaskChartStatusErrorState extends HomeState {
+  final String error;
+  TaskChartStatusErrorState(this.error);
 }
 //**************************** */
 

@@ -8,6 +8,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/screens/auth/set_password/logic/set_password_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/auth/set_password/logic/set_password_state.dart';
 import 'package:smart_cleaning_application/features/screens/auth/set_password/ui/widgets/new_password_body.dart';
@@ -67,10 +68,7 @@ class SetPasswordbody extends StatelessWidget {
                       const NewPasswordBody(),
                       verticalSpace(60),
                       state is SetPasswordLoadingState
-                          ? const Center(
-                              child: CircularProgressIndicator(
-                                  color: AppColor.primaryColor),
-                            )
+                          ?  Loading()
                           : DefaultElevatedButton(
                               width: 310,
                               height: 50,

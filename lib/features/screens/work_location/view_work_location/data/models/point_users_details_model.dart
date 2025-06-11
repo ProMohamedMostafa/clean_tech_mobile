@@ -49,6 +49,8 @@ class Data {
   bool? isCountable;
   double? capacity;
   String? unit;
+  int? deviceId;
+  String? deviceName;
   int? sectionId;
   String? sectionName;
   int? floorId;
@@ -72,6 +74,8 @@ class Data {
       this.isCountable,
       this.capacity,
       this.unit,
+      this.deviceId,
+      this.deviceName,
       this.sectionId,
       this.sectionName,
       this.floorId,
@@ -95,6 +99,8 @@ class Data {
     isCountable = json['isCountable'];
     capacity = json['capacity'];
     unit = json['unit'];
+    deviceId = json['deviceId'];
+    deviceName = json['deviceName'];
     sectionId = json['sectionId'];
     sectionName = json['sectionName'];
     floorId = json['floorId'];
@@ -125,6 +131,8 @@ class Data {
     data['isCountable'] = isCountable;
     data['capacity'] = capacity;
     data['unit'] = unit;
+    data['deviceId'] = deviceId;
+    data['deviceName'] = deviceName;
     data['sectionId'] = sectionId;
     data['sectionName'] = sectionName;
     data['floorId'] = floorId;

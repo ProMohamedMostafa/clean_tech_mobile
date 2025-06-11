@@ -1,5 +1,6 @@
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
+import 'package:smart_cleaning_application/features/screens/sensor/sensor_managment/data/model/sensor_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_point/data/model/edit_point_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/point_users_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_list_model.dart';
@@ -150,4 +151,17 @@ class GetPointDetailsSuccessState extends EditPointState {
 class GetPointDetailsErrorState extends EditPointState {
   final String error;
   GetPointDetailsErrorState(this.error);
+}
+//**************************** */
+
+class SensorManagementLoading extends EditPointState {}
+
+class SensorManagementSuccess extends EditPointState {
+  final SensorModel sensorModel;
+  SensorManagementSuccess(this.sensorModel);
+}
+
+class SensorManagementError extends EditPointState {
+  final String error;
+  SensorManagementError(this.error);
 }

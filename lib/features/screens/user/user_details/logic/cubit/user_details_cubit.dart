@@ -151,7 +151,7 @@ class UserDetailsCubit extends Cubit<UserDetailsState> {
   DeleteUserModel? deleteUserModel;
   userDelete(int id) {
     emit(UserDeleteLoadingState());
-    DioHelper.postData(url: 'users/delete/$id', data: {'id': id}).then((value) {
+    DioHelper.postData(url: 'users/delete/$id').then((value) {
       deleteUserModel = DeleteUserModel.fromJson(value!.data);
       emit(UserDeleteSuccessState(deleteUserModel!));
     }).catchError((error) {

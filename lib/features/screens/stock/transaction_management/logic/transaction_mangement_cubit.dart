@@ -15,7 +15,6 @@ class TransactionManagementCubit extends Cubit<TransactionManagementState> {
 
   TextEditingController searchController = TextEditingController();
 
-  final formKey = GlobalKey<FormState>();
   ScrollController scrollController = ScrollController();
 
   int selectedIndex = 0;

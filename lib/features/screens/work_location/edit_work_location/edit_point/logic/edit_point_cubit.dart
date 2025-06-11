@@ -4,6 +4,7 @@ import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/sensor/sensor_managment/data/model/sensor_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_point/data/model/edit_point_model.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_point/logic/edit_point_state.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/point_users_details_model.dart';
@@ -31,6 +32,8 @@ class EditPointCubit extends Cubit<EditPointState> {
   TextEditingController pointDescriptionController = TextEditingController();
   TextEditingController capacityController = TextEditingController();
   TextEditingController unitController = TextEditingController();
+  TextEditingController sensorController = TextEditingController();
+  TextEditingController sensorIdController = TextEditingController();
   final allmanagersController = MultiSelectController<Users>();
   final allSupervisorsController = MultiSelectController<Users>();
   final allCleanersController = MultiSelectController<Users>();
@@ -83,6 +86,9 @@ class EditPointCubit extends Cubit<EditPointState> {
         "sectionId": sectionController.text.isEmpty
             ? pointUsersDetailsModel!.data!.sectionId
             : sectionIdController.text,
+        "deviceId": sensorController.text.isEmpty
+            ? pointUsersDetailsModel!.data!.deviceId
+            : sensorIdController.text,
         "userIds": [...?managersIds, ...?supervisorsIds, ...?cleanersIds],
       });
       editPointModel = PointEditModel.fromJson(response!.data);
@@ -174,6 +180,20 @@ class EditPointCubit extends Cubit<EditPointState> {
       emit(GetFloorSuccessState(floorsModel!));
     }).catchError((error) {
       emit(GetFloorErrorState(error.toString()));
+    });
+  }
+
+  SensorModel? sensorModel;
+  List<SensorItem> sensorItem = [SensorItem(name: 'No sensors')];
+  getSensorsData() {
+    emit(SensorManagementLoading());
+    DioHelper.getData(url: "devices", query: {'IsAsign': false}).then((value) {
+      sensorModel = SensorModel.fromJson(value!.data);
+      sensorItem = sensorModel?.data?.data ?? [SensorItem(name: 'No sensors')];
+
+      emit(SensorManagementSuccess(sensorModel!));
+    }).catchError((error) {
+      emit(SensorManagementError(error.toString()));
     });
   }
 }

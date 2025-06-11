@@ -23,23 +23,23 @@ Widget twoButtonsIntegration({
         label: firstLabel,
         onTap: onTap,
       ),
-      if (secondCount != null && secondLabel != null) ...[
+      if (secondCount != null || secondLabel != null) ...[
         horizontalSpace(10),
         _buildButton(
           index: 1,
           selectedIndex: selectedIndex,
           count: secondCount,
-          label: secondLabel,
+          label: secondLabel!,
           onTap: onTap,
         )
       ],
-      if (thirdCount != null && thirdLabel != null) ...[
+      if (thirdCount != null || thirdLabel != null) ...[
         horizontalSpace(10),
         _buildButton(
           index: 2,
           selectedIndex: selectedIndex,
           count: thirdCount,
-          label: thirdLabel,
+          label: thirdLabel!,
           onTap: onTap,
         ),
       ]
@@ -75,8 +75,8 @@ Widget _buildButton({
             displayText,
             textAlign: TextAlign.center,
             style: isSelected
-                ? TextStyles.font14WhiteRegular
-                : TextStyles.font14PrimRegular,
+                ? TextStyles.font13WhiteRegular
+                : TextStyles.font13PrimRegular,
           ),
         ),
       ),

@@ -11,6 +11,7 @@ import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
+import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/screens/settings/logic/settings_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/settings/logic/settings_state.dart';
 import 'package:smart_cleaning_application/features/screens/settings/ui/widgets/list_tile_widget.dart';
@@ -37,11 +38,7 @@ class SettingsBody extends StatelessWidget {
       },
       builder: (context, state) {
         if (cubit.profileModel == null) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: AppColor.primaryColor,
-            ),
-          );
+          return Loading();
         }
         return SingleChildScrollView(
           child: Column(

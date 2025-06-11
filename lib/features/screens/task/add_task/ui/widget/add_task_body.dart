@@ -14,6 +14,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_date_picker.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_time_picker.dart';
@@ -83,11 +84,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
           },
           builder: (context, state) {
             if (context.read<AddTaskCubit>().usersModel == null) {
-              return Center(
-                child: CircularProgressIndicator(
-                  color: AppColor.primaryColor,
-                ),
-              );
+              return Loading();
             }
 
             var items = context
@@ -957,10 +954,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                             : const SizedBox.shrink(),
                         verticalSpace(20),
                         state is AddTaskLoadingState
-                            ? const Center(
-                                child: CircularProgressIndicator(
-                                    color: AppColor.primaryColor),
-                              )
+                            ? Loading()
                             : Center(
                                 child: DefaultElevatedButton(
                                     name: "Create",

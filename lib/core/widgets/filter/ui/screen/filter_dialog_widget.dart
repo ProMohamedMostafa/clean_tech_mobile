@@ -10,6 +10,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/filter/logic/cubit/filter_dialog_cubit.dart';
 import 'package:smart_cleaning_application/core/widgets/filter/data/model/filter_dialog_data_model.dart';
+import 'package:smart_cleaning_application/core/widgets/filter/ui/widget/battery_indicator.dart';
 import 'package:smart_cleaning_application/core/widgets/filter/ui/widget/filter_top_widget.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_date_picker.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
@@ -27,12 +28,12 @@ class FilterDialogWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final FilterDialogCubit cubit = context.read<FilterDialogCubit>();
 
-    final List<String> filteredLevelOrder = cubit.levelOrder
-        .where((level) =>
-            !((index == 'A-h' || index == 'A-l' || index == 'T') &&
-                level == 'Country') &&
-            !(index == 'S' && (level == 'Country' || level == 'Point')))
-        .toList();
+    final List<String> filteredLevelOrder = cubit.levelOrder.where((level) {
+      if (index == 'Se') return level == 'Point';
+      return !((index == 'A-h' || index == 'A-l' || index == 'T') &&
+              level == 'Country') &&
+          !(index == 'S' && (level == 'Country' || level == 'Point'));
+    }).toList();
     return Dialog(
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
@@ -137,6 +138,83 @@ class FilterDialogWidget extends StatelessWidget {
                           keyboardType: TextInputType.text,
                           suffixIcon: IconBroken.arrowDown2,
                         ),
+                        verticalSpace(10),
+                      ],
+                      if (index == 'Se') ...[
+                        Text(
+                          'Activity status',
+                          style: TextStyles.font16BlackRegular,
+                        ),
+                        CustomDropDownList(
+                          hint: 'Select status',
+                          controller: cubit.activityStatusController,
+                          items: ['Active', 'InActive'],
+                          onChanged: (selectedValue) {
+                            if (selectedValue == 'Active') {
+                              cubit.activityStatusIdController.text = 'true';
+                            } else if (selectedValue == 'InActive') {
+                              cubit.activityStatusIdController.text = 'false';
+                            }
+                          },
+                          keyboardType: TextInputType.text,
+                          suffixIcon: IconBroken.arrowDown2,
+                        ),
+                        verticalSpace(10),
+                      ],
+                      if (index == 'Se') ...[
+                        Text(
+                          'Type',
+                          style: TextStyles.font16BlackRegular,
+                        ),
+                        CustomDropDownList(
+                          hint: 'Select type',
+                          controller: cubit.activityTypeController,
+                          items: cubit.activityTypeDataItem
+                              .map((e) => e.name ?? 'Unknown')
+                              .toList(),
+                          onChanged: (selectedValue) {
+                            final selectedId = cubit.activityTypeModel?.data
+                                ?.firstWhere(
+                                  (type) => type.name == selectedValue,
+                                )
+                                .id
+                                ?.toString();
+                            if (selectedId != null) {
+                              cubit.activityTypeIdController.text = selectedId;
+                            }
+                          },
+                          keyboardType: TextInputType.text,
+                          suffixIcon: IconBroken.arrowDown2,
+                        ),
+                        verticalSpace(10),
+                      ],
+                      if (index == 'W-p' || index == 'Se') ...[
+                        Text(
+                          'Is Asign',
+                          style: TextStyles.font16BlackRegular,
+                        ),
+                        CustomDropDownList(
+                          hint: 'Select',
+                          controller: cubit.isAsignController,
+                          items: ['True', 'False'],
+                          onChanged: (selectedValue) {
+                            if (selectedValue == 'True') {
+                              cubit.isAsignController.text = 'true';
+                            } else if (selectedValue == 'False') {
+                              cubit.isAsignController.text = 'false';
+                            }
+                          },
+                          keyboardType: TextInputType.text,
+                          suffixIcon: IconBroken.arrowDown2,
+                        ),
+                        verticalSpace(10),
+                      ],
+                      if (index == 'Se') ...[
+                        Text(
+                          'Battery',
+                          style: TextStyles.font16BlackRegular,
+                        ),
+                        BatterySlider(),
                         verticalSpace(10),
                       ],
                       if (index == 'T') ...[
@@ -791,16 +869,17 @@ class FilterDialogWidget extends StatelessWidget {
                         verticalSpace(10),
                       ],
                       if (!(index == 'W-a' ||
-                          index == 'W-c' ||
-                          index == 'W-o' ||
-                          index == 'W-b' ||
-                          index == 'W-f' ||
-                          index == 'W-s' ||
-                          index == 'W-p' ||
-                          index == 'A' ||
-                          index == 'S-c' ||
-                          index == 'S-m' ||
-                          index == 'S-t')) ...[
+                              index == 'W-c' ||
+                              index == 'W-o' ||
+                              index == 'W-b' ||
+                              index == 'W-f' ||
+                              index == 'W-s' ||
+                              index == 'W-p' ||
+                              index == 'A' ||
+                              index == 'S-c' ||
+                              index == 'S-m' ||
+                              index == 'S-t') ||
+                          index == 'Se') ...[
                         Text('Work location',
                             style: TextStyles.font16BlackRegular),
                         CustomDropDownList(
@@ -1107,6 +1186,11 @@ class FilterDialogWidget extends StatelessWidget {
                                 categoryId: cubit.parentCategoryIdController.text.isNotEmpty ? _tryParseInt(cubit.parentCategoryIdController.text) : null,
                                 unitId: cubit.unitIdController.text.isNotEmpty ? _tryParseInt(cubit.unitIdController.text) : null,
                                 transactionTypeId: cubit.transactionIdController.text.isNotEmpty ? _tryParseInt(cubit.transactionIdController.text) : null,
+                                applicationId: cubit.activityTypeIdController.text.isNotEmpty ? _tryParseInt(cubit.activityTypeIdController.text) : null,
+                                activityStatus: cubit.activityStatusIdController.text,
+                                minBattery: cubit.currentRange.start.round(),
+                                maxBattery: cubit.currentRange.end.round(),
+                                isAsign: cubit.isAsignController.text,
                                 startDate: startDate,
                                 endDate: endDate,
                                 date: date,

@@ -1,11 +1,12 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/country_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
+import 'package:smart_cleaning_application/features/screens/sensor/sensor_managment/data/model/activity_type_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/all_shifts_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/category_management_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
@@ -75,6 +76,11 @@ class FilterDialogCubit extends Cubit<FilterDialogState> {
   TextEditingController parentCategoryIdController = TextEditingController();
   TextEditingController transactionController = TextEditingController();
   TextEditingController transactionIdController = TextEditingController();
+  TextEditingController activityStatusController = TextEditingController();
+  TextEditingController activityStatusIdController = TextEditingController();
+  TextEditingController activityTypeController = TextEditingController();
+  TextEditingController activityTypeIdController = TextEditingController();
+  TextEditingController isAsignController = TextEditingController();
 
   CountryListModel? countryModel;
   List<CountryModel> countryData = [CountryModel(name: 'No countries')];
@@ -253,9 +259,7 @@ class FilterDialogCubit extends Cubit<FilterDialogState> {
   }
 
   ProvidersModel? providersModel;
-  List<Provider> providerItem = [
-    Provider(name: 'No providers available')
-  ];
+  List<Provider> providerItem = [Provider(name: 'No providers available')];
   getProviders() {
     emit(FilterDialogLoading<ProvidersModel>());
     DioHelper.getData(url: ApiConstants.allProvidersUrl).then((value) {
@@ -281,6 +285,22 @@ class FilterDialogCubit extends Cubit<FilterDialogState> {
       emit(FilterDialogSuccess<CategoryManagementModel>());
     }).catchError((error) {
       emit(FilterDialogError<CategoryManagementModel>());
+    });
+  }
+
+  ActivityTypeModel? activityTypeModel;
+  List<ActivityTypeDataItem> activityTypeDataItem = [
+    ActivityTypeDataItem(name: 'No types available')
+  ];
+  getActivityType() {
+    emit(FilterDialogLoading<ActivityTypeModel>());
+    DioHelper.getData(url: 'devices/applications').then((value) {
+      activityTypeModel = ActivityTypeModel.fromJson(value!.data);
+      activityTypeDataItem = activityTypeModel?.data ??
+          [ActivityTypeDataItem(name: 'No types available')];
+      emit(FilterDialogSuccess<ActivityTypeModel>());
+    }).catchError((error) {
+      emit(FilterDialogError<ActivityTypeModel>());
     });
   }
 
@@ -420,5 +440,12 @@ class FilterDialogCubit extends Cubit<FilterDialogState> {
   void updateActionsForModule(String module) {
     currentActions = moduleActions[module] ?? [];
     emit(ChangeActionsState());
+  }
+
+  RangeValues currentRange = const RangeValues(0, 100);
+
+  void updateRange(RangeValues newRange) {
+    currentRange = newRange;
+    emit(FilterDialogRangeUpdated());
   }
 }

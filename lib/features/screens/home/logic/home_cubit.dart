@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
@@ -11,6 +12,7 @@ import 'package:smart_cleaning_application/features/screens/home/data/model/comp
 import 'package:smart_cleaning_application/features/screens/home/data/model/material_count_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/shifts_count_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/stock_total_price_model.dart';
+import 'package:smart_cleaning_application/features/screens/home/data/model/task_chart_status_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/task_status_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/total_stock.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/users_count_model.dart';
@@ -24,6 +26,49 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitialState());
 
   static HomeCubit get(context) => BlocProvider.of(context);
+
+  void initializeHome() {
+    if (role == 'Admin') {
+      getUserDetails();
+      getUnReadNotification();
+      getUserStatus();
+      getMyActivities();
+      getTeamActivities();
+      getStockTotalPriceCount();
+      getMaterialCount();
+      getUsersCount();
+      getAttendanceStatus();
+      getShiftsCount();
+      getTaskData();
+      getChartTaskData();
+      getQuantity();
+      initialize();
+      getCompleteiontask();
+      initializeUser();
+    }
+    if (role == 'Manager' || role == 'Supervisor') {
+      getUserDetails();
+      getUnReadNotification();
+      getUserStatus();
+      getMyActivities();
+      getTeamActivities();
+      getUsersCount();
+      getAttendanceStatus();
+      getTaskData();
+      getChartTaskData();
+      getCompleteiontask();
+      initializeUser();
+    }
+    if (role == 'Cleaner') {
+      getUserDetails();
+      getUnReadNotification();
+      getUserStatus();
+      getAttendanceStatus();
+      getTaskData();
+      getChartTaskData();
+      getCompleteiontask();
+    }
+  }
 
   clockInOut() {
     emit(ClockInOutLoadingState());
@@ -288,20 +333,16 @@ class HomeCubit extends Cubit<HomeState> {
 
   ActivitiesModel? teamActivities;
   Future<void> getTeamActivities() async {
-    emit(ActivityLoadingState());
+    emit(ActivityTeamLoadingState());
     try {
       final value = await DioHelper.getData(
         url: "logs",
-        query: {
-          'PageNumber': 1,
-          'PageSize': 20,
-          'History': false,
-        },
+        query: {'PageNumber': 1, 'PageSize': 20, 'History': false},
       );
       teamActivities = ActivitiesModel.fromJson(value!.data);
-      emit(ActivitySuccessState(teamActivities!));
+      emit(ActivityTeamSuccessState(teamActivities!));
     } catch (error) {
-      emit(ActivityErrorState(error.toString()));
+      emit(ActivityTeamErrorState(error.toString()));
     }
   }
 
@@ -316,7 +357,7 @@ class HomeCubit extends Cubit<HomeState> {
       }
     } else {
       if (teamActivities != null) {
-        emit(ActivitySuccessState(teamActivities!));
+        emit(ActivityTeamSuccessState(teamActivities!));
       } else {
         getTeamActivities();
       }
@@ -501,6 +542,23 @@ class HomeCubit extends Cubit<HomeState> {
   String selectedChartTypeTask = 'Line';
   String selectedDateRangeTask = '..... - ..... ${DateTime.now().year}';
 
+  TaskChartStatusModel? taskChartStatusModel;
+  getChartTaskData(
+      {int? userId, String? startDate, String? endDate, int? priority}) {
+    emit(TaskChartStatusLoadingState());
+    DioHelper.getData(url: 'tasks/status', query: {
+      'UserId': userId,
+      'StartDate': startDate,
+      'EndDate': endDate,
+      'Priority': priority
+    }).then((value) {
+      taskChartStatusModel = TaskChartStatusModel.fromJson(value!.data);
+      emit(TaskChartStatusSuccessState(taskChartStatusModel!));
+    }).catchError((error) {
+      emit(TaskChartStatusErrorState(error.toString()));
+    });
+  }
+
   TaskStatusModel? taskStatusModel;
   getTaskData(
       {int? userId, String? startDate, String? endDate, int? priority}) {
@@ -602,6 +660,29 @@ class HomeCubit extends Cubit<HomeState> {
           endDate: _formatDateForApi(parsedDates.endDate!),
         );
       }
+    }
+  }
+
+  String selectedPriority = 'High';
+
+  final List<String> priorities = ['High', 'Medium', 'Low'];
+
+  final Map<String, Color> priorityColors = {
+    'High': Colors.red,
+    'Medium': Colors.orange,
+    'Low': Colors.green,
+  };
+
+  int? convertPriorityToInt(String priority) {
+    switch (priority) {
+      case 'High':
+        return 0;
+      case 'Medium':
+        return 1;
+      case 'Low':
+        return 2;
+      default:
+        return null;
     }
   }
 }

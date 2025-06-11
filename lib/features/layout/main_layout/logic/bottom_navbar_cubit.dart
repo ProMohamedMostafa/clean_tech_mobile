@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/features/layout/main_layout/logic/bottom_navbar_states.dart';
-import 'package:smart_cleaning_application/features/screens/calendar/ui/calendar_screen.dart';
 import 'package:smart_cleaning_application/features/screens/calendar/logic/calendar_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/calendar/ui/calendar_screen.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/screen/home_screen.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/screen/integrations_screen.dart';
@@ -22,22 +22,7 @@ class BottomNavbarCubit extends Cubit<BottomNavbarStates> {
 
   List<Widget> bottomNavbarScreens = [
     BlocProvider(
-      create: (context) => HomeCubit()
-        ..getUserDetails()
-        ..getMyActivities()
-        // ..getTeamActivities()
-        ..getQuantity()
-        ..getCompleteiontask()
-        ..getMaterialCount()
-        ..getStockTotalPriceCount()
-        ..getUsersCount()
-        ..getAttendanceStatus()
-        ..getShiftsCount()
-        ..getTaskData()
-        ..initializeUser()
-        ..initialize()
-        ..getUnReadNotification()
-        ..getUserStatus(),
+      create: (context) => HomeCubit()..initializeHome(),
       child: const HomeScreen(),
     ),
     const IntegrationsScreen(),

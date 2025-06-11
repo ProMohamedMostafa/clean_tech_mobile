@@ -57,7 +57,6 @@ class Shift extends StatelessWidget {
                     const Spacer(),
                     Container(
                       height: 20.h,
-                      width: 50.w,
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       decoration: BoxDecoration(
                         color: Colors.blue[100],
@@ -66,7 +65,7 @@ class Shift extends StatelessWidget {
                       ),
                       child: Center(
                         child: Text(
-                          '$activePercentage %',
+                          '${activePercentage.toStringAsFixed(2)} %',
                           style: TextStyles.font11lightPrimary,
                         ),
                       ),
@@ -80,13 +79,13 @@ class Shift extends StatelessWidget {
                       '$totalCount',
                       style: TextStyles.font18PrimBold,
                     ),
-                    horizontalSpace(30),
+                    Spacer(),
                     _statusBox(
                       color: Colors.redAccent,
                       text: '${S.of(context).inactive} $inactiveCount',
                       iconColor: Colors.redAccent,
                     ),
-                    const Spacer(),
+                    horizontalSpace(10),
                     _statusBox(
                       color: AppColor.primaryColor,
                       text: '${S.of(context).active} $activeCount',

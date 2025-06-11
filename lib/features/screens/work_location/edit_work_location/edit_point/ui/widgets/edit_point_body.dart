@@ -11,6 +11,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_description_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
@@ -39,6 +40,7 @@ class _EditPointBodyState extends State<EditPointBody> {
   void initState() {
     context.read<EditPointCubit>().getPointManagersDetails(widget.id);
     context.read<EditPointCubit>().getNationality();
+    context.read<EditPointCubit>().getSensorsData();
 
     super.initState();
   }
@@ -63,9 +65,7 @@ class _EditPointBodyState extends State<EditPointBody> {
           builder: (context, state) {
             final cubit = context.read<EditPointCubit>();
             if (cubit.pointUsersDetailsModel == null) {
-              return const Center(
-                child: CircularProgressIndicator(color: AppColor.primaryColor),
-              );
+             return Loading();
             }
 
             return Padding(
@@ -448,6 +448,56 @@ class _EditPointBodyState extends State<EditPointBody> {
                             .pointUsersDetailsModel!
                             .data!
                             .description!,
+                      ),
+                      verticalSpace(10),
+                      RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Sensor',
+                              style: TextStyles.font16BlackRegular,
+                            ),
+                            TextSpan(
+                              text: ' (Optional)',
+                              style: TextStyles.font14GreyRegular,
+                            ),
+                          ],
+                        ),
+                      ),
+                      CustomDropDownList(
+                        hint: 'Select sensor',
+                        controller:
+                            context.read<EditPointCubit>().sensorController,
+                        items: context
+                            .read<EditPointCubit>()
+                            .sensorItem
+                            .map((e) => e.name ?? 'Unknown')
+                            .toList(),
+                        onChanged: (value) {
+                          final selectedsensor = context
+                              .read<EditPointCubit>()
+                              .sensorModel
+                              ?.data
+                              ?.data
+                              ?.firstWhere((sensor) =>
+                                  sensor.name ==
+                                  context
+                                      .read<EditPointCubit>()
+                                      .sensorController
+                                      .text)
+                              .id
+                              ?.toString();
+
+                          if (selectedsensor != null) {
+                            context
+                                .read<EditPointCubit>()
+                                .sensorIdController
+                                .text = selectedsensor;
+                          }
+                        },
+                        suffixIcon: IconBroken.arrowDown2,
+                        keyboardType: TextInputType.text,
                       ),
                       verticalSpace(10),
                       context
@@ -923,10 +973,7 @@ class _EditPointBodyState extends State<EditPointBody> {
                       ],
                       verticalSpace(20),
                       state is EditPointLoadingState
-                          ? const Center(
-                              child: CircularProgressIndicator(
-                                  color: AppColor.primaryColor),
-                            )
+                          ? Loading()
                           : DefaultElevatedButton(
                               name: "Edit",
                               onPressed: () {

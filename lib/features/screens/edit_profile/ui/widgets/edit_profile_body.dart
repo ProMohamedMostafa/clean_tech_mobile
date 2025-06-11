@@ -14,6 +14,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
 import 'package:smart_cleaning_application/features/layout/main_layout/logic/bottom_navbar_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/edit_profile/logic/edit_profile_cubit.dart';
@@ -55,11 +56,7 @@ class _EditProfileBodyState extends State<EditProfileBody> {
         }
       }, builder: (context, state) {
         if (context.read<EditProfileCubit>().profileModel?.data! == null) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: AppColor.primaryColor,
-            ),
-          );
+          return Loading();
         }
         return SingleChildScrollView(
           child: Padding(
@@ -394,10 +391,7 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                   ),
                   verticalSpace(20),
                   state is EditProfileLoadingState
-                      ? const Center(
-                          child: CircularProgressIndicator(
-                              color: AppColor.primaryColor),
-                        )
+                      ? Loading()
                       : Center(
                           child: DefaultElevatedButton(
                               name: S.of(context).saveButtton,

@@ -13,3 +13,4 @@ final class FilterDialogError<T> extends FilterDialogState {}
 //**************** */
 class FilterDialogLevelChanged extends FilterDialogState {}
 class ChangeActionsState extends FilterDialogState {}
+class FilterDialogRangeUpdated extends FilterDialogState {}

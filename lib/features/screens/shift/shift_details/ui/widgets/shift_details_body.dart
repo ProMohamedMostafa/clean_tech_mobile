@@ -11,6 +11,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/logic/cubit/shift_details_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/ui/widgets/buildings/building_list_build.dart';
@@ -87,9 +88,7 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
         },
         builder: (context, state) {
           if (context.read<ShiftDetailsCubit>().shiftDetailsModel == null) {
-            return const Center(
-              child: CircularProgressIndicator(color: AppColor.primaryColor),
-            );
+           return Loading();
           }
 
           return SafeArea(

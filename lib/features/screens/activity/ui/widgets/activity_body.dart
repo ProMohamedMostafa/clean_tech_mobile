@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
@@ -46,14 +47,15 @@ class ActivityBody extends StatelessWidget {
                     onTap: cubit.changeTap,
                     firstCount: cubit.myActivities?.data?.totalCount ?? 0,
                     firstLabel: 'My Activity',
-                    secondCount: cubit.teamActivities?.data?.totalCount ?? 0,
-                    secondLabel: 'My Team Activity',
+                    secondCount: role != 'Cleaner'
+                        ? cubit.teamActivities?.data?.totalCount ?? 0
+                        : null,
+                    secondLabel: role != 'Cleaner' ? 'My Team Activity' : null,
                   ),
                   verticalSpace(5),
                   Divider(color: Colors.grey[300]),
                   Expanded(
-                    child:
-                        ActivityListDetailsBuild(),
+                    child: ActivityListDetailsBuild(),
                   ),
                   verticalSpace(10),
                 ],

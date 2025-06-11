@@ -8,6 +8,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_text_form_field/default_text_form_field.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/layout/main_layout/logic/bottom_navbar_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/auth/login/logic/login_cubit_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/auth/login/logic/login_cubit_state.dart';
@@ -84,10 +85,7 @@ class EmailAndPassword extends StatelessWidget {
               ),
               verticalSpace(60),
               state is LoginLoadingState
-                  ? const Center(
-                      child: CircularProgressIndicator(
-                          color: AppColor.primaryColor),
-                    )
+                  ?  Loading()
                   : DefaultElevatedButton(
                       width: 310,
                       height: 50,

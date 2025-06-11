@@ -13,6 +13,7 @@ class Routes {
   static const String workLocationScreen = '/organizationsScreen';
   static const String assignScreen = '/assignScreen';
   static const String shiftScreen = '/shiftScreen';
+  static const String sensorScreen = '/sensorScreen';
   static const String addUserScreen = '/addUserScreen';
   static const String userDetailsScreen = '/userDetailsScreen';
   static const String editUserScreen = '/editUserScreen';
@@ -73,6 +74,10 @@ class Routes {
   static const String transactionDetailsScreen = '/transactionDetailsScreen';
 
   static const String activityScreen = '/activityScreen';
+
+
+  static const String sensorAssignScreen = '/sensorAssignScreen';
+  static const String sensorDetailsScreen = '/sensorDetailsScreen';
 
   static const String notificationScreen = '/notificationScreen';
 }

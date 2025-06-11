@@ -25,7 +25,7 @@ class PointListModel {
       message: json['message'],
       error: json['error'],
       businessErrorCode: json['businessErrorCode'],
-      data: PointData.fromJson(json['data']),
+      data: json['data'] != null ? PointData.fromJson(json['data']) : null,
     );
   }
 }
@@ -38,6 +38,7 @@ class PointData {
   bool? hasPreviousPage;
   bool? hasNextPage;
   bool? succeeded;
+  String? meta;
   List<PointItem>? data;
 
   PointData({
@@ -48,6 +49,7 @@ class PointData {
     this.hasPreviousPage,
     this.hasNextPage,
     this.succeeded,
+    this.meta,
     this.data,
   });
 
@@ -60,8 +62,10 @@ class PointData {
       hasPreviousPage: json['hasPreviousPage'],
       hasNextPage: json['hasNextPage'],
       succeeded: json['succeeded'],
-      data:
-          List<PointItem>.from(json['data'].map((x) => PointItem.fromJson(x))),
+      meta: json['meta'],
+      data: json['data'] != null
+          ? List<PointItem>.from(json['data'].map((x) => PointItem.fromJson(x)))
+          : [],
     );
   }
 }
@@ -72,7 +76,7 @@ class PointItem {
   String? number;
   String? description;
   bool? isCountable;
-  int? capacity;
+  double? capacity;
   String? unit;
   int? sectionId;
   String? sectionName;
@@ -87,6 +91,9 @@ class PointItem {
   int? areaId;
   String? areaName;
   String? countryName;
+  String? deviceName;
+  int? deviceId;
+  bool? hasDevice;
 
   PointItem({
     this.id,
@@ -109,6 +116,9 @@ class PointItem {
     this.areaId,
     this.areaName,
     this.countryName,
+    this.deviceName,
+    this.deviceId,
+    this.hasDevice,
   });
 
   factory PointItem.fromJson(Map<String, dynamic> json) {
@@ -133,6 +143,9 @@ class PointItem {
       areaId: json['areaId'],
       areaName: json['areaName'],
       countryName: json['countryName'],
+      deviceName: json['deviceName'],
+      deviceId: json['deviceId'],
+      hasDevice: json['hasDevice'],
     );
   }
 }

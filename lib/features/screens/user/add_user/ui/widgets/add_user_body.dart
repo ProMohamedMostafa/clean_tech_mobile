@@ -14,6 +14,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/screens/auth/set_password/ui/widgets/password_validation.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/logic/add_user_cubit.dart';
@@ -734,10 +735,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                     ),
                     verticalSpace(20),
                     state is AddUserLoadingState
-                        ? const Center(
-                            child: CircularProgressIndicator(
-                                color: AppColor.primaryColor),
-                          )
+                        ? Loading()
                         : Center(
                             child: DefaultElevatedButton(
                                 name: S.of(context).saveButtton,
