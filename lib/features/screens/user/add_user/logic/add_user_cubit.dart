@@ -8,8 +8,8 @@ import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/country_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/all_deleted_providers_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
+import 'package:smart_cleaning_application/features/screens/provider/provider_management/data/models/all_deleted_providers_model.dart';
+import 'package:smart_cleaning_application/features/screens/provider/provider_management/data/models/providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/user_create.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/logic/add_user_state.dart';
 
@@ -44,7 +44,6 @@ class AddUserCubit extends Cubit<AddUserState> {
   TextEditingController restoreProviderController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
-  final formAddKey = GlobalKey<FormState>();
   List<int> selectedShiftsIds = [];
 
   UserCreateModel? userCreateModel;
@@ -89,68 +88,24 @@ class AddUserCubit extends Cubit<AddUserState> {
     }
   }
 
-  addProvider() {
-    emit(AddProviderLoadingState());
-    DioHelper.postData(url: ApiConstants.userCreateProviderUrl, data: {
-      "name": providerController.text,
-    }).then((value) {
-      final message = value?.data['message'] ?? "Created Successfully";
-      providerController.clear();
-      providerIdController.clear();
-      emit(AddProviderSuccessState(message!));
-    }).catchError((error) {
-      emit(AddProviderErrorState(error.toString()));
-    });
-  }
+  
 
-  deleteProvider(String id) {
-    emit(DeletedProviderLoadingState());
-    DioHelper.postData(url: 'providers/delete/$id', data: {'id': id})
-        .then((value) {
-      final message = value?.data['message'] ?? "deleted successfully";
-      deletedProviderController.clear();
-      emit(DeletedProviderSuccessState(message!));
-    }).catchError((error) {
-      emit(DeletedProviderErrorState(error.toString()));
-    });
-  }
 
-  restoreDeletedProvider(String id) {
-    emit(RestoreProviderLoadingState());
-    DioHelper.postData(url: 'providers/restore/$id', data: {'id': id})
-        .then((value) {
-      final message = value?.data['message'] ?? "restored successfully";
-      restoreProviderController.clear();
-      emit(RestoreProviderSuccessState(message));
-    }).catchError((error) {
-      emit(RestoreProviderErrorState(error.toString()));
-    });
-  }
 
   AllDeletedProvidersModel? allDeletedProvidersModel;
   List<DeletedProviderData> deletedproviderItem = [
     DeletedProviderData(name: 'No Deleted Provider Item')
   ];
-  getAllDeletedProviders() {
-    emit(AllDeletedrovidersLoadingState());
-    DioHelper.getData(url: ApiConstants.deletedProvidersListUrl).then((value) {
-      allDeletedProvidersModel = AllDeletedProvidersModel.fromJson(value!.data);
-      deletedproviderItem = allDeletedProvidersModel?.data ??
-          [DeletedProviderData(name: 'No Deleted Provider Item')];
-      emit(AllDeletedrovidersSuccessState(allDeletedProvidersModel!));
-    }).catchError((error) {
-      emit(AllDeletedrovidersErrorState(error.toString()));
-    });
-  }
+ 
 
   ProvidersModel? providersModel;
-  List<Provider> providerItem = [Provider(name: 'No providers available')];
+  List<ProviderItem> providerItem = [ProviderItem(name: 'No providers available')];
   getProviders() {
     emit(AllProvidersLoadingState());
     DioHelper.getData(url: ApiConstants.allProvidersUrl).then((value) {
       providersModel = ProvidersModel.fromJson(value!.data);
-      providerItem = providersModel?.data?.providers ??
-          [Provider(name: 'No providers available')];
+      providerItem = providersModel?.data?.data ??
+          [ProviderItem(name: 'No providers available')];
       emit(AllProvidersSuccessState(providersModel!));
     }).catchError((error) {
       emit(AllProvidersErrorState(error.toString()));

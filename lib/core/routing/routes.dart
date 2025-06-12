@@ -79,5 +79,9 @@ class Routes {
   static const String sensorAssignScreen = '/sensorAssignScreen';
   static const String sensorDetailsScreen = '/sensorDetailsScreen';
 
+  static const String providerScreen = '/providerScreen';
+
+
+
   static const String notificationScreen = '/notificationScreen';
 }

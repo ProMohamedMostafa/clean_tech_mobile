@@ -15,6 +15,7 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_edit/logic/leaves_edit_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_edit/logic/leaves_edit_state.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_date_picker.dart';
@@ -44,7 +45,7 @@ class _LeavesEditBodyState extends State<LeavesEditBody> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Edit"),
-        leading: customBackButton(context),
+        leading: CustomBackButton(),
       ),
       body: BlocConsumer<LeavesEditCubit, LeavesEditState>(
         listener: (context, state) {
@@ -60,7 +61,7 @@ class _LeavesEditBodyState extends State<LeavesEditBody> {
         },
         builder: (context, state) {
           if (context.read<LeavesEditCubit>().leavesDetailsModel == null) {
-           return Loading();
+            return Loading();
           }
           return SafeArea(
             child: SingleChildScrollView(
@@ -266,7 +267,7 @@ class _LeavesEditBodyState extends State<LeavesEditBody> {
                                       MaterialPageRoute(
                                         builder: (contextt) => Scaffold(
                                           appBar: AppBar(
-                                            leading: customBackButton(context),
+                                            leading: CustomBackButton(),
                                           ),
                                           body: Center(
                                             child: PhotoView(
@@ -315,8 +316,7 @@ class _LeavesEditBodyState extends State<LeavesEditBody> {
                                         MaterialPageRoute(
                                           builder: (contextt) => Scaffold(
                                             appBar: AppBar(
-                                              leading:
-                                                  customBackButton(context),
+                                              leading: CustomBackButton(),
                                             ),
                                             body: Center(
                                               child: PhotoView(
@@ -391,18 +391,30 @@ class _LeavesEditBodyState extends State<LeavesEditBody> {
                       ),
                       verticalSpace(20),
                       state is LeavesEditLoadingState
-                          ?  Loading()
+                          ? Loading()
                           : Center(
                               child: DefaultElevatedButton(
                                   name: 'Edit',
                                   onPressed: () {
-                                    context.read<LeavesEditCubit>().editLeaves(
-                                        context
-                                            .read<LeavesEditCubit>()
-                                            .image
-                                            ?.path,
-                                        widget.id,
-                                        typeId);
+                                    showDialog(
+                                        context: context,
+                                        builder: (dialogContext) {
+                                          return PopUpMeassage(
+                                              title: 'edit',
+                                              body: 'leave',
+                                              onPressed: () {
+                                                context
+                                                    .read<LeavesEditCubit>()
+                                                    .editLeaves(
+                                                        context
+                                                            .read<
+                                                                LeavesEditCubit>()
+                                                            .image
+                                                            ?.path,
+                                                        widget.id,
+                                                        typeId);
+                                              });
+                                        });
                                   },
                                   color: AppColor.primaryColor,
                                   height: 47,

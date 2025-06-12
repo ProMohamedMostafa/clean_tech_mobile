@@ -10,7 +10,7 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
-import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_date_picker.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
@@ -26,8 +26,7 @@ class EditShiftBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<EditShiftCubit>();
     return Scaffold(
-        appBar: AppBar(
-            title: Text("Edit Shift"), leading: customBackButton(context)),
+        appBar: AppBar(title: Text("Edit Shift"), leading: CustomBackButton()),
         body: BlocConsumer<EditShiftCubit, EditShiftState>(
           listener: (context, state) {
             if (state is EditShiftSuccessState) {
@@ -346,14 +345,18 @@ class EditShiftBody extends StatelessWidget {
                                     onPressed: () {
                                       if (cubit.formKey.currentState!
                                           .validate()) {
-                                        showCustomDialog(context,
-                                            "Are you Sure you want save the edit of this shift ?",
-                                            () {
-                                          context
-                                              .read<EditShiftCubit>()
-                                              .editShift(id);
-                                          context.pop();
-                                        });
+                                        showDialog(
+                                            context: context,
+                                            builder: (dialogContext) {
+                                              return PopUpMeassage(
+                                                  title: 'edit',
+                                                  body: 'shift',
+                                                  onPressed: () {
+                                                    context
+                                                        .read<EditShiftCubit>()
+                                                        .editShift(id);
+                                                  });
+                                            });
                                       }
                                     },
                                     color: AppColor.primaryColor,

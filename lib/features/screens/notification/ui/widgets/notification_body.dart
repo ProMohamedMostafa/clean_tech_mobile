@@ -31,7 +31,7 @@ class NotificationBody extends StatelessWidget {
         final isRead = context.read<NotificationCubit>().allNotificationsRead();
         return Scaffold(
           appBar: AppBar(
-            leading: customBackButton(context),
+            leading: CustomBackButton(),
             title: Text(S.of(context).notifications),
             actions: [
               InkWell(

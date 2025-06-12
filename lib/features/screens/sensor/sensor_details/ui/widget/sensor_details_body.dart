@@ -10,6 +10,7 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/sensor/sensor_details/logic/cubit/sensor_details_cubit.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
@@ -24,7 +25,7 @@ class SensorDetailsBody extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Sensor details'),
-        leading: customBackButton(context),
+        leading: CustomBackButton(),
         actions: [
           IconButton(
               onPressed: () {
@@ -67,7 +68,7 @@ class SensorDetailsBody extends StatelessWidget {
         },
         builder: (context, state) {
           if (cubit.sensorDetailsModel == null) {
-          return Loading();
+            return Loading();
           }
           return SingleChildScrollView(
             child: Padding(
@@ -392,9 +393,28 @@ class SensorDetailsBody extends StatelessWidget {
                                         if (cubit.sensorDetailsModel?.data
                                                 ?.limit ==
                                             null) {
-                                          cubit.createLimitSensor(id);
+                                          showDialog(
+                                              context: context,
+                                              builder: (dialogContext) {
+                                                return PopUpMeassage(
+                                                    title: 'add',
+                                                    body: 'limit',
+                                                    onPressed: () {
+                                                      cubit.createLimitSensor(
+                                                          id);
+                                                    });
+                                              });
                                         } else {
-                                          cubit.editLimitSensor(id);
+                                          showDialog(
+                                              context: context,
+                                              builder: (dialogContext) {
+                                                return PopUpMeassage(
+                                                    title: 'edit',
+                                                    body: 'limit',
+                                                    onPressed: () {
+                                                      cubit.editLimitSensor(id);
+                                                    });
+                                              });
                                         }
                                       },
                                       style: ElevatedButton.styleFrom(
@@ -430,7 +450,16 @@ class SensorDetailsBody extends StatelessWidget {
                                     width: 72.w,
                                     child: ElevatedButton(
                                       onPressed: () {
-                                        cubit.deletelimit(id);
+                                        showDialog(
+                                            context: context,
+                                            builder: (dialogContext) {
+                                              return PopUpMeassage(
+                                                  title: 'delete',
+                                                  body: 'limit',
+                                                  onPressed: () {
+                                                    cubit.deletelimit(id);
+                                                  });
+                                            });
                                       },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.red,
@@ -533,7 +562,16 @@ class SensorDetailsBody extends StatelessWidget {
                           child: DefaultElevatedButton(
                               name: S.of(context).deleteButton,
                               onPressed: () {
-                                cubit.deleteSensor(id);
+                                showDialog(
+                                    context: context,
+                                    builder: (dialogContext) {
+                                      return PopUpMeassage(
+                                          title: 'delete',
+                                          body: 'sensor',
+                                          onPressed: () {
+                                            cubit.deleteSensor(id);
+                                          });
+                                    });
                               },
                               color: Colors.red,
                               height: 48,

@@ -25,7 +25,7 @@ class WorkLocationBody extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        leading: customBackButton(context),
+        leading: CustomBackButton(),
         title: const Text('Work Location'),
       ),
       floatingActionButton: role == 'Admin'

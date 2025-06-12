@@ -43,13 +43,13 @@ class CompletetionTaskModel {
 
 class Data {
   List<String>? labels;
-  List<int>? values;
+  List<num>? values;
 
   Data({this.labels, this.values});
 
   Data.fromJson(Map<String, dynamic> json) {
     labels = json['labels'].cast<String>();
-    values = json['values'].cast<int>();
+    values = json['values'].cast<num>();
   }
 
   Map<String, dynamic> toJson() {

@@ -58,7 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen>
           style: TextStyles.font16BlackSemiBold,
         ),
         centerTitle: true,
-        leading: customBackButton(context),
+        leading: CustomBackButton(),
         actions: [
           IconButton(
             onPressed: () {
@@ -119,7 +119,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                               MaterialPageRoute(
                                 builder: (contextt) => Scaffold(
                                   appBar: AppBar(
-                                    leading: customBackButton(context),
+                                    leading: CustomBackButton(),
                                   ),
                                   body: Center(
                                     child: PhotoView(

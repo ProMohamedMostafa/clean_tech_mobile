@@ -23,7 +23,7 @@ class MaterialManagmentBody extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Material Management'),
-        leading: customBackButton(context),
+        leading: CustomBackButton(),
       ),
       floatingActionButton: floatingActionButton(
         icon: Icons.library_add,

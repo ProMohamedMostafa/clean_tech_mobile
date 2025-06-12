@@ -33,7 +33,7 @@ class StockQuantityBody extends StatelessWidget {
                 ?.fold<int>(0, (a, b) => a + b) ??
             0;
         List<(String, String)> providerDropdownItems = cubit
-                .providersModel?.data?.providers
+                .providersModel?.data?.data
                 ?.map((provider) =>
                     (provider.id.toString(), provider.name ?? 'Unknown'))
                 .toList() ??

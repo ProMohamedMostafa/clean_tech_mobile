@@ -12,7 +12,7 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
-import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/logic/cubit/work_location_details_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/ui/widgets/attendance_list_item_build.dart';
@@ -549,7 +549,7 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                                   ? 'Section details'
                                   : 'Point details',
         ),
-        leading: customBackButton(context),
+        leading: CustomBackButton(),
         actions: [
           IconButton(
             onPressed: () {
@@ -686,7 +686,7 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
               (widget.selectedIndex == 6 &&
                   (context.read<WorkLocationDetailsCubit>().pointUsersDetailsModel ==
                       null))) {
-           return Loading();
+            return Loading();
           }
 
           return SafeArea(
@@ -823,41 +823,62 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                     DefaultElevatedButton(
                         name: S.of(context).deleteButton,
                         onPressed: () {
-                          showCustomDialog(context, S.of(context).deleteMessage,
-                              () {
-                            widget.selectedIndex == 0
-                                ? context
-                                    .read<WorkLocationDetailsCubit>()
-                                    .deleteArea(widget.id)
-                                : widget.selectedIndex == 1
-                                    ? context
-                                        .read<WorkLocationDetailsCubit>()
-                                        .deleteCity(widget.id)
-                                    : widget.selectedIndex == 2
-                                        ? context
-                                            .read<WorkLocationDetailsCubit>()
-                                            .deleteOrganization(widget.id)
-                                        : widget.selectedIndex == 3
-                                            ? context
-                                                .read<
-                                                    WorkLocationDetailsCubit>()
-                                                .deleteBuilding(widget.id)
-                                            : widget.selectedIndex == 4
-                                                ? context
-                                                    .read<
-                                                        WorkLocationDetailsCubit>()
-                                                    .deleteFloor(widget.id)
-                                                : widget.selectedIndex == 5
-                                                    ? context
-                                                        .read<
-                                                            WorkLocationDetailsCubit>()
-                                                        .deleteSection(
-                                                            widget.id)
-                                                    : context
-                                                        .read<
-                                                            WorkLocationDetailsCubit>()
-                                                        .deletePoint(widget.id);
-                          });
+                          showDialog(
+                              context: context,
+                              builder: (dialogContext) {
+                                return PopUpMeassage(
+                                    title: 'delete',
+                                    body: widget.selectedIndex == 0
+                                        ? "area"
+                                        : widget.selectedIndex == 1
+                                            ? "city"
+                                            : widget.selectedIndex == 2
+                                                ? "organization"
+                                                : widget.selectedIndex == 3
+                                                    ? "building"
+                                                    : widget.selectedIndex == 4
+                                                        ? "floor"
+                                                        : widget.selectedIndex ==
+                                                                5
+                                                            ? "section"
+                                                            : "point",
+                                    onPressed: () {
+                                      widget.selectedIndex == 0
+                                          ? context
+                                              .read<WorkLocationDetailsCubit>()
+                                              .deleteArea(widget.id)
+                                          : widget.selectedIndex == 1
+                                              ? context
+                                                  .read<
+                                                      WorkLocationDetailsCubit>()
+                                                  .deleteCity(widget.id)
+                                              : widget.selectedIndex == 2
+                                                  ? context
+                                                      .read<
+                                                          WorkLocationDetailsCubit>()
+                                                      .deleteOrganization(
+                                                          widget.id)
+                                                  : widget.selectedIndex == 3
+                                                      ? context
+                                                          .read<
+                                                              WorkLocationDetailsCubit>()
+                                                          .deleteBuilding(
+                                                              widget.id)
+                                                      : widget.selectedIndex ==
+                                                              4
+                                                          ? context
+                                                              .read<
+                                                                  WorkLocationDetailsCubit>()
+                                                              .deleteFloor(
+                                                                  widget.id)
+                                                          : widget.selectedIndex ==
+                                                                  5
+                                                              ? context
+                                                                  .read<WorkLocationDetailsCubit>()
+                                                                  .deleteSection(widget.id)
+                                                              : context.read<WorkLocationDetailsCubit>().deletePoint(widget.id);
+                                    });
+                              });
                         },
                         color: Colors.red,
                         height: 48,

@@ -16,7 +16,7 @@ class SensorBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<SensorCubit>();
     return Scaffold(
-      appBar: AppBar(title: Text('Sensor'), leading: customBackButton(context)),
+      appBar: AppBar(title: Text('Sensor'), leading: CustomBackButton()),
       body: BlocConsumer<SensorCubit, SensorState>(
         listener: (context, state) {
           if (state is RestoreSensorSuccessState) {

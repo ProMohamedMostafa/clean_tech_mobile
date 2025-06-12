@@ -55,7 +55,7 @@ class SettingsBody extends StatelessWidget {
                             MaterialPageRoute(
                               builder: (contextt) => Scaffold(
                                 appBar: AppBar(
-                                  leading: customBackButton(context),
+                                  leading: CustomBackButton(),
                                 ),
                                 body: Center(
                                   child: PhotoView(

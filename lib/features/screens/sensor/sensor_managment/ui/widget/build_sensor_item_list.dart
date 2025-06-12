@@ -7,6 +7,7 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/sensor/sensor_managment/logic/cubit/sensor_cubit.dart';
 
 class BuildSensorItemList extends StatelessWidget {
@@ -127,8 +128,19 @@ class BuildSensorItemList extends StatelessWidget {
                       icon: Icons.replay_outlined,
                       color: Colors.green,
                       onPressed: () {
-                        cubit.restoreDeletedSensor(
-                            cubit.deletedSensorListModel!.data![index].id!);
+                        showDialog(
+                            context: context,
+                            builder: (dialogContext) {
+                              return PopUpMeassage(
+                                  title: 'restore',
+                                  body: 'sensor',
+                                  onPressed: () {
+                                    cubit.restoreDeletedSensor(cubit
+                                        .deletedSensorListModel!
+                                        .data![index]
+                                        .id!);
+                                  });
+                            });
                       },
                     ),
             ),

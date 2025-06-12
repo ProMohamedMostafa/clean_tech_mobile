@@ -6,10 +6,10 @@ import 'package:smart_cleaning_application/features/screens/integrations/data/mo
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
+import 'package:smart_cleaning_application/features/screens/provider/provider_management/data/models/providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/sensor/sensor_managment/data/model/activity_type_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/all_shifts_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/category_management_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_list_model.dart';
@@ -259,13 +259,13 @@ class FilterDialogCubit extends Cubit<FilterDialogState> {
   }
 
   ProvidersModel? providersModel;
-  List<Provider> providerItem = [Provider(name: 'No providers available')];
+  List<ProviderItem> providerItem = [ProviderItem(name: 'No providers available')];
   getProviders() {
     emit(FilterDialogLoading<ProvidersModel>());
     DioHelper.getData(url: ApiConstants.allProvidersUrl).then((value) {
       providersModel = ProvidersModel.fromJson(value!.data);
-      providerItem = providersModel?.data?.providers ??
-          [Provider(name: 'No providers available')];
+      providerItem = providersModel?.data?.data ??
+          [ProviderItem(name: 'No providers available')];
       emit(FilterDialogSuccess<ProvidersModel>());
     }).catchError((error) {
       emit(FilterDialogError<ProvidersModel>());

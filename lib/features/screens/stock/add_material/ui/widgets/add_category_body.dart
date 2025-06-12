@@ -38,10 +38,10 @@ class _AddMaterialBodyState extends State<AddMaterialBody> {
         appBar: AppBar(
           title: Text(
             "Create Material",
-            style: TextStyles.font16BlackSemiBold,
+           
           ),
-          centerTitle: true,
-          leading: customBackButton(context),
+      
+          leading: CustomBackButton(),
         ),
         body: BlocConsumer<AddMaterialCubit, AddMaterialState>(
           listener: (context, state) {

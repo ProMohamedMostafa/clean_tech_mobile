@@ -16,6 +16,7 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
 import 'package:smart_cleaning_application/features/screens/task/view_task/logic/cubit/task_details_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/task/view_task/ui/widget/current_read_dialog_.dart';
@@ -92,7 +93,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Task details"),
-        leading: customBackButton(context),
+        leading: CustomBackButton(),
         actions: [
           role == 'Cleaner'
               ? SizedBox.shrink()
@@ -130,10 +131,18 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
           if (state is GetChangeTaskStatusErrorState) {
             toast(text: state.error, color: Colors.red);
           }
+
+          if (state is TaskDeleteSuccessState) {
+            toast(text: state.deleteTaskModel.message!, color: Colors.blue);
+            context.pushNamedAndRemoveLastTwo(Routes.taskManagementScreen);
+          }
+          if (state is TaskDeleteErrorState) {
+            toast(text: state.error, color: Colors.red);
+          }
         },
         builder: (context, state) {
           if (context.read<TaskDetailsCubit>().taskDetailsModel == null) {
-           return Loading();
+            return Loading();
           }
 
           String taskPriority = context
@@ -669,7 +678,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                 MaterialPageRoute(
                                   builder: (contextt) => Scaffold(
                                     appBar: AppBar(
-                                      leading: customBackButton(context),
+                                      leading: CustomBackButton(),
                                     ),
                                     body: Center(
                                       child: PhotoView(
@@ -784,8 +793,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                               MaterialPageRoute(
                                                 builder: (contextt) => Scaffold(
                                                   appBar: AppBar(
-                                                    leading: customBackButton(
-                                                        context),
+                                                    leading: CustomBackButton(),
                                                   ),
                                                   body: Center(
                                                     child: PhotoView(
@@ -874,8 +882,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                               Scaffold(
                                                             appBar: AppBar(
                                                               leading:
-                                                                  customBackButton(
-                                                                      context),
+                                                                  CustomBackButton(),
                                                             ),
                                                             body: Center(
                                                               child: PhotoView(
@@ -1072,7 +1079,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                               MaterialPageRoute(
                                 builder: (contextt) => Scaffold(
                                   appBar: AppBar(
-                                    leading: customBackButton(context),
+                                    leading: CustomBackButton(),
                                   ),
                                   body: Center(
                                     child: PhotoView(
@@ -1326,7 +1333,27 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                       "Completed")
                                               ? DefaultElevatedButton(
                                                   name: "Delete",
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    showDialog(
+                                                        context: context,
+                                                        builder:
+                                                            (dialogContext) {
+                                                          return PopUpMeassage(
+                                                              title: 'delete',
+                                                              body: 'task',
+                                                              onPressed: () {
+                                                                context
+                                                                    .read<
+                                                                        TaskDetailsCubit>()
+                                                                    .taskDelete(context
+                                                                        .read<
+                                                                            TaskDetailsCubit>()
+                                                                        .taskDetailsModel!
+                                                                        .data!
+                                                                        .id!);
+                                                              });
+                                                        });
+                                                  },
                                                   color: Colors.red,
                                                   height: 48.h,
                                                   width: double.infinity,
@@ -1386,7 +1413,23 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                           children: [
                                                             DefaultElevatedButton(
                                                               name: "Delete",
-                                                              onPressed: () {},
+                                                              onPressed: () {
+                                                                showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (dialogContext) {
+                                                                      return PopUpMeassage(
+                                                                          title:
+                                                                              'delete',
+                                                                          body:
+                                                                              'task',
+                                                                          onPressed:
+                                                                              () {
+                                                                            context.read<TaskDetailsCubit>().taskDelete(context.read<TaskDetailsCubit>().taskDetailsModel!.data!.id!);
+                                                                          });
+                                                                    });
+                                                              },
                                                               color: Colors.red,
                                                               height: 48.h,
                                                               width: 157.w,

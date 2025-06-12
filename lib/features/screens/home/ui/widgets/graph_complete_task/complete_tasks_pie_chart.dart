@@ -21,7 +21,7 @@ class _CompleteTasksPieChartState extends State<CompleteTasksPieChart> {
     // Ensure there's data in the model
     if (widget.completeTaskData!.data != null) {
       List<String> labels = widget.completeTaskData!.data!.labels ?? [];
-      List<int> values = widget.completeTaskData!.data!.values ?? [];
+      List<num> values = widget.completeTaskData!.data!.values ?? [];
 
       // Return chart data based on the available data
       return List.generate(
@@ -110,7 +110,7 @@ class _CompleteTasksPieChartState extends State<CompleteTasksPieChart> {
                   ),
                   Text(
                     chartDataList
-                        .fold(0, (sum, item) => sum + item.value)
+                        .fold(0, (sum, item) => sum + item.value.toInt())
                         .toString(),
                     style: TextStyles.font12BlackSemi,
                   ),

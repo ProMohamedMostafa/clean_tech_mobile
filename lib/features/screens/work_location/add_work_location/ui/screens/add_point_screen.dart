@@ -48,9 +48,9 @@ class _AddPointScreenState extends State<AddPointScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: customBackButton(context),
-        title: Text('Add Point', style: TextStyles.font16BlackSemiBold),
-        centerTitle: true,
+        leading: CustomBackButton(),
+        title: Text('Add Point'),
+       
       ),
       body: SafeArea(
         child: SingleChildScrollView(

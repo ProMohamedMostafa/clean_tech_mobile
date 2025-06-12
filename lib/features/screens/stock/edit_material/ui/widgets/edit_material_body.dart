@@ -10,6 +10,7 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_description_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
@@ -40,10 +41,8 @@ class _EditMaterialBodyState extends State<EditMaterialBody> {
         appBar: AppBar(
           title: Text(
             "Edit Material",
-            style: TextStyles.font16BlackSemiBold,
           ),
-          centerTitle: true,
-          leading: customBackButton(context),
+          leading: CustomBackButton(),
         ),
         body: BlocConsumer<EditMaterialCubit, EditMaterialState>(
           listener: (context, state) {
@@ -60,7 +59,7 @@ class _EditMaterialBodyState extends State<EditMaterialBody> {
                     null ||
                 context.read<EditMaterialCubit>().categoryManagementModel ==
                     null) {
-             return Loading();
+              return Loading();
             }
             return SafeArea(
                 child: SingleChildScrollView(
@@ -120,7 +119,7 @@ class _EditMaterialBodyState extends State<EditMaterialBody> {
                                       .categoryManagementModel
                                       ?.data
                                       ?.categories
-                                     ?.isEmpty ??
+                                      ?.isEmpty ??
                                   true
                               ? ['No category']
                               : context
@@ -137,7 +136,7 @@ class _EditMaterialBodyState extends State<EditMaterialBody> {
                                 .categoryManagementModel
                                 ?.data
                                 ?.categories
-                               ?.firstWhere((category) =>
+                                ?.firstWhere((category) =>
                                     category.name ==
                                     context
                                         .read<EditMaterialCubit>()
@@ -226,12 +225,22 @@ class _EditMaterialBodyState extends State<EditMaterialBody> {
                                           .formKey
                                           .currentState!
                                           .validate()) {
-                                        context
-                                            .read<EditMaterialCubit>()
-                                            .editMaterial(
-                                              widget.id,
-                                              categoryId,
-                                            );
+                                        showDialog(
+                                            context: context,
+                                            builder: (dialogContext) {
+                                              return PopUpMeassage(
+                                                  title: 'edit',
+                                                  body: 'material',
+                                                  onPressed: () {
+                                                    context
+                                                        .read<
+                                                            EditMaterialCubit>()
+                                                        .editMaterial(
+                                                          widget.id,
+                                                          categoryId,
+                                                        );
+                                                  });
+                                            });
                                       }
                                     },
                                     color: AppColor.primaryColor,

@@ -8,7 +8,7 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
 
 class WorkLocationListItemBuild extends StatelessWidget {
@@ -158,44 +158,60 @@ class WorkLocationListItemBuild extends StatelessWidget {
                       horizontalSpace(10),
                       InkWell(
                           onTap: () {
-                            showCustomDialog(
-                                context, 'Are you want to delete ?', () {
-                              selectedIndex == 0
-                                  ? cubit.deleteArea(
-                                      cubit.areaModel!.data!.data![index].id!)
-                                  : selectedIndex == 1
-                                      ? cubit.deleteCity(cubit
-                                          .cityModel!.data!.data![index].id!)
-                                      : selectedIndex == 2
-                                          ? cubit.deleteOrganization(cubit
-                                              .organizationModel!
-                                              .data!
-                                              .data![index]
-                                              .id!)
-                                          : selectedIndex == 3
-                                              ? cubit.deleteBuilding(cubit
-                                                  .buildingModel!
-                                                  .data!
-                                                  .data![index]
-                                                  .id!)
-                                              : selectedIndex == 4
-                                                  ? cubit.deleteFloor(cubit
-                                                      .floorModel!
-                                                      .data!
-                                                      .data![index]
-                                                      .id!)
-                                                  : selectedIndex == 5
-                                                      ? cubit.deleteSection(
-                                                          cubit
-                                                              .sectionModel!
-                                                              .data!
-                                                              .data![index]
-                                                              .id!)
-                                                      : cubit.deletePoint(
-                                                          cubit.pointModel!.data!.data![index].id!);
-
-                              context.pop();
-                            });
+                            showDialog(
+                                context: context,
+                                builder: (dialogContext) {
+                                  return PopUpMeassage(
+                                      title: 'delete',
+                                      body: selectedIndex == 0
+                                          ? "area"
+                                          : selectedIndex == 1
+                                              ? "city"
+                                              : selectedIndex == 2
+                                                  ? "organization"
+                                                  : selectedIndex == 3
+                                                      ? "building"
+                                                      : selectedIndex == 4
+                                                          ? "floor"
+                                                          : selectedIndex == 5
+                                                              ? "section"
+                                                              : "point",
+                                      onPressed: () {
+                                        selectedIndex == 0
+                                            ? cubit.deleteArea(cubit.areaModel!
+                                                .data!.data![index].id!)
+                                            : selectedIndex == 1
+                                                ? cubit.deleteCity(cubit
+                                                    .cityModel!
+                                                    .data!
+                                                    .data![index]
+                                                    .id!)
+                                                : selectedIndex == 2
+                                                    ? cubit.deleteOrganization(
+                                                        cubit
+                                                            .organizationModel!
+                                                            .data!
+                                                            .data![index]
+                                                            .id!)
+                                                    : selectedIndex == 3
+                                                        ? cubit.deleteBuilding(
+                                                            cubit
+                                                                .buildingModel!
+                                                                .data!
+                                                                .data![index]
+                                                                .id!)
+                                                        : selectedIndex == 4
+                                                            ? cubit.deleteFloor(
+                                                                cubit
+                                                                    .floorModel!
+                                                                    .data!
+                                                                    .data![index]
+                                                                    .id!)
+                                                            : selectedIndex == 5
+                                                                ? cubit.deleteSection(cubit.sectionModel!.data!.data![index].id!)
+                                                                : cubit.deletePoint(cubit.pointModel!.data!.data![index].id!);
+                                      });
+                                });
                           },
                           child: Icon(
                             IconBroken.delete,

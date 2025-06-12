@@ -25,9 +25,9 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Attendance',
+          'Attendance'
         ),
-        leading: customBackButton(context),
+        leading: CustomBackButton(),
       ),
       body: SafeArea(
           child: SingleChildScrollView(

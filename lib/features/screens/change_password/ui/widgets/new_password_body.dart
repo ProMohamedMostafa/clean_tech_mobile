@@ -7,6 +7,7 @@ import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/layout/main_layout/logic/bottom_navbar_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/change_password/logic/change_password_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/change_password/logic/change_password_state.dart';
@@ -185,7 +186,18 @@ class _ChangeToNewPasswordBodyState extends State<ChangeToNewPasswordBody> {
                       .formKey
                       .currentState!
                       .validate()) {
-                    context.read<ChangePasswordCubit>().changePassword();
+                    showDialog(
+                        context: context,
+                        builder: (dialogContext) {
+                          return PopUpMeassage(
+                              title: 'change password',
+                              body: 'profile',
+                              onPressed: () {
+                                context
+                                    .read<ChangePasswordCubit>()
+                                    .changePassword();
+                              });
+                        });
                   }
                 },
               ),

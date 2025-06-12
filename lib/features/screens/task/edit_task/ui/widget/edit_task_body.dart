@@ -15,6 +15,7 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_date_picker.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_description_text_form_field.dart';
@@ -68,7 +69,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
     return Scaffold(
         appBar: AppBar(
           title: const Text("Edit Task"),
-          leading: customBackButton(context),
+          leading: CustomBackButton(),
         ),
         body: BlocConsumer<EditTaskCubit, EditTaskState>(
           listener: (context, state) {
@@ -1023,8 +1024,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                             MaterialPageRoute(
                                               builder: (contextt) => Scaffold(
                                                 appBar: AppBar(
-                                                  leading:
-                                                      customBackButton(context),
+                                                  leading: CustomBackButton(),
                                                 ),
                                                 body: Center(
                                                   child: PhotoView(
@@ -1073,19 +1073,29 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                                   .formKey
                                                   .currentState!
                                                   .validate()) {
-                                                context
-                                                    .read<EditTaskCubit>()
-                                                    .editTask(
-                                                        widget.id,
-                                                        isSelected!,
-                                                        statusId,
-                                                        buildingId,
-                                                        floorId,
-                                                        sectionId,
-                                                        pointId,
-                                                        selectedSupervisorIds,
-                                                        parentId,
-                                                        currentReading);
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (dialogContext) {
+                                                      return PopUpMeassage(
+                                                          title: 'edit',
+                                                          body: 'task',
+                                                          onPressed: () {
+                                                            context
+                                                                .read<
+                                                                    EditTaskCubit>()
+                                                                .editTask(
+                                                                    widget.id,
+                                                                    isSelected!,
+                                                                    statusId,
+                                                                    buildingId,
+                                                                    floorId,
+                                                                    sectionId,
+                                                                    pointId,
+                                                                    selectedSupervisorIds,
+                                                                    parentId,
+                                                                    currentReading);
+                                                          });
+                                                    });
                                               }
                                             },
                                             color: AppColor.primaryColor,

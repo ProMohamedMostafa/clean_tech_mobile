@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
@@ -15,7 +14,7 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
-import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/layout/main_layout/logic/bottom_navbar_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/edit_profile/logic/edit_profile_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/edit_profile/logic/edit_profile_state.dart';
@@ -41,7 +40,7 @@ class _EditProfileBodyState extends State<EditProfileBody> {
           style: TextStyles.font16BlackSemiBold,
         ),
         centerTitle: true,
-        leading: customBackButton(context),
+        leading: CustomBackButton(),
       ),
       body: BlocConsumer<EditProfileCubit, EditProfileState>(
           listener: (context, state) {
@@ -77,7 +76,7 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                               MaterialPageRoute(
                                 builder: (contextt) => Scaffold(
                                   appBar: AppBar(
-                                    leading: customBackButton(context),
+                                    leading: CustomBackButton(),
                                   ),
                                   body: Center(
                                     child: PhotoView(
@@ -397,17 +396,21 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                               name: S.of(context).saveButtton,
                               onPressed: () {
                                 if (cubit.formKey.currentState!.validate()) {
-                                  showCustomDialog(context,
-                                      "Are you Sure you want save the edit your profile ?",
-                                      () {
-                                    context
-                                        .read<EditProfileCubit>()
-                                        .editProfile(context
-                                            .read<EditProfileCubit>()
-                                            .image
-                                            ?.path);
-                                    context.pop();
-                                  });
+                                  showDialog(
+                                      context: context,
+                                      builder: (dialogContext) {
+                                        return PopUpMeassage(
+                                            title: 'edit',
+                                            body: 'profile',
+                                            onPressed: () {
+                                              context
+                                                  .read<EditProfileCubit>()
+                                                  .editProfile(context
+                                                      .read<EditProfileCubit>()
+                                                      .image
+                                                      ?.path);
+                                            });
+                                      });
                                 }
                               },
                               color: AppColor.primaryColor,

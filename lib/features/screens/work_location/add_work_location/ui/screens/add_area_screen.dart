@@ -27,7 +27,7 @@ class AddAreaScreen extends StatelessWidget {
     final cubit = context.read<AddWorkLocationCubit>();
     return Scaffold(
       appBar: AppBar(
-        leading: customBackButton(context),
+        leading: CustomBackButton(),
         title: Text('Add Area'),
       ),
       body: SingleChildScrollView(

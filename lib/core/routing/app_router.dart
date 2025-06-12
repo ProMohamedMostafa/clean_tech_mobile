@@ -24,6 +24,8 @@ import 'package:smart_cleaning_application/features/screens/notification/logic/n
 import 'package:smart_cleaning_application/features/screens/notification/ui/screen/notification_screen.dart';
 import 'package:smart_cleaning_application/features/screens/profile/logic/profile_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/profile/ui/screen/profile_screen.dart';
+import 'package:smart_cleaning_application/features/screens/provider/provider_management/logic/cubit/provider_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/provider/provider_management/ui/screen/provider_screen.dart';
 import 'package:smart_cleaning_application/features/screens/sensor/sensor_edit/logic/cubit/assign_sensor_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/sensor/sensor_edit/ui/screen/sensor_assign.dart';
 import 'package:smart_cleaning_application/features/screens/sensor/sensor_details/logic/cubit/sensor_details_cubit.dart';
@@ -226,6 +228,13 @@ class AppRouter {
             child: const ShiftScreen(),
           ),
         );
+      case Routes.providerScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => ProviderCubit()..initialize(),
+            child: const ProviderScreen(),
+          ),
+        );
       case Routes.sensorScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -257,8 +266,7 @@ class AppRouter {
             create: (context) => AddUserCubit()
               ..getNationality()
               ..getRole()
-              ..getProviders()
-              ..getAllDeletedProviders(),
+              ..getProviders(),
             child: const AddUserScreen(),
           ),
         );

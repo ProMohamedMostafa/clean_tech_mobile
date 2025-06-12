@@ -10,6 +10,7 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/stock/edit_category/logic/edit_category_cubit.dart';
@@ -39,10 +40,8 @@ class _EditCategoryBodyState extends State<EditCategoryBody> {
         appBar: AppBar(
           title: Text(
             "Edit Category",
-            style: TextStyles.font16BlackSemiBold,
           ),
-          centerTitle: true,
-          leading: customBackButton(context),
+          leading: CustomBackButton(),
         ),
         body: BlocConsumer<EditCategoryCubit, EditCategoryState>(
           listener: (context, state) {
@@ -59,7 +58,7 @@ class _EditCategoryBodyState extends State<EditCategoryBody> {
                     null ||
                 context.read<EditCategoryCubit>().categoryManagementModel ==
                     null) {
-             return Loading();
+              return Loading();
             }
             return SafeArea(
                 child: SingleChildScrollView(
@@ -217,10 +216,22 @@ class _EditCategoryBodyState extends State<EditCategoryBody> {
                                           .formKey
                                           .currentState!
                                           .validate()) {
-                                        context
-                                            .read<EditCategoryCubit>()
-                                            .editCategory(widget.id, unit,
-                                                parentCategory);
+                                        showDialog(
+                                            context: context,
+                                            builder: (dialogContext) {
+                                              return PopUpMeassage(
+                                                  title: 'edit',
+                                                  body: 'category',
+                                                  onPressed: () {
+                                                    context
+                                                        .read<
+                                                            EditCategoryCubit>()
+                                                        .editCategory(
+                                                            widget.id,
+                                                            unit,
+                                                            parentCategory);
+                                                  });
+                                            });
                                       }
                                     },
                                     color: AppColor.primaryColor,

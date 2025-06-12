@@ -45,7 +45,7 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Language'),
-        leading: customBackButton(context),
+        leading: CustomBackButton()
       ),
       body: BlocBuilder<AppCubit, AppStates>(
         builder: (context, state) {

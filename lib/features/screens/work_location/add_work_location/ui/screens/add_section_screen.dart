@@ -47,9 +47,9 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: customBackButton(context),
-        title: Text('Add Section', style: TextStyles.font16BlackSemiBold),
-        centerTitle: true,
+        leading: CustomBackButton(),
+        title: Text('Add Section'),
+      
       ),
       body: SafeArea(
         child: SingleChildScrollView(

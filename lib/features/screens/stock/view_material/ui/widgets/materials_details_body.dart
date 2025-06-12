@@ -10,6 +10,7 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/logic/material_mangement_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/logic/material_mangement_state.dart';
@@ -35,7 +36,7 @@ class _MaterialDetailsBodyState extends State<MaterialDetailsBody> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Material details"),
-        leading: customBackButton(context),
+        leading: CustomBackButton(),
         actions: [
           IconButton(
               onPressed: () {
@@ -64,7 +65,7 @@ class _MaterialDetailsBodyState extends State<MaterialDetailsBody> {
         builder: (context, state) {
           if (context.read<MaterialManagementCubit>().materialDetailsModel ==
               null) {
-           return Loading();
+            return Loading();
           }
 
           return SingleChildScrollView(
@@ -168,9 +169,18 @@ class _MaterialDetailsBodyState extends State<MaterialDetailsBody> {
                           child: DefaultElevatedButton(
                               name: 'Delete',
                               onPressed: () {
-                                context
-                                    .read<MaterialManagementCubit>()
-                                    .deleteMaterial(widget.id);
+                                showDialog(
+                                    context: context,
+                                    builder: (dialogContext) {
+                                      return PopUpMeassage(
+                                          title: 'delete',
+                                          body: 'material',
+                                          onPressed: () {
+                                            context
+                                                .read<MaterialManagementCubit>()
+                                                .deleteMaterial(widget.id);
+                                          });
+                                    });
                               },
                               color: Colors.red,
                               height: 47,

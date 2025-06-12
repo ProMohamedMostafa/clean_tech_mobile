@@ -6,6 +6,7 @@ import 'package:smart_cleaning_application/core/networking/api_constants/api_con
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/gallary_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/delete_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/view_task/data/model/change_task_status.dart';
 import 'package:smart_cleaning_application/features/screens/task/view_task/data/model/task_details.dart';
 
@@ -38,6 +39,17 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
       emit(UserSuccessState(usersModel!));
     }).catchError((error) {
       emit(UserErrorState(error.toString()));
+    });
+  }
+
+  DeleteTaskModel? deleteTaskModel;
+  taskDelete(int id) {
+    emit(TaskDeleteLoadingState());
+    DioHelper.postData(url: 'tasks/delete/$id').then((value) {
+      deleteTaskModel = DeleteTaskModel.fromJson(value!.data);
+      emit(TaskDeleteSuccessState(deleteTaskModel!));
+    }).catchError((error) {
+      emit(TaskDeleteErrorState(error.toString()));
     });
   }
 

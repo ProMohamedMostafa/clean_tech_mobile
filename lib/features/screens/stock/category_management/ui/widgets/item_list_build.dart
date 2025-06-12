@@ -7,7 +7,7 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/stock/category_management/logic/category_mangement_cubit.dart';
 
 class CategoryListItemBuild extends StatelessWidget {
@@ -71,14 +71,19 @@ class CategoryListItemBuild extends StatelessWidget {
                               arguments: cubit.categoryManagementModel!.data!
                                   .categories![index].id,
                             )
-                          : showCustomDialog(context,
-                              "Are you Sure to restore this category ?", () {
-                              cubit.restoreDeletedCategory(
-                                cubit
-                                    .deletedCategoryListModel!.data![index].id!,
-                              );
-                              context.pop();
-                            });
+                          : showDialog(
+                              context: context,
+                              builder: (dialogContext) {
+                                return PopUpMeassage(
+                                    title: 'restore',
+                                    body: 'category',
+                                    onPressed: () {
+                                      cubit.restoreDeletedCategory(
+                                        cubit.deletedCategoryListModel!
+                                            .data![index].id!,
+                                      );
+                                    });
+                              });
                     },
                     child: Icon(
                       cubit.selectedIndex == 0
@@ -90,22 +95,33 @@ class CategoryListItemBuild extends StatelessWidget {
                 InkWell(
                     onTap: () {
                       cubit.selectedIndex == 0
-                          ? showCustomDialog(context,
-                              "Are You Yure You Want To Remove This category",
-                              () {
-                              cubit.deleteCategory(cubit
-                                  .categoryManagementModel!
-                                  .data!
-                                  .categories![index]
-                                  .id!);
-                              context.pop();
-                            })
-                          : showCustomDialog(
-                              context, "Forced Delete this category", () {
-                              cubit.forcedDeletedCategory(cubit
-                                  .deletedCategoryListModel!.data![index].id!);
-                              context.pop();
-                            });
+                          ? showDialog(
+                              context: context,
+                              builder: (dialogContext) {
+                                return PopUpMeassage(
+                                    title: 'delete',
+                                    body: 'category',
+                                    onPressed: () {
+                                      cubit.deleteCategory(cubit
+                                          .categoryManagementModel!
+                                          .data!
+                                          .categories![index]
+                                          .id!);
+                                    });
+                              })
+                          : showDialog(
+                              context: context,
+                              builder: (dialogContext) {
+                                return PopUpMeassage(
+                                    title: 'delete',
+                                    body: 'category',
+                                    onPressed: () {
+                                      cubit.forcedDeletedCategory(cubit
+                                          .deletedCategoryListModel!
+                                          .data![index]
+                                          .id!);
+                                    });
+                              });
                     },
                     child: Icon(
                       IconBroken.delete,

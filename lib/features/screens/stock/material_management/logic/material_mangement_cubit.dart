@@ -6,12 +6,12 @@ import 'package:smart_cleaning_application/core/networking/api_constants/api_con
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/core/widgets/filter/data/model/filter_dialog_data_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/gallary_model.dart';
+import 'package:smart_cleaning_application/features/screens/provider/provider_management/data/models/providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/data/model/delete_material_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/data/model/deleted_material_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/data/model/material_management_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/logic/material_mangement_state.dart';
 import 'package:smart_cleaning_application/features/screens/stock/view_material/data/model/material_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
 
 class MaterialManagementCubit extends Cubit<MaterialManagementState> {
   MaterialManagementCubit() : super(MaterialManagementInitialState());
@@ -202,11 +202,14 @@ class MaterialManagementCubit extends Cubit<MaterialManagementState> {
     });
   }
 
-  ProvidersModel? providersModel;
+    ProvidersModel? providersModel;
+  List<ProviderItem> providerItem = [ProviderItem(name: 'No providers available')];
   getProviders() {
     emit(AllProvidersLoadingState());
     DioHelper.getData(url: ApiConstants.allProvidersUrl).then((value) {
       providersModel = ProvidersModel.fromJson(value!.data);
+      providerItem = providersModel?.data?.data ??
+          [ProviderItem(name: 'No providers available')];
       emit(AllProvidersSuccessState(providersModel!));
     }).catchError((error) {
       emit(AllProvidersErrorState(error.toString()));

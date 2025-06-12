@@ -19,8 +19,8 @@ import 'package:smart_cleaning_application/features/screens/home/data/model/user
 import 'package:smart_cleaning_application/features/screens/home/logic/home_state.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/notification/data/model/notification_model.dart';
+import 'package:smart_cleaning_application/features/screens/provider/provider_management/data/models/providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/settings/data/model/profile_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitialState());
@@ -397,8 +397,8 @@ class HomeCubit extends Cubit<HomeState> {
       if (currentPage == 1 || providersModel == null) {
         providersModel = newProviders;
       } else {
-        providersModel?.data?.providers
-            ?.addAll(newProviders.data?.providers ?? []);
+        providersModel?.data?.data
+            ?.addAll(newProviders.data?.data ?? []);
         providersModel?.data?.currentPage = newProviders.data?.currentPage;
         providersModel?.data?.totalPages = newProviders.data?.totalPages;
       }
@@ -430,7 +430,7 @@ class HomeCubit extends Cubit<HomeState> {
     emit(ChangeChartTypeStockState());
     final selectedYear = _extractYearFromRange(range);
     final providerId = selectedProviderName != 'All Providers'
-        ? providersModel?.data?.providers
+        ? providersModel?.data?.data
             ?.firstWhere((p) => p.name == selectedProviderName)
             .id
         : null;
@@ -442,7 +442,7 @@ class HomeCubit extends Cubit<HomeState> {
     if (providerId == 0) {
       selectedProviderName = 'All Providers';
     } else {
-      final provider = providersModel?.data?.providers
+      final provider = providersModel?.data?.data
           ?.firstWhere((p) => p.id == providerId);
       selectedProviderName = provider?.name ?? 'All Providers';
     }

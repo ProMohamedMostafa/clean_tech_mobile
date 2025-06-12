@@ -20,7 +20,7 @@ class ActivityBody extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Activity'), leading: customBackButton(context)),
+          title: const Text('Activity'), leading: CustomBackButton()),
       body: BlocConsumer<ActivityCubit, ActivityState>(
         listener: (context, state) {
           if (state is ActivityErrorState) {

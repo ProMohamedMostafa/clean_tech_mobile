@@ -47,7 +47,7 @@ class _AssignBodyState extends State<AssignBody> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          leading: customBackButton(context),
+          leading: CustomBackButton(),
           title:
               Text('Assign Management', style: TextStyles.font16BlackSemiBold),
           centerTitle: true,

@@ -9,9 +9,8 @@ import 'package:smart_cleaning_application/core/networking/api_constants/api_con
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
-import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class BuildUserItemList extends StatelessWidget {
   final int index;
@@ -62,6 +61,8 @@ class BuildUserItemList extends StatelessWidget {
               ? cubit.usersModel!.data!.users![index].email!
               : cubit.deletedListModel!.data![index].email!,
           style: TextStyles.font12GreyRegular,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
         ),
         trailing: (role == 'Admin')
             ? (cubit.selectedIndex == 0 &&
@@ -79,16 +80,19 @@ class BuildUserItemList extends StatelessWidget {
                                   cubit.usersModel!.data!.users![index].id,
                             );
                           } else {
-                            showCustomDialog(
-                              context,
-                              S.of(context).confirmRestoreUser,
-                              () {
-                                cubit.restoreDeletedUser(
-                                  cubit.deletedListModel!.data![index].id!,
-                                );
-                                context.pop();
-                              },
-                            );
+                            showDialog(
+                                context: context,
+                                builder: (dialogContext) {
+                                  return PopUpMeassage(
+                                      title: 'restore',
+                                      body: 'user',
+                                      onPressed: () {
+                                        cubit.restoreDeletedUser(
+                                          cubit.deletedListModel!.data![index]
+                                              .id!,
+                                        );
+                                      });
+                                });
                           }
                         },
                         child: Padding(
@@ -105,25 +109,31 @@ class BuildUserItemList extends StatelessWidget {
                       InkWell(
                         onTap: () {
                           if (cubit.selectedIndex == 0) {
-                            showCustomDialog(
-                              context,
-                              S.of(context).deleteMessage,
-                              () {
-                                cubit.userDelete(
-                                    cubit.usersModel!.data!.users![index].id!);
-                                context.pop();
-                              },
-                            );
+                            showDialog(
+                                context: context,
+                                builder: (dialogContext) {
+                                  return PopUpMeassage(
+                                      title: 'delete',
+                                      body: 'user',
+                                      onPressed: () {
+                                        cubit.userDelete(cubit.usersModel!.data!
+                                            .users![index].id!);
+                                      });
+                                });
                           } else {
-                            showCustomDialog(
-                              context,
-                              S.of(context).confirmForcedDelete,
-                              () {
-                                cubit.forcedDeletedUser(
-                                    cubit.deletedListModel!.data![index].id!);
-                                context.pop();
-                              },
-                            );
+                            showDialog(
+                                context: context,
+                                builder: (dialogContext) {
+                                  return PopUpMeassage(
+                                      title: 'delete',
+                                      body: 'user',
+                                      onPressed: () {
+                                        cubit.forcedDeletedUser(cubit
+                                            .deletedListModel!
+                                            .data![index]
+                                            .id!);
+                                      });
+                                });
                           }
                         },
                         child: Padding(
@@ -131,7 +141,7 @@ class BuildUserItemList extends StatelessWidget {
                           child: Icon(
                             IconBroken.delete,
                             color: Colors.red,
-                            size: 24,
+                            size: 24.sp,
                           ),
                         ),
                       ),

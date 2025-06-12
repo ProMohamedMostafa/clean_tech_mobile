@@ -14,7 +14,7 @@ class UserManagmentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: customBackButton(context),
+        leading: CustomBackButton(),
         title: Text(S.of(context).userManagement),
       ),
       floatingActionButton: role == 'Admin'

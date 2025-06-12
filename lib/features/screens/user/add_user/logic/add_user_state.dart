@@ -1,8 +1,7 @@
 import 'package:image_picker/image_picker.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/all_deleted_providers_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
+import 'package:smart_cleaning_application/features/screens/provider/provider_management/data/models/providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/user_create.dart';
 import '../../../integrations/data/models/role_model.dart';
 
@@ -23,61 +22,9 @@ class AddUserErrorState extends AddUserState {
   AddUserErrorState(this.error);
 }
 
-//**************************** */
-class AddProviderLoadingState extends AddUserState {}
 
-class AddProviderSuccessState extends AddUserState {
-  final String message;
 
-  AddProviderSuccessState(this.message);
-}
 
-class AddProviderErrorState extends AddUserState {
-  final String error;
-  AddProviderErrorState(this.error);
-}
-//***************** */
-
-class AllDeletedrovidersLoadingState extends AddUserState {}
-
-class AllDeletedrovidersSuccessState extends AddUserState {
-  final AllDeletedProvidersModel allDeletedProvidersModel;
-
-  AllDeletedrovidersSuccessState(this.allDeletedProvidersModel);
-}
-
-class AllDeletedrovidersErrorState extends AddUserState {
-  final String error;
-  AllDeletedrovidersErrorState(this.error);
-}
-
-//***************** */
-
-class DeletedProviderLoadingState extends AddUserState {}
-
-class DeletedProviderSuccessState extends AddUserState {
-  final String message;
-  DeletedProviderSuccessState(this.message);
-}
-
-class DeletedProviderErrorState extends AddUserState {
-  final String error;
-  DeletedProviderErrorState(this.error);
-}
-//***************** */
-
-class RestoreProviderLoadingState extends AddUserState {}
-
-class RestoreProviderSuccessState extends AddUserState {
-  final String message;
-
-  RestoreProviderSuccessState(this.message);
-}
-
-class RestoreProviderErrorState extends AddUserState {
-  final String error;
-  RestoreProviderErrorState(this.error);
-}
 
 //**************************** */
 class GetNationalityLoadingState extends AddUserState {}

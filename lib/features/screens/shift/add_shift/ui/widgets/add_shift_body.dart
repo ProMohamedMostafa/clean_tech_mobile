@@ -26,7 +26,7 @@ class AddShiftBody extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text("Create Shift"),
-          leading: customBackButton(context),
+          leading: CustomBackButton(),
         ),
         body: BlocConsumer<AddShiftCubit, AddShiftState>(
           listener: (context, state) {

@@ -22,7 +22,7 @@ class AttendanceLeavesBody extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Leaves'),
-        leading: customBackButton(context),
+        leading: CustomBackButton(),
       ),
       floatingActionButton: floatingActionButton(
         icon: Icons.assignment_add,

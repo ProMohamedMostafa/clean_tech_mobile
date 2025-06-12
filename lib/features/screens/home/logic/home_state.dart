@@ -11,8 +11,8 @@ import 'package:smart_cleaning_application/features/screens/home/data/model/tota
 import 'package:smart_cleaning_application/features/screens/home/data/model/users_count_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/notification/data/model/notification_model.dart';
+import 'package:smart_cleaning_application/features/screens/provider/provider_management/data/models/providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/settings/data/model/profile_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
 
 abstract class HomeState {}
 

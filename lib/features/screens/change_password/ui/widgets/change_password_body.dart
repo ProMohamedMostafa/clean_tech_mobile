@@ -12,10 +12,9 @@ class ChangePasswordBody extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Change Password"),
-        leading: customBackButton(context),
+        leading: CustomBackButton(),
       ),
-      body: SafeArea(
-          child: SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -31,7 +30,7 @@ class ChangePasswordBody extends StatelessWidget {
             ],
           ),
         ),
-      )),
+      ),
     );
   }
 }

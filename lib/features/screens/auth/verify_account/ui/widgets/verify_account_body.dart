@@ -47,7 +47,7 @@ class VerifyAccountScreenBody extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        customBackButton(context),
+                        CustomBackButton(),
                         Image.asset(
                           'assets/images/clean.png',
                           height: 40,

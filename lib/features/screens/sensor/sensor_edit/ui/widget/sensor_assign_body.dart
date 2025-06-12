@@ -10,6 +10,7 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_description_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
@@ -24,8 +25,7 @@ class SensorAssignBody extends StatelessWidget {
     final cubit = context.read<AssignSensorCubit>();
     return Scaffold(
       appBar: AppBar(
-          title: Text('Assign to location'),
-          leading: customBackButton(context)),
+          title: Text('Assign to location'), leading: CustomBackButton()),
       body: BlocConsumer<AssignSensorCubit, AssignSensorState>(
         listener: (context, state) {
           if (state is AssignSensorSuccessState) {
@@ -224,7 +224,16 @@ class SensorAssignBody extends StatelessWidget {
                                 name: "Done",
                                 onPressed: () {
                                   if (cubit.formKey.currentState!.validate()) {
-                                    cubit.assignSensor(id);
+                                    showDialog(
+                                        context: context,
+                                        builder: (dialogContext) {
+                                          return PopUpMeassage(
+                                              title: 'edit',
+                                              body: 'sensor',
+                                              onPressed: () {
+                                                cubit.assignSensor(id);
+                                              });
+                                        });
                                   }
                                 },
                                 color: AppColor.primaryColor,
@@ -240,9 +249,19 @@ class SensorAssignBody extends StatelessWidget {
                                 child: DefaultElevatedButton(
                                   name: 'Remove Location',
                                   onPressed: () {
-                                    cubit.pointIdController.text = '';
-                                    cubit.assignSensor(id,
-                                        removeLocation: true);
+                                    showDialog(
+                                        context: context,
+                                        builder: (dialogContext) {
+                                          return PopUpMeassage(
+                                              title: 'remove location',
+                                              body: 'sensor',
+                                              onPressed: () {
+                                                cubit.pointIdController.text =
+                                                    '';
+                                                cubit.assignSensor(id,
+                                                    removeLocation: true);
+                                              });
+                                        });
                                   },
                                   color: Colors.red,
                                   height: 48,

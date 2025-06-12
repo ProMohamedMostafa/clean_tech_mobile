@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-IconButton customBackButton(context) => IconButton(
-    onPressed: () {
-      Navigator.pop(context);
-    },
-    icon: Icon(
-      Icons.arrow_back_ios_new_rounded,
-      size: 25.sp,
-      color: Colors.black,
-    ));
+class CustomBackButton extends StatelessWidget {
+  const CustomBackButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        icon: Icon(
+          Icons.arrow_back_ios_new_rounded,
+          size: 25.sp,
+          color: Colors.black,
+        ));
+  }
+}

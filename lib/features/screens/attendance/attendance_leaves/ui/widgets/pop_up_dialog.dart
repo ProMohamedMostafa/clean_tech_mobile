@@ -6,7 +6,7 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/logic/attendance_leaves_cubit.dart';
 
 class PopUpDialog {
@@ -50,13 +50,19 @@ class PopUpDialog {
                 verticalSpace(10),
                 InkWell(
                   onTap: () {
-                    showCustomDialog(
-                        context, "Are you sure you want to delete this leave",
-                        () {
-                      context.read<AttendanceLeavesCubit>().leavesDelete(id);
-                      context.pop();
-                      context.pop();
-                    });
+                    showDialog(
+                        context: context,
+                        builder: (dialogContext) {
+                          return PopUpMeassage(
+                              title: 'delete',
+                              body: 'leave',
+                              onPressed: () {
+                                context
+                                    .read<AttendanceLeavesCubit>()
+                                    .leavesDelete(id);
+                                context.pop();
+                              });
+                        });
                   },
                   child: Container(
                       height: 50.h,

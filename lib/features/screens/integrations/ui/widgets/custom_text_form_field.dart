@@ -6,7 +6,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 class CustomTextFormField extends StatelessWidget {
   final bool onlyRead;
   final TextEditingController controller;
-  final String hint;
+  final String? hint;
   final TextInputType keyboardType;
   final IconData? suffixIcon;
   final Widget? perfixIcon;
@@ -19,7 +19,7 @@ class CustomTextFormField extends StatelessWidget {
     super.key,
     required this.controller,
     required this.keyboardType,
-    required this.hint,
+    this.hint,
     this.validator,
     this.suffixIcon,
     this.perfixIcon,

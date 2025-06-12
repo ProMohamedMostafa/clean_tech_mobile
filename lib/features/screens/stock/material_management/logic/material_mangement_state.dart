@@ -1,9 +1,9 @@
 import 'package:share_plus/share_plus.dart';
+import 'package:smart_cleaning_application/features/screens/provider/provider_management/data/models/providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/data/model/delete_material_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/data/model/deleted_material_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/data/model/material_management_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/view_material/data/model/material_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
 
 abstract class MaterialManagementState {}
 

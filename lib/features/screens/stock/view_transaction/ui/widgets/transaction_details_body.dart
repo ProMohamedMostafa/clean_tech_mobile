@@ -65,7 +65,7 @@ class _TransactionDetailsBodyState extends State<TransactionDetailsBody> {
         return Scaffold(
             appBar: AppBar(
               title: Text("Transaction details"),
-              leading: customBackButton(context),
+              leading: CustomBackButton(),
               actions: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
@@ -238,7 +238,7 @@ class _TransactionDetailsBodyState extends State<TransactionDetailsBody> {
                               MaterialPageRoute(
                                 builder: (contextt) => Scaffold(
                                   appBar: AppBar(
-                                    leading: customBackButton(context),
+                                    leading: CustomBackButton(),
                                   ),
                                   body: Center(
                                     child: PhotoView(

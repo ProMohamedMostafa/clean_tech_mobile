@@ -114,7 +114,7 @@ class AddPopUpDialog {
                               .read<MaterialManagementCubit>()
                               .providersModel
                               ?.data
-                              ?.providers
+                              ?.data
                               ?.firstWhere(
                                 (provider) => provider.name == selectedValue,
                               )
@@ -128,7 +128,7 @@ class AddPopUpDialog {
                                     .read<MaterialManagementCubit>()
                                     .providersModel
                                     ?.data
-                                    ?.providers
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No Providers available']
@@ -136,7 +136,7 @@ class AddPopUpDialog {
                                     .read<MaterialManagementCubit>()
                                     .providersModel
                                     ?.data
-                                    ?.providers
+                                    ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
@@ -190,7 +190,7 @@ class AddPopUpDialog {
                                 MaterialPageRoute(
                                   builder: (contextt) => Scaffold(
                                     appBar: AppBar(
-                                      leading: customBackButton(context),
+                                      leading: CustomBackButton(),
                                     ),
                                     body: Center(
                                       child: PhotoView(

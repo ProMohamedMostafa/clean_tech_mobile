@@ -12,7 +12,7 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
-import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_description_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
@@ -49,10 +49,7 @@ class _EditFloorBodyState extends State<EditFloorBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: customBackButton(context),
-        title: Text('Edit Floor'),
-      ),
+      appBar: AppBar(leading: CustomBackButton(), title: Text('Edit Floor')),
       body: SafeArea(
         child: BlocConsumer<EditFloorCubit, EditFloorState>(
           listener: (context, state) {
@@ -68,7 +65,7 @@ class _EditFloorBodyState extends State<EditFloorBody> {
           builder: (context, state) {
             final cubit = context.read<EditFloorCubit>();
             if (cubit.floorDetailsInEditModel == null) {
-             return Loading();
+              return Loading();
             }
 
             return Padding(
@@ -128,22 +125,25 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                         items: context
                                     .read<EditFloorCubit>()
                                     .areasModel
-                                    ?.data?.data
+                                    ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No areas']
                             : context
                                     .read<EditFloorCubit>()
-                                  .areasModel
-                                    ?.data?.data
+                                    .areasModel
+                                    ?.data
+                                    ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
                         onPressed: (value) {
                           final selectedArea = context
                               .read<EditFloorCubit>()
-                                  .areasModel
-                                    ?.data?.data
+                              .areasModel
+                              ?.data
+                              ?.data
                               ?.firstWhere((area) =>
                                   area.name ==
                                   context
@@ -175,22 +175,25 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                         items: context
                                     .read<EditFloorCubit>()
                                     .cityyModel
-                                    ?.data?.data
+                                    ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No cities']
                             : context
                                     .read<EditFloorCubit>()
-                              .cityyModel
-                                    ?.data?.data
+                                    .cityyModel
+                                    ?.data
+                                    ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
                         onPressed: (value) {
                           final selectedCity = context
                               .read<EditFloorCubit>()
-                           .cityyModel
-                                    ?.data?.data
+                              .cityyModel
+                              ?.data
+                              ?.data
                               ?.firstWhere((city) =>
                                   city.name ==
                                   context
@@ -222,22 +225,25 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                         items: context
                                     .read<EditFloorCubit>()
                                     .organizationsModel
-                                    ?.data?.data
+                                    ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No organization']
                             : context
                                     .read<EditFloorCubit>()
-                                 .organizationsModel
-                                    ?.data?.data
+                                    .organizationsModel
+                                    ?.data
+                                    ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
                         onPressed: (value) {
                           final selectedOrganization = context
                               .read<EditFloorCubit>()
-                         .organizationsModel
-                                    ?.data?.data!
+                              .organizationsModel
+                              ?.data
+                              ?.data!
                               .firstWhere((organization) =>
                                   organization.name ==
                                   context
@@ -270,22 +276,25 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                         items: context
                                     .read<EditFloorCubit>()
                                     .buildingsModel
-                                    ?.data?.data
+                                    ?.data
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No building']
                             : context
                                     .read<EditFloorCubit>()
-                                     .buildingsModel
-                                    ?.data?.data
+                                    .buildingsModel
+                                    ?.data
+                                    ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],
                         onPressed: (value) {
                           final selectedBuilding = context
                               .read<EditFloorCubit>()
-                            .buildingsModel
-                                    ?.data?.data!
+                              .buildingsModel
+                              ?.data
+                              ?.data!
                               .firstWhere((building) =>
                                   building.name ==
                                   context
@@ -421,11 +430,12 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                           ? SizedBox.shrink()
                           : MultiDropdown<Users>(
                               items: context
-                                          .read<EditFloorCubit>()
-                                          .floorUsersShiftsDetailsModel
-                                          !.data!
-                                    .users!
-                                    .where((user) => user.role == 'Manger').isEmpty
+                                      .read<EditFloorCubit>()
+                                      .floorUsersShiftsDetailsModel!
+                                      .data!
+                                      .users!
+                                      .where((user) => user.role == 'Manger')
+                                      .isEmpty
                                   ? [
                                       DropdownItem(
                                         label: 'No managers available',
@@ -435,11 +445,11 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                                       )
                                     ]
                                   : context
-                                          .read<EditFloorCubit>()
-                                          .floorUsersShiftsDetailsModel
-                                          !.data!
-                                    .users!
-                                    .where((user) => user.role == 'Manger')
+                                      .read<EditFloorCubit>()
+                                      .floorUsersShiftsDetailsModel!
+                                      .data!
+                                      .users!
+                                      .where((user) => user.role == 'Manger')
                                       .map((manager) => DropdownItem(
                                             label: manager.userName!,
                                             value: manager,
@@ -459,7 +469,7 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                                 hintText: context
                                     .read<EditFloorCubit>()
                                     .floorUsersShiftsDetailsModel!
-                                      .data!
+                                    .data!
                                     .users!
                                     .where((user) => user.role == 'Cleaner')
                                     .map((manager) => manager.userName)
@@ -529,12 +539,14 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                               null
                           ? SizedBox.shrink()
                           : MultiDropdown<Users>(
-                              items:context
-                                    .read<EditFloorCubit>()
-                                    .floorUsersShiftsDetailsModel!
+                              items: context
+                                      .read<EditFloorCubit>()
+                                      .floorUsersShiftsDetailsModel!
                                       .data!
-                                    .users!
-                                    .where((user) => user.role == 'Supervisor').isEmpty
+                                      .users!
+                                      .where(
+                                          (user) => user.role == 'Supervisor')
+                                      .isEmpty
                                   ? [
                                       DropdownItem(
                                         label: 'No supervisors available',
@@ -545,11 +557,12 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                                       )
                                     ]
                                   : context
-                                    .read<EditFloorCubit>()
-                                    .floorUsersShiftsDetailsModel!
+                                      .read<EditFloorCubit>()
+                                      .floorUsersShiftsDetailsModel!
                                       .data!
-                                    .users!
-                                    .where((user) => user.role == 'Supervisor')
+                                      .users!
+                                      .where(
+                                          (user) => user.role == 'Supervisor')
                                       .map((supervisor) => DropdownItem(
                                             label: supervisor.userName!,
                                             value: supervisor,
@@ -569,7 +582,7 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                                 hintText: context
                                     .read<EditFloorCubit>()
                                     .floorUsersShiftsDetailsModel!
-                                      .data!
+                                    .data!
                                     .users!
                                     .where((user) => user.role == 'Supervisor')
                                     .map((supervisor) => supervisor.userName)
@@ -640,11 +653,12 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                           ? SizedBox.shrink()
                           : MultiDropdown<Users>(
                               items: context
-                                    .read<EditFloorCubit>()
-                                    .floorUsersShiftsDetailsModel!
+                                      .read<EditFloorCubit>()
+                                      .floorUsersShiftsDetailsModel!
                                       .data!
-                                    .users!
-                                    .where((user) => user.role == 'Cleaner').isEmpty
+                                      .users!
+                                      .where((user) => user.role == 'Cleaner')
+                                      .isEmpty
                                   ? [
                                       DropdownItem(
                                         label: 'No cleaners available',
@@ -654,11 +668,11 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                                       )
                                     ]
                                   : context
-                                    .read<EditFloorCubit>()
-                                    .floorUsersShiftsDetailsModel!
+                                      .read<EditFloorCubit>()
+                                      .floorUsersShiftsDetailsModel!
                                       .data!
-                                    .users!
-                                    .where((user) => user.role == 'Cleaner')
+                                      .users!
+                                      .where((user) => user.role == 'Cleaner')
                                       .map((cleaner) => DropdownItem(
                                             label: cleaner.userName!,
                                             value: cleaner,
@@ -678,7 +692,7 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                                 hintText: context
                                     .read<EditFloorCubit>()
                                     .floorUsersShiftsDetailsModel!
-                                      .data!
+                                    .data!
                                     .users!
                                     .where((user) => user.role == 'Cleaner')
                                     .map((cleaner) => cleaner.userName)
@@ -830,17 +844,24 @@ class _EditFloorBodyState extends State<EditFloorBody> {
                                     .formKey
                                     .currentState!
                                     .validate()) {
-                                  showCustomDialog(context,
-                                      "Are you Sure you want save the edit of this Floor ?",
-                                      () {
-                                    context.read<EditFloorCubit>().editFloor(
-                                        widget.id,
-                                        selectedManagersIds,
-                                        selectedSupervisorsIds,
-                                        selectedCleanersIds,
-                                        selectedShiftsIds);
-                                    context.pop();
-                                  });
+                                  showDialog(
+                                      context: context,
+                                      builder: (dialogContext) {
+                                        return PopUpMeassage(
+                                            title: 'edit',
+                                            body: 'floor',
+                                            onPressed: () {
+                                              context
+                                                  .read<EditFloorCubit>()
+                                                  .editFloor(
+                                                      widget.id,
+                                                      selectedManagersIds,
+                                                      selectedSupervisorsIds,
+                                                      selectedCleanersIds,
+                                                      selectedShiftsIds);
+                                              
+                                            });
+                                      });
                                 }
                               },
                               color: AppColor.primaryColor,

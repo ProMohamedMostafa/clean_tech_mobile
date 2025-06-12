@@ -15,7 +15,7 @@ import 'package:smart_cleaning_application/core/widgets/default_toast/default_to
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/logic/cubit/user_details_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/pdf.dart';
-import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/history/user_attendance_details.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/leaves/user_leaves_details.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/shifts/user_shift_details.dart';
@@ -58,7 +58,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
     return Scaffold(
       appBar: AppBar(
         title: Text(S.of(context).userDetailsTitle),
-        leading: customBackButton(context),
+        leading: CustomBackButton(),
         actions: [
           IconButton(
             onPressed: () {
@@ -99,7 +99,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
               cubit.userTaskDetailsModel?.data == null ||
               cubit.userWorkLocationDetailsModel?.data == null ||
               cubit.attendanceLeavesModel?.data == null) {
-           return Loading();
+            return Loading();
           }
 
           return Padding(
@@ -118,7 +118,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                             MaterialPageRoute(
                               builder: (contextt) => Scaffold(
                                 appBar: AppBar(
-                                  leading: customBackButton(context),
+                                  leading: CustomBackButton(),
                                 ),
                                 body: Center(
                                   child: PhotoView(
@@ -303,12 +303,18 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                     ? DefaultElevatedButton(
                         name: S.of(context).deleteButton,
                         onPressed: () {
-                          showCustomDialog(context, S.of(context).deleteMessage,
-                              () {
-                            context
-                                .read<UserDetailsCubit>()
-                                .userDelete(widget.id);
-                          });
+                          showDialog(
+                              context: context,
+                              builder: (dialogContext) {
+                                return PopUpMeassage(
+                                    title: 'delete',
+                                    body: 'user',
+                                    onPressed: () {
+                                      context
+                                          .read<UserDetailsCubit>()
+                                          .userDelete(widget.id);
+                                    });
+                              });
                         },
                         color: Colors.red,
                         height: 48,

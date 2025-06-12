@@ -19,7 +19,6 @@ import 'package:smart_cleaning_application/features/screens/auth/set_password/ui
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/logic/add_user_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/logic/add_user_state.dart';
-import 'package:smart_cleaning_application/features/screens/user/add_user/ui/widgets/add_provider_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/ui/widgets/add_user_text_form_field.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
@@ -36,10 +35,8 @@ class _AddUserBodyState extends State<AddUserBody> {
     final cubit = context.read<AddUserCubit>();
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          S.of(context).addUserTitle,
-        ),
-        leading: customBackButton(context),
+        title: Text(S.of(context).addUserTitle),
+        leading: CustomBackButton(),
       ),
       body: BlocConsumer<AddUserCubit, AddUserState>(
         listener: (context, state) {
@@ -48,31 +45,6 @@ class _AddUserBodyState extends State<AddUserBody> {
             context.pushNamedAndRemoveLastTwo(Routes.userManagmentScreen);
           }
           if (state is AddUserErrorState) {
-            toast(text: state.error, color: Colors.red);
-          }
-          if (state is AddProviderSuccessState) {
-            toast(text: state.message, color: Colors.blue);
-            cubit.getProviders();
-          }
-          if (state is AddProviderErrorState) {
-            toast(text: state.error, color: Colors.red);
-          }
-
-          if (state is DeletedProviderSuccessState) {
-            toast(text: state.message, color: Colors.blue);
-            cubit.getProviders();
-            cubit.getAllDeletedProviders();
-          }
-          if (state is DeletedProviderErrorState) {
-            toast(text: state.error, color: Colors.red);
-          }
-
-          if (state is RestoreProviderSuccessState) {
-            toast(text: state.message, color: Colors.blue);
-            cubit.getAllDeletedProviders();
-            cubit.getProviders();
-          }
-          if (state is RestoreProviderErrorState) {
             toast(text: state.error, color: Colors.red);
           }
         },
@@ -96,7 +68,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                                 MaterialPageRoute(
                                   builder: (contextt) => Scaffold(
                                     appBar: AppBar(
-                                      leading: customBackButton(context),
+                                      leading: CustomBackButton(),
                                     ),
                                     body: Center(
                                       child: PhotoView(
@@ -681,57 +653,25 @@ class _AddUserBodyState extends State<AddUserBody> {
                         ],
                       ),
                     ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          flex: 5,
-                          child: CustomDropDownList(
-                            hint: S.of(context).hintSelectProvider,
-                            controller: cubit.providerController,
-                            items: cubit.providerItem
-                                .map((e) => e.name ?? 'Unknown')
-                                .toList(),
-                            onChanged: (selectedValue) {
-                              final selectedId = cubit
-                                  .providersModel?.data?.providers
-                                  ?.firstWhere((provider) =>
-                                      provider.name == selectedValue)
-                                  .id
-                                  ?.toString();
+                    CustomDropDownList(
+                      hint: S.of(context).hintSelectProvider,
+                      controller: cubit.providerController,
+                      items: cubit.providerItem
+                          .map((e) => e.name ?? 'Unknown')
+                          .toList(),
+                      onChanged: (selectedValue) {
+                        final selectedId = cubit.providersModel?.data?.data
+                            ?.firstWhere(
+                                (provider) => provider.name == selectedValue)
+                            .id
+                            ?.toString();
 
-                              if (selectedId != null) {
-                                cubit.providerIdController.text = selectedId;
-                              }
-                            },
-                            keyboardType: TextInputType.text,
-                            suffixIcon: IconBroken.arrowDown2,
-                          ),
-                        ),
-                        horizontalSpace(10),
-                        Expanded(
-                          flex: 1,
-                          child: InkWell(
-                            onTap: () {
-                              AddProviderBottomDialog()
-                                  .showBottomDialog(context, cubit);
-                            },
-                            child: Container(
-                              height: 48,
-                              width: 48,
-                              decoration: BoxDecoration(
-                                color: AppColor.primaryColor,
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                              child: Icon(
-                                Icons.settings,
-                                color: Colors.white,
-                                size: 25.sp,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                        if (selectedId != null) {
+                          cubit.providerIdController.text = selectedId;
+                        }
+                      },
+                      keyboardType: TextInputType.text,
+                      suffixIcon: IconBroken.arrowDown2,
                     ),
                     verticalSpace(20),
                     state is AddUserLoadingState

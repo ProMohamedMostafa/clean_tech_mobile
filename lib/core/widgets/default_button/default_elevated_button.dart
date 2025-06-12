@@ -26,10 +26,8 @@ class DefaultElevatedButton extends StatelessWidget {
       height: height.h,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4.r),
-        border: Border.all(
-          color: color,
-        ),
+        borderRadius: BorderRadius.circular(5.r),
+        border: Border.all(color: color),
       ),
       child: ElevatedButton(
         style: ButtonStyle(

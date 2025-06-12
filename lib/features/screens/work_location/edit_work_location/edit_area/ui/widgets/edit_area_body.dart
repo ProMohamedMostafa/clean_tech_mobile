@@ -12,7 +12,7 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
-import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/data/models/area_users_details_model.dart';
@@ -45,7 +45,7 @@ class _EditAreaBodyState extends State<EditAreaBody> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: customBackButton(context),
+        leading: CustomBackButton(),
         title: Text('Edit Area'),
       ),
       body: SafeArea(
@@ -63,7 +63,7 @@ class _EditAreaBodyState extends State<EditAreaBody> {
           builder: (context, state) {
             final cubit = context.read<EditAreaCubit>();
             if (cubit.areaDetailsInEditModel == null) {
-             return Loading();
+              return Loading();
             }
 
             return Padding(
@@ -211,12 +211,12 @@ class _EditAreaBodyState extends State<EditAreaBody> {
                                   spacing: 5,
                                 ),
                                 fieldDecoration: FieldDecoration(
-                                  hintText:  context
-                                        .read<EditAreaCubit>()
-                                        .areaUsersDetailsModel!
-                                        .data!
-                                        .users!
-                                        .where((user) => user.role == 'Manager')
+                                  hintText: context
+                                      .read<EditAreaCubit>()
+                                      .areaUsersDetailsModel!
+                                      .data!
+                                      .users!
+                                      .where((user) => user.role == 'Manager')
                                       .map((manager) => manager.userName)
                                       .join(', '),
                                   suffixIcon: Icon(IconBroken.arrowDown2),
@@ -284,12 +284,14 @@ class _EditAreaBodyState extends State<EditAreaBody> {
                                 null
                             ? SizedBox.shrink()
                             : MultiDropdown<Users>(
-                                items:  context
+                                items: context
                                         .read<EditAreaCubit>()
                                         .areaUsersDetailsModel!
                                         .data!
                                         .users!
-                                        .where((user) => user.role == 'Supervisor').isEmpty
+                                        .where(
+                                            (user) => user.role == 'Supervisor')
+                                        .isEmpty
                                     ? [
                                         DropdownItem(
                                           label: 'No supervisors available',
@@ -299,12 +301,13 @@ class _EditAreaBodyState extends State<EditAreaBody> {
                                                   'No supervisors available'),
                                         )
                                       ]
-                                    :  context
+                                    : context
                                         .read<EditAreaCubit>()
                                         .areaUsersDetailsModel!
                                         .data!
                                         .users!
-                                        .where((user) => user.role == 'Supervisor')
+                                        .where(
+                                            (user) => user.role == 'Supervisor')
                                         .map((supervisor) => DropdownItem(
                                               label: supervisor.userName!,
                                               value: supervisor,
@@ -321,12 +324,13 @@ class _EditAreaBodyState extends State<EditAreaBody> {
                                   spacing: 5,
                                 ),
                                 fieldDecoration: FieldDecoration(
-                                  hintText:  context
-                                        .read<EditAreaCubit>()
-                                        .areaUsersDetailsModel!
-                                        .data!
-                                        .users!
-                                        .where((user) => user.role == 'Supervisor')
+                                  hintText: context
+                                      .read<EditAreaCubit>()
+                                      .areaUsersDetailsModel!
+                                      .data!
+                                      .users!
+                                      .where(
+                                          (user) => user.role == 'Supervisor')
                                       .map((supervisor) => supervisor.userName)
                                       .join(', '),
                                   suffixIcon: Icon(IconBroken.arrowDown2),
@@ -399,7 +403,8 @@ class _EditAreaBodyState extends State<EditAreaBody> {
                                         .areaUsersDetailsModel!
                                         .data!
                                         .users!
-                                        .where((user) => user.role == 'Cleaner').isEmpty
+                                        .where((user) => user.role == 'Cleaner')
+                                        .isEmpty
                                     ? [
                                         DropdownItem(
                                           label: 'No cleaners available',
@@ -409,7 +414,7 @@ class _EditAreaBodyState extends State<EditAreaBody> {
                                                   'No cleaners available'),
                                         )
                                       ]
-                                    :  context
+                                    : context
                                         .read<EditAreaCubit>()
                                         .areaUsersDetailsModel!
                                         .data!
@@ -431,12 +436,12 @@ class _EditAreaBodyState extends State<EditAreaBody> {
                                   spacing: 5,
                                 ),
                                 fieldDecoration: FieldDecoration(
-                                  hintText:  context
-                                        .read<EditAreaCubit>()
-                                        .areaUsersDetailsModel!
-                                        .data!
-                                        .users!
-                                        .where((user) => user.role == 'Cleaner')
+                                  hintText: context
+                                      .read<EditAreaCubit>()
+                                      .areaUsersDetailsModel!
+                                      .data!
+                                      .users!
+                                      .where((user) => user.role == 'Cleaner')
                                       .map((cleaner) => cleaner.userName)
                                       .join(', '),
                                   suffixIcon: Icon(IconBroken.arrowDown2),
@@ -486,16 +491,22 @@ class _EditAreaBodyState extends State<EditAreaBody> {
                                       .formKey
                                       .currentState!
                                       .validate()) {
-                                    showCustomDialog(context,
-                                        "Are you Sure you want save the edit of this area ?",
-                                        () {
-                                      context.read<EditAreaCubit>().editArea(
-                                          widget.id,
-                                          selectedManagersIds,
-                                          selectedSupervisorsIds,
-                                          selectedCleanersIds);
-                                      context.pop();
-                                    });
+                                    showDialog(
+                                        context: context,
+                                        builder: (dialogContext) {
+                                          return PopUpMeassage(
+                                              title: 'edit',
+                                              body: 'area',
+                                              onPressed: () {
+                                                context
+                                                    .read<EditAreaCubit>()
+                                                    .editArea(
+                                                        widget.id,
+                                                        selectedManagersIds,
+                                                        selectedSupervisorsIds,
+                                                        selectedCleanersIds);
+                                              });
+                                        });
                                   }
                                 },
                                 color: AppColor.primaryColor,

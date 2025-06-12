@@ -9,7 +9,7 @@ import 'package:smart_cleaning_application/features/screens/integrations/data/mo
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/providers_model.dart';
+import 'package:smart_cleaning_application/features/screens/provider/provider_management/data/models/providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/edit_user/data/model/edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/edit_user/logic/edit_user_state.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_details_model.dart';
@@ -139,13 +139,13 @@ class EditUserCubit extends Cubit<EditUserState> {
   }
 
   ProvidersModel? providersModel;
-  List<Provider> providerItem = [Provider(name: 'No providers available')];
+  List<ProviderItem> providerItem = [ProviderItem(name: 'No providers available')];
   getProviders() {
     emit(AllProvidersLoadingState());
     DioHelper.getData(url: ApiConstants.allProvidersUrl).then((value) {
       providersModel = ProvidersModel.fromJson(value!.data);
-      providerItem = providersModel?.data?.providers ??
-          [Provider(name: 'No providers available')];
+      providerItem = providersModel?.data?.data ??
+          [ProviderItem(name: 'No providers available')];
       emit(AllProvidersSuccessState(providersModel!));
     }).catchError((error) {
       emit(AllProvidersErrorState(error.toString()));

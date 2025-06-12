@@ -13,6 +13,7 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/logic/attendance_leaves_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/logic/attendance_leaves_state.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
@@ -38,7 +39,7 @@ class _LeavesDetailsBodyState extends State<LeavesDetailsBody> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Leave details"),
-        leading: customBackButton(context),
+        leading: CustomBackButton(),
         actions: [
           if (role == 'Admin')
             IconButton(
@@ -68,7 +69,7 @@ class _LeavesDetailsBodyState extends State<LeavesDetailsBody> {
         builder: (context, state) {
           if (context.read<AttendanceLeavesCubit>().leavesDetailsModel ==
               null) {
-           return Loading();
+            return Loading();
           }
 
           return SingleChildScrollView(
@@ -93,7 +94,7 @@ class _LeavesDetailsBodyState extends State<LeavesDetailsBody> {
                               .read<AttendanceLeavesCubit>()
                               .leavesDetailsModel!
                               .data!
-                              .userName!,
+                              .role!,
                           style: TextStyles.font11WhiteSemiBold
                               .copyWith(color: AppColor.primaryColor),
                         ),
@@ -119,7 +120,7 @@ class _LeavesDetailsBodyState extends State<LeavesDetailsBody> {
                               MaterialPageRoute(
                                 builder: (contextt) => Scaffold(
                                   appBar: AppBar(
-                                    leading: customBackButton(context),
+                                    leading: CustomBackButton(),
                                   ),
                                   body: Center(
                                     child: PhotoView(
@@ -257,7 +258,7 @@ class _LeavesDetailsBodyState extends State<LeavesDetailsBody> {
                               MaterialPageRoute(
                                 builder: (contextt) => Scaffold(
                                   appBar: AppBar(
-                                    leading: customBackButton(context),
+                                    leading: CustomBackButton(),
                                   ),
                                   body: Center(
                                     child: PhotoView(
@@ -306,9 +307,18 @@ class _LeavesDetailsBodyState extends State<LeavesDetailsBody> {
                             child: DefaultElevatedButton(
                                 name: 'Delete',
                                 onPressed: () {
-                                  context
-                                      .read<AttendanceLeavesCubit>()
-                                      .leavesDelete(widget.id);
+                                  showDialog(
+                                      context: context,
+                                      builder: (dialogContext) {
+                                        return PopUpMeassage(
+                                            title: 'delete',
+                                            body: 'leave',
+                                            onPressed: () {
+                                              context
+                                                  .read<AttendanceLeavesCubit>()
+                                                  .leavesDelete(widget.id);
+                                            });
+                                      });
                                 },
                                 color: Colors.red,
                                 height: 47,

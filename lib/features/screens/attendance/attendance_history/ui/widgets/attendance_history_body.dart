@@ -16,7 +16,7 @@ class AttendanceHistoryBody extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('History'),
-        leading: customBackButton(context),
+        leading: CustomBackButton(),
       ),
       body: BlocBuilder<AttendanceHistoryCubit, AttendanceHistoryState>(
         builder: (context, state) {

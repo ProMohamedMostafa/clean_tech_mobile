@@ -47,6 +47,16 @@ class TextStyles {
       fontSize: 18.sp,
       fontWeight: FontWeightHelper.bold,
       color: AppColor.primaryColor);
+  static TextStyle font18PrimMedium = TextStyle(
+      fontSize: 18.sp,
+      fontWeight: FontWeightHelper.medium,
+      color: AppColor.primaryColor);
+  static TextStyle font18BlackMedium = TextStyle(
+      fontSize: 18.sp,
+      fontWeight: FontWeightHelper.medium,
+      color: Colors.black);
+  static TextStyle font18RedMedium = TextStyle(
+      fontSize: 18.sp, fontWeight: FontWeightHelper.medium, color: Colors.red);
   static TextStyle font16WhiteSemiBold = TextStyle(
     fontSize: 16.sp,
     fontWeight: FontWeightHelper.semiBold,
@@ -66,6 +76,10 @@ class TextStyles {
       fontSize: 16.sp,
       fontWeight: FontWeightHelper.semiBold,
       color: AppColor.primaryColor);
+      static TextStyle font16RedSemiBold = TextStyle(
+      fontSize: 16.sp,
+      fontWeight: FontWeightHelper.semiBold,
+      color: Colors.red);
   static TextStyle font16BlackSemiBold = TextStyle(
       fontSize: 16.sp,
       fontWeight: FontWeightHelper.semiBold,
@@ -78,6 +92,16 @@ class TextStyles {
   static TextStyle font14BlackRegular = TextStyle(
     fontSize: 14.sp,
     fontWeight: FontWeightHelper.regular,
+    color: Colors.black,
+  );
+   static TextStyle font14RedRegular = TextStyle(
+    fontSize: 14.sp,
+    fontWeight: FontWeightHelper.regular,
+    color: Colors.red,
+  );
+  static TextStyle font14BlackMedium = TextStyle(
+    fontSize: 14.sp,
+    fontWeight: FontWeightHelper.medium,
     color: Colors.black,
   );
 
@@ -137,6 +161,7 @@ class TextStyles {
     fontWeight: FontWeightHelper.bold,
     color: Colors.red,
   );
+  
   static TextStyle font14Primarybold = TextStyle(
     fontSize: 14.sp,
     fontWeight: FontWeightHelper.bold,

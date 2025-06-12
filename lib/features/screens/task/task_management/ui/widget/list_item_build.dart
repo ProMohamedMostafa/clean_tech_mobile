@@ -8,7 +8,7 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/ui/widget/pop_up_dialog.dart';
 
@@ -110,18 +110,23 @@ Widget buildCardItem(BuildContext context, index) {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  showCustomDialog(context,
-                                      "Are you Sure to restore this task ?",
-                                      () {
-                                    context
-                                        .read<TaskManagementCubit>()
-                                        .restoreDeletedTask(context
-                                            .read<TaskManagementCubit>()
-                                            .deleteTaskListModel!
-                                            .data![index]
-                                            .id!);
-                                    context.pop();
-                                  });
+                                  showDialog(
+                                      context: context,
+                                      builder: (dialogContext) {
+                                        return PopUpMeassage(
+                                            title: 'restore',
+                                            body: 'task',
+                                            onPressed: () {
+                                              context
+                                                  .read<TaskManagementCubit>()
+                                                  .restoreDeletedTask(context
+                                                      .read<
+                                                          TaskManagementCubit>()
+                                                      .deleteTaskListModel!
+                                                      .data![index]
+                                                      .id!);
+                                            });
+                                      });
                                 },
                                 child: Icon(
                                   Icons.replay_outlined,
@@ -132,17 +137,34 @@ Widget buildCardItem(BuildContext context, index) {
                               horizontalSpace(8),
                               InkWell(
                                 onTap: () {
-                                  showCustomDialog(
-                                      context, "Forced Delete this task", () {
-                                    context
-                                        .read<TaskManagementCubit>()
-                                        .restoreDeletedTask(context
-                                            .read<TaskManagementCubit>()
-                                            .deleteTaskListModel!
-                                            .data![index]
-                                            .id!);
-                                    context.pop();
-                                  });
+                                  showDialog(
+                                      context: context,
+                                      builder: (dialogContext) {
+                                        return PopUpMeassage(
+                                            title: 'delete',
+                                            body: 'task',
+                                            onPressed: () {
+                                              cubit.selectedIndex == 8
+                                                  ? context
+                                                      .read<
+                                                          TaskManagementCubit>()
+                                                      .forcedDeletedUser(context
+                                                          .read<
+                                                              TaskManagementCubit>()
+                                                          .deleteTaskListModel!
+                                                          .data![index]
+                                                          .id!)
+                                                  : context
+                                                      .read<
+                                                          TaskManagementCubit>()
+                                                      .taskDelete(context
+                                                          .read<
+                                                              TaskManagementCubit>()
+                                                          .deleteTaskListModel!
+                                                          .data![index]
+                                                          .id!);
+                                            });
+                                      });
                                 },
                                 child: Icon(
                                   IconBroken.delete,

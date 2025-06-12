@@ -12,7 +12,7 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
-import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_description_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
@@ -50,7 +50,7 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: customBackButton(context),
+        leading: CustomBackButton(),
         title: Text('Edit Building'),
       ),
       body: SafeArea(
@@ -68,7 +68,7 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
           builder: (context, state) {
             final cubit = context.read<EditBuildingCubit>();
             if (cubit.buildingDetailsInEditModel == null) {
-             return Loading();
+              return Loading();
             }
 
             return Padding(
@@ -799,19 +799,24 @@ class _EditBuildingBodyState extends State<EditBuildingBody> {
                                     .formKey
                                     .currentState!
                                     .validate()) {
-                                  showCustomDialog(context,
-                                      "Are you Sure you want save the edit of this building ?",
-                                      () {
-                                    context
-                                        .read<EditBuildingCubit>()
-                                        .editBuilding(
-                                            widget.id,
-                                            selectedManagersIds,
-                                            selectedSupervisorsIds,
-                                            selectedCleanersIds,
-                                            selectedShiftsIds);
-                                    context.pop();
-                                  });
+                                  showDialog(
+                                      context: context,
+                                      builder: (dialogContext) {
+                                        return PopUpMeassage(
+                                            title: 'edit',
+                                            body: 'building',
+                                            onPressed: () {
+                                              context
+                                                  .read<EditBuildingCubit>()
+                                                  .editBuilding(
+                                                      widget.id,
+                                                      selectedManagersIds,
+                                                      selectedSupervisorsIds,
+                                                      selectedCleanersIds,
+                                                      selectedShiftsIds);
+                                            
+                                            });
+                                      });
                                 }
                               },
                               color: AppColor.primaryColor,

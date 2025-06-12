@@ -41,7 +41,7 @@ class _LeavesAddBodyState extends State<LeavesAddBody> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Create Leave"),
-        leading: customBackButton(context),
+        leading: CustomBackButton(),
       ),
       body: BlocConsumer<LeavesAddCubit, LeavesAddState>(
         listener: (context, state) {
@@ -283,7 +283,7 @@ class _LeavesAddBodyState extends State<LeavesAddBody> {
                                 MaterialPageRoute(
                                   builder: (contextt) => Scaffold(
                                     appBar: AppBar(
-                                      leading: customBackButton(context),
+                                      leading: CustomBackButton(),
                                     ),
                                     body: Center(
                                       child: PhotoView(

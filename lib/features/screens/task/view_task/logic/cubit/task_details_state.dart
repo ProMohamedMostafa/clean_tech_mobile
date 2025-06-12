@@ -30,7 +30,20 @@ class UserErrorState extends TaskDetailsState {
   final String error;
   UserErrorState(this.error);
 }
+//**************************************** */
 
+class TaskDeleteLoadingState extends TaskDetailsState {}
+
+class TaskDeleteSuccessState extends TaskDetailsState {
+  final DeleteTaskModel deleteTaskModel;
+
+  TaskDeleteSuccessState(this.deleteTaskModel);
+}
+
+class TaskDeleteErrorState extends TaskDetailsState {
+  final String error;
+  TaskDeleteErrorState(this.error);
+}
 //**************************************** */
 
 class GetChangeTaskStatusLoadingState extends TaskDetailsState {}

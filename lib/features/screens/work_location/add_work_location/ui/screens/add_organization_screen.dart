@@ -46,9 +46,9 @@ class _AddOrganizationScreenState extends State<AddOrganizationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: customBackButton(context),
-        title: Text('Add Organization', style: TextStyles.font16BlackSemiBold),
-        centerTitle: true,
+        leading: CustomBackButton(),
+        title: Text('Add Organization'),
+       
       ),
       body: SafeArea(
         child: SingleChildScrollView(

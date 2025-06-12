@@ -70,7 +70,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
           title: Text(
             "Create Task",
           ),
-          leading: customBackButton(context),
+          leading: CustomBackButton(),
         ),
         body: BlocConsumer<AddTaskCubit, AddTaskState>(
           listener: (context, state) {
@@ -915,7 +915,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                     MaterialPageRoute(
                                       builder: (contextt) => Scaffold(
                                         appBar: AppBar(
-                                          leading: customBackButton(context),
+                                          leading: CustomBackButton(),
                                         ),
                                         body: Center(
                                           child: PhotoView(

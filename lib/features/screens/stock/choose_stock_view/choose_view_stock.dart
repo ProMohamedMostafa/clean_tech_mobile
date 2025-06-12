@@ -26,7 +26,7 @@ class _ChooseViewStockState extends State<ChooseViewStock> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Stock'),
-        leading: customBackButton(context),
+        leading: CustomBackButton(),
       ),
       body: SingleChildScrollView(
         child: Padding(

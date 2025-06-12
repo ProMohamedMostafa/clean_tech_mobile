@@ -18,7 +18,7 @@ class TransactionManagmentBody extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Transaction Management'),
-        leading: customBackButton(context),
+        leading: CustomBackButton(),
       ),
       body:
           BlocConsumer<TransactionManagementCubit, TransactionManagementState>(

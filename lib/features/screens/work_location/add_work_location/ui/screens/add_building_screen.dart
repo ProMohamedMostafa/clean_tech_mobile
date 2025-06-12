@@ -47,9 +47,8 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: customBackButton(context),
-        title: Text('Add Building', style: TextStyles.font16BlackSemiBold),
-        centerTitle: true,
+        leading: CustomBackButton(),
+        title: Text('Add Building'),
       ),
       body: SafeArea(
         child: SingleChildScrollView(

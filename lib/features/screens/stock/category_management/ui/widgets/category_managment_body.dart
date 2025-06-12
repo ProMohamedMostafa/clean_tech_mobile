@@ -22,7 +22,7 @@ class CategoryManagmentBody extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
           title: Text('Category Management'),
-          leading: customBackButton(context)),
+          leading: CustomBackButton()),
       floatingActionButton: floatingActionButton(
         icon: Icons.post_add_rounded,
         onPressed: () {

@@ -84,7 +84,7 @@ class CompleteTasksLineChart extends StatelessWidget {
     );
   }
 
-  List<ChartData> _generateChartData(List<String>? labels, List<int>? values) {
+  List<ChartData> _generateChartData(List<String>? labels, List<num>? values) {
     if (labels == null || values == null) return [];
 
     return List.generate(
@@ -93,7 +93,7 @@ class CompleteTasksLineChart extends StatelessWidget {
         final fullLabel = labels[index];
         final trimmedLabel =
             fullLabel.length >= 3 ? fullLabel.substring(0, 3) : fullLabel;
-        return ChartData(trimmedLabel, values[index]);
+        return ChartData(trimmedLabel, values[index].toInt());
       },
     );
   }

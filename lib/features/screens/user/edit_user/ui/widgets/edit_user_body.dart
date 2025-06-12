@@ -15,7 +15,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
-import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/auth/set_password/ui/widgets/password_validation.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/user/edit_user/logic/edit_user_cubit.dart';
@@ -40,10 +40,8 @@ class _EditUserBodyState extends State<EditUserBody> {
       appBar: AppBar(
         title: Text(
           S.of(context).editUserTitle,
-          style: TextStyles.font16BlackSemiBold,
         ),
-        centerTitle: true,
-        leading: customBackButton(context),
+        leading: CustomBackButton(),
       ),
       body: BlocConsumer<EditUserCubit, EditUserState>(
           listener: (context, state) {
@@ -57,7 +55,7 @@ class _EditUserBodyState extends State<EditUserBody> {
       }, builder: (context, state) {
         final cubit = context.read<EditUserCubit>();
         if (cubit.userDetailsModel?.data! == null) {
-         return Loading();
+          return Loading();
         }
         return SafeArea(
             child: SingleChildScrollView(
@@ -79,7 +77,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                               MaterialPageRoute(
                                 builder: (contextt) => Scaffold(
                                   appBar: AppBar(
-                                    leading: customBackButton(context),
+                                    leading: CustomBackButton(),
                                   ),
                                   body: Center(
                                     child: PhotoView(
@@ -204,19 +202,15 @@ class _EditUserBodyState extends State<EditUserBody> {
                           label: S.of(context).addUserText2,
                           validator: (value) {
                             if (value!.length > 55) {
-                                    return S
-                                        .of(context)
-                                        .validationLastNameTooLong;
-                                  } else if (value.length < 3) {
-                                    return S
-                                        .of(context)
-                                        .validationLastNameTooShort;
-                                  } else if (!RegExp(r"^[a-zA-Z\s]+$")
-                                      .hasMatch(value)) {
-                                    return S
-                                        .of(context)
-                                        .validationLastNameOnlyLetters;
-                                  }
+                              return S.of(context).validationLastNameTooLong;
+                            } else if (value.length < 3) {
+                              return S.of(context).validationLastNameTooShort;
+                            } else if (!RegExp(r"^[a-zA-Z\s]+$")
+                                .hasMatch(value)) {
+                              return S
+                                  .of(context)
+                                  .validationLastNameOnlyLetters;
+                            }
                           },
                           hint: cubit.userDetailsModel!.data!.lastName!,
                         ),
@@ -232,10 +226,10 @@ class _EditUserBodyState extends State<EditUserBody> {
                     label: S.of(context).addUserText5,
                     validator: (value) {
                       if (value!.length > 55) {
-                          return S.of(context).validationUserNameTooLong;
-                        } else if (value.length < 3) {
-                          return S.of(context).validationUserNameTooShort;
-                        }
+                        return S.of(context).validationUserNameTooLong;
+                      } else if (value.length < 3) {
+                        return S.of(context).validationUserNameTooShort;
+                      }
                     },
                     hint: cubit.userDetailsModel!.data!.userName!,
                   ),
@@ -264,7 +258,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                     label: S.of(context).addUserText10,
                     validator: (value) {
                       if (!RegExp(r'^(?:[+0])?[0-9]{9}$').hasMatch(value!)) {
-                        return  S.of(context).validationValidMobileNumber;
+                        return S.of(context).validationValidMobileNumber;
                       }
                       return null;
                     },
@@ -286,10 +280,10 @@ class _EditUserBodyState extends State<EditUserBody> {
                     label: S.of(context).addUserText7,
                     validator: (value) {
                       if (value!.length > 20) {
-                          return S.of(context).validationIdNumberTooLong;
-                        } else if (value.length < 5) {
-                          return S.of(context).validationIdNumberTooShort;
-                        }
+                        return S.of(context).validationIdNumberTooLong;
+                      } else if (value.length < 5) {
+                        return S.of(context).validationIdNumberTooShort;
+                      }
                     },
                     hint: cubit.userDetailsModel!.data!.idNumber!,
                   ),
@@ -305,7 +299,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                     },
                     obscureText: cubit.ispassword,
                     keyboardType: TextInputType.text,
-                    label:  S.of(context).addUserText6,
+                    label: S.of(context).addUserText6,
                     hint: '',
                   ),
                   verticalSpace(15),
@@ -333,7 +327,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                       return null;
                     },
                     obscureText: cubit.ispassword,
-                    label:  S.of(context).addUserText11,
+                    label: S.of(context).addUserText11,
                     hint: '',
                   ),
                   verticalSpace(15),
@@ -356,8 +350,10 @@ class _EditUserBodyState extends State<EditUserBody> {
                         child: CustomDropDownList(
                           label: S.of(context).addUserText9,
                           onPressed: (selectedValue) {
-                            final items = [ S.of(context).genderMale,
-                                    S.of(context).genderFemale];
+                            final items = [
+                              S.of(context).genderMale,
+                              S.of(context).genderFemale
+                            ];
                             final selectedIndex = items.indexOf(selectedValue);
                             if (selectedIndex != -1) {
                               cubit.genderIdController.text =
@@ -365,8 +361,10 @@ class _EditUserBodyState extends State<EditUserBody> {
                             }
                           },
                           hint: cubit.userDetailsModel!.data!.gender!,
-                          items: [ S.of(context).genderMale,
-                                    S.of(context).genderFemale],
+                          items: [
+                            S.of(context).genderMale,
+                            S.of(context).genderFemale
+                          ],
                           controller: cubit.genderController,
                           keyboardType: TextInputType.text,
                           suffixIcon: IconBroken.arrowDown2,
@@ -463,8 +461,8 @@ class _EditUserBodyState extends State<EditUserBody> {
                     },
                     hint: cubit.userDetailsModel!.data!.role!,
                     items: cubit.providerItem
-                          .map((e) => e.name ?? 'Unknown')
-                          .toList(),
+                        .map((e) => e.name ?? 'Unknown')
+                        .toList(),
                     controller: cubit.roleController,
                     keyboardType: TextInputType.text,
                     suffixIcon: IconBroken.arrowDown2,
@@ -480,8 +478,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                             : (cubit.roleIdController.text == '4')
                                 ? S.of(context).roleSupervisor
                                 : cubit.userDetailsModel!.data!.managerName ??
-                                    
-                                         S.of(context).roleUsers,
+                                    S.of(context).roleUsers,
                     onPressed: (selectedValue) {
                       final selectedId = cubit.usersModel?.data?.users!
                           .firstWhere(
@@ -514,7 +511,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                             else if (cubit.roleIdController.text == '3')
                               S.of(context).noManagersAvailable
                             else if (cubit.roleIdController.text == '4')
-                             S.of(context).noSupervisorsAvailable
+                              S.of(context).noSupervisorsAvailable
                             else
                               S.of(context).noUsersAvailable
                           ]
@@ -527,7 +524,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                     label: S.of(context).addUserText15,
                     hint: cubit.userDetailsModel!.data!.providerName ?? '',
                     onChanged: (selectedValue) {
-                      final selectedId = cubit.providersModel?.data?.providers
+                      final selectedId = cubit.providersModel?.data?.data
                           ?.firstWhere(
                               (provider) => provider.name == selectedValue)
                           .id
@@ -552,13 +549,17 @@ class _EditUserBodyState extends State<EditUserBody> {
                               name: S.of(context).saveButtton,
                               onPressed: () {
                                 if (cubit.formKey.currentState!.validate()) {
-                                  showCustomDialog(context,
-                                      S.of(context).confirmSaveEdit,
-                                      () {
-                                    cubit.editUser(
-                                        widget.id, cubit.image?.path);
-                                    context.pop();
-                                  });
+                                  showDialog(
+                                      context: context,
+                                      builder: (dialogContext) {
+                                        return PopUpMeassage(
+                                            title: 'edit',
+                                            body: 'user',
+                                            onPressed: () {
+                                              cubit.editUser(
+                                                  widget.id, cubit.image?.path);
+                                            });
+                                      });
                                 }
                               },
                               color: AppColor.primaryColor,

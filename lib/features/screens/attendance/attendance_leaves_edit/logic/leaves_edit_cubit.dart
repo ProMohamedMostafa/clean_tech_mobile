@@ -39,16 +39,16 @@ class LeavesEditCubit extends Cubit<LeavesEditState> {
       "Id": id,
       "UserId": employeeController.text.isNotEmpty
           ? employeeIdController.text
-          : leavesDetailsModel!.data!.id,
+          : leavesDetailsModel!.data!.userId,
       "StartDate": startDateController.text.isNotEmpty
           ? startDateController.text
           : leavesDetailsModel!.data!.startDate,
       "EndDate": endDateController.text.isNotEmpty
           ? endDateController.text
           : leavesDetailsModel!.data!.endDate,
-      "Type": typeController.text.isNotEmpty
-          ? typeId
-          : leavesDetailsModel!.data!.type,
+      "Type": typeController.text.isEmpty
+          ? leavesDetailsModel!.data!.typeId
+          : typeId,
       "Reason": discriptionController.text.isNotEmpty
           ? discriptionController.text
           : leavesDetailsModel!.data!.reason,

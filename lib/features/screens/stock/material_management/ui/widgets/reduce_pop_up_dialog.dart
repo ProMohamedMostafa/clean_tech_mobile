@@ -73,7 +73,7 @@ class ReducePopUpDialog {
                               .read<MaterialManagementCubit>()
                               .providersModel
                               ?.data
-                              ?.providers
+                              ?.data
                               ?.firstWhere(
                                 (provider) => provider.name == selectedValue,
                               )
@@ -87,7 +87,7 @@ class ReducePopUpDialog {
                                     .read<MaterialManagementCubit>()
                                     .providersModel
                                     ?.data
-                                    ?.providers
+                                    ?.data
                                     ?.isEmpty ??
                                 true
                             ? ['No Providers available']
@@ -95,7 +95,7 @@ class ReducePopUpDialog {
                                     .read<MaterialManagementCubit>()
                                     .providersModel
                                     ?.data
-                                    ?.providers
+                                    ?.data
                                     ?.map((e) => e.name ?? 'Unknown')
                                     .toList() ??
                                 [],

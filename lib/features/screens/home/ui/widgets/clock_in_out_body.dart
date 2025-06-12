@@ -155,7 +155,11 @@ class ClockInOutBody extends StatelessWidget {
                       width: 65.w,
                       height: 65.h,
                       decoration: BoxDecoration(
-                        color: AppColor.primaryColor,
+                        color: (cubit.attendanceStatusModel?.data == null ||
+                                cubit.attendanceStatusModel?.data?.clockIn ==
+                                    null)
+                            ? AppColor.primaryColor
+                            : Colors.white,
                         shape: BoxShape.circle,
                         border: Border.all(
                             width: 2.w,

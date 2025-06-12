@@ -43,9 +43,9 @@ class _AddCityScreenState extends State<AddCityScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: customBackButton(context),
-        title: Text('Add City', style: TextStyles.font16BlackSemiBold),
-        centerTitle: true,
+        leading: CustomBackButton(),
+        title: Text('Add City'),
+       
       ),
       body: SafeArea(
         child: SingleChildScrollView(

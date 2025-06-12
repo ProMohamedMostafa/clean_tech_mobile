@@ -47,9 +47,9 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: customBackButton(context),
-        title: Text('Add Floor', style: TextStyles.font16BlackSemiBold),
-        centerTitle: true,
+        leading: CustomBackButton(),
+        title: Text('Add Floor'),
+      
       ),
       body: SafeArea(
         child: SingleChildScrollView(

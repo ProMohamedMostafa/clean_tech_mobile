@@ -12,7 +12,7 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
-import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_description_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
@@ -48,8 +48,7 @@ class _EditPointBodyState extends State<EditPointBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          AppBar(leading: customBackButton(context), title: Text('Edit Point')),
+      appBar: AppBar(leading: CustomBackButton(), title: Text('Edit Point')),
       body: SafeArea(
         child: BlocConsumer<EditPointCubit, EditPointState>(
           listener: (context, state) {
@@ -65,7 +64,7 @@ class _EditPointBodyState extends State<EditPointBody> {
           builder: (context, state) {
             final cubit = context.read<EditPointCubit>();
             if (cubit.pointUsersDetailsModel == null) {
-             return Loading();
+              return Loading();
             }
 
             return Padding(
@@ -982,18 +981,25 @@ class _EditPointBodyState extends State<EditPointBody> {
                                     .formKey
                                     .currentState!
                                     .validate()) {
-                                  showCustomDialog(context,
-                                      "Are you Sure you want save the edit of this Point ?",
-                                      () {
-                                    context.read<EditPointCubit>().editPoint(
-                                        widget.id,
-                                        selectedManagersIds,
-                                        selectedSupervisorsIds,
-                                        selectedCleanersIds,
-                                        capacity,
-                                        unit);
-                                    context.pop();
-                                  });
+                                  showDialog(
+                                      context: context,
+                                      builder: (dialogContext) {
+                                        return PopUpMeassage(
+                                            title: 'edit',
+                                            body: 'point',
+                                            onPressed: () {
+                                              context
+                                                  .read<EditPointCubit>()
+                                                  .editPoint(
+                                                      widget.id,
+                                                      selectedManagersIds,
+                                                      selectedSupervisorsIds,
+                                                      selectedCleanersIds,
+                                                      capacity,
+                                                      unit);
+                                             
+                                            });
+                                      });
                                 }
                               },
                               color: AppColor.primaryColor,

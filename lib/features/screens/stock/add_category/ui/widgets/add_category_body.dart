@@ -37,10 +37,10 @@ class _AddCategoryBodyState extends State<AddCategoryBody> {
         appBar: AppBar(
           title: Text(
             "Create Category",
-            style: TextStyles.font16BlackSemiBold,
+           
           ),
-          centerTitle: true,
-          leading: customBackButton(context),
+       
+          leading: CustomBackButton(),
         ),
         body: BlocConsumer<AddCategoryCubit, AddCategoryState>(
           listener: (context, state) {

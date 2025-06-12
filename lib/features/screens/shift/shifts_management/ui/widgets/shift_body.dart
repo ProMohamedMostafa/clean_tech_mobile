@@ -22,7 +22,7 @@ class ShiftBody extends StatelessWidget {
     final ShiftCubit cubit = context.read<ShiftCubit>();
     return Scaffold(
         appBar:
-            AppBar(title: Text('Shifts'), leading: customBackButton(context)),
+            AppBar(title: Text('Shifts'), leading: CustomBackButton()),
         floatingActionButton: role == 'Admin'
             ? floatingActionButton(
                 icon: Icons.post_add_outlined,

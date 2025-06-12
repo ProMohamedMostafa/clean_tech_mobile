@@ -4,6 +4,7 @@ class AllDeletedProvidersModel {
   bool? succeeded;
   String? message;
   String? error;
+  int? businessErrorCode;
   List<DeletedProviderData>? data;
 
   AllDeletedProvidersModel(
@@ -12,6 +13,7 @@ class AllDeletedProvidersModel {
       this.succeeded,
       this.message,
       this.error,
+      this.businessErrorCode,
       this.data});
 
   AllDeletedProvidersModel.fromJson(Map<String, dynamic> json) {
@@ -20,21 +22,23 @@ class AllDeletedProvidersModel {
     succeeded = json['succeeded'];
     message = json['message'];
     error = json['error'];
+    businessErrorCode = json['businessErrorCode'];
     if (json['data'] != null) {
       data = <DeletedProviderData>[];
       json['data'].forEach((v) {
-        data!.add( DeletedProviderData.fromJson(v));
+        data!.add(DeletedProviderData.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['statusCode'] = statusCode;
     data['meta'] = meta;
     data['succeeded'] = succeeded;
     data['message'] = message;
     data['error'] = error;
+    data['businessErrorCode'] = businessErrorCode;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -54,7 +58,7 @@ class DeletedProviderData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
     return data;

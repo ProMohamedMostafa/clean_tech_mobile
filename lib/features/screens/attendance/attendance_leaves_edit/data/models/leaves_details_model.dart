@@ -53,6 +53,7 @@ class Data {
   String? endDate;
   String? reason;
   String? type;
+  int? typeId;
   String? file;
 
   Data(
@@ -67,6 +68,7 @@ class Data {
       this.endDate,
       this.reason,
       this.type,
+      this.typeId,
       this.file});
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -81,6 +83,7 @@ class Data {
     endDate = json['endDate'];
     reason = json['reason'];
     type = json['type'];
+    typeId = json['typeId'];
     file = json['file'];
   }
 
@@ -97,6 +100,7 @@ class Data {
     data['endDate'] = endDate;
     data['reason'] = reason;
     data['type'] = type;
+    data['typeId'] = typeId;
     data['file'] = file;
     return data;
   }

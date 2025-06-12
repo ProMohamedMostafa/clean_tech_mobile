@@ -24,7 +24,7 @@ class TaskManagementBody extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Tasks'),
-        leading: customBackButton(context),
+        leading: CustomBackButton(),
       ),
       floatingActionButton: role == 'Cleaner'
           ? SizedBox.shrink()

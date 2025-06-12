@@ -62,6 +62,12 @@ class IntegrationsBody extends StatelessWidget {
         label: S.of(context).integ8,
         image: 'assets/images/activity.png',
       ),
+      if (role == 'Admin')
+        IntegrationItem(
+          onTap: () => context.pushNamed(Routes.providerScreen),
+          label: 'Provider',
+          image: 'assets/images/provider.png',
+        ),
     ];
 
     return Scaffold(

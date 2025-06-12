@@ -8,7 +8,7 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/logic/shift_cubit.dart';
 
 class ListShiftItemBuild extends StatelessWidget {
@@ -66,14 +66,19 @@ class ListShiftItemBuild extends StatelessWidget {
                                     arguments: cubit.allShiftsModel!.data!
                                         .shifts![index].id,
                                   )
-                                : showCustomDialog(context,
-                                    "Are you Sure to restore this shift ?", () {
-                                    cubit.restoreDeletedShift(
-                                      cubit.allShiftsDeletedModel!.data![index]
-                                          .id!,
-                                    );
-                                    context.pop();
-                                  });
+                                : showDialog(
+                                    context: context,
+                                    builder: (dialogContext) {
+                                      return PopUpMeassage(
+                                          title: 'restore',
+                                          body: 'shift',
+                                          onPressed: () {
+                                            cubit.restoreDeletedShift(
+                                              cubit.allShiftsDeletedModel!
+                                                  .data![index].id!,
+                                            );
+                                          });
+                                    });
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(5),
@@ -89,20 +94,33 @@ class ListShiftItemBuild extends StatelessWidget {
                       ? InkWell(
                           onTap: () {
                             cubit.selectedIndex == 0
-                                ? showCustomDialog(context,
-                                    "Are you Sure to delete this shift ?", () {
-                                    cubit.shiftDelete(cubit.allShiftsModel!
-                                        .data!.shifts![index].id!);
-                                    context.pop();
-                                  })
-                                : showCustomDialog(
-                                    context, "Forced Delete this shift", () {
-                                    cubit.forcedDeletedShift(cubit
-                                        .allShiftsDeletedModel!
-                                        .data![index]
-                                        .id!);
-                                    context.pop();
-                                  });
+                                ? showDialog(
+                                    context: context,
+                                    builder: (dialogContext) {
+                                      return PopUpMeassage(
+                                          title: 'delete',
+                                          body: 'shift',
+                                          onPressed: () {
+                                            cubit.shiftDelete(cubit
+                                                .allShiftsModel!
+                                                .data!
+                                                .shifts![index]
+                                                .id!);
+                                          });
+                                    })
+                                : showDialog(
+                                    context: context,
+                                    builder: (dialogContext) {
+                                      return PopUpMeassage(
+                                          title: 'delete',
+                                          body: 'shift',
+                                          onPressed: () {
+                                            cubit.forcedDeletedShift(cubit
+                                                .allShiftsDeletedModel!
+                                                .data![index]
+                                                .id!);
+                                          });
+                                    });
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(5),

@@ -32,7 +32,7 @@ class _ChooseViewWorkLocationState extends State<ChooseViewWorkLocation> {
         title: Text(
           'Work Location',
         ),
-        leading: customBackButton(context),
+        leading: CustomBackButton(),
       ),
       body: SafeArea(
           child: SingleChildScrollView(

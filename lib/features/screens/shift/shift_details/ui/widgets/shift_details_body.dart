@@ -12,7 +12,7 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
-import 'package:smart_cleaning_application/core/widgets/pop_up_dialog/show_custom_dialog.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/logic/cubit/shift_details_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/ui/widgets/buildings/building_list_build.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/ui/widgets/floor/floor_list_build.dart';
@@ -52,7 +52,7 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
     return Scaffold(
       appBar: AppBar(
         title: Text("Shift details"),
-        leading: customBackButton(context),
+        leading: CustomBackButton(),
         actions: [
           IconButton(
             onPressed: () {
@@ -88,7 +88,7 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
         },
         builder: (context, state) {
           if (context.read<ShiftDetailsCubit>().shiftDetailsModel == null) {
-           return Loading();
+            return Loading();
           }
 
           return SafeArea(
@@ -189,12 +189,18 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
                     DefaultElevatedButton(
                         name: S.of(context).deleteButton,
                         onPressed: () {
-                          showCustomDialog(context, S.of(context).deleteMessage,
-                              () {
-                            context
-                                .read<ShiftDetailsCubit>()
-                                .shiftDelete(widget.id);
-                          });
+                          showDialog(
+                              context: context,
+                              builder: (dialogContext) {
+                                return PopUpMeassage(
+                                    title: 'delete',
+                                    body: 'shift',
+                                    onPressed: () {
+                                      context
+                                          .read<ShiftDetailsCubit>()
+                                          .shiftDelete(widget.id);
+                                    });
+                              });
                         },
                         color: Colors.red,
                         height: 48,

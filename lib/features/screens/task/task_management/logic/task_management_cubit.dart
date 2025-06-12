@@ -111,7 +111,7 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
   List<TaskData> deletedTasks = [];
   taskDelete(int id) {
     emit(TaskDeleteLoadingState());
-    DioHelper.postData(url: 'tasks/delete/$id', data: {'id': id}).then((value) {
+    DioHelper.postData(url: 'tasks/delete/$id').then((value) {
       deleteTaskModel = DeleteTaskModel.fromJson(value!.data);
       final deletedTask = allTasksModel?.data?.data?.firstWhere(
         (user) => user.id == id,
@@ -138,8 +138,7 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
 
   restoreDeletedTask(int id) {
     emit(RestoreTaskLoadingState());
-    DioHelper.postData(url: 'tasks/restore/$id', data: {'id': id})
-        .then((value) {
+    DioHelper.postData(url: 'tasks/restore/$id').then((value) {
       final message = value?.data['message'] ?? "restored successfully";
 
       // Find and process the restored user
@@ -184,8 +183,7 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
 
   forcedDeletedUser(int id) {
     emit(ForceDeleteTaskLoadingState());
-    DioHelper.deleteData(url: 'tasks/forcedelete/$id', data: {'id': id})
-        .then((value) {
+    DioHelper.deleteData(url: 'tasks/forcedelete/$id').then((value) {
       final message = value?.data['message'] ?? "restored successfully";
       emit(ForceDeleteTaskSuccessState(message));
     }).catchError((error) {

@@ -1,6 +1,6 @@
 class ChartData {
   final String month;
-  final int value;
+  final num value;
 
   ChartData(this.month, this.value);
 }
