@@ -21,11 +21,10 @@ class TaskManagementBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<TaskManagementCubit>();
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Tasks'),
-        leading: CustomBackButton(),
-      ),
+      appBar: AppBar(title: Text('Tasks'), leading: CustomBackButton()),
       floatingActionButton: role == 'Cleaner'
           ? SizedBox.shrink()
           : floatingActionButton(
@@ -44,19 +43,27 @@ class TaskManagementBody extends StatelessWidget {
           }
           if (state is ForceDeleteTaskSuccessState) {
             toast(text: state.message, color: Colors.blue);
-            context.read<TaskManagementCubit>().getAllTasks();
-            context.read<TaskManagementCubit>().getAllDeletedTasks();
+            cubit.getAllTasks();
+            cubit.getAllDeletedTasks();
+          }
+          if (state is ForceDeleteTaskErrorState) {
+            toast(text: state.error, color: Colors.red);
           }
           if (state is RestoreTaskSuccessState) {
             toast(text: state.message, color: Colors.blue);
           }
+          if (state is RestoreTaskErrorState) {
+            toast(text: state.error, color: Colors.red);
+          }
           if (state is TaskDeleteSuccessState) {
             toast(text: state.deleteTaskModel.message!, color: Colors.blue);
-            context.read<TaskManagementCubit>().getAllDeletedTasks();
+            cubit.getAllDeletedTasks();
+          }
+          if (state is TaskDeleteErrorState) {
+            toast(text: state.error, color: Colors.red);
           }
         },
         builder: (context, state) {
-          TaskManagementCubit cubit = context.read<TaskManagementCubit>();
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
@@ -70,7 +77,7 @@ class TaskManagementBody extends StatelessWidget {
                 _buildTabBar(context),
                 verticalSpace(10),
                 Expanded(
-                  child: taskListDetailsBuild(context, state, cubit),
+                  child: TaskListBuild(),
                 ),
                 verticalSpace(10)
               ],

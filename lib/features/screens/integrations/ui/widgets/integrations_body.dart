@@ -27,7 +27,7 @@ class IntegrationsBody extends StatelessWidget {
       if (role == 'Admin')
         IntegrationItem(
           onTap: () => context.pushNamed(Routes.sensorScreen),
-          label: 'Sensor',
+          label: S.of(context).integ9,
           image: 'assets/images/sensor.png',
         ),
       if (role == 'Admin')
@@ -65,7 +65,7 @@ class IntegrationsBody extends StatelessWidget {
       if (role == 'Admin')
         IntegrationItem(
           onTap: () => context.pushNamed(Routes.providerScreen),
-          label: 'Provider',
+          label: S.of(context).integ10,
           image: 'assets/images/provider.png',
         ),
     ];

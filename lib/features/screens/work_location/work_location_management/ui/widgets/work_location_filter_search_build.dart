@@ -55,7 +55,6 @@ class FilterAndSearchWidget extends StatelessWidget {
               builder: (dialogContext) {
                 return BlocProvider(
                   create: (context) {
-                    // Dynamically create the cubit based on selectedIndex
                     switch (selectedIndex) {
                       case 0:
                         return FilterDialogCubit()..getCountry(false, true);
@@ -136,10 +135,10 @@ class FilterAndSearchWidget extends StatelessWidget {
             );
           },
           child: Container(
-            height: 49.h,
+            height: 47.h,
             width: 49.w,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.r),
+                borderRadius: BorderRadius.circular(8.r),
                 border: Border.all(color: AppColor.secondaryColor)),
             child: Icon(
               Icons.tune,

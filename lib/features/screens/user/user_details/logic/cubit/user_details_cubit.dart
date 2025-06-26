@@ -4,20 +4,21 @@ import 'package:intl/intl.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/core/widgets/filter/data/model/filter_dialog_data_model.dart';
-import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/data/models/attendance_history_model.dart';
-import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/data/models/attendance_leaves_model.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attendance_history_management/data/models/attendance_history_model.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_management/data/models/attendance_leaves_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/all_tasks_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/data/model/delete_user_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_shift_details_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_status_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_work_location_details.dart';
 part 'user_details_state.dart';
 
 class UserDetailsCubit extends Cubit<UserDetailsState> {
   UserDetailsCubit() : super(UserDetailsInitial());
 
-  FilterDialogDataModel? filterModel;
+  FilterDialogDataModel? taskFilterModel;
+  FilterDialogDataModel? attendanceFilterModel;
+  FilterDialogDataModel? leavesFilterModel;
 
   UserDetailsModel? userDetailsModel;
   getUserDetails(int? id) {
@@ -27,18 +28,6 @@ class UserDetailsCubit extends Cubit<UserDetailsState> {
       emit(UserDetailsSuccessState(userDetailsModel!));
     }).catchError((error) {
       emit(UserDetailsErrorState(error.toString()));
-    });
-  }
-
-  UserStatusModel? userStatusModel;
-  getUserStatus(int? id) {
-    emit(UserStatusLoadingState());
-    DioHelper.getData(url: 'attendance/status', query: {'userId': id})
-        .then((value) {
-      userStatusModel = UserStatusModel.fromJson(value!.data);
-      emit(UserStatusSuccessState(userStatusModel!));
-    }).catchError((error) {
-      emit(UserStatusErrorState(error.toString()));
     });
   }
 
@@ -68,25 +57,29 @@ class UserDetailsCubit extends Cubit<UserDetailsState> {
   AllTasksModel? userTaskDetailsModel;
   getUserTaskDetails(int? id) {
     emit(UserTaskDetailsLoadingState());
+    final String? formattedStartDate = taskFilterModel?.startDate != null
+        ? DateFormat('yyyy-MM-dd').format(taskFilterModel!.startDate!)
+        : null;
+
+    final String? formattedEndDate = taskFilterModel?.endDate != null
+        ? DateFormat('yyyy-MM-dd').format(taskFilterModel!.endDate!)
+        : null;
     DioHelper.getData(url: "tasks/pagination", query: {
-      'Status': filterModel?.taskStatusId,
-      'Priority': filterModel?.priorityId,
-      'CreatedBy': filterModel?.createdBy,
+      'Status': taskFilterModel?.taskStatusId,
+      'Priority': taskFilterModel?.priorityId,
+      'CreatedBy': taskFilterModel?.createdBy,
       'AssignTo': id,
-      'AreaId': filterModel?.areaId,
-      'CityId': filterModel?.cityId,
-      'OrganizationId': filterModel?.organizationId,
-      'BuildingId': filterModel?.buildingId,
-      'FloorId': filterModel?.floorId,
-      'SectionId': filterModel?.sectionId,
-      'PointId': filterModel?.pointId,
-      'ProviderId': filterModel?.providerId,
-      'StartDate': filterModel?.startDate != null
-          ? DateFormat('yyyy-MM-dd').format(filterModel!.startDate!)
-          : null,
-      'EndDate': filterModel?.endDate,
-      'StartTime': filterModel?.startTime,
-      'EndTime': filterModel?.endTime,
+      'AreaId': taskFilterModel?.areaId,
+      'CityId': taskFilterModel?.cityId,
+      'OrganizationId': taskFilterModel?.organizationId,
+      'BuildingId': taskFilterModel?.buildingId,
+      'FloorId': taskFilterModel?.floorId,
+      'SectionId': taskFilterModel?.sectionId,
+      'PointId': taskFilterModel?.pointId,
+      if (formattedStartDate != null) 'StartDate': formattedStartDate,
+      if (formattedEndDate != null) 'EndDate': formattedEndDate,
+      'StartTime': taskFilterModel?.startTime,
+      'EndTime': taskFilterModel?.endTime,
     }).then((value) {
       userTaskDetailsModel = AllTasksModel.fromJson(value!.data);
       emit(UserTaskDetailsSuccessState(userTaskDetailsModel!));
@@ -98,22 +91,27 @@ class UserDetailsCubit extends Cubit<UserDetailsState> {
   AttendanceHistoryModel? attendanceHistoryModel;
   getAllHistory(int? id) {
     emit(HistoryLoadingState());
+    final String? formattedStartDate = attendanceFilterModel?.startDate != null
+        ? DateFormat('yyyy-MM-dd').format(attendanceFilterModel!.startDate!)
+        : null;
+
+    final String? formattedEndDate = attendanceFilterModel?.endDate != null
+        ? DateFormat('yyyy-MM-dd').format(attendanceFilterModel!.endDate!)
+        : null;
     DioHelper.getData(url: ApiConstants.hisotryUrl, query: {
       'UserId': id,
       'History': false,
-      'RoleId': filterModel?.roleId,
-      'Shift': filterModel?.shiftId,
-      'StartDate': filterModel?.startDate,
-      'EndDate': filterModel?.endDate,
-      'Status': filterModel?.statusId,
-      'AreaId': filterModel?.areaId,
-      'CityId': filterModel?.cityId,
-      'OrganizationId': filterModel?.organizationId,
-      'BuildingId': filterModel?.buildingId,
-      'FloorId': filterModel?.floorId,
-      'SectionId': filterModel?.sectionId,
-      'PointId': filterModel?.pointId,
-      'ProviderId': filterModel?.providerId
+      'Shift': attendanceFilterModel?.shiftId,
+      if (formattedStartDate != null) 'StartDate': formattedStartDate,
+      if (formattedEndDate != null) 'EndDate': formattedEndDate,
+      'Status': attendanceFilterModel?.statusId,
+      'AreaId': attendanceFilterModel?.areaId,
+      'CityId': attendanceFilterModel?.cityId,
+      'OrganizationId': attendanceFilterModel?.organizationId,
+      'BuildingId': attendanceFilterModel?.buildingId,
+      'FloorId': attendanceFilterModel?.floorId,
+      'SectionId': attendanceFilterModel?.sectionId,
+      'PointId': attendanceFilterModel?.pointId,
     }).then((value) {
       attendanceHistoryModel = AttendanceHistoryModel.fromJson(value!.data);
       emit(HistorySuccessState(attendanceHistoryModel!));
@@ -125,21 +123,26 @@ class UserDetailsCubit extends Cubit<UserDetailsState> {
   AttendanceLeavesModel? attendanceLeavesModel;
   getAllLeaves(int? id) {
     emit(LeavesLoadingState());
+    final String? formattedStartDate = leavesFilterModel?.startDate != null
+        ? DateFormat('yyyy-MM-dd').format(leavesFilterModel!.startDate!)
+        : null;
+
+    final String? formattedEndDate = leavesFilterModel?.endDate != null
+        ? DateFormat('yyyy-MM-dd').format(leavesFilterModel!.endDate!)
+        : null;
     DioHelper.getData(url: ApiConstants.leavesUrl, query: {
       'History': false,
       'UserId': id,
-      'RoleId': filterModel?.roleId,
-      'StartDate': filterModel?.startDate,
-      'EndDate': filterModel?.endDate,
-      'Type': filterModel?.typeId,
-      'AreaId': filterModel?.areaId,
-      'CityId': filterModel?.cityId,
-      'OrganizationId': filterModel?.organizationId,
-      'BuildingId': filterModel?.buildingId,
-      'FloorId': filterModel?.floorId,
-      'SectionId': filterModel?.sectionId,
-      'PointId': filterModel?.pointId,
-      'ProviderId': filterModel?.providerId
+      if (formattedStartDate != null) 'StartDate': formattedStartDate,
+      if (formattedEndDate != null) 'EndDate': formattedEndDate,
+      'Type': leavesFilterModel?.typeId,
+      'AreaId': leavesFilterModel?.areaId,
+      'CityId': leavesFilterModel?.cityId,
+      'OrganizationId': leavesFilterModel?.organizationId,
+      'BuildingId': leavesFilterModel?.buildingId,
+      'FloorId': leavesFilterModel?.floorId,
+      'SectionId': leavesFilterModel?.sectionId,
+      'PointId': leavesFilterModel?.pointId,
     }).then((value) {
       attendanceLeavesModel = AttendanceLeavesModel.fromJson(value!.data);
       emit(LeavesSuccessState(attendanceLeavesModel!));

@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/logic/material_mangement_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/stock/material_management/ui/widgets/item_list_build.dart';
+import 'package:smart_cleaning_application/features/screens/stock/material_management/ui/widgets/material_item_list_build.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class MaterialDetailsListBuild extends StatelessWidget {
   const MaterialDetailsListBuild({super.key});
@@ -18,7 +19,7 @@ class MaterialDetailsListBuild extends StatelessWidget {
     if (materialsData == null || materialsData.isEmpty) {
       return Center(
         child: Text(
-          "There's no data",
+          S.of(context).noData,
           style: TextStyles.font13Blackmedium,
         ),
       );
@@ -35,9 +36,7 @@ class MaterialDetailsListBuild extends StatelessWidget {
           return Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              MaterialListItemBuild(index: index),
-            ],
+            children: [MaterialListItemBuild(index: index)],
           );
         },
       );

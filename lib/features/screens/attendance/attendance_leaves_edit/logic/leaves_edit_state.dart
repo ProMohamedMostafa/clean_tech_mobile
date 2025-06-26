@@ -1,5 +1,5 @@
 import 'package:image_picker/image_picker.dart';
-import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_edit/data/models/leaves_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attedance_leaves_details/data/model/leaves_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_edit/data/models/leaves_edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 

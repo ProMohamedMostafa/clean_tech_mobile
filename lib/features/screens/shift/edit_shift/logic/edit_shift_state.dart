@@ -1,6 +1,6 @@
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/edit_shift/data/model/edit_shift_model.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/shift_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/section_list_model.dart';
@@ -49,43 +49,43 @@ class OrganizationErrorState extends EditShiftState {
 }
 //**************************** */
 
-class GetBuildingLoadingState extends EditShiftState {}
+class BuildingLoadingState extends EditShiftState {}
 
-class GetBuildingSuccessState extends EditShiftState {
+class BuildingSuccessState extends EditShiftState {
   final BuildingListModel buildingModel;
 
-  GetBuildingSuccessState(this.buildingModel);
+  BuildingSuccessState(this.buildingModel);
 }
 
-class GetBuildingErrorState extends EditShiftState {
+class BuildingErrorState extends EditShiftState {
   final String error;
-  GetBuildingErrorState(this.error);
+  BuildingErrorState(this.error);
 }
 
 //**************************** */
-class GetFloorLoadingState extends EditShiftState {}
+class FloorLoadingState extends EditShiftState {}
 
-class GetFloorSuccessState extends EditShiftState {
+class FloorSuccessState extends EditShiftState {
   final FloorListModel floorModel;
 
-  GetFloorSuccessState(this.floorModel);
+  FloorSuccessState(this.floorModel);
 }
 
-class GetFloorErrorState extends EditShiftState {
+class FloorErrorState extends EditShiftState {
   final String error;
-  GetFloorErrorState(this.error);
+  FloorErrorState(this.error);
 }
 //**************************** */
 
-class GetSectionLoadingState extends EditShiftState {}
+class SectionLoadingState extends EditShiftState {}
 
-class GetSectionSuccessState extends EditShiftState {
+class SectionSuccessState extends EditShiftState {
   final SectionListModel sectionModel;
 
-  GetSectionSuccessState(this.sectionModel);
+  SectionSuccessState(this.sectionModel);
 }
 
-class GetSectionErrorState extends EditShiftState {
+class SectionErrorState extends EditShiftState {
   final String error;
-  GetSectionErrorState(this.error);
+  SectionErrorState(this.error);
 }

@@ -20,6 +20,7 @@ class EditUserCubit extends Cubit<EditUserState> {
   EditUserCubit() : super(EditUserInitialState());
 
   static EditUserCubit get(context) => BlocProvider.of(context);
+
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -41,12 +42,9 @@ class EditUserCubit extends Cubit<EditUserState> {
   TextEditingController passwordConfirmationController =
       TextEditingController();
   final formKey = GlobalKey<FormState>();
-  List<int> selectedShiftsIds = [];
+
   EditModel? editModel;
-  editUser(
-    int? id,
-    String? image,
-  ) async {
+  editUser(int? id, String? image) async {
     emit(EditUserLoadingState());
     int getRoleId(String role) {
       switch (role.toLowerCase()) {
@@ -139,7 +137,9 @@ class EditUserCubit extends Cubit<EditUserState> {
   }
 
   ProvidersModel? providersModel;
-  List<ProviderItem> providerItem = [ProviderItem(name: 'No providers available')];
+  List<ProviderItem> providerItem = [
+    ProviderItem(name: 'No providers available')
+  ];
   getProviders() {
     emit(AllProvidersLoadingState());
     DioHelper.getData(url: ApiConstants.allProvidersUrl).then((value) {

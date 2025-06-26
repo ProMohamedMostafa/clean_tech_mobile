@@ -8,6 +8,7 @@ import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_cubit.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class PopUpDialog {
   static Future<String?> show(
@@ -15,17 +16,14 @@ class PopUpDialog {
     return await showDialog(
       context: context,
       builder: (dialogContext) {
-        return AlertDialog(
+        return Dialog(
+          insetPadding: EdgeInsets.all(20),
           backgroundColor: Colors.white,
-          surfaceTintColor: Colors.white,
-          insetPadding: const EdgeInsets.all(20),
-          contentPadding: const EdgeInsets.all(20),
-          clipBehavior: Clip.antiAliasWithSaveLayer,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(16.r)),
+            borderRadius: BorderRadius.circular(12.r),
           ),
-          content: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -42,7 +40,7 @@ class PopUpDialog {
                           border: Border.all(color: AppColor.primaryColor)),
                       child: Center(
                         child: Text(
-                          'Edit',
+                          S.of(context).editButton,
                           style: TextStyles.font18PrimBold,
                         ),
                       )),
@@ -53,9 +51,9 @@ class PopUpDialog {
                     showDialog(
                         context: context,
                         builder: (dialogContext) {
-                          return PopUpMeassage(
-                              title: 'delete',
-                              body: 'task',
+                          return PopUpMessage(
+                              title: S.of(context).TitleDelete,
+                              body: S.of(context).materialBody,
                               onPressed: () {
                                 context
                                     .read<TaskManagementCubit>()
@@ -72,7 +70,7 @@ class PopUpDialog {
                           border: Border.all(color: Colors.red)),
                       child: Center(
                         child: Text(
-                          'Delete',
+                          S.of(context).deleteButton,
                           style: TextStyles.font18PrimBold
                               .copyWith(color: Colors.red),
                         ),

@@ -6,6 +6,7 @@ import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class ChooseViewWorkLocation extends StatefulWidget {
   const ChooseViewWorkLocation({super.key});
@@ -15,39 +16,28 @@ class ChooseViewWorkLocation extends StatefulWidget {
 }
 
 class _ChooseViewWorkLocationState extends State<ChooseViewWorkLocation> {
-  final List<Map<String, dynamic>> items = [
-    {'title': 'Area', 'icon': Icons.map},
-    {'title': 'City', 'icon': Icons.location_city},
-    {'title': 'Organizations', 'icon': Icons.business},
-    {'title': 'Building', 'icon': Icons.home_work},
-    {'title': 'Floor', 'icon': Icons.house},
-    {'title': 'Section', 'icon': Icons.stairs},
-    {'title': 'Point', 'icon': Icons.place},
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final List<Map<String, dynamic>> items = [
+      {'title': S.of(context).Area, 'icon': Icons.map},
+      {'title': S.of(context).City, 'icon': Icons.location_city},
+      {'title': S.of(context).Organization, 'icon': Icons.business},
+      {'title': S.of(context).Building, 'icon': Icons.home_work},
+      {'title': S.of(context).Floor, 'icon': Icons.house},
+      {'title': S.of(context).Section, 'icon': Icons.stairs},
+      {'title': S.of(context).Point, 'icon': Icons.place},
+    ];
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Work Location',
-        ),
-        leading: CustomBackButton(),
-      ),
-      body: SafeArea(
-          child: SingleChildScrollView(
+          title: Text(S.of(context).workLocation), leading: CustomBackButton()),
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               verticalSpace(20),
-              Text(
-                'Select To View',
-                style: TextStyles.font16BlackRegular,
-              ),
-              verticalSpace(10),
               ListView.separated(
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
@@ -59,12 +49,11 @@ class _ChooseViewWorkLocationState extends State<ChooseViewWorkLocation> {
                   final item = items[index];
 
                   return Container(
-                    height: 80,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8.r),
                         border: Border.all(color: AppColor.secondaryColor)),
                     child: ListTile(
-                      minTileHeight: 80,
+                      minTileHeight: 70,
                       dense: true,
                       leading: Icon(item['icon'], color: AppColor.primaryColor),
                       title: Text(item['title'],
@@ -105,7 +94,7 @@ class _ChooseViewWorkLocationState extends State<ChooseViewWorkLocation> {
             ],
           ),
         ),
-      )),
+      ),
     );
   }
 }

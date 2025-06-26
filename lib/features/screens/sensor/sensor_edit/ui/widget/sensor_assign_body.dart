@@ -14,25 +14,26 @@ import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_me
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_description_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
-import 'package:smart_cleaning_application/features/screens/sensor/sensor_edit/logic/cubit/assign_sensor_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/sensor/sensor_edit/logic/cubit/edit_sensor_cubit.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
-class SensorAssignBody extends StatelessWidget {
+class SensorEditBody extends StatelessWidget {
   final int id;
-  const SensorAssignBody({super.key, required this.id});
+  const SensorEditBody({super.key, required this.id});
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<AssignSensorCubit>();
+    final cubit = context.read<EditSensorCubit>();
     return Scaffold(
       appBar: AppBar(
-          title: Text('Assign to location'), leading: CustomBackButton()),
-      body: BlocConsumer<AssignSensorCubit, AssignSensorState>(
+          title: Text(S.of(context).editLocation), leading: CustomBackButton()),
+      body: BlocConsumer<EditSensorCubit, EditSensorState>(
         listener: (context, state) {
-          if (state is AssignSensorSuccessState) {
-            toast(text: state.assignSensorModel.message!, color: Colors.blue);
-            context.pushNamedAndRemoveLastTwo(Routes.sensorScreen);
+          if (state is EditSensorSuccessState) {
+            toast(text: state.editSensorModel.message!, color: Colors.blue);
+            context.pushNamedAndRemoveAllExceptFirst(Routes.sensorScreen);
           }
-          if (state is AssignSensorErrorState) {
+          if (state is EditSensorErrorState) {
             toast(text: state.error, color: Colors.red);
           }
         },
@@ -51,7 +52,7 @@ class SensorAssignBody extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Name",
+                    S.of(context).name,
                     style: TextStyles.font16BlackRegular,
                   ),
                   CustomTextFormField(
@@ -63,7 +64,7 @@ class SensorAssignBody extends StatelessWidget {
                   ),
                   verticalSpace(10),
                   Text(
-                    'Organization',
+                    S.of(context).Organization,
                     style: TextStyles.font16BlackRegular,
                   ),
                   verticalSpace(5),
@@ -94,7 +95,7 @@ class SensorAssignBody extends StatelessWidget {
                   ),
                   verticalSpace(10),
                   Text(
-                    'Building',
+                    S.of(context).Building,
                     style: TextStyles.font16BlackRegular,
                   ),
                   verticalSpace(5),
@@ -122,7 +123,7 @@ class SensorAssignBody extends StatelessWidget {
                   ),
                   verticalSpace(10),
                   Text(
-                    'Floor',
+                    S.of(context).Floor,
                     style: TextStyles.font16BlackRegular,
                   ),
                   verticalSpace(5),
@@ -150,7 +151,7 @@ class SensorAssignBody extends StatelessWidget {
                   ),
                   verticalSpace(10),
                   Text(
-                    'Section',
+                    S.of(context).Section,
                     style: TextStyles.font16BlackRegular,
                   ),
                   verticalSpace(5),
@@ -178,7 +179,7 @@ class SensorAssignBody extends StatelessWidget {
                   ),
                   verticalSpace(10),
                   Text(
-                    'Point',
+                    S.of(context).Point,
                     style: TextStyles.font16BlackRegular,
                   ),
                   verticalSpace(5),
@@ -204,7 +205,7 @@ class SensorAssignBody extends StatelessWidget {
                   ),
                   verticalSpace(10),
                   Text(
-                    "Description",
+                    S.of(context).discription,
                     style: TextStyles.font16BlackRegular,
                   ),
                   verticalSpace(10),
@@ -214,24 +215,24 @@ class SensorAssignBody extends StatelessWidget {
                     hint: cubit.sensorDetailsModel!.data!.description ?? '',
                   ),
                   verticalSpace(20),
-                  state is AssignSensorLoadingState
+                  state is EditSensorLoadingState
                       ? Loading()
                       : Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
                               child: DefaultElevatedButton(
-                                name: "Done",
+                                name: S.of(context).editButton,
                                 onPressed: () {
                                   if (cubit.formKey.currentState!.validate()) {
                                     showDialog(
                                         context: context,
                                         builder: (dialogContext) {
-                                          return PopUpMeassage(
-                                              title: 'edit',
-                                              body: 'sensor',
+                                          return PopUpMessage(
+                                              title: S.of(context).TitleEdit,
+                                              body: S.of(context).sensorBody,
                                               onPressed: () {
-                                                cubit.assignSensor(id);
+                                                cubit.editSensor(id);
                                               });
                                         });
                                   }
@@ -247,18 +248,18 @@ class SensorAssignBody extends StatelessWidget {
                               horizontalSpace(10),
                               Expanded(
                                 child: DefaultElevatedButton(
-                                  name: 'Remove Location',
+                                  name: S.of(context).RemoveLocationButton,
                                   onPressed: () {
                                     showDialog(
                                         context: context,
                                         builder: (dialogContext) {
-                                          return PopUpMeassage(
-                                              title: 'remove location',
-                                              body: 'sensor',
+                                          return PopUpMessage(
+                                              title: S.of(context).TitleRemove,
+                                              body: S.of(context).sensorBody,
                                               onPressed: () {
                                                 cubit.pointIdController.text =
                                                     '';
-                                                cubit.assignSensor(id,
+                                                cubit.editSensor(id,
                                                     removeLocation: true);
                                               });
                                         });

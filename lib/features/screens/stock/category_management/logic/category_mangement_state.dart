@@ -1,7 +1,6 @@
 import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/category_management_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/delete_category_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/deleted_category_list_model.dart';
-import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/category_details_model.dart';
 
 abstract class CategoryManagementState {}
 
@@ -35,17 +34,17 @@ class DeleteCategoryErrorState extends CategoryManagementState {
 }
 //***************** */
 
-class DeletedCategoryLoadingState extends CategoryManagementState {}
+class AllDeletedCategoryLoadingState extends CategoryManagementState {}
 
-class DeletedCategorySuccessState extends CategoryManagementState {
+class AllDeletedCategorySuccessState extends CategoryManagementState {
   final DeletedCategoryListModel deletedCategoryListModel;
 
-  DeletedCategorySuccessState(this.deletedCategoryListModel);
+  AllDeletedCategorySuccessState(this.deletedCategoryListModel);
 }
 
-class DeletedCategoryErrorState extends CategoryManagementState {
+class AllDeletedCategoryErrorState extends CategoryManagementState {
   final String error;
-  DeletedCategoryErrorState(this.error);
+  AllDeletedCategoryErrorState(this.error);
 }
 //***************** */
 
@@ -74,18 +73,4 @@ class ForceDeleteCategorySuccessState extends CategoryManagementState {
 class ForceDeleteCategoryErrorState extends CategoryManagementState {
   final String error;
   ForceDeleteCategoryErrorState(this.error);
-}
-//***************** */
-
-class CategoryDetailsLoadingState extends CategoryManagementState {}
-
-class CategoryDetailsSuccessState extends CategoryManagementState {
-  final CategoryDetailsModel categoryDetailsModelModel;
-
-  CategoryDetailsSuccessState(this.categoryDetailsModelModel);
-}
-
-class CategoryDetailsErrorState extends CategoryManagementState {
-  final String error;
-  CategoryDetailsErrorState(this.error);
 }

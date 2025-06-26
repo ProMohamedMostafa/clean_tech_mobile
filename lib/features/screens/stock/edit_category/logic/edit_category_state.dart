@@ -1,7 +1,7 @@
 
 import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/category_management_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/edit_category/data/model/edit_category_model.dart';
-import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/category_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/stock/edit_category/data/model/category_details_model.dart';
 
 abstract class EditCategoryState {}
 
@@ -35,15 +35,15 @@ class CategoryDetailsErrorState extends EditCategoryState {
 }
 //**************** */
 
-class CategoryManagementLoadingState extends EditCategoryState {}
+class AllCategoriesLoadingState extends EditCategoryState {}
 
-class CategoryManagementSuccessState extends EditCategoryState {
+class AllCategoriesSuccessState extends EditCategoryState {
   final CategoryManagementModel categoryManagementModel;
 
-  CategoryManagementSuccessState(this.categoryManagementModel);
+  AllCategoriesSuccessState(this.categoryManagementModel);
 }
 
-class CategoryManagementErrorState extends EditCategoryState {
+class AllCategoriesErrorState extends EditCategoryState {
   final String error;
-  CategoryManagementErrorState(this.error);
+  AllCategoriesErrorState(this.error);
 }

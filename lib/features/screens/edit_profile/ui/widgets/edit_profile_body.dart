@@ -19,7 +19,7 @@ import 'package:smart_cleaning_application/features/layout/main_layout/logic/bot
 import 'package:smart_cleaning_application/features/screens/edit_profile/logic/edit_profile_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/edit_profile/logic/edit_profile_state.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
-import 'package:smart_cleaning_application/features/screens/user/edit_user/ui/widgets/edit_user_text_form_field/edit_user_text_form_field.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class EditProfileBody extends StatefulWidget {
@@ -170,7 +170,8 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        child: EditUserTextField(
+                        child: CustomTextFormField(
+                          onlyRead: false,
                           controller: cubit.firstNameController
                             ..text = cubit.profileModel!.data!.firstName!,
                           obscureText: false,
@@ -187,13 +188,15 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                                   .of(context)
                                   .validationFirstNameOnlyLetters;
                             }
+                            return null;
                           },
                           hint: cubit.profileModel!.data!.firstName!,
                         ),
                       ),
                       horizontalSpace(10),
                       Expanded(
-                        child: EditUserTextField(
+                        child: CustomTextFormField(
+                          onlyRead: false,
                           controller: cubit.lastNameController
                             ..text = cubit.profileModel!.data!.lastName!,
                           obscureText: false,
@@ -210,6 +213,7 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                                   .of(context)
                                   .validationLastNameOnlyLetters;
                             }
+                            return null;
                           },
                           hint: cubit.profileModel!.data!.lastName!,
                         ),
@@ -217,7 +221,7 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                     ],
                   ),
                   verticalSpace(15),
-                  EditUserTextField(
+                  CustomTextFormField(
                     controller: cubit.userNameController
                       ..text = cubit.profileModel!.data!.userName!,
                     obscureText: false,
@@ -229,11 +233,14 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                       } else if (value.length < 3) {
                         return S.of(context).validationUserNameTooShort;
                       }
+                      return null;
                     },
                     hint: cubit.profileModel!.data!.userName!,
+                    onlyRead: false,
                   ),
                   verticalSpace(15),
-                  EditUserTextField(
+                  CustomTextFormField(
+                    onlyRead: false,
                     controller: cubit.emailController
                       ..text = cubit.profileModel!.data!.email!,
                     obscureText: false,
@@ -244,11 +251,13 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                           .hasMatch(value!)) {
                         return S.of(context).validationValidEmail;
                       }
+                      return null;
                     },
                     hint: cubit.profileModel!.data!.email!,
                   ),
                   verticalSpace(15),
-                  EditUserTextField(
+                  CustomTextFormField(
+                    onlyRead: false,
                     controller: cubit.phoneController
                       ..text = cubit.profileModel!.data!.phoneNumber!
                           .replaceFirst('+966', ''),
@@ -261,7 +270,7 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                       }
                       return null;
                     },
-                    prefixIcon: Padding(
+                    perfixIcon: Padding(
                       padding: const EdgeInsets.fromLTRB(10, 13, 5, 13),
                       child: Text(
                         '+966 |',
@@ -271,7 +280,8 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                     hint: cubit.profileModel!.data!.phoneNumber!,
                   ),
                   verticalSpace(15),
-                  EditUserTextField(
+                  CustomTextFormField(
+                    onlyRead: false,
                     controller: cubit.idNumberController
                       ..text = cubit.profileModel!.data!.idNumber!,
                     obscureText: false,
@@ -283,6 +293,7 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                       } else if (value.length < 5) {
                         return S.of(context).validationIdNumberTooShort;
                       }
+                      return null;
                     },
                     hint: cubit.profileModel!.data!.idNumber!,
                   ),
@@ -347,7 +358,8 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                       ),
                       horizontalSpace(15),
                       Expanded(
-                        child: EditUserTextField(
+                        child: CustomTextFormField(
+                          onlyRead: false,
                           controller: cubit.birthController,
                           obscureText: false,
                           suffixIcon: Icons.calendar_today,
@@ -399,7 +411,7 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                                   showDialog(
                                       context: context,
                                       builder: (dialogContext) {
-                                        return PopUpMeassage(
+                                        return PopUpMessage(
                                             title: 'edit',
                                             body: 'profile',
                                             onPressed: () {

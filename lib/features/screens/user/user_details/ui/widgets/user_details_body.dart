@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
+
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
@@ -40,9 +41,43 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
   @override
   void initState() {
     controller = TabController(length: 6, vsync: this);
+
     controller.addListener(() {
-      setState(() {});
+      final cubit = context.read<UserDetailsCubit>();
+
+      if (controller.indexIsChanging) return;
+
+      final index = controller.index;
+
+      switch (index) {
+        case 1:
+          if (cubit.userWorkLocationDetailsModel == null) {
+            cubit.getUserWorkLocationDetails(widget.id);
+          }
+          break;
+        case 2:
+          if (cubit.userShiftDetailsModel == null) {
+            cubit.getUserShiftDetails(widget.id);
+          }
+          break;
+        case 3:
+          if (cubit.userTaskDetailsModel == null) {
+            cubit.getUserTaskDetails(widget.id);
+          }
+          break;
+        case 4:
+          if (cubit.attendanceHistoryModel == null) {
+            cubit.getAllHistory(widget.id);
+          }
+          break;
+        case 5:
+          if (cubit.attendanceLeavesModel == null) {
+            cubit.getAllLeaves(widget.id);
+          }
+          break;
+      }
     });
+
     super.initState();
   }
 
@@ -57,48 +92,43 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
     final cubit = context.read<UserDetailsCubit>();
     return Scaffold(
       appBar: AppBar(
-        title: Text(S.of(context).userDetailsTitle),
-        leading: CustomBackButton(),
-        actions: [
-          IconButton(
-            onPressed: () {
-              createPDF(context);
-            },
-            icon: Icon(
-              CupertinoIcons.tray_arrow_down,
-              color: Colors.red,
-              size: 22.sp,
-            ),
-          ),
-          if (role == 'Admin')
+          title: Text(S.of(context).userDetailsTitle),
+          leading: CustomBackButton(),
+          actions: [
             IconButton(
-                onPressed: () {
-                  context.pushNamed(Routes.editUserScreen,
-                      arguments: widget.id);
-                },
-                icon: Icon(
-                  Icons.edit,
-                  color: AppColor.primaryColor,
-                ))
-        ],
-      ),
+              onPressed: () {
+                createPDF(context);
+              },
+              icon: Icon(
+                CupertinoIcons.tray_arrow_down,
+                color: Colors.red,
+                size: 22.sp,
+              ),
+            ),
+            if (role == 'Admin')
+              IconButton(
+                  onPressed: () {
+                    context.pushNamed(Routes.editUserScreen,
+                        arguments: widget.id);
+                  },
+                  icon: Icon(
+                    Icons.edit,
+                    color: AppColor.primaryColor,
+                  ))
+          ]),
       body: BlocConsumer<UserDetailsCubit, UserDetailsState>(
         listener: (context, state) {
           if (state is UserDeleteSuccessState) {
             toast(text: state.deleteUserModel.message!, color: Colors.blue);
-            context.pushNamedAndRemoveLastTwo(Routes.userManagmentScreen);
+            context
+                .pushNamedAndRemoveAllExceptFirst(Routes.userManagmentScreen);
           }
           if (state is UserDeleteErrorState) {
             toast(text: state.error, color: Colors.red);
           }
         },
         builder: (context, state) {
-          if ((cubit.userDetailsModel?.data == null &&
-                  cubit.userStatusModel?.data == null) ||
-              cubit.userShiftDetailsModel?.data == null ||
-              cubit.userTaskDetailsModel?.data == null ||
-              cubit.userWorkLocationDetailsModel?.data == null ||
-              cubit.attendanceLeavesModel?.data == null) {
+          if (cubit.userDetailsModel?.data == null) {
             return Loading();
           }
 
@@ -168,9 +198,8 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                           height: 15.h,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: cubit.userStatusModel?.data == null
-                                ? Colors.red
-                                : cubit.userStatusModel!.data!.clockOut == null
+                            color:
+                                cubit.userDetailsModel!.data!.isWorking == true
                                     ? Colors.green
                                     : Colors.red,
                             border: Border.all(color: Colors.white, width: 2.w),
@@ -194,133 +223,106 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                   ],
                 ),
                 verticalSpace(5),
-                Text(
-                  cubit.userDetailsModel!.data!.role!,
-                  style: TextStyles.font11GreyMedium,
-                ),
+                Text(cubit.userDetailsModel!.data!.role!,
+                    style: TextStyles.font11GreyMedium),
                 verticalSpace(15),
                 SizedBox(
-                  height: 42.h,
-                  width: double.infinity,
-                  child: TabBar(
-                      tabAlignment: TabAlignment.center,
-                      isScrollable: true,
-                      indicatorSize: TabBarIndicatorSize.tab,
-                      controller: controller,
-                      dividerColor: Colors.transparent,
-                      indicator: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(5.r)),
-                        color: controller.index == controller.index
-                            ? AppColor.primaryColor
-                            : Colors.transparent,
-                      ),
-                      tabs: [
-                        Tab(
-                          child: Text(
-                            S.of(context).userDetails,
-                            style: TextStyle(
-                                color: controller.index == 0
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14.sp),
+                    height: 42.h,
+                    width: double.infinity,
+                    child: AnimatedBuilder(
+                      animation: controller,
+                      builder: (context, _) {
+                        return TabBar(
+                          controller: controller,
+                          tabAlignment: TabAlignment.center,
+                          isScrollable: true,
+                          indicatorSize: TabBarIndicatorSize.tab,
+                          indicator: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5.r),
+                            color: AppColor.primaryColor,
                           ),
-                        ),
-                        Tab(
-                          child: Text(
-                            S.of(context).integ2,
-                            style: TextStyle(
-                                color: controller.index == 1
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14.sp),
-                          ),
-                        ),
-                        Tab(
-                          child: Text(
-                            S.of(context).integ4,
-                            style: TextStyle(
-                                color: controller.index == 2
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14.sp),
-                          ),
-                        ),
-                        Tab(
-                          child: Text(
-                            S.of(context).integ5,
-                            style: TextStyle(
-                                color: controller.index == 3
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14.sp),
-                          ),
-                        ),
-                        Tab(
-                          child: Text(
-                            S.of(context).attendance,
-                            style: TextStyle(
-                                color: controller.index == 4
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14.sp),
-                          ),
-                        ),
-                        Tab(
-                          child: Text(
-                            S.of(context).leaves,
-                            style: TextStyle(
-                                color: controller.index == 5
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14.sp),
-                          ),
-                        ),
-                      ]),
-                ),
-                Divider(
-                  color: Colors.grey[300],
-                  height: 2,
-                ),
+                          tabs: List.generate(6, (index) {
+                            final labels = [
+                              S.of(context).userDetails,
+                              S.of(context).integ2,
+                              S.of(context).integ4,
+                              S.of(context).integ5,
+                              S.of(context).attendance,
+                              S.of(context).leaves,
+                            ];
+
+                            return Tab(
+                              child: Text(
+                                labels[index],
+                                style: TextStyle(
+                                  color: controller.index == index
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14.sp,
+                                ),
+                              ),
+                            );
+                          }),
+                        );
+                      },
+                    )),
                 verticalSpace(5),
                 Expanded(
-                  child: TabBarView(controller: controller, children: [
-                    UserDetails(),
-                    WorkLocationUserDetails(),
-                    UserShiftDetails(),
-                    UserTasksDetails(),
-                    UserAttendanceDetails(),
-                    UserLeavesDetails()
-                  ]),
+                  child: TabBarView(
+                    controller: controller,
+                    children: [
+                      UserDetails(),
+
+                      // Tab 1: Work Location
+                      cubit.userWorkLocationDetailsModel == null
+                          ? Loading()
+                          : WorkLocationUserDetails(),
+
+                      // Tab 2: Shifts
+                      cubit.userShiftDetailsModel == null
+                          ? Loading()
+                          : UserShiftDetails(),
+
+                      // Tab 3: Tasks
+                      cubit.userTaskDetailsModel == null
+                          ? Loading()
+                          : UserTasksDetails(),
+
+                      // Tab 4: Attendance History
+                      cubit.attendanceHistoryModel == null
+                          ? Loading()
+                          : UserAttendanceDetails(),
+
+                      // Tab 5: Leaves
+                      cubit.attendanceLeavesModel == null
+                          ? Loading()
+                          : UserLeavesDetails(),
+                    ],
+                  ),
                 ),
                 verticalSpace(15),
-                (role == 'Admin')
-                    ? DefaultElevatedButton(
-                        name: S.of(context).deleteButton,
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (dialogContext) {
-                                return PopUpMeassage(
-                                    title: 'delete',
-                                    body: 'user',
-                                    onPressed: () {
-                                      context
-                                          .read<UserDetailsCubit>()
-                                          .userDelete(widget.id);
-                                    });
-                              });
-                        },
-                        color: Colors.red,
-                        height: 48,
-                        width: double.infinity,
-                        textStyles: TextStyles.font20Whitesemimedium)
-                    : SizedBox.shrink(),
+                if (role == 'Admin')
+                  DefaultElevatedButton(
+                      name: S.of(context).deleteButton,
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (dialogContext) {
+                              return PopUpMessage(
+                                  title: 'delete',
+                                  body: 'user',
+                                  onPressed: () {
+                                    context
+                                        .read<UserDetailsCubit>()
+                                        .userDelete(widget.id);
+                                  });
+                            });
+                      },
+                      color: Colors.red,
+                      height: 48,
+                      width: double.infinity,
+                      textStyles: TextStyles.font20Whitesemimedium),
                 verticalSpace(20),
               ],
             ),

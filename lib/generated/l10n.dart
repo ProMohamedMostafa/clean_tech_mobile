@@ -539,14 +539,14 @@ class S {
     return Intl.message('Settings', name: 'botNavTitle4', desc: '', args: []);
   }
 
-  /// `User Management`
+  /// `Users Management`
   String get integ1 {
-    return Intl.message('User Management', name: 'integ1', desc: '', args: []);
+    return Intl.message('Users Management', name: 'integ1', desc: '', args: []);
   }
 
-  /// `Work Location`
+  /// `Work Locations`
   String get integ2 {
-    return Intl.message('Work Location', name: 'integ2', desc: '', args: []);
+    return Intl.message('Work Locations', name: 'integ2', desc: '', args: []);
   }
 
   /// `Assign Management`
@@ -559,14 +559,14 @@ class S {
     );
   }
 
-  /// `Shift`
+  /// `Shifts`
   String get integ4 {
-    return Intl.message('Shift', name: 'integ4', desc: '', args: []);
+    return Intl.message('Shifts', name: 'integ4', desc: '', args: []);
   }
 
-  /// `Task`
+  /// `Tasks`
   String get integ5 {
-    return Intl.message('Task', name: 'integ5', desc: '', args: []);
+    return Intl.message('Tasks', name: 'integ5', desc: '', args: []);
   }
 
   /// `Attendance`
@@ -579,9 +579,19 @@ class S {
     return Intl.message('Stock', name: 'integ7', desc: '', args: []);
   }
 
-  /// `Activity`
+  /// `Activities`
   String get integ8 {
-    return Intl.message('Activity', name: 'integ8', desc: '', args: []);
+    return Intl.message('Activities', name: 'integ8', desc: '', args: []);
+  }
+
+  /// `Sensors`
+  String get integ9 {
+    return Intl.message('Sensors', name: 'integ9', desc: '', args: []);
+  }
+
+  /// `Providers`
+  String get integ10 {
+    return Intl.message('Providers', name: 'integ10', desc: '', args: []);
   }
 
   /// `Integrations`
@@ -1064,9 +1074,9 @@ class S {
     );
   }
 
-  /// `In Active`
+  /// `InActive`
   String get inactive {
-    return Intl.message('In Active', name: 'inactive', desc: '', args: []);
+    return Intl.message('InActive', name: 'inactive', desc: '', args: []);
   }
 
   /// `Active`
@@ -1602,6 +1612,2261 @@ class S {
   /// `Filter`
   String get Filter {
     return Intl.message('Filter', name: 'Filter', desc: '', args: []);
+  }
+
+  /// `Area`
+  String get Area {
+    return Intl.message('Area', name: 'Area', desc: '', args: []);
+  }
+
+  /// `City`
+  String get City {
+    return Intl.message('City', name: 'City', desc: '', args: []);
+  }
+
+  /// `Organization`
+  String get Organization {
+    return Intl.message(
+      'Organization',
+      name: 'Organization',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Building`
+  String get Building {
+    return Intl.message('Building', name: 'Building', desc: '', args: []);
+  }
+
+  /// `Floor`
+  String get Floor {
+    return Intl.message('Floor', name: 'Floor', desc: '', args: []);
+  }
+
+  /// `Section`
+  String get Section {
+    return Intl.message('Section', name: 'Section', desc: '', args: []);
+  }
+
+  /// `Point`
+  String get Point {
+    return Intl.message('Point', name: 'Point', desc: '', args: []);
+  }
+
+  /// `All sensors`
+  String get sensorFirstLabel {
+    return Intl.message(
+      'All sensors',
+      name: 'sensorFirstLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Deleted sensors`
+  String get sensorSecondLabel {
+    return Intl.message(
+      'Deleted sensors',
+      name: 'sensorSecondLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `find sensor`
+  String get sensorHint {
+    return Intl.message('find sensor', name: 'sensorHint', desc: '', args: []);
+  }
+
+  /// `Last read `
+  String get sensorTextLastRead {
+    return Intl.message(
+      'Last read ',
+      name: 'sensorTextLastRead',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ` ago`
+  String get sensorTextAgo {
+    return Intl.message(' ago', name: 'sensorTextAgo', desc: '', args: []);
+  }
+
+  /// `restore`
+  String get TitleRestore {
+    return Intl.message('restore', name: 'TitleRestore', desc: '', args: []);
+  }
+
+  /// `sensor`
+  String get sensorBody {
+    return Intl.message('sensor', name: 'sensorBody', desc: '', args: []);
+  }
+
+  /// `Type`
+  String get type {
+    return Intl.message('Type', name: 'type', desc: '', args: []);
+  }
+
+  /// `Battery`
+  String get battery {
+    return Intl.message('Battery', name: 'battery', desc: '', args: []);
+  }
+
+  /// `Edit Location`
+  String get editLocation {
+    return Intl.message(
+      'Edit Location',
+      name: 'editLocation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Duration : `
+  String get duration {
+    return Intl.message('Duration : ', name: 'duration', desc: '', args: []);
+  }
+
+  /// `Shift : `
+  String get shiftField {
+    return Intl.message('Shift : ', name: 'shiftField', desc: '', args: []);
+  }
+
+  /// `Name`
+  String get name {
+    return Intl.message('Name', name: 'name', desc: '', args: []);
+  }
+
+  /// `Discription`
+  String get discription {
+    return Intl.message('Discription', name: 'discription', desc: '', args: []);
+  }
+
+  /// `Remove Location`
+  String get RemoveLocationButton {
+    return Intl.message(
+      'Remove Location',
+      name: 'RemoveLocationButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sensor details`
+  String get sensorDetails {
+    return Intl.message(
+      'Sensor details',
+      name: 'sensorDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Read more`
+  String get ReadMoreButton {
+    return Intl.message(
+      'Read more',
+      name: 'ReadMoreButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Read less`
+  String get ReadLessButton {
+    return Intl.message(
+      'Read less',
+      name: 'ReadLessButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `edit`
+  String get TitleEdit {
+    return Intl.message('edit', name: 'TitleEdit', desc: '', args: []);
+  }
+
+  /// `remove location`
+  String get TitleRemove {
+    return Intl.message(
+      'remove location',
+      name: 'TitleRemove',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Min`
+  String get min {
+    return Intl.message('Min', name: 'min', desc: '', args: []);
+  }
+
+  /// `Max`
+  String get max {
+    return Intl.message('Max', name: 'max', desc: '', args: []);
+  }
+
+  /// `add`
+  String get TitleAdd {
+    return Intl.message('add', name: 'TitleAdd', desc: '', args: []);
+  }
+
+  /// `limit`
+  String get limitBody {
+    return Intl.message('limit', name: 'limitBody', desc: '', args: []);
+  }
+
+  /// `Add`
+  String get addButton {
+    return Intl.message('Add', name: 'addButton', desc: '', args: []);
+  }
+
+  /// `delete`
+  String get TitleDelete {
+    return Intl.message('delete', name: 'TitleDelete', desc: '', args: []);
+  }
+
+  /// `There's no tasks`
+  String get noTasks {
+    return Intl.message(
+      'There\'s no tasks',
+      name: 'noTasks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reload`
+  String get reloadButton {
+    return Intl.message('Reload', name: 'reloadButton', desc: '', args: []);
+  }
+
+  /// `All Tasks`
+  String get allTasks {
+    return Intl.message('All Tasks', name: 'allTasks', desc: '', args: []);
+  }
+
+  /// `Pending`
+  String get pendingTask {
+    return Intl.message('Pending', name: 'pendingTask', desc: '', args: []);
+  }
+
+  /// `In Progress`
+  String get inProgressTask {
+    return Intl.message(
+      'In Progress',
+      name: 'inProgressTask',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not Approval`
+  String get notApproval {
+    return Intl.message(
+      'Not Approval',
+      name: 'notApproval',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Completed`
+  String get completed {
+    return Intl.message('Completed', name: 'completed', desc: '', args: []);
+  }
+
+  /// `Rejected`
+  String get rejected {
+    return Intl.message('Rejected', name: 'rejected', desc: '', args: []);
+  }
+
+  /// `Not Resolved`
+  String get notResolvedTask {
+    return Intl.message(
+      'Not Resolved',
+      name: 'notResolvedTask',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Overdue`
+  String get overdueTask {
+    return Intl.message('Overdue', name: 'overdueTask', desc: '', args: []);
+  }
+
+  /// `Total Shifts`
+  String get totalShiftss {
+    return Intl.message(
+      'Total Shifts',
+      name: 'totalShiftss',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Deleted Shifts`
+  String get deletedShifts {
+    return Intl.message(
+      'Deleted Shifts',
+      name: 'deletedShifts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Find shift`
+  String get findShift {
+    return Intl.message('Find shift', name: 'findShift', desc: '', args: []);
+  }
+
+  /// `Shift`
+  String get shiftBody {
+    return Intl.message('Shift', name: 'shiftBody', desc: '', args: []);
+  }
+
+  /// `Create Shift`
+  String get createShift {
+    return Intl.message(
+      'Create Shift',
+      name: 'createShift',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shift Name`
+  String get shiftName {
+    return Intl.message('Shift Name', name: 'shiftName', desc: '', args: []);
+  }
+
+  /// `Enter Shift`
+  String get enterShift {
+    return Intl.message('Enter Shift', name: 'enterShift', desc: '', args: []);
+  }
+
+  /// `Shift Name is Required`
+  String get shiftNameRequiredValidation {
+    return Intl.message(
+      'Shift Name is Required',
+      name: 'shiftNameRequiredValidation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shift name too long`
+  String get shiftNameTooLongValidation {
+    return Intl.message(
+      'Shift name too long',
+      name: 'shiftNameTooLongValidation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shift name too short`
+  String get shiftNameTooShortValidation {
+    return Intl.message(
+      'Shift name too short',
+      name: 'shiftNameTooShortValidation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start Date`
+  String get startDate {
+    return Intl.message('Start Date', name: 'startDate', desc: '', args: []);
+  }
+
+  /// `Start date is required`
+  String get startDateRequiredValidation {
+    return Intl.message(
+      'Start date is required',
+      name: 'startDateRequiredValidation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `End Date`
+  String get endDate {
+    return Intl.message('End Date', name: 'endDate', desc: '', args: []);
+  }
+
+  /// `End date is required`
+  String get endDateRequiredValidation {
+    return Intl.message(
+      'End date is required',
+      name: 'endDateRequiredValidation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start Time`
+  String get startTime {
+    return Intl.message('Start Time', name: 'startTime', desc: '', args: []);
+  }
+
+  /// `Start time is required`
+  String get startTimeRequiredValidation {
+    return Intl.message(
+      'Start time is required',
+      name: 'startTimeRequiredValidation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `End Time`
+  String get endTime {
+    return Intl.message('End Time', name: 'endTime', desc: '', args: []);
+  }
+
+  /// `End Time is required`
+  String get endTimeRequiredValidation {
+    return Intl.message(
+      'End Time is required',
+      name: 'endTimeRequiredValidation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select organizations`
+  String get selectOrganization {
+    return Intl.message(
+      'Select organizations',
+      name: 'selectOrganization',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select building`
+  String get selectBuilding {
+    return Intl.message(
+      'Select building',
+      name: 'selectBuilding',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select floor`
+  String get selectFloor {
+    return Intl.message(
+      'Select floor',
+      name: 'selectFloor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select section`
+  String get selectSection {
+    return Intl.message(
+      'Select section',
+      name: 'selectSection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `create`
+  String get createButton {
+    return Intl.message('create', name: 'createButton', desc: '', args: []);
+  }
+
+  /// `Edit Shift`
+  String get editShift {
+    return Intl.message('Edit Shift', name: 'editShift', desc: '', args: []);
+  }
+
+  /// `Shift Details`
+  String get shiftDetails {
+    return Intl.message(
+      'Shift Details',
+      name: 'shiftDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Providers`
+  String get providers {
+    return Intl.message('Providers', name: 'providers', desc: '', args: []);
+  }
+
+  /// `Add Provider`
+  String get addProvider {
+    return Intl.message(
+      'Add Provider',
+      name: 'addProvider',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Provider Name`
+  String get providerName {
+    return Intl.message(
+      'Provider Name',
+      name: 'providerName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Provider is required`
+  String get providerRequiredValidation {
+    return Intl.message(
+      'Provider is required',
+      name: 'providerRequiredValidation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name is too long`
+  String get providerNameTooLongValidation {
+    return Intl.message(
+      'Name is too long',
+      name: 'providerNameTooLongValidation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name is too short`
+  String get providerNameTooShortValidation {
+    return Intl.message(
+      'Name is too short',
+      name: 'providerNameTooShortValidation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total providers`
+  String get totalProviders {
+    return Intl.message(
+      'Total providers',
+      name: 'totalProviders',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Deleted providers`
+  String get deletedProviders {
+    return Intl.message(
+      'Deleted providers',
+      name: 'deletedProviders',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Provider`
+  String get editProvider {
+    return Intl.message(
+      'Edit Provider',
+      name: 'editProvider',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Provider`
+  String get providerBody {
+    return Intl.message('Provider', name: 'providerBody', desc: '', args: []);
+  }
+
+  /// `Find provider`
+  String get findProvider {
+    return Intl.message(
+      'Find provider',
+      name: 'findProvider',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Activities`
+  String get activities {
+    return Intl.message('Activities', name: 'activities', desc: '', args: []);
+  }
+
+  /// `My Activities`
+  String get myActivities {
+    return Intl.message(
+      'My Activities',
+      name: 'myActivities',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My Team Activities`
+  String get myTeamActivities {
+    return Intl.message(
+      'My Team Activities',
+      name: 'myTeamActivities',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `History`
+  String get history {
+    return Intl.message('History', name: 'history', desc: '', args: []);
+  }
+
+  /// `Shift : `
+  String get shift {
+    return Intl.message('Shift : ', name: 'shift', desc: '', args: []);
+  }
+
+  /// `Reject`
+  String get reject {
+    return Intl.message('Reject', name: 'reject', desc: '', args: []);
+  }
+
+  /// `Approved`
+  String get approved {
+    return Intl.message('Approved', name: 'approved', desc: '', args: []);
+  }
+
+  /// `Leave details`
+  String get leaveDetails {
+    return Intl.message(
+      'Leave details',
+      name: 'leaveDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reason`
+  String get reason {
+    return Intl.message('Reason', name: 'reason', desc: '', args: []);
+  }
+
+  /// `File`
+  String get file {
+    return Intl.message('File', name: 'file', desc: '', args: []);
+  }
+
+  /// `There's no file`
+  String get noFile {
+    return Intl.message('There\'s no file', name: 'noFile', desc: '', args: []);
+  }
+
+  /// `approve`
+  String get Titleapprove {
+    return Intl.message('approve', name: 'Titleapprove', desc: '', args: []);
+  }
+
+  /// `Approve`
+  String get approveButton {
+    return Intl.message('Approve', name: 'approveButton', desc: '', args: []);
+  }
+
+  /// `Leave`
+  String get leaveBody {
+    return Intl.message('Leave', name: 'leaveBody', desc: '', args: []);
+  }
+
+  /// `Reject`
+  String get rejectButton {
+    return Intl.message('Reject', name: 'rejectButton', desc: '', args: []);
+  }
+
+  /// `Reason for rejection`
+  String get rejectionReason {
+    return Intl.message(
+      'Reason for rejection',
+      name: 'rejectionReason',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `reason..`
+  String get reasonHint {
+    return Intl.message('reason..', name: 'reasonHint', desc: '', args: []);
+  }
+
+  /// `approve`
+  String get approveBody {
+    return Intl.message('approve', name: 'approveBody', desc: '', args: []);
+  }
+
+  /// `Create Leave`
+  String get createLeave {
+    return Intl.message(
+      'Create Leave',
+      name: 'createLeave',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Employee Name`
+  String get employeeName {
+    return Intl.message(
+      'Employee Name',
+      name: 'employeeName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Employee`
+  String get selectEmployee {
+    return Intl.message(
+      'Select Employee',
+      name: 'selectEmployee',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No employee available`
+  String get noEmployeeValidation {
+    return Intl.message(
+      'No employee available',
+      name: 'noEmployeeValidation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Employee name is required`
+  String get employeeNameRequiredValidation {
+    return Intl.message(
+      'Employee name is required',
+      name: 'employeeNameRequiredValidation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sick`
+  String get sick {
+    return Intl.message('Sick', name: 'sick', desc: '', args: []);
+  }
+
+  /// `Annual`
+  String get annual {
+    return Intl.message('Annual', name: 'annual', desc: '', args: []);
+  }
+
+  /// `Ordinary`
+  String get ordinary {
+    return Intl.message('Ordinary', name: 'ordinary', desc: '', args: []);
+  }
+
+  /// `Select type`
+  String get selectType {
+    return Intl.message('Select type', name: 'selectType', desc: '', args: []);
+  }
+
+  /// `Type is required`
+  String get typeRequired {
+    return Intl.message(
+      'Type is required',
+      name: 'typeRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Write the reason for the leave`
+  String get writeReason {
+    return Intl.message(
+      'Write the reason for the leave',
+      name: 'writeReason',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reason is required`
+  String get reasonRequiredValidation {
+    return Intl.message(
+      'Reason is required',
+      name: 'reasonRequiredValidation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Upload file`
+  String get uploadFile {
+    return Intl.message('Upload file', name: 'uploadFile', desc: '', args: []);
+  }
+
+  /// `Edit Leave`
+  String get editLeave {
+    return Intl.message('Edit Leave', name: 'editLeave', desc: '', args: []);
+  }
+
+  /// `Category`
+  String get category {
+    return Intl.message('Category', name: 'category', desc: '', args: []);
+  }
+
+  /// `Material`
+  String get material {
+    return Intl.message('Material', name: 'material', desc: '', args: []);
+  }
+
+  /// `Transactions`
+  String get transactions {
+    return Intl.message(
+      'Transactions',
+      name: 'transactions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Stock`
+  String get stock {
+    return Intl.message('Stock', name: 'stock', desc: '', args: []);
+  }
+
+  /// `Transaction Management`
+  String get transactionManagement {
+    return Intl.message(
+      'Transaction Management',
+      name: 'transactionManagement',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Inside`
+  String get inside {
+    return Intl.message('Inside', name: 'inside', desc: '', args: []);
+  }
+
+  /// `Outside`
+  String get outside {
+    return Intl.message('Outside', name: 'outside', desc: '', args: []);
+  }
+
+  /// `Find transaction`
+  String get findTransaction {
+    return Intl.message(
+      'Find transaction',
+      name: 'findTransaction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Category: `
+  String get categoryLabel {
+    return Intl.message(
+      'Category: ',
+      name: 'categoryLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quantity: `
+  String get quantityLabel {
+    return Intl.message(
+      'Quantity: ',
+      name: 'quantityLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total Price: `
+  String get totalPriceLabel {
+    return Intl.message(
+      'Total Price: ',
+      name: 'totalPriceLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Find activity`
+  String get findActivity {
+    return Intl.message(
+      'Find activity',
+      name: 'findActivity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Find history`
+  String get findHistory {
+    return Intl.message(
+      'Find history',
+      name: 'findHistory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Find leaves`
+  String get findLeaves {
+    return Intl.message('Find leaves', name: 'findLeaves', desc: '', args: []);
+  }
+
+  /// `Material details`
+  String get materialDetails {
+    return Intl.message(
+      'Material details',
+      name: 'materialDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quantity`
+  String get quantity {
+    return Intl.message('Quantity', name: 'quantity', desc: '', args: []);
+  }
+
+  /// `Minimum`
+  String get minimum {
+    return Intl.message('Minimum', name: 'minimum', desc: '', args: []);
+  }
+
+  /// `Description`
+  String get description {
+    return Intl.message('Description', name: 'description', desc: '', args: []);
+  }
+
+  /// `Transaction details`
+  String get transactionDetails {
+    return Intl.message(
+      'Transaction details',
+      name: 'transactionDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User`
+  String get user {
+    return Intl.message('User', name: 'user', desc: '', args: []);
+  }
+
+  /// `Total Quantity`
+  String get totalQuantity {
+    return Intl.message(
+      'Total Quantity',
+      name: 'totalQuantity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total Price`
+  String get totalPrice {
+    return Intl.message('Total Price', name: 'totalPrice', desc: '', args: []);
+  }
+
+  /// `Date`
+  String get date {
+    return Intl.message('Date', name: 'date', desc: '', args: []);
+  }
+
+  /// `Time`
+  String get time {
+    return Intl.message('Time', name: 'time', desc: '', args: []);
+  }
+
+  /// `Files uploaded`
+  String get filesUploaded {
+    return Intl.message(
+      'Files uploaded',
+      name: 'filesUploaded',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add material`
+  String get addMaterial {
+    return Intl.message(
+      'Add material',
+      name: 'addMaterial',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Write quantity number`
+  String get writeQuantity {
+    return Intl.message(
+      'Write quantity number',
+      name: 'writeQuantity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quantity is required`
+  String get quantityRequired {
+    return Intl.message(
+      'Quantity is required',
+      name: 'quantityRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quantity is too long`
+  String get quantityTooLong {
+    return Intl.message(
+      'Quantity is too long',
+      name: 'quantityTooLong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Price`
+  String get price {
+    return Intl.message('Price', name: 'price', desc: '', args: []);
+  }
+
+  /// ` (unit)`
+  String get unit {
+    return Intl.message(' (unit)', name: 'unit', desc: '', args: []);
+  }
+
+  /// `Write price number`
+  String get writePrice {
+    return Intl.message(
+      'Write price number',
+      name: 'writePrice',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Price is required`
+  String get priceRequired {
+    return Intl.message(
+      'Price is required',
+      name: 'priceRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Price is too long`
+  String get priceTooLong {
+    return Intl.message(
+      'Price is too long',
+      name: 'priceTooLong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Find material`
+  String get findMaterial {
+    return Intl.message(
+      'Find material',
+      name: 'findMaterial',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `material`
+  String get materialBody {
+    return Intl.message('material', name: 'materialBody', desc: '', args: []);
+  }
+
+  /// `Minimum: `
+  String get minimumLabel {
+    return Intl.message('Minimum: ', name: 'minimumLabel', desc: '', args: []);
+  }
+
+  /// `Material Management`
+  String get materialManagement {
+    return Intl.message(
+      'Material Management',
+      name: 'materialManagement',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total Materials`
+  String get totalMaterials {
+    return Intl.message(
+      'Total Materials',
+      name: 'totalMaterials',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Deleted Materials`
+  String get deletedMaterials {
+    return Intl.message(
+      'Deleted Materials',
+      name: 'deletedMaterials',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reduce`
+  String get reduceButton {
+    return Intl.message('Reduce', name: 'reduceButton', desc: '', args: []);
+  }
+
+  /// `Reduce material`
+  String get reduceMaterial {
+    return Intl.message(
+      'Reduce material',
+      name: 'reduceMaterial',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Material`
+  String get editMaterial {
+    return Intl.message(
+      'Edit Material',
+      name: 'editMaterial',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Material Name`
+  String get materialName {
+    return Intl.message(
+      'Material Name',
+      name: 'materialName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Material Name is Required`
+  String get materialNameRequired {
+    return Intl.message(
+      'Material Name is Required',
+      name: 'materialNameRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Material name too long`
+  String get materialNameTooLong {
+    return Intl.message(
+      'Material name too long',
+      name: 'materialNameTooLong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Material name too short`
+  String get materialNameTooShort {
+    return Intl.message(
+      'Material name too short',
+      name: 'materialNameTooShort',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Minimum is Required`
+  String get minimumRequired {
+    return Intl.message(
+      'Minimum is Required',
+      name: 'minimumRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Minimum is too long`
+  String get minimumTooLong {
+    return Intl.message(
+      'Minimum is too long',
+      name: 'minimumTooLong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Material description is Required`
+  String get materialDescriptionRequired {
+    return Intl.message(
+      'Material description is Required',
+      name: 'materialDescriptionRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Material description too short`
+  String get materialDescriptionTooShort {
+    return Intl.message(
+      'Material description too short',
+      name: 'materialDescriptionTooShort',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `description...`
+  String get descriptionHint {
+    return Intl.message(
+      'description...',
+      name: 'descriptionHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Category`
+  String get editCategory {
+    return Intl.message(
+      'Edit Category',
+      name: 'editCategory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Category Name`
+  String get categoryName {
+    return Intl.message(
+      'Category Name',
+      name: 'categoryName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Category Name is Required`
+  String get categoryNameRequired {
+    return Intl.message(
+      'Category Name is Required',
+      name: 'categoryNameRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Category name too long`
+  String get categoryNameTooLong {
+    return Intl.message(
+      'Category name too long',
+      name: 'categoryNameTooLong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Category name too short`
+  String get categoryNameTooShort {
+    return Intl.message(
+      'Category name too short',
+      name: 'categoryNameTooShort',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unit`
+  String get unitTitle {
+    return Intl.message('Unit', name: 'unitTitle', desc: '', args: []);
+  }
+
+  /// `Ml`
+  String get ml {
+    return Intl.message('Ml', name: 'ml', desc: '', args: []);
+  }
+
+  /// `L`
+  String get l {
+    return Intl.message('L', name: 'l', desc: '', args: []);
+  }
+
+  /// `Kg`
+  String get kg {
+    return Intl.message('Kg', name: 'kg', desc: '', args: []);
+  }
+
+  /// `G`
+  String get g {
+    return Intl.message('G', name: 'g', desc: '', args: []);
+  }
+
+  /// `M`
+  String get m {
+    return Intl.message('M', name: 'm', desc: '', args: []);
+  }
+
+  /// `Cm`
+  String get cm {
+    return Intl.message('Cm', name: 'cm', desc: '', args: []);
+  }
+
+  /// `Pieces`
+  String get pieces {
+    return Intl.message('Pieces', name: 'pieces', desc: '', args: []);
+  }
+
+  /// `category`
+  String get categoryBody {
+    return Intl.message('category', name: 'categoryBody', desc: '', args: []);
+  }
+
+  /// `Parent Category`
+  String get parentCategory {
+    return Intl.message(
+      'Parent Category',
+      name: 'parentCategory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Find category`
+  String get findCategory {
+    return Intl.message(
+      'Find category',
+      name: 'findCategory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unit: `
+  String get unitLabel {
+    return Intl.message('Unit: ', name: 'unitLabel', desc: '', args: []);
+  }
+
+  /// `Category Management`
+  String get categoryManagement {
+    return Intl.message(
+      'Category Management',
+      name: 'categoryManagement',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total Categories`
+  String get totalCategories {
+    return Intl.message(
+      'Total Categories',
+      name: 'totalCategories',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Deleted Categories`
+  String get deletedCategories {
+    return Intl.message(
+      'Deleted Categories',
+      name: 'deletedCategories',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create Material`
+  String get createMaterial {
+    return Intl.message(
+      'Create Material',
+      name: 'createMaterial',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter Material`
+  String get enterMaterial {
+    return Intl.message(
+      'Enter Material',
+      name: 'enterMaterial',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select category`
+  String get selectCategory {
+    return Intl.message(
+      'Select category',
+      name: 'selectCategory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Write minimum number`
+  String get writeMinimum {
+    return Intl.message(
+      'Write minimum number',
+      name: 'writeMinimum',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create Category`
+  String get createCategory {
+    return Intl.message(
+      'Create Category',
+      name: 'createCategory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter Category`
+  String get enterCategory {
+    return Intl.message(
+      'Enter Category',
+      name: 'enterCategory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unit is Required`
+  String get unitRequired {
+    return Intl.message(
+      'Unit is Required',
+      name: 'unitRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select unit`
+  String get selectUnit {
+    return Intl.message('Select unit', name: 'selectUnit', desc: '', args: []);
+  }
+
+  /// `Categories`
+  String get categories {
+    return Intl.message('Categories', name: 'categories', desc: '', args: []);
+  }
+
+  /// `Materials`
+  String get materials {
+    return Intl.message('Materials', name: 'materials', desc: '', args: []);
+  }
+
+  /// `Work Location`
+  String get workLocation {
+    return Intl.message(
+      'Work Location',
+      name: 'workLocation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Area`
+  String get addArea {
+    return Intl.message('Add Area', name: 'addArea', desc: '', args: []);
+  }
+
+  /// `Select country`
+  String get selectCountry {
+    return Intl.message(
+      'Select country',
+      name: 'selectCountry',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Area Name`
+  String get areaName {
+    return Intl.message('Area Name', name: 'areaName', desc: '', args: []);
+  }
+
+  /// `Area name is required`
+  String get areaNameRequired {
+    return Intl.message(
+      'Area name is required',
+      name: 'areaNameRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Area name too long`
+  String get areaNameTooLong {
+    return Intl.message(
+      'Area name too long',
+      name: 'areaNameTooLong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Area name too short`
+  String get areaNameTooShort {
+    return Intl.message(
+      'Area name too short',
+      name: 'areaNameTooShort',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Managers`
+  String get managers {
+    return Intl.message('Managers', name: 'managers', desc: '', args: []);
+  }
+
+  /// `No managers available`
+  String get noManagers {
+    return Intl.message(
+      'No managers available',
+      name: 'noManagers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select managers`
+  String get selectManagers {
+    return Intl.message(
+      'Select managers',
+      name: 'selectManagers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Supervisors`
+  String get supervisors {
+    return Intl.message('Supervisors', name: 'supervisors', desc: '', args: []);
+  }
+
+  /// `No supervisors available`
+  String get noSupervisors {
+    return Intl.message(
+      'No supervisors available',
+      name: 'noSupervisors',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select supervisors`
+  String get selectSupervisors {
+    return Intl.message(
+      'Select supervisors',
+      name: 'selectSupervisors',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cleaners`
+  String get cleaners {
+    return Intl.message('Cleaners', name: 'cleaners', desc: '', args: []);
+  }
+
+  /// `No cleaners available`
+  String get noCleaners {
+    return Intl.message(
+      'No cleaners available',
+      name: 'noCleaners',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select cleaners`
+  String get selectCleaners {
+    return Intl.message(
+      'Select cleaners',
+      name: 'selectCleaners',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No country`
+  String get noCountry {
+    return Intl.message('No country', name: 'noCountry', desc: '', args: []);
+  }
+
+  /// `Add City`
+  String get addCity {
+    return Intl.message('Add City', name: 'addCity', desc: '', args: []);
+  }
+
+  /// `City Name`
+  String get cityName {
+    return Intl.message('City Name', name: 'cityName', desc: '', args: []);
+  }
+
+  /// `City name is required`
+  String get cityNameRequired {
+    return Intl.message(
+      'City name is required',
+      name: 'cityNameRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `City name too long`
+  String get cityNameTooLong {
+    return Intl.message(
+      'City name too long',
+      name: 'cityNameTooLong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `City name too short`
+  String get cityNameTooShort {
+    return Intl.message(
+      'City name too short',
+      name: 'cityNameTooShort',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select area`
+  String get selectArea {
+    return Intl.message('Select area', name: 'selectArea', desc: '', args: []);
+  }
+
+  /// `Select city`
+  String get selectCity {
+    return Intl.message('Select city', name: 'selectCity', desc: '', args: []);
+  }
+
+  /// `Organization Name`
+  String get organizationName {
+    return Intl.message(
+      'Organization Name',
+      name: 'organizationName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Organization name is required`
+  String get organizationNameRequired {
+    return Intl.message(
+      'Organization name is required',
+      name: 'organizationNameRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Organization name too long`
+  String get organizationNameTooLong {
+    return Intl.message(
+      'Organization name too long',
+      name: 'organizationNameTooLong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Organization name too short`
+  String get organizationNameTooShort {
+    return Intl.message(
+      'Organization name too short',
+      name: 'organizationNameTooShort',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Organization`
+  String get addOrganization {
+    return Intl.message(
+      'Add Organization',
+      name: 'addOrganization',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Building`
+  String get addBuilding {
+    return Intl.message(
+      'Add Building',
+      name: 'addBuilding',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select organizations`
+  String get selectOrganizations {
+    return Intl.message(
+      'Select organizations',
+      name: 'selectOrganizations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Building Name`
+  String get buildingName {
+    return Intl.message(
+      'Building Name',
+      name: 'buildingName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Building name is required`
+  String get buildingNameRequired {
+    return Intl.message(
+      'Building name is required',
+      name: 'buildingNameRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Building name too long`
+  String get buildingNameTooLong {
+    return Intl.message(
+      'Building name too long',
+      name: 'buildingNameTooLong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Building name too short`
+  String get buildingNameTooShort {
+    return Intl.message(
+      'Building name too short',
+      name: 'buildingNameTooShort',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Building Number`
+  String get buildingNumber {
+    return Intl.message(
+      'Building Number',
+      name: 'buildingNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Building number is required`
+  String get buildingNumberRequired {
+    return Intl.message(
+      'Building number is required',
+      name: 'buildingNumberRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Building number too long`
+  String get buildingNumberTooLong {
+    return Intl.message(
+      'Building number too long',
+      name: 'buildingNumberTooLong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Building Description`
+  String get buildingDescription {
+    return Intl.message(
+      'Building Description',
+      name: 'buildingDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Description is required`
+  String get descriptionRequired {
+    return Intl.message(
+      'Description is required',
+      name: 'descriptionRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Description too short`
+  String get descriptionTooShort {
+    return Intl.message(
+      'Description too short',
+      name: 'descriptionTooShort',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Floor`
+  String get addFloor {
+    return Intl.message('Add Floor', name: 'addFloor', desc: '', args: []);
+  }
+
+  /// `Floor Name`
+  String get floorName {
+    return Intl.message('Floor Name', name: 'floorName', desc: '', args: []);
+  }
+
+  /// `Floor name is required`
+  String get floorNameRequired {
+    return Intl.message(
+      'Floor name is required',
+      name: 'floorNameRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Floor name too long`
+  String get floorNameTooLong {
+    return Intl.message(
+      'Floor name too long',
+      name: 'floorNameTooLong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Floor name too short`
+  String get floorNameTooShort {
+    return Intl.message(
+      'Floor name too short',
+      name: 'floorNameTooShort',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Floor Number`
+  String get floorNumber {
+    return Intl.message(
+      'Floor Number',
+      name: 'floorNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Floor number is required`
+  String get floorNumberRequired {
+    return Intl.message(
+      'Floor number is required',
+      name: 'floorNumberRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Floor number too long`
+  String get floorNumberTooLong {
+    return Intl.message(
+      'Floor number too long',
+      name: 'floorNumberTooLong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Floor Description`
+  String get floorDescription {
+    return Intl.message(
+      'Floor Description',
+      name: 'floorDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Section`
+  String get addSection {
+    return Intl.message('Add Section', name: 'addSection', desc: '', args: []);
+  }
+
+  /// `Section Name`
+  String get sectionName {
+    return Intl.message(
+      'Section Name',
+      name: 'sectionName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Section name is required`
+  String get sectionNameRequired {
+    return Intl.message(
+      'Section name is required',
+      name: 'sectionNameRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Section name too long`
+  String get sectionNameTooLong {
+    return Intl.message(
+      'Section name too long',
+      name: 'sectionNameTooLong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Section name too short`
+  String get sectionNameTooShort {
+    return Intl.message(
+      'Section name too short',
+      name: 'sectionNameTooShort',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Section Number`
+  String get sectionNumber {
+    return Intl.message(
+      'Section Number',
+      name: 'sectionNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Section number is required`
+  String get sectionNumberRequired {
+    return Intl.message(
+      'Section number is required',
+      name: 'sectionNumberRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Section number too long`
+  String get sectionNumberTooLong {
+    return Intl.message(
+      'Section number too long',
+      name: 'sectionNumberTooLong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Section Description`
+  String get sectionDescription {
+    return Intl.message(
+      'Section Description',
+      name: 'sectionDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Point`
+  String get addPoint {
+    return Intl.message('Add Point', name: 'addPoint', desc: '', args: []);
+  }
+
+  /// `Point Name`
+  String get pointName {
+    return Intl.message('Point Name', name: 'pointName', desc: '', args: []);
+  }
+
+  /// `Point name is required`
+  String get pointNameRequired {
+    return Intl.message(
+      'Point name is required',
+      name: 'pointNameRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Point name too long`
+  String get pointNameTooLong {
+    return Intl.message(
+      'Point name too long',
+      name: 'pointNameTooLong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Point name too short`
+  String get pointNameTooShort {
+    return Intl.message(
+      'Point name too short',
+      name: 'pointNameTooShort',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Point Number`
+  String get pointNumber {
+    return Intl.message(
+      'Point Number',
+      name: 'pointNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Point number is required`
+  String get pointNumberRequired {
+    return Intl.message(
+      'Point number is required',
+      name: 'pointNumberRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Point number too long`
+  String get pointNumberTooLong {
+    return Intl.message(
+      'Point number too long',
+      name: 'pointNumberTooLong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Point Description`
+  String get pointDescription {
+    return Intl.message(
+      'Point Description',
+      name: 'pointDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sensor`
+  String get sensor {
+    return Intl.message('Sensor', name: 'sensor', desc: '', args: []);
+  }
+
+  /// `Select sensor`
+  String get selectSensor {
+    return Intl.message(
+      'Select sensor',
+      name: 'selectSensor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Is Countable:`
+  String get isCountable {
+    return Intl.message(
+      'Is Countable:',
+      name: 'isCountable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yes`
+  String get yes {
+    return Intl.message('Yes', name: 'yes', desc: '', args: []);
+  }
+
+  /// `No`
+  String get no {
+    return Intl.message('No', name: 'no', desc: '', args: []);
+  }
+
+  /// `Capacity`
+  String get capacity {
+    return Intl.message('Capacity', name: 'capacity', desc: '', args: []);
+  }
+
+  /// `Write capacity`
+  String get writeCapacity {
+    return Intl.message(
+      'Write capacity',
+      name: 'writeCapacity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Capacity is required`
+  String get capacityRequired {
+    return Intl.message(
+      'Capacity is required',
+      name: 'capacityRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Capacity too long`
+  String get capacityTooLong {
+    return Intl.message(
+      'Capacity too long',
+      name: 'capacityTooLong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No shifts available`
+  String get noShiftsAvailable {
+    return Intl.message(
+      'No shifts available',
+      name: 'noShiftsAvailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select shift`
+  String get selectShift {
+    return Intl.message(
+      'Select shift',
+      name: 'selectShift',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Area`
+  String get EditArea {
+    return Intl.message('Edit Area', name: 'EditArea', desc: '', args: []);
+  }
+
+  /// `area`
+  String get areaBody {
+    return Intl.message('area', name: 'areaBody', desc: '', args: []);
+  }
+
+  /// `Edit Building`
+  String get EditBuilding {
+    return Intl.message(
+      'Edit Building',
+      name: 'EditBuilding',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `building`
+  String get buildingBody {
+    return Intl.message('building', name: 'buildingBody', desc: '', args: []);
+  }
+
+  /// `Edit City`
+  String get EditCity {
+    return Intl.message('Edit City', name: 'EditCity', desc: '', args: []);
+  }
+
+  /// `city`
+  String get cityBody {
+    return Intl.message('city', name: 'cityBody', desc: '', args: []);
+  }
+
+  /// `Edit Floor`
+  String get EditFloor {
+    return Intl.message('Edit Floor', name: 'EditFloor', desc: '', args: []);
+  }
+
+  /// `floor`
+  String get floorBody {
+    return Intl.message('floor', name: 'floorBody', desc: '', args: []);
+  }
+
+  /// `Edit Organization`
+  String get EditOrganization {
+    return Intl.message(
+      'Edit Organization',
+      name: 'EditOrganization',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `organization`
+  String get organizationBody {
+    return Intl.message(
+      'organization',
+      name: 'organizationBody',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Point`
+  String get EditPoint {
+    return Intl.message('Edit Point', name: 'EditPoint', desc: '', args: []);
+  }
+
+  /// `point`
+  String get pointBody {
+    return Intl.message('point', name: 'pointBody', desc: '', args: []);
+  }
+
+  /// `Edit Section`
+  String get EditSection {
+    return Intl.message(
+      'Edit Section',
+      name: 'EditSection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `section`
+  String get sectionBody {
+    return Intl.message('section', name: 'sectionBody', desc: '', args: []);
   }
 }
 

@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
+import 'package:smart_cleaning_application/core/widgets/filter/logic/cubit/filter_dialog_cubit.dart';
+import 'package:smart_cleaning_application/core/widgets/filter/ui/screen/filter_dialog_widget.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/logic/cubit/user_details_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/leaves/leaves_list_item_build.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
@@ -26,19 +28,33 @@ class UserLeavesDetails extends StatelessWidget {
   }
 
   Widget _buildFilterHeader(BuildContext context) {
+    final cubit = context.read<UserDetailsCubit>();
     return SizedBox(
       height: 45.h,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-              S.of(context).Filter,
+            S.of(context).Filter,
             style: TextStyles.font16BlackSemiBold,
           ),
           InkWell(
             onTap: () {
-              // CustomFilterAttedanceDialog.show(
-              //     context: context, id: widget.id);
+              showDialog(
+                context: context,
+                builder: (dialogContext) {
+                  return BlocProvider(
+                    create: (context) => FilterDialogCubit()..getArea(),
+                    child: FilterDialogWidget(
+                      index: 'A-lU',
+                      onPressed: (data) {
+                        cubit.leavesFilterModel = data;
+                        cubit.getAllLeaves(cubit.userDetailsModel!.data!.id);
+                      },
+                    ),
+                  );
+                },
+              );
             },
             child: Container(
               height: 52,
@@ -58,6 +74,7 @@ class UserLeavesDetails extends StatelessWidget {
       ),
     );
   }
+
   Widget _buildLeavesContent(BuildContext context) {
     final attendanceData =
         context.read<UserDetailsCubit>().attendanceLeavesModel?.data?.leaves;
@@ -66,7 +83,7 @@ class UserLeavesDetails extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 20.h),
           child: Text(
-             S.of(context).noData,
+            S.of(context).noData,
             style: TextStyles.font13Blackmedium,
           ),
         ),

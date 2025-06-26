@@ -30,7 +30,12 @@ class FilterDialogWidget extends StatelessWidget {
 
     final List<String> filteredLevelOrder = cubit.levelOrder.where((level) {
       if (index == 'Se') return level == 'Point';
-      return !((index == 'A-h' || index == 'A-l' || index == 'T') &&
+      return !((index == 'A-h' ||
+                  index == 'A-hU' ||
+                  index == 'A-l' ||
+                  index == 'A-lU' ||
+                  index == 'T' ||
+                  index == 'TU') &&
               level == 'Country') &&
           !(index == 'S' && (level == 'Country' || level == 'Point'));
     }).toList();
@@ -51,13 +56,11 @@ class FilterDialogWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Header(),
-                    if (index == 'S-c' ||
-                        index == 'S-m' ||
-                        index == 'S-t') ...[
+                    if (index == 'S-c' || index == 'S-m' || index == 'S-t') ...[
                       Text(
                         (index == 'S-c') ? 'Parent category' : 'Category',
                         style: TextStyles.font16BlackRegular,
-                      ),  
+                      ),
                       CustomDropDownList(
                         hint: 'Select Parent category',
                         controller: cubit.parentCategoryController,
@@ -73,10 +76,9 @@ class FilterDialogWidget extends StatelessWidget {
                                   )
                                   .id
                                   ?.toString();
-        
+
                           if (selectedId != null) {
-                            cubit.parentCategoryIdController.text =
-                                selectedId;
+                            cubit.parentCategoryIdController.text = selectedId;
                           }
                         },
                         keyboardType: TextInputType.text,
@@ -216,7 +218,7 @@ class FilterDialogWidget extends StatelessWidget {
                       BatterySlider(),
                       verticalSpace(10),
                     ],
-                    if (index == 'T') ...[
+                    if (index == 'T' || index == 'TU') ...[
                       if (role == 'Admin' || role == 'Manager') ...[
                         Text(
                           'Created By',
@@ -256,7 +258,7 @@ class FilterDialogWidget extends StatelessWidget {
                         ),
                         verticalSpace(10),
                       ],
-                      if (role != 'Cleaner') ...[
+                      if (role != 'Cleaner' && !(index == 'TU')) ...[
                         Text(
                           'Assgin to',
                           style: TextStyles.font16BlackRegular,
@@ -264,14 +266,13 @@ class FilterDialogWidget extends StatelessWidget {
                         CustomDropDownList(
                           hint: "Select user",
                           controller: cubit.assignToController,
-                          items:
-                              cubit.usersModel?.data?.users?.isEmpty ?? true
-                                  ? ['No user']
-                                  : cubit.usersModel?.data?.users
-                                          ?.where((e) => e.roleId != 1)
-                                          .map((e) => e.userName ?? 'Unknown')
-                                          .toList() ??
-                                      [],
+                          items: cubit.usersModel?.data?.users?.isEmpty ?? true
+                              ? ['No user']
+                              : cubit.usersModel?.data?.users
+                                      ?.where((e) => e.roleId != 1)
+                                      .map((e) => e.userName ?? 'Unknown')
+                                      .toList() ??
+                                  [],
                           onPressed: (value) {
                             final selectedUser = cubit.usersModel?.data?.users
                                 ?.firstWhere((user) =>
@@ -279,7 +280,7 @@ class FilterDialogWidget extends StatelessWidget {
                                     cubit.assignToController.text)
                                 .id
                                 .toString();
-        
+
                             if (selectedUser != null) {
                               cubit.organizationIdController.text =
                                   selectedUser;
@@ -319,7 +320,7 @@ class FilterDialogWidget extends StatelessWidget {
                           final selectedIndex = items.indexOf(selectedValue!);
                           cubit.taskStatusIdController.text =
                               selectedIndex.toString();
-        
+
                           cubit.taskStatusController.text = selectedValue;
                         },
                         suffixIcon: IconBroken.arrowDown2,
@@ -347,7 +348,7 @@ class FilterDialogWidget extends StatelessWidget {
                           final selectedIndex = items.indexOf(selectedValue!);
                           cubit.priorityIdController.text =
                               selectedIndex.toString();
-        
+
                           cubit.priorityController.text = selectedValue;
                         },
                         suffixIcon: IconBroken.arrowDown2,
@@ -386,7 +387,7 @@ class FilterDialogWidget extends StatelessWidget {
                       ),
                       verticalSpace(10),
                     ],
-                    if (index == 'A-h') ...[
+                    if (index == 'A-h' || index == 'A-hU') ...[
                       Text(
                         'Shift',
                         style: TextStyles.font16BlackRegular,
@@ -403,7 +404,7 @@ class FilterDialogWidget extends StatelessWidget {
                                   (shift) => shift.name == selectedValue)
                               .id
                               ?.toString();
-        
+
                           if (selectedId != null) {
                             cubit.shiftIdController.text = selectedId;
                           }
@@ -413,7 +414,7 @@ class FilterDialogWidget extends StatelessWidget {
                       ),
                       verticalSpace(10),
                     ],
-                    if (index == 'A-l') ...[
+                    if (index == 'A-l' || index == 'A-lU') ...[
                       Text(
                         'Type',
                         style: TextStyles.font16BlackRegular,
@@ -455,7 +456,7 @@ class FilterDialogWidget extends StatelessWidget {
                                   (user) => user.userName == selectedValue)
                               .id
                               ?.toString();
-        
+
                           if (selectedUser != null) {
                             cubit.userIdController.text = selectedUser;
                           }
@@ -521,7 +522,7 @@ class FilterDialogWidget extends StatelessWidget {
                         suffixPressed: () async {
                           final selectedDate =
                               await CustomDatePicker.show(context: context);
-        
+
                           if (selectedDate != null && context.mounted) {
                             cubit.dateController.text = selectedDate;
                           }
@@ -532,7 +533,7 @@ class FilterDialogWidget extends StatelessWidget {
                       ),
                       verticalSpace(10),
                     ],
-                    if (index == 'A-h') ...[
+                    if (index == 'A-h' || index == 'A-hU') ...[
                       Text(
                         'Status',
                         style: TextStyles.font16BlackRegular,
@@ -582,7 +583,7 @@ class FilterDialogWidget extends StatelessWidget {
                               )
                               .id
                               ?.toString();
-        
+
                           if (selectedId != null) {
                             cubit.providerIdController.text = selectedId;
                           }
@@ -592,11 +593,42 @@ class FilterDialogWidget extends StatelessWidget {
                       ),
                       verticalSpace(10),
                     ],
+                    if ((index == 'T' || index == 'TU') && role == 'Admin') ...[
+                      Text(
+                        'Sensor',
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomDropDownList(
+                        hint: 'Select Sensor',
+                        controller: cubit.deviceController,
+                        items: cubit.sensorItem
+                            .map((e) => e.name ?? 'Unknown')
+                            .toList(),
+                        onChanged: (selectedValue) {
+                          final selectedId = cubit.sensorsModel?.data?.data
+                              ?.firstWhere(
+                                (sensor) => sensor.name == selectedValue,
+                              )
+                              .id
+                              ?.toString();
+
+                          if (selectedId != null) {
+                            cubit.deviceIdController.text = selectedId;
+                          }
+                        },
+                        keyboardType: TextInputType.text,
+                        suffixIcon: IconBroken.arrowDown2,
+                      ),
+                      verticalSpace(10),
+                    ],
                     if (index == 'S' ||
                         index == 'A-h' ||
+                        index == 'A-hU' ||
                         index == 'A-l' ||
+                        index == 'A-lU' ||
                         index == 'T' ||
-                        index == 'S-t') ...[
+                        index == 'S-t' ||
+                        index == 'TU') ...[
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -618,9 +650,8 @@ class FilterDialogWidget extends StatelessWidget {
                                   final selectedDate =
                                       await CustomDatePicker.show(
                                           context: context);
-        
-                                  if (selectedDate != null &&
-                                      context.mounted) {
+
+                                  if (selectedDate != null && context.mounted) {
                                     context
                                         .read<FilterDialogCubit>()
                                         .startDateController
@@ -650,9 +681,8 @@ class FilterDialogWidget extends StatelessWidget {
                                   final selectedDate =
                                       await CustomDatePicker.show(
                                           context: context);
-        
-                                  if (selectedDate != null &&
-                                      context.mounted) {
+
+                                  if (selectedDate != null && context.mounted) {
                                     context
                                         .read<FilterDialogCubit>()
                                         .endDateController
@@ -667,7 +697,7 @@ class FilterDialogWidget extends StatelessWidget {
                       ),
                       verticalSpace(10),
                     ],
-                    if (index == 'T') ...[
+                    if (index == 'T' || index == 'TU') ...[
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -689,9 +719,8 @@ class FilterDialogWidget extends StatelessWidget {
                                   final selectedTime =
                                       await CustomTimePicker.show(
                                           context: context);
-        
-                                  if (selectedTime != null &&
-                                      context.mounted) {
+
+                                  if (selectedTime != null && context.mounted) {
                                     context
                                         .read<FilterDialogCubit>()
                                         .startTimeController
@@ -721,9 +750,8 @@ class FilterDialogWidget extends StatelessWidget {
                                   final selectedTime =
                                       await CustomTimePicker.show(
                                           context: context);
-        
-                                  if (selectedTime != null &&
-                                      context.mounted) {
+
+                                  if (selectedTime != null && context.mounted) {
                                     context
                                         .read<FilterDialogCubit>()
                                         .endTimeController
@@ -760,9 +788,8 @@ class FilterDialogWidget extends StatelessWidget {
                                   final selectedTime =
                                       await CustomTimePicker.show(
                                           context: context);
-        
-                                  if (selectedTime != null &&
-                                      context.mounted) {
+
+                                  if (selectedTime != null && context.mounted) {
                                     context
                                         .read<FilterDialogCubit>()
                                         .startTimeController
@@ -798,9 +825,8 @@ class FilterDialogWidget extends StatelessWidget {
                                   final selectedTime =
                                       await CustomTimePicker.show(
                                           context: context);
-        
-                                  if (selectedTime != null &&
-                                      context.mounted) {
+
+                                  if (selectedTime != null && context.mounted) {
                                     context
                                         .read<FilterDialogCubit>()
                                         .endTimeController
@@ -923,7 +949,7 @@ class FilterDialogWidget extends StatelessWidget {
                                   area.name == cubit.areaController.text)
                               .id
                               ?.toString();
-        
+
                           if (selectedArea != null) {
                             cubit.areaIdController.text = selectedArea;
                           }
@@ -936,8 +962,11 @@ class FilterDialogWidget extends StatelessWidget {
                     ],
                     if (((index == 'S' ||
                                 index == 'A-h' ||
+                                index == 'A-hU' ||
                                 index == 'A-l' ||
-                                index == 'T') &&
+                                index == 'A-lU' ||
+                                index == 'T' ||
+                                index == 'TU') &&
                             cubit.shouldShow('Area')) ||
                         (index == 'W-o')) ...[
                       Text('Area', style: TextStyles.font16BlackRegular),
@@ -953,7 +982,7 @@ class FilterDialogWidget extends StatelessWidget {
                                   area.name == cubit.areaController.text)
                               .id
                               ?.toString();
-        
+
                           if (selectedArea != null) {
                             cubit.areaIdController.text = selectedArea;
                           }
@@ -980,7 +1009,7 @@ class FilterDialogWidget extends StatelessWidget {
                                   city.name == cubit.cityController.text)
                               .id
                               ?.toString();
-        
+
                           if (selectedCity != null) {
                             cubit.cityIdController.text = selectedCity;
                           }
@@ -1006,11 +1035,10 @@ class FilterDialogWidget extends StatelessWidget {
                           final selectedOrganization = cubit
                               .organizationModel?.data?.data
                               ?.firstWhere((org) =>
-                                  org.name ==
-                                  cubit.organizationController.text)
+                                  org.name == cubit.organizationController.text)
                               .id
                               ?.toString();
-        
+
                           if (selectedOrganization != null) {
                             cubit.organizationIdController.text =
                                 selectedOrganization;
@@ -1039,10 +1067,9 @@ class FilterDialogWidget extends StatelessWidget {
                                   bld.name == cubit.buildingController.text)
                               .id
                               ?.toString();
-        
+
                           if (selectedBuilding != null) {
-                            cubit.buildingIdController.text =
-                                selectedBuilding;
+                            cubit.buildingIdController.text = selectedBuilding;
                           }
                           cubit.getFloor();
                         },
@@ -1067,7 +1094,7 @@ class FilterDialogWidget extends StatelessWidget {
                                   floor.name == cubit.floorController.text)
                               .id
                               ?.toString();
-        
+
                           if (selectedFloor != null) {
                             cubit.floorIdController.text = selectedFloor;
                           }
@@ -1087,14 +1114,12 @@ class FilterDialogWidget extends StatelessWidget {
                             .map((e) => e.name ?? 'Unknown')
                             .toList(),
                         onChanged: (value) {
-                          final selectedSection = cubit
-                              .sectionModel?.data?.data
+                          final selectedSection = cubit.sectionModel?.data?.data
                               ?.firstWhere((section) =>
-                                  section.name ==
-                                  cubit.sectionController.text)
+                                  section.name == cubit.sectionController.text)
                               .id
                               ?.toString();
-        
+
                           if (selectedSection != null) {
                             cubit.sectionIdController.text = selectedSection;
                           }
@@ -1119,7 +1144,7 @@ class FilterDialogWidget extends StatelessWidget {
                                   point.name == cubit.pointController.text)
                               .id
                               ?.toString();
-        
+
                           if (selectedPoint != null) {
                             cubit.pointIdController.text = selectedPoint;
                           }
@@ -1135,9 +1160,9 @@ class FilterDialogWidget extends StatelessWidget {
                         name: 'Done',
                         onPressed: () {
                           final date =
-                              DateTime.tryParse(cubit.dateController.text);
-                          final startDate = DateTime.tryParse(
-                              cubit.startDateController.text);
+                              DateTime.tryParse(cubit.dateController.text );
+                          final startDate =
+                              DateTime.tryParse(cubit.startDateController.text);
                           final endDate =
                               DateTime.tryParse(cubit.endDateController.text);
                           onPressed(FilterDialogDataModel(
@@ -1162,8 +1187,7 @@ class FilterDialogWidget extends StatelessWidget {
                                   ? _tryParseInt(cubit.floorIdController.text)
                                   : null,
                               sectionId: cubit.sectionIdController.text.isNotEmpty
-                                  ? _tryParseInt(
-                                      cubit.sectionIdController.text)
+                                  ? _tryParseInt(cubit.sectionIdController.text)
                                   : null,
                               pointId: cubit.pointIdController.text.isNotEmpty
                                   ? _tryParseInt(cubit.pointIdController.text)
@@ -1171,8 +1195,13 @@ class FilterDialogWidget extends StatelessWidget {
                               roleId: cubit.roleIdController.text.isNotEmpty
                                   ? _tryParseInt(cubit.roleIdController.text)
                                   : null,
-                              providerId: cubit.providerIdController.text.isNotEmpty ? _tryParseInt(cubit.providerIdController.text) : null,
-                              nationality: cubit.nationalityController.text.isNotEmpty ? cubit.nationalityController.text : null,
+                              providerId: cubit.providerIdController.text.isNotEmpty
+                                  ? _tryParseInt(
+                                      cubit.providerIdController.text)
+                                  : null,
+                              nationality: cubit.nationalityController.text.isNotEmpty
+                                  ? cubit.nationalityController.text
+                                  : null,
                               genderId: cubit.genderIdController.text.isNotEmpty ? _tryParseInt(cubit.genderIdController.text) : null,
                               createdBy: cubit.createdByIdController.text.isNotEmpty ? _tryParseInt(cubit.createdByIdController.text) : null,
                               assignTo: cubit.assignToIdController.text.isNotEmpty ? _tryParseInt(cubit.assignToIdController.text) : null,
@@ -1188,6 +1217,8 @@ class FilterDialogWidget extends StatelessWidget {
                               minBattery: cubit.currentRange.start.round(),
                               maxBattery: cubit.currentRange.end.round(),
                               isAsign: cubit.isAsignController.text,
+                              typeId: cubit.typeIdController.text.isNotEmpty ? _tryParseInt(cubit.typeIdController.text) : null,
+                              deviceId: cubit.deviceIdController.text.isNotEmpty ? _tryParseInt(cubit.deviceIdController.text) : null,
                               startDate: startDate,
                               endDate: endDate,
                               date: date,

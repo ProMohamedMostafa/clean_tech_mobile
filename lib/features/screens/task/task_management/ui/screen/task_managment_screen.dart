@@ -6,8 +6,6 @@ class TaskManagementScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: TaskManagementBody(),
-    );
+    return TaskManagementBody();
   }
 }

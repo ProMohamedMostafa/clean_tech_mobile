@@ -55,6 +55,7 @@ class Data {
   String? endTime;
   double? currentReading;
   double? readingAfter;
+  int? organizationId;
   String? organizationName;
   String? buildingName;
   int? buildingId;
@@ -68,44 +69,50 @@ class Data {
   int? parentId;
   int? createdBy;
   String? createdUserName;
+  int? deviceId;
+  String? deviceName;
   String? started;
   String? duration;
   List<Users>? users;
   List<Files>? files;
   List<Comments>? comments;
 
-  Data(
-      {this.id,
-      this.title,
-      this.description,
-      this.priority,
-      this.priorityId,
-      this.status,
-      this.statusId,
-      this.startDate,
-      this.endDate,
-      this.startTime,
-      this.endTime,
-      this.currentReading,
-      this.readingAfter,
-      this.organizationName,
-      this.buildingName,
-      this.buildingId,
-      this.floorName,
-      this.floorId,
-      this.sectionName,
-      this.sectionId,
-      this.pointName,
-      this.pointId,
-      this.parentTitle,
-      this.parentId,
-      this.createdBy,
-      this.createdUserName,
-      this.started,
-      this.duration,
-      this.users,
-      this.files,
-      this.comments});
+  Data({
+    this.id,
+    this.title,
+    this.description,
+    this.priority,
+    this.priorityId,
+    this.status,
+    this.statusId,
+    this.startDate,
+    this.endDate,
+    this.startTime,
+    this.endTime,
+    this.currentReading,
+    this.readingAfter,
+    this.organizationId,
+    this.organizationName,
+    this.buildingName,
+    this.buildingId,
+    this.floorName,
+    this.floorId,
+    this.sectionName,
+    this.sectionId,
+    this.pointName,
+    this.pointId,
+    this.parentTitle,
+    this.parentId,
+    this.createdBy,
+    this.createdUserName,
+    this.deviceId,
+    this.deviceName,
+    this.started,
+    this.duration,
+    this.users,
+    this.files,
+    this.comments,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -121,6 +128,7 @@ class Data {
     endTime = json['endTime'];
     currentReading = json['currentReading'];
     readingAfter = json['readingAfter'];
+    organizationId = json['organizationId'];
     organizationName = json['organizationName'];
     buildingName = json['buildingName'];
     buildingId = json['buildingId'];
@@ -134,6 +142,8 @@ class Data {
     parentId = json['parentId'];
     createdBy = json['createdBy'];
     createdUserName = json['createdUserName'];
+    deviceId = json['deviceId'];
+    deviceName = json['deviceName'];
     started = json['started'];
     duration = json['duration'];
     if (json['users'] != null) {
@@ -171,6 +181,7 @@ class Data {
     data['endTime'] = endTime;
     data['currentReading'] = currentReading;
     data['readingAfter'] = readingAfter;
+    data['organizationId'] = organizationId;
     data['organizationName'] = organizationName;
     data['buildingName'] = buildingName;
     data['buildingId'] = buildingId;
@@ -184,6 +195,8 @@ class Data {
     data['parentId'] = parentId;
     data['createdBy'] = createdBy;
     data['createdUserName'] = createdUserName;
+    data['deviceId'] = deviceId;
+    data['deviceName'] = deviceName;
     data['started'] = started;
     data['duration'] = duration;
     if (users != null) {

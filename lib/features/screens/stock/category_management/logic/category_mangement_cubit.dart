@@ -7,7 +7,6 @@ import 'package:smart_cleaning_application/features/screens/stock/category_manag
 import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/delete_category_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/deleted_category_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/category_management/logic/category_mangement_state.dart';
-import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/category_details_model.dart';
 
 class CategoryManagementCubit extends Cubit<CategoryManagementState> {
   CategoryManagementCubit() : super(CategoryManagementInitialState());
@@ -15,8 +14,6 @@ class CategoryManagementCubit extends Cubit<CategoryManagementState> {
   static CategoryManagementCubit get(context) => BlocProvider.of(context);
 
   TextEditingController searchController = TextEditingController();
-
-  final formKey = GlobalKey<FormState>();
   ScrollController scrollController = ScrollController();
 
   int selectedIndex = 0;
@@ -80,14 +77,24 @@ class CategoryManagementCubit extends Cubit<CategoryManagementState> {
       if (deletedCategoryListModel == null) {
         getAllDeletedCategory();
       } else {
-        emit(DeletedCategorySuccessState(deletedCategoryListModel!));
+        emit(AllDeletedCategorySuccessState(deletedCategoryListModel!));
       }
     }
   }
 
+  DeletedCategoryListModel? deletedCategoryListModel;
+  getAllDeletedCategory() {
+    emit(AllDeletedCategoryLoadingState());
+    DioHelper.getData(url: ApiConstants.deleteCategoryListUrl).then((value) {
+      deletedCategoryListModel = DeletedCategoryListModel.fromJson(value!.data);
+      emit(AllDeletedCategorySuccessState(deletedCategoryListModel!));
+    }).catchError((error) {
+      emit(AllDeletedCategoryErrorState(error.toString()));
+    });
+  }
+
   DeleteCategoryModel? deleteCategoryModel;
   List<CategoryModel> deletedCategories = [];
-
   deleteCategory(int id) {
     emit(DeleteCategoryLoadingState());
     DioHelper.postData(url: 'categories/delete/$id').then((value) {
@@ -115,17 +122,6 @@ class CategoryManagementCubit extends Cubit<CategoryManagementState> {
       emit(DeleteCategorySuccessState(deleteCategoryModel!));
     }).catchError((error) {
       emit(DeleteCategoryErrorState(error.toString()));
-    });
-  }
-
-  DeletedCategoryListModel? deletedCategoryListModel;
-  getAllDeletedCategory() {
-    emit(DeletedCategoryLoadingState());
-    DioHelper.getData(url: ApiConstants.deleteCategoryListUrl).then((value) {
-      deletedCategoryListModel = DeletedCategoryListModel.fromJson(value!.data);
-      emit(DeletedCategorySuccessState(deletedCategoryListModel!));
-    }).catchError((error) {
-      emit(DeletedCategoryErrorState(error.toString()));
     });
   }
 
@@ -177,23 +173,11 @@ class CategoryManagementCubit extends Cubit<CategoryManagementState> {
 
   forcedDeletedCategory(int id) {
     emit(ForceDeleteCategoryLoadingState());
-    DioHelper.deleteData(url: 'categories/forcedelete/$id', data: {'id': id})
-        .then((value) {
+    DioHelper.deleteData(url: 'categories/forcedelete/$id').then((value) {
       final message = value?.data['message'] ?? "restored successfully";
       emit(ForceDeleteCategorySuccessState(message));
     }).catchError((error) {
       emit(ForceDeleteCategoryErrorState(error.toString()));
-    });
-  }
-
-  CategoryDetailsModel? categoryDetailsModel;
-  getCategoryDetails(int id) {
-    emit(CategoryDetailsLoadingState());
-    DioHelper.getData(url: 'categories/$id').then((value) {
-      categoryDetailsModel = CategoryDetailsModel.fromJson(value!.data);
-      emit(CategoryDetailsSuccessState(categoryDetailsModel!));
-    }).catchError((error) {
-      emit(CategoryDetailsErrorState(error.toString()));
     });
   }
 }

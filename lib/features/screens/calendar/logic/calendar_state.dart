@@ -1,4 +1,4 @@
-import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/all_tasks_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/all_tasks_model.dart';
 
 abstract class CalendarState {}
 

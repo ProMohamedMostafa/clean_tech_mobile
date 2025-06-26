@@ -17,9 +17,9 @@ import 'package:smart_cleaning_application/core/widgets/default_toast/default_to
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/screens/auth/set_password/ui/widgets/password_validation.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/logic/add_user_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/logic/add_user_state.dart';
-import 'package:smart_cleaning_application/features/screens/user/add_user/ui/widgets/add_user_text_form_field.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class AddUserBody extends StatefulWidget {
@@ -35,14 +35,13 @@ class _AddUserBodyState extends State<AddUserBody> {
     final cubit = context.read<AddUserCubit>();
     return Scaffold(
       appBar: AppBar(
-        title: Text(S.of(context).addUserTitle),
-        leading: CustomBackButton(),
-      ),
+          title: Text(S.of(context).addUserTitle), leading: CustomBackButton()),
       body: BlocConsumer<AddUserCubit, AddUserState>(
         listener: (context, state) {
           if (state is AddUserSuccessState) {
             toast(text: state.userCreateModel.message!, color: Colors.blue);
-            context.pushNamedAndRemoveLastTwo(Routes.userManagmentScreen);
+            context
+                .pushNamedAndRemoveAllExceptFirst(Routes.userManagmentScreen);
           }
           if (state is AddUserErrorState) {
             toast(text: state.error, color: Colors.red);
@@ -73,12 +72,10 @@ class _AddUserBodyState extends State<AddUserBody> {
                                     body: Center(
                                       child: PhotoView(
                                         imageProvider: cubit.image?.path == null
-                                            ? AssetImage(
-                                                'assets/images/person.png',
-                                              )
-                                            : FileImage(
-                                                File(cubit.image!.path),
-                                              ),
+                                            ? const AssetImage(
+                                                'assets/images/person.png')
+                                            : FileImage(File(cubit.image!.path))
+                                                as ImageProvider,
                                         backgroundDecoration:
                                             const BoxDecoration(
                                           color: Colors.white,
@@ -90,8 +87,8 @@ class _AddUserBodyState extends State<AddUserBody> {
                               );
                             },
                             child: Container(
-                              width: 100.w,
-                              height: 100.h,
+                              width: 100.r, // Make sure width == height
+                              height: 100.r,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
@@ -103,16 +100,16 @@ class _AddUserBodyState extends State<AddUserBody> {
                                 child: cubit.image?.path == null
                                     ? Image.asset(
                                         'assets/images/person.png',
-                                        fit: BoxFit.fill,
+                                        fit: BoxFit.cover,
                                       )
                                     : Image.file(
                                         File(cubit.image!.path),
-                                        fit: BoxFit.fill,
+                                        fit: BoxFit.cover,
                                         errorBuilder:
                                             (context, error, stackTrace) {
                                           return Image.asset(
                                             'assets/images/person.png',
-                                            fit: BoxFit.fill,
+                                            fit: BoxFit.cover,
                                           );
                                         },
                                       ),
@@ -127,16 +124,18 @@ class _AddUserBodyState extends State<AddUserBody> {
                                 cubit.galleryFile();
                               },
                               child: Container(
-                                  width: 22.w,
-                                  height: 22.h,
-                                  decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: AppColor.primaryColor),
-                                  child: Icon(
-                                    Icons.camera_alt_outlined,
-                                    color: Colors.white,
-                                    size: 20.sp,
-                                  )),
+                                width: 22.r,
+                                height: 22.r,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppColor.primaryColor,
+                                ),
+                                child: Icon(
+                                  Icons.camera_alt_outlined,
+                                  color: Colors.white,
+                                  size: 16.sp,
+                                ),
+                              ),
                             ),
                           )
                         ],
@@ -154,10 +153,9 @@ class _AddUserBodyState extends State<AddUserBody> {
                                 S.of(context).addUserText1,
                                 style: TextStyles.font16BlackRegular,
                               ),
-                              AddUserTextFormField(
+                              CustomTextFormField(
                                 controller: cubit.firstNameController,
                                 obscureText: false,
-                                readOnly: false,
                                 keyboardType: TextInputType.text,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
@@ -176,7 +174,9 @@ class _AddUserBodyState extends State<AddUserBody> {
                                         .of(context)
                                         .validationFirstNameOnlyLetters;
                                   }
+                                  return null;
                                 },
+                                onlyRead: false,
                               ),
                             ],
                           ),
@@ -190,10 +190,9 @@ class _AddUserBodyState extends State<AddUserBody> {
                                 S.of(context).addUserText2,
                                 style: TextStyles.font16BlackRegular,
                               ),
-                              AddUserTextFormField(
+                              CustomTextFormField(
                                 controller: cubit.lastNameController,
                                 obscureText: false,
-                                readOnly: false,
                                 keyboardType: TextInputType.text,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
@@ -212,7 +211,9 @@ class _AddUserBodyState extends State<AddUserBody> {
                                         .of(context)
                                         .validationLastNameOnlyLetters;
                                   }
+                                  return null;
                                 },
+                                onlyRead: false,
                               ),
                             ],
                           ),
@@ -224,10 +225,10 @@ class _AddUserBodyState extends State<AddUserBody> {
                       S.of(context).addUserText5,
                       style: TextStyles.font16BlackRegular,
                     ),
-                    AddUserTextFormField(
+                    CustomTextFormField(
                       controller: cubit.userNameController,
                       obscureText: false,
-                      readOnly: false,
+                      onlyRead: false,
                       keyboardType: TextInputType.text,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -237,6 +238,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                         } else if (value.length < 3) {
                           return S.of(context).validationUserNameTooShort;
                         }
+                        return null;
                       },
                     ),
                     verticalSpace(10),
@@ -244,19 +246,20 @@ class _AddUserBodyState extends State<AddUserBody> {
                       S.of(context).addUserText3,
                       style: TextStyles.font16BlackRegular,
                     ),
-                    AddUserTextFormField(
+                    CustomTextFormField(
                       controller: cubit.emailController,
                       obscureText: false,
-                      readOnly: false,
+                      onlyRead: false,
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return S.of(context).validationAddEmail;
                         } else if (!RegExp(
-                                r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
                             .hasMatch(value)) {
                           return S.of(context).validationValidEmail;
                         }
+                        return null;
                       },
                     ),
                     verticalSpace(10),
@@ -264,7 +267,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                       S.of(context).addUserText10,
                       style: TextStyles.font16BlackRegular,
                     ),
-                    AddUserTextFormField(
+                    CustomTextFormField(
                       controller: cubit.phoneController,
                       keyboardType: TextInputType.phone,
                       validator: (value) {
@@ -276,7 +279,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                         }
                         return null;
                       },
-                      prefixIcon: Padding(
+                      perfixIcon: Padding(
                         padding: const EdgeInsets.fromLTRB(10, 13, 5, 13),
                         child: Text(
                           '+966 |',
@@ -286,7 +289,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                       ),
                       hint: S.of(context).hintPhoneNumber,
                       obscureText: false,
-                      readOnly: false,
+                      onlyRead: false,
                     ),
                     verticalSpace(10),
                     Row(
@@ -389,10 +392,10 @@ class _AddUserBodyState extends State<AddUserBody> {
                                 S.of(context).addUserText4,
                                 style: TextStyles.font16BlackRegular,
                               ),
-                              AddUserTextFormField(
+                              CustomTextFormField(
                                 controller: cubit.birthController,
                                 obscureText: false,
-                                readOnly: true,
+                                onlyRead: true,
                                 suffixIcon: Icons.calendar_today,
                                 suffixPressed: () async {
                                   DateTime? pickedDate = await showDatePicker(
@@ -434,6 +437,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                                         .of(context)
                                         .validationBirthDateRequired;
                                   }
+                                  return null;
                                 },
                               ),
                             ],
@@ -446,10 +450,10 @@ class _AddUserBodyState extends State<AddUserBody> {
                       S.of(context).addUserText7,
                       style: TextStyles.font16BlackRegular,
                     ),
-                    AddUserTextFormField(
+                    CustomTextFormField(
                       controller: cubit.idNumberController,
                       obscureText: false,
-                      readOnly: false,
+                      onlyRead: false,
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -459,6 +463,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                         } else if (value.length < 5) {
                           return S.of(context).validationIdNumberTooShort;
                         }
+                        return null;
                       },
                     ),
                     verticalSpace(10),
@@ -466,16 +471,16 @@ class _AddUserBodyState extends State<AddUserBody> {
                       S.of(context).addUserText6,
                       style: TextStyles.font16BlackRegular,
                     ),
-                    AddUserTextFormField(
+                    CustomTextFormField(
                       controller: cubit.passwordController,
-                      readOnly: false,
+                      onlyRead: false,
                       keyboardType: TextInputType.text,
                       suffixIcon: cubit.suffixIcon,
                       suffixPressed: () {
                         cubit.changeSuffixIconVisiability();
                       },
                       onChanged: (value) {
-                        if (value!.isNotEmpty) {
+                        if (value.isNotEmpty) {
                           cubit.isShow = true;
                         } else {
                           cubit.isShow = false;
@@ -492,6 +497,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                             .hasMatch(value)) {
                           return S.of(context).validationPassword;
                         }
+                        return null;
                       },
                     ),
                     if (cubit.isShow == true) ...[
@@ -509,19 +515,20 @@ class _AddUserBodyState extends State<AddUserBody> {
                       S.of(context).addUserText11,
                       style: TextStyles.font16BlackRegular,
                     ),
-                    AddUserTextFormField(
+                    CustomTextFormField(
                       controller: cubit.passwordConfirmationController,
                       suffixIcon: cubit.suffixIcon,
                       suffixPressed: () {
                         cubit.changeSuffixIconVisiability();
                       },
                       obscureText: cubit.ispassword,
-                      readOnly: false,
+                      onlyRead: false,
                       keyboardType: TextInputType.text,
                       validator: (value) {
                         if (value! != cubit.passwordController.text) {
                           return S.of(context).validationRepeatPassword;
                         }
+                        return null;
                       },
                     ),
                     verticalSpace(10),
@@ -563,7 +570,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                         return null;
                       },
                       hint: S.of(context).hintSelectRole,
-                      items: cubit.providerItem
+                      items: cubit.roleDataItem
                           .map((e) => e.name ?? 'Unknown')
                           .toList(),
                       controller: cubit.roleController,
@@ -681,10 +688,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                                 name: S.of(context).saveButtton,
                                 onPressed: () {
                                   if (cubit.formKey.currentState!.validate()) {
-                                    cubit.addUser(
-                                        image: cubit.image?.path,
-                                        selectedShiftsIds:
-                                            cubit.selectedShiftsIds);
+                                    cubit.addUser(image: cubit.image?.path);
                                   }
                                 },
                                 color: AppColor.primaryColor,

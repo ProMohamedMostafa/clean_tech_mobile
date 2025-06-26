@@ -14,6 +14,7 @@ import 'package:smart_cleaning_application/core/widgets/default_button/default_e
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/logic/material_mangement_cubit.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class AddPopUpDialog {
   static Future<String?> show(
@@ -21,256 +22,231 @@ class AddPopUpDialog {
     return await showDialog(
       context: context,
       builder: (dialogContext) {
-        int? providerId;
-        double? quantityId;
-        double? price;
+        final cubit = context.read<MaterialManagementCubit>();
         return Dialog(
-            backgroundColor: Colors.white,
-            surfaceTintColor: Colors.white,
-            insetPadding: EdgeInsets.all(20),
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(16.r)),
-            ),
-            child: SafeArea(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+          insetPadding: EdgeInsets.all(20),
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
+                      Container(
+                        width: 8.w,
+                        height: 24.h,
+                        decoration: BoxDecoration(
+                            color: AppColor.primaryColor,
+                            borderRadius: BorderRadius.circular(2.r)),
+                      ),
+                      horizontalSpace(8),
                       Text(
-                        'Quantity',
-                        style: TextStyles.font16BlackRegular,
+                        S.of(context).addMaterial,
+                        style: TextStyles.font18PrimMedium,
                       ),
-                      verticalSpace(5),
-                      CustomTextFormField(
-                        onlyRead: false,
-                        hint: "Write Number",
-                        controller: context
-                            .read<MaterialManagementCubit>()
-                            .quantityController,
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "quantity is Required";
-                          } else if (value.length > 20) {
-                            return 'quantity is too long';
-                          }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          quantityId = double.parse(value);
-                        },
-                      ),
-                      verticalSpace(10),
-                      RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Price',
-                              style: TextStyles.font16BlackRegular,
-                            ),
-                            TextSpan(
-                              text: ' (unit)',
-                              style: TextStyles.font14GreyRegular,
-                            ),
-                          ],
+                      const Spacer(),
+                      IconButton(
+                        icon: Icon(
+                          Icons.close_rounded,
+                          size: 26.sp,
                         ),
+                        onPressed: () => context.pop(),
                       ),
-                      verticalSpace(5),
-                      CustomTextFormField(
-                        onlyRead: false,
-                        hint: "Write Number",
-                        controller: context
-                            .read<MaterialManagementCubit>()
-                            .priceController,
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Price is Required";
-                          } else if (value.length > 20) {
-                            return 'Price is too long';
-                          }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          price = double.parse(value);
-                        },
-                      ),
-                      verticalSpace(10),
-                      Text(
-                        'Provider',
-                        style: TextStyles.font16BlackRegular,
-                      ),
-                      verticalSpace(5),
-                      CustomDropDownList(
-                        hint: 'Select provider',
-                        onPressed: (selectedValue) {
-                          final selectedId = context
-                              .read<MaterialManagementCubit>()
-                              .providersModel
-                              ?.data
-                              ?.data
-                              ?.firstWhere(
-                                (provider) => provider.name == selectedValue,
-                              )
-                              .id;
-
-                          if (selectedId != null) {
-                            providerId = selectedId;
-                          }
-                        },
-                        items: context
-                                    .read<MaterialManagementCubit>()
-                                    .providersModel
-                                    ?.data
-                                    ?.data
-                                    ?.isEmpty ??
-                                true
-                            ? ['No Providers available']
-                            : context
-                                    .read<MaterialManagementCubit>()
-                                    .providersModel
-                                    ?.data
-                                    ?.data
-                                    ?.map((e) => e.name ?? 'Unknown')
-                                    .toList() ??
-                                [],
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "provider is Required";
-                          }
-                          return null;
-                        },
-                        controller: context
-                            .read<MaterialManagementCubit>()
-                            .providerController,
-                        keyboardType: TextInputType.text,
-                        suffixIcon: IconBroken.arrowDown2,
-                      ),
-                      verticalSpace(10),
-                      Center(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            context
-                                .read<MaterialManagementCubit>()
-                                .galleryFile();
-                          },
-                          style: ElevatedButton.styleFrom(
-                              shape: const CircleBorder(),
-                              padding: const EdgeInsets.all(10),
-                              backgroundColor: AppColor.primaryColor,
-                              elevation: 4),
-                          child: const Icon(IconBroken.upload,
-                              color: Colors.white, size: 26),
-                        ),
-                      ),
-                      verticalSpace(8),
-                      Center(
-                        child: Text(
-                          'Upload file',
-                          style: TextStyles.font14BlackSemiBold,
-                        ),
-                      ),
-                      if (context.read<MaterialManagementCubit>().image?.path !=
-                          null) ...[
-                        Text(
-                          'File',
+                    ],
+                  ),
+                  verticalSpace(10),
+                  Text(
+                    S.of(context).quantity,
+                    style: TextStyles.font16BlackRegular,
+                  ),
+                  verticalSpace(5),
+                  CustomTextFormField(
+                    onlyRead: false,
+                    hint: S.of(context).writeQuantity,
+                    controller: cubit.quantityController,
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return S.of(context).quantityRequired;
+                      } else if (value.length > 20) {
+                        return S.of(context).quantityTooLong;
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      cubit.quantityIdController.text =
+                          double.parse(value).toString();
+                    },
+                  ),
+                  verticalSpace(10),
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: S.of(context).price,
                           style: TextStyles.font16BlackRegular,
                         ),
-                        verticalSpace(5),
-                        GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (contextt) => Scaffold(
-                                    appBar: AppBar(
-                                      leading: CustomBackButton(),
+                        TextSpan(
+                          text: S.of(context).unit,
+                          style: TextStyles.font14GreyRegular,
+                        ),
+                      ],
+                    ),
+                  ),
+                  verticalSpace(5),
+                  CustomTextFormField(
+                    onlyRead: false,
+                    hint: S.of(context).writePrice,
+                    controller: cubit.priceController,
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return S.of(context).priceRequired;
+                      } else if (value.length > 20) {
+                        return S.of(context).priceTooLong;
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      cubit.priceIdController.text =
+                          double.parse(value).toString();
+                    },
+                  ),
+                  verticalSpace(10),
+                  Text(
+                    S.of(context).providerBody,
+                    style: TextStyles.font16BlackRegular,
+                  ),
+                  verticalSpace(5),
+                  CustomDropDownList(
+                    hint: S.of(context).hintSelectProvider,
+                    onPressed: (selectedValue) {
+                      final selectedId = cubit.providersModel?.data?.data
+                          ?.firstWhere(
+                            (provider) => provider.name == selectedValue,
+                          )
+                          .id;
+
+                      if (selectedId != null) {
+                        cubit.providerIdController.text = selectedId.toString();
+                      }
+                    },
+                    items: cubit.providerItem
+                        .map((e) => e.name ?? 'Unknown')
+                        .toList(),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return S.of(context).providerRequiredValidation;
+                      }
+                      return null;
+                    },
+                    controller: cubit.providerController,
+                    keyboardType: TextInputType.text,
+                    suffixIcon: IconBroken.arrowDown2,
+                  ),
+                  verticalSpace(10),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        cubit.galleryFile();
+                      },
+                      style: ElevatedButton.styleFrom(
+                          shape: const CircleBorder(),
+                          padding: const EdgeInsets.all(10),
+                          backgroundColor: AppColor.primaryColor,
+                          elevation: 4),
+                      child: const Icon(IconBroken.upload,
+                          color: Colors.white, size: 26),
+                    ),
+                  ),
+                  verticalSpace(8),
+                  Center(
+                    child: Text(
+                      S.of(context).uploadFile,
+                      style: TextStyles.font14BlackSemiBold,
+                    ),
+                  ),
+                  if (cubit.image?.path != null) ...[
+                    Text(
+                      S.of(context).file,
+                      style: TextStyles.font16BlackRegular,
+                    ),
+                    verticalSpace(5),
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (contextt) => Scaffold(
+                                appBar: AppBar(
+                                  leading: CustomBackButton(),
+                                ),
+                                body: Center(
+                                  child: PhotoView(
+                                    imageProvider: FileImage(
+                                      File(cubit.image!.path),
                                     ),
-                                    body: Center(
-                                      child: PhotoView(
-                                        imageProvider: FileImage(
-                                          File(context
-                                              .read<MaterialManagementCubit>()
-                                              .image!
-                                              .path),
-                                        ),
-                                        backgroundDecoration:
-                                            const BoxDecoration(
-                                          color: Colors.white,
-                                        ),
-                                      ),
+                                    backgroundDecoration: const BoxDecoration(
+                                      color: Colors.white,
                                     ),
                                   ),
                                 ),
-                              );
-                            },
-                            child: Container(
-                              height: 80,
-                              width: 80,
-                              clipBehavior: Clip.hardEdge,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.r)),
-                              child: Image.file(
-                                File(context
-                                    .read<MaterialManagementCubit>()
-                                    .image!
-                                    .path),
-                                fit: BoxFit.cover,
                               ),
-                            ))
-                      ],
-                      verticalSpace(20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          DefaultElevatedButton(
-                            name: "Add",
-                            onPressed: () {
-                              if (providerId != null &&
-                                  quantityId != null &&
-                                  price != null) {
-                                context
-                                    .read<MaterialManagementCubit>()
-                                    .addMaterial(
-                                        materialId: id,
-                                        providerId: providerId,
-                                        quantityId: quantityId,
-                                        priceId: price,
-                                        image: context
-                                            .read<MaterialManagementCubit>()
-                                            .image
-                                            ?.path);
-                                context.pop();
-                              }
-                            },
-                            color: AppColor.primaryColor,
-                            height: 47.h,
-                            width: 125.w,
-                            textStyles: TextStyles.font16WhiteSemiBold,
+                            ),
+                          );
+                        },
+                        child: Container(
+                          height: 80,
+                          width: 80,
+                          clipBehavior: Clip.hardEdge,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r)),
+                          child: Image.file(
+                            File(cubit.image!.path),
+                            fit: BoxFit.cover,
                           ),
-                          DefaultElevatedButton(
-                            name: "Cancel",
-                            onPressed: () {
-                              context.pop();
-                            },
-                            color: AppColor.secondaryColor,
-                            height: 47.h,
-                            width: 125.w,
-                            textStyles: TextStyles.font16WhiteSemiBold,
-                          ),
-                        ],
-                      )
+                        ))
+                  ],
+                  verticalSpace(20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      DefaultElevatedButton(
+                        name: S.of(context).addButton,
+                        onPressed: () {
+                          cubit.addMaterial(
+                              materialId: id, image: cubit.image?.path);
+                          context.pop();
+                        },
+                        color: AppColor.primaryColor,
+                        height: 47.h,
+                        width: 125.w,
+                        textStyles: TextStyles.font16WhiteSemiBold,
+                      ),
+                      DefaultElevatedButton(
+                        name: S.of(context).cancelButton,
+                        onPressed: () {
+                          context.pop();
+                        },
+                        color: AppColor.fourthColor,
+                        height: 47.h,
+                        width: 125.w,
+                        textStyles: TextStyles.font16WhiteSemiBold,
+                      ),
                     ],
-                  ),
-                ),
+                  )
+                ],
               ),
-            ));
+            ),
+          ),
+        );
       },
     );
   }

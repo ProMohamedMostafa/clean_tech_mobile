@@ -5,7 +5,7 @@ import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper
 import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/category_management_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/edit_category/data/model/edit_category_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/edit_category/logic/edit_category_state.dart';
-import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/category_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/stock/edit_category/data/model/category_details_model.dart';
 
 class EditCategoryCubit extends Cubit<EditCategoryState> {
   EditCategoryCubit() : super(EditCategoryInitialState());
@@ -14,20 +14,25 @@ class EditCategoryCubit extends Cubit<EditCategoryState> {
 
   TextEditingController nameController = TextEditingController();
   TextEditingController unitController = TextEditingController();
+  TextEditingController unitIdController = TextEditingController();
   TextEditingController parentCategoryController = TextEditingController();
+  TextEditingController parentCategoryIdController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   EditCategoryModel? editCategoryModel;
-  editCategory(int id, int? unit, int? parentCategory) {
+  editCategory(int id) {
     emit(EditCategoryLoadingState());
     DioHelper.putData(url: ApiConstants.editCategoryUrl, data: {
       "id": id,
       "name": nameController.text.isEmpty
           ? categoryDetailsModel!.data!.name
           : nameController.text,
-      "parentCategoryId":
-          parentCategory ?? categoryDetailsModel!.data!.parentCategoryId,
-      "unit": unit ?? categoryDetailsModel!.data!.unitId,
+      "parentCategoryId": parentCategoryController.text.isEmpty
+          ? categoryDetailsModel!.data!.parentCategoryId
+          : parentCategoryIdController.text,
+      "unit": unitController.text.isEmpty
+          ? categoryDetailsModel!.data!.unitId
+          : unitIdController.text,
     }).then((value) {
       editCategoryModel = EditCategoryModel.fromJson(value!.data);
       emit(EditCategorySuccessState(editCategoryModel!));
@@ -49,12 +54,12 @@ class EditCategoryCubit extends Cubit<EditCategoryState> {
 
   CategoryManagementModel? categoryManagementModel;
   getCategoryList() {
-    emit(CategoryManagementLoadingState());
+    emit(AllCategoriesLoadingState());
     DioHelper.getData(url: ApiConstants.categoryUrl).then((value) {
       categoryManagementModel = CategoryManagementModel.fromJson(value!.data);
-      emit(CategoryManagementSuccessState(categoryManagementModel!));
+      emit(AllCategoriesSuccessState(categoryManagementModel!));
     }).catchError((error) {
-      emit(CategoryManagementErrorState(error.toString()));
+      emit(AllCategoriesErrorState(error.toString()));
     });
   }
 }

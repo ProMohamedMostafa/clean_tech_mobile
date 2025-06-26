@@ -1,7 +1,7 @@
-import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/data/models/attendance_history_model.dart';
-import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/data/models/attendance_leaves_model.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attendance_history_management/data/models/attendance_history_model.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_management/data/models/attendance_leaves_model.dart';
 import 'package:smart_cleaning_application/features/screens/settings/data/model/profile_model.dart';
-import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/all_tasks_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/all_tasks_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_shift_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_work_location_details.dart';
 

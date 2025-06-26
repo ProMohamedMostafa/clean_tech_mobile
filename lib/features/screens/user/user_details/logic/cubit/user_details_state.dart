@@ -16,34 +16,7 @@ class UserDetailsErrorState extends UserDetailsState {
   final String error;
   UserDetailsErrorState(this.error);
 }
-//*********************** */
 
-class UserStatusLoadingState extends UserDetailsState {}
-
-class UserStatusSuccessState extends UserDetailsState {
-  final UserStatusModel userStatusModel;
-
-  UserStatusSuccessState(this.userStatusModel);
-}
-
-class UserStatusErrorState extends UserDetailsState {
-  final String error;
-  UserStatusErrorState(this.error);
-}
-
-//********************************* */
-class UserShiftDetailsLoadingState extends UserDetailsState {}
-
-class UserShiftDetailsSuccessState extends UserDetailsState {
-  final UserShiftDetailsModel userShiftDetailsModel;
-
-  UserShiftDetailsSuccessState(this.userShiftDetailsModel);
-}
-
-class UserShiftDetailsErrorState extends UserDetailsState {
-  final String error;
-  UserShiftDetailsErrorState(this.error);
-}
 
 //*********************** */
 
@@ -60,6 +33,19 @@ class UserWorkLocationDetailsErrorState extends UserDetailsState {
   UserWorkLocationDetailsErrorState(this.error);
 }
 
+//********************************* */
+class UserShiftDetailsLoadingState extends UserDetailsState {}
+
+class UserShiftDetailsSuccessState extends UserDetailsState {
+  final UserShiftDetailsModel userShiftDetailsModel;
+
+  UserShiftDetailsSuccessState(this.userShiftDetailsModel);
+}
+
+class UserShiftDetailsErrorState extends UserDetailsState {
+  final String error;
+  UserShiftDetailsErrorState(this.error);
+}
 //*********************** */
 
 class UserTaskDetailsLoadingState extends UserDetailsState {}

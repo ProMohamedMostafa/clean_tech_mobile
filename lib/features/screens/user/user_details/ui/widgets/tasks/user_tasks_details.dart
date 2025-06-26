@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
+import 'package:smart_cleaning_application/core/widgets/filter/logic/cubit/filter_dialog_cubit.dart';
+import 'package:smart_cleaning_application/core/widgets/filter/ui/screen/filter_dialog_widget.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/logic/cubit/user_details_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/ui/widgets/tasks/task_list_item_build.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
@@ -26,6 +28,8 @@ class UserTasksDetails extends StatelessWidget {
   }
 
   Widget _buildFilterHeader(BuildContext context) {
+    final cubit = context.read<UserDetailsCubit>();
+
     return SizedBox(
       height: 45.h,
       child: Row(
@@ -37,8 +41,24 @@ class UserTasksDetails extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              // CustomFilterAttedanceDialog.show(
-              //     context: context, id: widget.id);
+              showDialog(
+                context: context,
+                builder: (dialogContext) {
+                  return BlocProvider(
+                      create: (context) => FilterDialogCubit()
+                        ..getArea()
+                        ..getUsers()
+                        ..getDevices(),
+                      child: FilterDialogWidget(
+                        index: 'TU',
+                        onPressed: (data) {
+                          cubit.taskFilterModel = data;
+                          cubit.getUserTaskDetails(
+                              cubit.userDetailsModel!.data!.id);
+                        },
+                      ));
+                },
+              );
             },
             child: Container(
               height: 52,

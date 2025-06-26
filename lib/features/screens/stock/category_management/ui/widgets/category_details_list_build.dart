@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/features/screens/stock/category_management/logic/category_mangement_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/stock/category_management/ui/widgets/item_list_build.dart';
+import 'package:smart_cleaning_application/features/screens/stock/category_management/ui/widgets/category_item_list_build.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class CategoryDetailsBuild extends StatelessWidget {
   const CategoryDetailsBuild({super.key});
@@ -18,7 +19,7 @@ class CategoryDetailsBuild extends StatelessWidget {
     if (categoriesData == null || categoriesData.isEmpty) {
       return Center(
         child: Text(
-          "There's no data",
+          S.of(context).noData,
           style: TextStyles.font13Blackmedium,
         ),
       );

@@ -112,9 +112,9 @@ class GetFloorErrorState extends AddWorkLocationState {
 class GetSectionLoadingState extends AddWorkLocationState {}
 
 class GetSectionSuccessState extends AddWorkLocationState {
-  final SectionListModel sectionsModel;
+  final SectionListModel sectionModel;
 
-  GetSectionSuccessState(this.sectionsModel);
+  GetSectionSuccessState(this.sectionModel);
 }
 
 class GetSectionErrorState extends AddWorkLocationState {
@@ -127,9 +127,9 @@ class GetSectionErrorState extends AddWorkLocationState {
 class GetPointLoadingState extends AddWorkLocationState {}
 
 class GetPointSuccessState extends AddWorkLocationState {
-  final PointListModel pointsModel;
+  final PointListModel pointModel;
 
-  GetPointSuccessState(this.pointsModel);
+  GetPointSuccessState(this.pointModel);
 }
 
 class GetPointErrorState extends AddWorkLocationState {
@@ -149,6 +149,32 @@ class AllUsersSuccessState extends AddWorkLocationState {
 class AllUsersErrorState extends AddWorkLocationState {
   final String error;
   AllUsersErrorState(this.error);
+}
+//**************************** */
+
+class ShiftLoadingState extends AddWorkLocationState {}
+
+class ShiftSuccessState extends AddWorkLocationState {
+  final ShiftModel shiftModel;
+  ShiftSuccessState(this.shiftModel);
+}
+
+class ShiftErrorState extends AddWorkLocationState {
+  final String error;
+  ShiftErrorState(this.error);
+}
+//**************************** */
+
+class SensorLoading extends AddWorkLocationState {}
+
+class SensorSuccess extends AddWorkLocationState {
+  final SensorModel sensorModel;
+  SensorSuccess(this.sensorModel);
+}
+
+class SensorError extends AddWorkLocationState {
+  final String error;
+  SensorError(this.error);
 }
 
 //***************** */
@@ -222,7 +248,8 @@ class CreateFloorSuccessState extends AddWorkLocationState {
 class CreateFloorErrorState extends AddWorkLocationState {
   final String error;
   CreateFloorErrorState(this.error);
-} //***************** */
+}
+//***************** */
 
 class CreateSectionLoadingState extends AddWorkLocationState {}
 
@@ -235,7 +262,8 @@ class CreateSectionSuccessState extends AddWorkLocationState {
 class CreateSectionErrorState extends AddWorkLocationState {
   final String error;
   CreateSectionErrorState(this.error);
-} //***************** */
+}
+//***************** */
 
 class CreatePointLoadingState extends AddWorkLocationState {}
 
@@ -249,29 +277,6 @@ class CreatePointErrorState extends AddWorkLocationState {
   final String error;
   CreatePointErrorState(this.error);
 }
-//**************************** */
+//***************** */
 
-class ShiftLoadingState extends AddWorkLocationState {}
-
-class ShiftSuccessState extends AddWorkLocationState {
-  final ShiftModel shiftModel;
-  ShiftSuccessState(this.shiftModel);
-}
-
-class ShiftErrorState extends AddWorkLocationState {
-  final String error;
-  ShiftErrorState(this.error);
-}
-//**************************** */
-
-class SensorManagementLoading extends AddWorkLocationState {}
-
-class SensorManagementSuccess extends AddWorkLocationState {
-  final SensorModel sensorModel;
-  SensorManagementSuccess(this.sensorModel);
-}
-
-class SensorManagementError extends AddWorkLocationState {
-  final String error;
-  SensorManagementError(this.error);
-}
+class IsCountableChanged extends AddWorkLocationState {}

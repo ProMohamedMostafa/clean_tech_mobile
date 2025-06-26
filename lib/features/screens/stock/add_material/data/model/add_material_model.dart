@@ -4,7 +4,7 @@ class AddMaterialModel {
   bool? succeeded;
   String? message;
   String? error;
-  String? businessErrorCode;
+  int? businessErrorCode;
   String? data;
 
   AddMaterialModel(
@@ -27,7 +27,7 @@ class AddMaterialModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data =  <String, dynamic>{};
     data['statusCode'] = statusCode;
     data['meta'] = meta;
     data['succeeded'] = succeeded;

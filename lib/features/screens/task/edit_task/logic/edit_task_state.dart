@@ -1,8 +1,8 @@
 import 'package:image_picker/image_picker.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
-import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/all_tasks_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/edit_task_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/all_tasks_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/view_task/data/model/task_details.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_list_model.dart';

@@ -21,15 +21,14 @@ class SensorDetailsBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<SensorDetailsCubit>();
-
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sensor details'),
+        title: Text(S.of(context).sensorDetails),
         leading: CustomBackButton(),
         actions: [
           IconButton(
               onPressed: () {
-                context.pushNamed(Routes.sensorAssignScreen, arguments: id);
+                context.pushNamed(Routes.sensorEditScreen, arguments: id);
               },
               icon: Icon(Icons.edit, color: AppColor.primaryColor)),
         ],
@@ -38,7 +37,7 @@ class SensorDetailsBody extends StatelessWidget {
         listener: (context, state) {
           if (state is DeleteSensorSuccessState) {
             toast(text: state.deletedSensorModel.message!, color: Colors.blue);
-            context.pushNamedAndRemoveLastTwo(Routes.sensorScreen);
+            context.pushNamedAndRemoveAllExceptFirst(Routes.sensorScreen);
           }
           if (state is DeleteSensorErrorState) {
             toast(text: state.error, color: Colors.red);
@@ -153,7 +152,7 @@ class SensorDetailsBody extends StatelessWidget {
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: 'Last read ',
+                            text: '${S.of(context).sensorTextLastRead} ',
                             style: TextStyles.font12GreyRegular,
                           ),
                           TextSpan(
@@ -163,7 +162,7 @@ class SensorDetailsBody extends StatelessWidget {
                                 .copyWith(color: Colors.red),
                           ),
                           TextSpan(
-                            text: ' ago',
+                            text: ' ${S.of(context).sensorTextAgo}',
                             style: TextStyles.font12GreyRegular,
                           ),
                         ],
@@ -184,8 +183,8 @@ class SensorDetailsBody extends StatelessWidget {
                             child: cubit.descTextShowFlag
                                 ? Padding(
                                     padding: const EdgeInsets.all(10),
-                                    child: const Text(
-                                      "Read less",
+                                    child: Text(
+                                      S.of(context).ReadLessButton,
                                       style: TextStyle(
                                           color: AppColor.primaryColor,
                                           fontSize: 12),
@@ -193,8 +192,8 @@ class SensorDetailsBody extends StatelessWidget {
                                   )
                                 : Padding(
                                     padding: const EdgeInsets.all(10),
-                                    child: const Text(
-                                      "Read more",
+                                    child: Text(
+                                      S.of(context).ReadMoreButton,
                                       style: TextStyle(
                                           color: AppColor.primaryColor,
                                           fontSize: 12),
@@ -204,7 +203,7 @@ class SensorDetailsBody extends StatelessWidget {
                     Divider(color: Colors.grey[300], height: 0),
                     verticalSpace(10),
                     rowDetailsBuild(
-                      'Battery',
+                      S.of(context).battery,
                       '${cubit.sensorDetailsModel?.data?.battery?.toString() ?? ''}%',
                       color:
                           ((cubit.sensorDetailsModel?.data?.battery ?? 0)) >= 50
@@ -214,44 +213,42 @@ class SensorDetailsBody extends StatelessWidget {
                     verticalSpace(10),
                     Divider(color: Colors.grey[300], height: 0),
                     verticalSpace(10),
-                    rowDetailsBuild('Type',
+                    rowDetailsBuild(S.of(context).type,
                         cubit.sensorDetailsModel!.data!.applicationName ?? ''),
                     verticalSpace(10),
                     Divider(color: Colors.grey[300], height: 0),
                     verticalSpace(10),
-                    rowDetailsBuild('Organization',
+                    rowDetailsBuild(S.of(context).Organization,
                         cubit.sensorDetailsModel!.data!.organizationName ?? ''),
                     verticalSpace(10),
                     Divider(color: Colors.grey[300], height: 0),
                     verticalSpace(10),
-                    rowDetailsBuild('Building',
+                    rowDetailsBuild(S.of(context).Building,
                         cubit.sensorDetailsModel!.data!.buildingName ?? ''),
                     verticalSpace(10),
                     Divider(color: Colors.grey[300], height: 0),
                     verticalSpace(10),
-                    rowDetailsBuild('Floor',
+                    rowDetailsBuild(S.of(context).Floor,
                         cubit.sensorDetailsModel!.data!.floorName ?? ''),
                     verticalSpace(10),
                     Divider(color: Colors.grey[300], height: 0),
                     verticalSpace(10),
-                    rowDetailsBuild('Section',
+                    rowDetailsBuild(S.of(context).Section,
                         cubit.sensorDetailsModel!.data!.sectionName ?? ''),
                     verticalSpace(10),
                     Divider(color: Colors.grey[300], height: 0),
                     verticalSpace(10),
-                    rowDetailsBuild('Point',
+                    rowDetailsBuild(S.of(context).Point,
                         cubit.sensorDetailsModel!.data!.pointName ?? ''),
                     verticalSpace(10),
                     Divider(color: Colors.grey[300], height: 0),
                     verticalSpace(10),
-                    SizedBox(
-                      height: 40.h,
-                      child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: cubit.sensorDetailsModel!.data!.data!.length,
-                        separatorBuilder: (context, index) =>
-                            horizontalSpace(8),
-                        itemBuilder: (context, index) {
+                    Wrap(
+                      spacing: 8.w,
+                      runSpacing: 8.h,
+                      children: List.generate(
+                        cubit.sensorDetailsModel!.data!.data!.length,
+                        (index) {
                           final item =
                               cubit.sensorDetailsModel!.data!.data![index];
                           return GestureDetector(
@@ -275,8 +272,7 @@ class SensorDetailsBody extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 5),
+                            padding: const EdgeInsets.fromLTRB(8, 5, 8, 0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -298,195 +294,228 @@ class SensorDetailsBody extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Divider(color: Colors.grey.shade300, height: 16.h),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Min',
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                              horizontalSpace(5),
-                              SizedBox(
-                                width: 50.w,
-                                height: 40.h,
-                                child: TextFormField(
-                                  controller: cubit.minController
-                                    ..text = cubit.sensorDetailsModel?.data
-                                            ?.limit?.min
-                                            .toString() ??
-                                        '',
-                                  keyboardType: TextInputType.number,
-                                  style: TextStyles.font16BlackSemiBold,
-                                  textAlign: TextAlign.center,
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 8.h, horizontal: 8.w),
-                                    isDense: true,
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(6.r),
-                                      borderSide: BorderSide(
-                                          color: Colors.grey.shade300),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(6.r),
-                                      borderSide: BorderSide(
-                                          color: Colors.grey.shade300),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(6.r),
-                                      borderSide: BorderSide(
-                                          color: AppColor.primaryColor),
+                          Divider(color: Colors.grey.shade300, height: 10.h),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    S.of(context).min,
+                                    style: TextStyle(color: Colors.grey),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                horizontalSpace(5),
+                                SizedBox(
+                                  width: 50.w,
+                                  height: 40.h,
+                                  child: TextFormField(
+                                    controller: cubit.minController
+                                      ..text = cubit.sensorDetailsModel?.data
+                                              ?.limit?.min
+                                              .toString() ??
+                                          '',
+                                    keyboardType: TextInputType.number,
+                                    style: TextStyles.font16BlackSemiBold,
+                                    textAlign: TextAlign.center,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 8.h, horizontal: 8.w),
+                                      isDense: true,
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(6.r),
+                                        borderSide: BorderSide(
+                                            color: Colors.grey.shade300),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(6.r),
+                                        borderSide: BorderSide(
+                                            color: Colors.grey.shade300),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(6.r),
+                                        borderSide: BorderSide(
+                                            color: AppColor.primaryColor),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              horizontalSpace(30),
-                              Text(
-                                'Max',
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                              horizontalSpace(5),
-                              SizedBox(
-                                width: 50.w,
-                                height: 40.h,
-                                child: TextFormField(
-                                  controller: cubit.maxController
-                                    ..text = cubit.sensorDetailsModel?.data
-                                            ?.limit?.max
-                                            .toString() ??
-                                        '',
-                                  keyboardType: TextInputType.number,
-                                  style: TextStyles.font16BlackSemiBold,
-                                  textAlign: TextAlign.center,
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 8.h, horizontal: 8.w),
-                                    isDense: true,
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(6.r),
-                                      borderSide: BorderSide(
-                                          color: Colors.grey.shade300),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(6.r),
-                                      borderSide: BorderSide(
-                                          color: Colors.grey.shade300),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(6.r),
-                                      borderSide: BorderSide(
-                                          color: AppColor.primaryColor),
+                                horizontalSpace(30),
+                                Flexible(
+                                  child: Text(
+                                    S.of(context).max,
+                                    style: TextStyle(color: Colors.grey),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                horizontalSpace(5),
+                                SizedBox(
+                                  width: 50.w,
+                                  height: 40.h,
+                                  child: TextFormField(
+                                    controller: cubit.maxController
+                                      ..text = cubit.sensorDetailsModel?.data
+                                              ?.limit?.max
+                                              .toString() ??
+                                          '',
+                                    keyboardType: TextInputType.number,
+                                    style: TextStyles.font16BlackSemiBold,
+                                    textAlign: TextAlign.center,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 8.h, horizontal: 8.w),
+                                      isDense: true,
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(6.r),
+                                        borderSide: BorderSide(
+                                            color: Colors.grey.shade300),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(6.r),
+                                        borderSide: BorderSide(
+                                            color: Colors.grey.shade300),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(6.r),
+                                        borderSide: BorderSide(
+                                            color: AppColor.primaryColor),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              horizontalSpace(30),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    height: 26.h,
-                                    width: 72.w,
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        if (cubit.sensorDetailsModel?.data
-                                                ?.limit ==
-                                            null) {
+                                horizontalSpace(30),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      height: 26.h,
+                                      width: 72.w,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          if (cubit.sensorDetailsModel?.data
+                                                  ?.limit ==
+                                              null) {
+                                            showDialog(
+                                                context: context,
+                                                builder: (dialogContext) {
+                                                  return PopUpMessage(
+                                                      title: S
+                                                          .of(context)
+                                                          .TitleAdd,
+                                                      body: S
+                                                          .of(context)
+                                                          .limitBody,
+                                                      onPressed: () {
+                                                        cubit.createLimitSensor(
+                                                            id);
+                                                      });
+                                                });
+                                          } else {
+                                            showDialog(
+                                                context: context,
+                                                builder: (dialogContext) {
+                                                  return PopUpMessage(
+                                                      title: S
+                                                          .of(context)
+                                                          .TitleEdit,
+                                                      body: S
+                                                          .of(context)
+                                                          .limitBody,
+                                                      onPressed: () {
+                                                        cubit.editLimitSensor(
+                                                            id);
+                                                      });
+                                                });
+                                          }
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              AppColor.primaryColor,
+                                          foregroundColor: Colors.white,
+                                          padding: EdgeInsets.zero,
+                                          textStyle:
+                                              TextStyles.font14BlackRegular,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(4.r),
+                                          ),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.edit,
+                                                size: 16.sp,
+                                                color: Colors.white),
+                                            horizontalSpace(4),
+                                            Text(cubit.sensorDetailsModel?.data
+                                                        ?.limit ==
+                                                    null
+                                                ? S.of(context).addButton
+                                                : S.of(context).editButton),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    verticalSpace(8),
+                                    SizedBox(
+                                      height: 26.h,
+                                      width: 72.w,
+                                      child: ElevatedButton(
+                                        onPressed: () {
                                           showDialog(
                                               context: context,
                                               builder: (dialogContext) {
-                                                return PopUpMeassage(
-                                                    title: 'add',
-                                                    body: 'limit',
+                                                return PopUpMessage(
+                                                    title: S
+                                                        .of(context)
+                                                        .TitleDelete,
+                                                    body:
+                                                        S.of(context).limitBody,
                                                     onPressed: () {
-                                                      cubit.createLimitSensor(
-                                                          id);
+                                                      cubit.deletelimit(id);
                                                     });
                                               });
-                                        } else {
-                                          showDialog(
-                                              context: context,
-                                              builder: (dialogContext) {
-                                                return PopUpMeassage(
-                                                    title: 'edit',
-                                                    body: 'limit',
-                                                    onPressed: () {
-                                                      cubit.editLimitSensor(id);
-                                                    });
-                                              });
-                                        }
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: AppColor.primaryColor,
-                                        foregroundColor: Colors.white,
-                                        padding: EdgeInsets.zero,
-                                        textStyle:
-                                            TextStyles.font14BlackRegular,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(4.r),
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.red,
+                                          foregroundColor: Colors.white,
+                                          padding: EdgeInsets.zero,
+                                          textStyle:
+                                              TextStyles.font14BlackRegular,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(4.r),
+                                          ),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.delete,
+                                                size: 16.sp,
+                                                color: Colors.white),
+                                            horizontalSpace(4),
+                                            Text(S.of(context).deleteButton),
+                                          ],
                                         ),
                                       ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(Icons.edit,
-                                              size: 16.sp, color: Colors.white),
-                                          horizontalSpace(4),
-                                          Text(cubit.sensorDetailsModel?.data
-                                                      ?.limit ==
-                                                  null
-                                              ? 'Add'
-                                              : 'Edit'),
-                                        ],
-                                      ),
                                     ),
-                                  ),
-                                  verticalSpace(8),
-                                  SizedBox(
-                                    height: 26.h,
-                                    width: 72.w,
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: (dialogContext) {
-                                              return PopUpMeassage(
-                                                  title: 'delete',
-                                                  body: 'limit',
-                                                  onPressed: () {
-                                                    cubit.deletelimit(id);
-                                                  });
-                                            });
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.red,
-                                        foregroundColor: Colors.white,
-                                        padding: EdgeInsets.zero,
-                                        textStyle:
-                                            TextStyles.font14BlackRegular,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(4.r),
-                                        ),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(Icons.delete,
-                                              size: 16.sp, color: Colors.white),
-                                          horizontalSpace(4),
-                                          Text('Delete'),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              )
-                            ],
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
                           verticalSpace(10),
                         ],
@@ -497,7 +526,7 @@ class SensorDetailsBody extends StatelessWidget {
                       height: 40.h,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: cubit.tapList.length,
+                        itemCount: cubit.getTapList(context).length,
                         itemBuilder: (context, index) {
                           bool isSelected = index == cubit.selectedTreeIndex;
                           return GestureDetector(
@@ -512,7 +541,7 @@ class SensorDetailsBody extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      cubit.tapList[index], // fix here
+                                      cubit.getTapList(context)[index],
                                       style: TextStyle(
                                         color: isSelected
                                             ? AppColor.primaryColor
@@ -540,7 +569,7 @@ class SensorDetailsBody extends StatelessWidget {
                       width: double.infinity,
                       height: 150,
                       color: Colors.grey[200],
-                      child: Center(child: Text("There's no tasks")),
+                      child: Center(child: Text(S.of(context).noTasks)),
                     ),
                     verticalSpace(20),
                     Row(
@@ -548,7 +577,7 @@ class SensorDetailsBody extends StatelessWidget {
                       children: [
                         Expanded(
                           child: DefaultElevatedButton(
-                              name: 'Reload',
+                              name: S.of(context).reloadButton,
                               onPressed: () {
                                 cubit.getSensorDetails(id);
                               },
@@ -565,9 +594,9 @@ class SensorDetailsBody extends StatelessWidget {
                                 showDialog(
                                     context: context,
                                     builder: (dialogContext) {
-                                      return PopUpMeassage(
-                                          title: 'delete',
-                                          body: 'sensor',
+                                      return PopUpMessage(
+                                          title: S.of(context).TitleDelete,
+                                          body: S.of(context).sensorBody,
                                           onPressed: () {
                                             cubit.deleteSensor(id);
                                           });
@@ -594,38 +623,33 @@ class SensorDetailsBody extends StatelessWidget {
     required String value,
     required bool isActive,
   }) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        minWidth: 120.w,
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      decoration: BoxDecoration(
+        color: isActive ? Colors.blue : Colors.white,
+        borderRadius: BorderRadius.circular(8.r),
+        border: Border.all(
+          color: Colors.grey.shade300,
+        ),
       ),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(
-          color: isActive ? Colors.blue : Colors.white,
-          borderRadius: BorderRadius.circular(8.r),
-          border: Border.all(
-            color: Colors.grey.shade300,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            '$label ',
+            style: TextStyle(
+              color: isActive ? Colors.white : Colors.grey,
+              fontWeight: FontWeight.w500,
+            ),
           ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              '$label ',
-              style: TextStyle(
-                color: isActive ? Colors.white : Colors.grey,
-                fontWeight: FontWeight.w500,
-              ),
+          Text(
+            value,
+            style: TextStyle(
+              color: isActive ? Colors.greenAccent : Colors.black,
+              fontWeight: FontWeight.bold,
             ),
-            Text(
-              value,
-              style: TextStyle(
-                color: isActive ? Colors.greenAccent : Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -8,7 +8,6 @@ import 'package:photo_view/photo_view.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
-import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
@@ -25,6 +24,7 @@ import 'package:smart_cleaning_application/features/screens/integrations/ui/widg
 import 'package:smart_cleaning_application/features/screens/task/edit_task/logic/edit_task_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/logic/edit_task_state.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/ui/widget/upload_files_dialog.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 import '../../../../../../core/helpers/constants/constants.dart';
 
 class EditTaskBody extends StatefulWidget {
@@ -36,80 +36,37 @@ class EditTaskBody extends StatefulWidget {
 }
 
 class _EditTaskBodyState extends State<EditTaskBody> {
-  int? statusId;
-  List<int> selectedSupervisorIds = [];
-  int? buildingId;
-  int? floorId;
-  int? sectionId;
-  int? pointId;
-  int? parentId;
-  int? isSelected;
-  double? currentReading;
-  bool isPointCountable = false;
-  String? selectedPriority;
-  final List<String> priority = ["Low", "Medium", "High"];
-  final List<Color> tasksColor = [
-    Colors.green,
-    Colors.orange,
-    Colors.red,
-  ];
-  @override
-  void initState() {
-    super.initState();
-    final editTaskCubit = context.read<EditTaskCubit>();
-
-    editTaskCubit.getTaskDetails(widget.id);
-    editTaskCubit.getAllTasks();
-    editTaskCubit.getOrganization();
-    editTaskCubit.getAllUsers();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<EditTaskCubit>();
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Edit Task"),
-          leading: CustomBackButton(),
-        ),
+        appBar:
+            AppBar(title: const Text("Edit Task"), leading: CustomBackButton()),
         body: BlocConsumer<EditTaskCubit, EditTaskState>(
           listener: (context, state) {
             if (state is EditTaskSuccessState) {
               toast(text: state.editTaskModel.message!, color: Colors.blue);
-              context.pushNamedAndRemoveLastTwo(Routes.taskManagementScreen);
+              context.popWithTrueResult();
             }
             if (state is EditTaskErrorState) {
               toast(text: state.message, color: Colors.red);
             }
           },
           builder: (context, state) {
-            if (context.read<EditTaskCubit>().taskDetailsModel == null
-                //  ||
-                //     context.read<EditTaskCubit>().usersModel == null ||
-                //     context.read<EditTaskCubit>().allOrganizationModel == null
-                ) {
+            if (cubit.taskDetailsModel == null ||
+                cubit.usersModel == null ||
+                cubit.allTasksModel == null ||
+                cubit.organizationModel == null) {
               return Loading();
             }
-            if (selectedPriority == null &&
-                context
-                        .read<EditTaskCubit>()
-                        .taskDetailsModel
-                        ?.data
-                        ?.priority !=
-                    null) {
-              selectedPriority = context
-                  .read<EditTaskCubit>()
-                  .taskDetailsModel!
-                  .data!
-                  .priority!;
-              isSelected = priority.contains(selectedPriority)
-                  ? priority.indexOf(selectedPriority!)
+            if (cubit.selectedPriority == null &&
+                cubit.taskDetailsModel?.data?.priority != null) {
+              cubit.selectedPriority = cubit.taskDetailsModel!.data!.priority!;
+              cubit.isSelected = cubit.priority.contains(cubit.selectedPriority)
+                  ? cubit.priority.indexOf(cubit.selectedPriority!)
                   : null;
             }
-            var items = context
-                .read<EditTaskCubit>()
-                .usersModel
-                ?.data
-                ?.users
+            var items = cubit.usersModel?.data?.users
                 ?.map((employee) => DropdownItem(
                       label: employee.userName!,
                       value: employee,
@@ -120,7 +77,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                     child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Form(
-                          key: context.read<EditTaskCubit>().formKey,
+                          key: cubit.formKey,
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,8 +89,8 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
-                                    children:
-                                        List.generate(priority.length, (index) {
+                                    children: List.generate(
+                                        cubit.priority.length, (index) {
                                       return Expanded(
                                         child: Padding(
                                           padding: EdgeInsets.symmetric(
@@ -141,15 +98,13 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                           child: InkWell(
                                             onTap: () {
                                               setState(() {
-                                                isSelected = index;
-                                                selectedPriority =
-                                                    priority[index];
+                                                cubit.isSelected = index;
+                                                cubit.selectedPriority =
+                                                    cubit.priority[index];
 
-                                                context
-                                                    .read<EditTaskCubit>()
-                                                    .taskDetailsModel!
-                                                    .data!
-                                                    .priority = priority[index];
+                                                cubit.taskDetailsModel!.data!
+                                                        .priority =
+                                                    cubit.priority[index];
                                               });
                                             },
                                             child: Container(
@@ -157,20 +112,22 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                               decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(8),
-                                                color: isSelected == index
-                                                    ? tasksColor[index]
+                                                color: cubit.isSelected == index
+                                                    ? cubit.tasksColor[index]
                                                         .withOpacity(0.2)
                                                     : Colors.white,
                                                 border: Border.all(
-                                                    color: tasksColor[index]),
+                                                    color: cubit
+                                                        .tasksColor[index]),
                                               ),
                                               child: Center(
                                                 child: Text(
-                                                  priority[index],
+                                                  cubit.priority[index],
                                                   style: TextStyles
                                                       .font14Redbold
                                                       .copyWith(
-                                                    color: tasksColor[index],
+                                                    color:
+                                                        cubit.tasksColor[index],
                                                   ),
                                                 ),
                                               ),
@@ -188,52 +145,26 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                 ),
                                 verticalSpace(5),
                                 CustomDropDownList(
-                                  hint: context
-                                          .read<EditTaskCubit>()
-                                          .taskDetailsModel!
-                                          .data!
+                                  hint: cubit.taskDetailsModel!.data!
                                           .parentTitle ??
                                       '',
-                                  items: context
-                                              .read<EditTaskCubit>()
-                                              .allTasksModel
-                                              ?.data
-                                              ?.data
-                                              ?.where((task) =>
-                                                  task.createdBy != uId)
-                                              .toList()
-                                              .isEmpty ??
-                                          true
-                                      ? ['No task']
-                                      : context
-                                              .read<EditTaskCubit>()
-                                              .allTasksModel
-                                              ?.data
-                                              ?.data
-                                              ?.where((task) =>
-                                                  task.createdBy != uId)
-                                              .map((e) => e.title ?? 'Unknown')
-                                              .toList() ??
-                                          [],
+                                  items: cubit.taskData
+                                      .where((task) => task.createdBy != uId)
+                                      .map((e) => e.title ?? 'Unknown')
+                                      .toList(),
                                   onChanged: (value) {
-                                    final selectedParentTask = context
-                                        .read<EditTaskCubit>()
-                                        .allTasksModel
-                                        ?.data
-                                        ?.data
+                                    final selectedParentTask = cubit
+                                        .allTasksModel?.data?.data
                                         ?.firstWhere((task) =>
                                             task.title ==
-                                            context
-                                                .read<EditTaskCubit>()
-                                                .parentTaskController
-                                                .text);
-                                    parentId = selectedParentTask!.id!;
-                                    context.read<EditTaskCubit>().getAllTasks();
+                                            cubit.parentTaskController.text)
+                                        .id;
+                                    cubit.parentIdTaskController.text =
+                                        selectedParentTask!.toString();
+                                    cubit.getAllTasks();
                                   },
                                   suffixIcon: IconBroken.arrowDown2,
-                                  controller: context
-                                      .read<EditTaskCubit>()
-                                      .parentTaskController,
+                                  controller: cubit.parentTaskController,
                                   keyboardType: TextInputType.text,
                                 ),
                                 verticalSpace(10),
@@ -254,19 +185,10 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                     return null;
                                   },
                                   onlyRead: false,
-                                  hint: context
-                                      .read<EditTaskCubit>()
-                                      .taskDetailsModel!
-                                      .data!
-                                      .title!,
-                                  controller: context
-                                      .read<EditTaskCubit>()
-                                      .taskTitleController
-                                    ..text = context
-                                        .read<EditTaskCubit>()
-                                        .taskDetailsModel!
-                                        .data!
-                                        .title!,
+                                  hint: cubit.taskDetailsModel!.data!.title!,
+                                  controller: cubit.taskTitleController
+                                    ..text =
+                                        cubit.taskDetailsModel!.data!.title!,
                                   keyboardType: TextInputType.text,
                                 ),
                                 verticalSpace(10),
@@ -287,49 +209,29 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                 ),
                                 verticalSpace(5),
                                 CustomDropDownList(
-                                  hint: context
-                                          .read<EditTaskCubit>()
-                                          .taskDetailsModel!
-                                          .data!
+                                  hint: cubit.taskDetailsModel!.data!
                                           .organizationName ??
-                                      'Select organization',
-                                  items: context
-                                              .read<EditTaskCubit>()
-                                              .organizationListModel
-                                              ?.data
-                                              ?.data
-                                              ?.isEmpty ??
-                                          true
-                                      ? ['No organizations']
-                                      : context
-                                              .read<EditTaskCubit>()
-                                              .organizationListModel
-                                              ?.data
-                                              ?.data
-                                              ?.map((e) => e.name ?? 'Unknown')
-                                              .toList() ??
-                                          [],
+                                      S.of(context).selectOrganization,
+                                  controller: cubit.organizationController,
+                                  items: cubit.organizationItem
+                                      .map((e) => e.name ?? 'Unknown')
+                                      .toList(),
                                   onChanged: (value) {
-                                    final selectedOrganization = context
-                                        .read<EditTaskCubit>()
-                                        .organizationListModel
-                                        ?.data
-                                        ?.data
-                                        ?.firstWhere((organization) =>
-                                            organization.name ==
-                                            context
-                                                .read<EditTaskCubit>()
-                                                .organizationController
-                                                .text);
+                                    final selectedOrganization = cubit
+                                        .organizationModel?.data?.data
+                                        ?.firstWhere((org) =>
+                                            org.name ==
+                                            cubit.organizationController.text)
+                                        .id
+                                        ?.toString();
 
-                                    context
-                                        .read<EditTaskCubit>()
-                                        .getBuilding(selectedOrganization!.id!);
+                                    if (selectedOrganization != null) {
+                                      cubit.organizationIdController.text =
+                                          selectedOrganization;
+                                    }
+                                    cubit.getBuilding();
                                   },
                                   suffixIcon: IconBroken.arrowDown2,
-                                  controller: context
-                                      .read<EditTaskCubit>()
-                                      .organizationController,
                                   keyboardType: TextInputType.text,
                                 ),
                                 verticalSpace(10),
@@ -350,50 +252,29 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                 ),
                                 verticalSpace(5),
                                 CustomDropDownList(
-                                  hint: context
-                                          .read<EditTaskCubit>()
-                                          .taskDetailsModel!
-                                          .data!
+                                  hint: cubit.taskDetailsModel!.data!
                                           .buildingName ??
-                                      'Select building',
-                                  items: context
-                                              .read<EditTaskCubit>()
-                                              .buildingModel
-                                              ?.data
-                                              ?.data
-                                              ?.isEmpty ??
-                                          true
-                                      ? ['No buildings']
-                                      : context
-                                              .read<EditTaskCubit>()
-                                              .buildingModel
-                                              ?.data
-                                              ?.data
-                                              ?.map((e) => e.name ?? 'Unknown')
-                                              .toList() ??
-                                          [],
+                                      S.of(context).selectBuilding,
+                                  controller: cubit.buildingController,
+                                  items: cubit.buildingItem
+                                      .map((e) => e.name ?? 'Unknown')
+                                      .toList(),
                                   onChanged: (value) {
-                                    final selectedBuilding = context
-                                        .read<EditTaskCubit>()
-                                        .buildingModel
-                                        ?.data
-                                        ?.data
-                                        ?.firstWhere((building) =>
-                                            building.name ==
-                                            context
-                                                .read<EditTaskCubit>()
-                                                .buildingController
-                                                .text);
+                                    final selectedBuilding = cubit
+                                        .buildingModel?.data?.data
+                                        ?.firstWhere((bld) =>
+                                            bld.name ==
+                                            cubit.buildingController.text)
+                                        .id
+                                        ?.toString();
 
-                                    context
-                                        .read<EditTaskCubit>()
-                                        .getFloor(selectedBuilding!.id!);
-                                    buildingId = selectedBuilding.id;
+                                    if (selectedBuilding != null) {
+                                      cubit.buildingIdController.text =
+                                          selectedBuilding;
+                                    }
+                                    cubit.getFloor();
                                   },
                                   suffixIcon: IconBroken.arrowDown2,
-                                  controller: context
-                                      .read<EditTaskCubit>()
-                                      .buildingController,
                                   keyboardType: TextInputType.text,
                                 ),
                                 verticalSpace(10),
@@ -414,45 +295,29 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                 ),
                                 verticalSpace(5),
                                 CustomDropDownList(
-                                  hint: "Select floor",
-                                  items: context
-                                              .read<EditTaskCubit>()
-                                              .floorModel
-                                              ?.data
-                                              ?.data
-                                              ?.isEmpty ??
-                                          true
-                                      ? ['No floors']
-                                      : context
-                                              .read<EditTaskCubit>()
-                                              .floorModel
-                                              ?.data
-                                              ?.data
-                                              ?.map((e) => e.name ?? 'Unknown')
-                                              .toList() ??
-                                          [],
-                                  onPressed: (value) {
-                                    final selectedFloor = context
-                                        .read<EditTaskCubit>()
-                                        .floorModel
-                                        ?.data
-                                        ?.data
+                                  hint:
+                                      cubit.taskDetailsModel!.data!.floorName ??
+                                          S.of(context).selectFloor,
+                                  controller: cubit.floorController,
+                                  items: cubit.floorItem
+                                      .map((e) => e.name ?? 'Unknown')
+                                      .toList(),
+                                  onChanged: (value) {
+                                    final selectedFloor = cubit
+                                        .floorModel?.data?.data
                                         ?.firstWhere((floor) =>
                                             floor.name ==
-                                            context
-                                                .read<EditTaskCubit>()
-                                                .floorController
-                                                .text);
+                                            cubit.floorController.text)
+                                        .id
+                                        ?.toString();
 
-                                    context
-                                        .read<EditTaskCubit>()
-                                        .getSection(selectedFloor!.id!);
-                                    floorId = selectedFloor.id;
+                                    if (selectedFloor != null) {
+                                      cubit.floorIdController.text =
+                                          selectedFloor;
+                                    }
+                                    cubit.getSection();
                                   },
                                   suffixIcon: IconBroken.arrowDown2,
-                                  controller: context
-                                      .read<EditTaskCubit>()
-                                      .floorController,
                                   keyboardType: TextInputType.text,
                                 ),
                                 verticalSpace(10),
@@ -473,45 +338,28 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                 ),
                                 verticalSpace(5),
                                 CustomDropDownList(
-                                  hint: "Select section",
-                                  items: context
-                                              .read<EditTaskCubit>()
-                                              .sectionModel
-                                              ?.data
-                                              ?.data
-                                              ?.isEmpty ??
-                                          true
-                                      ? ['No sections']
-                                      : context
-                                              .read<EditTaskCubit>()
-                                              .sectionModel
-                                              ?.data
-                                              ?.data
-                                              ?.map((e) => e.name ?? 'Unknown')
-                                              .toList() ??
-                                          [],
-                                  onPressed: (value) {
-                                    final selectedSection = context
-                                        .read<EditTaskCubit>()
-                                        .sectionModel
-                                        ?.data
-                                        ?.data
+                                  hint: cubit.taskDetailsModel!.data!
+                                          .sectionName ??
+                                      S.of(context).selectSection,
+                                  controller: cubit.sectionController,
+                                  items: cubit.sectionItem
+                                      .map((e) => e.name ?? 'Unknown')
+                                      .toList(),
+                                  onChanged: (value) {
+                                    final selectedSection = cubit
+                                        .sectionModel?.data?.data
                                         ?.firstWhere((section) =>
                                             section.name ==
-                                            context
-                                                .read<EditTaskCubit>()
-                                                .sectionController
-                                                .text);
+                                            cubit.sectionController.text)
+                                        .id
+                                        ?.toString();
 
-                                    context
-                                        .read<EditTaskCubit>()
-                                        .getPoint(selectedSection!.id!);
-                                    sectionId = selectedSection.id!;
+                                    if (selectedSection != null) {
+                                      cubit.sectionIdController.text =
+                                          selectedSection;
+                                    }
                                   },
                                   suffixIcon: IconBroken.arrowDown2,
-                                  controller: context
-                                      .read<EditTaskCubit>()
-                                      .sectionController,
                                   keyboardType: TextInputType.text,
                                 ),
                                 verticalSpace(10),
@@ -532,51 +380,31 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                 ),
                                 verticalSpace(5),
                                 CustomDropDownList(
-                                  hint: "Select point",
-                                  items: context
-                                              .read<EditTaskCubit>()
-                                              .pointModel
-                                              ?.data
-                                              ?.data
-                                              ?.isEmpty ??
-                                          true
-                                      ? ['No points']
-                                      : context
-                                              .read<EditTaskCubit>()
-                                              .pointModel
-                                              ?.data
-                                              ?.data
-                                              ?.map((e) => e.name ?? 'Unknown')
-                                              .toList() ??
-                                          [],
-                                  onPressed: (value) {
-                                    final selectedPoint = context
-                                        .read<EditTaskCubit>()
-                                        .pointModel
-                                        ?.data
-                                        ?.data
+                                  hint:
+                                      cubit.taskDetailsModel!.data!.pointName ??
+                                          'Select point',
+                                  controller: cubit.pointController,
+                                  items: cubit.pointItem
+                                      .map((e) => e.name ?? 'Unknown')
+                                      .toList(),
+                                  onChanged: (value) {
+                                    final selectedPoint = cubit
+                                        .pointModel?.data?.data
                                         ?.firstWhere((point) =>
                                             point.name ==
-                                            context
-                                                .read<EditTaskCubit>()
-                                                .pointController
-                                                .text);
+                                            cubit.pointController.text)
+                                        .id
+                                        ?.toString();
 
-                                    context
-                                        .read<EditTaskCubit>()
-                                        .getPoint(selectedPoint!.id!);
-                                    pointId = selectedPoint.id;
-                                    isPointCountable =
-                                        selectedPoint.isCountable ?? false;
+                                    if (selectedPoint != null) {
+                                      cubit.pointIdController.text =
+                                          selectedPoint;
+                                    }
                                   },
                                   suffixIcon: IconBroken.arrowDown2,
-                                  controller: context
-                                      .read<EditTaskCubit>()
-                                      .pointController,
                                   keyboardType: TextInputType.text,
                                 ),
-                                verticalSpace(10),
-                                if (isPointCountable) ...[
+                                if (cubit.isPointCountable) ...[
                                   verticalSpace(10),
                                   Text(
                                     "Currently reading",
@@ -584,19 +412,11 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                   ),
                                   CustomTextFormField(
                                     onlyRead: false,
-                                    hint: context
-                                        .read<EditTaskCubit>()
-                                        .taskDetailsModel!
-                                        .data!
-                                        .currentReading!
+                                    hint: cubit
+                                        .taskDetailsModel!.data!.currentReading!
                                         .toString(),
-                                    controller: context
-                                        .read<EditTaskCubit>()
-                                        .currentReadingController
-                                      ..text = context
-                                          .read<EditTaskCubit>()
-                                          .taskDetailsModel!
-                                          .data!
+                                    controller: cubit.currentlyReadingController
+                                      ..text = cubit.taskDetailsModel!.data!
                                           .currentReading!
                                           .toString(),
                                     keyboardType: TextInputType.number,
@@ -609,7 +429,8 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                       return null;
                                     },
                                     onChanged: (value) {
-                                      currentReading = double.parse(value);
+                                      cubit.currentlyReadingController.text =
+                                          double.parse(value).toString();
                                     },
                                   ),
                                   verticalSpace(10),
@@ -630,30 +451,22 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                         items.indexOf(selectedValue!);
                                     if (selectedIndex != -1) {
                                       if (selectedIndex == 1) {
-                                        statusId = 3;
+                                        cubit.statusIdController.text = '3';
                                       } else if (selectedIndex == 2) {
-                                        statusId = 6;
+                                        cubit.statusIdController.text = '6';
                                       } else {
-                                        statusId = selectedIndex;
+                                        cubit.statusIdController.text =
+                                            selectedIndex.toString();
                                       }
                                     }
 
-                                    context
-                                        .read<EditTaskCubit>()
-                                        .statusController
-                                        .text = selectedValue;
+                                    cubit.statusController.text = selectedValue;
                                   },
-                                  hint: context
-                                      .read<EditTaskCubit>()
-                                      .taskDetailsModel!
-                                      .data!
-                                      .status!,
+                                  hint: cubit.taskDetailsModel!.data!.status!,
                                   items: ['Pending', 'Completed', 'Overdue'],
                                   suffixIcon: IconBroken.arrowDown2,
                                   keyboardType: TextInputType.text,
-                                  controller: context
-                                      .read<EditTaskCubit>()
-                                      .statusController,
+                                  controller: cubit.statusController,
                                 ),
                                 verticalSpace(10),
                                 Row(
@@ -672,14 +485,9 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                         verticalSpace(5),
                                         CustomTextFormField(
                                           onlyRead: true,
-                                          hint: context
-                                              .read<EditTaskCubit>()
-                                              .taskDetailsModel!
-                                              .data!
+                                          hint: cubit.taskDetailsModel!.data!
                                               .startDate!,
-                                          controller: context
-                                              .read<EditTaskCubit>()
-                                              .startDateController,
+                                          controller: cubit.startDateController,
                                           suffixIcon: Icons.calendar_today,
                                           suffixPressed: () async {
                                             final selectedDate =
@@ -711,14 +519,9 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                         verticalSpace(5),
                                         CustomTextFormField(
                                           onlyRead: true,
-                                          hint: context
-                                              .read<EditTaskCubit>()
-                                              .taskDetailsModel!
-                                              .data!
-                                              .endDate!,
-                                          controller: context
-                                              .read<EditTaskCubit>()
-                                              .endDateController,
+                                          hint: cubit
+                                              .taskDetailsModel!.data!.endDate!,
+                                          controller: cubit.endDateController,
                                           suffixIcon: Icons.calendar_today,
                                           suffixPressed: () async {
                                             final selectedDate =
@@ -756,14 +559,9 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                         verticalSpace(5),
                                         CustomTextFormField(
                                           onlyRead: true,
-                                          hint: context
-                                              .read<EditTaskCubit>()
-                                              .taskDetailsModel!
-                                              .data!
+                                          hint: cubit.taskDetailsModel!.data!
                                               .startTime!,
-                                          controller: context
-                                              .read<EditTaskCubit>()
-                                              .startTimeController,
+                                          controller: cubit.startTimeController,
                                           suffixIcon: Icons.timer_sharp,
                                           suffixPressed: () async {
                                             final selectedTime =
@@ -795,14 +593,9 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                         verticalSpace(5),
                                         CustomTextFormField(
                                           onlyRead: true,
-                                          hint: context
-                                              .read<EditTaskCubit>()
-                                              .taskDetailsModel!
-                                              .data!
-                                              .endTime!,
-                                          controller: context
-                                              .read<EditTaskCubit>()
-                                              .endTimeController,
+                                          hint: cubit
+                                              .taskDetailsModel!.data!.endTime!,
+                                          controller: cubit.endTimeController,
                                           suffixIcon: Icons.timer_sharp,
                                           suffixPressed: () async {
                                             final selectedTime =
@@ -842,9 +635,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                 verticalSpace(5),
                                 MultiDropdown<UserItem>(
                                   items: items ?? [],
-                                  controller: context
-                                      .read<EditTaskCubit>()
-                                      .supervisorsController,
+                                  controller: cubit.usersController,
                                   enabled: true,
                                   chipDecoration: ChipDecoration(
                                     backgroundColor: Colors.grey[300],
@@ -861,12 +652,12 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(8.r),
                                       borderSide:
-                                          const BorderSide(color: Colors.grey),
+                                          BorderSide(color: Colors.grey[300]!),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(8.r),
                                       borderSide: const BorderSide(
-                                        color: Colors.grey,
+                                        color: AppColor.primaryColor,
                                       ),
                                     ),
                                     errorBorder: OutlineInputBorder(
@@ -884,7 +675,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                         color: Colors.blue),
                                   ),
                                   onSelectionChange: (selectedItems) {
-                                    selectedSupervisorIds = selectedItems
+                                    cubit.selectedUsersIds = selectedItems
                                         .map((item) => (item).id!)
                                         .toList();
                                   },
@@ -904,19 +695,11 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                       }
                                       return null;
                                     },
-                                    controller: context
-                                        .read<EditTaskCubit>()
-                                        .descriptionController
-                                      ..text = context
-                                          .read<EditTaskCubit>()
-                                          .taskDetailsModel!
-                                          .data!
-                                          .description!,
-                                    hint: context
-                                        .read<EditTaskCubit>()
-                                        .taskDetailsModel!
-                                        .data!
-                                        .description!),
+                                    controller: cubit.descriptionController
+                                      ..text = cubit
+                                          .taskDetailsModel!.data!.description!,
+                                    hint: cubit
+                                        .taskDetailsModel!.data!.description!),
                                 verticalSpace(5),
                                 Row(
                                   children: [
@@ -949,12 +732,8 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                     height: 80,
                                     child: ListView.builder(
                                       scrollDirection: Axis.horizontal,
-                                      itemCount: context
-                                          .read<EditTaskCubit>()
-                                          .taskDetailsModel!
-                                          .data!
-                                          .files!
-                                          .length,
+                                      itemCount: cubit.taskDetailsModel!.data!
+                                          .files!.length,
                                       itemBuilder: (context, index) {
                                         final file = context
                                             .read<EditTaskCubit>()
@@ -1052,10 +831,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                               borderRadius:
                                                   BorderRadius.circular(10.r)),
                                           child: Image.file(
-                                            File(context
-                                                .read<EditTaskCubit>()
-                                                .image!
-                                                .path),
+                                            File(cubit.image!.path),
                                             fit: BoxFit.cover,
                                           ),
                                         ),
@@ -1076,7 +852,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                                 showDialog(
                                                     context: context,
                                                     builder: (dialogContext) {
-                                                      return PopUpMeassage(
+                                                      return PopUpMessage(
                                                           title: 'edit',
                                                           body: 'task',
                                                           onPressed: () {
@@ -1085,15 +861,8 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                                                     EditTaskCubit>()
                                                                 .editTask(
                                                                     widget.id,
-                                                                    isSelected!,
-                                                                    statusId,
-                                                                    buildingId,
-                                                                    floorId,
-                                                                    sectionId,
-                                                                    pointId,
-                                                                    selectedSupervisorIds,
-                                                                    parentId,
-                                                                    currentReading);
+                                                                    cubit.image
+                                                                        ?.path);
                                                           });
                                                     });
                                               }

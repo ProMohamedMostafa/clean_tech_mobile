@@ -8,6 +8,7 @@ import 'package:smart_cleaning_application/core/widgets/filter/logic/cubit/filte
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
 import 'package:smart_cleaning_application/core/widgets/filter/ui/screen/filter_dialog_widget.dart';
 import 'package:smart_cleaning_application/features/screens/sensor/sensor_managment/logic/cubit/sensor_cubit.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class SensorFilterAndSearchWidget extends StatelessWidget {
   const SensorFilterAndSearchWidget({super.key});
@@ -25,7 +26,7 @@ class SensorFilterAndSearchWidget extends StatelessWidget {
             color: AppColor.secondaryColor,
             perfixIcon: Icon(IconBroken.search),
             controller: cubit.searchController,
-            hint: 'find sensor',
+            hint: S.of(context).sensorHint,
             keyboardType: TextInputType.text,
             onlyRead: false,
             onChanged: (searchedCharacter) {
@@ -56,10 +57,10 @@ class SensorFilterAndSearchWidget extends StatelessWidget {
             );
           },
           child: Container(
-            height: 49.h,
+            height: 47.h,
             width: 49.w,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.r),
+                borderRadius: BorderRadius.circular(8.r),
                 border: Border.all(color: AppColor.secondaryColor)),
             child: Icon(
               Icons.tune,

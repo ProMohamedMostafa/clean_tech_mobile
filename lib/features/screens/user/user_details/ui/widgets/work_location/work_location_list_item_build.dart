@@ -7,6 +7,7 @@ import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/logic/cubit/user_details_cubit.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class WorkLocationItemBuild extends StatelessWidget {
   const WorkLocationItemBuild({super.key});
@@ -54,7 +55,7 @@ class WorkLocationItemBuild extends StatelessWidget {
                       ),
                       horizontalSpace(5),
                       Text(
-                        'Area',
+                        S.of(context).Area,
                         style: TextStyles.font16BlackSemiBold,
                       ),
                     ],
@@ -171,7 +172,7 @@ class WorkLocationItemBuild extends StatelessWidget {
                       ),
                       horizontalSpace(5),
                       Text(
-                        'City',
+                        S.of(context).City,
                         style: TextStyles.font16BlackSemiBold,
                       ),
                     ],
@@ -288,7 +289,7 @@ class WorkLocationItemBuild extends StatelessWidget {
                       ),
                       horizontalSpace(5),
                       Text(
-                        'Organization',
+                        S.of(context).Organization,
                         style: TextStyles.font16BlackSemiBold,
                       ),
                     ],
@@ -405,7 +406,7 @@ class WorkLocationItemBuild extends StatelessWidget {
                       ),
                       horizontalSpace(5),
                       Text(
-                        'Building',
+                        S.of(context).Building,
                         style: TextStyles.font16BlackSemiBold,
                       ),
                     ],
@@ -522,7 +523,7 @@ class WorkLocationItemBuild extends StatelessWidget {
                       ),
                       horizontalSpace(5),
                       Text(
-                        'Floor',
+                        S.of(context).Floor,
                         style: TextStyles.font16BlackSemiBold,
                       ),
                     ],
@@ -605,6 +606,123 @@ class WorkLocationItemBuild extends StatelessWidget {
             .read<UserDetailsCubit>()
             .userWorkLocationDetailsModel!
             .data!
+            .sections!
+            .isNotEmpty) ...[
+          Card(
+            elevation: 1,
+            margin: EdgeInsets.zero,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(11.r),
+            ),
+            child: Container(
+              constraints: BoxConstraints(
+                minHeight: 100.h,
+              ),
+              width: double.infinity,
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(11.r),
+                border: Border.all(color: AppColor.secondaryColor),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: 8.w,
+                        height: 24,
+                        decoration: BoxDecoration(
+                            color: AppColor.primaryColor,
+                            borderRadius: BorderRadius.circular(1.r)),
+                      ),
+                      horizontalSpace(5),
+                      Text(
+                        S.of(context).Section,
+                        style: TextStyles.font16BlackSemiBold,
+                      ),
+                    ],
+                  ),
+                  verticalSpace(20),
+                  ListView.separated(
+                    shrinkWrap: true,
+                    physics: const BouncingScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    itemCount: context
+                        .read<UserDetailsCubit>()
+                        .userWorkLocationDetailsModel!
+                        .data!
+                        .sections!
+                        .length,
+                    separatorBuilder: (context, index) {
+                      return verticalSpace(10);
+                    },
+                    itemBuilder: (context, index) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          InkWell(
+                            borderRadius: BorderRadius.circular(5.r),
+                            onTap: () {
+                              context.pushNamed(
+                                  Routes.workLocationDetailsScreen,
+                                  arguments: {
+                                    'id': context
+                                        .read<UserDetailsCubit>()
+                                        .userWorkLocationDetailsModel!
+                                        .data!
+                                        .sections![index]
+                                        .id,
+                                    'selectedIndex': 5
+                                  });
+                            },
+                            child: Container(
+                              padding: EdgeInsets.fromLTRB(10, 8, 8, 8),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5.r),
+                                  border: Border.all(
+                                      color: AppColor.secondaryColor)),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    context
+                                        .read<UserDetailsCubit>()
+                                        .userWorkLocationDetailsModel!
+                                        .data!
+                                        .sections![index]
+                                        .name!,
+                                    style: TextStyles.font14BlackSemiBold,
+                                  ),
+                                  Text(
+                                    " (${context.read<UserDetailsCubit>().userWorkLocationDetailsModel!.data!.sections![index].buildingName})",
+                                    style: TextStyles.font12GreyRegular,
+                                  ),
+                                  Spacer(),
+                                  Icon(
+                                    Icons.arrow_forward_ios_rounded,
+                                    color: Colors.blue,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  )
+                ],
+              ),
+            ),
+          ),
+          verticalSpace(10),
+        ],
+        if (context
+            .read<UserDetailsCubit>()
+            .userWorkLocationDetailsModel!
+            .data!
             .points!
             .isNotEmpty) ...[
           Card(
@@ -639,7 +757,7 @@ class WorkLocationItemBuild extends StatelessWidget {
                       ),
                       horizontalSpace(5),
                       Text(
-                        'Point',
+                        S.of(context).Point,
                         style: TextStyles.font16BlackSemiBold,
                       ),
                     ],
@@ -674,7 +792,7 @@ class WorkLocationItemBuild extends StatelessWidget {
                                         .data!
                                         .points![index]
                                         .id,
-                                    'selectedIndex': 5
+                                    'selectedIndex': 6
                                   });
                             },
                             child: Container(

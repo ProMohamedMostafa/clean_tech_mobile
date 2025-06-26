@@ -1,4 +1,3 @@
-
 import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/category_management_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/edit_material/data/model/edit_material_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/view_material/data/model/material_details_model.dart';
@@ -35,15 +34,15 @@ class MaterialDetailsErrorState extends EditMaterialState {
 }
 //**************** */
 
-class CategoryManagementLoadingState extends EditMaterialState {}
+class CategoriesLoadingState extends EditMaterialState {}
 
-class CategoryManagementSuccessState extends EditMaterialState {
+class CategoriesSuccessState extends EditMaterialState {
   final CategoryManagementModel categoryManagementModel;
 
-  CategoryManagementSuccessState(this.categoryManagementModel);
+  CategoriesSuccessState(this.categoryManagementModel);
 }
 
-class CategoryManagementErrorState extends EditMaterialState {
+class CategoriesErrorState extends EditMaterialState {
   final String error;
-  CategoryManagementErrorState(this.error);
+  CategoriesErrorState(this.error);
 }

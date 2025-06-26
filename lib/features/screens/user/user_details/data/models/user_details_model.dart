@@ -61,6 +61,7 @@ class Data {
   int? genderId;
   String? role;
   int? roleId;
+  bool? isWorking; 
 
   Data(
       {this.id,
@@ -81,7 +82,7 @@ class Data {
       this.gender,
       this.genderId,
       this.role,
-      this.roleId});
+      this.roleId,this.isWorking,});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -103,6 +104,7 @@ class Data {
     genderId = json['genderId'];
     role = json['role'];
     roleId = json['roleId'];
+    isWorking = json['isWorking'];
   }
 
   Map<String, dynamic> toJson() {
@@ -126,6 +128,7 @@ class Data {
     data['genderId'] = genderId;
     data['role'] = role;
     data['roleId'] = roleId;
+    data['isWorking'] = isWorking;
     return data;
   }
 }

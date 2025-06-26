@@ -5,6 +5,7 @@ import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/provider/provider_management/logic/cubit/provider_cubit.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class SearchProviderWidget extends StatelessWidget {
   const SearchProviderWidget({super.key});
@@ -20,7 +21,7 @@ class SearchProviderWidget extends StatelessWidget {
         color: AppColor.secondaryColor,
         perfixIcon: Icon(IconBroken.search),
         controller: cubit.searchController,
-        hint: "find provider",
+        hint: S.of(context).findProvider,
         keyboardType: TextInputType.text,
         onlyRead: false,
         onChanged: (searchedCharacter) {

@@ -36,7 +36,6 @@ class FloorListItemBuild extends StatelessWidget {
             side: BorderSide(color: AppColor.secondaryColor)),
         child: ListTile(
           contentPadding: EdgeInsets.symmetric(horizontal: 20),
-          minTileHeight: 72.h,
           title: Text(
             context
                     .read<ShiftDetailsCubit>()

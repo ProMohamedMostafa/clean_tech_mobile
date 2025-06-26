@@ -8,21 +8,22 @@ import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/floating_action_button/floating_action_button.dart';
-import 'package:smart_cleaning_application/core/widgets/two_buttons_in_integreat_screen/two_buttons_in_integration_screen.dart';
+import 'package:smart_cleaning_application/core/widgets/integration_buttons/integrations_buttons.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/logic/shift_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/logic/shift_state.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shifts_management/ui/widgets/filter_search_build.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shifts_management/ui/widgets/shift_filter_search_build.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/ui/widgets/shift_list_details_build.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class ShiftBody extends StatelessWidget {
   const ShiftBody({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final ShiftCubit cubit = context.read<ShiftCubit>();
+    final cubit = context.read<ShiftCubit>();
     return Scaffold(
-        appBar:
-            AppBar(title: Text('Shifts'), leading: CustomBackButton()),
+        appBar: AppBar(
+            title: Text(S.of(context).integ4), leading: CustomBackButton()),
         floatingActionButton: role == 'Admin'
             ? floatingActionButton(
                 icon: Icons.post_add_outlined,
@@ -50,6 +51,9 @@ class ShiftBody extends StatelessWidget {
               cubit.getAllShifts();
               cubit.getAllDeletedShifts();
             }
+            if (state is ForceDeleteShiftErrorState) {
+              toast(text: state.error, color: Colors.red);
+            }
           },
           builder: (context, state) {
             return Skeletonizer(
@@ -62,15 +66,16 @@ class ShiftBody extends StatelessWidget {
                     verticalSpace(10),
                     FilterAndSearchBuild(),
                     verticalSpace(10),
-                    twoButtonsIntegration(
+                    integrationsButtons(
                       selectedIndex: cubit.selectedIndex,
                       onTap: (index) => cubit.changeTap(index),
                       firstCount: cubit.allShiftsModel?.data?.totalCount ?? 0,
-                      firstLabel: 'Total Shifts',
+                      firstLabel: S.of(context).totalShiftss,
                       secondCount: role == 'Admin'
                           ? cubit.allShiftsDeletedModel?.data?.length ?? 0
                           : null,
-                      secondLabel: role == 'Admin' ? 'Deleted Shifts' : null,
+                      secondLabel:
+                          role == 'Admin' ? S.of(context).deletedShifts : null,
                     ),
                     verticalSpace(10),
                     Divider(color: Colors.grey[300], height: 0),

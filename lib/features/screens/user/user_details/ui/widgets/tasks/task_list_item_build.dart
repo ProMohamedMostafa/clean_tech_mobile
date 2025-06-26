@@ -7,7 +7,6 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/features/screens/task/task_management/ui/widget/pop_up_dialog.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/logic/cubit/user_details_cubit.dart';
 
 class TaskCardItem extends StatelessWidget {
@@ -19,14 +18,13 @@ class TaskCardItem extends StatelessWidget {
     final cubit = context.read<UserDetailsCubit>();
     return InkWell(
       borderRadius: BorderRadius.circular(11.r),
-      onTap: () {
-        context.pushNamed(Routes.taskDetailsScreen,
-            arguments: context
-                .read<UserDetailsCubit>()
-                .userTaskDetailsModel!
-                .data!
-                .data![index]
-                .id!);
+      onTap: () async {
+        final result = await context.pushNamed(Routes.taskDetailsScreen,
+            arguments: cubit.userTaskDetailsModel!.data!.data![index].id!);
+
+        if (result == true) {
+          cubit.getUserTaskDetails(cubit.userDetailsModel!.data!.id);
+        }
       },
       child: Card(
         elevation: 1,
@@ -35,11 +33,8 @@ class TaskCardItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(11.r),
         ),
         child: Container(
-          constraints: BoxConstraints(
-            minHeight: 150.h,
-          ),
           width: double.infinity,
-          padding: EdgeInsets.fromLTRB(10, 0, 10, 5),
+          padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(11.r),
@@ -64,12 +59,8 @@ class TaskCardItem extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        context
-                            .read<UserDetailsCubit>()
-                            .userTaskDetailsModel!
-                            .data!
-                            .data![index]
-                            .priority!,
+                        cubit
+                            .userTaskDetailsModel!.data!.data![index].priority!,
                         style: TextStyles.font11WhiteSemiBold.copyWith(
                           color: cubit.getPriorityColor(cubit
                               .userTaskDetailsModel!
@@ -91,58 +82,27 @@ class TaskCardItem extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        context
-                            .read<UserDetailsCubit>()
-                            .userTaskDetailsModel!
-                            .data!
-                            .data![index]
-                            .status!,
+                        cubit.userTaskDetailsModel!.data!.data![index].status!,
                         style: TextStyles.font11WhiteSemiBold
                             .copyWith(color: AppColor.primaryColor),
                       ),
                     ),
                   ),
-                  Spacer(),
-                  IconButton(
-                    onPressed: () {
-                      PopUpDialog.show(
-                          context: context,
-                          id: context
-                              .read<UserDetailsCubit>()
-                              .userTaskDetailsModel!
-                              .data!
-                              .data![index]
-                              .id!);
-                    },
-                    icon: Icon(
-                      Icons.more_horiz_rounded,
-                      size: 22.sp,
-                    ),
-                  )
                 ],
               ),
+              verticalSpace(5),
               Text(
-                context
-                    .read<UserDetailsCubit>()
-                    .userTaskDetailsModel!
-                    .data!
-                    .data![index]
-                    .title!,
+                cubit.userTaskDetailsModel!.data!.data![index].title!,
                 style: TextStyles.font16BlackSemiBold,
               ),
               verticalSpace(10),
               Text(
-                context
-                    .read<UserDetailsCubit>()
-                    .userTaskDetailsModel!
-                    .data!
-                    .data![index]
-                    .description!,
+                cubit.userTaskDetailsModel!.data!.data![index].description!,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
                 style: TextStyles.font11GreyMedium,
               ),
-              verticalSpace(20),
+              verticalSpace(10),
               Row(
                 children: [
                   Icon(
@@ -152,53 +112,70 @@ class TaskCardItem extends StatelessWidget {
                   ),
                   horizontalSpace(5),
                   Text(
-                    context
-                        .read<UserDetailsCubit>()
-                        .userTaskDetailsModel!
-                        .data!
-                        .data![index]
-                        .startTime!,
+                    cubit.userTaskDetailsModel!.data!.data![index].startTime!,
                     style: TextStyles.font11WhiteSemiBold
                         .copyWith(color: AppColor.primaryColor),
                   ),
-                  Spacer(),
-                  Text(
-                    "+1",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  horizontalSpace(25),
-                  Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      Container(
-                        width: 30.w,
-                        height: 30.h,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.blue,
-                          border: Border.all(color: Colors.white, width: 1.w),
-                        ),
-                      ),
-                      // Second circle (overlapping)
-                      Positioned(
-                        left: -20,
-                        child: Container(
-                          width: 30.w,
+                  const Spacer(),
+
+                 
+                  Builder(builder: (_) {
+                    final users =
+                        cubit.userTaskDetailsModel!.data!.data![index].users ??
+                            [];
+                    final visibleUsers = users.take(2).toList();
+                    final extraCount = users.length - visibleUsers.length;
+
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (extraCount > 0)
+                          Padding(
+                            padding: EdgeInsets.only(right: 8.w),
+                            child: Text(
+                              '+$extraCount',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        SizedBox(
+                          width: users.length == 1 ? 30.w : 50.w,
                           height: 30.h,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.red,
-                            border: Border.all(color: Colors.white, width: 1.w),
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            children: List.generate(visibleUsers.length, (i) {
+                              return Positioned(
+                                left: i * 20.0,
+                                child: Container(
+                                  width: 30.w,
+                                  height: 30.h,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                        color: Colors.white, width: 1.w),
+                                  ),
+                                  child: ClipOval(
+                                    child: Image.network(
+                                      visibleUsers[i].image ?? '',
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (_, __, ___) => Image.asset(
+                                        'assets/images/person.png',
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    );
+                  }),
                 ],
-              ),
+              )
             ],
           ),
         ),

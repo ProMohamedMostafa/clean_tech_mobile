@@ -68,6 +68,15 @@ dependencies:
   audioplayers: ^6.4.0
   intl_utils: ^2.8.10
   lottie: ^3.3.1
+  flutter_launcher_icons: ^0.14.4
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo_launcher.png"
+  min_sdk_android: 21
+  background_color: "#FFFFFF"
+
 
 dev_dependencies:
   flutter_test:

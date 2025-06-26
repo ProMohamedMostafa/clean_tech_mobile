@@ -14,53 +14,36 @@ import 'package:smart_cleaning_application/features/screens/integrations/ui/widg
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/stock/add_category/logic/add_category_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/stock/add_category/logic/add_category_state.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
-class AddCategoryBody extends StatefulWidget {
+class AddCategoryBody extends StatelessWidget {
   const AddCategoryBody({super.key});
 
   @override
-  State<AddCategoryBody> createState() => _AddCategoryBodyState();
-}
-
-class _AddCategoryBodyState extends State<AddCategoryBody> {
-  int? unit;
-  int? parentCategoryId;
-  @override
-  void initState() {
-    context.read<AddCategoryCubit>().getCategoryList();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final cubit = context.read<AddCategoryCubit>();
     return Scaffold(
         appBar: AppBar(
-          title: Text(
-            "Create Category",
-           
-          ),
-       
-          leading: CustomBackButton(),
-        ),
+            title: Text(S.of(context).createCategory),
+            leading: CustomBackButton()),
         body: BlocConsumer<AddCategoryCubit, AddCategoryState>(
           listener: (context, state) {
             if (state is AddCategorySuccessState) {
               toast(text: state.addCategoryModel.message!, color: Colors.blue);
-              context.pushNamedAndRemoveLastTwo(Routes.categoryScreen);
+              context.pushNamedAndRemoveAllExceptFirst(Routes.categoryScreen);
             }
             if (state is AddCategoryErrorState) {
               toast(text: state.error, color: Colors.red);
             }
           },
           builder: (context, state) {
-            if (context.read<AddCategoryCubit>().categoryManagementModel ==
-                null) {
+            if (cubit.categoryManagementModel == null) {
               return Loading();
             }
             return SafeArea(
                 child: SingleChildScrollView(
                     child: Form(
-              key: context.read<AddCategoryCubit>().formKey,
+              key: cubit.formKey,
               child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
@@ -68,58 +51,65 @@ class _AddCategoryBodyState extends State<AddCategoryBody> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Category Name",
+                          S.of(context).categoryName,
                           style: TextStyles.font16BlackRegular,
                         ),
                         verticalSpace(5),
                         CustomTextFormField(
                           onlyRead: false,
-                          hint: "Enter Category",
-                          controller:
-                              context.read<AddCategoryCubit>().nameController,
+                          hint: S.of(context).enterCategory,
+                          controller: cubit.nameController,
                           keyboardType: TextInputType.text,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return "Category Name is Required";
+                              return S.of(context).categoryNameRequired;
                             } else if (value.length > 55) {
-                              return 'Category name too long';
+                              return S.of(context).categoryNameTooLong;
                             } else if (value.length < 3) {
-                              return 'Category name too short';
+                              return S.of(context).categoryNameTooShort;
                             }
                             return null;
                           },
                         ),
                         verticalSpace(10),
                         Text(
-                          'Unit',
+                          S.of(context).unitTitle,
                           style: TextStyles.font16BlackRegular,
                         ),
                         CustomDropDownList(
                           onPressed: (selectedValue) {
                             final items = [
-                              'Ml',
-                              'L',
-                              'Kg',
-                              'G',
-                              'M',
-                              'Cm',
-                              'Pieces'
+                              S.of(context).ml,
+                              S.of(context).l,
+                              S.of(context).kg,
+                              S.of(context).g,
+                              S.of(context).m,
+                              S.of(context).cm,
+                              S.of(context).pieces
                             ];
                             final selectedIndex = items.indexOf(selectedValue);
                             if (selectedIndex != -1) {
-                              unit = selectedIndex;
+                              cubit.unitIdController.text =
+                                  selectedIndex.toString();
                             }
                           },
-                          hint: 'Select',
-                          items: ['Ml', 'L', 'Kg', 'G', 'M', 'Cm', 'Pieces'],
+                          hint: S.of(context).selectUnit,
+                          items: [
+                            S.of(context).ml,
+                            S.of(context).l,
+                            S.of(context).kg,
+                            S.of(context).g,
+                            S.of(context).m,
+                            S.of(context).cm,
+                            S.of(context).pieces
+                          ],
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return "Unit is Required";
+                              return S.of(context).unitRequired;
                             }
                             return null;
                           },
-                          controller:
-                              context.read<AddCategoryCubit>().unitController,
+                          controller: cubit.unitController,
                           keyboardType: TextInputType.text,
                           suffixIcon: IconBroken.arrowDown2,
                         ),
@@ -129,11 +119,11 @@ class _AddCategoryBodyState extends State<AddCategoryBody> {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: 'Parent Category',
+                                text: S.of(context).parentCategory,
                                 style: TextStyles.font16BlackRegular,
                               ),
                               TextSpan(
-                                text: ' (Optional)',
+                                text: S.of(context).labelOptional,
                                 style: TextStyles.font14GreyRegular,
                               ),
                             ],
@@ -141,42 +131,22 @@ class _AddCategoryBodyState extends State<AddCategoryBody> {
                         ),
                         verticalSpace(10),
                         CustomDropDownList(
-                          hint: "Select category",
-                          items: context
-                                      .read<AddCategoryCubit>()
-                                      .categoryManagementModel
-                                      ?.data!
-                                      .categories!
-                                      .isEmpty ??
-                                  true
-                              ? ['No category']
-                              : context
-                                      .read<AddCategoryCubit>()
-                                      .categoryManagementModel
-                                      ?.data
-                                      ?.categories!
-                                      .map((e) => e.name!)
-                                      .toList() ??
-                                  [],
+                          hint: S.of(context).selectCategory,
+                          items: cubit.categoryModel
+                              .map((e) => e.name ?? 'Unknown')
+                              .toList(),
                           onPressed: (value) {
-                            final selectedCategory = context
-                                .read<AddCategoryCubit>()
-                                .categoryManagementModel
-                                ?.data!
-                                .categories!
+                            final selectedCategory = cubit
+                                .categoryManagementModel?.data!.categories!
                                 .firstWhere((category) =>
                                     category.name ==
-                                    context
-                                        .read<AddCategoryCubit>()
-                                        .parentCategoryController
-                                        .text);
+                                    cubit.parentCategoryController.text);
 
-                            parentCategoryId = selectedCategory!.id;
+                            cubit.parentCategoryIdController.text =
+                                selectedCategory!.id.toString();
                           },
                           suffixIcon: IconBroken.arrowDown2,
-                          controller: context
-                              .read<AddCategoryCubit>()
-                              .parentCategoryController,
+                          controller: cubit.parentCategoryController,
                           isRead: false,
                           keyboardType: TextInputType.text,
                         ),
@@ -185,17 +155,11 @@ class _AddCategoryBodyState extends State<AddCategoryBody> {
                             ? Loading()
                             : Center(
                                 child: DefaultElevatedButton(
-                                    name: "Create",
+                                    name: S.of(context).createButton,
                                     onPressed: () {
-                                      if (context
-                                          .read<AddCategoryCubit>()
-                                          .formKey
-                                          .currentState!
+                                      if (cubit.formKey.currentState!
                                           .validate()) {
-                                        context
-                                            .read<AddCategoryCubit>()
-                                            .addCategory(
-                                                unit, parentCategoryId);
+                                        cubit.addCategory();
                                       }
                                     },
                                     color: AppColor.primaryColor,

@@ -1,12 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_building_details.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_floor_details.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_organization_details.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_section_details.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/delete_shift_model.dart'
-    show DeleteShiftModel;
-import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/shift_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/delete_shift_model.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_details_model.dart';
 
 part 'shift_details_state.dart';
 
@@ -24,12 +19,10 @@ class ShiftDetailsCubit extends Cubit<ShiftDetailsState> {
     });
   }
 
-  
-
   DeleteShiftModel? deleteShiftModel;
   shiftDelete(int id) {
     emit(ShiftDeleteLoadingState());
-    DioHelper.postData(url: 'shifts/delete/$id', data: {'id': id})
+    DioHelper.postData(url: 'shifts/delete/$id')
         .then((value) {
       deleteShiftModel = DeleteShiftModel.fromJson(value!.data);
       emit(ShiftDeleteSuccessState(deleteShiftModel!));

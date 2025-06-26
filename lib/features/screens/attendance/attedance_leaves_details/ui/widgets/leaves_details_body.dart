@@ -14,61 +14,49 @@ import 'package:smart_cleaning_application/core/widgets/default_button/default_e
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
-import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/logic/attendance_leaves_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/logic/attendance_leaves_state.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attedance_leaves_details/logic/cubit/leaves_details_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_description_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
-class LeavesDetailsBody extends StatefulWidget {
+class LeavesDetailsBody extends StatelessWidget {
   final int id;
   const LeavesDetailsBody({super.key, required this.id});
 
   @override
-  State<LeavesDetailsBody> createState() => _LeavesDetailsBodyState();
-}
-
-class _LeavesDetailsBodyState extends State<LeavesDetailsBody> {
-  @override
-  void initState() {
-    context.read<AttendanceLeavesCubit>().getLeavesDetails(widget.id);
-    super.initState();
-  }
-
-  bool descTextShowFlag = false;
-  @override
   Widget build(BuildContext context) {
+    final cubit = context.read<LeavesDetailsCubit>();
     return Scaffold(
       appBar: AppBar(
-        title: Text("Leave details"),
+        title: Text(S.of(context).leaveDetails),
         leading: CustomBackButton(),
         actions: [
-          if (role == 'Admin')
-            IconButton(
-                onPressed: () {
-                  context.pushNamed(Routes.editleavesScreen,
-                      arguments: widget.id);
-                },
-                icon: Icon(
-                  Icons.edit,
-                  color: AppColor.primaryColor,
-                ))
+          IconButton(
+              onPressed: () {
+                context.pushNamed(Routes.editleavesScreen, arguments: id);
+              },
+              icon: Icon(Icons.edit, color: AppColor.primaryColor))
         ],
       ),
-      body: BlocConsumer<AttendanceLeavesCubit, AttendanceLeavesState>(
+      body: BlocConsumer<LeavesDetailsCubit, LeavesDetailsState>(
         listener: (context, state) {
           if (state is LeavesDeleteSuccessState) {
             toast(text: state.message, color: Colors.blue);
-            context.pushNamedAndRemoveUntil(
-              Routes.leavesScreen,
-              predicate: (route) => false,
-            );
+            Navigator.of(context).pop(true);
           }
           if (state is LeavesDeleteErrorState) {
             toast(text: state.error, color: Colors.red);
           }
+          if (state is LeavesApproveSuccessState) {
+            toast(text: state.message, color: Colors.blue);
+            context.pushNamedAndRemoveAllExceptFirst(Routes.leavesScreen);
+          }
+          if (state is LeavesApproveErrorState) {
+            toast(text: state.error, color: Colors.red);
+          }
         },
         builder: (context, state) {
-          if (context.read<AttendanceLeavesCubit>().leavesDetailsModel ==
-              null) {
+          if (cubit.leavesDetailsModel == null) {
             return Loading();
           }
 
@@ -79,178 +67,125 @@ class _LeavesDetailsBodyState extends State<LeavesDetailsBody> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  FittedBox(
-                    child: Container(
-                      height: 23.h,
-                      margin: EdgeInsets.zero,
-                      padding: EdgeInsets.symmetric(horizontal: 5),
-                      decoration: BoxDecoration(
-                        color: AppColor.secondaryColor,
-                        borderRadius: BorderRadius.circular(4.r),
-                      ),
-                      child: Center(
-                        child: Text(
-                          context
-                              .read<AttendanceLeavesCubit>()
-                              .leavesDetailsModel!
-                              .data!
-                              .role!,
-                          style: TextStyles.font11WhiteSemiBold
-                              .copyWith(color: AppColor.primaryColor),
-                        ),
-                      ),
-                    ),
+                  Row(
+                    children: [
+                      _statusChip(
+                          text: cubit.leavesDetailsModel!.data!.type!,
+                          color: Color(0xffF6DCDF),
+                          textColor: Colors.red),
+                      horizontalSpace(5),
+                      if (cubit.leavesDetailsModel!.data!.status != null) ...[
+                        _statusChip(
+                            text: cubit.leavesDetailsModel!.data!.status!,
+                            color: Colors.grey[300]!,
+                            textColor: AppColor.primaryColor),
+                        horizontalSpace(5),
+                      ],
+                      _statusChip(
+                          text: cubit.leavesDetailsModel!.data!.role!,
+                          color: Colors.grey[300]!,
+                          textColor: AppColor.primaryColor),
+                    ],
                   ),
                   verticalSpace(5),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        context
-                            .read<AttendanceLeavesCubit>()
-                            .leavesDetailsModel!
-                            .data!
-                            .userName!,
-                        style: TextStyles.font16BlackSemiBold,
-                      ),
-                      GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (contextt) => Scaffold(
-                                  appBar: AppBar(
-                                    leading: CustomBackButton(),
-                                  ),
-                                  body: Center(
-                                    child: PhotoView(
-                                      imageProvider: NetworkImage(
-                                        '${ApiConstants.apiBaseUrlImage}${context.read<AttendanceLeavesCubit>().leavesDetailsModel!.data!.image}',
-                                      ),
-                                      errorBuilder:
-                                          (context, error, stackTrace) {
-                                        return Image.asset(
-                                          'assets/images/person.png',
-                                          fit: BoxFit.fill,
-                                        );
-                                      },
-                                      backgroundDecoration: const BoxDecoration(
-                                        color: Colors.white,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(cubit.leavesDetailsModel!.data!.userName!,
+                            style: TextStyles.font14BlackSemiBold),
+                        GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (contextt) => Scaffold(
+                                    appBar: AppBar(
+                                      leading: CustomBackButton(),
+                                    ),
+                                    body: Center(
+                                      child: PhotoView(
+                                        imageProvider: NetworkImage(
+                                          '${cubit.leavesDetailsModel!.data!.image}',
+                                        ),
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return Image.asset(
+                                            'assets/images/person.png',
+                                            fit: BoxFit.fill,
+                                          );
+                                        },
+                                        backgroundDecoration:
+                                            const BoxDecoration(
+                                                color: Colors.white),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            height: 30,
-                            width: 30,
-                            clipBehavior: Clip.hardEdge,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.r)),
-                            child: Image.network(
-                              '${ApiConstants.apiBaseUrl}${context.read<AttendanceLeavesCubit>().leavesDetailsModel!.data!.image}',
-                              fit: BoxFit.fill,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Image.asset(
-                                  'assets/images/noImage.png',
+                              );
+                            },
+                            child: Container(
+                                width: 30.w,
+                                height: 30.h,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                ),
+                                child: ClipOval(
+                                    child: Image.network(
+                                  cubit.leavesDetailsModel!.data!.image ?? '',
                                   fit: BoxFit.fill,
-                                );
-                              },
-                            ),
-                          )),
-                    ],
-                  ),
-                  Divider(
-                    height: 30,
-                  ),
-                  rowDetailsBuild(
-                      context,
-                      'Start Date',
-                      context
-                          .read<AttendanceLeavesCubit>()
-                          .leavesDetailsModel!
-                          .data!
-                          .startDate!),
-                  Divider(
-                    height: 30,
-                  ),
-                  rowDetailsBuild(
-                      context,
-                      'End Date',
-                      context
-                          .read<AttendanceLeavesCubit>()
-                          .leavesDetailsModel!
-                          .data!
-                          .endDate!),
-                  Divider(
-                    height: 30,
-                  ),
-                  rowDetailsBuild(
-                      context,
-                      'Type',
-                      context
-                          .read<AttendanceLeavesCubit>()
-                          .leavesDetailsModel!
-                          .data!
-                          .type!),
-                  Divider(
-                    height: 30,
-                  ),
-                  Text(
-                    'Reason',
-                    style: TextStyles.font16BlackSemiBold,
-                  ),
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Image.asset(
+                                      'assets/images/person.png',
+                                      fit: BoxFit.fill,
+                                    );
+                                  },
+                                ))))
+                      ]),
+                  Divider(height: 30),
+                  rowDetailsBuild(context, S.of(context).startDate,
+                      cubit.leavesDetailsModel!.data!.startDate!),
+                  Divider(height: 30),
+                  rowDetailsBuild(context, S.of(context).endDate,
+                      cubit.leavesDetailsModel!.data!.endDate!),
+                  Divider(height: 30),
+                  Text(S.of(context).reason,
+                      style: TextStyles.font14BlackMedium),
                   verticalSpace(5),
-                  Text(
-                    context
-                        .read<AttendanceLeavesCubit>()
-                        .leavesDetailsModel!
-                        .data!
-                        .reason!,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: descTextShowFlag ? 40 : 3,
-                    style: TextStyles.font14GreyRegular,
-                  ),
+                  Text(cubit.leavesDetailsModel!.data!.reason!,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: cubit.descTextShowFlag ? 40 : 3,
+                      style: TextStyles.font14GreyRegular),
                   Align(
                       alignment: Alignment.bottomRight,
                       child: InkWell(
                           borderRadius: BorderRadius.circular(5.r),
                           onTap: () {
-                            setState(() {
-                              descTextShowFlag = !descTextShowFlag;
-                            });
+                            cubit.toggleDescText();
                           },
-                          child: descTextShowFlag
+                          child: cubit.descTextShowFlag
                               ? Padding(
                                   padding: const EdgeInsets.all(10),
-                                  child: const Text(
-                                    "Read less",
+                                  child: Text(
+                                    S.of(context).ReadLessButton,
                                     style: TextStyle(
                                         color: Colors.blue, fontSize: 12),
                                   ),
                                 )
                               : Padding(
                                   padding: const EdgeInsets.all(10),
-                                  child: const Text(
-                                    "Read more",
+                                  child: Text(
+                                    S.of(context).ReadMoreButton,
                                     style: TextStyle(
                                         color: Colors.blue, fontSize: 12),
                                   ),
                                 ))),
                   verticalSpace(10),
                   Text(
-                    "File",
+                    S.of(context).file,
                     style: TextStyles.font16BlackRegular,
                   ),
                   verticalSpace(5),
-                  context
-                              .read<AttendanceLeavesCubit>()
-                              .leavesDetailsModel!
-                              .data!
-                              .file !=
-                          null
+                  cubit.leavesDetailsModel!.data!.file != null
                       ? GestureDetector(
                           onTap: () {
                             Navigator.push(
@@ -263,7 +198,7 @@ class _LeavesDetailsBodyState extends State<LeavesDetailsBody> {
                                   body: Center(
                                     child: PhotoView(
                                       imageProvider: NetworkImage(
-                                        '${ApiConstants.apiBaseUrl}${context.read<AttendanceLeavesCubit>().leavesDetailsModel!.data!.file}',
+                                        '${ApiConstants.apiBaseUrl}${cubit.leavesDetailsModel!.data!.file}',
                                       ),
                                       errorBuilder:
                                           (context, error, stackTrace) {
@@ -288,7 +223,7 @@ class _LeavesDetailsBodyState extends State<LeavesDetailsBody> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10.r)),
                             child: Image.network(
-                              '${ApiConstants.apiBaseUrl}${context.read<AttendanceLeavesCubit>().leavesDetailsModel!.data!.file}',
+                              '${ApiConstants.apiBaseUrl}${cubit.leavesDetailsModel!.data!.file}',
                               fit: BoxFit.fill,
                               errorBuilder: (context, error, stackTrace) {
                                 return Image.asset(
@@ -298,39 +233,203 @@ class _LeavesDetailsBodyState extends State<LeavesDetailsBody> {
                               },
                             ),
                           ))
-                      : Text('There\'s no file'),
+                      : Text(S.of(context).noFile),
                   verticalSpace(20),
-                  if (role == 'Admin')
+                  if (role == 'Admin' ||
+                      (role == 'Cleaner' &&
+                          cubit.leavesDetailsModel!.data!.status == 'Pending'))
                     state is LeavesDeleteLoadingState
                         ? Loading()
-                        : Center(
-                            child: DefaultElevatedButton(
-                                name: 'Delete',
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (dialogContext) {
-                                        return PopUpMeassage(
-                                            title: 'delete',
-                                            body: 'leave',
-                                            onPressed: () {
-                                              context
-                                                  .read<AttendanceLeavesCubit>()
-                                                  .leavesDelete(widget.id);
-                                            });
-                                      });
-                                },
-                                color: Colors.red,
-                                height: 47,
-                                width: double.infinity,
-                                textStyles: TextStyles.font20Whitesemimedium),
-                          ),
+                        : cubit.leavesDetailsModel!.data!.status == 'Pending' &&
+                                role == 'Admin'
+                            ? Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  DefaultElevatedButton(
+                                    name: S.of(context).approveButton,
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (dialogContext) {
+                                            return PopUpMessage(
+                                                title:
+                                                    S.of(context).Titleapprove,
+                                                body: S.of(context).leaveBody,
+                                                onPressed: () {
+                                                  cubit.approveLeaveRequest(
+                                                      id, true);
+                                                  context.pop();
+                                                });
+                                          });
+                                    },
+                                    color: AppColor.primaryColor,
+                                    height: 48.h,
+                                    width: 157.w,
+                                    textStyles: TextStyles.font16WhiteSemiBold,
+                                  ),
+                                  DefaultElevatedButton(
+                                    name: S.of(context).rejectButton,
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (dialogContext) {
+                                          final cubit = context
+                                              .read<LeavesDetailsCubit>();
+
+                                          return Dialog(
+                                            insetPadding: EdgeInsets.all(20),
+                                            backgroundColor: Colors.white,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12.r),
+                                            ),
+                                            child: SingleChildScrollView(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(20),
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Container(
+                                                          width: 8.w,
+                                                          height: 24.h,
+                                                          decoration: BoxDecoration(
+                                                              color:
+                                                                  Colors.black,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          2.r)),
+                                                        ),
+                                                        horizontalSpace(8),
+                                                        Text(
+                                                          S
+                                                              .of(context)
+                                                              .rejectionReason,
+                                                          style: TextStyles
+                                                              .font18BlackMedium,
+                                                        ),
+                                                        const Spacer(),
+                                                        IconButton(
+                                                          icon: Icon(
+                                                            Icons.close_rounded,
+                                                            size: 26.sp,
+                                                          ),
+                                                          onPressed: () =>
+                                                              context.pop(),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    verticalSpace(10),
+                                                    CustomDescriptionTextFormField(
+                                                        controller: cubit
+                                                            .rejectionReasonController,
+                                                        hint: S
+                                                            .of(context)
+                                                            .reasonHint),
+                                                    verticalSpace(20),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceAround,
+                                                      children: [
+                                                        DefaultElevatedButton(
+                                                          name: S
+                                                              .of(context)
+                                                              .rejectButton,
+                                                          onPressed: () {
+                                                            cubit
+                                                                .approveLeaveRequest(
+                                                                    id, false);
+                                                          },
+                                                          color: Colors.black,
+                                                          height: 47.h,
+                                                          width: 125.w,
+                                                          textStyles: TextStyles
+                                                              .font16WhiteSemiBold,
+                                                        ),
+                                                        DefaultElevatedButton(
+                                                          name: S
+                                                              .of(context)
+                                                              .cancelButton,
+                                                          onPressed: () {
+                                                            context.pop();
+                                                          },
+                                                          color:
+                                                              Colors.grey[300]!,
+                                                          height: 47.h,
+                                                          width: 125.w,
+                                                          textStyles: TextStyles
+                                                              .font16BlackSemiBold,
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
+                                    color: Colors.black,
+                                    height: 48.h,
+                                    width: 157.w,
+                                    textStyles: TextStyles.font16WhiteSemiBold,
+                                  ),
+                                ],
+                              )
+                            : Center(
+                                child: DefaultElevatedButton(
+                                    name: S.of(context).deleteButton,
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (dialogContext) {
+                                            return PopUpMessage(
+                                                title:
+                                                    S.of(context).TitleDelete,
+                                                body: S.of(context).leaveBody,
+                                                onPressed: () {
+                                                  cubit.leavesDelete(id);
+                                                });
+                                          });
+                                    },
+                                    color: Colors.red,
+                                    height: 47,
+                                    width: double.infinity,
+                                    textStyles:
+                                        TextStyles.font20Whitesemimedium)),
                   verticalSpace(20)
                 ],
               ),
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget _statusChip(
+      {required String text, required Color color, required Color textColor}) {
+    return Container(
+      height: 23.h,
+      padding: EdgeInsets.symmetric(horizontal: 5),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(4.r),
+      ),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyles.font11WhiteSemiBold.copyWith(color: textColor),
+        ),
       ),
     );
   }

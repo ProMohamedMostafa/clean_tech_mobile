@@ -37,67 +37,51 @@ class OnBoardingScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    BlocBuilder<AppCubit, AppStates>(
-                      builder: (context, state) {
-                        return Align(
-                          alignment: Alignment.topRight,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: Icon(
-                                  textDirection: TextDirection.ltr,
-                                  Icons.language,
-                                  color: AppColor.primaryColor,
-                                  size: 20.sp,
-                                ),
-                              ),
-                              horizontalSpace(4),
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: DropdownButtonHideUnderline(
-                                  child: DropdownButton<String>(
-                                    padding: EdgeInsets.zero,
-                                    value: context
-                                        .read<AppCubit>()
-                                        .locale
-                                        .toString(),
-                                    dropdownColor: Colors.white,
-                                    borderRadius: BorderRadius.circular(12.r),
-                                    icon: SizedBox.shrink(),
-                                    style:
-                                        TextStyles.font14Primarybold.copyWith(
-                                      color: AppColor.primaryColor,
-                                    ),
-                                    onChanged: (String? newLang) {
-                                      if (newLang != null) {
-                                        context
-                                            .read<AppCubit>()
-                                            .changeLanguage(newLang);
-                                      }
-                                    },
-                                    items: [
-                                      DropdownMenuItem(
-                                        value: 'en',
-                                        child: Text('English'),
-                                      ),
-                                      DropdownMenuItem(
-                                        value: 'ar',
-                                        child: Text('عربي'),
-                                      ),
-                                      DropdownMenuItem(
-                                        value: 'ur',
-                                        child: Text('اردو'),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            textDirection: TextDirection.ltr,
+                            Icons.language,
+                            color: AppColor.primaryColor,
+                            size: 20.sp,
                           ),
-                        );
-                      },
+                          horizontalSpace(4),
+                          DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              padding: EdgeInsets.zero,
+                              value: cubit.locale.toString(),
+                              dropdownColor: Colors.white,
+                              borderRadius: BorderRadius.circular(12.r),
+                              icon: SizedBox.shrink(),
+                              style: TextStyles.font14Primarybold.copyWith(
+                                color: AppColor.primaryColor,
+                              ),
+                              onChanged: (String? newLang) {
+                                if (newLang != null) {
+                                  cubit.changeLanguage(newLang);
+                                }
+                              },
+                              items: [
+                                DropdownMenuItem(
+                                  value: 'en',
+                                  child: Text('English'),
+                                ),
+                                DropdownMenuItem(
+                                  value: 'ar',
+                                  child: Text('عربي'),
+                                ),
+                                DropdownMenuItem(
+                                  value: 'ur',
+                                  child: Text('اردو'),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     CarouselSlider(
                       options: CarouselOptions(
@@ -110,7 +94,7 @@ class OnBoardingScreen extends StatelessWidget {
                         enlargeCenterPage: true,
                         viewportFraction: 1.0,
                         onPageChanged: (index, reason) {
-                          cubit.currentIndex = index;
+                          cubit.changeCarouselIndex(index);
                         },
                       ),
                       items: onBoardingList.map((item) {

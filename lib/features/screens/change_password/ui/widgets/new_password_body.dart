@@ -12,7 +12,7 @@ import 'package:smart_cleaning_application/features/layout/main_layout/logic/bot
 import 'package:smart_cleaning_application/features/screens/change_password/logic/change_password_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/change_password/logic/change_password_state.dart';
 import 'package:smart_cleaning_application/features/screens/change_password/ui/widgets/password_validation.dart';
-import 'package:smart_cleaning_application/features/screens/user/add_user/ui/widgets/add_user_text_form_field.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class ChangeToNewPasswordBody extends StatefulWidget {
@@ -80,7 +80,7 @@ class _ChangeToNewPasswordBodyState extends State<ChangeToNewPasswordBody> {
                 style: TextStyles.font16BlackRegular,
               ),
               verticalSpace(5),
-              AddUserTextFormField(
+              CustomTextFormField(
                 keyboardType: TextInputType.visiblePassword,
                 controller:
                     context.read<ChangePasswordCubit>().oldPasswordController,
@@ -95,8 +95,9 @@ class _ChangeToNewPasswordBodyState extends State<ChangeToNewPasswordBody> {
                   if (value == null || value.isEmpty) {
                     return S.of(context).validationPassword;
                   }
+                  return null;
                 },
-                readOnly: false,
+                onlyRead: false,
               ),
               verticalSpace(10),
               Text(
@@ -104,7 +105,7 @@ class _ChangeToNewPasswordBodyState extends State<ChangeToNewPasswordBody> {
                 style: TextStyles.font16BlackRegular,
               ),
               verticalSpace(5),
-              AddUserTextFormField(
+              CustomTextFormField(
                 keyboardType: TextInputType.text,
                 controller:
                     context.read<ChangePasswordCubit>().passwordController,
@@ -116,7 +117,7 @@ class _ChangeToNewPasswordBodyState extends State<ChangeToNewPasswordBody> {
                 },
                 obscureText: context.read<ChangePasswordCubit>().ispassword,
                 onChanged: (value) {
-                  if (value!.isNotEmpty) {
+                  if (value.isNotEmpty) {
                     isShow = true;
                   } else {
                     isShow = false;
@@ -129,8 +130,9 @@ class _ChangeToNewPasswordBodyState extends State<ChangeToNewPasswordBody> {
                           .hasMatch(value)) {
                     return S.of(context).validationPassword;
                   }
+                  return null;
                 },
-                readOnly: false,
+                onlyRead: false,
               ),
               verticalSpace(10),
               if (isShow == true)
@@ -147,7 +149,7 @@ class _ChangeToNewPasswordBodyState extends State<ChangeToNewPasswordBody> {
                 style: TextStyles.font16BlackRegular,
               ),
               verticalSpace(5),
-              AddUserTextFormField(
+              CustomTextFormField(
                 keyboardType: TextInputType.text,
                 controller: context
                     .read<ChangePasswordCubit>()
@@ -170,8 +172,9 @@ class _ChangeToNewPasswordBodyState extends State<ChangeToNewPasswordBody> {
                           .text) {
                     return S.of(context).validationRepeatPassword;
                   }
+                  return null;
                 },
-                readOnly: false,
+                onlyRead: false,
               ),
               verticalSpace(30),
               DefaultElevatedButton(
@@ -189,7 +192,7 @@ class _ChangeToNewPasswordBodyState extends State<ChangeToNewPasswordBody> {
                     showDialog(
                         context: context,
                         builder: (dialogContext) {
-                          return PopUpMeassage(
+                          return PopUpMessage(
                               title: 'change password',
                               body: 'profile',
                               onPressed: () {

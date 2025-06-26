@@ -12,8 +12,9 @@ import 'package:smart_cleaning_application/core/widgets/default_toast/default_to
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
-import 'package:smart_cleaning_application/features/screens/stock/material_management/logic/material_mangement_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/stock/material_management/logic/material_mangement_state.dart';
+
+import 'package:smart_cleaning_application/features/screens/stock/view_material/logic/cubit/material_details_cubit.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class MaterialDetailsBody extends StatefulWidget {
   final int id;
@@ -25,17 +26,11 @@ class MaterialDetailsBody extends StatefulWidget {
 
 class _MaterialDetailsBodyState extends State<MaterialDetailsBody> {
   @override
-  void initState() {
-    context.read<MaterialManagementCubit>().getMaterialDetails(widget.id);
-    super.initState();
-  }
-
-  bool descTextShowFlag = false;
-  @override
   Widget build(BuildContext context) {
+    final cubit = context.read<MaterialDetailsCubit>();
     return Scaffold(
       appBar: AppBar(
-        title: Text("Material details"),
+        title: Text(S.of(context).materialDetails),
         leading: CustomBackButton(),
         actions: [
           IconButton(
@@ -43,13 +38,10 @@ class _MaterialDetailsBodyState extends State<MaterialDetailsBody> {
                 context.pushNamed(Routes.editMaterialScreen,
                     arguments: widget.id);
               },
-              icon: Icon(
-                Icons.edit,
-                color: AppColor.primaryColor,
-              ))
+              icon: Icon(Icons.edit, color: AppColor.primaryColor))
         ],
       ),
-      body: BlocConsumer<MaterialManagementCubit, MaterialManagementState>(
+      body: BlocConsumer<MaterialDetailsCubit, MaterialDetailsState>(
         listener: (context, state) {
           if (state is DeleteMaterialSuccessState) {
             toast(text: state.deleteMaterialModel.message!, color: Colors.blue);
@@ -63,8 +55,7 @@ class _MaterialDetailsBodyState extends State<MaterialDetailsBody> {
           }
         },
         builder: (context, state) {
-          if (context.read<MaterialManagementCubit>().materialDetailsModel ==
-              null) {
+          if (cubit.materialDetailsModel == null) {
             return Loading();
           }
 
@@ -75,65 +66,38 @@ class _MaterialDetailsBodyState extends State<MaterialDetailsBody> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  rowDetailsBuild(
-                      context,
-                      'Name',
-                      context
-                          .read<MaterialManagementCubit>()
-                          .materialDetailsModel!
-                          .data!
-                          .name!),
+                  rowDetailsBuild(context, S.of(context).name,
+                      cubit.materialDetailsModel!.data!.name!),
+                  Divider(
+                    height: 30,
+                  ),
+                  rowDetailsBuild(context, S.of(context).category,
+                      cubit.materialDetailsModel!.data!.categoryName!),
+                  Divider(
+                    height: 30,
+                  ),
+                  rowDetailsBuild(context, S.of(context).quantity,
+                      cubit.materialDetailsModel!.data!.quantity.toString()),
                   Divider(
                     height: 30,
                   ),
                   rowDetailsBuild(
                       context,
-                      'Category',
-                      context
-                          .read<MaterialManagementCubit>()
-                          .materialDetailsModel!
-                          .data!
-                          .categoryName!),
-                  Divider(
-                    height: 30,
-                  ),
-                  rowDetailsBuild(
-                      context,
-                      'Quantity',
-                      context
-                          .read<MaterialManagementCubit>()
-                          .materialDetailsModel!
-                          .data!
-                          .quantity
-                          .toString()),
-                  Divider(
-                    height: 30,
-                  ),
-                  rowDetailsBuild(
-                      context,
-                      'Minimum',
-                      context
-                          .read<MaterialManagementCubit>()
-                          .materialDetailsModel!
-                          .data!
-                          .minThreshold
+                      S.of(context).minimum,
+                      cubit.materialDetailsModel!.data!.minThreshold
                           .toString()),
                   Divider(
                     height: 30,
                   ),
                   Text(
-                    'Description',
+                    S.of(context).description,
                     style: TextStyles.font16BlackSemiBold,
                   ),
                   verticalSpace(5),
                   Text(
-                    context
-                        .read<MaterialManagementCubit>()
-                        .materialDetailsModel!
-                        .data!
-                        .description!,
+                    cubit.materialDetailsModel!.data!.description!,
                     overflow: TextOverflow.ellipsis,
-                    maxLines: descTextShowFlag ? 40 : 3,
+                    maxLines: cubit.descTextShowFlag ? 40 : 3,
                     style: TextStyles.font14GreyRegular,
                   ),
                   Align(
@@ -141,23 +105,21 @@ class _MaterialDetailsBodyState extends State<MaterialDetailsBody> {
                       child: InkWell(
                           borderRadius: BorderRadius.circular(5.r),
                           onTap: () {
-                            setState(() {
-                              descTextShowFlag = !descTextShowFlag;
-                            });
+                            cubit.toggleDescText();
                           },
-                          child: descTextShowFlag
+                          child: cubit.descTextShowFlag
                               ? Padding(
                                   padding: const EdgeInsets.all(10),
-                                  child: const Text(
-                                    "Read less",
+                                  child: Text(
+                                    S.of(context).ReadLessButton,
                                     style: TextStyle(
                                         color: Colors.blue, fontSize: 12),
                                   ),
                                 )
                               : Padding(
                                   padding: const EdgeInsets.all(10),
-                                  child: const Text(
-                                    "Read more",
+                                  child: Text(
+                                    S.of(context).ReadMoreButton,
                                     style: TextStyle(
                                         color: Colors.blue, fontSize: 12),
                                   ),
@@ -167,18 +129,16 @@ class _MaterialDetailsBodyState extends State<MaterialDetailsBody> {
                       ? Loading()
                       : Center(
                           child: DefaultElevatedButton(
-                              name: 'Delete',
+                              name: S.of(context).deleteButton,
                               onPressed: () {
                                 showDialog(
                                     context: context,
                                     builder: (dialogContext) {
-                                      return PopUpMeassage(
-                                          title: 'delete',
-                                          body: 'material',
+                                      return PopUpMessage(
+                                          title: S.of(context).TitleDelete,
+                                          body: S.of(context).material,
                                           onPressed: () {
-                                            context
-                                                .read<MaterialManagementCubit>()
-                                                .deleteMaterial(widget.id);
+                                            cubit.deleteMaterial(widget.id);
                                           });
                                     });
                               },

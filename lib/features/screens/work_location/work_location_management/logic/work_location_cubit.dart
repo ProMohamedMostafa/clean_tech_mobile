@@ -34,10 +34,11 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
 
   TextEditingController searchController = TextEditingController();
   ScrollController scrollController = ScrollController();
-
   final formKey = GlobalKey<FormState>();
 
   int tapIndex = 0;
+  int selectedIndex = 0;
+
   int currentPage = 1;
   FilterDialogDataModel? filterModel;
   AreaListModel? areaModel;
@@ -200,7 +201,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
       "SearchQuery": searchController.text,
       "FloorId": filterModel?.floorId,
       "SectionId": filterModel?.sectionId,
-      "AssignToDevice":filterModel?.isAsign
+      "AssignToDevice": filterModel?.isAsign
     }).then((value) {
       final newPoints = PointListModel.fromJson(value!.data);
 
@@ -278,7 +279,6 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
     }
   }
 
-  int selectedIndex = 0;
   void changeTap(int index) {
     tapIndex = index;
 
@@ -444,7 +444,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
   List<AreaItem> deletedAreas = [];
   deleteArea(int id) {
     emit(AreaDeleteLoadingState());
-    DioHelper.postData(url: 'areas/delete/$id', data: {'id': id}).then((value) {
+    DioHelper.postData(url: 'areas/delete/$id').then((value) {
       deleteAreaModel = DeleteAreaModel.fromJson(value!.data);
 
       final deletedArea = areaModel?.data?.data?.firstWhere(
@@ -474,8 +474,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
   List<CityItem> deletedCitys = [];
   deleteCity(int id) {
     emit(CityDeleteLoadingState());
-    DioHelper.postData(url: 'cities/delete/$id', data: {'id': id})
-        .then((value) {
+    DioHelper.postData(url: 'cities/delete/$id').then((value) {
       deleteCityModel = DeleteCityModel.fromJson(value!.data);
 
       final deletedCity = cityModel?.data?.data?.firstWhere(
@@ -505,8 +504,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
   List<OrganizationItem> deletedOrganizations = [];
   deleteOrganization(int id) {
     emit(OrganizationDeleteLoadingState());
-    DioHelper.postData(url: 'organizations/delete/$id', data: {'id': id})
-        .then((value) {
+    DioHelper.postData(url: 'organizations/delete/$id').then((value) {
       deleteOrganizationModel = DeleteOrganizationModel.fromJson(value!.data);
 
       final deletedOrganization = organizationModel?.data?.data?.firstWhere(
@@ -536,8 +534,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
   List<BuildingItem> deletedBuildings = [];
   deleteBuilding(int id) {
     emit(BuildingDeleteLoadingState());
-    DioHelper.postData(url: 'buildings/delete/$id', data: {'id': id})
-        .then((value) {
+    DioHelper.postData(url: 'buildings/delete/$id').then((value) {
       deleteBuildingModel = DeleteBuildingModel.fromJson(value!.data);
 
       final deletedBuilding = buildingModel?.data?.data?.firstWhere(
@@ -567,8 +564,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
   List<FloorItem> deletedFloors = [];
   deleteFloor(int id) {
     emit(FloorDeleteLoadingState());
-    DioHelper.postData(url: 'floors/delete/$id', data: {'id': id})
-        .then((value) {
+    DioHelper.postData(url: 'floors/delete/$id').then((value) {
       deleteFloorModel = DeleteFloorModel.fromJson(value!.data);
 
       final deletedFloor = floorModel?.data?.data?.firstWhere(
@@ -598,8 +594,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
   List<SectionItem> deletedSections = [];
   deleteSection(int id) {
     emit(SectionDeleteLoadingState());
-    DioHelper.postData(url: 'sections/delete/$id', data: {'id': id})
-        .then((value) {
+    DioHelper.postData(url: 'sections/delete/$id').then((value) {
       deleteSectionModel = DeleteSectionModel.fromJson(value!.data);
 
       final deletedSection = sectionModel?.data?.data?.firstWhere(
@@ -629,8 +624,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
   List<PointItem> deletedPoints = [];
   deletePoint(int id) {
     emit(PointDeleteLoadingState());
-    DioHelper.postData(url: 'points/delete/$id', data: {'id': id})
-        .then((value) {
+    DioHelper.postData(url: 'points/delete/$id').then((value) {
       deletePointModel = DeletePointModel.fromJson(value!.data);
 
       final deletedPoint = pointModel?.data?.data?.firstWhere(
@@ -738,9 +732,8 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
   ///************************* */
 
   restoreDeletedArea(int id) {
-    emit(DeleteRestoreAreaLoadingState());
-    DioHelper.postData(url: 'areas/restore/$id', data: {'id': id})
-        .then((value) {
+    emit(RestoreAreaLoadingState());
+    DioHelper.postData(url: 'areas/restore/$id').then((value) {
       final message = value?.data['message'] ?? "restored successfully";
       // Find and process the restored user
       final restoredData = deletedAreaList?.data?.firstWhere(
@@ -773,16 +766,15 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
                 (areaModel?.data?.pageSize ?? 10))
             .ceil();
       }
-      emit(DeleteRestoreAreaSuccessState(message));
+      emit(RestoreAreaSuccessState(message));
     }).catchError((error) {
-      emit(DeleteRestoreAreaErrorState(error.toString()));
+      emit(RestoreAreaErrorState(error.toString()));
     });
   }
 
   restoreDeletedCity(int id) {
-    emit(DeleteRestoreCityLoadingState());
-    DioHelper.postData(url: 'cities/restore/$id', data: {'id': id})
-        .then((value) {
+    emit(RestoreCityLoadingState());
+    DioHelper.postData(url: 'cities/restore/$id').then((value) {
       final message = value?.data['message'] ?? "restored successfully";
       // Find and process the restored user
       final restoredData = deletedCityList?.data?.firstWhere(
@@ -815,16 +807,15 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
                 (cityModel?.data?.pageSize ?? 10))
             .ceil();
       }
-      emit(DeleteRestoreCitySuccessState(message));
+      emit(RestoreCitySuccessState(message));
     }).catchError((error) {
-      emit(DeleteRestoreCityErrorState(error.toString()));
+      emit(RestoreCityErrorState(error.toString()));
     });
   }
 
   restoreDeletedOrganization(int id) {
-    emit(DeleteRestoreOrganizationLoadingState());
-    DioHelper.postData(url: 'organizations/restore/$id', data: {'id': id})
-        .then((value) {
+    emit(RestoreOrganizationLoadingState());
+    DioHelper.postData(url: 'organizations/restore/$id').then((value) {
       final message = value?.data['message'] ?? "restored successfully";
       // Find and process the restored user
       final restoredData = deletedOrganizationList?.data?.firstWhere(
@@ -860,16 +851,15 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
                     (organizationModel?.data?.pageSize ?? 10))
                 .ceil();
       }
-      emit(DeleteRestoreOrganizationSuccessState(message));
+      emit(RestoreOrganizationSuccessState(message));
     }).catchError((error) {
-      emit(DeleteRestoreOrganizationErrorState(error.toString()));
+      emit(RestoreOrganizationErrorState(error.toString()));
     });
   }
 
   restoreDeletedBuilding(int id) {
-    emit(DeleteRestoreBuildingLoadingState());
-    DioHelper.postData(url: 'buildings/restore/$id', data: {'id': id})
-        .then((value) {
+    emit(RestoreBuildingLoadingState());
+    DioHelper.postData(url: 'buildings/restore/$id').then((value) {
       final message = value?.data['message'] ?? "restored successfully";
       // Find and process the restored user
       final restoredData = deletedBuildingList?.data?.firstWhere(
@@ -904,16 +894,15 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
                     (buildingModel?.data?.pageSize ?? 10))
                 .ceil();
       }
-      emit(DeleteRestoreBuildingSuccessState(message));
+      emit(RestoreBuildingSuccessState(message));
     }).catchError((error) {
-      emit(DeleteRestoreBuildingErrorState(error.toString()));
+      emit(RestoreBuildingErrorState(error.toString()));
     });
   }
 
   restoreDeletedFloor(int id) {
-    emit(DeleteRestoreFloorLoadingState());
-    DioHelper.postData(url: 'floors/restore/$id', data: {'id': id})
-        .then((value) {
+    emit(RestoreFloorLoadingState());
+    DioHelper.postData(url: 'floors/restore/$id').then((value) {
       final message = value?.data['message'] ?? "restored successfully";
       // Find and process the restored user
       final restoredData = deletedFloorList?.data?.firstWhere(
@@ -946,16 +935,15 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
                 (floorModel?.data?.pageSize ?? 10))
             .ceil();
       }
-      emit(DeleteRestoreFloorSuccessState(message));
+      emit(RestoreFloorSuccessState(message));
     }).catchError((error) {
-      emit(DeleteRestoreFloorErrorState(error.toString()));
+      emit(RestoreFloorErrorState(error.toString()));
     });
   }
 
   restoreDeletedSection(int id) {
-    emit(DeleteRestoreSectionLoadingState());
-    DioHelper.postData(url: 'sections/restore/$id', data: {'id': id})
-        .then((value) {
+    emit(RestoreSectionLoadingState());
+    DioHelper.postData(url: 'sections/restore/$id').then((value) {
       final message = value?.data['message'] ?? "restored successfully";
       // Find and process the restored user
       final restoredData = deletedSectionList?.data?.firstWhere(
@@ -990,16 +978,15 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
                     (sectionModel?.data?.pageSize ?? 10))
                 .ceil();
       }
-      emit(DeleteRestoreSectionSuccessState(message));
+      emit(RestoreSectionSuccessState(message));
     }).catchError((error) {
-      emit(DeleteRestoreSectionErrorState(error.toString()));
+      emit(RestoreSectionErrorState(error.toString()));
     });
   }
 
   restoreDeletedPoint(int id) {
-    emit(DeleteRestorePointLoadingState());
-    DioHelper.postData(url: 'points/restore/$id', data: {'id': id})
-        .then((value) {
+    emit(RestorePointLoadingState());
+    DioHelper.postData(url: 'points/restore/$id').then((value) {
       final message = value?.data['message'] ?? "restored successfully";
       // Find and process the restored user
       final restoredData = deletedPointList?.data?.firstWhere(
@@ -1032,9 +1019,9 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
                 (pointModel?.data?.pageSize ?? 10))
             .ceil();
       }
-      emit(DeleteRestorePointSuccessState(message));
+      emit(RestorePointSuccessState(message));
     }).catchError((error) {
-      emit(DeleteRestorePointErrorState(error.toString()));
+      emit(RestorePointErrorState(error.toString()));
     });
   }
 
@@ -1042,8 +1029,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
 
   forcedDeletedArea(int id) {
     emit(DeleteForceAreaLoadingState());
-    DioHelper.deleteData(url: 'areas/forcedelete/$id', data: {'id': id})
-        .then((value) {
+    DioHelper.deleteData(url: 'areas/forcedelete/$id').then((value) {
       final message = value?.data['message'] ?? "forced deleted successfully";
       emit(DeleteForceAreaSuccessState(message));
     }).catchError((error) {
@@ -1053,8 +1039,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
 
   forcedDeletedCity(int id) {
     emit(DeleteForceCityLoadingState());
-    DioHelper.deleteData(url: 'cities/forcedelete/$id', data: {'id': id})
-        .then((value) {
+    DioHelper.deleteData(url: 'cities/forcedelete/$id').then((value) {
       final message = value?.data['message'] ?? "forced deleted successfully";
       emit(DeleteForceCitySuccessState(message));
     }).catchError((error) {
@@ -1064,8 +1049,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
 
   forcedDeletedOrganization(int id) {
     emit(DeleteForceOrganizationLoadingState());
-    DioHelper.deleteData(url: 'organizations/forcedelete/$id', data: {'id': id})
-        .then((value) {
+    DioHelper.deleteData(url: 'organizations/forcedelete/$id').then((value) {
       final message = value?.data['message'] ?? "forced deleted successfully";
       emit(DeleteForceOrganizationSuccessState(message));
     }).catchError((error) {
@@ -1075,8 +1059,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
 
   forcedDeletedBuilding(int id) {
     emit(DeleteForceBuildingLoadingState());
-    DioHelper.deleteData(url: 'buildings/forcedelete/$id', data: {'id': id})
-        .then((value) {
+    DioHelper.deleteData(url: 'buildings/forcedelete/$id').then((value) {
       final message = value?.data['message'] ?? "forced deleted successfully";
       emit(DeleteForceBuildingSuccessState(message));
     }).catchError((error) {
@@ -1086,8 +1069,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
 
   forcedDeletedFloor(int id) {
     emit(DeleteForceFloorLoadingState());
-    DioHelper.deleteData(url: 'floors/forcedelete/$id', data: {'id': id})
-        .then((value) {
+    DioHelper.deleteData(url: 'floors/forcedelete/$id').then((value) {
       final message = value?.data['message'] ?? "forced deleted successfully";
       emit(DeleteForceFloorSuccessState(message));
     }).catchError((error) {
@@ -1097,8 +1079,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
 
   forcedDeletedSection(int id) {
     emit(DeleteForceSectionLoadingState());
-    DioHelper.deleteData(url: 'sections/forcedelete/$id', data: {'id': id})
-        .then((value) {
+    DioHelper.deleteData(url: 'sections/forcedelete/$id').then((value) {
       final message = value?.data['message'] ?? "forced deleted successfully";
       emit(DeleteForceSectionSuccessState(message));
     }).catchError((error) {
@@ -1108,8 +1089,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
 
   forcedDeletedPoint(int id) {
     emit(DeleteForcePointLoadingState());
-    DioHelper.deleteData(url: 'points/forcedelete/$id', data: {'id': id})
-        .then((value) {
+    DioHelper.deleteData(url: 'points/forcedelete/$id').then((value) {
       final message = value?.data['message'] ?? "forced deleted successfully";
       emit(DeleteForcePointSuccessState(message));
     }).catchError((error) {
@@ -1126,4 +1106,46 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
     "Sections",
     "Points",
   ];
+
+  List<dynamic>? getWorkLocationData(int selectedIndex) {
+    switch (selectedIndex) {
+      case 0:
+        return areaModel?.data?.data;
+      case 1:
+        return cityModel?.data?.data;
+      case 2:
+        return organizationModel?.data?.data;
+      case 3:
+        return buildingModel?.data?.data;
+      case 4:
+        return floorModel?.data?.data;
+      case 5:
+        return sectionModel?.data?.data;
+      case 6:
+        return pointModel?.data?.data;
+      default:
+        return null;
+    }
+  }
+
+  List<dynamic>? getDeletedWorkLocationData(int selectedIndex) {
+    switch (selectedIndex) {
+      case 0:
+        return deletedAreaList?.data;
+      case 1:
+        return deletedCityList?.data;
+      case 2:
+        return deletedOrganizationList?.data;
+      case 3:
+        return deletedBuildingList?.data;
+      case 4:
+        return deletedFloorList?.data;
+      case 5:
+        return deletedSectionList?.data;
+      case 6:
+        return deletedPointList?.data;
+      default:
+        return null;
+    }
+  }
 }

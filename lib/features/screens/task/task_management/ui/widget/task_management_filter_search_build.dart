@@ -44,7 +44,8 @@ class FilterAndSearchWidget extends StatelessWidget {
                     create: (context) => FilterDialogCubit()
                       ..getArea()
                       ..getUsers()
-                      ..getProviders(),
+                      ..getProviders()
+                      ..getDevices(),
                     child: FilterDialogWidget(
                       index: 'T',
                       onPressed: (data) {
@@ -56,10 +57,10 @@ class FilterAndSearchWidget extends StatelessWidget {
             );
           },
           child: Container(
-            height: 49.h,
+            height: 47.h,
             width: 49.w,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.r),
+                borderRadius: BorderRadius.circular(8.r),
                 border: Border.all(color: AppColor.secondaryColor)),
             child: Icon(
               Icons.tune,

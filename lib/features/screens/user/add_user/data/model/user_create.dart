@@ -4,6 +4,7 @@ class UserCreateModel {
   bool? succeeded;
   String? message;
   String? error;
+  int? businessErrorCode;
   String? data;
 
   UserCreateModel(
@@ -12,6 +13,7 @@ class UserCreateModel {
       this.succeeded,
       this.message,
       this.error,
+      this.businessErrorCode,
       this.data});
 
   UserCreateModel.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class UserCreateModel {
     succeeded = json['succeeded'];
     message = json['message'];
     error = json['error'];
+    businessErrorCode = json['businessErrorCode'];
     data = json['data'];
   }
 
@@ -30,6 +33,7 @@ class UserCreateModel {
     data['succeeded'] = succeeded;
     data['message'] = message;
     data['error'] = error;
+    data['businessErrorCode'] = businessErrorCode;
     data['data'] = this.data;
     return data;
   }

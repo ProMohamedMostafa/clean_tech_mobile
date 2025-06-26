@@ -11,7 +11,6 @@ import 'package:smart_cleaning_application/features/screens/stock/material_manag
 import 'package:smart_cleaning_application/features/screens/stock/material_management/data/model/deleted_material_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/data/model/material_management_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/logic/material_mangement_state.dart';
-import 'package:smart_cleaning_application/features/screens/stock/view_material/data/model/material_details_model.dart';
 
 class MaterialManagementCubit extends Cubit<MaterialManagementState> {
   MaterialManagementCubit() : super(MaterialManagementInitialState());
@@ -20,11 +19,12 @@ class MaterialManagementCubit extends Cubit<MaterialManagementState> {
 
   TextEditingController searchController = TextEditingController();
   TextEditingController quantityController = TextEditingController();
+  TextEditingController quantityIdController = TextEditingController();
   TextEditingController priceController = TextEditingController();
+  TextEditingController priceIdController = TextEditingController();
   TextEditingController providerController = TextEditingController();
   TextEditingController providerIdController = TextEditingController();
 
-  final formKey = GlobalKey<FormState>();
   ScrollController scrollController = ScrollController();
 
   int selectedIndex = 0;
@@ -90,6 +90,17 @@ class MaterialManagementCubit extends Cubit<MaterialManagementState> {
     }
   }
 
+  DeletedMaterialListModel? deletedMaterialListModel;
+  getAllDeletedMaterial() {
+    emit(DeletedMaterialLoadingState());
+    DioHelper.getData(url: ApiConstants.deleteMaterialListUrl).then((value) {
+      deletedMaterialListModel = DeletedMaterialListModel.fromJson(value!.data);
+      emit(DeletedMaterialSuccessState(deletedMaterialListModel!));
+    }).catchError((error) {
+      emit(DeletedMaterialErrorState(error.toString()));
+    });
+  }
+
   DeleteMaterialModel? deleteMaterialModel;
   List<MaterialModel> deletedMaterials = [];
   deleteMaterial(int id) {
@@ -118,17 +129,6 @@ class MaterialManagementCubit extends Cubit<MaterialManagementState> {
       emit(DeleteMaterialSuccessState(deleteMaterialModel!));
     }).catchError((error) {
       emit(DeleteMaterialErrorState(error.toString()));
-    });
-  }
-
-  DeletedMaterialListModel? deletedMaterialListModel;
-  getAllDeletedMaterial() {
-    emit(DeletedMaterialLoadingState());
-    DioHelper.getData(url: ApiConstants.deleteMaterialListUrl).then((value) {
-      deletedMaterialListModel = DeletedMaterialListModel.fromJson(value!.data);
-      emit(DeletedMaterialSuccessState(deletedMaterialListModel!));
-    }).catchError((error) {
-      emit(DeletedMaterialErrorState(error.toString()));
     });
   }
 
@@ -182,8 +182,7 @@ class MaterialManagementCubit extends Cubit<MaterialManagementState> {
 
   forcedDeletedMaterial(int id) {
     emit(ForceDeleteMaterialLoadingState());
-    DioHelper.deleteData(url: 'materials/forcedelete/$id', data: {'id': id})
-        .then((value) {
+    DioHelper.deleteData(url: 'materials/forcedelete/$id').then((value) {
       final message = value?.data['message'] ?? "restored successfully";
       emit(ForceDeleteMaterialSuccessState(message));
     }).catchError((error) {
@@ -191,19 +190,10 @@ class MaterialManagementCubit extends Cubit<MaterialManagementState> {
     });
   }
 
-  MaterialDetailsModel? materialDetailsModel;
-  getMaterialDetails(int id) {
-    emit(MaterialDetailsLoadingState());
-    DioHelper.getData(url: 'materials/$id').then((value) {
-      materialDetailsModel = MaterialDetailsModel.fromJson(value!.data);
-      emit(MaterialDetailsSuccessState(materialDetailsModel!));
-    }).catchError((error) {
-      emit(MaterialDetailsErrorState(error.toString()));
-    });
-  }
-
-    ProvidersModel? providersModel;
-  List<ProviderItem> providerItem = [ProviderItem(name: 'No providers available')];
+  ProvidersModel? providersModel;
+  List<ProviderItem> providerItem = [
+    ProviderItem(name: 'No providers available')
+  ];
   getProviders() {
     emit(AllProvidersLoadingState());
     DioHelper.getData(url: ApiConstants.allProvidersUrl).then((value) {
@@ -216,12 +206,8 @@ class MaterialManagementCubit extends Cubit<MaterialManagementState> {
     });
   }
 
-
   addMaterial({
     int? materialId,
-    int? providerId,
-    double? quantityId,
-    double? priceId,
     String? image,
   }) async {
     emit(AddMaterialLoadingState());
@@ -235,9 +221,9 @@ class MaterialManagementCubit extends Cubit<MaterialManagementState> {
     }
     Map<String, dynamic> formDataMap = {
       'MaterialId': materialId,
-      'ProviderId': providerId,
-      "Quantity": quantityId,
-      'Price': priceId,
+      'ProviderId': providerIdController.text,
+      "Quantity": quantityIdController.text,
+      'Price': priceIdController.text,
       'File': imageFile,
     };
     FormData formData = FormData.fromMap(formDataMap);
@@ -254,15 +240,13 @@ class MaterialManagementCubit extends Cubit<MaterialManagementState> {
 
   reduceMaterial({
     int? materialId,
-    int? providerId,
-    double? quantityId,
   }) async {
     emit(ReduceMaterialLoadingState());
     try {
       final response = await DioHelper.postData(url: 'stock/out', data: {
         'MaterialId': materialId,
-        'ProviderId': providerId,
-        "Quantity": quantityId,
+        'ProviderId': providerIdController.text,
+        "Quantity": quantityIdController.text,
       });
       final message = response?.data['message'] ?? "Reduce successfully";
       emit(ReduceMaterialSuccessState(message!));

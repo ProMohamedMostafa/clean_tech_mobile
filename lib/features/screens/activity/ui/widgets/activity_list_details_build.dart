@@ -4,6 +4,7 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/features/screens/activity/logic/activity_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/activity/ui/widgets/list_item_build.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class ActivityListDetailsBuild extends StatelessWidget {
   const ActivityListDetailsBuild({super.key});
@@ -18,7 +19,7 @@ class ActivityListDetailsBuild extends StatelessWidget {
     if (activitiesData.isEmpty) {
       return Center(
         child: Text(
-          "There's no data",
+          S.of(context).noData,
           style: TextStyles.font13Blackmedium,
         ),
       );
@@ -29,8 +30,7 @@ class ActivityListDetailsBuild extends StatelessWidget {
       physics: const AlwaysScrollableScrollPhysics(),
       itemCount: activitiesData.length,
       separatorBuilder: (context, index) => verticalSpace(10),
-      itemBuilder: (context, index) =>
-         ActivityListItemBuild(index: index),
+      itemBuilder: (context, index) => ActivityListItemBuild(index: index),
     );
   }
 }

@@ -8,6 +8,7 @@ import 'package:smart_cleaning_application/core/widgets/filter/logic/cubit/filte
 import 'package:smart_cleaning_application/core/widgets/filter/ui/screen/filter_dialog_widget.dart';
 import 'package:smart_cleaning_application/features/screens/activity/logic/activity_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class FilterAndSearchWidget extends StatelessWidget {
   const FilterAndSearchWidget({super.key});
@@ -25,7 +26,7 @@ class FilterAndSearchWidget extends StatelessWidget {
             color: AppColor.secondaryColor,
             perfixIcon: Icon(IconBroken.search),
             controller: cubit.searchController,
-            hint: 'Find person',
+            hint: S.of(context).findActivity,
             keyboardType: TextInputType.text,
             onlyRead: false,
             onChanged: (searchedCharacter) {
@@ -57,10 +58,10 @@ class FilterAndSearchWidget extends StatelessWidget {
             );
           },
           child: Container(
-            height: 49.h,
+            height: 47.h,
             width: 49.w,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.r),
+              borderRadius: BorderRadius.circular(8.r),
               border: Border.all(color: AppColor.secondaryColor),
             ),
             child: Icon(

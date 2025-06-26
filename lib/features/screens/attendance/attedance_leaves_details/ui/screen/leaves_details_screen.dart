@@ -7,6 +7,6 @@ class LeavesDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: LeavesDetailsBody(id: id),);
+    return LeavesDetailsBody(id: id);
   }
 }

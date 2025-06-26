@@ -23,9 +23,6 @@ class AddUserErrorState extends AddUserState {
 }
 
 
-
-
-
 //**************************** */
 class GetNationalityLoadingState extends AddUserState {}
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 
 class CustomDescriptionTextFormField extends StatelessWidget {
@@ -40,7 +41,7 @@ class CustomDescriptionTextFormField extends StatelessWidget {
     return InputDecoration(
       border: _buildBorder(),
       enabledBorder: _buildBorder(),
-      focusedBorder: _buildBorder(),
+      focusedBorder: _buildFocusBorder(),
       errorBorder: _buildErrorBorder(),
       contentPadding: const EdgeInsets.all(5),
       isDense: true,
@@ -54,14 +55,24 @@ class CustomDescriptionTextFormField extends StatelessWidget {
   OutlineInputBorder _buildBorder() {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(8.r),
-      borderSide: BorderSide(color: Colors.grey),
+      borderSide: BorderSide(
+        color: Colors.grey[300]!,
+      ),
     );
+  }
+
+  OutlineInputBorder _buildFocusBorder() {
+    return OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8.r),
+        borderSide: const BorderSide(
+          color: AppColor.primaryColor,
+        ));
   }
 
   OutlineInputBorder _buildErrorBorder() {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(8.r),
-      borderSide: const BorderSide(color: Colors.red),
+      borderSide: BorderSide(color: Colors.red),
     );
   }
 }

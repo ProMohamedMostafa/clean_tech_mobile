@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
-import 'package:smart_cleaning_application/features/screens/sensor/sensor_edit/data/model/sensor_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/sensor/sensor_details/data/model/sensor_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/sensor/sensor_details/data/model/delete_sensor_model.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 part 'sensor_details_state.dart';
 
@@ -78,16 +79,19 @@ class SensorDetailsCubit extends Cubit<SensorDetailsState> {
     emit(SensorTreeIndexChanged());
   }
 
-  List<String> tapList = [
-    'All Tasks',
-    'Pending',
-    'In Progress',
-    'Not Approval',
-    'Completed',
-    'Rejected',
-    'Not Resolved',
-    'Overdue'
+  List<String> getTapList(BuildContext context) {
+  return [
+    S.of(context).allTasks,
+    S.of(context).pendingTask,
+    S.of(context).inProgressTask,
+    S.of(context).notApproval,
+    S.of(context).completed,
+    S.of(context).rejected,
+    S.of(context).notResolvedTask,
+    S.of(context).overdueTask,
   ];
+}
+
 
   deletelimit(int id) {
     emit(DeleteLimitLoadingState());

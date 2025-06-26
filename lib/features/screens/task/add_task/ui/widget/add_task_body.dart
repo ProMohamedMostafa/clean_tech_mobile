@@ -8,7 +8,6 @@ import 'package:photo_view/photo_view.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
-import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
@@ -23,6 +22,7 @@ import 'package:smart_cleaning_application/features/screens/integrations/ui/widg
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/logic/add_task_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/logic/add_task_state.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class AddTaskBody extends StatefulWidget {
   const AddTaskBody({super.key});
@@ -32,75 +32,37 @@ class AddTaskBody extends StatefulWidget {
 }
 
 class _AddTaskBodyState extends State<AddTaskBody> {
-  int? statusId;
-  List<int> selectedSupervisorIds = [];
-  int? buildingId;
-  int? floorId;
-  int? sectionId;
-  int? pointId;
-  double? currentReading;
-  int? parentId;
-  bool _isFormSubmitted = false;
-  int? selectedPriority;
-  bool isPointCountable = false;
-
-  final Map<String, int> priorityMap = {
-    "High": 2,
-    "Medium": 1,
-    "Low": 0,
-  };
-
-  final List<Color> tasksColor = [
-    Colors.red,
-    Colors.orange,
-    Colors.green,
-  ];
-  @override
-  void initState() {
-    context.read<AddTaskCubit>().getAllTasks();
-    context.read<AddTaskCubit>().getOrganization();
-    context.read<AddTaskCubit>().getAllUsers();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<AddTaskCubit>();
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Create Task",
-          ),
-          leading: CustomBackButton(),
-        ),
+        appBar: AppBar(title: Text("Create Task"), leading: CustomBackButton()),
         body: BlocConsumer<AddTaskCubit, AddTaskState>(
           listener: (context, state) {
             if (state is AddTaskSuccessState) {
               toast(text: state.createTaskModel.message!, color: Colors.blue);
-              context.pushNamedAndRemoveLastTwo(Routes.taskManagementScreen);
+              context.popWithTrueResult();
             }
             if (state is AddTaskErrorState) {
               toast(text: state.message, color: Colors.red);
             }
           },
           builder: (context, state) {
-            if (context.read<AddTaskCubit>().usersModel == null) {
+            if (cubit.usersModel == null ||
+                cubit.organizationModel == null ||
+                cubit.allTasksModel == null) {
               return Loading();
             }
 
-            var items = context
-                .read<AddTaskCubit>()
-                .usersModel
-                ?.data
-                ?.users
+            var items = cubit.usersModel?.data?.users
                 ?.map((employee) => DropdownItem(
                       label: employee.userName!,
                       value: employee,
                     ))
                 .toList();
-            return SafeArea(
-                child: SingleChildScrollView(
-                    child: Form(
-              key: context.read<AddTaskCubit>().formKey,
+            return SingleChildScrollView(
+                child: Form(
+              key: cubit.formKey,
               child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
@@ -118,12 +80,12 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                           color: Colors.white,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children:
-                                List.generate(priorityMap.length, (index) {
+                            children: List.generate(cubit.priorityMap.length,
+                                (index) {
                               String priorityName =
-                                  priorityMap.keys.elementAt(index);
+                                  cubit.priorityMap.keys.elementAt(index);
                               int priorityValue =
-                                  priorityMap.values.elementAt(index);
+                                  cubit.priorityMap.values.elementAt(index);
                               return Expanded(
                                 child: Padding(
                                   padding:
@@ -131,25 +93,28 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                   child: InkWell(
                                     onTap: () {
                                       setState(() {
-                                        selectedPriority = priorityValue;
+                                        cubit.priorityIdController.text =
+                                            priorityValue.toString();
                                       });
                                     },
                                     child: Container(
                                       height: 40.h,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(8),
-                                        color: selectedPriority == priorityValue
-                                            ? tasksColor[index].withOpacity(0.2)
+                                        color: cubit.priorityIdController ==
+                                                priorityValue
+                                            ? cubit.tasksColor[index]
+                                                .withOpacity(0.2)
                                             : Colors.white,
                                         border: Border.all(
-                                            color: tasksColor[index]),
+                                            color: cubit.tasksColor[index]),
                                       ),
                                       child: Center(
                                         child: Text(
                                           priorityName,
                                           style:
                                               TextStyles.font14Redbold.copyWith(
-                                            color: tasksColor[index],
+                                            color: cubit.tasksColor[index],
                                           ),
                                         ),
                                       ),
@@ -160,7 +125,8 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                             }),
                           ),
                         ),
-                        if (_isFormSubmitted && selectedPriority == null)
+                        if (cubit.isFormSubmitted &&
+                            cubit.priorityController.text.isEmpty)
                           Padding(
                             padding: EdgeInsets.only(left: 10, top: 3),
                             child: Text(
@@ -179,41 +145,22 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                         verticalSpace(5),
                         CustomDropDownList(
                           hint: "Select parent task",
-                          items: context
-                                      .read<AddTaskCubit>()
-                                      .allTasksModel
-                                      ?.data
-                                      ?.data
-                                      ?.toList()
-                                      .isEmpty ??
-                                  true
-                              ? ['No task']
-                              : context
-                                      .read<AddTaskCubit>()
-                                      .allTasksModel
-                                      ?.data
-                                      ?.data
-                                      ?.map((e) => e.title ?? 'Unknown')
-                                      .toList() ??
-                                  [],
+                          items: cubit.taskData
+                              .map((e) => e.title ?? 'Unknown')
+                              .toList(),
                           onPressed: (value) {
-                            final selectedParentTask = context
-                                .read<AddTaskCubit>()
-                                .allTasksModel
-                                ?.data
-                                ?.data
+                            final selectedParentTask = cubit
+                                .allTasksModel?.data?.data
                                 ?.firstWhere((task) =>
                                     task.title ==
-                                    context
-                                        .read<AddTaskCubit>()
-                                        .parentTaskController
-                                        .text);
-                            parentId = selectedParentTask!.id!;
-                            context.read<AddTaskCubit>().getAllTasks();
+                                    cubit.parentTaskController.text)
+                                .id;
+                            cubit.parentIdTaskController.text =
+                                selectedParentTask!.toString();
+                            cubit.getAllTasks();
                           },
                           suffixIcon: IconBroken.arrowDown2,
-                          controller:
-                              context.read<AddTaskCubit>().parentTaskController,
+                          controller: cubit.parentTaskController,
                           keyboardType: TextInputType.text,
                         ),
                         verticalSpace(10),
@@ -225,8 +172,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                         CustomTextFormField(
                           onlyRead: false,
                           hint: "Enter task title",
-                          controller:
-                              context.read<AddTaskCubit>().taskTitleController,
+                          controller: cubit.taskTitleController,
                           keyboardType: TextInputType.text,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -257,44 +203,27 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                         ),
                         verticalSpace(5),
                         CustomDropDownList(
-                          hint: "Select organizations",
-                          items: context
-                                      .read<AddTaskCubit>()
-                                      .organizationListModel
-                                      ?.data
-                                      ?.data
-                                      ?.isEmpty ??
-                                  true
-                              ? ['No organizations']
-                              : context
-                                      .read<AddTaskCubit>()
-                                      .organizationListModel
-                                      ?.data
-                                      ?.data
-                                      ?.map((e) => e.name ?? 'Unknown')
-                                      .toList() ??
-                                  [],
-                          onPressed: (value) {
-                            final selectedOrganization = context
-                                .read<AddTaskCubit>()
-                                .organizationListModel
-                                ?.data
-                                ?.data
-                                ?.firstWhere((organization) =>
-                                    organization.name ==
-                                    context
-                                        .read<AddTaskCubit>()
-                                        .organizationController
-                                        .text);
+                          hint: S.of(context).selectOrganization,
+                          controller: cubit.organizationController,
+                          items: cubit.organizationItem
+                              .map((e) => e.name ?? 'Unknown')
+                              .toList(),
+                          onChanged: (value) {
+                            final selectedOrganization = cubit
+                                .organizationModel?.data?.data
+                                ?.firstWhere((org) =>
+                                    org.name ==
+                                    cubit.organizationController.text)
+                                .id
+                                ?.toString();
 
-                            context
-                                .read<AddTaskCubit>()
-                                .getBuilding(selectedOrganization!.id!);
+                            if (selectedOrganization != null) {
+                              cubit.organizationIdController.text =
+                                  selectedOrganization;
+                            }
+                            cubit.getBuilding();
                           },
                           suffixIcon: IconBroken.arrowDown2,
-                          controller: context
-                              .read<AddTaskCubit>()
-                              .organizationController,
                           keyboardType: TextInputType.text,
                         ),
                         verticalSpace(10),
@@ -315,44 +244,26 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                         ),
                         verticalSpace(5),
                         CustomDropDownList(
-                          hint: "Select building",
-                          items: context
-                                      .read<AddTaskCubit>()
-                                      .buildingModel
-                                      ?.data
-                                      ?.data
-                                      ?.isEmpty ??
-                                  true
-                              ? ['No building']
-                              : context
-                                      .read<AddTaskCubit>()
-                                      .buildingModel
-                                      ?.data
-                                      ?.data
-                                      ?.map((e) => e.name ?? 'Unknown')
-                                      .toList() ??
-                                  [],
-                          onPressed: (value) {
-                            final selectedBuilding = context
-                                .read<AddTaskCubit>()
-                                .buildingModel
-                                ?.data
-                                ?.data
-                                ?.firstWhere((building) =>
-                                    building.name ==
-                                    context
-                                        .read<AddTaskCubit>()
-                                        .buildingController
-                                        .text);
+                          hint: S.of(context).selectBuilding,
+                          controller: cubit.buildingController,
+                          items: cubit.buildingItem
+                              .map((e) => e.name ?? 'Unknown')
+                              .toList(),
+                          onChanged: (value) {
+                            final selectedBuilding = cubit
+                                .buildingModel?.data?.data
+                                ?.firstWhere((bld) =>
+                                    bld.name == cubit.buildingController.text)
+                                .id
+                                ?.toString();
 
-                            context
-                                .read<AddTaskCubit>()
-                                .getFloor(selectedBuilding!.id!);
-                            buildingId = selectedBuilding.id;
+                            if (selectedBuilding != null) {
+                              cubit.buildingIdController.text =
+                                  selectedBuilding;
+                            }
+                            cubit.getFloor();
                           },
                           suffixIcon: IconBroken.arrowDown2,
-                          controller:
-                              context.read<AddTaskCubit>().buildingController,
                           keyboardType: TextInputType.text,
                         ),
                         verticalSpace(10),
@@ -373,44 +284,24 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                         ),
                         verticalSpace(5),
                         CustomDropDownList(
-                          hint: "Select floor",
-                          items: context
-                                      .read<AddTaskCubit>()
-                                      .floorModel
-                                      ?.data
-                                      ?.data
-                                      ?.isEmpty ??
-                                  true
-                              ? ['No floors']
-                              : context
-                                      .read<AddTaskCubit>()
-                                      .floorModel
-                                      ?.data
-                                      ?.data
-                                      ?.map((e) => e.name ?? 'Unknown')
-                                      .toList() ??
-                                  [],
-                          onPressed: (value) {
-                            final selectedFloor = context
-                                .read<AddTaskCubit>()
-                                .floorModel
-                                ?.data
-                                ?.data
+                          hint: S.of(context).selectFloor,
+                          controller: cubit.floorController,
+                          items: cubit.floorItem
+                              .map((e) => e.name ?? 'Unknown')
+                              .toList(),
+                          onChanged: (value) {
+                            final selectedFloor = cubit.floorModel?.data?.data
                                 ?.firstWhere((floor) =>
-                                    floor.name ==
-                                    context
-                                        .read<AddTaskCubit>()
-                                        .floorController
-                                        .text);
+                                    floor.name == cubit.floorController.text)
+                                .id
+                                ?.toString();
 
-                            context
-                                .read<AddTaskCubit>()
-                                .getSection(selectedFloor!.id!);
-                            floorId = selectedFloor.id;
+                            if (selectedFloor != null) {
+                              cubit.floorIdController.text = selectedFloor;
+                            }
+                            cubit.getSection();
                           },
                           suffixIcon: IconBroken.arrowDown2,
-                          controller:
-                              context.read<AddTaskCubit>().floorController,
                           keyboardType: TextInputType.text,
                         ),
                         verticalSpace(10),
@@ -431,44 +322,25 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                         ),
                         verticalSpace(5),
                         CustomDropDownList(
-                          hint: "Select section",
-                          items: context
-                                      .read<AddTaskCubit>()
-                                      .sectionModel
-                                      ?.data
-                                      ?.data
-                                      ?.isEmpty ??
-                                  true
-                              ? ['No sections']
-                              : context
-                                      .read<AddTaskCubit>()
-                                      .sectionModel
-                                      ?.data
-                                      ?.data
-                                      ?.map((e) => e.name ?? 'Unknown')
-                                      .toList() ??
-                                  [],
-                          onPressed: (value) {
-                            final selectedSection = context
-                                .read<AddTaskCubit>()
-                                .sectionModel
-                                ?.data
-                                ?.data
+                          hint: S.of(context).selectSection,
+                          controller: cubit.sectionController,
+                          items: cubit.sectionItem
+                              .map((e) => e.name ?? 'Unknown')
+                              .toList(),
+                          onChanged: (value) {
+                            final selectedSection = cubit
+                                .sectionModel?.data?.data
                                 ?.firstWhere((section) =>
                                     section.name ==
-                                    context
-                                        .read<AddTaskCubit>()
-                                        .sectionController
-                                        .text);
+                                    cubit.sectionController.text)
+                                .id
+                                ?.toString();
 
-                            context
-                                .read<AddTaskCubit>()
-                                .getPoint(selectedSection!.id!);
-                            sectionId = selectedSection.id;
+                            if (selectedSection != null) {
+                              cubit.sectionIdController.text = selectedSection;
+                            }
                           },
                           suffixIcon: IconBroken.arrowDown2,
-                          controller:
-                              context.read<AddTaskCubit>().sectionController,
                           keyboardType: TextInputType.text,
                         ),
                         verticalSpace(10),
@@ -489,49 +361,26 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                         ),
                         verticalSpace(5),
                         CustomDropDownList(
-                          hint: "Select point",
-                          items: context
-                                      .read<AddTaskCubit>()
-                                      .pointModel
-                                      ?.data
-                                      ?.data
-                                      ?.isEmpty ??
-                                  true
-                              ? ['No point']
-                              : context
-                                      .read<AddTaskCubit>()
-                                      .pointModel
-                                      ?.data
-                                      ?.data
-                                      ?.map((e) => e.name ?? 'Unknown')
-                                      .toList() ??
-                                  [],
-                          onPressed: (value) {
-                            final selectedPoint = context
-                                .read<AddTaskCubit>()
-                                .pointModel
-                                ?.data
-                                ?.data
+                          hint: 'Select point',
+                          controller: cubit.pointController,
+                          items: cubit.pointItem
+                              .map((e) => e.name ?? 'Unknown')
+                              .toList(),
+                          onChanged: (value) {
+                            final selectedPoint = cubit.pointModel?.data?.data
                                 ?.firstWhere((point) =>
-                                    point.name ==
-                                    context
-                                        .read<AddTaskCubit>()
-                                        .pointController
-                                        .text);
+                                    point.name == cubit.pointController.text)
+                                .id
+                                ?.toString();
 
-                            context
-                                .read<AddTaskCubit>()
-                                .getPoint(selectedPoint!.id!);
-                            pointId = selectedPoint.id;
-                            isPointCountable =
-                                selectedPoint.isCountable ?? false;
+                            if (selectedPoint != null) {
+                              cubit.pointIdController.text = selectedPoint;
+                            }
                           },
                           suffixIcon: IconBroken.arrowDown2,
-                          controller:
-                              context.read<AddTaskCubit>().pointController,
                           keyboardType: TextInputType.text,
                         ),
-                        if (isPointCountable) ...[
+                        if (cubit.isPointCountable) ...[
                           verticalSpace(10),
                           Text(
                             "Currently reading",
@@ -540,9 +389,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                           CustomTextFormField(
                             onlyRead: false,
                             hint: "Write Currently reading",
-                            controller: context
-                                .read<AddTaskCubit>()
-                                .currentlyReadingController,
+                            controller: cubit.currentlyReadingController,
                             keyboardType: TextInputType.number,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -553,7 +400,8 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                               return null;
                             },
                             onChanged: (value) {
-                              currentReading = double.parse(value);
+                              cubit.currentlyReadingController.text =
+                                  double.parse(value).toString();
                             },
                           ),
                           verticalSpace(10),
@@ -574,16 +422,16 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                             final selectedIndex = items.indexOf(selectedValue);
                             if (selectedIndex != -1) {
                               if (selectedIndex == 1) {
-                                statusId = 3;
+                                cubit.statusIdController.text = '3';
                               } else if (selectedIndex == 2) {
-                                statusId = 6;
+                                cubit.statusIdController.text = '6';
                               } else {
-                                statusId = selectedIndex;
+                                cubit.statusIdController.text =
+                                    selectedIndex.toString();
                               }
                             }
 
-                            context.read<AddTaskCubit>().statusController.text =
-                                selectedValue;
+                            cubit.statusController.text = selectedValue;
                           },
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -595,8 +443,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                           items: ['Pending', 'Completed', 'Overdue'],
                           suffixIcon: IconBroken.arrowDown2,
                           keyboardType: TextInputType.text,
-                          controller:
-                              context.read<AddTaskCubit>().statusController,
+                          controller: cubit.statusController,
                         ),
                         verticalSpace(10),
                         Row(
@@ -614,9 +461,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                 CustomTextFormField(
                                   onlyRead: true,
                                   hint: "--/--/---",
-                                  controller: context
-                                      .read<AddTaskCubit>()
-                                      .startDateController,
+                                  controller: cubit.startDateController,
                                   suffixIcon: Icons.calendar_today,
                                   suffixPressed: () async {
                                     final selectedDate =
@@ -625,10 +470,8 @@ class _AddTaskBodyState extends State<AddTaskBody> {
 
                                     if (selectedDate != null &&
                                         context.mounted) {
-                                      context
-                                          .read<AddTaskCubit>()
-                                          .startDateController
-                                          .text = selectedDate;
+                                      cubit.startDateController.text =
+                                          selectedDate;
                                     }
                                   },
                                   keyboardType: TextInputType.none,
@@ -654,9 +497,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                 CustomTextFormField(
                                   onlyRead: true,
                                   hint: "--/--/---",
-                                  controller: context
-                                      .read<AddTaskCubit>()
-                                      .endDateController,
+                                  controller: cubit.endDateController,
                                   suffixIcon: Icons.calendar_today,
                                   suffixPressed: () async {
                                     final selectedDate =
@@ -665,10 +506,8 @@ class _AddTaskBodyState extends State<AddTaskBody> {
 
                                     if (selectedDate != null &&
                                         context.mounted) {
-                                      context
-                                          .read<AddTaskCubit>()
-                                          .endDateController
-                                          .text = selectedDate;
+                                      cubit.endDateController.text =
+                                          selectedDate;
                                     }
                                   },
                                   keyboardType: TextInputType.none,
@@ -699,9 +538,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                 CustomTextFormField(
                                   onlyRead: true,
                                   hint: '00:00 AM',
-                                  controller: context
-                                      .read<AddTaskCubit>()
-                                      .startTimeController,
+                                  controller: cubit.startTimeController,
                                   suffixIcon: Icons.timer_sharp,
                                   suffixPressed: () async {
                                     final selectedTime =
@@ -710,10 +547,8 @@ class _AddTaskBodyState extends State<AddTaskBody> {
 
                                     if (selectedTime != null &&
                                         context.mounted) {
-                                      context
-                                          .read<AddTaskCubit>()
-                                          .startTimeController
-                                          .text = selectedTime;
+                                      cubit.startTimeController.text =
+                                          selectedTime;
                                     }
                                   },
                                   keyboardType: TextInputType.none,
@@ -739,9 +574,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                 CustomTextFormField(
                                   onlyRead: true,
                                   hint: "09:30 PM",
-                                  controller: context
-                                      .read<AddTaskCubit>()
-                                      .endTimeController,
+                                  controller: cubit.endTimeController,
                                   suffixIcon: Icons.timer_sharp,
                                   suffixPressed: () async {
                                     final selectedTime =
@@ -750,10 +583,8 @@ class _AddTaskBodyState extends State<AddTaskBody> {
 
                                     if (selectedTime != null &&
                                         context.mounted) {
-                                      context
-                                          .read<AddTaskCubit>()
-                                          .endTimeController
-                                          .text = selectedTime;
+                                      cubit.endTimeController.text =
+                                          selectedTime;
                                     }
                                   },
                                   keyboardType: TextInputType.none,
@@ -787,9 +618,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                         verticalSpace(5),
                         MultiDropdown<UserItem>(
                           items: items!,
-                          controller: context
-                              .read<AddTaskCubit>()
-                              .supervisorsController,
+                          controller: cubit.usersController,
                           enabled: true,
                           chipDecoration: ChipDecoration(
                             backgroundColor: Colors.grey[300],
@@ -804,12 +633,12 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                             showClearIcon: false,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8.r),
-                              borderSide: const BorderSide(color: Colors.grey),
+                              borderSide: BorderSide(color: Colors.grey[300]!),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8.r),
                               borderSide: const BorderSide(
-                                color: Colors.grey,
+                                color: AppColor.primaryColor,
                               ),
                             ),
                             errorBorder: OutlineInputBorder(
@@ -826,7 +655,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                 const Icon(Icons.check_box, color: Colors.blue),
                           ),
                           onSelectionChange: (selectedItems) {
-                            selectedSupervisorIds = selectedItems
+                            cubit.selectedUsersIds = selectedItems
                                 .map((item) => (item).id!)
                                 .toList();
                           },
@@ -846,9 +675,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                               }
                               return null;
                             },
-                            controller: context
-                                .read<AddTaskCubit>()
-                                .descriptionController,
+                            controller: cubit.descriptionController,
                             hint: "description..."),
                         verticalSpace(10),
                         Text(
@@ -864,7 +691,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                               children: [
                                 ElevatedButton(
                                   onPressed: () {
-                                    context.read<AddTaskCubit>().galleryFile();
+                                    cubit.galleryFile();
                                   },
                                   style: ElevatedButton.styleFrom(
                                       shape: const CircleBorder(),
@@ -886,7 +713,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                               children: [
                                 ElevatedButton(
                                   onPressed: () {
-                                    context.read<AddTaskCubit>().cameraFile();
+                                    cubit.cameraFile();
                                   },
                                   style: ElevatedButton.styleFrom(
                                       shape: const CircleBorder(),
@@ -920,10 +747,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                         body: Center(
                                           child: PhotoView(
                                             imageProvider: FileImage(
-                                              File(context
-                                                  .read<AddTaskCubit>()
-                                                  .image!
-                                                  .path),
+                                              File(cubit.image!.path),
                                             ),
                                             backgroundDecoration:
                                                 const BoxDecoration(
@@ -943,10 +767,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                       borderRadius:
                                           BorderRadius.circular(10.r)),
                                   child: Image.file(
-                                    File(context
-                                        .read<AddTaskCubit>()
-                                        .image!
-                                        .path),
+                                    File(cubit.image!.path),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -960,24 +781,11 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                     name: "Create",
                                     onPressed: () {
                                       setState(() {
-                                        _isFormSubmitted = true;
+                                        cubit.isFormSubmitted = true;
                                       });
-                                      if (context
-                                          .read<AddTaskCubit>()
-                                          .formKey
-                                          .currentState!
+                                      if (cubit.formKey.currentState!
                                           .validate()) {
-                                        context.read<AddTaskCubit>().addTask(
-                                            priorityId: selectedPriority,
-                                            statusId: statusId,
-                                            buildingId: buildingId,
-                                            floorId: floorId,
-                                            sectionId: sectionId,
-                                            pointId: pointId,
-                                            selectedSupervisorIds:
-                                                selectedSupervisorIds,
-                                            parentId: parentId,
-                                            currentReading: currentReading);
+                                        cubit.addTask(image: cubit.image?.path);
                                       }
                                     },
                                     color: AppColor.primaryColor,
@@ -988,7 +796,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                               ),
                         verticalSpace(30),
                       ])),
-            )));
+            ));
           },
         ));
   }

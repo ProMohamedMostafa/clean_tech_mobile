@@ -7,11 +7,11 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_message/widgets/pop_up_header.dart';
 
-class PopUpMeassage extends StatelessWidget {
+class PopUpMessage extends StatelessWidget {
   final String title;
   final String body;
   final Function? onPressed;
-  const PopUpMeassage(
+  const PopUpMessage(
       {super.key,
       required this.title,
       required this.body,

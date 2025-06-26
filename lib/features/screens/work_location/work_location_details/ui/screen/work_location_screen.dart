@@ -1,0 +1,340 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
+import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
+import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/routing/routes.dart';
+import 'package:smart_cleaning_application/core/theming/colors/color.dart';
+import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
+import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
+import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
+import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
+import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_details/logic/cubit/work_location_details_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_details/ui/widgets/work_location_leaves/work_location_leaves_details.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_details/ui/widgets/work_location_details/work_location_details.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_details/ui/widgets/work_location_history/work_location_attendance_details.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_details/ui/widgets/work_location_shifts/work_location_shifts.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_details/ui/widgets/work_location_tasks/work_location_tasks.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_details/ui/widgets/work_location_users/cleaners/work_location_cleaners.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_details/ui/widgets/work_location_users/managers/work_location_managers.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_details/ui/widgets/work_location_users/supervisors/work_location_supervisors.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
+
+class WorkLocationDetailsScreen extends StatefulWidget {
+  final int selectedIndex;
+  final int id;
+  const WorkLocationDetailsScreen(
+      {super.key, required this.id, required this.selectedIndex});
+
+  @override
+  State<WorkLocationDetailsScreen> createState() =>
+      _WorkLocationDetailsScreenState();
+}
+
+class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
+    with TickerProviderStateMixin {
+  late TabController controller;
+
+  @override
+  void initState() {
+    controller = TabController(length: 8, vsync: this);
+    controller.addListener(() {
+      setState(() {});
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<WorkLocationDetailsCubit>();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          widget.selectedIndex == 0
+              ? 'Area details'
+              : widget.selectedIndex == 1
+                  ? 'City details'
+                  : widget.selectedIndex == 2
+                      ? 'Organization details'
+                      : widget.selectedIndex == 3
+                          ? 'Building details'
+                          : widget.selectedIndex == 4
+                              ? 'Floor details'
+                              : widget.selectedIndex == 5
+                                  ? 'Section details'
+                                  : 'Point details',
+        ),
+        leading: CustomBackButton(),
+        actions: [
+          IconButton(
+            onPressed: () {
+              // generateAndSavePDF(context);
+            },
+            icon: Icon(
+              CupertinoIcons.tray_arrow_down,
+              color: Colors.red,
+              size: 22.sp,
+            ),
+          ),
+          if (role == 'Admin') ...[
+            IconButton(
+                onPressed: () {
+                  widget.selectedIndex == 0
+                      ? context.pushNamed(Routes.editAreaScreen,
+                          arguments: widget.id)
+                      : widget.selectedIndex == 1
+                          ? context.pushNamed(Routes.editCityScreen,
+                              arguments: widget.id)
+                          : widget.selectedIndex == 2
+                              ? context.pushNamed(Routes.editOrganizationScreen,
+                                  arguments: widget.id)
+                              : widget.selectedIndex == 3
+                                  ? context.pushNamed(Routes.editBuildingScreen,
+                                      arguments: widget.id)
+                                  : widget.selectedIndex == 4
+                                      ? context.pushNamed(
+                                          Routes.editFloorScreen,
+                                          arguments: widget.id)
+                                      : widget.selectedIndex == 5
+                                          ? context.pushNamed(
+                                              Routes.editSectionScreen,
+                                              arguments: widget.id)
+                                          : context.pushNamed(
+                                              Routes.editPointScreen,
+                                              arguments: widget.id);
+                },
+                icon: Icon(
+                  Icons.edit,
+                  color: AppColor.primaryColor,
+                ))
+          ]
+        ],
+      ),
+      body: BlocConsumer<WorkLocationDetailsCubit, WorkLocationDetailsState>(
+        listener: (context, state) {
+          if (state is AreaDeleteSuccessState) {
+            toast(text: state.deleteAreaModel.message!, color: Colors.blue);
+            // context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
+            //     arguments: 0);
+            Navigator.of(context).pop(true);
+          }
+          if (state is AreaDeleteErrorState) {
+            toast(text: state.error, color: Colors.red);
+          }
+          if (state is CityDeleteSuccessState) {
+            toast(text: state.deleteCityModel.message!, color: Colors.blue);
+            // context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
+            //     arguments: 1);
+            Navigator.of(context).pop(true);
+          }
+          if (state is CityDeleteErrorState) {
+            toast(text: state.error, color: Colors.red);
+          }
+          if (state is OrganizationDeleteSuccessState) {
+            toast(
+                text: state.deleteOrganizationModel.message!,
+                color: Colors.blue);
+            // context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
+            //     arguments: 2);
+            Navigator.of(context).pop(true);
+          }
+          if (state is OrganizationDeleteErrorState) {
+            toast(text: state.error, color: Colors.red);
+          }
+          if (state is BuildingDeleteSuccessState) {
+            toast(text: state.deleteBuildingModel.message!, color: Colors.blue);
+            // context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
+            //     arguments: 3);
+            Navigator.of(context).pop(true);
+          }
+          if (state is BuildingDeleteErrorState) {
+            toast(text: state.error, color: Colors.red);
+          }
+          if (state is FloorDeleteSuccessState) {
+            toast(text: state.deleteFloorModel.message!, color: Colors.blue);
+            // context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
+            //     arguments: 4);
+            Navigator.of(context).pop(true);
+          }
+          if (state is FloorDeleteErrorState) {
+            toast(text: state.error, color: Colors.red);
+          }
+          if (state is SectionDeleteSuccessState) {
+            toast(text: state.deleteSectionModel.message!, color: Colors.blue);
+            // context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
+            //     arguments: 5);
+            Navigator.of(context).pop(true);
+          }
+          if (state is SectionDeleteErrorState) {
+            toast(text: state.error, color: Colors.red);
+          }
+          if (state is PointDeleteSuccessState) {
+            toast(text: state.deletePointModel.message!, color: Colors.blue);
+            // context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
+            //     arguments: 6);
+            Navigator.of(context).pop(true);
+          }
+          if (state is PointDeleteErrorState) {
+            toast(text: state.error, color: Colors.red);
+          }
+        },
+        builder: (context, state) {
+          if ((widget.selectedIndex == 0 &&
+                  (cubit.areaUsersDetailsModel == null ||
+                      cubit.areaTreeModel == null)) ||
+              (widget.selectedIndex == 1 &&
+                  (cubit.cityUsersDetailsModel == null ||
+                      cubit.cityTreeModel == null)) ||
+              (widget.selectedIndex == 2 &&
+                  (cubit.organizationUsersShiftDetailsModel == null ||
+                      cubit.organizationTreeModel == null)) ||
+              (widget.selectedIndex == 3 &&
+                  (cubit.buildingUsersShiftDetailsModel == null ||
+                      cubit.buildingTreeModel == null)) ||
+              (widget.selectedIndex == 4 &&
+                  (cubit.floorUsersShiftDetailsModel == null ||
+                      cubit.floorTreeModel == null)) ||
+              (widget.selectedIndex == 5 &&
+                  (cubit.sectionUsersShiftDetailsModel == null ||
+                      cubit.sectionTreeModel == null)) ||
+              (widget.selectedIndex == 6 &&
+                  (cubit.pointUsersDetailsModel == null))) {
+            return Loading();
+          }
+
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 42.h,
+                  width: double.infinity,
+                  child: AnimatedBuilder(
+                    animation: controller,
+                    builder: (context, _) {
+                      final shiftLabels = [
+                        S.of(context).workLocation,
+                        S.of(context).managers,
+                        S.of(context).supervisors,
+                        S.of(context).cleaners,
+                        "Shifts",
+                        S.of(context).tasks,
+                        S.of(context).attendance,
+                        S.of(context).leaves,
+                      ];
+                      return TabBar(
+                        controller: controller,
+                        tabAlignment: TabAlignment.center,
+                        isScrollable: true,
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        indicator: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5.r),
+                          color: AppColor.primaryColor,
+                        ),
+                        tabs: List.generate(shiftLabels.length, (index) {
+                          return Tab(
+                            child: Text(
+                              shiftLabels[index],
+                              style: TextStyle(
+                                color: controller.index == index
+                                    ? Colors.white
+                                    : Colors.black,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                          );
+                        }),
+                      );
+                    },
+                  ),
+                ),
+                verticalSpace(10),
+                Expanded(
+                  child: TabBarView(controller: controller, children: [
+                    WorkLocationDetails(selectedIndex: widget.selectedIndex),
+                    WorkLocationManagers(selectedIndex: widget.selectedIndex),
+                    WorkLocationSupervisors(
+                        selectedIndex: widget.selectedIndex),
+                    WorkLocationCleaners(selectedIndex: widget.selectedIndex),
+                    WorkLocationShifts(selectedIndex: widget.selectedIndex),
+                    WorkLocationTasks(selectedIndex: widget.selectedIndex),
+                    WorkLocationAttendanceDetails(
+                        selectedIndex: widget.selectedIndex),
+                    WorkLocationLeavesDetails(
+                        selectedIndex: widget.selectedIndex)
+                  ]),
+                ),
+                verticalSpace(15),
+                if (role == 'Admin')
+                  DefaultElevatedButton(
+                      name: S.of(context).deleteButton,
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (dialogContext) {
+                              return PopUpMessage(
+                                  title: S.of(context).TitleDelete,
+                                  body: widget.selectedIndex == 0
+                                      ? "area"
+                                      : widget.selectedIndex == 1
+                                          ? "city"
+                                          : widget.selectedIndex == 2
+                                              ? "organization"
+                                              : widget.selectedIndex == 3
+                                                  ? "building"
+                                                  : widget.selectedIndex == 4
+                                                      ? "floor"
+                                                      : widget.selectedIndex ==
+                                                              5
+                                                          ? "section"
+                                                          : "point",
+                                  onPressed: () {
+                                    widget.selectedIndex == 0
+                                        ? cubit.deleteArea(widget.id)
+                                        : widget.selectedIndex == 1
+                                            ? cubit.deleteCity(widget.id)
+                                            : widget.selectedIndex == 2
+                                                ? cubit.deleteOrganization(
+                                                    widget.id)
+                                                : widget.selectedIndex == 3
+                                                    ? cubit.deleteBuilding(
+                                                        widget.id)
+                                                    : widget.selectedIndex == 4
+                                                        ? cubit.deleteFloor(
+                                                            widget.id)
+                                                        : widget.selectedIndex ==
+                                                                5
+                                                            ? cubit
+                                                                .deleteSection(
+                                                                    widget.id)
+                                                            : cubit.deletePoint(
+                                                                widget.id);
+                                  });
+                            });
+                      },
+                      color: Colors.red,
+                      height: 47,
+                      width: double.infinity,
+                      textStyles: TextStyles.font20Whitesemimedium),
+                verticalSpace(20),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}

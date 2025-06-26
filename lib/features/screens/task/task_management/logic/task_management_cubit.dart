@@ -4,9 +4,9 @@ import 'package:intl/intl.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/core/widgets/filter/data/model/filter_dialog_data_model.dart';
-import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/all_tasks_model.dart';
-import 'package:smart_cleaning_application/features/screens/task/task_management/data/delete_task_list_model.dart';
-import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/delete_task_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/all_tasks_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/delete_task_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/delete_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_state.dart';
 
 class TaskManagementCubit extends Cubit<TaskManagementState> {
@@ -42,11 +42,14 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
       'SectionId': filterModel?.sectionId,
       'PointId': filterModel?.pointId,
       'ProviderId': filterModel?.providerId,
-      'StartDate': DateFormat('yyyy-MM-dd')
+      'StartDate': DateFormat('yyyy-MM-dd', 'en')
           .format(filterModel?.startDate ?? selectedDate),
-      'EndDate': filterModel?.endDate,
+      'EndDate': filterModel?.endDate != null
+          ? DateFormat('yyyy-MM-dd', 'en').format(filterModel!.endDate!)
+          : null,
       'StartTime': filterModel?.startTime,
       'EndTime': filterModel?.endTime,
+      'DeviceId': filterModel?.deviceId
     }).then((value) {
       final newTask = AllTasksModel.fromJson(value!.data);
 
@@ -124,7 +127,6 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
         // Add to deleted list
         deletedTasks.insert(0, deletedTask);
 
-        //  Reload current page to refill to 10 users
         if (currentPage == 1) {
           allTasksModel = null;
           getAllTasks();
@@ -141,7 +143,6 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
     DioHelper.postData(url: 'tasks/restore/$id').then((value) {
       final message = value?.data['message'] ?? "restored successfully";
 
-      // Find and process the restored user
       final restoredData = deleteTaskListModel?.data?.firstWhere(
         (data) => data.id == id,
       );
@@ -202,4 +203,19 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
     'Overdue',
     'Deleted'
   ];
+
+  Color getPriorityColor(String? priorityValue) {
+    final List<String> priorities = ["High", "Medium", "Low"];
+    final List<Color> colors = [
+      Colors.red,
+      Colors.orange,
+      Colors.green,
+    ];
+
+    if (priorityValue != null && priorities.contains(priorityValue)) {
+      return colors[priorities.indexOf(priorityValue)];
+    } else {
+      return Colors.black;
+    }
+  }
 }

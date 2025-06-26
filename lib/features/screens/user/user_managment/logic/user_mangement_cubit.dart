@@ -88,9 +88,20 @@ class UserManagementCubit extends Cubit<UserManagementState> {
       if (deletedListModel == null) {
         getAllDeletedUser();
       } else {
-        emit(DeletedUsersSuccessState(deletedListModel!));
+        emit(AllDeletedUsersSuccessState(deletedListModel!));
       }
     }
+  }
+
+  DeletedListModel? deletedListModel;
+  getAllDeletedUser() {
+    emit(AllDeletedUsersLoadingState());
+    DioHelper.getData(url: ApiConstants.deleteUserListUrl).then((value) {
+      deletedListModel = DeletedListModel.fromJson(value!.data);
+      emit(AllDeletedUsersSuccessState(deletedListModel!));
+    }).catchError((error) {
+      emit(AllDeletedUsersErrorState(error.toString()));
+    });
   }
 
   DeleteUserModel? deleteUserModel;
@@ -99,7 +110,7 @@ class UserManagementCubit extends Cubit<UserManagementState> {
   userDelete(int id) {
     emit(UserDeleteLoadingState());
 
-    DioHelper.postData(url: 'users/delete/$id', data: {'id': id}).then((value) {
+    DioHelper.postData(url: 'users/delete/$id').then((value) {
       deleteUserModel = DeleteUserModel.fromJson(value!.data);
 
       final deletedUser = usersModel?.data?.users?.firstWhere(
@@ -130,22 +141,10 @@ class UserManagementCubit extends Cubit<UserManagementState> {
     });
   }
 
-  DeletedListModel? deletedListModel;
-  getAllDeletedUser() {
-    emit(DeletedUsersLoadingState());
-    DioHelper.getData(url: ApiConstants.deleteUserListUrl).then((value) {
-      deletedListModel = DeletedListModel.fromJson(value!.data);
-      emit(DeletedUsersSuccessState(deletedListModel!));
-    }).catchError((error) {
-      emit(DeletedUsersErrorState(error.toString()));
-    });
-  }
-
   restoreDeletedUser(int id) {
     emit(RestoreUsersLoadingState());
 
-    DioHelper.postData(url: 'users/restore/$id', data: {'id': id})
-        .then((value) {
+    DioHelper.postData(url: 'users/restore/$id').then((value) {
       final responseMessage = value?.data['message'] ?? "Restored successfully";
 
       // Find and process the restored user
@@ -188,8 +187,7 @@ class UserManagementCubit extends Cubit<UserManagementState> {
 
   forcedDeletedUser(int id) {
     emit(ForceDeleteUsersLoadingState());
-    DioHelper.deleteData(url: 'users/forcedelete/$id')
-        .then((value) {
+    DioHelper.deleteData(url: 'users/forcedelete/$id').then((value) {
       final message = value?.data['message'] ?? "deleted successfully";
       emit(ForceDeleteUsersSuccessState(message));
     }).catchError((error) {

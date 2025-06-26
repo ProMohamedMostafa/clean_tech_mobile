@@ -7,7 +7,7 @@ import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
-import 'package:smart_cleaning_application/features/screens/task/view_task/logic/cubit/task_details_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/task/view_task/logic/task_details_cubit.dart';
 
 class CustomCurrentReadDialog {
   static Future<String?> show(

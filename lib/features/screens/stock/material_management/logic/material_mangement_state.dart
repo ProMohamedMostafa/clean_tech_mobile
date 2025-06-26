@@ -3,7 +3,6 @@ import 'package:smart_cleaning_application/features/screens/provider/provider_ma
 import 'package:smart_cleaning_application/features/screens/stock/material_management/data/model/delete_material_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/data/model/deleted_material_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/data/model/material_management_model.dart';
-import 'package:smart_cleaning_application/features/screens/stock/view_material/data/model/material_details_model.dart';
 
 abstract class MaterialManagementState {}
 
@@ -77,20 +76,7 @@ class ForceDeleteMaterialErrorState extends MaterialManagementState {
   final String error;
   ForceDeleteMaterialErrorState(this.error);
 }
-//***************** */
 
-class MaterialDetailsLoadingState extends MaterialManagementState {}
-
-class MaterialDetailsSuccessState extends MaterialManagementState {
-  final MaterialDetailsModel materialDetailsModelModel;
-
-  MaterialDetailsSuccessState(this.materialDetailsModelModel);
-}
-
-class MaterialDetailsErrorState extends MaterialManagementState {
-  final String error;
-  MaterialDetailsErrorState(this.error);
-}
 //**************************** */
 
 class AllProvidersLoadingState extends MaterialManagementState {}

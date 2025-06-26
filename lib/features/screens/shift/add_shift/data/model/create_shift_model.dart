@@ -4,6 +4,7 @@ class CreateShiftModel {
   bool? succeeded;
   String? message;
   String? error;
+  int? businessErrorCode;
   String? data;
 
   CreateShiftModel(
@@ -12,6 +13,7 @@ class CreateShiftModel {
       this.succeeded,
       this.message,
       this.error,
+      this.businessErrorCode,
       this.data});
 
   CreateShiftModel.fromJson(Map<String, dynamic> json) {
@@ -20,17 +22,19 @@ class CreateShiftModel {
     succeeded = json['succeeded'];
     message = json['message'];
     error = json['error'];
+    businessErrorCode = json['businessErrorCode'];
     data = json['data'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data =  <String, dynamic>{};
     data['statusCode'] = statusCode;
     data['meta'] = meta;
     data['succeeded'] = succeeded;
     data['message'] = message;
     data['error'] = error;
-    data['data'] = data;
+    data['businessErrorCode'] = businessErrorCode;
+    data['data'] = this.data;
     return data;
   }
 }

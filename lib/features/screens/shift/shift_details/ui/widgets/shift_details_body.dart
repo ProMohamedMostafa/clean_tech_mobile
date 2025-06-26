@@ -49,9 +49,10 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<ShiftDetailsCubit>();
     return Scaffold(
       appBar: AppBar(
-        title: Text("Shift details"),
+        title: Text(S.of(context).shiftDetails),
         leading: CustomBackButton(),
         actions: [
           IconButton(
@@ -80,7 +81,7 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
         listener: (context, state) {
           if (state is ShiftDeleteSuccessState) {
             toast(text: state.deleteShiftModel.message!, color: Colors.blue);
-            context.pushNamedAndRemoveLastTwo(Routes.shiftScreen);
+            Navigator.of(context).pop(true);
           }
           if (state is ShiftDeleteErrorState) {
             toast(text: state.error, color: Colors.red);
@@ -91,124 +92,96 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
             return Loading();
           }
 
-          return SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 42.h,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(5.r)),
-                        border: Border.all(color: AppColor.secondaryColor)),
-                    child: TabBar(
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 42.h,
+                  width: double.infinity,
+                  child: AnimatedBuilder(
+                    animation: controller,
+                    builder: (context, _) {
+                      final shiftLabels = [
+                        S.of(context).shiftDetails,
+                        S.of(context).Organization,
+                        S.of(context).Building,
+                        S.of(context).Floor,
+                        S.of(context).Section,
+                      ];
+                      return TabBar(
+                        controller: controller,
                         tabAlignment: TabAlignment.center,
                         isScrollable: true,
                         indicatorSize: TabBarIndicatorSize.tab,
-                        controller: controller,
-                        dividerColor: Colors.transparent,
                         indicator: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(5.r)),
-                          color: controller.index == controller.index
-                              ? AppColor.primaryColor
-                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(5.r),
+                          color: AppColor.primaryColor,
                         ),
-                        tabs: [
-                          Tab(
+                        tabs: List.generate(shiftLabels.length, (index) {
+                          return Tab(
                             child: Text(
-                              "Shift Details",
+                              shiftLabels[index],
                               style: TextStyle(
-                                  color: controller.index == 0
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14.sp),
+                                color: controller.index == index
+                                    ? Colors.white
+                                    : Colors.black,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14.sp,
+                              ),
                             ),
-                          ),
-                          Tab(
-                            child: Text(
-                              "Organization",
-                              style: TextStyle(
-                                  color: controller.index == 1
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14.sp),
-                            ),
-                          ),
-                          Tab(
-                            child: Text(
-                              "Building",
-                              style: TextStyle(
-                                  color: controller.index == 2
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14.sp),
-                            ),
-                          ),
-                          Tab(
-                            child: Text(
-                              "Floor",
-                              style: TextStyle(
-                                  color: controller.index == 3
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14.sp),
-                            ),
-                          ),
-                          Tab(
-                            child: Text(
-                              "Section",
-                              style: TextStyle(
-                                  color: controller.index == 4
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14.sp),
-                            ),
-                          ),
-                        ]),
+                          );
+                        }),
+                      );
+                    },
                   ),
-                  verticalSpace(20),
-                  Expanded(
-                    child: TabBarView(controller: controller, children: [
-                      ShiftDetails(),
-                      OrganizationListBuild(),
-                      BuildingListBuild(),
-                      FloorListBuild(),
-                      SectionListBuild(),
-                    ]),
-                  ),
-                  verticalSpace(15),
-                  if (role == 'Admin')
-                    DefaultElevatedButton(
-                        name: S.of(context).deleteButton,
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (dialogContext) {
-                                return PopUpMeassage(
-                                    title: 'delete',
-                                    body: 'shift',
-                                    onPressed: () {
-                                      context
-                                          .read<ShiftDetailsCubit>()
-                                          .shiftDelete(widget.id);
-                                    });
-                              });
-                        },
-                        color: Colors.red,
-                        height: 48,
-                        width: double.infinity,
-                        textStyles: TextStyles.font20Whitesemimedium),
-                  verticalSpace(20),
-                ],
-              ),
+                ),
+                verticalSpace(20),
+                Expanded(
+                  child: TabBarView(controller: controller, children: [
+                    cubit.shiftDetailsModel == null
+                        ? Loading()
+                        : ShiftDetails(),
+                    cubit.shiftDetailsModel == null
+                        ? Loading()
+                        : OrganizationListBuild(),
+                    cubit.shiftDetailsModel == null
+                        ? Loading()
+                        : BuildingListBuild(),
+                    cubit.shiftDetailsModel == null
+                        ? Loading()
+                        : FloorListBuild(),
+                    cubit.shiftDetailsModel == null
+                        ? Loading()
+                        : SectionListBuild(),
+                  ]),
+                ),
+                verticalSpace(15),
+                if (role == 'Admin')
+                  DefaultElevatedButton(
+                      name: S.of(context).deleteButton,
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (dialogContext) {
+                              return PopUpMessage(
+                                  title: S.of(context).TitleDelete,
+                                  body: S.of(context).shiftBody,
+                                  onPressed: () {
+                                    context
+                                        .read<ShiftDetailsCubit>()
+                                        .shiftDelete(widget.id);
+                                  });
+                            });
+                      },
+                      color: Colors.red,
+                      height: 48,
+                      width: double.infinity,
+                      textStyles: TextStyles.font20Whitesemimedium),
+                verticalSpace(20),
+              ],
             ),
           );
         },

@@ -43,7 +43,7 @@ class MaterialCountModel {
 
 class Data {
   int? count;
-  int? percentage;
+  num? percentage;
 
   Data({this.count, this.percentage});
 

@@ -132,7 +132,14 @@ class DioHelper {
     required FormData data,
   }) async {
     try {
-      return await dio!.post(url, queryParameters: query, data: data);
+      return await dio!.post(
+        url,
+        queryParameters: query,
+        data: data,
+        options: Options(
+          contentType: 'multipart/form-data', // ✅ Add this line
+        ),
+      );
     } on DioException catch (e) {
       final error = ApiErrorHandler.handle(e);
       throw Exception(error.message);
@@ -170,7 +177,7 @@ class DioHelper {
   static Future<Response?> deleteData({
     required String url,
     Map<String, dynamic>? query,
-     Map<String, dynamic>? data,
+    Map<String, dynamic>? data,
   }) async {
     try {
       return await dio!.delete(url, queryParameters: query, data: data);

@@ -10,6 +10,7 @@ import 'package:smart_cleaning_application/core/widgets/default_button/default_e
 import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/provider/provider_management/logic/cubit/provider_cubit.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class BuildProviderItemList extends StatelessWidget {
   final int index;
@@ -43,136 +44,132 @@ class BuildProviderItemList extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12.r),
                         ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(16, 16, 4, 0),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: 8.w,
-                                    height: 24.h,
-                                    decoration: BoxDecoration(
-                                        color: AppColor.primaryColor,
-                                        borderRadius:
-                                            BorderRadius.circular(2.r)),
-                                  ),
-                                  horizontalSpace(8),
-                                  Text("Edit Provider",
-                                      style: TextStyles.font18BlackMedium),
-                                  const Spacer(),
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.close_rounded,
-                                      size: 26.sp,
+                        child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 8.w,
+                                      height: 24.h,
+                                      decoration: BoxDecoration(
+                                          color: AppColor.primaryColor,
+                                          borderRadius:
+                                              BorderRadius.circular(2.r)),
                                     ),
-                                    onPressed: () => Navigator.pop(context),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            verticalSpace(10),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
-                              child: Text(
-                                "Provider Name ",
-                                style: TextStyles.font14BlackMedium,
-                              ),
-                            ),
-                            verticalSpace(5),
-                            Form(
-                              key: cubit.formAddKey,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 16),
-                                child: CustomTextFormField(
-                                    color: Colors.grey,
-                                    controller: cubit.providerController
-                                      ..text = cubit.providersModel!.data!
-                                          .data![index].name!,
-                                    onlyRead: false,
-                                    keyboardType: TextInputType.text,
-                                    validator: (value) {
-                                      if (value!.length > 55) {
-                                        return 'return "name is too long';
-                                      } else if (value.length < 3) {
-                                        return 'name is too short';
-                                      }
-                                      return null;
-                                    }),
-                              ),
-                            ),
-                            verticalSpace(25),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: DefaultElevatedButton(
-                                        name: 'Edit',
-                                        textStyles:
-                                            TextStyles.font16WhiteSemiBold,
-                                        onPressed: () {
-                                          {
-                                            if (cubit.formAddKey.currentState
-                                                    ?.validate() ??
-                                                false) {
-                                              showDialog(
-                                                  context: context,
-                                                  builder: (dialogContext) {
-                                                    return PopUpMeassage(
-                                                        title: 'edit',
-                                                        body: 'provider',
-                                                        onPressed: () {
-                                                          cubit.editProvider(cubit
-                                                              .providersModel!
-                                                              .data!
-                                                              .data![index]
-                                                              .id);
-                                                          context.pop();
-                                                        });
-                                                  });
+                                    horizontalSpace(8),
+                                    Text(S.of(context).editProvider,
+                                        style: TextStyles.font18BlackMedium),
+                                    const Spacer(),
+                                    IconButton(
+                                      icon: Icon(
+                                        Icons.close_rounded,
+                                        size: 26.sp,
+                                      ),
+                                      onPressed: () => Navigator.pop(context),
+                                    ),
+                                  ],
+                                ),
+                                verticalSpace(10),
+                                Text(
+                                  S.of(context).providerName,
+                                  style: TextStyles.font14BlackMedium,
+                                ),
+                                verticalSpace(5),
+                                Form(
+                                  key: cubit.formAddKey,
+                                  child: CustomTextFormField(
+                                      color: Colors.grey,
+                                      controller: cubit.providerController
+                                        ..text = cubit.providersModel!.data!
+                                            .data![index].name!,
+                                      onlyRead: false,
+                                      keyboardType: TextInputType.text,
+                                      validator: (value) {
+                                        if (value!.length > 55) {
+                                          return S
+                                              .of(context)
+                                              .providerNameTooLongValidation;
+                                        } else if (value.length < 3) {
+                                          return S
+                                              .of(context)
+                                              .providerNameTooShortValidation;
+                                        }
+                                        return null;
+                                      }),
+                                ),
+                                verticalSpace(25),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: DefaultElevatedButton(
+                                          name: S.of(context).editButton,
+                                          textStyles:
+                                              TextStyles.font16WhiteSemiBold,
+                                          onPressed: () {
+                                            {
+                                              if (cubit.formAddKey.currentState
+                                                      ?.validate() ??
+                                                  false) {
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (dialogContext) {
+                                                      return PopUpMessage(
+                                                          title: S
+                                                              .of(context)
+                                                              .TitleEdit,
+                                                          body: S
+                                                              .of(context)
+                                                              .providerBody,
+                                                          onPressed: () {
+                                                            cubit.editProvider(cubit
+                                                                .providersModel!
+                                                                .data!
+                                                                .data![index]
+                                                                .id);
+                                                            context.pop();
+                                                          });
+                                                    });
+                                              }
                                             }
-                                          }
-                                        },
-                                        color: AppColor.primaryColor,
-                                        height: 43.h,
-                                        width: double.infinity),
-                                  ),
-                                  horizontalSpace(16),
-                                  Expanded(
-                                    child: DefaultElevatedButton(
-                                        name: 'Cancel',
-                                        textStyles:
-                                            TextStyles.font16PrimSemiBold,
-                                        onPressed: () {
-                                          context.pop();
-                                        },
-                                        color: AppColor.fourthColor,
-                                        height: 43.h,
-                                        width: double.infinity),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            verticalSpace(5),
-                          ],
-                        ));
+                                          },
+                                          color: AppColor.primaryColor,
+                                          height: 43.h,
+                                          width: double.infinity),
+                                    ),
+                                    horizontalSpace(16),
+                                    Expanded(
+                                      child: DefaultElevatedButton(
+                                          name: S.of(context).cancelButton,
+                                          textStyles:
+                                              TextStyles.font16PrimSemiBold,
+                                          onPressed: () {
+                                            context.pop();
+                                          },
+                                          color: AppColor.fourthColor,
+                                          height: 43.h,
+                                          width: double.infinity),
+                                    ),
+                                  ],
+                                ),
+                                verticalSpace(5),
+                              ],
+                            )));
                   },
                 );
               } else {
                 showDialog(
                     context: context,
                     builder: (dialogContext) {
-                      return PopUpMeassage(
-                          title: 'restore',
-                          body: 'provider',
+                      return PopUpMessage(
+                          title: S.of(context).TitleRestore,
+                          body: S.of(context).providerBody,
                           onPressed: () {
                             cubit.restoreDeletedProvider(
                               cubit.allDeletedProvidersModel!.data![index].id!,
@@ -198,9 +195,9 @@ class BuildProviderItemList extends StatelessWidget {
                 showDialog(
                     context: context,
                     builder: (dialogContext) {
-                      return PopUpMeassage(
-                          title: 'delete',
-                          body: 'provider',
+                      return PopUpMessage(
+                          title: S.of(context).TitleDelete,
+                          body: S.of(context).providerBody,
                           onPressed: () {
                             cubit.providerDelete(
                                 cubit.providersModel!.data!.data![index].id!);
@@ -210,9 +207,9 @@ class BuildProviderItemList extends StatelessWidget {
                 showDialog(
                     context: context,
                     builder: (dialogContext) {
-                      return PopUpMeassage(
-                          title: 'delete',
-                          body: 'provider',
+                      return PopUpMessage(
+                          title: S.of(context).TitleDelete,
+                          body: S.of(context).providerBody,
                           onPressed: () {
                             cubit.forcedDeletedProvider(cubit
                                 .allDeletedProvidersModel!.data![index].id!);

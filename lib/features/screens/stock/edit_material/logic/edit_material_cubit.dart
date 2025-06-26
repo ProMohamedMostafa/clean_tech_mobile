@@ -15,6 +15,7 @@ class EditMaterialCubit extends Cubit<EditMaterialState> {
 
   TextEditingController nameController = TextEditingController();
   TextEditingController categoryController = TextEditingController();
+  TextEditingController categoryIdController = TextEditingController();
   TextEditingController miniController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   final formKey = GlobalKey<FormState>();
@@ -22,7 +23,6 @@ class EditMaterialCubit extends Cubit<EditMaterialState> {
   EditMaterialModel? editMaterialModel;
   editMaterial(
     int id,
-    int? categoryId,
   ) {
     emit(EditMaterialLoadingState());
     DioHelper.putData(url: ApiConstants.editMaterialUrl, data: {
@@ -30,7 +30,9 @@ class EditMaterialCubit extends Cubit<EditMaterialState> {
       "name": nameController.text.isEmpty
           ? materialDetailsModel!.data!.name
           : nameController.text,
-      "categoryId": categoryId ?? materialDetailsModel!.data!.categoryId,
+      "categoryId": categoryController.text.isEmpty
+          ? materialDetailsModel!.data!.categoryId
+          : categoryIdController.text,
       "minThreshold": miniController.text.isEmpty
           ? materialDetailsModel!.data!.minThreshold
           : miniController.text,
@@ -57,13 +59,19 @@ class EditMaterialCubit extends Cubit<EditMaterialState> {
   }
 
   CategoryManagementModel? categoryManagementModel;
+  List<CategoryModel> categoryModel = [
+    CategoryModel(name: 'No categories available')
+  ];
   getCategoryList() {
-    emit(CategoryManagementLoadingState());
+    emit(CategoriesLoadingState());
     DioHelper.getData(url: ApiConstants.categoryUrl).then((value) {
       categoryManagementModel = CategoryManagementModel.fromJson(value!.data);
-      emit(CategoryManagementSuccessState(categoryManagementModel!));
+      categoryModel = categoryManagementModel?.data?.categories ??
+          [CategoryModel(name: 'No categories available')];
+      emit(CategoriesSuccessState(categoryManagementModel!));
     }).catchError((error) {
-      emit(CategoryManagementErrorState(error.toString()));
+      emit(CategoriesErrorState(error.toString()));
     });
   }
+
 }

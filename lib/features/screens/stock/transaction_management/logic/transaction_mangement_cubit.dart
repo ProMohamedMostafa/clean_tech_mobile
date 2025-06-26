@@ -6,7 +6,6 @@ import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper
 import 'package:smart_cleaning_application/core/widgets/filter/data/model/filter_dialog_data_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/transaction_management/data/model/transaction_management_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/transaction_management/logic/transaction_mangement_state.dart';
-import 'package:smart_cleaning_application/features/screens/stock/view_transaction/data/model/transaction_details_model.dart';
 
 class TransactionManagementCubit extends Cubit<TransactionManagementState> {
   TransactionManagementCubit() : super(TransactionManagementInitialState());
@@ -14,7 +13,6 @@ class TransactionManagementCubit extends Cubit<TransactionManagementState> {
   static TransactionManagementCubit get(context) => BlocProvider.of(context);
 
   TextEditingController searchController = TextEditingController();
-
   ScrollController scrollController = ScrollController();
 
   int selectedIndex = 0;
@@ -24,60 +22,40 @@ class TransactionManagementCubit extends Cubit<TransactionManagementState> {
   TransactionManagementModel? transactionManagementModel;
   TransactionManagementModel? transactionManagementInModel;
   TransactionManagementModel? transactionManagementOutModel;
-  getTransactionList() {
+  Future<void> getTransactionList({int? type, int page = 1}) async {
     emit(TransactionManagementLoadingState());
-    transactionManagementModel == null;
-    DioHelper.getData(url: ApiConstants.transactionUrl, query: {
-      'PageNumber': currentPage,
-      'PageSize': 15,
-      'Search': searchController.text,
-      'CategoryId': filterModel?.categoryId,
-      'ProviderId': filterModel?.providerId,
-      'UserId': filterModel?.userId,
-      'StartDate': filterModel?.startDate,
-      'EndDate': filterModel?.endDate,
-      'Type': filterModel?.transactionTypeId ?? type,
-    }).then((value) {
-      final newTransaction = TransactionManagementModel.fromJson(value!.data);
+
+    try {
+      final response = await DioHelper.getData(
+        url: ApiConstants.transactionUrl,
+        query: {
+          'PageNumber': page,
+          'PageSize': 15,
+          'Search': searchController.text,
+          'CategoryId': filterModel?.categoryId,
+          'ProviderId': filterModel?.providerId,
+          'UserId': filterModel?.userId,
+          'StartDate': filterModel?.startDate,
+          'EndDate': filterModel?.endDate,
+          'Type': filterModel?.transactionTypeId ?? type,
+        },
+      );
+
+      final newTransaction =
+          TransactionManagementModel.fromJson(response!.data);
+
       if (type == 0) {
-        if (currentPage == 1 || transactionManagementInModel == null) {
-          transactionManagementInModel = newTransaction;
-        } else {
-          transactionManagementInModel?.data?.data
-              ?.addAll(newTransaction.data?.data ?? []);
-          transactionManagementInModel?.data?.currentPage =
-              newTransaction.data?.currentPage;
-          transactionManagementInModel?.data?.totalPages =
-              newTransaction.data?.totalPages;
-        }
+        transactionManagementInModel = newTransaction;
       } else if (type == 1) {
-        if (currentPage == 1 || transactionManagementOutModel == null) {
-          transactionManagementOutModel = newTransaction;
-        } else {
-          transactionManagementOutModel?.data?.data
-              ?.addAll(newTransaction.data?.data ?? []);
-          transactionManagementOutModel?.data?.currentPage =
-              newTransaction.data?.currentPage;
-          transactionManagementOutModel?.data?.totalPages =
-              newTransaction.data?.totalPages;
-        }
+        transactionManagementOutModel = newTransaction;
       } else {
-        if (currentPage == 1 || transactionManagementModel == null) {
-          transactionManagementModel = newTransaction;
-        } else {
-          transactionManagementModel?.data?.data
-              ?.addAll(newTransaction.data?.data ?? []);
-          transactionManagementModel?.data?.currentPage =
-              newTransaction.data?.currentPage;
-          transactionManagementModel?.data?.totalPages =
-              newTransaction.data?.totalPages;
-        }
+        transactionManagementModel = newTransaction;
       }
 
       emit(TransactionManagementSuccessState(transactionManagementModel!));
-    }).catchError((error) {
-      emit(TransactionManagementErrorState(error.toString()));
-    });
+    } catch (e) {
+      emit(TransactionManagementErrorState(e.toString()));
+    }
   }
 
   void initialize() {
@@ -89,8 +67,21 @@ class TransactionManagementCubit extends Cubit<TransactionManagementState> {
           getTransactionList();
         }
       });
+    fetchAllCounts();
+  }
 
-    getTransactionList();
+  Future<void> fetchAllCounts() async {
+    emit(TransactionManagementLoadingState());
+
+    try {
+      await getTransactionList(type: null, page: 1); // All
+      await getTransactionList(type: 0, page: 1); // Inside
+      await getTransactionList(type: 1, page: 1); // Outside
+
+      emit(TransactionManagementSuccessState(transactionManagementModel!));
+    } catch (e) {
+      emit(TransactionManagementErrorState(e.toString()));
+    }
   }
 
   void changeTap(int index) {
@@ -109,19 +100,8 @@ class TransactionManagementCubit extends Cubit<TransactionManagementState> {
     } else if (index == 0 && transactionManagementModel != null) {
       emit(TransactionManagementSuccessState(transactionManagementModel!));
     } else {
-      getTransactionList();
+      getTransactionList(type: type, page: 1);
     }
-  }
-
-  TransactionDetailsModel? transactionDetailsModel;
-  getTransactionDetails(int? id, int? type) {
-    emit(TransactionDetailsLoadingState());
-    DioHelper.getData(url: 'stock/transactions/$id/$type').then((value) {
-      transactionDetailsModel = TransactionDetailsModel.fromJson(value!.data);
-      emit(TransactionDetailsSuccessState(transactionDetailsModel!));
-    }).catchError((error) {
-      emit(TransactionDetailsErrorState(error.toString()));
-    });
   }
 
   String getDateOnly(String dateTimeString) {

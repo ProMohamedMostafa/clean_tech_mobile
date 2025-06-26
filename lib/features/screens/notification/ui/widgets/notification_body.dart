@@ -6,7 +6,7 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
-import 'package:smart_cleaning_application/core/widgets/two_buttons_in_integreat_screen/two_buttons_in_integration_screen.dart';
+import 'package:smart_cleaning_application/core/widgets/integration_buttons/integrations_buttons.dart';
 import 'package:smart_cleaning_application/features/screens/notification/logic/notification_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/notification/logic/notification_state.dart';
 import 'package:smart_cleaning_application/features/screens/notification/ui/widgets/notification_list_details_build.dart';
@@ -91,7 +91,7 @@ class NotificationBody extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  twoButtonsIntegration(
+                  integrationsButtons(
                     selectedIndex: cubit.selectedIndex,
                     onTap: (index) => cubit.changeTap(index),
                     firstCount:

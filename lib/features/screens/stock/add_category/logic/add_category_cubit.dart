@@ -13,16 +13,18 @@ class AddCategoryCubit extends Cubit<AddCategoryState> {
 
   TextEditingController nameController = TextEditingController();
   TextEditingController unitController = TextEditingController();
+  TextEditingController unitIdController = TextEditingController();
   TextEditingController parentCategoryController = TextEditingController();
+  TextEditingController parentCategoryIdController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   AddCategoryModel? addCategoryModel;
-  addCategory(int? unit , int? parentCategory) {
+  addCategory() {
     emit(AddCategoryLoadingState());
     DioHelper.postData(url: ApiConstants.createCategoryUrl, data: {
       "name": nameController.text,
-      "unit": unit,
-      "parentCategoryId": parentCategory,
+      "unit": unitIdController.text,
+      "parentCategoryId": parentCategoryIdController.text,
     }).then((value) {
       addCategoryModel = AddCategoryModel.fromJson(value!.data);
       emit(AddCategorySuccessState(addCategoryModel!));
@@ -32,10 +34,15 @@ class AddCategoryCubit extends Cubit<AddCategoryState> {
   }
 
   CategoryManagementModel? categoryManagementModel;
+  List<CategoryModel> categoryModel = [
+    CategoryModel(name: 'No categories available')
+  ];
   getCategoryList() {
     emit(CategoryManagementLoadingState());
     DioHelper.getData(url: ApiConstants.categoryUrl).then((value) {
       categoryManagementModel = CategoryManagementModel.fromJson(value!.data);
+      categoryModel = categoryManagementModel?.data?.categories ??
+          [CategoryModel(name: 'No categories available')];
       emit(CategoryManagementSuccessState(categoryManagementModel!));
     }).catchError((error) {
       emit(CategoryManagementErrorState(error.toString()));

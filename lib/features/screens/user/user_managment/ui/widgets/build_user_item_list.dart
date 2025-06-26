@@ -83,7 +83,7 @@ class BuildUserItemList extends StatelessWidget {
                             showDialog(
                                 context: context,
                                 builder: (dialogContext) {
-                                  return PopUpMeassage(
+                                  return PopUpMessage(
                                       title: 'restore',
                                       body: 'user',
                                       onPressed: () {
@@ -112,7 +112,7 @@ class BuildUserItemList extends StatelessWidget {
                             showDialog(
                                 context: context,
                                 builder: (dialogContext) {
-                                  return PopUpMeassage(
+                                  return PopUpMessage(
                                       title: 'delete',
                                       body: 'user',
                                       onPressed: () {
@@ -124,7 +124,7 @@ class BuildUserItemList extends StatelessWidget {
                             showDialog(
                                 context: context,
                                 builder: (dialogContext) {
-                                  return PopUpMeassage(
+                                  return PopUpMessage(
                                       title: 'delete',
                                       body: 'user',
                                       onPressed: () {

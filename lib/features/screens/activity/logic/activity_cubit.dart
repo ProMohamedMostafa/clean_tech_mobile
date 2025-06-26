@@ -22,24 +22,30 @@ class ActivityCubit extends Cubit<ActivityState> {
   ActivitiesModel? teamActivities;
 
   bool isPersonal = true;
-  getActivities({required bool isPersonal}) async {
-    emit(ActivityLoadingState());
-    DioHelper.getData(
-      url: "logs",
-      query: {
-        'PageNumber': currentPage,
-        'PageSize': 15,
-        'Search': searchController.text,
-        'RoleId': filterModel?.roleId,
-        'Action': filterModel?.actionId,
-        'Module': filterModel?.moduleId,
-        'UserId': filterModel?.userId,
-        'StartDate': filterModel?.startDate,
-        'EndDate': filterModel?.endDate,
-        'History': isPersonal,
-      },
-    ).then((value) {
-      final activities = ActivitiesModel.fromJson(value!.data);
+  Future<void> getActivities({
+    required bool isPersonal,
+    bool emitLoading = true,
+  }) async {
+    if (emitLoading) emit(ActivityLoadingState());
+
+    try {
+      final response = await DioHelper.getData(
+        url: "logs",
+        query: {
+          'PageNumber': currentPage,
+          'PageSize': 15,
+          'Search': searchController.text,
+          'RoleId': filterModel?.roleId,
+          'Action': filterModel?.actionId,
+          'Module': filterModel?.moduleId,
+          'UserId': filterModel?.userId,
+          'StartDate': filterModel?.startDate,
+          'EndDate': filterModel?.endDate,
+          'History': isPersonal,
+        },
+      );
+
+      final activities = ActivitiesModel.fromJson(response!.data);
 
       if (isPersonal) {
         if (currentPage == 1 || myActivities == null) {
@@ -61,11 +67,10 @@ class ActivityCubit extends Cubit<ActivityState> {
         }
       }
 
-      emit(ActivitySuccessState(
-          isPersonal == true ? myActivities! : teamActivities!));
-    }).catchError((error) {
+      emit(ActivitySuccessState(isPersonal ? myActivities! : teamActivities!));
+    } catch (error) {
       emit(ActivityErrorState(error.toString()));
-    });
+    }
   }
 
   void initialize() {
@@ -78,7 +83,20 @@ class ActivityCubit extends Cubit<ActivityState> {
         }
       });
 
-    getActivities(isPersonal: isPersonal);
+    fetchAllActivityCounts();
+  }
+
+  Future<void> fetchAllActivityCounts() async {
+    emit(ActivityLoadingState());
+
+    try {
+      await getActivities(isPersonal: true, emitLoading: false);
+      await getActivities(isPersonal: false, emitLoading: false);
+
+      emit(ActivitySuccessState(myActivities!));
+    } catch (e) {
+      emit(ActivityErrorState(e.toString()));
+    }
   }
 
   void changeTap(int index) {
@@ -100,8 +118,6 @@ class ActivityCubit extends Cubit<ActivityState> {
       }
     }
   }
-
-// activity_cubit.dart
 
   String getRouteName(String? module, int? moduleId) {
     if (moduleId == null) return '';

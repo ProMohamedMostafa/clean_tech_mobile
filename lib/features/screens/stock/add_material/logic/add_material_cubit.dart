@@ -13,19 +13,18 @@ class AddMaterialCubit extends Cubit<AddMaterialState> {
 
   TextEditingController nameController = TextEditingController();
   TextEditingController categoryController = TextEditingController();
+  TextEditingController categoryIdController = TextEditingController();
   TextEditingController miniController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
   AddMaterialModel? addMaterialModel;
-  addMaterial(
-    int? categoryId,
-  ) {
+  addMaterial() {
     emit(AddMaterialLoadingState());
     DioHelper.postData(url: ApiConstants.createMaterialUrl, data: {
       "name": nameController.text,
-      "categoryId": categoryId,
+      "categoryId": categoryIdController.text,
       "minThreshold": miniController.text,
       "description": descriptionController.text,
     }).then((value) {
@@ -37,10 +36,15 @@ class AddMaterialCubit extends Cubit<AddMaterialState> {
   }
 
   CategoryManagementModel? categoryManagementModel;
+  List<CategoryModel> categoryModel = [
+    CategoryModel(name: 'No categories available')
+  ];
   getCategoryList() {
     emit(CategoriesLoadingState());
     DioHelper.getData(url: ApiConstants.categoryUrl).then((value) {
       categoryManagementModel = CategoryManagementModel.fromJson(value!.data);
+      categoryModel = categoryManagementModel?.data?.categories ??
+          [CategoryModel(name: 'No categories available')];
       emit(CategoriesSuccessState(categoryManagementModel!));
     }).catchError((error) {
       emit(CategoriesErrorState(error.toString()));

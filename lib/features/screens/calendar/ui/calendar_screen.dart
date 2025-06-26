@@ -11,7 +11,7 @@ import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/screens/calendar/logic/calendar_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/calendar/logic/calendar_state.dart';
 import 'package:smart_cleaning_application/features/screens/calendar/ui/date_day_picker.dart';
-import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/all_tasks_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/all_tasks_model.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 

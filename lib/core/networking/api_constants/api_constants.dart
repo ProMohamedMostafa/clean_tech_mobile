@@ -1,5 +1,5 @@
 class ApiConstants {
-  //  static const apiBaseUrl = "https://10.0.2.2:7111/api/v1/";
+  // static const apiBaseUrl = "https://10.0.2.2:7111/api/v1/";
   static const apiBaseUrl = "http://192.168.1.27:8080/api/v1/";
   static const apiBaseUrlImage = "https://10.0.2.2:7111/uploads/";
   static const loginUrl = "auth/login";
@@ -17,7 +17,7 @@ class ApiConstants {
   static const organizationEditUrl = "organizations/edit";
   static const buildingEditUrl = "buildings/edit";
   static const floorEditUrl = "floors/edit";
-  static const sectionEditUrl = "section/edit";
+  static const sectionEditUrl = "sections/edit";
   static const pointEditUrl = "points/edit";
   static const deleteUserListUrl = "users/deleted/index";
   static const deletedProvidersListUrl = "providers/deleted/index";

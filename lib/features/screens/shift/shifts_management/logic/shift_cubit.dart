@@ -16,14 +16,13 @@ class ShiftCubit extends Cubit<ShiftState> {
 
   TextEditingController searchController = TextEditingController();
   ScrollController scrollController = ScrollController();
-  final formKey = GlobalKey<FormState>();
 
   int selectedIndex = 0;
   int currentPage = 1;
   FilterDialogDataModel? filterModel;
   AllShiftsModel? allShiftsModel;
   getAllShifts() {
-    emit(ShiftLoadingState());
+    emit(AllShiftLoadingState());
     DioHelper.getData(url: ApiConstants.allShiftsUrl, query: {
       'PageNumber': currentPage,
       'PageSize': 15,
@@ -49,9 +48,9 @@ class ShiftCubit extends Cubit<ShiftState> {
         allShiftsModel?.data?.totalPages = newShifts.data?.totalPages;
       }
 
-      emit(ShiftSuccessState(allShiftsModel!));
+      emit(AllShiftSuccessState(allShiftsModel!));
     }).catchError((error) {
-      emit(ShiftErrorState(error.toString()));
+      emit(AllShiftErrorState(error.toString()));
     });
   }
 
@@ -79,7 +78,7 @@ class ShiftCubit extends Cubit<ShiftState> {
         allShiftsModel = null;
         getAllShifts();
       } else {
-        emit(ShiftSuccessState(allShiftsModel!));
+        emit(AllShiftSuccessState(allShiftsModel!));
       }
     } else {
       if (allShiftsDeletedModel == null) {
@@ -90,11 +89,22 @@ class ShiftCubit extends Cubit<ShiftState> {
     }
   }
 
+  AllShiftsDeletedModel? allShiftsDeletedModel;
+  getAllDeletedShifts() {
+    emit(AllShiftDeleteLoadingState());
+    DioHelper.getData(url: ApiConstants.allShiftsDeletedUrl).then((value) {
+      allShiftsDeletedModel = AllShiftsDeletedModel.fromJson(value!.data);
+      emit(AllShiftDeleteSuccessState(allShiftsDeletedModel!));
+    }).catchError((error) {
+      emit(AllShiftDeleteErrorState(error.toString()));
+    });
+  }
+
   List<ShiftData> deletedShifts = [];
   DeleteShiftModel? deleteShiftModel;
   shiftDelete(int id) {
     emit(ShiftDeleteLoadingState());
-    DioHelper.postData(url: 'shifts/delete/$id', data: {'id': id})
+    DioHelper.postData(url: 'shifts/delete/$id')
         .then((value) {
       deleteShiftModel = DeleteShiftModel.fromJson(value!.data);
 
@@ -109,7 +119,6 @@ class ShiftCubit extends Cubit<ShiftState> {
         // Add to deleted list
         deletedShifts.insert(0, deletedShift);
 
-        //  Reload current page to refill to 10 users
         if (currentPage == 1) {
           allShiftsModel = null;
           getAllShifts();
@@ -121,23 +130,11 @@ class ShiftCubit extends Cubit<ShiftState> {
     });
   }
 
-  AllShiftsDeletedModel? allShiftsDeletedModel;
-  getAllDeletedShifts() {
-    emit(AllShiftDeleteLoadingState());
-    DioHelper.getData(url: ApiConstants.allShiftsDeletedUrl).then((value) {
-      allShiftsDeletedModel = AllShiftsDeletedModel.fromJson(value!.data);
-      emit(AllShiftDeleteSuccessState(allShiftsDeletedModel!));
-    }).catchError((error) {
-      emit(AllShiftDeleteErrorState(error.toString()));
-    });
-  }
-
   restoreDeletedShift(int id) {
     emit(RestoreShiftLoadingState());
-    DioHelper.postData(url: 'shifts/restore/$id', data: {'id': id})
+    DioHelper.postData(url: 'shifts/restore/$id')
         .then((value) {
       final message = value?.data['message'] ?? "restored successfully";
-      // Find and process the restored user
       final restoredData = allShiftsDeletedModel?.data?.firstWhere(
         (data) => data.id == id,
       );
@@ -179,7 +176,7 @@ class ShiftCubit extends Cubit<ShiftState> {
 
   forcedDeletedShift(int id) {
     emit(ForceDeleteShiftLoadingState());
-    DioHelper.deleteData(url: 'shifts/forcedelete/$id', data: {'id': id})
+    DioHelper.deleteData(url: 'shifts/forcedelete/$id')
         .then((value) {
       final message = value?.data['message'] ?? "deleted successfully";
       emit(ForceDeleteShiftSuccessState(message));

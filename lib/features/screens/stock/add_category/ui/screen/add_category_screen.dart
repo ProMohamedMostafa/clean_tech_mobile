@@ -6,8 +6,6 @@ class AddCategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: AddCategoryBody(),
-    );
+    return AddCategoryBody();
   }
 }

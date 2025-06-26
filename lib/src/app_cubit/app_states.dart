@@ -9,3 +9,4 @@ class ChangeLocaleState extends AppStates {
   ChangeLocaleState({required this.locale});
 }//**************************************** */
 class NotificationCountUpdatedState extends AppStates {}
+class ChangeCarouselIndexState extends AppStates {}

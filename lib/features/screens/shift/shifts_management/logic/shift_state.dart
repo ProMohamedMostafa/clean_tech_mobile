@@ -6,30 +6,16 @@ abstract class ShiftState {}
 
 class ShiftInitialState extends ShiftState {}
 
-class ShiftLoadingState extends ShiftState {}
+class AllShiftLoadingState extends ShiftState {}
 
-class ShiftSuccessState extends ShiftState {
+class AllShiftSuccessState extends ShiftState {
   final AllShiftsModel allShiftsModel;
-  ShiftSuccessState(this.allShiftsModel);
+  AllShiftSuccessState(this.allShiftsModel);
 }
 
-class ShiftErrorState extends ShiftState {
+class AllShiftErrorState extends ShiftState {
   final String error;
-  ShiftErrorState(this.error);
-}
-
-
-//******************** */
-class ShiftDeleteLoadingState extends ShiftState {}
-
-class ShiftDeleteSuccessState extends ShiftState {
-  final DeleteShiftModel deleteShiftModel;
-  ShiftDeleteSuccessState(this.deleteShiftModel);
-}
-
-class ShiftDeleteErrorState extends ShiftState {
-  final String error;
-  ShiftDeleteErrorState(this.error);
+  AllShiftErrorState(this.error);
 }
 
 //******************** */
@@ -69,4 +55,17 @@ class ForceDeleteShiftSuccessState extends ShiftState {
 class ForceDeleteShiftErrorState extends ShiftState {
   final String error;
   ForceDeleteShiftErrorState(this.error);
+}
+
+//******************** */
+class ShiftDeleteLoadingState extends ShiftState {}
+
+class ShiftDeleteSuccessState extends ShiftState {
+  final DeleteShiftModel deleteShiftModel;
+  ShiftDeleteSuccessState(this.deleteShiftModel);
+}
+
+class ShiftDeleteErrorState extends ShiftState {
+  final String error;
+  ShiftDeleteErrorState(this.error);
 }

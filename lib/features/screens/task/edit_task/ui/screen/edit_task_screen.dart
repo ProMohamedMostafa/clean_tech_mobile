@@ -7,6 +7,6 @@ class EditTaskScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: EditTaskBody(id:id),);
+    return EditTaskBody(id: id);
   }
 }

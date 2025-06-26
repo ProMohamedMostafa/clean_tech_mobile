@@ -5,7 +5,7 @@ import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/edit_shift/data/model/edit_shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/edit_shift/logic/edit_shift_state.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/shift_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shift_details/data/models/shift_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/section_list_model.dart';
@@ -102,48 +102,47 @@ class EditShiftCubit extends Cubit<EditShiftState> {
   BuildingListModel? buildingModel;
   List<BuildingItem> buildingItem = [BuildingItem(name: 'No building')];
   getBuilding() {
-    emit(GetBuildingLoadingState());
+    emit(BuildingLoadingState());
     DioHelper.getData(
         url: 'buildings/pagination',
         query: {'OrganizationId': organizationIdController.text}).then((value) {
       buildingModel = BuildingListModel.fromJson(value!.data);
       buildingItem =
           buildingModel?.data?.data ?? [BuildingItem(name: 'No building')];
-      emit(GetBuildingSuccessState(buildingModel!));
+      emit(BuildingSuccessState(buildingModel!));
     }).catchError((error) {
-      emit(GetBuildingErrorState(error.toString()));
+      emit(BuildingErrorState(error.toString()));
     });
   }
 
   FloorListModel? floorModel;
   List<FloorItem> floorItem = [FloorItem(name: 'No floors')];
   getFloor() {
-    emit(GetFloorLoadingState());
+    emit(FloorLoadingState());
     DioHelper.getData(
         url: 'floors/pagination',
         query: {'BuildingId': buildingIdController.text}).then((value) {
       floorModel = FloorListModel.fromJson(value!.data);
       floorItem = floorModel?.data?.data ?? [FloorItem(name: 'No floors')];
-      emit(GetFloorSuccessState(floorModel!));
+      emit(FloorSuccessState(floorModel!));
     }).catchError((error) {
-      emit(GetFloorErrorState(error.toString()));
+      emit(FloorErrorState(error.toString()));
     });
   }
 
   SectionListModel? sectionModel;
   List<SectionItem> sectionItem = [SectionItem(name: 'No sections')];
   getSection() {
-    emit(GetSectionLoadingState());
+    emit(SectionLoadingState());
     DioHelper.getData(
         url: 'sections/pagination',
         query: {'FloorId': floorIdController.text}).then((value) {
       sectionModel = SectionListModel.fromJson(value!.data);
       sectionItem =
           sectionModel?.data?.data ?? [SectionItem(name: 'No sections')];
-      emit(GetSectionSuccessState(sectionModel!));
+      emit(SectionSuccessState(sectionModel!));
     }).catchError((error) {
-      emit(GetSectionErrorState(error.toString()));
+      emit(SectionErrorState(error.toString()));
     });
   }
-
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
+import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 
 class CustomDropDownList extends StatefulWidget {
   final TextEditingController controller;
@@ -90,6 +91,9 @@ class _CustomDropDownListState extends State<CustomDropDownList> {
               },
               style: TextStyle(color: Colors.black, fontSize: 14.sp),
               decoration: InputDecoration(
+                label: widget.label != null ? Text(widget.label!) : null,
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+                labelStyle: TextStyles.font14BlackSemiBold,
                 isDense: true,
                 prefixIcon: widget.perfixIcon == null
                     ? null
@@ -122,19 +126,19 @@ class _CustomDropDownListState extends State<CustomDropDownList> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.r),
                   borderSide: BorderSide(
-                    color: widget.color ?? AppColor.thirdColor,
+                    color: widget.color ?? Colors.grey[300]!,
                   ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.r),
                   borderSide: BorderSide(
-                    color: widget.color ?? AppColor.thirdColor,
+                    color: widget.color ?? Colors.grey[300]!,
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.r),
                   borderSide: BorderSide(
-                    color: widget.color ?? AppColor.thirdColor,
+                    color: widget.color ?? AppColor.primaryColor,
                   ),
                 ),
                 errorBorder: OutlineInputBorder(
@@ -186,23 +190,6 @@ class _CustomDropDownListState extends State<CustomDropDownList> {
               ),
           ],
         ),
-        widget.label == null
-            ? SizedBox.shrink()
-            : Positioned(
-                top: -7,
-                left: 9,
-                child: Container(
-                  margin: EdgeInsets.zero,
-                  padding: EdgeInsets.only(left: 5, right: 5, top: 0),
-                  color: Colors.white,
-                  child: Text(
-                    '${widget.label}',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 10.sp,
-                        fontWeight: FontWeight.bold),
-                  ),
-                )),
       ],
     );
   }

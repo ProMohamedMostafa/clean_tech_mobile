@@ -7,16 +7,17 @@ import 'package:smart_cleaning_application/features/screens/activity/logic/activ
 import 'package:smart_cleaning_application/features/screens/activity/ui/screen/activity_screen.dart';
 import 'package:smart_cleaning_application/features/screens/assign/logic/assign_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/assign/ui/screen/assign_screen.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attedance_leaves_details/logic/cubit/leaves_details_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attedance_leaves_details/ui/screen/leaves_details_screen.dart';
-import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/logic/attendance_history_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/attendance/attendance_history/ui/screen/attendance_history_screen.dart';
-import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/logic/attendance_leaves_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves/ui/screen/attendance_leaves_screen.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attendance_history_management/logic/attendance_history_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attendance_history_management/ui/screen/attendance_history_screen.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_management/logic/attendance_leaves_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_management/ui/screen/attendance_leaves_screen.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_add/logic/leaves_add_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_add/ui/screen/leaves_add_screen.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_edit/logic/leaves_edit_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_edit/ui/screen/leaves_edit_screen.dart';
-import 'package:smart_cleaning_application/features/screens/attendance/ui/attendance_screen.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/select_view/ui/attendance_screen.dart';
 import 'package:smart_cleaning_application/features/screens/edit_profile/logic/edit_profile_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/edit_profile/ui/screen/edit_profile_screen.dart';
 import 'package:smart_cleaning_application/features/screens/languages/ui/screen/languages_screen.dart';
@@ -26,8 +27,8 @@ import 'package:smart_cleaning_application/features/screens/profile/logic/profil
 import 'package:smart_cleaning_application/features/screens/profile/ui/screen/profile_screen.dart';
 import 'package:smart_cleaning_application/features/screens/provider/provider_management/logic/cubit/provider_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/provider/provider_management/ui/screen/provider_screen.dart';
-import 'package:smart_cleaning_application/features/screens/sensor/sensor_edit/logic/cubit/assign_sensor_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/sensor/sensor_edit/ui/screen/sensor_assign.dart';
+import 'package:smart_cleaning_application/features/screens/sensor/sensor_edit/logic/cubit/edit_sensor_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/sensor/sensor_edit/ui/screen/sensor_edit_screen.dart';
 import 'package:smart_cleaning_application/features/screens/sensor/sensor_details/logic/cubit/sensor_details_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/sensor/sensor_details/ui/screen/sensor_details.dart';
 import 'package:smart_cleaning_application/features/screens/sensor/sensor_managment/logic/cubit/sensor_cubit.dart';
@@ -36,10 +37,10 @@ import 'package:smart_cleaning_application/features/screens/shift/shift_details/
 import 'package:smart_cleaning_application/features/screens/stock/add_category/logic/add_category_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/stock/add_category/ui/screen/add_category_screen.dart';
 import 'package:smart_cleaning_application/features/screens/stock/add_material/logic/add_material_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/stock/add_material/ui/screen/add_category_screen.dart';
+import 'package:smart_cleaning_application/features/screens/stock/add_material/ui/screen/add_material_screen.dart';
 import 'package:smart_cleaning_application/features/screens/stock/category_management/logic/category_mangement_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/stock/category_management/ui/screen/material_managment.dart';
-import 'package:smart_cleaning_application/features/screens/stock/choose_stock_view/choose_view_stock.dart';
+import 'package:smart_cleaning_application/features/screens/stock/select_stock_view/choose_view_stock.dart';
 import 'package:smart_cleaning_application/features/screens/stock/edit_category/logic/edit_category_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/stock/edit_category/ui/screen/edit_category_screen.dart';
 import 'package:smart_cleaning_application/features/screens/stock/edit_material/logic/edit_material_cubit.dart';
@@ -48,9 +49,11 @@ import 'package:smart_cleaning_application/features/screens/stock/material_manag
 import 'package:smart_cleaning_application/features/screens/stock/material_management/ui/screen/category_managment.dart';
 import 'package:smart_cleaning_application/features/screens/stock/transaction_management/logic/transaction_mangement_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/stock/transaction_management/ui/screen/transaction_managment.dart';
+import 'package:smart_cleaning_application/features/screens/stock/view_material/logic/cubit/material_details_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/stock/view_material/ui/screen/material_details_screen.dart';
+import 'package:smart_cleaning_application/features/screens/stock/view_transaction/logic/cubit/transaction_details_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/stock/view_transaction/ui/screen/transaction_details_screen.dart';
-import 'package:smart_cleaning_application/features/screens/task/view_task/logic/cubit/task_details_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/task/view_task/logic/task_details_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/technical_support/ui/screen/technical_support_screen.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/logic/cubit/user_details_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/logic/add_work_location_cubit.dart';
@@ -62,22 +65,16 @@ import 'package:smart_cleaning_application/features/screens/work_location/add_wo
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/screens/add_point_screen.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/screens/add_section_screen.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/choose_view_work_location/choose_view_work_location.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_area/logic/edit_area_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_area/ui/screen/edit_area_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_building/logic/edit_building_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_building/ui/screen/edit_building_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_city/logic/edit_city_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_city/ui/screen/edit_city_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_floor/logic/edit_floor_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_floor/ui/screen/edit_floor_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_organization/logic/edit_organization_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_organization/ui/screen/edit_organization_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_point/logic/edit_point_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_point/ui/screen/edit_point_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_section/logic/edit_section_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/edit_section/ui/screen/edit_section_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/logic/cubit/work_location_details_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/view_work_location/ui/screen/work_location_screen.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/logic/cubit/edit_work_location_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/ui/screens/edit_area_screen.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/ui/screens/edit_building_screen.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/ui/screens/edit_city_screen.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/ui/screens/edit_floor_screen.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/ui/screens/edit_organization_screen.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/ui/screens/edit_point_screen.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/ui/screens/edit_section_screen.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_details/logic/cubit/work_location_details_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/work_location_details/ui/screen/work_location_screen.dart';
 import 'package:smart_cleaning_application/features/screens/shift/add_shift/logic/add_shift_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/shift/add_shift/ui/screen/add_shift_screen.dart';
 import 'package:smart_cleaning_application/features/screens/shift/edit_shift/logic/edit_shift_cubit.dart';
@@ -242,14 +239,14 @@ class AppRouter {
             child: const SensorScreen(),
           ),
         );
-      case Routes.sensorAssignScreen:
+      case Routes.sensorEditScreen:
         var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => AssignSensorCubit()
+            create: (context) => EditSensorCubit()
               ..getSensorDetails(id)
               ..getOrganization(),
-            child: SensorAssignScreen(id: id),
+            child: SensorEditScreen(id: id),
           ),
         );
       case Routes.sensorDetailsScreen:
@@ -274,14 +271,7 @@ class AppRouter {
         var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => UserDetailsCubit()
-              ..getUserDetails(id)
-              ..getUserShiftDetails(id)
-              ..getUserTaskDetails(id)
-              ..getUserWorkLocationDetails(id)
-              ..getAllHistory(id)
-              ..getAllLeaves(id)
-              ..getUserStatus(id),
+            create: (context) => UserDetailsCubit()..getUserDetails(id),
             child: UserDetailsScreen(
               id: id,
             ),
@@ -323,42 +313,59 @@ class AppRouter {
       case Routes.addCityScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => AddWorkLocationCubit(),
+            create: (context) => AddWorkLocationCubit()
+              ..getNationality(userUsedOnly: false, areaUsedOnly: true)
+              ..getAllUsers(),
             child: const AddCityScreen(),
           ),
         );
       case Routes.addOrganizationScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => AddWorkLocationCubit(),
+            create: (context) => AddWorkLocationCubit()
+              ..getNationality(userUsedOnly: false, areaUsedOnly: true)
+              ..getAllUsers()
+              ..getShifts(),
             child: const AddOrganizationScreen(),
           ),
         );
       case Routes.addBuildingScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => AddWorkLocationCubit(),
+            create: (context) => AddWorkLocationCubit()
+              ..getNationality(userUsedOnly: false, areaUsedOnly: true)
+              ..getAllUsers()
+              ..getShifts(),
             child: const AddBuildingScreen(),
           ),
         );
       case Routes.addFloorScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => AddWorkLocationCubit(),
+            create: (context) => AddWorkLocationCubit()
+              ..getNationality(userUsedOnly: false, areaUsedOnly: true)
+              ..getAllUsers()
+              ..getShifts(),
             child: const AddFloorScreen(),
           ),
         );
       case Routes.addSectionScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => AddWorkLocationCubit(),
+            create: (context) => AddWorkLocationCubit()
+              ..getNationality(userUsedOnly: false, areaUsedOnly: true)
+              ..getAllUsers()
+              ..getShifts(),
             child: AddSectionScreen(),
           ),
         );
       case Routes.addPointScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => AddWorkLocationCubit(),
+            create: (context) => AddWorkLocationCubit()
+              ..getNationality(userUsedOnly: false, areaUsedOnly: true)
+              ..getAllUsers()
+              ..getSensorsData(),
             child: const AddPointScreen(),
           ),
         );
@@ -366,7 +373,8 @@ class AppRouter {
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => WorkLocationDetailsCubit(),
+            create: (context) => WorkLocationDetailsCubit()
+              ..initialize(args['id'], args['selectedIndex']),
             child: WorkLocationDetailsScreen(
               id: args['id']!,
               selectedIndex: args['selectedIndex']!,
@@ -378,17 +386,21 @@ class AppRouter {
         var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => EditAreaCubit(),
-            child: EditAreaScreen(
-              id: id,
-            ),
+            create: (context) => EditWorkLocationCubit()
+              ..getNationality(userUsedOnly: false, areaUsedOnly: false)
+              ..getAreaManagersDetails(id)
+              ..getAllUsers(),
+            child: EditAreaScreen(id: id),
           ),
         );
       case Routes.editCityScreen:
         var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => EditCityCubit(),
+            create: (context) => EditWorkLocationCubit()
+              ..getCityManagersDetails(id)
+              ..getNationality(userUsedOnly: false, areaUsedOnly: true)
+              ..getAllUsers(),
             child: EditCityScreen(
               id: id,
             ),
@@ -398,7 +410,11 @@ class AppRouter {
         var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => EditOrganizationCubit(),
+            create: (context) => EditWorkLocationCubit()
+              ..getOrganizationManagersDetails(id)
+              ..getNationality(userUsedOnly: false, areaUsedOnly: true)
+              ..getAllUsers()
+              ..getShifts(),
             child: EditOrganizationScreen(
               id: id,
             ),
@@ -408,7 +424,11 @@ class AppRouter {
         var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => EditBuildingCubit(),
+            create: (context) => EditWorkLocationCubit()
+              ..getBuildingManagersDetails(id)
+              ..getNationality(userUsedOnly: false, areaUsedOnly: true)
+              ..getAllUsers()
+              ..getShifts(),
             child: EditBuildingScreen(
               id: id,
             ),
@@ -418,7 +438,11 @@ class AppRouter {
         var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => EditFloorCubit(),
+            create: (context) => EditWorkLocationCubit()
+              ..getFloorManagersDetails(id)
+              ..getNationality(userUsedOnly: false, areaUsedOnly: true)
+              ..getAllUsers()
+              ..getShifts(),
             child: EditFloorScreen(
               id: id,
             ),
@@ -429,7 +453,11 @@ class AppRouter {
         var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => EditSectionCubit(),
+            create: (context) => EditWorkLocationCubit()
+              ..getSectionManagersDetails(id)
+              ..getNationality(userUsedOnly: false, areaUsedOnly: true)
+              ..getAllUsers()
+              ..getShifts(),
             child: EditSectionScreen(
               id: id,
             ),
@@ -440,7 +468,11 @@ class AppRouter {
         var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => EditPointCubit(),
+            create: (context) => EditWorkLocationCubit()
+              ..getPointManagersDetails(id)
+              ..getNationality(userUsedOnly: false, areaUsedOnly: true)
+              ..getAllUsers()
+              ..getSensorsData(),
             child: EditPointScreen(
               id: id,
             ),
@@ -486,7 +518,10 @@ class AppRouter {
       case Routes.addTaskScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => AddTaskCubit(),
+            create: (context) => AddTaskCubit()
+              ..getAllTasks()
+              ..getAllUsers()
+              ..getOrganization(),
             child: AddTaskScreen(),
           ),
         );
@@ -503,10 +538,8 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (context) => TaskDetailsCubit()
               ..getTaskDetails(id)
-              ..getUsers(),
-            child: TaskDetailsScreen(
-              id: id,
-            ),
+              ..getAllUsers(),
+            child: TaskDetailsScreen(id: id),
           ),
         );
 
@@ -514,10 +547,12 @@ class AppRouter {
         var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => EditTaskCubit(),
-            child: EditTaskScreen(
-              id: id,
-            ),
+            create: (context) => EditTaskCubit()
+              ..getTaskDetails(id)
+              ..getAllTasks()
+              ..getOrganization()
+              ..getAllUsers(),
+            child: EditTaskScreen(id: id),
           ),
         );
 
@@ -545,7 +580,7 @@ class AppRouter {
       case Routes.createleavesScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => LeavesAddCubit(),
+            create: (context) => LeavesAddCubit()..initialize(),
             child: LeavesAddScreen(),
           ),
         );
@@ -553,7 +588,9 @@ class AppRouter {
         var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => LeavesEditCubit(),
+            create: (context) => LeavesEditCubit()
+              ..getLeavesDetails(id)
+              ..getAllUsers(),
             child: LeavesEditScreen(
               id: id,
             ),
@@ -563,7 +600,7 @@ class AppRouter {
         var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => AttendanceLeavesCubit(),
+            create: (context) => LeavesDetailsCubit()..getLeavesDetails(id),
             child: LeavesDetailsScreen(
               id: id,
             ),
@@ -584,7 +621,7 @@ class AppRouter {
       case Routes.addCategoryScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => AddCategoryCubit(),
+            create: (context) => AddCategoryCubit()..getCategoryList(),
             child: const AddCategoryScreen(),
           ),
         );
@@ -592,7 +629,9 @@ class AppRouter {
         var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => EditCategoryCubit(),
+            create: (context) => EditCategoryCubit()
+              ..getCategoryDetails(id)
+              ..getCategoryList(),
             child: EditCategoryScreen(
               id: id,
             ),
@@ -612,7 +651,7 @@ class AppRouter {
       case Routes.addMaterialScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => AddMaterialCubit(),
+            create: (context) => AddMaterialCubit()..getCategoryList(),
             child: const AddMaterialScreen(),
           ),
         );
@@ -620,7 +659,9 @@ class AppRouter {
         var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => EditMaterialCubit(),
+            create: (context) => EditMaterialCubit()
+              ..getMaterialDetails(id)
+              ..getCategoryList(),
             child: EditMaterialScreen(
               id: id,
             ),
@@ -630,7 +671,7 @@ class AppRouter {
         var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => MaterialManagementCubit(),
+            create: (context) => MaterialDetailsCubit()..getMaterialDetails(id),
             child: MaterialDetailsScreen(
               id: id,
             ),
@@ -651,7 +692,8 @@ class AppRouter {
         var type = args['type'] as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => TransactionManagementCubit(),
+            create: (context) =>
+                TransactionDetailsCubit()..getTransactionDetails(id, type),
             child: TransactionDetailsScreen(
               id: id,
               type: type,

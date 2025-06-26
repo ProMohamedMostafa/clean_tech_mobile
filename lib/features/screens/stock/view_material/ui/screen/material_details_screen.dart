@@ -8,9 +8,7 @@ class MaterialDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: MaterialDetailsBody(
-        id: id,
-      ),
+      body: MaterialDetailsBody(id: id),
     );
   }
 }

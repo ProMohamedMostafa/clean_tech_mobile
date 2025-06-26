@@ -28,6 +28,7 @@ class FilterDialogDataModel {
   String? activityStatus;
   int? minBattery;
   int? maxBattery;
+  int? deviceId;
   DateTime? date;
   DateTime? startDate;
   DateTime? endDate;
@@ -65,6 +66,7 @@ class FilterDialogDataModel {
     this.activityStatus,
     this.minBattery,
     this.maxBattery,
+    this.deviceId,
     this.date,
     this.startDate,
     this.endDate,
@@ -72,6 +74,8 @@ class FilterDialogDataModel {
     this.endTime,
     this.isAsign,
   });
+
+  factory FilterDialogDataModel.empty() => FilterDialogDataModel();
 
   factory FilterDialogDataModel.fromJson(Map<String, dynamic> json) {
     return FilterDialogDataModel(
@@ -104,6 +108,7 @@ class FilterDialogDataModel {
       activityStatus: json['activityStatus'],
       minBattery: json['minBattery'],
       maxBattery: json['maxBattery'],
+      deviceId: json['deviceId'],
       date: json['date'],
       startDate: json['startDate'],
       endDate: json['endDate'],
@@ -144,6 +149,7 @@ class FilterDialogDataModel {
       'activityStatus': activityStatus,
       'minBattery': minBattery,
       'maxBattery': maxBattery,
+      'deviceId': deviceId,
       'date': date,
       'startDate': startDate,
       'endDate': endDate,

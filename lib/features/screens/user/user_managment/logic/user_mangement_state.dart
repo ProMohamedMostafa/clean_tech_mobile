@@ -47,17 +47,17 @@ class AllUsersErrorState extends UserManagementState {
 
 //***************** */
 
-class DeletedUsersLoadingState extends UserManagementState {}
+class AllDeletedUsersLoadingState extends UserManagementState {}
 
-class DeletedUsersSuccessState extends UserManagementState {
+class AllDeletedUsersSuccessState extends UserManagementState {
   final DeletedListModel deletedListModel;
 
-  DeletedUsersSuccessState(this.deletedListModel);
+  AllDeletedUsersSuccessState(this.deletedListModel);
 }
 
-class DeletedUsersErrorState extends UserManagementState {
+class AllDeletedUsersErrorState extends UserManagementState {
   final String error;
-  DeletedUsersErrorState(this.error);
+  AllDeletedUsersErrorState(this.error);
 }
 //***************** */
 

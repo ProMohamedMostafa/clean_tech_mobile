@@ -15,14 +15,14 @@ class LoginCubit extends Cubit<LoginStates> {
   TextEditingController passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
-  LogInModel? logInModel;
+  LoginModel? logInModel;
   userLogin(BuildContext context) {
     emit(LoginLoadingState());
     DioHelper.postData(url: ApiConstants.loginUrl, data: {
       'emailOrUserName': emailController.text,
       'password': passwordController.text
     }).then((value) async {
-      logInModel = LogInModel.fromJson(value!.data);
+      logInModel = LoginModel.fromJson(value!.data);
       await saveUserToken(logInModel!.data!.token!);
       await saveUserId(logInModel!.data!.id!);
       await saveRole(logInModel!.data!.role!);

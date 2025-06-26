@@ -7,7 +7,7 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/core/widgets/two_buttons_in_integreat_screen/two_buttons_in_integration_screen.dart';
+import 'package:smart_cleaning_application/core/widgets/integration_buttons/integrations_buttons.dart';
 import 'package:smart_cleaning_application/features/screens/activity/ui/widgets/icons_widget.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_cubit.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
@@ -58,7 +58,7 @@ class ShowActivity extends StatelessWidget {
                 Divider(height: 1.h),
                 Padding(
                   padding: const EdgeInsets.all(8),
-                  child: twoButtonsIntegration(
+                  child: integrationsButtons(
                     selectedIndex: cubit.selectedIndex,
                     onTap: cubit.changeTap,
                     firstLabel: S.of(context).myActivity,

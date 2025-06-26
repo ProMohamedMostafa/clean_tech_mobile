@@ -99,8 +99,7 @@ class SensorCubit extends Cubit<SensorState> {
 
   restoreDeletedSensor(int id) {
     emit(RestoreSensorLoadingState());
-    DioHelper.postData(url: 'devices/restore/$id', data: {'id': id})
-        .then((value) {
+    DioHelper.postData(url: 'devices/restore/$id').then((value) {
       final responseMessage = value?.data['message'] ?? "Restored successfully";
 
       getSensorsData();

@@ -2,9 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
-import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_edit/data/models/leaves_details_model.dart';
+import 'package:smart_cleaning_application/features/screens/attendance/attedance_leaves_details/data/model/leaves_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_edit/data/models/leaves_edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_edit/logic/leaves_edit_state.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/gallary_model.dart';
@@ -25,7 +26,7 @@ class LeavesEditCubit extends Cubit<LeavesEditState> {
   final formKey = GlobalKey<FormState>();
 
   AttendanceLeavesEditModel? attendanceLeavesEditModel;
-  editLeaves(String? image, int id, typeId) async {
+  editLeaves(String? image, int id) async {
     emit(LeavesEditLoadingState());
     MultipartFile? imageFile;
     if (image != null && image.isNotEmpty) {
@@ -48,7 +49,7 @@ class LeavesEditCubit extends Cubit<LeavesEditState> {
           : leavesDetailsModel!.data!.endDate,
       "Type": typeController.text.isEmpty
           ? leavesDetailsModel!.data!.typeId
-          : typeId,
+          : typeIdController.text,
       "Reason": discriptionController.text.isNotEmpty
           ? discriptionController.text
           : leavesDetailsModel!.data!.reason,
@@ -59,6 +60,45 @@ class LeavesEditCubit extends Cubit<LeavesEditState> {
     try {
       final response = await DioHelper.putData2(
           url: ApiConstants.leavesEditUrl, data: formData);
+      attendanceLeavesEditModel =
+          AttendanceLeavesEditModel.fromJson(response!.data);
+      emit(LeavesEditSuccessState(attendanceLeavesEditModel!));
+    } catch (error) {
+      emit(LeavesEditErrorState(error.toString()));
+    }
+  }
+
+  editLeavesRequest(String? image, int id) async {
+    emit(LeavesEditLoadingState());
+    MultipartFile? imageFile;
+    if (image != null && image.isNotEmpty) {
+      imageFile = await MultipartFile.fromFile(
+        image,
+        filename: image.split('/').last,
+      );
+    }
+
+    Map<String, dynamic> formDataMap = {
+      "Id": id,
+      "StartDate": startDateController.text.isNotEmpty
+          ? startDateController.text
+          : leavesDetailsModel!.data!.startDate,
+      "EndDate": endDateController.text.isNotEmpty
+          ? endDateController.text
+          : leavesDetailsModel!.data!.endDate,
+      "Type": typeController.text.isEmpty
+          ? leavesDetailsModel!.data!.typeId
+          : typeIdController.text,
+      "Reason": discriptionController.text.isNotEmpty
+          ? discriptionController.text
+          : leavesDetailsModel!.data!.reason,
+      "File": leavesDetailsModel!.data!.file ?? imageFile
+    };
+
+    FormData formData = FormData.fromMap(formDataMap);
+    try {
+      final response =
+          await DioHelper.putData2(url: 'leaves/edit/request', data: formData);
       attendanceLeavesEditModel =
           AttendanceLeavesEditModel.fromJson(response!.data);
       emit(LeavesEditSuccessState(attendanceLeavesEditModel!));
@@ -79,19 +119,23 @@ class LeavesEditCubit extends Cubit<LeavesEditState> {
   }
 
   UsersModel? usersModel;
-  getAllUsers({
-    int? organizationId,
-    int? buildingId,
-    int? floorId,
-    int? pointId,
-  }) {
+  List<UserItem> userItem = [UserItem(userName: 'No users available')];
+  getAllUsers() {
     emit(AllUsersLoadingState());
     DioHelper.getData(url: "users/pagination").then((value) {
       usersModel = UsersModel.fromJson(value!.data);
+      userItem =
+          usersModel?.data?.users ?? [UserItem(userName: 'No users available')];
       emit(AllUsersSuccessState(usersModel!));
     }).catchError((error) {
       emit(AllUsersErrorState(error.toString()));
     });
+  }
+
+  void initialize() {
+    if (role == 'Admin') {
+      getAllUsers();
+    }
   }
 
   GalleryModel? gellaryModel;

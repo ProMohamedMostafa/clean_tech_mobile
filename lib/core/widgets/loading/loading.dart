@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 
 class Loading extends StatelessWidget {
@@ -9,8 +10,8 @@ class Loading extends StatelessWidget {
     return Center(
       child: Lottie.asset(
         'assets/images/loading.json',
-        width: 210,
-        height: 210,
+        width: 200.w,
+        height: 200.h,
       ),
     );
   }

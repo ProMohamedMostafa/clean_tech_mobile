@@ -25,9 +25,9 @@ class LeavesAddCubit extends Cubit<LeavesAddState> {
   final formKey = GlobalKey<FormState>();
 
   AttendanceLeavesAddModel? attendanceLeavesAddModel;
-  createLeaves(String? image, int typeId) async {
+  createLeaves(String? image) async {
     emit(LeavesAddLoadingState());
- MultipartFile? imageFile;
+    MultipartFile? imageFile;
     if (image != null && image.isNotEmpty) {
       imageFile = await MultipartFile.fromFile(
         image,
@@ -35,19 +35,47 @@ class LeavesAddCubit extends Cubit<LeavesAddState> {
       );
     }
     Map<String, dynamic> formDataMap = {
-        "userLogin": uId,
-        "userId": employeeIdController.text,
-        "startDate": startDateController.text,
-        "endDate": endDateController.text,
-        "type": typeId,
-        "reason": discriptionController.text,
-        "File": imageFile,
-      };
+      "UserId": employeeIdController.text,
+      "StartDate": startDateController.text,
+      "EndDate": endDateController.text,
+      "Type": typeIdController.text,
+      "Reason": discriptionController.text,
+      "File": imageFile,
+    };
 
     FormData formData = FormData.fromMap(formDataMap);
     try {
-      final response =
-          await DioHelper.postData2(url: ApiConstants.leavesCreateUrl, data: formData);
+      final response = await DioHelper.postData2(
+          url: ApiConstants.leavesCreateUrl, data: formData);
+      attendanceLeavesAddModel =
+          AttendanceLeavesAddModel.fromJson(response!.data);
+      emit(LeavesAddSuccessState(attendanceLeavesAddModel!));
+    } catch (error) {
+      emit(LeavesAddErrorState(error.toString()));
+    }
+  }
+
+  createLeaveRequest(String? image) async {
+    emit(LeavesAddLoadingState());
+    MultipartFile? imageFile;
+    if (image != null && image.isNotEmpty) {
+      imageFile = await MultipartFile.fromFile(
+        image,
+        filename: image.split('/').last,
+      );
+    }
+    Map<String, dynamic> formDataMap = {
+      "StartDate": startDateController.text,
+      "EndDate": endDateController.text,
+      "Type": typeIdController.text,
+      "Reason": discriptionController.text,
+      "File": imageFile,
+    };
+
+    FormData formData = FormData.fromMap(formDataMap);
+    try {
+      final response = await DioHelper.postData2(
+          url: 'leaves/create/request', data: formData);
       attendanceLeavesAddModel =
           AttendanceLeavesAddModel.fromJson(response!.data);
       emit(LeavesAddSuccessState(attendanceLeavesAddModel!));
@@ -57,19 +85,23 @@ class LeavesAddCubit extends Cubit<LeavesAddState> {
   }
 
   UsersModel? usersModel;
-  getAllUsersInUserManage({
-    int? organizationId,
-    int? buildingId,
-    int? floorId,
-    int? pointId,
-  }) {
+  List<UserItem> userItem = [UserItem(userName: 'No users available')];
+  getAllUsers() {
     emit(AllUsersLoadingState());
     DioHelper.getData(url: "users/pagination").then((value) {
       usersModel = UsersModel.fromJson(value!.data);
+      userItem =
+          usersModel?.data?.users ?? [UserItem(userName: 'No users available')];
       emit(AllUsersSuccessState(usersModel!));
     }).catchError((error) {
       emit(AllUsersErrorState(error.toString()));
     });
+  }
+
+  void initialize() {
+    if (role == 'Admin') {
+      getAllUsers();
+    }
   }
 
   GalleryModel? gellaryModel;

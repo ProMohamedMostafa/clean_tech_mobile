@@ -4,7 +4,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
-import 'package:smart_cleaning_application/core/widgets/two_buttons_in_integreat_screen/two_buttons_in_integration_screen.dart';
+import 'package:smart_cleaning_application/core/widgets/integration_buttons/integrations_buttons.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_state.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_managment/ui/widgets/filter_search_build.dart';
@@ -23,7 +23,7 @@ class UserManagmentBody extends StatelessWidget {
           toast(text: state.deleteUserModel.message!, color: Colors.blue);
           cubit.getAllDeletedUser();
         }
-        if (state is DeletedUsersErrorState) {
+        if (state is UserDeleteErrorState) {
           toast(text: state.error, color: Colors.red);
         }
         if (state is RestoreUsersSuccessState) {
@@ -37,6 +37,9 @@ class UserManagmentBody extends StatelessWidget {
           cubit.getAllUsersInUserManage();
           cubit.getAllDeletedUser();
         }
+        if (state is ForceDeleteUsersErrorState) {
+          toast(text: state.error, color: Colors.red);
+        }
       },
       builder: (context, state) {
         return Skeletonizer(
@@ -49,7 +52,7 @@ class UserManagmentBody extends StatelessWidget {
                 verticalSpace(10),
                 FilterAndSearchWidget(),
                 verticalSpace(10),
-                twoButtonsIntegration(
+                integrationsButtons(
                   selectedIndex: cubit.selectedIndex,
                   onTap: (index) => cubit.changeTap(index),
                   firstCount: cubit.usersModel?.data?.totalCount ?? 0,
@@ -61,10 +64,7 @@ class UserManagmentBody extends StatelessWidget {
                       role == 'Admin' ? S.of(context).deletedUsers : null,
                 ),
                 verticalSpace(10),
-                Divider(
-                  color: Colors.grey[300],
-                  height: 0,
-                ),
+                Divider(color: Colors.grey[300], height: 0),
                 Expanded(child: UserDetailsList()),
                 verticalSpace(10),
               ],

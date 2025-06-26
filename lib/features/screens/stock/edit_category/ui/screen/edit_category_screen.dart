@@ -7,8 +7,6 @@ class EditCategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: EditCategoryBody(id: id,),
-    );
+    return EditCategoryBody(id: id);
   }
 }

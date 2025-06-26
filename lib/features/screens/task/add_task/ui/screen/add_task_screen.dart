@@ -6,6 +6,6 @@ class AddTaskScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: AddTaskBody(),);
+    return AddTaskBody();
   }
 }

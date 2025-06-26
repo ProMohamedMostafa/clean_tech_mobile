@@ -4,7 +4,7 @@ import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/features/screens/task/view_task/logic/cubit/task_details_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/task/view_task/logic/task_details_cubit.dart';
 
 class UploadFilesBottomDialog {
   void showBottomDialog(BuildContext context, TaskDetailsCubit cubit) {

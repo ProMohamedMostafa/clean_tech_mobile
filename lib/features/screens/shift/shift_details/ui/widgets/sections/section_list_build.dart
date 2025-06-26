@@ -4,6 +4,7 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/logic/cubit/shift_details_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shift_details/ui/widgets/sections/section_list_item_build.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class SectionListBuild extends StatelessWidget {
   const SectionListBuild({super.key});
@@ -26,7 +27,7 @@ class SectionListBuild extends StatelessWidget {
     if (sectiontsData == null || sectiontsData.isEmpty) {
       return Center(
         child: Text(
-          "There's no data",
+          S.of(context).noData,
           style: TextStyles.font13Blackmedium,
         ),
       );

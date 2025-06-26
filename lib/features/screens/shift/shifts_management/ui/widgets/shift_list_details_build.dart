@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/logic/shift_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shifts_management/ui/widgets/list_item_build.dart';
+import 'package:smart_cleaning_application/features/screens/shift/shifts_management/ui/widgets/shift_list_item_build.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class ShiftListDetailsBuild extends StatelessWidget {
   const ShiftListDetailsBuild({super.key});
@@ -18,7 +19,7 @@ class ShiftListDetailsBuild extends StatelessWidget {
     if (shiftsData == null || shiftsData.isEmpty) {
       return Center(
         child: Text(
-          "There's no data",
+          S.of(context).noData,
           style: TextStyles.font13Blackmedium,
         ),
       );

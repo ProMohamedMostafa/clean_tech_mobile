@@ -31,7 +31,6 @@ class AddShiftCubit extends Cubit<AddShiftState> {
   CreateShiftModel? createShiftModel;
   addShift() async {
     emit(AddShiftLoadingState());
-
     try {
       final response =
           await DioHelper.postData(url: ApiConstants.createShiftUrl, data: {

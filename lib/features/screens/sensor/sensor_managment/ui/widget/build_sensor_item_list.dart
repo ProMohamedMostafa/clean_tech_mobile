@@ -9,6 +9,7 @@ import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/sensor/sensor_managment/logic/cubit/sensor_cubit.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class BuildSensorItemList extends StatelessWidget {
   final int index;
@@ -84,7 +85,7 @@ class BuildSensorItemList extends StatelessWidget {
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: 'Last read ',
+                            text: '${S.of(context).sensorTextLastRead} ',
                             style: TextStyles.font12GreyRegular,
                           ),
                           TextSpan(
@@ -94,7 +95,7 @@ class BuildSensorItemList extends StatelessWidget {
                                 .copyWith(color: Colors.red),
                           ),
                           TextSpan(
-                            text: ' ago',
+                            text: ' ${S.of(context).sensorTextAgo}',
                             style: TextStyles.font12GreyRegular,
                           ),
                         ],
@@ -131,9 +132,9 @@ class BuildSensorItemList extends StatelessWidget {
                         showDialog(
                             context: context,
                             builder: (dialogContext) {
-                              return PopUpMeassage(
-                                  title: 'restore',
-                                  body: 'sensor',
+                              return PopUpMessage(
+                                  title: S.of(context).TitleRestore,
+                                  body: S.of(context).sensorBody,
                                   onPressed: () {
                                     cubit.restoreDeletedSensor(cubit
                                         .deletedSensorListModel!
@@ -150,22 +151,22 @@ class BuildSensorItemList extends StatelessWidget {
             if (cubit.sensorModel!.data!.data![index].pointId != null) ...[
               if (cubit.selectedIndex == 0) ...[
                 rowDetailsBuild(
-                    'Organization',
+                    S.of(context).Organization,
                     cubit.sensorModel!.data!.data![index].organizationName ??
                         ''),
                 verticalSpace(5),
-                rowDetailsBuild('Building',
+                rowDetailsBuild(S.of(context).Building,
                     cubit.sensorModel!.data!.data![index].buildingName ?? ''),
                 verticalSpace(5),
-                rowDetailsBuild('Floor',
+                rowDetailsBuild(S.of(context).Floor,
                     cubit.sensorModel!.data!.data![index].floorName ?? ''),
                 verticalSpace(5),
-                rowDetailsBuild('Section',
+                rowDetailsBuild(S.of(context).Section,
                     cubit.sensorModel!.data!.data![index].sectionName ?? ''),
                 verticalSpace(5),
               ],
               rowDetailsBuild(
-                  'Point',
+                  S.of(context).Point,
                   cubit.selectedIndex == 0
                       ? cubit.sensorModel!.data!.data![index].pointName ?? ''
                       : cubit.deletedSensorListModel!.data![index].pointName ??
@@ -173,7 +174,7 @@ class BuildSensorItemList extends StatelessWidget {
               verticalSpace(5),
             ],
             rowDetailsBuild(
-                'Type',
+                S.of(context).type,
                 cubit.selectedIndex == 0
                     ? cubit.sensorModel!.data!.data![index].applicationName ??
                         ''
@@ -182,7 +183,7 @@ class BuildSensorItemList extends StatelessWidget {
                         ''),
             verticalSpace(5),
             rowDetailsBuild(
-              'Battery',
+              S.of(context).type,
               cubit.selectedIndex == 0
                   ? '${cubit.sensorModel?.data?.data?[index].battery?.toString() ?? ''}%'
                   : '${cubit.deletedSensorListModel?.data?[index].battery?.toString() ?? ''}%',
@@ -211,20 +212,15 @@ class BuildSensorItemList extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    cubit.sensorModel!.data!.data![index].pointName == null
-                        ? 'Assign To Location'
-                        : 'Edit Location',
+                    S.of(context).editLocation,
                     style: TextStyle(
-                      color: cubit.sensorModel!.data!.data![index].pointName ==
-                              null
-                          ? AppColor.primaryColor
-                          : Colors.black,
+                      color: AppColor.primaryColor,
                     ),
                   ),
                   InkWell(
                     borderRadius: BorderRadius.circular(8.r),
                     onTap: () {
-                      context.pushNamed(Routes.sensorAssignScreen,
+                      context.pushNamed(Routes.sensorEditScreen,
                           arguments: cubit.sensorModel!.data!.data![index].id);
                     },
                     child: Container(

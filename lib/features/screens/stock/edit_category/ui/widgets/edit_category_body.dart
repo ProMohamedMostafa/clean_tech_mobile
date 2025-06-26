@@ -15,55 +15,37 @@ import 'package:smart_cleaning_application/features/screens/integrations/ui/widg
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/stock/edit_category/logic/edit_category_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/stock/edit_category/logic/edit_category_state.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
-class EditCategoryBody extends StatefulWidget {
+class EditCategoryBody extends StatelessWidget {
   final int id;
   const EditCategoryBody({super.key, required this.id});
 
   @override
-  State<EditCategoryBody> createState() => _EditCategoryBodyState();
-}
-
-class _EditCategoryBodyState extends State<EditCategoryBody> {
-  int? unit;
-  int? parentCategory;
-  @override
-  void initState() {
-    context.read<EditCategoryCubit>().getCategoryDetails(widget.id);
-    context.read<EditCategoryCubit>().getCategoryList();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final cubit = context.read<EditCategoryCubit>();
     return Scaffold(
         appBar: AppBar(
-          title: Text(
-            "Edit Category",
-          ),
-          leading: CustomBackButton(),
-        ),
+            title: Text(S.of(context).editCategory),
+            leading: CustomBackButton()),
         body: BlocConsumer<EditCategoryCubit, EditCategoryState>(
           listener: (context, state) {
             if (state is EditCategorySuccessState) {
               toast(text: state.editCategoryModel.message!, color: Colors.blue);
-              context.pushNamedAndRemoveLastTwo(Routes.categoryScreen);
+              context.pushNamedAndRemoveAllExceptFirst(Routes.categoryScreen);
             }
             if (state is EditCategoryErrorState) {
               toast(text: state.error, color: Colors.red);
             }
           },
           builder: (context, state) {
-            if (context.read<EditCategoryCubit>().categoryDetailsModel ==
-                    null ||
-                context.read<EditCategoryCubit>().categoryManagementModel ==
-                    null) {
+            if (cubit.categoryDetailsModel == null ||
+                cubit.categoryManagementModel == null) {
               return Loading();
             }
-            return SafeArea(
-                child: SingleChildScrollView(
-                    child: Form(
-              key: context.read<EditCategoryCubit>().formKey,
+            return SingleChildScrollView(
+                child: Form(
+              key: cubit.formKey,
               child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
@@ -71,66 +53,61 @@ class _EditCategoryBodyState extends State<EditCategoryBody> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Category Name",
+                          S.of(context).categoryName,
                           style: TextStyles.font16BlackRegular,
                         ),
                         verticalSpace(5),
                         CustomTextFormField(
                           onlyRead: false,
-                          hint: context
-                              .read<EditCategoryCubit>()
-                              .categoryDetailsModel!
-                              .data!
-                              .name!,
-                          controller:
-                              context.read<EditCategoryCubit>().nameController
-                                ..text = context
-                                    .read<EditCategoryCubit>()
-                                    .categoryDetailsModel!
-                                    .data!
-                                    .name!,
+                          hint: cubit.categoryDetailsModel!.data!.name!,
+                          controller: cubit.nameController
+                            ..text = cubit.categoryDetailsModel!.data!.name!,
                           keyboardType: TextInputType.text,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return "Category Name is Required";
+                              return S.of(context).categoryNameRequired;
                             } else if (value.length > 55) {
-                              return 'Category name too long';
+                              return S.of(context).categoryNameTooLong;
                             } else if (value.length < 3) {
-                              return 'Category name too short';
+                              return S.of(context).categoryNameTooShort;
                             }
                             return null;
                           },
                         ),
                         verticalSpace(10),
                         Text(
-                          'Unit',
+                          S.of(context).unitTitle,
                           style: TextStyles.font16BlackRegular,
                         ),
                         verticalSpace(5),
                         CustomDropDownList(
                           onPressed: (selectedValue) {
                             final items = [
-                              'Ml',
-                              'L',
-                              'Kg',
-                              'G',
-                              'M',
-                              'Cm',
-                              'Pieces'
+                              S.of(context).ml,
+                              S.of(context).l,
+                              S.of(context).kg,
+                              S.of(context).g,
+                              S.of(context).m,
+                              S.of(context).cm,
+                              S.of(context).pieces
                             ];
                             final selectedIndex = items.indexOf(selectedValue);
                             if (selectedIndex != -1) {
-                              unit = selectedIndex;
+                              cubit.unitIdController.text =
+                                  selectedIndex.toString();
                             }
                           },
-                          hint: context
-                              .read<EditCategoryCubit>()
-                              .categoryDetailsModel!
-                              .data!
-                              .unit!,
-                          items: ['Ml', 'L', 'Kg', 'G', 'M', 'Cm', 'Pieces'],
-                          controller:
-                              context.read<EditCategoryCubit>().unitController,
+                          hint: cubit.categoryDetailsModel!.data!.unit!,
+                          items: [
+                            S.of(context).ml,
+                            S.of(context).l,
+                            S.of(context).kg,
+                            S.of(context).g,
+                            S.of(context).m,
+                            S.of(context).cm,
+                            S.of(context).pieces
+                          ],
+                          controller: cubit.unitController,
                           keyboardType: TextInputType.text,
                           suffixIcon: IconBroken.arrowDown2,
                         ),
@@ -140,11 +117,11 @@ class _EditCategoryBodyState extends State<EditCategoryBody> {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: 'Parent Category',
+                                text: S.of(context).parentCategory,
                                 style: TextStyles.font16BlackRegular,
                               ),
                               TextSpan(
-                                text: ' (Optional)',
+                                text: S.of(context).labelOptional,
                                 style: TextStyles.font14GreyRegular,
                               ),
                             ],
@@ -152,55 +129,39 @@ class _EditCategoryBodyState extends State<EditCategoryBody> {
                         ),
                         verticalSpace(5),
                         CustomDropDownList(
-                          hint: context
-                                  .read<EditCategoryCubit>()
-                                  .categoryDetailsModel
-                                  ?.data
+                          hint: cubit.categoryDetailsModel?.data
                                   ?.parentCategoryName ??
                               '',
-                          items: (context
-                                          .read<EditCategoryCubit>()
-                                          .categoryManagementModel
-                                          ?.data
+                          items: (cubit.categoryManagementModel?.data
                                           ?.categories ??
                                       [])
-                                  .where((e) => e.id != widget.id)
+                                  .where((e) => e.id != id)
                                   .map((e) => e.name)
                                   .toList()
                                   .isEmpty
                               ? ['No category']
-                              : (context
-                                          .read<EditCategoryCubit>()
-                                          .categoryManagementModel
-                                          ?.data
+                              : (cubit.categoryManagementModel?.data
                                           ?.categories ??
                                       [])
-                                  .where((e) => e.id != widget.id)
+                                  .where((e) => e.id != id)
                                   .map((e) => e.name!)
                                   .toList(),
                           onPressed: (value) {
-                            final selectedCategory = context
-                                .read<EditCategoryCubit>()
-                                .categoryManagementModel
-                                ?.data
-                                ?.categories
+                            final selectedCategory = cubit
+                                .categoryManagementModel?.data?.categories
                                 ?.firstWhere(
-                                  (category) =>
-                                      category.name ==
-                                      context
-                                          .read<EditCategoryCubit>()
-                                          .parentCategoryController
-                                          .text,
-                                );
+                              (category) =>
+                                  category.name ==
+                                  cubit.parentCategoryController.text,
+                            );
 
                             if (selectedCategory != null) {
-                              parentCategory = selectedCategory.id;
+                              cubit.parentCategoryIdController.text =
+                                  selectedCategory.id.toString();
                             }
                           },
                           suffixIcon: IconBroken.arrowDown2,
-                          controller: context
-                              .read<EditCategoryCubit>()
-                              .parentCategoryController,
+                          controller: cubit.parentCategoryController,
                           isRead: false,
                           keyboardType: TextInputType.text,
                         ),
@@ -209,27 +170,24 @@ class _EditCategoryBodyState extends State<EditCategoryBody> {
                             ? Loading()
                             : Center(
                                 child: DefaultElevatedButton(
-                                    name: "Edit",
+                                    name: S.of(context).editButton,
                                     onPressed: () {
-                                      if (context
-                                          .read<EditCategoryCubit>()
-                                          .formKey
-                                          .currentState!
+                                      if (cubit.formKey.currentState!
                                           .validate()) {
                                         showDialog(
                                             context: context,
                                             builder: (dialogContext) {
-                                              return PopUpMeassage(
-                                                  title: 'edit',
-                                                  body: 'category',
+                                              return PopUpMessage(
+                                                  title:
+                                                      S.of(context).TitleEdit,
+                                                  body: S
+                                                      .of(context)
+                                                      .categoryBody,
                                                   onPressed: () {
                                                     context
                                                         .read<
                                                             EditCategoryCubit>()
-                                                        .editCategory(
-                                                            widget.id,
-                                                            unit,
-                                                            parentCategory);
+                                                        .editCategory(id);
                                                   });
                                             });
                                       }
@@ -242,7 +200,7 @@ class _EditCategoryBodyState extends State<EditCategoryBody> {
                               ),
                         verticalSpace(30),
                       ])),
-            )));
+            ));
           },
         ));
   }

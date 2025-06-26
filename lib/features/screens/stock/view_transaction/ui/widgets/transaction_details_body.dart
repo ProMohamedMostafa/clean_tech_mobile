@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
@@ -9,62 +8,30 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
-import 'package:smart_cleaning_application/features/screens/stock/transaction_management/logic/transaction_mangement_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/stock/transaction_management/logic/transaction_mangement_state.dart';
+import 'package:smart_cleaning_application/features/screens/stock/view_transaction/logic/cubit/transaction_details_cubit.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
-class TransactionDetailsBody extends StatefulWidget {
+class TransactionDetailsBody extends StatelessWidget {
   final int id;
   final int type;
   const TransactionDetailsBody(
       {super.key, required this.id, required this.type});
 
   @override
-  State<TransactionDetailsBody> createState() => _TransactionDetailsBodyState();
-}
-
-class _TransactionDetailsBodyState extends State<TransactionDetailsBody> {
-  String getDateOnly(String dateTimeString) {
-    final dateTime = DateTime.parse(dateTimeString);
-    return DateFormat('yyyy-MM-dd').format(dateTime);
-  }
-
-  String getTimeOnly(String dateTimeString) {
-    final dateTime = DateTime.parse(dateTimeString);
-    return DateFormat('HH:mm').format(dateTime);
-  }
-
-  final List<Color> statusColor = [
-    Colors.green,
-    Colors.red,
-  ];
-
-  @override
-  void initState() {
-    context
-        .read<TransactionManagementCubit>()
-        .getTransactionDetails(widget.id, widget.type);
-    super.initState();
-  }
-
-  bool descTextShowFlag = false;
-  @override
   Widget build(BuildContext context) {
+    final cubit = context.read<TransactionDetailsCubit>();
     final Color currentStatusColor =
-        (widget.type >= 0 && widget.type < statusColor.length)
-            ? statusColor[widget.type]
+        (type >= 0 && type < cubit.statusColor.length)
+            ? cubit.statusColor[type]
             : Colors.grey;
-    return BlocBuilder<TransactionManagementCubit, TransactionManagementState>(
+    return BlocBuilder<TransactionDetailsCubit, TransactionDetailsState>(
       builder: (context, state) {
-        if (context
-                .read<TransactionManagementCubit>()
-                .transactionDetailsModel
-                ?.data ==
-            null) {
+        if (cubit.transactionDetailsModel?.data == null) {
           return Loading();
         }
         return Scaffold(
             appBar: AppBar(
-              title: Text("Transaction details"),
+              title: Text(S.of(context).transactionDetails),
               leading: CustomBackButton(),
               actions: [
                 Padding(
@@ -79,11 +46,7 @@ class _TransactionDetailsBodyState extends State<TransactionDetailsBody> {
                     ),
                     child: Center(
                       child: Text(
-                        context
-                            .read<TransactionManagementCubit>()
-                            .transactionDetailsModel!
-                            .data!
-                            .type!,
+                        cubit.transactionDetailsModel!.data!.type!,
                         style: TextStyles.font11WhiteSemiBold.copyWith(
                           color: currentStatusColor,
                         ),
@@ -100,76 +63,40 @@ class _TransactionDetailsBodyState extends State<TransactionDetailsBody> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    rowDetailsBuild(
-                        context,
-                        'Category',
-                        context
-                            .read<TransactionManagementCubit>()
-                            .transactionDetailsModel!
-                            .data!
-                            .category!),
+                    rowDetailsBuild(context, S.of(context).category,
+                        cubit.transactionDetailsModel!.data!.category!),
+                    Divider(
+                      height: 30,
+                    ),
+                    rowDetailsBuild(context, S.of(context).material,
+                        cubit.transactionDetailsModel!.data!.name!),
+                    Divider(
+                      height: 30,
+                    ),
+                    rowDetailsBuild(context, S.of(context).user,
+                        cubit.transactionDetailsModel!.data!.userName!),
+                    Divider(
+                      height: 30,
+                    ),
+                    rowDetailsBuild(context, S.of(context).providerBody,
+                        cubit.transactionDetailsModel!.data!.provider!),
                     Divider(
                       height: 30,
                     ),
                     rowDetailsBuild(
                         context,
-                        'Matrial',
-                        context
-                            .read<TransactionManagementCubit>()
-                            .transactionDetailsModel!
-                            .data!
-                            .name!),
-                    Divider(
-                      height: 30,
-                    ),
-                    rowDetailsBuild(
-                        context,
-                        'User',
-                        context
-                            .read<TransactionManagementCubit>()
-                            .transactionDetailsModel!
-                            .data!
-                            .userName!),
-                    Divider(
-                      height: 30,
-                    ),
-                    rowDetailsBuild(
-                        context,
-                        'Provider',
-                        context
-                            .read<TransactionManagementCubit>()
-                            .transactionDetailsModel!
-                            .data!
-                            .provider!),
-                    Divider(
-                      height: 30,
-                    ),
-                    rowDetailsBuild(
-                        context,
-                        'Total Quantity',
-                        context
-                            .read<TransactionManagementCubit>()
-                            .transactionDetailsModel!
-                            .data!
-                            .quantity!
+                        S.of(context).totalQuantity,
+                        cubit.transactionDetailsModel!.data!.quantity!
                             .toString()),
                     Divider(
                       height: 30,
                     ),
-                    if (context
-                            .read<TransactionManagementCubit>()
-                            .transactionDetailsModel!
-                            .data!
-                            .typeId ==
-                        0) ...[
+                    if (cubit.transactionDetailsModel!.data!.typeId == 0) ...[
                       rowDetailsBuild(
                         context,
-                        'Total Price',
-                        double.parse(context
-                                    .read<TransactionManagementCubit>()
-                                    .transactionDetailsModel!
-                                    .data!
-                                    .totalPrice
+                        S.of(context).totalPrice,
+                        double.parse(cubit
+                                    .transactionDetailsModel!.data!.totalPrice
                                     ?.toString() ??
                                 '0.0')
                             .toString(),
@@ -180,56 +107,31 @@ class _TransactionDetailsBodyState extends State<TransactionDetailsBody> {
                     ],
                     rowDetailsBuild(
                         context,
-                        'Date',
-                        getDateOnly(context
-                            .read<TransactionManagementCubit>()
-                            .transactionDetailsModel!
-                            .data!
-                            .createdAt!)),
+                        S.of(context).date,
+                        cubit.getDateOnly(
+                            cubit.transactionDetailsModel!.data!.createdAt!)),
                     Divider(
                       height: 30,
                     ),
                     rowDetailsBuild(
                         context,
-                        'Time',
-                        getTimeOnly(context
-                            .read<TransactionManagementCubit>()
-                            .transactionDetailsModel!
-                            .data!
-                            .createdAt!)),
+                        S.of(context).time,
+                        cubit.getTimeOnly(
+                            cubit.transactionDetailsModel!.data!.createdAt!)),
                     Divider(
                       height: 30,
                     ),
-                    if (context
-                            .read<TransactionManagementCubit>()
-                            .transactionDetailsModel!
-                            .data!
-                            .typeId ==
-                        0) ...[
+                    if (cubit.transactionDetailsModel!.data!.typeId == 0) ...[
                       rowDetailsBuild(
                         context,
-                        'File',
-                        context
-                                    .read<TransactionManagementCubit>()
-                                    .transactionDetailsModel!
-                                    .data!
-                                    .file ==
-                                null
-                            ? 'No file uploaded'
-                            : '${context.read<TransactionManagementCubit>().transactionDetailsModel?.data?.file != null ? 1 : 0} files uploaded',
+                        S.of(context).file,
+                        cubit.transactionDetailsModel!.data!.file == null
+                            ? S.of(context).noFile
+                            : '${cubit.transactionDetailsModel?.data?.file != null ? 1 : 0} ${S.of(context).uploadFile}',
                       ),
                       verticalSpace(10),
-                      if (context
-                                  .read<TransactionManagementCubit>()
-                                  .transactionDetailsModel!
-                                  .data!
-                                  .file !=
-                              null &&
-                          context
-                              .read<TransactionManagementCubit>()
-                              .transactionDetailsModel!
-                              .data!
-                              .file!
+                      if (cubit.transactionDetailsModel!.data!.file != null &&
+                          cubit.transactionDetailsModel!.data!.file!
                               .isNotEmpty) ...[
                         GestureDetector(
                           onTap: () {
@@ -243,7 +145,7 @@ class _TransactionDetailsBodyState extends State<TransactionDetailsBody> {
                                   body: Center(
                                     child: PhotoView(
                                       imageProvider: NetworkImage(
-                                        '${ApiConstants.apiBaseUrlImage}${context.read<TransactionManagementCubit>().transactionDetailsModel!.data!.file}',
+                                        '${ApiConstants.apiBaseUrlImage}${cubit.transactionDetailsModel!.data!.file}',
                                       ),
                                       errorBuilder:
                                           (context, error, stackTrace) {
@@ -271,7 +173,7 @@ class _TransactionDetailsBodyState extends State<TransactionDetailsBody> {
                                 borderRadius: BorderRadius.circular(10.r),
                               ),
                               child: Image.network(
-                                '${ApiConstants.apiBaseUrlImage}${context.read<TransactionManagementCubit>().transactionDetailsModel!.data!.file}',
+                                '${ApiConstants.apiBaseUrlImage}${cubit.transactionDetailsModel!.data!.file}',
                                 fit: BoxFit.fill,
                                 errorBuilder: (context, error, stackTrace) {
                                   return Image.asset(

@@ -18,9 +18,9 @@ import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/auth/set_password/ui/widgets/password_validation.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/user/edit_user/logic/edit_user_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user/edit_user/logic/edit_user_state.dart';
-import 'package:smart_cleaning_application/features/screens/user/edit_user/ui/widgets/edit_user_text_form_field/edit_user_text_form_field.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 import '../../../../../../core/widgets/default_toast/default_toast.dart';
@@ -38,16 +38,13 @@ class _EditUserBodyState extends State<EditUserBody> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          S.of(context).editUserTitle,
-        ),
-        leading: CustomBackButton(),
-      ),
+          title: Text(S.of(context).editUserTitle),
+          leading: CustomBackButton()),
       body: BlocConsumer<EditUserCubit, EditUserState>(
           listener: (context, state) {
         if (state is EditUserSuccessState) {
           toast(text: state.editModel.message!, color: Colors.blue);
-          context.pushNamedAndRemoveLastTwo(Routes.userManagmentScreen);
+          context.pushNamedAndRemoveAllExceptFirst(Routes.userManagmentScreen);
         }
         if (state is EditUserErrorState) {
           toast(text: state.error, color: Colors.red);
@@ -57,12 +54,11 @@ class _EditUserBodyState extends State<EditUserBody> {
         if (cubit.userDetailsModel?.data! == null) {
           return Loading();
         }
-        return SafeArea(
-            child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Form(
-              key: cubit.formKey,
+        return SingleChildScrollView(
+          child: Form(
+            key: cubit.formKey,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,12 +79,10 @@ class _EditUserBodyState extends State<EditUserBody> {
                                     child: PhotoView(
                                       imageProvider: (cubit.image != null &&
                                               cubit.image!.path.isNotEmpty)
-                                          ? FileImage(
-                                              File(cubit.image!.path),
-                                            )
+                                          ? FileImage(File(cubit.image!.path))
                                           : NetworkImage(
                                               '${ApiConstants.apiBaseUrlImage}${cubit.userDetailsModel!.data!.image}',
-                                            ),
+                                            ) as ImageProvider,
                                       errorBuilder:
                                           (context, error, stackTrace) {
                                         return Image.asset(
@@ -106,8 +100,8 @@ class _EditUserBodyState extends State<EditUserBody> {
                             );
                           },
                           child: Container(
-                            width: 100.w,
-                            height: 100.h,
+                            width: 100.r,
+                            height: 100.r,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               border: Border.all(
@@ -120,23 +114,23 @@ class _EditUserBodyState extends State<EditUserBody> {
                                       cubit.image!.path.isNotEmpty)
                                   ? Image.file(
                                       File(cubit.image!.path),
-                                      fit: BoxFit.fill,
+                                      fit: BoxFit.cover,
                                       errorBuilder:
                                           (context, error, stackTrace) {
                                         return Image.asset(
                                           'assets/images/person.png',
-                                          fit: BoxFit.fill,
+                                          fit: BoxFit.cover,
                                         );
                                       },
                                     )
                                   : Image.network(
                                       '${ApiConstants.apiBaseUrlImage}${cubit.userDetailsModel!.data!.image}',
-                                      fit: BoxFit.fill,
+                                      fit: BoxFit.cover,
                                       errorBuilder:
                                           (context, error, stackTrace) {
                                         return Image.asset(
                                           'assets/images/person.png',
-                                          fit: BoxFit.fill,
+                                          fit: BoxFit.cover,
                                         );
                                       },
                                     ),
@@ -151,27 +145,29 @@ class _EditUserBodyState extends State<EditUserBody> {
                               cubit.galleryFile();
                             },
                             child: Container(
-                                width: 22.w,
-                                height: 22.h,
-                                decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColor.primaryColor),
-                                child: Icon(
-                                  Icons.camera_alt_outlined,
-                                  color: Colors.white,
-                                  size: 20.sp,
-                                )),
+                              width: 22.r,
+                              height: 22.r,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColor.primaryColor,
+                              ),
+                              child: Icon(
+                                Icons.camera_alt_outlined,
+                                color: Colors.white,
+                                size: 14.sp,
+                              ),
+                            ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
-                  verticalSpace(35),
+                  verticalSpace(20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        child: EditUserTextField(
+                        child: CustomTextFormField(
                           controller: cubit.firstNameController
                             ..text = cubit.userDetailsModel!.data!.firstName!,
                           obscureText: false,
@@ -188,13 +184,15 @@ class _EditUserBodyState extends State<EditUserBody> {
                                   .of(context)
                                   .validationFirstNameOnlyLetters;
                             }
+                            return null;
                           },
                           hint: cubit.userDetailsModel!.data!.firstName!,
+                          onlyRead: false,
                         ),
                       ),
                       horizontalSpace(10),
                       Expanded(
-                        child: EditUserTextField(
+                        child: CustomTextFormField(
                           controller: cubit.lastNameController
                             ..text = cubit.userDetailsModel!.data!.lastName!,
                           obscureText: false,
@@ -211,17 +209,18 @@ class _EditUserBodyState extends State<EditUserBody> {
                                   .of(context)
                                   .validationLastNameOnlyLetters;
                             }
+                            return null;
                           },
                           hint: cubit.userDetailsModel!.data!.lastName!,
+                          onlyRead: false,
                         ),
                       ),
                     ],
                   ),
                   verticalSpace(15),
-                  EditUserTextField(
+                  CustomTextFormField(
                     controller: cubit.userNameController
                       ..text = cubit.userDetailsModel!.data!.userName!,
-                    obscureText: false,
                     keyboardType: TextInputType.text,
                     label: S.of(context).addUserText5,
                     validator: (value) {
@@ -230,30 +229,33 @@ class _EditUserBodyState extends State<EditUserBody> {
                       } else if (value.length < 3) {
                         return S.of(context).validationUserNameTooShort;
                       }
+                      return null;
                     },
                     hint: cubit.userDetailsModel!.data!.userName!,
+                    onlyRead: false,
                   ),
                   verticalSpace(15),
-                  EditUserTextField(
+                  CustomTextFormField(
                     controller: cubit.emailController
                       ..text = cubit.userDetailsModel!.data!.email!,
-                    obscureText: false,
                     keyboardType: TextInputType.emailAddress,
                     label: S.of(context).addUserText3,
                     validator: (value) {
-                      if (!RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                      if (!RegExp(
+                              r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
                           .hasMatch(value!)) {
                         return S.of(context).validationValidEmail;
                       }
+                      return null;
                     },
                     hint: cubit.userDetailsModel!.data!.email!,
+                    onlyRead: false,
                   ),
                   verticalSpace(15),
-                  EditUserTextField(
+                  CustomTextFormField(
                     controller: cubit.phoneController
                       ..text = cubit.userDetailsModel!.data!.phoneNumber!
                           .replaceFirst('+966', ''),
-                    obscureText: false,
                     keyboardType: TextInputType.phone,
                     label: S.of(context).addUserText10,
                     validator: (value) {
@@ -262,7 +264,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                       }
                       return null;
                     },
-                    prefixIcon: Padding(
+                    perfixIcon: Padding(
                       padding: const EdgeInsets.fromLTRB(10, 13, 5, 13),
                       child: Text(
                         '+966 |',
@@ -270,12 +272,12 @@ class _EditUserBodyState extends State<EditUserBody> {
                       ),
                     ),
                     hint: cubit.userDetailsModel!.data!.phoneNumber!,
+                    onlyRead: false,
                   ),
                   verticalSpace(15),
-                  EditUserTextField(
+                  CustomTextFormField(
                     controller: cubit.idNumberController
                       ..text = cubit.userDetailsModel!.data!.idNumber!,
-                    obscureText: false,
                     keyboardType: TextInputType.number,
                     label: S.of(context).addUserText7,
                     validator: (value) {
@@ -284,23 +286,26 @@ class _EditUserBodyState extends State<EditUserBody> {
                       } else if (value.length < 5) {
                         return S.of(context).validationIdNumberTooShort;
                       }
+                      return null;
                     },
                     hint: cubit.userDetailsModel!.data!.idNumber!,
+                    onlyRead: false,
                   ),
                   verticalSpace(15),
-                  EditUserTextField(
+                  CustomTextFormField(
                     controller: cubit.passwordController,
                     suffixIcon: cubit.suffixIcon,
                     suffixPressed: () {
                       cubit.changeSuffixIconVisiability();
                     },
                     onChanged: (value) {
-                      cubit.validatePassword(value!);
+                      cubit.validatePassword(value);
                     },
                     obscureText: cubit.ispassword,
                     keyboardType: TextInputType.text,
                     label: S.of(context).addUserText6,
                     hint: '',
+                    onlyRead: false,
                   ),
                   verticalSpace(15),
                   if (cubit.isShow == true) ...[
@@ -311,9 +316,9 @@ class _EditUserBodyState extends State<EditUserBody> {
                       hasNumber: cubit.hasNumber,
                       hasMinLength: cubit.hasMinLength,
                     ),
-                    verticalSpace(10)
+                    verticalSpace(15)
                   ],
-                  EditUserTextField(
+                  CustomTextFormField(
                     controller: cubit.passwordConfirmationController,
                     keyboardType: TextInputType.text,
                     suffixIcon: cubit.suffixIcon,
@@ -329,6 +334,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                     obscureText: cubit.ispassword,
                     label: S.of(context).addUserText11,
                     hint: '',
+                    onlyRead: false,
                   ),
                   verticalSpace(15),
                   Row(
@@ -391,7 +397,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                       ),
                       horizontalSpace(15),
                       Expanded(
-                        child: EditUserTextField(
+                        child: CustomTextFormField(
                           controller: cubit.birthController,
                           obscureText: false,
                           suffixIcon: Icons.calendar_today,
@@ -428,6 +434,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                           keyboardType: TextInputType.none,
                           label: S.of(context).addUserText4,
                           hint: cubit.userDetailsModel!.data!.birthdate!,
+                          onlyRead: false,
                         ),
                       ),
                     ],
@@ -460,7 +467,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                       }
                     },
                     hint: cubit.userDetailsModel!.data!.role!,
-                    items: cubit.providerItem
+                    items: cubit.roleDataItem
                         .map((e) => e.name ?? 'Unknown')
                         .toList(),
                     controller: cubit.roleController,
@@ -469,16 +476,17 @@ class _EditUserBodyState extends State<EditUserBody> {
                   ),
                   verticalSpace(15),
                   CustomDropDownList(
-                    label: (cubit.roleIdController.text == '1' ||
-                            cubit.roleIdController.text == '2' ||
-                            cubit.roleIdController.text == '5')
+                    label: (int.tryParse(cubit.roleIdController.text) == 1 ||
+                            cubit.userDetailsModel!.data!.roleId == 1 ||
+                            int.tryParse(cubit.roleIdController.text) == 2 ||
+                            cubit.userDetailsModel!.data!.roleId == 2 ||
+                            int.tryParse(cubit.roleIdController.text) == 5 ||
+                            cubit.userDetailsModel!.data!.roleId == 5)
                         ? S.of(context).roleAdmin
-                        : (cubit.roleIdController.text == '3')
+                        : (int.tryParse(cubit.roleIdController.text) == 3 ||
+                                cubit.userDetailsModel!.data!.roleId == 3)
                             ? S.of(context).roleManager
-                            : (cubit.roleIdController.text == '4')
-                                ? S.of(context).roleSupervisor
-                                : cubit.userDetailsModel!.data!.managerName ??
-                                    S.of(context).roleUsers,
+                            : S.of(context).roleSupervisor,
                     onPressed: (selectedValue) {
                       final selectedId = cubit.usersModel?.data?.users!
                           .firstWhere(
@@ -552,7 +560,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                                   showDialog(
                                       context: context,
                                       builder: (dialogContext) {
-                                        return PopUpMeassage(
+                                        return PopUpMessage(
                                             title: 'edit',
                                             body: 'user',
                                             onPressed: () {
@@ -572,7 +580,7 @@ class _EditUserBodyState extends State<EditUserBody> {
               ),
             ),
           ),
-        ));
+        );
       }),
     );
   }

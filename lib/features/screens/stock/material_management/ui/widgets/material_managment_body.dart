@@ -7,11 +7,12 @@ import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/floating_action_button/floating_action_button.dart';
-import 'package:smart_cleaning_application/core/widgets/two_buttons_in_integreat_screen/two_buttons_in_integration_screen.dart';
+import 'package:smart_cleaning_application/core/widgets/integration_buttons/integrations_buttons.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/logic/material_mangement_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/logic/material_mangement_state.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/ui/widgets/filter_search_build.dart';
 import 'package:smart_cleaning_application/features/screens/stock/material_management/ui/widgets/material_details_list_build.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class MaterialManagmentBody extends StatelessWidget {
   final int? id;
@@ -22,9 +23,7 @@ class MaterialManagmentBody extends StatelessWidget {
     final cubit = context.read<MaterialManagementCubit>();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Material Management'),
-        leading: CustomBackButton(),
-      ),
+          title: Text(S.of(context).materialManagement), leading: CustomBackButton()),
       floatingActionButton: floatingActionButton(
         icon: Icons.library_add,
         onPressed: () {
@@ -40,27 +39,40 @@ class MaterialManagmentBody extends StatelessWidget {
                 : (state as DeleteMaterialErrorState).error;
             toast(text: errorMessage, color: Colors.red);
           }
+          if (state is DeleteMaterialSuccessState) {
+            toast(text: state.deleteMaterialModel.message!, color: Colors.blue);
+            cubit.getMaterialList();
+          }
           if (state is ForceDeleteMaterialSuccessState) {
             toast(text: state.message, color: Colors.blue);
             cubit.getMaterialList();
             cubit.getAllDeletedMaterial();
           }
+          if (state is ForceDeleteMaterialErrorState) {
+            toast(text: state.error, color: Colors.red);
+          }
           if (state is RestoreMaterialSuccessState) {
             toast(text: state.message, color: Colors.blue);
           }
-          if (state is DeleteMaterialSuccessState) {
-            toast(text: state.deleteMaterialModel.message!, color: Colors.blue);
-            cubit.getMaterialList();
+          if (state is RestoreMaterialErrorState) {
+            toast(text: state.error, color: Colors.red);
           }
+
           if (state is AddMaterialSuccessState) {
-            context.read<MaterialManagementCubit>().getMaterialList();
-            context.read<MaterialManagementCubit>().getAllDeletedMaterial();
+            cubit.getMaterialList();
+            cubit.getAllDeletedMaterial();
             toast(text: state.message, color: Colors.blue);
+          }
+          if (state is AddMaterialErrorState) {
+            toast(text: state.error, color: Colors.red);
           }
           if (state is ReduceMaterialSuccessState) {
-            context.read<MaterialManagementCubit>().getMaterialList();
-            context.read<MaterialManagementCubit>().getAllDeletedMaterial();
+            cubit.getMaterialList();
+            cubit.getAllDeletedMaterial();
             toast(text: state.message, color: Colors.blue);
+          }
+          if (state is ReduceMaterialErrorState) {
+            toast(text: state.error, color: Colors.red);
           }
         },
         builder: (context, state) {
@@ -75,18 +87,19 @@ class MaterialManagmentBody extends StatelessWidget {
                   verticalSpace(10),
                   FilterAndSearchWidget(),
                   verticalSpace(10),
-                  twoButtonsIntegration(
+                  integrationsButtons(
                     selectedIndex: cubit.selectedIndex,
                     onTap: (index) => cubit.changeTap(index),
                     firstCount:
                         cubit.materialManagementModel?.data?.totalCount ?? 0,
-                    firstLabel: 'Total Materials',
+                    firstLabel: S.of(context).totalMaterials,
                     secondCount:
                         cubit.deletedMaterialListModel?.data?.length ?? 0,
-                    secondLabel: 'Deleted Materials',
+                    secondLabel: S.of(context).deletedMaterials,
                   ),
-                  verticalSpace(5),
-                  Divider(color: Colors.grey[300]),
+                  verticalSpace(10),
+                  Divider(color: Colors.grey[300], height: 0),
+                  verticalSpace(10),
                   Expanded(child: MaterialDetailsListBuild()),
                   verticalSpace(10),
                 ],

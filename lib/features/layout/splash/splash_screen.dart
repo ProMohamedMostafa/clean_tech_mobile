@@ -33,11 +33,11 @@ class _SplashScreenState extends State<SplashScreen>
       duration: Duration(seconds: 2),
     );
 
-    _iconPosition = Tween<double>(begin: 0, end: -70).animate(
+    _iconPosition = Tween<double>(begin: 0, end: -80).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
 
-    _cleanPosition = Tween<double>(begin: 70, end: 50).animate(
+    _cleanPosition = Tween<double>(begin: 80, end: 50).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
 
@@ -60,39 +60,41 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white,
-        statusBarIconBrightness: Brightness.dark,
-      ),
+          statusBarColor: Colors.white,
+          statusBarIconBrightness: Brightness.dark),
       child: AnimatedSplashScreen(
         splash: AnimatedBuilder(
-          animation: _controller,
-          builder: (context, child) {
-            return Stack(
-              alignment: Alignment.center,
-              children: [
-                Positioned(
-                  left: (MediaQuery.of(context).size.width - 250) / 2 +
-                      _iconPosition.value,
-                  child: Image.asset(
-                    "assets/images/icon.png",
-                    width: 250.w,
-                  ),
-                ),
-                Positioned(
-                  left: MediaQuery.of(context).size.width / 2 -
-                      _cleanPosition.value,
-                  child: Opacity(
-                    opacity: _fadeAnimation.value,
-                    child: Image.asset(
-                      "assets/images/clean.png",
-                      width: 150.w,
+            animation: _controller,
+            builder: (context, child) {
+              return Transform.translate(
+                offset: const Offset(0, 12),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Positioned(
+                      left: (MediaQuery.of(context).size.width - 102) / 2 +
+                          _iconPosition.value,
+                      child: Image.asset(
+                        "assets/images/logo_launcher.png",
+                        width: 102.w,
+                        height: 102.h,
+                      ),
                     ),
-                  ),
+                    Positioned(
+                      left: MediaQuery.of(context).size.width / 2 -
+                          _cleanPosition.value,
+                      child: Opacity(
+                        opacity: _fadeAnimation.value,
+                        child: Image.asset(
+                          "assets/images/clean.png",
+                          width: 150.w,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            );
-          },
-        ),
+              );
+            }),
         nextScreen: isBoarding!.isNotEmpty
             ? token != null
                 ? const MainLayout()
@@ -106,7 +108,6 @@ class _SplashScreenState extends State<SplashScreen>
               ),
         splashIconSize: 600,
         duration: 3000,
-        splashTransition: SplashTransition.sizeTransition,
       ),
     );
   }

@@ -8,69 +8,77 @@ import 'package:image_picker/image_picker.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/gallary_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
-import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/all_tasks_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/create_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/logic/add_task_state.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/point_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/section_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/all_tasks_model.dart';
 
 class AddTaskCubit extends Cubit<AddTaskState> {
   AddTaskCubit() : super(AddTaskInitialState());
 
   static AddTaskCubit get(context) => BlocProvider.of(context);
   TextEditingController taskTitleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController priorityController = TextEditingController();
+  TextEditingController priorityIdController = TextEditingController();
+  TextEditingController statusController = TextEditingController();
+  TextEditingController statusIdController = TextEditingController();
   TextEditingController startDateController = TextEditingController();
   TextEditingController endDateController = TextEditingController();
+  TextEditingController currentlyReadingController = TextEditingController();
   TextEditingController startTimeController = TextEditingController();
   TextEditingController endTimeController = TextEditingController();
-  TextEditingController organizationController = TextEditingController();
-  TextEditingController buildingController = TextEditingController();
-  TextEditingController floorController = TextEditingController();
-  TextEditingController sectionController = TextEditingController();
   TextEditingController pointController = TextEditingController();
-  TextEditingController statusController = TextEditingController();
-  TextEditingController cleanersController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
+  TextEditingController pointIdController = TextEditingController();
   TextEditingController parentTaskController = TextEditingController();
-  TextEditingController currentlyReadingController = TextEditingController();
-  final supervisorsController = MultiSelectController<UserItem>();
+  TextEditingController parentIdTaskController = TextEditingController();
+  TextEditingController organizationController = TextEditingController();
+  TextEditingController organizationIdController = TextEditingController();
+  TextEditingController buildingController = TextEditingController();
+  TextEditingController buildingIdController = TextEditingController();
+  TextEditingController floorController = TextEditingController();
+  TextEditingController floorIdController = TextEditingController();
+  TextEditingController sectionController = TextEditingController();
+  TextEditingController sectionIdController = TextEditingController();
+
+  final usersController = MultiSelectController<UserItem>();
   final formKey = GlobalKey<FormState>();
 
+  bool isFormSubmitted = false;
+  bool isPointCountable = false;
+
+  List<int>? selectedUsersIds = [];
   CreateTaskModel? createTaskModel;
-  addTask(
-      {int? priorityId,
-      int? statusId,
-      int? buildingId,
-      int? floorId,
-      int? sectionId,
-      int? pointId,
-      List<int>? selectedSupervisorIds,
-      int? parentId,
-      double? currentReading}) async {
+  addTask({String? image}) async {
     emit(AddTaskLoadingState());
+    MultipartFile? imageFile;
+    if (image != null && image.isNotEmpty) {
+      imageFile = await MultipartFile.fromFile(
+        image,
+        filename: image.split('/').last,
+      );
+    }
     Map<String, dynamic> formDataMap = {
-      "ParentId": parentId,
       "Title": taskTitleController.text,
       "Description": descriptionController.text,
-      "Priority": priorityId,
-      "Status": statusId,
+      "Priority": priorityIdController.text,
+      "Status": statusIdController.text,
       "StartDate": startDateController.text,
       "EndDate": endDateController.text,
+      "CurrentReading": currentlyReadingController.text,
       "StartTime": startTimeController.text,
       "EndTime": endTimeController.text,
-      "CurrentReading": currentReading,
-      "BuildingId": pointId != null || sectionId != null || floorId != null
-          ? null
-          : buildingId,
-      "FloorId": pointId != null || sectionId != null ? null : floorId,
-      "SectionId": pointId != null ? null : sectionId,
-      "PointId": pointId,
-      "UserIds": selectedSupervisorIds,
-      "Files": null,
+      "PointId": pointIdController.text,
+      "ParentId": parentIdTaskController.text,
+      "UserIds": selectedUsersIds,
+      "Files": imageFile,
     };
+
     FormData formData = FormData.fromMap(formDataMap);
+
     try {
       final response = await DioHelper.postData2(
           url: ApiConstants.createTaskUrl, data: formData);
@@ -82,10 +90,13 @@ class AddTaskCubit extends Cubit<AddTaskState> {
   }
 
   AllTasksModel? allTasksModel;
+  List<TaskData> taskData = [TaskData(title: 'No tasks available')];
   getAllTasks() {
     emit(GetAllTasksLoadingState());
     DioHelper.getData(url: "tasks/pagination").then((value) {
       allTasksModel = AllTasksModel.fromJson(value!.data);
+      taskData =
+          allTasksModel?.data?.data ?? [TaskData(title: 'No tasks available')];
       emit(GetAllTasksSuccessState(allTasksModel!));
     }).catchError((error) {
       emit(GetAllTasksErrorState(error.toString()));
@@ -93,34 +104,45 @@ class AddTaskCubit extends Cubit<AddTaskState> {
   }
 
   UsersModel? usersModel;
+  List<UserItem> userItem = [UserItem(userName: 'No users available')];
   getAllUsers() {
     emit(AllUsersLoadingState());
     DioHelper.getData(url: "users/pagination").then((value) {
       usersModel = UsersModel.fromJson(value!.data);
+      userItem =
+          usersModel?.data?.users ?? [UserItem(userName: 'No users available')];
       emit(AllUsersSuccessState(usersModel!));
     }).catchError((error) {
       emit(AllUsersErrorState(error.toString()));
     });
   }
 
-  OrganizationListModel? organizationListModel;
+  OrganizationListModel? organizationModel;
+  List<OrganizationItem> organizationItem = [
+    OrganizationItem(name: 'No organizations')
+  ];
   getOrganization() {
     emit(GetOrganizationLoadingState());
-    DioHelper.getData(url: ApiConstants.organizationUrl).then((value) {
-      organizationListModel = OrganizationListModel.fromJson(value!.data);
-      emit(GetOrganizationSuccessState(organizationListModel!));
+    DioHelper.getData(url: "organizations/pagination").then((value) {
+      organizationModel = OrganizationListModel.fromJson(value!.data);
+      organizationItem = organizationModel?.data?.data ??
+          [OrganizationItem(name: 'No organizations')];
+      emit(GetOrganizationSuccessState(organizationModel!));
     }).catchError((error) {
       emit(GetOrganizationErrorState(error.toString()));
     });
   }
 
   BuildingListModel? buildingModel;
-  getBuilding(int organizationId) {
+  List<BuildingItem> buildingItem = [BuildingItem(name: 'No building')];
+  getBuilding() {
     emit(GetBuildingLoadingState());
     DioHelper.getData(
         url: 'buildings/pagination',
-        query: {'organization': organizationId}).then((value) {
+        query: {'OrganizationId': organizationIdController.text}).then((value) {
       buildingModel = BuildingListModel.fromJson(value!.data);
+      buildingItem =
+          buildingModel?.data?.data ?? [BuildingItem(name: 'No building')];
       emit(GetBuildingSuccessState(buildingModel!));
     }).catchError((error) {
       emit(GetBuildingErrorState(error.toString()));
@@ -128,11 +150,14 @@ class AddTaskCubit extends Cubit<AddTaskState> {
   }
 
   FloorListModel? floorModel;
-  getFloor(int buildingId) {
+  List<FloorItem> floorItem = [FloorItem(name: 'No floors')];
+  getFloor() {
     emit(GetFloorLoadingState());
-    DioHelper.getData(url: 'floors/pagination', query: {'building': buildingId})
-        .then((value) {
+    DioHelper.getData(
+        url: 'floors/pagination',
+        query: {'BuildingId': buildingIdController.text}).then((value) {
       floorModel = FloorListModel.fromJson(value!.data);
+      floorItem = floorModel?.data?.data ?? [FloorItem(name: 'No floors')];
       emit(GetFloorSuccessState(floorModel!));
     }).catchError((error) {
       emit(GetFloorErrorState(error.toString()));
@@ -140,11 +165,15 @@ class AddTaskCubit extends Cubit<AddTaskState> {
   }
 
   SectionListModel? sectionModel;
-  getSection(int floorId) {
+  List<SectionItem> sectionItem = [SectionItem(name: 'No sections')];
+  getSection() {
     emit(GetSectionLoadingState());
-    DioHelper.getData(url: 'sections/pagination', query: {'floor': floorId})
-        .then((value) {
+    DioHelper.getData(
+        url: 'sections/pagination',
+        query: {'FloorId': floorIdController.text}).then((value) {
       sectionModel = SectionListModel.fromJson(value!.data);
+      sectionItem =
+          sectionModel?.data?.data ?? [SectionItem(name: 'No sections')];
       emit(GetSectionSuccessState(sectionModel!));
     }).catchError((error) {
       emit(GetSectionErrorState(error.toString()));
@@ -152,11 +181,14 @@ class AddTaskCubit extends Cubit<AddTaskState> {
   }
 
   PointListModel? pointModel;
-  getPoint(int sectionId) {
+  List<PointItem> pointItem = [PointItem(name: 'No points')];
+  getPoint() {
     emit(GetPointLoadingState());
-    DioHelper.getData(url: 'points/pagination', query: {'section': sectionId})
-        .then((value) {
+    DioHelper.getData(
+        url: 'points/pagination',
+        query: {'SectionId': sectionIdController.text}).then((value) {
       pointModel = PointListModel.fromJson(value!.data);
+      pointItem = pointModel?.data?.data ?? [PointItem(name: 'No points')];
       emit(GetPointSuccessState(pointModel!));
     }).catchError((error) {
       emit(GetPointErrorState(error.toString()));
@@ -186,4 +218,16 @@ class AddTaskCubit extends Cubit<AddTaskState> {
       emit(CameraSelectedState(image!));
     }
   }
+
+  final Map<String, int> priorityMap = {
+    "High": 2,
+    "Medium": 1,
+    "Low": 0,
+  };
+
+  final List<Color> tasksColor = [
+    Colors.red,
+    Colors.orange,
+    Colors.green,
+  ];
 }

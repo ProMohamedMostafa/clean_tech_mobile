@@ -1,5 +1,4 @@
 import 'package:smart_cleaning_application/features/screens/settings/data/model/profile_model.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_status_model.dart';
 
 abstract class SettingsState {}
 
@@ -27,21 +26,6 @@ class UserDetailsSuccessState extends SettingsState {
 class UserDetailsErrorState extends SettingsState {
   final String error;
   UserDetailsErrorState(this.error);
-}
-
-//********************************* */
-
-class UserStatusLoadingState extends SettingsState {}
-
-class UserStatusSuccessState extends SettingsState {
-  final UserStatusModel userStatusModel;
-
-  UserStatusSuccessState(this.userStatusModel);
-}
-
-class UserStatusErrorState extends SettingsState {
-  final String error;
-  UserStatusErrorState(this.error);
 }
 
 //********************************* */

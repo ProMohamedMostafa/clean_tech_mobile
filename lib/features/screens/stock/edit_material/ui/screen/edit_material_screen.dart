@@ -7,10 +7,6 @@ class EditMaterialScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: EditMaterialBody(
-        id: id,
-      ),
-    );
+    return EditMaterialBody(id: id);
   }
 }

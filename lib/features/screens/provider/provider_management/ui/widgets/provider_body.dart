@@ -10,11 +10,12 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/floating_action_button/floating_action_button.dart';
-import 'package:smart_cleaning_application/core/widgets/two_buttons_in_integreat_screen/two_buttons_in_integration_screen.dart';
+import 'package:smart_cleaning_application/core/widgets/integration_buttons/integrations_buttons.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/provider/provider_management/logic/cubit/provider_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/provider/provider_management/ui/widgets/provider_details_list_build.dart';
 import 'package:smart_cleaning_application/features/screens/provider/provider_management/ui/widgets/search_build.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class ProviderBody extends StatelessWidget {
   const ProviderBody({super.key});
@@ -25,7 +26,7 @@ class ProviderBody extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: CustomBackButton(),
-        title: Text('Provider'),
+        title: Text(S.of(context).providers),
       ),
       floatingActionButton: floatingActionButton(
         icon: Icons.add_location_outlined,
@@ -39,14 +40,14 @@ class ProviderBody extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12.r),
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 16, 4, 0),
-                        child: Row(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
                           children: [
                             Container(
                               width: 8.w,
@@ -56,7 +57,7 @@ class ProviderBody extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(2.r)),
                             ),
                             horizontalSpace(8),
-                            Text("Add Provider",
+                            Text(S.of(context).addProvider,
                                 style: TextStyles.font18BlackMedium),
                             const Spacer(),
                             IconButton(
@@ -68,20 +69,14 @@ class ProviderBody extends StatelessWidget {
                             ),
                           ],
                         ),
-                      ),
-                      verticalSpace(10),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Text(
-                          "Provider Name ",
+                        verticalSpace(10),
+                        Text(
+                          S.of(context).providerName,
                           style: TextStyles.font14BlackMedium,
                         ),
-                      ),
-                      verticalSpace(5),
-                      Form(
-                        key: cubit.formAddKey,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                        verticalSpace(5),
+                        Form(
+                          key: cubit.formAddKey,
                           child: CustomTextFormField(
                               color: Colors.grey,
                               controller: cubit.providerController,
@@ -90,25 +85,28 @@ class ProviderBody extends StatelessWidget {
                               keyboardType: TextInputType.text,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Provider is required';
+                                  return S
+                                      .of(context)
+                                      .providerRequiredValidation;
                                 } else if (value.length > 55) {
-                                  return 'return "name is too long';
+                                  return S
+                                      .of(context)
+                                      .providerNameTooLongValidation;
                                 } else if (value.length < 3) {
-                                  return 'name is too short';
+                                  return S
+                                      .of(context)
+                                      .providerNameTooShortValidation;
                                 }
                                 return null;
                               }),
                         ),
-                      ),
-                      verticalSpace(25),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                        child: Row(
+                        verticalSpace(25),
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
                               child: DefaultElevatedButton(
-                                  name: 'Add',
+                                  name: S.of(context).addButton,
                                   textStyles: TextStyles.font16WhiteSemiBold,
                                   onPressed: () {
                                     {
@@ -127,7 +125,7 @@ class ProviderBody extends StatelessWidget {
                             horizontalSpace(16),
                             Expanded(
                               child: DefaultElevatedButton(
-                                  name: 'Cancel',
+                                  name: S.of(context).cancelButton,
                                   textStyles: TextStyles.font16PrimSemiBold,
                                   onPressed: () {
                                     context.pop();
@@ -138,9 +136,9 @@ class ProviderBody extends StatelessWidget {
                             ),
                           ],
                         ),
-                      ),
-                      verticalSpace(5),
-                    ],
+                        verticalSpace(5),
+                      ],
+                    ),
                   ));
             },
           );
@@ -152,7 +150,7 @@ class ProviderBody extends StatelessWidget {
             toast(text: state.deleteProviderModel.message!, color: Colors.blue);
             cubit.getAllDeletedProviders();
           }
-          if (state is AllDeletedProvidersErrorState) {
+          if (state is ProviderDeleteErrorState) {
             toast(text: state.error, color: Colors.red);
           }
           if (state is RestoreProvidersSuccessState) {
@@ -166,17 +164,21 @@ class ProviderBody extends StatelessWidget {
             cubit.getProviders();
             cubit.getAllDeletedProviders();
           }
-          if (state is AddProviderSuccessState) {
-            toast(text: state.message, color: Colors.blue);
-            cubit.getProviders();
+          if (state is ForceDeleteProvidersErrorState) {
+            toast(text: state.error, color: Colors.red);
           }
-          if (state is EditProviderSuccessState) {
+          if (state is AddProviderSuccessState) {
             toast(text: state.message, color: Colors.blue);
             cubit.getProviders();
           }
           if (state is AddProviderErrorState) {
             toast(text: state.error, color: Colors.red);
           }
+          if (state is EditProviderSuccessState) {
+            toast(text: state.message, color: Colors.blue);
+            cubit.getProviders();
+          }
+
           if (state is EditProviderErrorState) {
             toast(text: state.error, color: Colors.red);
           }
@@ -192,14 +194,14 @@ class ProviderBody extends StatelessWidget {
                 children: [
                   verticalSpace(10),
                   SearchProviderWidget(),
-                  twoButtonsIntegration(
+                  integrationsButtons(
                     selectedIndex: cubit.selectedIndex,
                     onTap: (index) => cubit.changeTap(index),
                     firstCount: cubit.providersModel?.data?.totalCount ?? 0,
-                    firstLabel: 'Total providers',
+                    firstLabel: S.of(context).totalProviders,
                     secondCount:
                         cubit.allDeletedProvidersModel?.data?.length ?? 0,
-                    secondLabel: 'deleted providers',
+                    secondLabel: S.of(context).deletedProviders,
                   ),
                   verticalSpace(10),
                   Divider(

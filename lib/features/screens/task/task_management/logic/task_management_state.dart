@@ -1,6 +1,6 @@
-import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/all_tasks_model.dart';
-import 'package:smart_cleaning_application/features/screens/task/task_management/data/delete_task_list_model.dart';
-import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/delete_task_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/all_tasks_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/delete_task_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/delete_task_model.dart';
 
 
 abstract class TaskManagementState {}

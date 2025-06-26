@@ -7,6 +7,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool onlyRead;
   final TextEditingController controller;
   final String? hint;
+  final bool? obscureText;
   final TextInputType keyboardType;
   final IconData? suffixIcon;
   final Widget? perfixIcon;
@@ -14,6 +15,7 @@ class CustomTextFormField extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final VoidCallback? suffixPressed;
   final Color? color;
+  final String? label;
 
   const CustomTextFormField({
     super.key,
@@ -27,11 +29,14 @@ class CustomTextFormField extends StatelessWidget {
     this.suffixPressed,
     required this.onlyRead,
     this.color,
+    this.label,
+    this.obscureText,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      obscureText: obscureText ?? false,
       readOnly: onlyRead,
       controller: controller,
       keyboardType: keyboardType,
@@ -45,12 +50,17 @@ class CustomTextFormField extends StatelessWidget {
 
   InputDecoration _buildInputDecoration() {
     return InputDecoration(
+      label: label != null ? Text(label!) : null,
+      floatingLabelBehavior: label != null
+          ? FloatingLabelBehavior.always
+          : FloatingLabelBehavior.never,
+      labelStyle: TextStyles.font14BlackSemiBold,
       isDense: true,
       suffixIcon: _buildSuffixIcon(),
       prefixIcon: _buildPerffixIcon(),
       border: _buildBorder(),
       enabledBorder: _buildBorder(),
-      focusedBorder: _buildBorder(),
+      focusedBorder: _buildFocusBorder(),
       errorBorder: _buildErrorBorder(),
       hintText: hint,
       hintStyle: TextStyles.font12GreyRegular,
@@ -63,9 +73,17 @@ class CustomTextFormField extends StatelessWidget {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(8.r),
       borderSide: BorderSide(
-        color: color ?? AppColor.thirdColor,
+        color: color ?? Colors.grey[300]!,
       ),
     );
+  }
+
+  OutlineInputBorder _buildFocusBorder() {
+    return OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8.r),
+        borderSide: const BorderSide(
+          color: AppColor.primaryColor,
+        ));
   }
 
   OutlineInputBorder _buildErrorBorder() {

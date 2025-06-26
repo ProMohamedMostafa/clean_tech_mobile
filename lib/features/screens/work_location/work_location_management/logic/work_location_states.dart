@@ -20,7 +20,6 @@ import 'package:smart_cleaning_application/features/screens/integrations/data/mo
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/point_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/section_list_model.dart';
 
-
 abstract class WorkLocationState {}
 
 class OrganizationsInitialState extends WorkLocationState {}
@@ -132,7 +131,6 @@ class PointErrorState extends WorkLocationState {
   final String error;
   PointErrorState(this.error);
 }
-
 
 //******************************** */
 
@@ -339,94 +337,94 @@ class DeletedPointErrorState extends WorkLocationState {
 
 //******************************** */
 
-class DeleteRestoreAreaLoadingState extends WorkLocationState {}
+class RestoreAreaLoadingState extends WorkLocationState {}
 
-class DeleteRestoreAreaSuccessState extends WorkLocationState {
+class RestoreAreaSuccessState extends WorkLocationState {
   final String message;
-  DeleteRestoreAreaSuccessState(this.message);
+  RestoreAreaSuccessState(this.message);
 }
 
-class DeleteRestoreAreaErrorState extends WorkLocationState {
+class RestoreAreaErrorState extends WorkLocationState {
   final String error;
-  DeleteRestoreAreaErrorState(this.error);
+  RestoreAreaErrorState(this.error);
 }
 
 //******************************** */
-class DeleteRestoreCityLoadingState extends WorkLocationState {}
+class RestoreCityLoadingState extends WorkLocationState {}
 
-class DeleteRestoreCitySuccessState extends WorkLocationState {
+class RestoreCitySuccessState extends WorkLocationState {
   final String message;
-  DeleteRestoreCitySuccessState(this.message);
+  RestoreCitySuccessState(this.message);
 }
 
-class DeleteRestoreCityErrorState extends WorkLocationState {
+class RestoreCityErrorState extends WorkLocationState {
   final String error;
-  DeleteRestoreCityErrorState(this.error);
+  RestoreCityErrorState(this.error);
 }
 
 //******************************** */
-class DeleteRestoreOrganizationLoadingState extends WorkLocationState {}
+class RestoreOrganizationLoadingState extends WorkLocationState {}
 
-class DeleteRestoreOrganizationSuccessState extends WorkLocationState {
+class RestoreOrganizationSuccessState extends WorkLocationState {
   final String message;
-  DeleteRestoreOrganizationSuccessState(this.message);
+  RestoreOrganizationSuccessState(this.message);
 }
 
-class DeleteRestoreOrganizationErrorState extends WorkLocationState {
+class RestoreOrganizationErrorState extends WorkLocationState {
   final String error;
-  DeleteRestoreOrganizationErrorState(this.error);
+  RestoreOrganizationErrorState(this.error);
 }
 
 //******************************** */
-class DeleteRestoreBuildingLoadingState extends WorkLocationState {}
+class RestoreBuildingLoadingState extends WorkLocationState {}
 
-class DeleteRestoreBuildingSuccessState extends WorkLocationState {
+class RestoreBuildingSuccessState extends WorkLocationState {
   final String message;
-  DeleteRestoreBuildingSuccessState(this.message);
+  RestoreBuildingSuccessState(this.message);
 }
 
-class DeleteRestoreBuildingErrorState extends WorkLocationState {
+class RestoreBuildingErrorState extends WorkLocationState {
   final String error;
-  DeleteRestoreBuildingErrorState(this.error);
+  RestoreBuildingErrorState(this.error);
 }
 
 //******************************** */
-class DeleteRestoreFloorLoadingState extends WorkLocationState {}
+class RestoreFloorLoadingState extends WorkLocationState {}
 
-class DeleteRestoreFloorSuccessState extends WorkLocationState {
+class RestoreFloorSuccessState extends WorkLocationState {
   final String message;
-  DeleteRestoreFloorSuccessState(this.message);
+  RestoreFloorSuccessState(this.message);
 }
 
-class DeleteRestoreFloorErrorState extends WorkLocationState {
+class RestoreFloorErrorState extends WorkLocationState {
   final String error;
-  DeleteRestoreFloorErrorState(this.error);
+  RestoreFloorErrorState(this.error);
 }
 
 //******************************** */
-class DeleteRestoreSectionLoadingState extends WorkLocationState {}
+class RestoreSectionLoadingState extends WorkLocationState {}
 
-class DeleteRestoreSectionSuccessState extends WorkLocationState {
+class RestoreSectionSuccessState extends WorkLocationState {
   final String message;
-  DeleteRestoreSectionSuccessState(this.message);
+  RestoreSectionSuccessState(this.message);
 }
 
-class DeleteRestoreSectionErrorState extends WorkLocationState {
+class RestoreSectionErrorState extends WorkLocationState {
   final String error;
-  DeleteRestoreSectionErrorState(this.error);
+  RestoreSectionErrorState(this.error);
 }
 
 //******************************** */
-class DeleteRestorePointLoadingState extends WorkLocationState {}
+class RestorePointLoadingState extends WorkLocationState {}
 
-class DeleteRestorePointSuccessState extends WorkLocationState {
+class RestorePointSuccessState extends WorkLocationState {
   final String message;
-  DeleteRestorePointSuccessState(this.message);
+  RestorePointSuccessState(this.message);
 }
 
-class DeleteRestorePointErrorState extends WorkLocationState {
+class RestorePointErrorState extends WorkLocationState {
   final String error;
-  DeleteRestorePointErrorState(this.error);
+  RestorePointErrorState(this.error);
 }
 
 //******************************** */
@@ -520,223 +518,3 @@ class DeleteForcePointErrorState extends WorkLocationState {
   final String error;
   DeleteForcePointErrorState(this.error);
 }
-// //**************************** */
-// class GetNationalityLoadingState extends WorkLocationState {}
-
-// class GetNationalitySuccessState extends WorkLocationState {
-//   final NationalityModel nationalitymodel;
-
-//   GetNationalitySuccessState(this.nationalitymodel);
-// }
-
-// class GetNationalityErrorState extends WorkLocationState {
-//   final String error;
-//   GetNationalityErrorState(this.error);
-// }
-
-// //**************************** */
-
-// class GetAreaLoadingState extends WorkLocationState {}
-
-// class GetAreaSuccessState extends WorkLocationState {
-//   final AreaListModel areaModel;
-
-//   GetAreaSuccessState(this.areaModel);
-// }
-
-// class GetAreaErrorState extends WorkLocationState {
-//   final String error;
-//   GetAreaErrorState(this.error);
-// }
-// //**************************** */
-
-// class GetCityyLoadingState extends WorkLocationState {}
-
-// class GetCityySuccessState extends WorkLocationState {
-//   final CityModel cityModel;
-
-//   GetCityySuccessState(this.cityModel);
-// }
-
-// class GetCityyErrorState extends WorkLocationState {
-//   final String error;
-//   GetCityyErrorState(this.error);
-// }
-
-// class GetOrganizationLoadingState extends WorkLocationState {}
-
-// class GetOrganizationSuccessState extends WorkLocationState {
-//   final OrganizationListModel organizationModel;
-
-//   GetOrganizationSuccessState(this.organizationModel);
-// }
-
-// class GetOrganizationErrorState extends WorkLocationState {
-//   final String error;
-//   GetOrganizationErrorState(this.error);
-// }
-// //**************************** */
-
-// class GetBuildingLoadingState extends WorkLocationState {}
-
-// class GetBuildingSuccessState extends WorkLocationState {
-//   final BuildingListModel buildingModel;
-
-//   GetBuildingSuccessState(this.buildingModel);
-// }
-
-// class GetBuildingErrorState extends WorkLocationState {
-//   final String error;
-//   GetBuildingErrorState(this.error);
-// }
-// //**************************** */
-
-// class GetFloorLoadingState extends WorkLocationState {}
-
-// class GetFloorSuccessState extends WorkLocationState {
-//   final FloorListModel floorModel;
-
-//   GetFloorSuccessState(this.floorModel);
-// }
-
-// class GetFloorErrorState extends WorkLocationState {
-//   final String error;
-//   GetFloorErrorState(this.error);
-// }
-// //**************************** */
-// class GetSectionLoadingState extends WorkLocationState {}
-
-// class GetSectionSuccessState extends WorkLocationState {
-//   final SectionListModel sectionModel;
-
-//   GetSectionSuccessState(this.sectionModel);
-// }
-
-// class GetSectionErrorState extends WorkLocationState {
-//   final String error;
-//   GetSectionErrorState(this.error);
-// }
-// //**************************** */
-// class GetPointsLoadingState extends WorkLocationState {}
-
-// class GetPointsSuccessState extends WorkLocationState {
-//   final PointListModel pointsModel;
-
-//   GetPointsSuccessState(this.pointsModel);
-// }
-
-// class GetPointsErrorState extends WorkLocationState {
-//   final String error;
-//   GetPointsErrorState(this.error);
-// }
-
-// //******************************** */
-// //******************************** */
-
-// class AreaDetailsLoadingState extends WorkLocationState {}
-
-// class AreaDetailsSuccessState extends WorkLocationState {
-//   final AreaDetailsModel areaDetailsModel;
-
-//   AreaDetailsSuccessState(this.areaDetailsModel);
-// }
-
-// class AreaDetailsErrorState extends WorkLocationState {
-//   final String error;
-//   AreaDetailsErrorState(this.error);
-// }
-
-// class OrganizationDetailsLoadingState extends WorkLocationState {}
-
-// class OrganizationDetailsSuccessState extends WorkLocationState {
-//   final OrganizationDetailsModel organizationDetailsModel;
-
-//   OrganizationDetailsSuccessState(this.organizationDetailsModel);
-// }
-
-// class OrganizationDetailsErrorState extends WorkLocationState {
-//   final String error;
-//   OrganizationDetailsErrorState(this.error);
-// }//******************************** */
-
-// class FloorDetailsLoadingState extends WorkLocationState {}
-
-// class FloorDetailsSuccessState extends WorkLocationState {
-//   final FloorDetailsModel floorDetailsModel;
-
-//   FloorDetailsSuccessState(this.floorDetailsModel);
-// }
-
-// class FloorDetailsErrorState extends WorkLocationState {
-//   final String error;
-//   FloorDetailsErrorState(this.error);
-// }
-// //******************************** */
-
-// class SectionDetailsLoadingState extends WorkLocationState {}
-
-// class SectionDetailsSuccessState extends WorkLocationState {
-//   final SectionDetailsModel sectionDetailsModel;
-
-//   SectionDetailsSuccessState(this.sectionDetailsModel);
-// }
-
-// class SectionDetailsErrorState extends WorkLocationState {
-//   final String error;
-//   SectionDetailsErrorState(this.error);
-// }
-// //******************************** */
-
-// class BuildingDetailsLoadingState extends WorkLocationState {}
-
-// class BuildingDetailsSuccessState extends WorkLocationState {
-//   final BuildingDetailsModel buildingDetailsModel;
-
-//   BuildingDetailsSuccessState(this.buildingDetailsModel);
-// }
-
-// class BuildingDetailsErrorState extends WorkLocationState {
-//   final String error;
-//   BuildingDetailsErrorState(this.error);
-// }
-// //******************************** */
-
-// class CityDetailsLoadingState extends WorkLocationState {}
-
-// class CityDetailsSuccessState extends WorkLocationState {
-//   final CityDetailsModel cityDetailsModel;
-
-//   CityDetailsSuccessState(this.cityDetailsModel);
-// }
-
-// class CityDetailsErrorState extends WorkLocationState {
-//   final String error;
-//   CityDetailsErrorState(this.error);
-// }//******************************** */
-
-// class PointDetailsLoadingState extends WorkLocationState {}
-
-// class PointDetailsSuccessState extends WorkLocationState {
-//   final PointDetailsModel pointDetailsModel;
-
-//   PointDetailsSuccessState(this.pointDetailsModel);
-// }
-
-// class PointDetailsErrorState extends WorkLocationState {
-//   final String error;
-//   PointDetailsErrorState(this.error);
-// }
-// //******************************** */
-
-// class PointDeleteLoadingState extends WorkLocationState {}
-
-// class PointDeleteSuccessState extends WorkLocationState {
-//   final DeletePointModel deletePointModel;
-
-//   PointDeleteSuccessState(this.deletePointModel);
-// }
-
-// class PointDeleteErrorState extends WorkLocationState {
-//   final String error;
-//   PointDeleteErrorState(this.error);
-// }

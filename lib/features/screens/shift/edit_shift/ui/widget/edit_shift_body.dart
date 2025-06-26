@@ -17,6 +17,7 @@ import 'package:smart_cleaning_application/features/screens/integrations/ui/widg
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_time_picker.dart';
 import 'package:smart_cleaning_application/features/screens/shift/edit_shift/logic/edit_shift_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/shift/edit_shift/logic/edit_shift_state.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class EditShiftBody extends StatelessWidget {
   final int id;
@@ -26,14 +27,15 @@ class EditShiftBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<EditShiftCubit>();
     return Scaffold(
-        appBar: AppBar(title: Text("Edit Shift"), leading: CustomBackButton()),
+        appBar: AppBar(
+            title: Text(S.of(context).editShift), leading: CustomBackButton()),
         body: BlocConsumer<EditShiftCubit, EditShiftState>(
           listener: (context, state) {
             if (state is EditShiftSuccessState) {
               toast(
                   text: state.editShiftDetailsModel.message!,
                   color: Colors.blue);
-              context.pushNamedAndRemoveLastTwo(Routes.shiftScreen);
+              context.pushNamedAndRemoveAllExceptFirst(Routes.shiftScreen);
             }
             if (state is EditShiftErrorState) {
               toast(text: state.error, color: Colors.red);
@@ -55,7 +57,7 @@ class EditShiftBody extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Shift Name",
+                          S.of(context).shiftName,
                           style: TextStyles.font16BlackRegular,
                         ),
                         verticalSpace(5),
@@ -64,9 +66,9 @@ class EditShiftBody extends StatelessWidget {
                           hint: cubit.shiftDetailsModel!.data!.name!,
                           validator: (value) {
                             if (value!.length > 55) {
-                              return 'Shift name too long';
+                              return S.of(context).shiftNameTooLongValidation;
                             } else if (value.length < 3) {
-                              return 'Shift name too short';
+                              return S.of(context).shiftNameTooShortValidation;
                             }
                             return null;
                           },
@@ -83,7 +85,7 @@ class EditShiftBody extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Start Date",
+                                  S.of(context).startDate,
                                   style: TextStyles.font16BlackRegular,
                                 ),
                                 verticalSpace(5),
@@ -114,7 +116,7 @@ class EditShiftBody extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "End Date",
+                                  S.of(context).endDate,
                                   style: TextStyles.font16BlackRegular,
                                 ),
                                 verticalSpace(5),
@@ -149,7 +151,7 @@ class EditShiftBody extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Start Time",
+                                  S.of(context).startTime,
                                   style: TextStyles.font16BlackRegular,
                                 ),
                                 verticalSpace(5),
@@ -180,7 +182,7 @@ class EditShiftBody extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "End Time",
+                                  S.of(context).endTime,
                                   style: TextStyles.font16BlackRegular,
                                 ),
                                 verticalSpace(5),
@@ -208,7 +210,7 @@ class EditShiftBody extends StatelessWidget {
                         ),
                         verticalSpace(10),
                         Text(
-                          'Organization',
+                          S.of(context).Organization,
                           style: TextStyles.font16BlackRegular,
                         ),
                         verticalSpace(5),
@@ -242,7 +244,7 @@ class EditShiftBody extends StatelessWidget {
                         ),
                         verticalSpace(15),
                         Text(
-                          'Building',
+                          S.of(context).Building,
                           style: TextStyles.font16BlackRegular,
                         ),
                         verticalSpace(5),
@@ -275,7 +277,7 @@ class EditShiftBody extends StatelessWidget {
                         ),
                         verticalSpace(10),
                         Text(
-                          'Floor',
+                          S.of(context).Floor,
                           style: TextStyles.font16BlackRegular,
                         ),
                         verticalSpace(5),
@@ -306,7 +308,7 @@ class EditShiftBody extends StatelessWidget {
                         ),
                         verticalSpace(10),
                         Text(
-                          'Section',
+                          S.of(context).Section,
                           style: TextStyles.font16BlackRegular,
                         ),
                         verticalSpace(5),
@@ -341,16 +343,17 @@ class EditShiftBody extends StatelessWidget {
                             ? Loading()
                             : Center(
                                 child: DefaultElevatedButton(
-                                    name: "Edit",
+                                    name: S.of(context).editButton,
                                     onPressed: () {
                                       if (cubit.formKey.currentState!
                                           .validate()) {
                                         showDialog(
                                             context: context,
                                             builder: (dialogContext) {
-                                              return PopUpMeassage(
-                                                  title: 'edit',
-                                                  body: 'shift',
+                                              return PopUpMessage(
+                                                  title:
+                                                      S.of(context).TitleEdit,
+                                                  body: S.of(context).shiftBody,
                                                   onPressed: () {
                                                     context
                                                         .read<EditShiftCubit>()

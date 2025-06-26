@@ -4,10 +4,11 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
-import 'package:smart_cleaning_application/core/widgets/two_buttons_in_integreat_screen/two_buttons_in_integration_screen.dart';
+import 'package:smart_cleaning_application/core/widgets/integration_buttons/integrations_buttons.dart';
 import 'package:smart_cleaning_application/features/screens/sensor/sensor_managment/logic/cubit/sensor_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/sensor/sensor_managment/ui/widget/filter_search_build.dart';
 import 'package:smart_cleaning_application/features/screens/sensor/sensor_managment/ui/widget/sensor_list_build.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class SensorBody extends StatelessWidget {
   const SensorBody({super.key});
@@ -16,7 +17,8 @@ class SensorBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<SensorCubit>();
     return Scaffold(
-      appBar: AppBar(title: Text('Sensor'), leading: CustomBackButton()),
+      appBar: AppBar(
+          title: Text(S.of(context).integ9), leading: CustomBackButton()),
       body: BlocConsumer<SensorCubit, SensorState>(
         listener: (context, state) {
           if (state is RestoreSensorSuccessState) {
@@ -38,20 +40,17 @@ class SensorBody extends StatelessWidget {
                   verticalSpace(10),
                   SensorFilterAndSearchWidget(),
                   verticalSpace(10),
-                  twoButtonsIntegration(
+                  integrationsButtons(
                     selectedIndex: cubit.selectedIndex,
                     onTap: (index) => cubit.changeTap(index),
                     firstCount: cubit.sensorModel?.data?.totalCount ?? 0,
-                    firstLabel: 'All sensors',
+                    firstLabel: S.of(context).sensorFirstLabel,
                     secondCount:
                         cubit.deletedSensorListModel?.data?.length ?? 0,
-                    secondLabel: 'Deleted sensors',
+                    secondLabel: S.of(context).sensorSecondLabel,
                   ),
                   verticalSpace(10),
-                  Divider(
-                    color: Colors.grey[300],
-                    height: 0,
-                  ),
+                  Divider(color: Colors.grey[300], height: 0),
                   verticalSpace(10),
                   Expanded(child: SensorListBuild()),
                   verticalSpace(10),

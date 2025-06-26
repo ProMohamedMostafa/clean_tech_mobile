@@ -1,12 +1,12 @@
 import 'package:image_picker/image_picker.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
-import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/all_tasks_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/create_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/point_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/section_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/all_tasks_model.dart';
 
 abstract class AddTaskState {}
 

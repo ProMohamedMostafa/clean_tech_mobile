@@ -7,11 +7,12 @@ import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/floating_action_button/floating_action_button.dart';
-import 'package:smart_cleaning_application/core/widgets/two_buttons_in_integreat_screen/two_buttons_in_integration_screen.dart';
+import 'package:smart_cleaning_application/core/widgets/integration_buttons/integrations_buttons.dart';
 import 'package:smart_cleaning_application/features/screens/stock/category_management/logic/category_mangement_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/stock/category_management/logic/category_mangement_state.dart';
 import 'package:smart_cleaning_application/features/screens/stock/category_management/ui/widgets/category_details_list_build.dart';
-import 'package:smart_cleaning_application/features/screens/stock/category_management/ui/widgets/filter_search_build.dart';
+import 'package:smart_cleaning_application/features/screens/stock/category_management/ui/widgets/category_filter_search_build.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class CategoryManagmentBody extends StatelessWidget {
   const CategoryManagmentBody({super.key});
@@ -21,7 +22,7 @@ class CategoryManagmentBody extends StatelessWidget {
     final cubit = context.read<CategoryManagementCubit>();
     return Scaffold(
       appBar: AppBar(
-          title: Text('Category Management'),
+          title: Text(S.of(context).categoryManagement),
           leading: CustomBackButton()),
       floatingActionButton: floatingActionButton(
         icon: Icons.post_add_rounded,
@@ -38,17 +39,23 @@ class CategoryManagmentBody extends StatelessWidget {
                 : (state as DeleteCategoryErrorState).error;
             toast(text: errorMessage, color: Colors.red);
           }
+          if (state is DeleteCategorySuccessState) {
+            toast(text: state.deleteCategoryModel.message!, color: Colors.blue);
+            cubit.getAllDeletedCategory();
+          }
           if (state is ForceDeleteCategorySuccessState) {
             toast(text: state.message, color: Colors.blue);
             cubit.getAllDeletedCategory();
             cubit.getAllDeletedCategory();
           }
+          if (state is ForceDeleteCategoryErrorState) {
+            toast(text: state.error, color: Colors.red);
+          }
           if (state is RestoreCategorySuccessState) {
             toast(text: state.message, color: Colors.blue);
           }
-          if (state is DeleteCategorySuccessState) {
-            toast(text: state.deleteCategoryModel.message!, color: Colors.blue);
-            cubit.getAllDeletedCategory();
+          if (state is RestoreCategoryErrorState) {
+            toast(text: state.error, color: Colors.red);
           }
         },
         builder: (context, state) {
@@ -63,18 +70,19 @@ class CategoryManagmentBody extends StatelessWidget {
                   verticalSpace(10),
                   FilterAndSearchWidget(),
                   verticalSpace(10),
-                  twoButtonsIntegration(
+                  integrationsButtons(
                     selectedIndex: cubit.selectedIndex,
                     onTap: (index) => cubit.changeTap(index),
                     firstCount:
                         cubit.categoryManagementModel?.data?.totalCount ?? 0,
-                    firstLabel: 'Total Categories',
+                    firstLabel: S.of(context).totalCategories,
                     secondCount:
                         cubit.deletedCategoryListModel?.data?.length ?? 0,
-                    secondLabel: 'Deleted Categories',
+                    secondLabel: S.of(context).deletedCategories,
                   ),
-                  verticalSpace(5),
-                  Divider(color: Colors.grey[300]),
+                  verticalSpace(10),
+                  Divider(color: Colors.grey[300], height: 0),
+                  verticalSpace(10),
                   Expanded(child: CategoryDetailsBuild()),
                   verticalSpace(10),
                 ],

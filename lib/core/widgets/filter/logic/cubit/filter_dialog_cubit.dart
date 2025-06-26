@@ -8,6 +8,7 @@ import 'package:smart_cleaning_application/features/screens/integrations/data/mo
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/provider/provider_management/data/models/providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/sensor/sensor_managment/data/model/activity_type_model.dart';
+import 'package:smart_cleaning_application/features/screens/sensor/sensor_managment/data/model/sensor_model.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/all_shifts_model.dart';
 import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/category_management_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_list_model.dart';
@@ -81,6 +82,8 @@ class FilterDialogCubit extends Cubit<FilterDialogState> {
   TextEditingController activityTypeController = TextEditingController();
   TextEditingController activityTypeIdController = TextEditingController();
   TextEditingController isAsignController = TextEditingController();
+  TextEditingController deviceController = TextEditingController();
+  TextEditingController deviceIdController = TextEditingController();
 
   CountryListModel? countryModel;
   List<CountryModel> countryData = [CountryModel(name: 'No countries')];
@@ -259,7 +262,9 @@ class FilterDialogCubit extends Cubit<FilterDialogState> {
   }
 
   ProvidersModel? providersModel;
-  List<ProviderItem> providerItem = [ProviderItem(name: 'No providers available')];
+  List<ProviderItem> providerItem = [
+    ProviderItem(name: 'No providers available')
+  ];
   getProviders() {
     emit(FilterDialogLoading<ProvidersModel>());
     DioHelper.getData(url: ApiConstants.allProvidersUrl).then((value) {
@@ -269,6 +274,29 @@ class FilterDialogCubit extends Cubit<FilterDialogState> {
       emit(FilterDialogSuccess<ProvidersModel>());
     }).catchError((error) {
       emit(FilterDialogError<ProvidersModel>());
+    });
+  }
+
+  SensorModel? sensorsModel;
+  List<SensorItem> sensorItem = [SensorItem(name: 'No sensors available')];
+  getDevices() {
+    DioHelper.getData(url: "devices", query: {
+      'AreaId': areaIdController.text,
+      'CityId': cityIdController.text,
+      'OrganizationId': organizationIdController.text,
+      'BuildingId': buildingIdController.text,
+      'FloorId': floorIdController.text,
+      'SectionId': sectionIdController.text,
+      'PointId': pointIdController.text,
+      'IsActive': true,
+      'IsAsign': true
+    }).then((value) {
+      sensorsModel = SensorModel.fromJson(value!.data);
+      sensorItem = sensorsModel?.data?.data ??
+          [SensorItem(name: 'No sensors available')];
+      emit(FilterDialogSuccess<SensorModel>());
+    }).catchError((error) {
+      emit(FilterDialogError<SensorModel>());
     });
   }
 

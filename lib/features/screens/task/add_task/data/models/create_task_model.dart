@@ -4,6 +4,7 @@ class CreateTaskModel {
   bool? succeeded;
   String? message;
   String? error;
+  int? businessErrorCode;
   String? data;
 
   CreateTaskModel(
@@ -12,6 +13,7 @@ class CreateTaskModel {
       this.succeeded,
       this.message,
       this.error,
+      this.businessErrorCode,
       this.data});
 
   CreateTaskModel.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class CreateTaskModel {
     succeeded = json['succeeded'];
     message = json['message'];
     error = json['error'];
+    businessErrorCode = json['businessErrorCode'];
     data = json['data'];
   }
 
@@ -30,6 +33,7 @@ class CreateTaskModel {
     data['succeeded'] = succeeded;
     data['message'] = message;
     data['error'] = error;
+    data['businessErrorCode'] = businessErrorCode;
     data['data'] = this.data;
     return data;
   }

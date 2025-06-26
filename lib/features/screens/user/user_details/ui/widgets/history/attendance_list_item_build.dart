@@ -6,8 +6,8 @@ import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/features/screens/profile/logic/profile_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/logic/cubit/user_details_cubit.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class AttendanceCardItem extends StatelessWidget {
   final int index;
@@ -23,11 +23,8 @@ class AttendanceCardItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(11.r),
       ),
       child: Container(
-        constraints: BoxConstraints(
-          minHeight: 145.h,
-        ),
         width: double.infinity,
-        padding: EdgeInsets.fromLTRB(10, 12, 10, 0),
+        padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(11.r),
@@ -44,23 +41,21 @@ class AttendanceCardItem extends StatelessWidget {
                   margin: EdgeInsets.zero,
                   padding: EdgeInsets.symmetric(horizontal: 5),
                   decoration: BoxDecoration(
-                    color:cubit.getStatusColor(
-  cubit.attendanceHistoryModel!.data!.data![index].status!
-).withOpacity(0.2),
+                    color: cubit
+                        .getStatusColor(cubit
+                            .attendanceHistoryModel!.data!.data![index].status!)
+                        .withOpacity(0.2),
                     borderRadius: BorderRadius.circular(4.r),
                   ),
                   child: Center(
                     child: Text(
-                      context
-                          .read<ProfileCubit>()
-                          .attendanceHistoryModel!
-                          .data!
-                          .data![index]
-                          .status!,
+                      cubit.attendanceHistoryModel!.data!.data![index].status!,
                       style: TextStyles.font11WhiteSemiBold.copyWith(
-                        color: cubit.getStatusColor(
-  cubit.attendanceHistoryModel!.data!.data![index].status!
-),
+                        color: cubit.getStatusColor(cubit
+                            .attendanceHistoryModel!
+                            .data!
+                            .data![index]
+                            .status!),
                       ),
                     ),
                   ),
@@ -77,12 +72,8 @@ class AttendanceCardItem extends StatelessWidget {
                   child: Center(
                     child: Text(
                       DateFormat('d MMM').format(
-                        DateTime.parse(context
-                            .read<ProfileCubit>()
-                            .attendanceHistoryModel!
-                            .data!
-                            .data![index]
-                            .date!),
+                        DateTime.parse(cubit
+                            .attendanceHistoryModel!.data!.data![index].date!),
                       ),
                       style: TextStyles.font11WhiteSemiBold
                           .copyWith(color: AppColor.primaryColor),
@@ -100,12 +91,7 @@ class AttendanceCardItem extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      context
-                          .read<ProfileCubit>()
-                          .attendanceHistoryModel!
-                          .data!
-                          .data![index]
-                          .role!,
+                      cubit.attendanceHistoryModel!.data!.data![index].role!,
                       style: TextStyles.font11WhiteSemiBold
                           .copyWith(color: AppColor.primaryColor),
                     ),
@@ -113,41 +99,31 @@ class AttendanceCardItem extends StatelessWidget {
                 ),
               ],
             ),
-            verticalSpace(15),
+            verticalSpace(5),
             Text(
-              context
-                  .read<ProfileCubit>()
-                  .attendanceHistoryModel!
-                  .data!
-                  .data![index]
-                  .userName!,
+              cubit.attendanceHistoryModel!.data!.data![index].userName!,
               style: TextStyles.font16BlackSemiBold,
             ),
-            verticalSpace(5),
+            verticalSpace(10),
             RichText(
               textAlign: TextAlign.center,
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: 'Shift : ',
+                    text: S.of(context).shiftField,
                     style: TextStyles.font12GreyRegular,
                   ),
                   TextSpan(
-                    text: context
-                                .read<ProfileCubit>()
-                                .attendanceHistoryModel!
-                                .data!
-                                .data![index]
+                    text: cubit.attendanceHistoryModel!.data!.data![index]
                                 .startShift !=
                             null
-                        ? DateFormat('hh:mm a').format(DateFormat('HH:mm:ss')
-                            .parse(context
-                                .read<ProfileCubit>()
+                        ? DateFormat('hh:mm a', 'en').format(
+                            DateFormat('HH:mm:ss', 'en').parse(cubit
                                 .attendanceHistoryModel!
                                 .data!
                                 .data![index]
-                                .startShift!
-                                .toString()))
+                                .startShift!),
+                          )
                         : '--',
                     style: TextStyles.font11WhiteSemiBold
                         .copyWith(color: AppColor.thirdColor),
@@ -158,21 +134,16 @@ class AttendanceCardItem extends StatelessWidget {
                         .copyWith(color: AppColor.thirdColor),
                   ),
                   TextSpan(
-                    text: context
-                                .read<ProfileCubit>()
-                                .attendanceHistoryModel!
-                                .data!
-                                .data![index]
+                    text: cubit.attendanceHistoryModel!.data!.data![index]
                                 .endShift !=
                             null
-                        ? DateFormat('hh:mm a').format(DateFormat('HH:mm:ss')
-                            .parse(context
-                                .read<ProfileCubit>()
+                        ? DateFormat('hh:mm a', 'en').format(
+                            DateFormat('HH:mm:ss', 'en').parse(cubit
                                 .attendanceHistoryModel!
                                 .data!
                                 .data![index]
-                                .endShift!
-                                .toString()))
+                                .endShift!),
+                          )
                         : '--',
                     style: TextStyles.font11WhiteSemiBold
                         .copyWith(color: AppColor.thirdColor),
@@ -180,7 +151,7 @@ class AttendanceCardItem extends StatelessWidget {
                 ],
               ),
             ),
-            verticalSpace(20),
+            verticalSpace(10),
             Row(
               children: [
                 Icon(
@@ -194,12 +165,8 @@ class AttendanceCardItem extends StatelessWidget {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: cubit.formatTime(context
-                                .read<ProfileCubit>()
-                                .attendanceHistoryModel!
-                                .data!
-                                .data![index]
-                                .clockIn ??
+                        text: cubit.formatTime(cubit.attendanceHistoryModel!
+                                .data!.data![index].clockIn ??
                             ''),
                         style: TextStyles.font12GreyRegular
                             .copyWith(color: AppColor.primaryColor),
@@ -210,12 +177,8 @@ class AttendanceCardItem extends StatelessWidget {
                             .copyWith(color: AppColor.primaryColor),
                       ),
                       TextSpan(
-                        text: cubit.formatTime(context
-                                .read<ProfileCubit>()
-                                .attendanceHistoryModel!
-                                .data!
-                                .data![index]
-                                .clockOut ??
+                        text: cubit.formatTime(cubit.attendanceHistoryModel!
+                                .data!.data![index].clockOut ??
                             ''),
                         style: TextStyles.font12GreyRegular
                             .copyWith(color: AppColor.primaryColor),
@@ -229,17 +192,13 @@ class AttendanceCardItem extends StatelessWidget {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: 'Duration : ',
+                        text: S.of(context).duration,
                         style: TextStyles.font12GreyRegular
                             .copyWith(color: AppColor.primaryColor),
                       ),
                       TextSpan(
                         text: cubit.formatDuration(
-                          context
-                                  .read<ProfileCubit>()
-                                  .attendanceHistoryModel!
-                                  .data!
-                                  .data![index]
+                          cubit.attendanceHistoryModel!.data!.data![index]
                                   .duration ??
                               '',
                         ),

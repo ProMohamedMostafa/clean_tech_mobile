@@ -8,7 +8,6 @@ import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/country_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
-import 'package:smart_cleaning_application/features/screens/provider/provider_management/data/models/all_deleted_providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/provider/provider_management/data/models/providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/user_create.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/logic/add_user_state.dart';
@@ -32,22 +31,19 @@ class AddUserCubit extends Cubit<AddUserState> {
   TextEditingController idNumberController = TextEditingController();
   TextEditingController nationalityController = TextEditingController();
   TextEditingController countryController = TextEditingController();
-  TextEditingController genderIdController = TextEditingController();
   TextEditingController genderController = TextEditingController();
-  TextEditingController roleIdController = TextEditingController();
+  TextEditingController genderIdController = TextEditingController();
   TextEditingController roleController = TextEditingController();
+  TextEditingController roleIdController = TextEditingController();
   TextEditingController managerController = TextEditingController();
   TextEditingController managerIdController = TextEditingController();
-  TextEditingController providerIdController = TextEditingController();
   TextEditingController providerController = TextEditingController();
-  TextEditingController deletedProviderController = TextEditingController();
-  TextEditingController restoreProviderController = TextEditingController();
+  TextEditingController providerIdController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
-  List<int> selectedShiftsIds = [];
 
   UserCreateModel? userCreateModel;
-  addUser({String? image, List<int>? selectedShiftsIds}) async {
+  addUser({String? image}) async {
     emit(AddUserLoadingState());
 
     MultipartFile? imageFile;
@@ -58,23 +54,22 @@ class AddUserCubit extends Cubit<AddUserState> {
       );
     }
     Map<String, dynamic> formDataMap = {
-      "userName": userNameController.text,
-      "firstName": firstNameController.text,
-      "lastName": lastNameController.text,
-      "email": emailController.text,
-      "phoneNumber": '+966${phoneController.text}',
-      "password": passwordController.text,
-      "passwordConfirmation": passwordConfirmationController.text,
+      "UserName": userNameController.text,
+      "FirstName": firstNameController.text,
+      "LastName": lastNameController.text,
+      "Email": emailController.text,
+      "PhoneNumber": '+966${phoneController.text}',
+      "Password": passwordController.text,
+      "PasswordConfirmation": passwordConfirmationController.text,
       "Image": imageFile,
-      "birthdate": birthController.text,
-      "iDNumber": idNumberController.text,
-      "nationalityName": nationalityController.text,
-      "countryName": countryController.text,
+      "Birthdate": birthController.text,
+      "IDNumber": idNumberController.text,
+      "NationalityName": nationalityController.text,
+      "CountryName": countryController.text,
+      "ManagerId": managerIdController.text,
+      "ProviderId": providerIdController.text,
+      "Gender": genderIdController.text,
       "RoleId": roleIdController.text,
-      "managerId": managerIdController.text,
-      "gender": genderIdController.text,
-      "providerId": providerIdController.text,
-      "ShiftsIds": selectedShiftsIds,
     };
 
     FormData formData = FormData.fromMap(formDataMap);
@@ -88,18 +83,10 @@ class AddUserCubit extends Cubit<AddUserState> {
     }
   }
 
-  
-
-
-
-  AllDeletedProvidersModel? allDeletedProvidersModel;
-  List<DeletedProviderData> deletedproviderItem = [
-    DeletedProviderData(name: 'No Deleted Provider Item')
-  ];
- 
-
   ProvidersModel? providersModel;
-  List<ProviderItem> providerItem = [ProviderItem(name: 'No providers available')];
+  List<ProviderItem> providerItem = [
+    ProviderItem(name: 'No providers available')
+  ];
   getProviders() {
     emit(AllProvidersLoadingState());
     DioHelper.getData(url: ApiConstants.allProvidersUrl).then((value) {

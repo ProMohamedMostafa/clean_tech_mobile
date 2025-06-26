@@ -5,7 +5,6 @@ import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
-import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
@@ -21,797 +20,562 @@ import 'package:smart_cleaning_application/features/screens/work_location/add_wo
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/logic/add_work_location_state.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
-class AddSectionScreen extends StatefulWidget {
+class AddSectionScreen extends StatelessWidget {
   const AddSectionScreen({super.key});
 
   @override
-  State<AddSectionScreen> createState() => _AddSectionScreenState();
-}
-
-class _AddSectionScreenState extends State<AddSectionScreen> {
-  List<int> selectedManagersIds = [];
-  List<int> selectedSupervisorsIds = [];
-  List<int> selectedCleanersIds = [];
-  List<int> selectedShiftsIds = [];
-  int? floorId;
-  @override
-  void initState() {
-    context.read<AddWorkLocationCubit>()
-      ..getNationality(userUsedOnly: false, areaUsedOnly: true)
-      ..getAllUsers()
-      ..getShifts();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final cubit = context.read<AddWorkLocationCubit>();
     return Scaffold(
       appBar: AppBar(
-        leading: CustomBackButton(),
-        title: Text('Add Section'),
-      
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-            child: BlocConsumer<AddWorkLocationCubit, AddWorkLocationState>(
-          listener: (context, state) {
-            if (state is CreateSectionSuccessState) {
-              toast(text: state.message, color: Colors.blue);
-              context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
-                  arguments: 5);
-            }
-            if (state is CreateSectionErrorState) {
-              toast(text: state.error, color: Colors.red);
-            }
-          },
-          builder: (context, state) {
-            if (context.read<AddWorkLocationCubit>().usersModel == null ||
-                context.read<AddWorkLocationCubit>().nationalityModel == null ||
-                context.read<AddWorkLocationCubit>().shiftModel == null) {
-             return Loading();
-            }
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Form(
-                key: context.read<AddWorkLocationCubit>().formAddKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    verticalSpace(20),
-                    _buildDetailsField(),
-                    verticalSpace(20),
-                    _buildContinueButton(state),
-                    verticalSpace(20),
-                  ],
-                ),
+          leading: CustomBackButton(), title: Text(S.of(context).addSection)),
+      body: SingleChildScrollView(
+          child: BlocConsumer<AddWorkLocationCubit, AddWorkLocationState>(
+        listener: (context, state) {
+          if (state is CreateSectionSuccessState) {
+            toast(text: state.message, color: Colors.blue);
+            context.popWithTrueResult();
+          }
+          if (state is CreateSectionErrorState) {
+            toast(text: state.error, color: Colors.red);
+          }
+        },
+        builder: (context, state) {
+          if (cubit.usersModel == null ||
+              cubit.nationalityListModel == null ||
+              cubit.shiftModel == null) {
+            return Loading();
+          }
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Form(
+              key: cubit.formAddKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildDetailsField(context, cubit),
+                  verticalSpace(20),
+                  _buildContinueButton(context, cubit, state),
+                  verticalSpace(20),
+                ],
               ),
-            );
-          },
-        )),
-      ),
+            ),
+          );
+        },
+      )),
     );
   }
 
-  Widget _buildDetailsField() {
+  Widget _buildDetailsField(BuildContext context, AddWorkLocationCubit cubit) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          S.of(context).addUserText12,
-          style: TextStyles.font16BlackRegular,
-        ),
-        CustomDropDownList(
-          hint: "Select country",
-          items: context
-                      .read<AddWorkLocationCubit>()
-                      .nationalityModel
-                      ?.data
-                      ?.isEmpty ??
-                  true
-              ? ['No country']
-              : context
-                      .read<AddWorkLocationCubit>()
-                      .nationalityModel
-                      ?.data
-                      ?.map((e) => e.name ?? 'Unknown')
-                      .toList() ??
-                  [],
-          onChanged: (value) {
-            context.read<AddWorkLocationCubit>().nationalityController.text =
-                value!;
-            context.read<AddWorkLocationCubit>().getArea(value);
-          },
-          validator: (value) {
-            if (value == null || value.isEmpty || value == 'No country') {
-              return S.of(context).validationNationality;
-            }
-            return null;
-          },
-          suffixIcon: IconBroken.arrowDown2,
-          controller:
-              context.read<AddWorkLocationCubit>().nationalityController,
-          isRead: false,
-          keyboardType: TextInputType.text,
-        ),
-        verticalSpace(10),
-        Text(
-          "Area",
-          style: TextStyles.font16BlackRegular,
-        ),
-        CustomDropDownList(
-          hint: "Select area",
-          items: context
-                      .read<AddWorkLocationCubit>()
-                      .areaModel
-                      ?.data
-                      ?.data
-                      ?.isEmpty ??
-                  true
-              ? ['No area']
-              : context
-                      .read<AddWorkLocationCubit>()
-                      .areaModel
-                      ?.data
-                      ?.data
-                      ?.map((e) => e.name ?? 'Unknown')
-                      .toList() ??
-                  [],
-          validator: (value) {
-            if (value == null || value.isEmpty || value == "No area") {
-              return "Area is required";
-            }
-            return null;
-          },
-          onPressed: (value) {
-            final selectedArea = context
-                .read<AddWorkLocationCubit>()
-                .areaModel
-                ?.data
-                ?.data
-                ?.firstWhere((area) =>
-                    area.name ==
-                    context.read<AddWorkLocationCubit>().areaController.text);
-            context.read<AddWorkLocationCubit>().getCity(selectedArea!.id!);
-          },
-          suffixIcon: IconBroken.arrowDown2,
-          controller: context.read<AddWorkLocationCubit>().areaController,
-          isRead: false,
-          keyboardType: TextInputType.text,
-        ),
-        verticalSpace(10),
-        Text(
-          "City",
-          style: TextStyles.font16BlackRegular,
-        ),
-        CustomDropDownList(
-          hint: "Select city",
-          items: context
-                      .read<AddWorkLocationCubit>()
-                      .cityModel
-                      ?.data
-                      ?.data
-                      ?.isEmpty ??
-                  true
-              ? ['No cities']
-              : context
-                      .read<AddWorkLocationCubit>()
-                      .cityModel
-                      ?.data
-                      ?.data
-                      ?.map((e) => e.name ?? 'Unknown')
-                      .toList() ??
-                  [],
-          validator: (value) {
-            if (value == null || value.isEmpty || value == 'No cities') {
-              return "City is required";
-            }
-            return null;
-          },
-          onPressed: (value) {
-            final selectedCity = context
-                .read<AddWorkLocationCubit>()
-                .cityModel
-                ?.data
-                ?.data
-                ?.firstWhere((city) =>
-                    city.name ==
-                    context.read<AddWorkLocationCubit>().cityController.text);
-            context
-                .read<AddWorkLocationCubit>()
-                .getOrganization(selectedCity!.id!);
-          },
-          suffixIcon: IconBroken.arrowDown2,
-          controller: context.read<AddWorkLocationCubit>().cityController,
-          isRead: false,
-          keyboardType: TextInputType.text,
-        ),
-        verticalSpace(10),
-        Text(
-          "Organization",
-          style: TextStyles.font16BlackRegular,
-        ),
-        CustomDropDownList(
-          hint: "Select organizations",
-          items: context
-                      .read<AddWorkLocationCubit>()
-                      .organizationModel
-                      ?.data
-                      ?.data
-                      ?.isEmpty ??
-                  true
-              ? ['No organizations']
-              : context
-                      .read<AddWorkLocationCubit>()
-                      .organizationModel
-                      ?.data
-                      ?.data
-                      ?.map((e) => e.name ?? 'Unknown')
-                      .toList() ??
-                  [],
-          validator: (value) {
-            if (value == null || value.isEmpty || value == 'No organizations') {
-              return "Organizations is required";
-            }
-            return null;
-          },
-          onPressed: (value) {
-            final selectedOrganization = context
-                .read<AddWorkLocationCubit>()
-                .organizationModel
-                ?.data
-                ?.data
-                ?.firstWhere((organization) =>
-                    organization.name ==
-                    context
-                        .read<AddWorkLocationCubit>()
-                        .organizationController
-                        .text);
-            context
-                .read<AddWorkLocationCubit>()
-                .getBuilding(selectedOrganization!.id!);
-          },
-          suffixIcon: IconBroken.arrowDown2,
-          controller:
-              context.read<AddWorkLocationCubit>().organizationController,
-          isRead: false,
-          keyboardType: TextInputType.text,
-        ),
-        verticalSpace(10),
-        Text(
-          "Building",
-          style: TextStyles.font16BlackRegular,
-        ),
-        CustomDropDownList(
-          hint: "Select building",
-          items: context
-                      .read<AddWorkLocationCubit>()
-                      .buildingModel
-                      ?.data
-                      ?.data
-                      ?.isEmpty ??
-                  true
-              ? ['No building']
-              : context
-                      .read<AddWorkLocationCubit>()
-                      .buildingModel
-                      ?.data
-                      ?.data
-                      ?.map((e) => e.name ?? 'Unknown')
-                      .toList() ??
-                  [],
-          validator: (value) {
-            if (value == null || value.isEmpty || value == 'No building') {
-              return "Building is required";
-            }
-            return null;
-          },
-          onPressed: (value) {
-            final selectedBuilding = context
-                .read<AddWorkLocationCubit>()
-                .buildingModel
-                ?.data
-                ?.data
-                ?.firstWhere((building) =>
-                    building.name ==
-                    context
-                        .read<AddWorkLocationCubit>()
-                        .buildingController
-                        .text);
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(S.of(context).addUserText12,
+              style: TextStyles.font16BlackRegular),
+          CustomDropDownList(
+            hint: S.of(context).selectCountry,
+            items:
+                cubit.nationalityData.map((e) => e.name ?? 'un known').toList(),
+            onChanged: (value) {
+              cubit.getArea();
+            },
+            validator: (value) {
+              if (value == null ||
+                  value.isEmpty ||
+                  value == S.of(context).noCountry) {
+                return S.of(context).validationNationality;
+              }
+              return null;
+            },
+            suffixIcon: IconBroken.arrowDown2,
+            controller: cubit.nationalityController,
+            isRead: false,
+            keyboardType: TextInputType.text,
+          ),
+          verticalSpace(10),
+          Text(S.of(context).areaName, style: TextStyles.font16BlackRegular),
+          CustomDropDownList(
+            hint: S.of(context).selectArea,
+            controller: cubit.areaController,
+            items: cubit.areaItem.map((e) => e.name ?? 'Unknown').toList(),
+            onChanged: (value) {
+              final selectedArea = cubit.areaListModel?.data?.data
+                  ?.firstWhere((area) => area.name == cubit.areaController.text)
+                  .id
+                  ?.toString();
 
-            context
-                .read<AddWorkLocationCubit>()
-                .getFloor(selectedBuilding!.id!);
-          },
-          suffixIcon: IconBroken.arrowDown2,
-          controller: context.read<AddWorkLocationCubit>().buildingController,
-          isRead: false,
-          keyboardType: TextInputType.text,
-        ),
-        verticalSpace(10),
-        Text(
-          "Floor",
-          style: TextStyles.font16BlackRegular,
-        ),
-        CustomDropDownList(
-          hint: "Select floor",
-          items: context
-                      .read<AddWorkLocationCubit>()
-                      .floorModel
-                      ?.data
-                      ?.data
-                      ?.isEmpty ??
-                  true
-              ? ['No floor']
-              : context
-                      .read<AddWorkLocationCubit>()
-                      .floorModel
-                      ?.data
-                      ?.data
-                      ?.map((e) => e.name ?? 'Unknown')
-                      .toList() ??
-                  [],
-          validator: (value) {
-            if (value == null || value.isEmpty || value == 'No floor') {
-              return "Floor is required";
-            }
-            return null;
-          },
-          onPressed: (value) {
-            final selectedFloor = context
-                .read<AddWorkLocationCubit>()
-                .floorModel
-                ?.data
-                ?.data
-                ?.firstWhere((floor) =>
-                    floor.name ==
-                    context.read<AddWorkLocationCubit>().floorController.text);
+              if (selectedArea != null) {
+                cubit.areaIdController.text = selectedArea;
+              }
+              cubit.getCity();
+            },
+            suffixIcon: IconBroken.arrowDown2,
+            keyboardType: TextInputType.text,
+          ),
+          verticalSpace(10),
+          Text(
+            S.of(context).cityName,
+            style: TextStyles.font16BlackRegular,
+          ),
+          CustomDropDownList(
+            hint: S.of(context).selectCity,
+            controller: cubit.cityController,
+            items: cubit.cityItem.map((e) => e.name ?? 'Unknown').toList(),
+            onChanged: (value) {
+              final selectedCity = cubit.cityModel?.data?.data
+                  ?.firstWhere((city) => city.name == cubit.cityController.text)
+                  .id
+                  ?.toString();
 
-            floorId = selectedFloor!.id!;
-          },
-          suffixIcon: IconBroken.arrowDown2,
-          controller: context.read<AddWorkLocationCubit>().floorController,
-          isRead: false,
-          keyboardType: TextInputType.text,
-        ),
-        verticalSpace(10),
-        Text(
-          "Section Name",
-          style: TextStyles.font16BlackRegular,
-        ),
-        CustomTextFormField(
-          controller: context.read<AddWorkLocationCubit>().addSectionController,
-          onlyRead: false,
-          hint: '',
-          keyboardType: TextInputType.text,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return "Section name is required";
-            } else if (value.length > 55) {
-              return 'Section name too long';
-            } else if (value.length < 3) {
-              return 'Section name too short';
-            }
-            return null;
-          },
-        ),
-        verticalSpace(10),
-        Text(
-          "Section Number",
-          style: TextStyles.font16BlackRegular,
-        ),
-        CustomTextFormField(
-          controller:
-              context.read<AddWorkLocationCubit>().sectionNumberController,
-          onlyRead: false,
-          hint: '',
-          keyboardType: TextInputType.text,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return "Section number is required";
-            } else if (value.length > 30) {
-              return 'Section number too long';
-            }
-            return null;
-          },
-        ),
-        verticalSpace(10),
-        Text(
-          "Section Description",
-          style: TextStyles.font16BlackRegular,
-        ),
-        CustomDescriptionTextFormField(
-          controller:
-              context.read<AddWorkLocationCubit>().sectionDiscriptionController,
-          hint: 'discription...',
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return "description is required";
-            } else if (value.length < 3) {
-              return 'description too short';
-            }
-            return null;
-          },
-        ),
-        verticalSpace(10),
-        context.read<AddWorkLocationCubit>().usersModel!.data == null
-            ? SizedBox.shrink()
-            : RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Managers',
-                      style: TextStyles.font16BlackRegular,
-                    ),
-                    TextSpan(
-                      text: ' (Optional)',
-                      style: TextStyles.font14GreyRegular,
-                    ),
-                  ],
+              if (selectedCity != null) {
+                cubit.cityIdController.text = selectedCity;
+              }
+              cubit.getOrganization();
+            },
+            suffixIcon: IconBroken.arrowDown2,
+            keyboardType: TextInputType.text,
+          ),
+          verticalSpace(10),
+          Text(
+            S.of(context).Organization,
+            style: TextStyles.font16BlackRegular,
+          ),
+          CustomDropDownList(
+            hint: S.of(context).selectOrganization,
+            controller: cubit.organizationController,
+            items:
+                cubit.organizationItem.map((e) => e.name ?? 'Unknown').toList(),
+            onChanged: (value) {
+              final selectedOrganization = cubit.organizationModel?.data?.data
+                  ?.firstWhere(
+                      (org) => org.name == cubit.organizationController.text)
+                  .id
+                  ?.toString();
+
+              if (selectedOrganization != null) {
+                cubit.organizationIdController.text = selectedOrganization;
+              }
+              cubit.getBuilding();
+            },
+            suffixIcon: IconBroken.arrowDown2,
+            keyboardType: TextInputType.text,
+          ),
+          verticalSpace(10),
+          Text(
+            S.of(context).Building,
+            style: TextStyles.font16BlackRegular,
+          ),
+          CustomDropDownList(
+            hint: S.of(context).selectBuilding,
+            controller: cubit.buildingController,
+            items: cubit.buildingItem.map((e) => e.name ?? 'Unknown').toList(),
+            onChanged: (value) {
+              final selectedBuilding = cubit.buildingModel?.data?.data
+                  ?.firstWhere(
+                      (bld) => bld.name == cubit.buildingController.text)
+                  .id
+                  ?.toString();
+
+              if (selectedBuilding != null) {
+                cubit.buildingIdController.text = selectedBuilding;
+              }
+              cubit.getFloor();
+            },
+            suffixIcon: IconBroken.arrowDown2,
+            keyboardType: TextInputType.text,
+          ),
+          verticalSpace(10),
+          Text(
+            S.of(context).Floor,
+            style: TextStyles.font16BlackRegular,
+          ),
+          CustomDropDownList(
+            hint: S.of(context).selectFloor,
+            controller: cubit.floorController,
+            items: cubit.floorItem.map((e) => e.name ?? 'Unknown').toList(),
+            onChanged: (value) {
+              final selectedFloor = cubit.floorModel?.data?.data
+                  ?.firstWhere(
+                      (floor) => floor.name == cubit.floorController.text)
+                  .id
+                  ?.toString();
+
+              if (selectedFloor != null) {
+                cubit.floorIdController.text = selectedFloor;
+              }
+            },
+            suffixIcon: IconBroken.arrowDown2,
+            keyboardType: TextInputType.text,
+          ),
+          verticalSpace(10),
+          Text(
+            S.of(context).sectionName,
+            style: TextStyles.font16BlackRegular,
+          ),
+          CustomTextFormField(
+            controller: cubit.addSectionController,
+            onlyRead: false,
+            hint: '',
+            keyboardType: TextInputType.text,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return S.of(context).sectionNameRequired;
+              } else if (value.length > 55) {
+                return S.of(context).sectionNameTooLong;
+              } else if (value.length < 3) {
+                return S.of(context).sectionNameTooShort;
+              }
+              return null;
+            },
+          ),
+          verticalSpace(10),
+          Text(
+            S.of(context).sectionNumber,
+            style: TextStyles.font16BlackRegular,
+          ),
+          CustomTextFormField(
+            controller: cubit.sectionNumberController,
+            onlyRead: false,
+            hint: '',
+            keyboardType: TextInputType.text,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return S.of(context).sectionNumberRequired;
+              } else if (value.length > 30) {
+                return S.of(context).sectionNumberTooLong;
+              }
+              return null;
+            },
+          ),
+          verticalSpace(10),
+          Text(
+            S.of(context).sectionDescription,
+            style: TextStyles.font16BlackRegular,
+          ),
+          CustomDescriptionTextFormField(
+            controller: cubit.sectionDiscriptionController,
+            hint: S.of(context).descriptionHint,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return S.of(context).descriptionRequired;
+              } else if (value.length < 3) {
+                return S.of(context).descriptionTooShort;
+              }
+              return null;
+            },
+          ),
+          verticalSpace(10),
+          RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: S.of(context).managers,
+                  style: TextStyles.font16BlackRegular,
+                ),
+                TextSpan(
+                  text: S.of(context).labelOptional,
+                  style: TextStyles.font14GreyRegular,
+                ),
+              ],
+            ),
+          ),
+          MultiDropdown<UserItem>(
+            items: cubit.usersModel!.data!.users!
+                    .where((user) => user.role == 'Manager')
+                    .isEmpty
+                ? [
+                    DropdownItem(
+                      label: S.of(context).noManagers,
+                      value: UserItem(
+                          id: null, userName: S.of(context).noManagers),
+                    )
+                  ]
+                : cubit.usersModel!.data!.users!
+                    .where((user) => user.role == 'Manager')
+                    .map((manager) => DropdownItem(
+                          label: manager.userName!,
+                          value: manager,
+                        ))
+                    .toList(),
+            controller: cubit.allmanagersController,
+            enabled: true,
+            chipDecoration: ChipDecoration(
+              backgroundColor: Colors.grey[300],
+              wrap: true,
+              runSpacing: 5,
+              spacing: 5,
+            ),
+            fieldDecoration: FieldDecoration(
+              hintText: S.of(context).selectManagers,
+              suffixIcon: Icon(IconBroken.arrowDown2),
+              hintStyle: TextStyle(fontSize: 12.sp, color: AppColor.thirdColor),
+              showClearIcon: false,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: BorderSide(color: Colors.grey[300]!),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: const BorderSide(
+                  color: AppColor.primaryColor,
                 ),
               ),
-        context.read<AddWorkLocationCubit>().usersModel!.data == null
-            ? SizedBox.shrink()
-            : MultiDropdown<UserItem>(
-                items: context
-                        .read<AddWorkLocationCubit>()
-                        .usersModel!
-                        .data!
-                        .users!
-                        .where((user) => user.role == 'Manager')
-                        .isEmpty
-                    ? [
-                        DropdownItem(
-                          label: 'No managers available',
-                          value: UserItem(
-                              id: null, userName: 'No managers available'),
-                        )
-                      ]
-                    : context
-                        .read<AddWorkLocationCubit>()
-                        .usersModel!
-                        .data!
-                        .users!
-                        .where((user) => user.role == 'Manager')
-                        .map((manager) => DropdownItem(
-                              label: manager.userName!,
-                              value: manager,
-                            ))
-                        .toList(),
-                controller:
-                    context.read<AddWorkLocationCubit>().allmanagersController,
-                enabled: true,
-                chipDecoration: ChipDecoration(
-                  backgroundColor: Colors.grey[300],
-                  wrap: true,
-                  runSpacing: 5,
-                  spacing: 5,
-                ),
-                fieldDecoration: FieldDecoration(
-                  hintText: 'Select managers',
-                  suffixIcon: Icon(IconBroken.arrowDown2),
-                  hintStyle:
-                      TextStyle(fontSize: 12.sp, color: AppColor.thirdColor),
-                  showClearIcon: false,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: const BorderSide(color: Colors.grey),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: const BorderSide(
-                      color: Colors.grey,
-                    ),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: const BorderSide(
-                      color: Colors.red,
-                    ),
-                  ),
-                ),
-                dropdownDecoration: const DropdownDecoration(
-                  maxHeight: 200,
-                ),
-                dropdownItemDecoration: DropdownItemDecoration(
-                  selectedIcon: const Icon(Icons.check_box, color: Colors.blue),
-                ),
-                onSelectionChange: (selectedItems) {
-                  selectedManagersIds =
-                      selectedItems.map((item) => (item).id!).toList();
-                },
-              ),
-        verticalSpace(10),
-        context.read<AddWorkLocationCubit>().usersModel!.data == null
-            ? SizedBox.shrink()
-            : RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Supervisors',
-                      style: TextStyles.font16BlackRegular,
-                    ),
-                    TextSpan(
-                      text: ' (Optional)',
-                      style: TextStyles.font14GreyRegular,
-                    ),
-                  ],
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: const BorderSide(
+                  color: Colors.red,
                 ),
               ),
-        context.read<AddWorkLocationCubit>().usersModel!.data == null
-            ? SizedBox.shrink()
-            : MultiDropdown<UserItem>(
-                items: context
-                        .read<AddWorkLocationCubit>()
-                        .usersModel!
-                        .data!
-                        .users!
-                        .where((user) => user.role == 'Supervisor')
-                        .isEmpty
-                    ? [
-                        DropdownItem(
-                          label: 'No supervisors available',
-                          value: UserItem(
-                              id: null, userName: 'No supervisors available'),
-                        )
-                      ]
-                    : context
-                        .read<AddWorkLocationCubit>()
-                        .usersModel!
-                        .data!
-                        .users!
-                        .where((user) => user.role == 'Supervisor')
-                        .map((supervisor) => DropdownItem(
-                              label: supervisor.userName!,
-                              value: supervisor,
-                            ))
-                        .toList(),
-                controller: context
-                    .read<AddWorkLocationCubit>()
-                    .allSupervisorsController,
-                enabled: true,
-                chipDecoration: ChipDecoration(
-                  backgroundColor: Colors.grey[300],
-                  wrap: true,
-                  runSpacing: 5,
-                  spacing: 5,
+            ),
+            dropdownDecoration: const DropdownDecoration(
+              maxHeight: 200,
+            ),
+            dropdownItemDecoration: DropdownItemDecoration(
+              selectedIcon: const Icon(Icons.check_box, color: Colors.blue),
+            ),
+            onSelectionChange: (selectedItems) {
+              cubit.selectedManagersIds =
+                  selectedItems.map((item) => (item).id!).toList();
+            },
+          ),
+          verticalSpace(10),
+          RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: S.of(context).supervisors,
+                  style: TextStyles.font16BlackRegular,
                 ),
-                fieldDecoration: FieldDecoration(
-                  hintText: 'Select supervisors',
-                  suffixIcon: Icon(IconBroken.arrowDown2),
-                  hintStyle:
-                      TextStyle(fontSize: 12.sp, color: AppColor.thirdColor),
-                  showClearIcon: false,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: const BorderSide(color: Colors.grey),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: const BorderSide(
-                      color: Colors.grey,
-                    ),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: const BorderSide(
-                      color: Colors.red,
-                    ),
-                  ),
+                TextSpan(
+                  text: S.of(context).labelOptional,
+                  style: TextStyles.font14GreyRegular,
                 ),
-                dropdownDecoration: const DropdownDecoration(
-                  maxHeight: 200,
-                ),
-                dropdownItemDecoration: DropdownItemDecoration(
-                  selectedIcon: const Icon(Icons.check_box, color: Colors.blue),
-                ),
-                onSelectionChange: (selectedItems) {
-                  selectedSupervisorsIds =
-                      selectedItems.map((item) => (item).id!).toList();
-                },
+              ],
+            ),
+          ),
+          MultiDropdown<UserItem>(
+            items: cubit.usersModel!.data!.users!
+                    .where((user) => user.role == 'Supervisor')
+                    .isEmpty
+                ? [
+                    DropdownItem(
+                      label: S.of(context).noSupervisors,
+                      value: UserItem(
+                          id: null, userName: S.of(context).noSupervisors),
+                    )
+                  ]
+                : cubit.usersModel!.data!.users!
+                    .where((user) => user.role == 'Supervisor')
+                    .map((supervisor) => DropdownItem(
+                          label: supervisor.userName!,
+                          value: supervisor,
+                        ))
+                    .toList(),
+            controller: cubit.allSupervisorsController,
+            enabled: true,
+            chipDecoration: ChipDecoration(
+              backgroundColor: Colors.grey[300],
+              wrap: true,
+              runSpacing: 5,
+              spacing: 5,
+            ),
+            fieldDecoration: FieldDecoration(
+              hintText: S.of(context).selectSupervisors,
+              suffixIcon: Icon(IconBroken.arrowDown2),
+              hintStyle: TextStyle(fontSize: 12.sp, color: AppColor.thirdColor),
+              showClearIcon: false,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: BorderSide(color: Colors.grey[300]!),
               ),
-        verticalSpace(10),
-        context.read<AddWorkLocationCubit>().usersModel!.data == null
-            ? SizedBox.shrink()
-            : RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Cleaners',
-                      style: TextStyles.font16BlackRegular,
-                    ),
-                    TextSpan(
-                      text: ' (Optional)',
-                      style: TextStyles.font14GreyRegular,
-                    ),
-                  ],
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: const BorderSide(
+                  color: AppColor.primaryColor,
                 ),
               ),
-        context.read<AddWorkLocationCubit>().usersModel!.data == null
-            ? SizedBox.shrink()
-            : MultiDropdown<UserItem>(
-                items: context
-                        .read<AddWorkLocationCubit>()
-                        .usersModel!
-                        .data!
-                        .users!
-                        .where((user) => user.role == 'Cleaner')
-                        .isEmpty
-                    ? [
-                        DropdownItem(
-                          label: 'No cleaners available',
-                          value: UserItem(
-                              id: null, userName: 'No cleaners available'),
-                        )
-                      ]
-                    : context
-                        .read<AddWorkLocationCubit>()
-                        .usersModel!
-                        .data!
-                        .users!
-                        .where((user) => user.role == 'Cleaner')
-                        .map((cleaner) => DropdownItem(
-                              label: cleaner.userName!,
-                              value: cleaner,
-                            ))
-                        .toList(),
-                controller:
-                    context.read<AddWorkLocationCubit>().allCleanersController,
-                enabled: true,
-                chipDecoration: ChipDecoration(
-                  backgroundColor: Colors.grey[300],
-                  wrap: true,
-                  runSpacing: 5,
-                  spacing: 5,
-                ),
-                fieldDecoration: FieldDecoration(
-                  hintText: 'Select cleaners',
-                  suffixIcon: Icon(IconBroken.arrowDown2),
-                  hintStyle:
-                      TextStyle(fontSize: 12.sp, color: AppColor.thirdColor),
-                  showClearIcon: false,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: const BorderSide(color: Colors.grey),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: const BorderSide(
-                      color: Colors.grey,
-                    ),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: const BorderSide(
-                      color: Colors.red,
-                    ),
-                  ),
-                ),
-                dropdownDecoration: const DropdownDecoration(
-                  maxHeight: 200,
-                ),
-                dropdownItemDecoration: DropdownItemDecoration(
-                  selectedIcon: const Icon(Icons.check_box, color: Colors.blue),
-                ),
-                onSelectionChange: (selectedItems) {
-                  selectedCleanersIds =
-                      selectedItems.map((item) => (item).id!).toList();
-                },
-              ),
-        verticalSpace(10),
-        context.read<AddWorkLocationCubit>().shiftModel?.data == null
-            ? SizedBox.shrink()
-            : RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Shifts',
-                      style: TextStyles.font16BlackRegular,
-                    ),
-                    TextSpan(
-                      text: ' (Optional)',
-                      style: TextStyles.font14GreyRegular,
-                    ),
-                  ],
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: const BorderSide(
+                  color: Colors.red,
                 ),
               ),
-        context.read<AddWorkLocationCubit>().shiftModel?.data == null
-            ? SizedBox.shrink()
-            : MultiDropdown<ShiftItem>(
-                items: context
-                            .read<AddWorkLocationCubit>()
-                            .shiftModel
-                            ?.data
-                            ?.data
-                            ?.isEmpty ??
-                        true
-                    ? [
-                        DropdownItem(
-                          label: 'No shifts available',
-                          value:
-                              ShiftItem(id: null, name: 'No shifts available'),
-                        )
-                      ]
-                    : context
-                        .read<AddWorkLocationCubit>()
-                        .shiftModel!
-                        .data!
-                        .data!
-                        .map((shift) => DropdownItem(
-                              label: shift.name!,
-                              value: shift,
-                            ))
-                        .toList(),
-                controller:
-                    context.read<AddWorkLocationCubit>().shiftController,
-                enabled: true,
-                chipDecoration: ChipDecoration(
-                  backgroundColor: Colors.grey[300],
-                  wrap: true,
-                  runSpacing: 5,
-                  spacing: 5,
+            ),
+            dropdownDecoration: const DropdownDecoration(
+              maxHeight: 200,
+            ),
+            dropdownItemDecoration: DropdownItemDecoration(
+              selectedIcon: const Icon(Icons.check_box, color: Colors.blue),
+            ),
+            onSelectionChange: (selectedItems) {
+              cubit.selectedSupervisorsIds =
+                  selectedItems.map((item) => (item).id!).toList();
+            },
+          ),
+          verticalSpace(10),
+          RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: S.of(context).cleaners,
+                  style: TextStyles.font16BlackRegular,
                 ),
-                fieldDecoration: FieldDecoration(
-                  hintText: 'Select shift',
-                  suffixIcon: Icon(IconBroken.arrowDown2),
-                  hintStyle:
-                      TextStyle(fontSize: 12.sp, color: AppColor.thirdColor),
-                  showClearIcon: false,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: const BorderSide(color: Colors.grey),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: const BorderSide(
-                      color: Colors.grey,
-                    ),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: const BorderSide(
-                      color: Colors.red,
-                    ),
-                  ),
+                TextSpan(
+                  text: S.of(context).labelOptional,
+                  style: TextStyles.font14GreyRegular,
                 ),
-                dropdownDecoration: const DropdownDecoration(
-                  maxHeight: 200,
-                ),
-                dropdownItemDecoration: DropdownItemDecoration(
-                  selectedIcon: const Icon(Icons.check_box, color: Colors.blue),
-                ),
-                onSelectionChange: (selectedItems) {
-                  selectedShiftsIds =
-                      selectedItems.map((item) => (item).id!).toList();
-                },
+              ],
+            ),
+          ),
+          MultiDropdown<UserItem>(
+            items: cubit.usersModel!.data!.users!
+                    .where((user) => user.role == 'Cleaner')
+                    .isEmpty
+                ? [
+                    DropdownItem(
+                      label: S.of(context).noCleaners,
+                      value: UserItem(
+                          id: null, userName: S.of(context).noCleaners),
+                    )
+                  ]
+                : cubit.usersModel!.data!.users!
+                    .where((user) => user.role == 'Cleaner')
+                    .map((cleaner) => DropdownItem(
+                          label: cleaner.userName!,
+                          value: cleaner,
+                        ))
+                    .toList(),
+            controller: cubit.allCleanersController,
+            enabled: true,
+            chipDecoration: ChipDecoration(
+              backgroundColor: Colors.grey[300],
+              wrap: true,
+              runSpacing: 5,
+              spacing: 5,
+            ),
+            fieldDecoration: FieldDecoration(
+              hintText: S.of(context).selectCleaners,
+              suffixIcon: Icon(IconBroken.arrowDown2),
+              hintStyle: TextStyle(fontSize: 12.sp, color: AppColor.thirdColor),
+              showClearIcon: false,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: BorderSide(color: Colors.grey[300]!),
               ),
-        verticalSpace(10),
-      ],
-    );
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: const BorderSide(
+                  color: AppColor.primaryColor,
+                ),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: const BorderSide(
+                  color: Colors.red,
+                ),
+              ),
+            ),
+            dropdownDecoration: const DropdownDecoration(
+              maxHeight: 200,
+            ),
+            dropdownItemDecoration: DropdownItemDecoration(
+              selectedIcon: const Icon(Icons.check_box, color: Colors.blue),
+            ),
+            onSelectionChange: (selectedItems) {
+              cubit.selectedCleanersIds =
+                  selectedItems.map((item) => (item).id!).toList();
+            },
+          ),
+          verticalSpace(10),
+          RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: S.of(context).shiftBody,
+                  style: TextStyles.font16BlackRegular,
+                ),
+                TextSpan(
+                  text: S.of(context).labelOptional,
+                  style: TextStyles.font14GreyRegular,
+                ),
+              ],
+            ),
+          ),
+          MultiDropdown<ShiftItem>(
+            items: cubit.shiftModel?.data?.data?.isEmpty ?? true
+                ? [
+                    DropdownItem(
+                      label: S.of(context).noShiftsAvailable,
+                      value: ShiftItem(
+                          id: null, name: S.of(context).noShiftsAvailable),
+                    )
+                  ]
+                : cubit.shiftModel!.data!.data!
+                    .map((shift) => DropdownItem(
+                          label: shift.name!,
+                          value: shift,
+                        ))
+                    .toList(),
+            controller: cubit.shiftController,
+            enabled: true,
+            chipDecoration: ChipDecoration(
+              backgroundColor: Colors.grey[300],
+              wrap: true,
+              runSpacing: 5,
+              spacing: 5,
+            ),
+            fieldDecoration: FieldDecoration(
+              hintText: S.of(context).selectShift,
+              suffixIcon: Icon(IconBroken.arrowDown2),
+              hintStyle: TextStyle(fontSize: 12.sp, color: AppColor.thirdColor),
+              showClearIcon: false,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: BorderSide(color: Colors.grey[300]!),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: const BorderSide(
+                  color: AppColor.primaryColor,
+                ),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: const BorderSide(
+                  color: Colors.red,
+                ),
+              ),
+            ),
+            dropdownDecoration: const DropdownDecoration(
+              maxHeight: 200,
+            ),
+            dropdownItemDecoration: DropdownItemDecoration(
+              selectedIcon: const Icon(Icons.check_box, color: Colors.blue),
+            ),
+            onSelectionChange: (selectedItems) {
+              cubit.selectedShiftsIds =
+                  selectedItems.map((item) => (item).id!).toList();
+            },
+          ),
+          verticalSpace(10),
+        ]);
   }
 
-  Widget _buildContinueButton(state) {
+  Widget _buildContinueButton(BuildContext context, AddWorkLocationCubit cubit,
+      AddWorkLocationState state) {
     return state is CreateCityLoadingState
         ? Loading()
         : DefaultElevatedButton(
-            name: "Add",
+            name: S.of(context).addButton,
             onPressed: () {
-              if (context
-                  .read<AddWorkLocationCubit>()
-                  .formAddKey
-                  .currentState!
-                  .validate()) {
-                context.read<AddWorkLocationCubit>().createSection(
-                    floorId!,
-                    selectedManagersIds,
-                    selectedSupervisorsIds,
-                    selectedCleanersIds,
-                    selectedShiftsIds);
+              if (cubit.formAddKey.currentState!.validate()) {
+                cubit.createSection();
               }
             },
             color: AppColor.primaryColor,
