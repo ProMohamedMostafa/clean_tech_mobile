@@ -1,5 +1,6 @@
 class Routes {
   static const String splashScreen = '/splashScreen';
+  static const String ipScreen = '/ipScreen';
   static const String loginScreen = '/loginScreen';
   static const String forgotPasswordScreen = '/forgotPasswordScreen';
   static const String verifyScreen = '/verifyScreen';
@@ -52,6 +53,7 @@ class Routes {
   static const String addTaskScreen = '/addTaskScreen';
   static const String taskDetailsScreen = '/taskDetailsScreen';
   static const String editTaskScreen = '/editTaskScreen';
+  static const String chooseViewTask = '/chooseViewTask';
 
   static const String attendanceScreen = '/attendanceScreen';
   static const String historyScreen = '/historyScreen';

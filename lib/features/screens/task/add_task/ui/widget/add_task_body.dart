@@ -101,11 +101,12 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                       height: 40.h,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(8),
-                                        color: cubit.priorityIdController ==
-                                                priorityValue
-                                            ? cubit.tasksColor[index]
-                                                .withOpacity(0.2)
-                                            : Colors.white,
+                                        color:
+                                            cubit.priorityIdController.text ==
+                                                    priorityValue.toString()
+                                                ? cubit.tasksColor[index]
+                                                    .withOpacity(0.2)
+                                                : Colors.white,
                                         border: Border.all(
                                             color: cubit.tasksColor[index]),
                                       ),

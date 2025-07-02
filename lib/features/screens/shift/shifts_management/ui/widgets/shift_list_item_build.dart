@@ -28,7 +28,7 @@ class ListShiftItemBuild extends StatelessWidget {
               arguments: cubit.allShiftsModel!.data!.shifts![index].id);
 
           if (result == true) {
-            cubit.getAllShifts();
+            await cubit.refreshShifts();
           }
         }
       },
@@ -61,26 +61,32 @@ class ListShiftItemBuild extends StatelessWidget {
                   Spacer(),
                   role == 'Admin'
                       ? InkWell(
-                          onTap: () {
-                            cubit.selectedIndex == 0
-                                ? context.pushNamed(
-                                    Routes.editShiftScreen,
-                                    arguments: cubit.allShiftsModel!.data!
-                                        .shifts![index].id,
-                                  )
-                                : showDialog(
-                                    context: context,
-                                    builder: (dialogContext) {
-                                      return PopUpMessage(
-                                          title: S.of(context).TitleRestore,
-                                          body: S.of(context).shiftBody,
-                                          onPressed: () {
-                                            cubit.restoreDeletedShift(
-                                              cubit.allShiftsDeletedModel!
-                                                  .data![index].id!,
-                                            );
-                                          });
-                                    });
+                          onTap: () async {
+                            if (cubit.selectedIndex == 0) {
+                              final result = await context.pushNamed(
+                                Routes.editShiftScreen,
+                                arguments: cubit
+                                    .allShiftsModel!.data!.shifts![index].id,
+                              );
+
+                              if (result == true) {
+                                await cubit.refreshShifts();
+                              }
+                            } else {
+                              showDialog(
+                                  context: context,
+                                  builder: (dialogContext) {
+                                    return PopUpMessage(
+                                        title: S.of(context).TitleRestore,
+                                        body: S.of(context).shiftBody,
+                                        onPressed: () {
+                                          cubit.restoreDeletedShift(
+                                            cubit.allShiftsDeletedModel!
+                                                .data![index].id!,
+                                          );
+                                        });
+                                  });
+                            }
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(5),

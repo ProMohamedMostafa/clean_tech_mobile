@@ -25,8 +25,12 @@ class AttendanceLeavesBody extends StatelessWidget {
       appBar: AppBar(title: Text(S.of(context).leaves), leading: CustomBackButton()),
       floatingActionButton: floatingActionButton(
           icon: Icons.assignment_add,
-          onPressed: () {
-            context.pushNamed(Routes.createleavesScreen);
+          onPressed: () async{
+            final result = await  context.pushNamed(Routes.createleavesScreen);
+
+                if (result == true) {
+                  cubit.refreshLeaves();
+                }
           }),
       body: BlocConsumer<AttendanceLeavesCubit, AttendanceLeavesState>(
         listener: (context, state) {

@@ -70,18 +70,18 @@ class WorkLocationListItemBuild extends StatelessWidget {
 
           if (result == true) {
             selectedIndex == 0
-                ? cubit.getArea()
+                ? cubit.refreshAreas()
                 : selectedIndex == 1
-                    ? cubit.getCity()
+                    ? cubit.refreshCities()
                     : selectedIndex == 2
-                        ? cubit.getOrganization()
+                        ? cubit.refreshOrganizations()
                         : selectedIndex == 3
-                            ? cubit.getBuilding()
+                            ? cubit.refreshBuildings()
                             : selectedIndex == 4
-                                ? cubit.getFloor()
+                                ? cubit.refreshFloors()
                                 : selectedIndex == 5
-                                    ? cubit.getSection()
-                                    : cubit.getPoint();
+                                    ? cubit.refreshSections()
+                                    : cubit.refreshPoints();
           }
         }
       },
@@ -187,107 +187,117 @@ class WorkLocationListItemBuild extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       InkWell(
-                          onTap: () {
-                            cubit.tapIndex == 0
-                                ? context.pushNamed(
-                                    selectedIndex == 0
-                                        ? Routes.editAreaScreen
-                                        : selectedIndex == 1
-                                            ? Routes.editCityScreen
-                                            : selectedIndex == 2
-                                                ? Routes.editOrganizationScreen
-                                                : selectedIndex == 3
-                                                    ? Routes.editBuildingScreen
-                                                    : selectedIndex == 4
-                                                        ? Routes.editFloorScreen
-                                                        : selectedIndex == 5
-                                                            ? Routes
-                                                                .editSectionScreen
-                                                            : Routes
-                                                                .editPointScreen,
-                                    arguments: selectedIndex == 0
-                                        ? cubit.areaModel!.data!.data![index].id
-                                        : selectedIndex == 1
-                                            ? cubit.cityModel!.data!
-                                                .data![index].id
-                                            : selectedIndex == 2
-                                                ? cubit.organizationModel!.data!
-                                                    .data![index].id
-                                                : selectedIndex == 3
-                                                    ? cubit.buildingModel!.data!
-                                                        .data![index].id
-                                                    : selectedIndex == 4
+                          onTap: () async {
+                            if (cubit.tapIndex == 0) {
+                              final result = await context.pushNamed(
+                                  selectedIndex == 0
+                                      ? Routes.editAreaScreen
+                                      : selectedIndex == 1
+                                          ? Routes.editCityScreen
+                                          : selectedIndex == 2
+                                              ? Routes.editOrganizationScreen
+                                              : selectedIndex == 3
+                                                  ? Routes.editBuildingScreen
+                                                  : selectedIndex == 4
+                                                      ? Routes.editFloorScreen
+                                                      : selectedIndex == 5
+                                                          ? Routes
+                                                              .editSectionScreen
+                                                          : Routes
+                                                              .editPointScreen,
+                                  arguments: selectedIndex == 0
+                                      ? cubit.areaModel!.data!.data![index].id
+                                      : selectedIndex == 1
+                                          ? cubit
+                                              .cityModel!.data!.data![index].id
+                                          : selectedIndex == 2
+                                              ? cubit.organizationModel!.data!
+                                                  .data![index].id
+                                              : selectedIndex == 3
+                                                  ? cubit.buildingModel!.data!
+                                                      .data![index].id
+                                                  : selectedIndex == 4
+                                                      ? cubit.floorModel!.data!
+                                                          .data![index].id
+                                                      : selectedIndex == 5
+                                                          ? cubit
+                                                              .sectionModel!
+                                                              .data!
+                                                              .data![index]
+                                                              .id
+                                                          : cubit
+                                                              .pointModel!
+                                                              .data!
+                                                              .data![index]
+                                                              .id);
+                              if (result == true) {
+                                selectedIndex == 0
+                                    ? cubit.refreshAreas()
+                                    : selectedIndex == 1
+                                        ? cubit.refreshCities()
+                                        : selectedIndex == 2
+                                            ? cubit.refreshOrganizations()
+                                            : selectedIndex == 3
+                                                ? cubit.refreshBuildings()
+                                                : selectedIndex == 4
+                                                    ? cubit.refreshFloors()
+                                                    : selectedIndex == 5
                                                         ? cubit
-                                                            .floorModel!
-                                                            .data!
-                                                            .data![index]
-                                                            .id
-                                                        : selectedIndex == 5
-                                                            ? cubit
-                                                                .sectionModel!
-                                                                .data!
-                                                                .data![index]
-                                                                .id
-                                                            : cubit
-                                                                .pointModel!
-                                                                .data!
-                                                                .data![index]
-                                                                .id)
-                                : showDialog(
-                                    context: context,
-                                    builder: (dialogContext) {
-                                      return PopUpMessage(
-                                          title: 'restore',
-                                          body: selectedIndex == 0
-                                              ? "area"
+                                                            .refreshSections()
+                                                        : cubit.refreshPoints();
+                              }
+                            } else {
+                              showDialog(
+                                  context: context,
+                                  builder: (dialogContext) {
+                                    return PopUpMessage(
+                                        title: 'restore',
+                                        body: selectedIndex == 0
+                                            ? "area"
+                                            : selectedIndex == 1
+                                                ? "city"
+                                                : selectedIndex == 2
+                                                    ? "organization"
+                                                    : selectedIndex == 3
+                                                        ? "building"
+                                                        : selectedIndex == 4
+                                                            ? "floor"
+                                                            : selectedIndex == 5
+                                                                ? "section"
+                                                                : "point",
+                                        onPressed: () {
+                                          selectedIndex == 0
+                                              ? cubit.restoreDeletedArea(cubit
+                                                  .deletedAreaList!
+                                                  .data![index]
+                                                  .id!)
                                               : selectedIndex == 1
-                                                  ? "city"
+                                                  ? cubit.restoreDeletedCity(
+                                                      cubit.deletedCityList!
+                                                          .data![index].id!)
                                                   : selectedIndex == 2
-                                                      ? "organization"
+                                                      ? cubit.restoreDeletedOrganization(cubit
+                                                          .deletedOrganizationList!
+                                                          .data![index]
+                                                          .id!)
                                                       : selectedIndex == 3
-                                                          ? "building"
+                                                          ? cubit.restoreDeletedBuilding(cubit
+                                                              .deletedBuildingList!
+                                                              .data![index]
+                                                              .id!)
                                                           : selectedIndex == 4
-                                                              ? "floor"
+                                                              ? cubit.restoreDeletedFloor(cubit
+                                                                  .deletedFloorList!
+                                                                  .data![index]
+                                                                  .id!)
                                                               : selectedIndex ==
                                                                       5
-                                                                  ? "section"
-                                                                  : "point",
-                                          onPressed: () {
-                                            selectedIndex == 0
-                                                ? cubit.restoreDeletedArea(cubit
-                                                    .deletedAreaList!
-                                                    .data![index]
-                                                    .id!)
-                                                : selectedIndex == 1
-                                                    ? cubit.restoreDeletedCity(cubit
-                                                        .deletedCityList!
-                                                        .data![index]
-                                                        .id!)
-                                                    : selectedIndex == 2
-                                                        ? cubit.restoreDeletedOrganization(cubit
-                                                            .deletedOrganizationList!
-                                                            .data![index]
-                                                            .id!)
-                                                        : selectedIndex == 3
-                                                            ? cubit.restoreDeletedBuilding(cubit
-                                                                .deletedBuildingList!
-                                                                .data![index]
-                                                                .id!)
-                                                            : selectedIndex == 4
-                                                                ? cubit.restoreDeletedFloor(cubit
-                                                                    .deletedFloorList!
-                                                                    .data![
-                                                                        index]
-                                                                    .id!)
-                                                                : selectedIndex ==
-                                                                        5
-                                                                    ? cubit.restoreDeletedSection(cubit
-                                                                        .deletedSectionList!
-                                                                        .data![index]
-                                                                        .id!)
-                                                                    : cubit.restoreDeletedPoint(cubit.deletedPointList!.data![index].id!);
-                                          });
-                                    });
+                                                                  ? cubit.restoreDeletedSection(
+                                                                      cubit.deletedSectionList!.data![index].id!)
+                                                                  : cubit.restoreDeletedPoint(cubit.deletedPointList!.data![index].id!);
+                                        });
+                                  });
+                            }
                           },
                           child: Icon(
                             cubit.tapIndex == 0

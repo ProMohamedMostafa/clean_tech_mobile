@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
-import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
@@ -31,7 +30,7 @@ class SensorEditBody extends StatelessWidget {
         listener: (context, state) {
           if (state is EditSensorSuccessState) {
             toast(text: state.editSensorModel.message!, color: Colors.blue);
-            context.pushNamedAndRemoveAllExceptFirst(Routes.sensorScreen);
+            context.popWithTrueResult();
           }
           if (state is EditSensorErrorState) {
             toast(text: state.error, color: Colors.red);

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
-import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
@@ -145,7 +144,7 @@ class TransactionDetailsBody extends StatelessWidget {
                                   body: Center(
                                     child: PhotoView(
                                       imageProvider: NetworkImage(
-                                        '${ApiConstants.apiBaseUrlImage}${cubit.transactionDetailsModel!.data!.file}',
+                                        '${cubit.transactionDetailsModel!.data!.file}',
                                       ),
                                       errorBuilder:
                                           (context, error, stackTrace) {
@@ -173,7 +172,7 @@ class TransactionDetailsBody extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(10.r),
                               ),
                               child: Image.network(
-                                '${ApiConstants.apiBaseUrlImage}${cubit.transactionDetailsModel!.data!.file}',
+                                '${cubit.transactionDetailsModel!.data!.file}',
                                 fit: BoxFit.fill,
                                 errorBuilder: (context, error, stackTrace) {
                                   return Image.asset(

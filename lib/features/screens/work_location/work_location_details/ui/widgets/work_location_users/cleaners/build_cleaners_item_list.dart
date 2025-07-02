@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
-import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_details/logic/cubit/work_location_details_cubit.dart';
@@ -71,7 +70,7 @@ class BuildCleanersItemList extends StatelessWidget {
           decoration: BoxDecoration(shape: BoxShape.circle),
           clipBehavior: Clip.hardEdge,
           child: Image.network(
-            '${ApiConstants.apiBaseUrlImage}${cleaner.image}',
+            '${cleaner.image}',
             fit: BoxFit.fill,
             errorBuilder: (context, error, stackTrace) {
               return Image.asset(

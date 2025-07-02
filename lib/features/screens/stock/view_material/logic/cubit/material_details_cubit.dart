@@ -36,4 +36,10 @@ class MaterialDetailsCubit extends Cubit<MaterialDetailsState> {
   descTextShowFlag = !descTextShowFlag;
   emit(DescToggleState());
 }
+
+Future<void> refreshMaterials({int? id}) async {
+    materialDetailsModel = null;
+    emit(MaterialDetailsLoadingState());
+    await getMaterialDetails(id!);
+  }
 }

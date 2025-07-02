@@ -29,8 +29,13 @@ class TaskManagementBody extends StatelessWidget {
           ? SizedBox.shrink()
           : floatingActionButton(
               icon: Icons.post_add_outlined,
-              onPressed: () {
-                context.pushNamed(Routes.addTaskScreen);
+              onPressed: () async{
+               
+                 final result = await  context.pushNamed(Routes.addTaskScreen);
+
+                if (result == true) {
+                  cubit.refreshTasks();
+                }
               },
             ),
       body: BlocConsumer<TaskManagementCubit, TaskManagementState>(

@@ -35,6 +35,7 @@ class FilterDialogDataModel {
   String? startTime;
   String? endTime;
   String? isAsign;
+  String? isActive;
 
   FilterDialogDataModel({
     this.nationality,
@@ -73,6 +74,7 @@ class FilterDialogDataModel {
     this.startTime,
     this.endTime,
     this.isAsign,
+    this.isActive,
   });
 
   factory FilterDialogDataModel.empty() => FilterDialogDataModel();
@@ -115,6 +117,7 @@ class FilterDialogDataModel {
       startTime: json['startTime'],
       endTime: json['endTime'],
       isAsign: json['isAsign'],
+      isActive: json['isActive'],
     );
   }
 
@@ -156,6 +159,7 @@ class FilterDialogDataModel {
       'startTime': startTime,
       'endTime': endTime,
       'isAsign': isAsign,
+      'isActive': isActive,
     };
   }
 }

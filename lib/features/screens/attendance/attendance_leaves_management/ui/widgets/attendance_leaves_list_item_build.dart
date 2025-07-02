@@ -39,7 +39,7 @@ class LeavesListItemBuild extends StatelessWidget {
           arguments: item.id!,
         );
         if (result == true) {
-          cubit.changeTap(cubit.selectedIndex);
+          await cubit.refreshLeaves();
         }
       },
       child: Card(

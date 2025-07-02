@@ -31,7 +31,7 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
     });
   }
 
- UsersModel? usersModel;
+  UsersModel? usersModel;
   List<UserItem> userItem = [UserItem(userName: 'No users available')];
   getAllUsers() {
     emit(AllUsersLoadingState());
@@ -44,8 +44,6 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
       emit(AllUsersErrorState(error.toString()));
     });
   }
-
-  
 
   DeleteTaskModel? deleteTaskModel;
   taskDelete(int id) {
@@ -126,4 +124,53 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
       emit(CameraSelectedState(image!));
     }
   }
+
+final List<String> priority = ["High", "Medium", "Low"];
+  final List<Color> priorityColor = [
+    Colors.red,
+    Colors.orange,
+    Colors.green,
+  ];
+
+  Color? priorityColorForTask;
+  bool descTextShowFlag = false;
+
+  String formatTime(String time) {
+    List<String> parts = time.split(':');
+    return '${parts[0]}:${parts[1]}';
+  }
+
+  String formatDuration(String duration) {
+    try {
+      if (duration.contains(".")) {
+        duration = duration.split(".")[0];
+      }
+
+      List<String> parts = duration.split(":");
+      int hours = 0, minutes = 0, seconds = 0;
+
+      if (parts.length == 3) {
+        hours = int.parse(parts[0]);
+        minutes = int.parse(parts[1]);
+        seconds = int.parse(parts[2]);
+      } else if (parts.length == 2) {
+        minutes = int.parse(parts[0]);
+        seconds = int.parse(parts[1]);
+      } else {
+        throw FormatException("Invalid duration format");
+      }
+
+      if (hours > 0) {
+        return "$hours hour${hours > 1 ? 's' : ''}";
+      } else if (minutes > 0) {
+        return "$minutes min${minutes > 1 ? 's' : ''}";
+      } else {
+        return "$seconds sec${seconds > 1 ? 's' : ''}";
+      }
+    } catch (e) {
+      return "Invalid duration";
+    }
+  }
+
+  
 }

@@ -49,4 +49,10 @@ class LeavesDetailsCubit extends Cubit<LeavesDetailsState> {
     descTextShowFlag = !descTextShowFlag;
     emit(DescToggleState());
   }
+
+  Future<void> refresLeaves({int? id}) async {
+    leavesDetailsModel = null;
+    emit(LeavesDetailsLoadingState());
+    await getLeavesDetails(id);
+  }
 }

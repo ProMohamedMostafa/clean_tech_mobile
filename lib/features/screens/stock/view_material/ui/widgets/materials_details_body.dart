@@ -34,9 +34,13 @@ class _MaterialDetailsBodyState extends State<MaterialDetailsBody> {
         leading: CustomBackButton(),
         actions: [
           IconButton(
-              onPressed: () {
-                context.pushNamed(Routes.editMaterialScreen,
-                    arguments: widget.id);
+              onPressed: () async {
+                final result = await context
+                    .pushNamed(Routes.editMaterialScreen, arguments: widget.id);
+
+                if (result == true) {
+                  cubit.getMaterialDetails(widget.id);
+                }
               },
               icon: Icon(Icons.edit, color: AppColor.primaryColor))
         ],
@@ -45,10 +49,7 @@ class _MaterialDetailsBodyState extends State<MaterialDetailsBody> {
         listener: (context, state) {
           if (state is DeleteMaterialSuccessState) {
             toast(text: state.deleteMaterialModel.message!, color: Colors.blue);
-            context.pushNamedAndRemoveUntil(
-              Routes.materialScreen,
-              predicate: (route) => false,
-            );
+            context.popWithTrueResult();
           }
           if (state is DeleteMaterialErrorState) {
             toast(text: state.error, color: Colors.red);

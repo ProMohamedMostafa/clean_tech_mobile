@@ -644,7 +644,10 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                     spacing: 5,
                                   ),
                                   fieldDecoration: FieldDecoration(
-                                    hintText: 'Select employee',
+                                    hintText: cubit
+                                        .taskDetailsModel!.data!.users!
+                                        .map((cleaner) => cleaner.userName)
+                                        .join(', '),
                                     hintStyle: TextStyle(
                                         fontSize: 12.sp,
                                         color: AppColor.thirdColor),

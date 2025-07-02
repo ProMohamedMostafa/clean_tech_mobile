@@ -89,7 +89,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(HistoryLoadingState());
     DioHelper.getData(url: ApiConstants.hisotryUrl, query: {
       'UserId': uId,
-      'History': false,
+      'History': true,
       'RoleId': filterModel?.roleId,
       'Shift': filterModel?.shiftId,
       'StartDate': filterModel?.startDate,
@@ -115,7 +115,7 @@ class ProfileCubit extends Cubit<ProfileState> {
   getAllLeaves() {
     emit(LeavesLoadingState());
     DioHelper.getData(url: ApiConstants.leavesUrl, query: {
-      'History': false,
+      'History': true,
       'UserId': uId,
       'RoleId': filterModel?.roleId,
       'StartDate': filterModel?.startDate,

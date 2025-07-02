@@ -72,18 +72,18 @@ class WorkLocationBody extends StatelessWidget {
 
                 if (result == true) {
                   selectedIndex == 0
-                      ? cubit.getArea()
+                      ? cubit.refreshAreas()
                       : selectedIndex == 1
-                          ? cubit.getCity()
+                          ? cubit.refreshCities()
                           : selectedIndex == 2
-                              ? cubit.getOrganization()
+                              ? cubit.refreshOrganizations()
                               : selectedIndex == 3
-                                  ? cubit.getBuilding()
+                                  ? cubit.refreshBuildings()
                                   : selectedIndex == 4
-                                      ? cubit.getFloor()
+                                      ? cubit.refreshFloors()
                                       : selectedIndex == 5
-                                          ? cubit.getSection()
-                                          : cubit.getPoint();
+                                          ? cubit.refreshSections()
+                                          : cubit.refreshPoints();
                 }
               },
             )

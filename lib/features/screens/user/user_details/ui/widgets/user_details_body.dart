@@ -4,9 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
-
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
-import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
@@ -107,9 +105,13 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
             ),
             if (role == 'Admin')
               IconButton(
-                  onPressed: () {
-                    context.pushNamed(Routes.editUserScreen,
-                        arguments: widget.id);
+                  onPressed: () async {
+                    final result = await context
+                        .pushNamed(Routes.editUserScreen, arguments: widget.id);
+
+                    if (result == true) {
+                      cubit.getUserDetails(widget.id);
+                    }
                   },
                   icon: Icon(
                     Icons.edit,
@@ -120,8 +122,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
         listener: (context, state) {
           if (state is UserDeleteSuccessState) {
             toast(text: state.deleteUserModel.message!, color: Colors.blue);
-            context
-                .pushNamedAndRemoveAllExceptFirst(Routes.userManagmentScreen);
+            context.popWithTrueResult();
           }
           if (state is UserDeleteErrorState) {
             toast(text: state.error, color: Colors.red);
@@ -153,7 +154,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                                 body: Center(
                                   child: PhotoView(
                                     imageProvider: NetworkImage(
-                                      '${ApiConstants.apiBaseUrlImage}${cubit.userDetailsModel!.data!.image}',
+                                      '${cubit.userDetailsModel!.data!.image}',
                                     ),
                                     errorBuilder: (context, error, stackTrace) {
                                       return Image.asset(
@@ -178,7 +179,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                           ),
                           child: ClipOval(
                             child: Image.network(
-                              '${ApiConstants.apiBaseUrlImage}${cubit.userDetailsModel!.data!.image}',
+                              '${cubit.userDetailsModel!.data!.image}',
                               fit: BoxFit.fill,
                               errorBuilder: (context, error, stackTrace) {
                                 return Image.asset(
@@ -313,9 +314,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                                   title: 'delete',
                                   body: 'user',
                                   onPressed: () {
-                                    context
-                                        .read<UserDetailsCubit>()
-                                        .userDelete(widget.id);
+                                    cubit.userDelete(widget.id);
                                   });
                             });
                       },

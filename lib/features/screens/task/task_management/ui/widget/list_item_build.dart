@@ -9,6 +9,8 @@ import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
+import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/all_tasks_model.dart';
+import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/delete_task_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/ui/widget/pop_up_dialog.dart';
 
@@ -30,7 +32,7 @@ class TaskListItemBuild extends StatelessWidget {
             arguments: cubit.allTasksModel!.data!.data![index].id!);
 
         if (result == true) {
-          cubit.getAllTasks();
+          cubit.refreshTasks();
         }
       },
       child: Card(
@@ -115,8 +117,7 @@ class TaskListItemBuild extends StatelessWidget {
                                   },
                                   child: Icon(
                                     Icons.replay_outlined,
-                                    size: 26,
-                                    color: AppColor.thirdColor,
+                                    color: AppColor.primaryColor,
                                   ),
                                 ),
                                 horizontalSpace(8),
@@ -144,10 +145,10 @@ class TaskListItemBuild extends StatelessWidget {
                                   },
                                   child: Icon(
                                     IconBroken.delete,
-                                    color: AppColor.thirdColor,
+                                    color: Colors.red,
+                                    size: 24.sp,
                                   ),
                                 ),
-                                horizontalSpace(5),
                               ],
                             )
                           : IconButton(
@@ -197,66 +198,73 @@ class TaskListItemBuild extends StatelessWidget {
                         .copyWith(color: AppColor.primaryColor),
                   ),
                   Spacer(),
-                  Builder(builder: (_) {
-                    final users =
-                        cubit.allTasksModel?.data?.data![index].users ?? [];
-                    final visibleUsers = users.take(2).toList();
-                    final extraCount = users.length - visibleUsers.length;
-
-                    return Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (extraCount > 0)
-                          Padding(
-                            padding: EdgeInsets.only(right: 8.w),
-                            child: Text(
-                              '+$extraCount',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        SizedBox(
-                          width: users.length == 1 ? 30.w : 50.w,
-                          height: 30.h,
-                          child: Stack(
-                            clipBehavior: Clip.none,
-                            children: List.generate(visibleUsers.length, (i) {
-                              return Positioned(
-                                left: i * 20.0,
-                                child: Container(
-                                  width: 30.w,
-                                  height: 30.h,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                        color: Colors.white, width: 1.w),
-                                  ),
-                                  child: ClipOval(
-                                    child: Image.network(
-                                      visibleUsers[i].image ?? '',
-                                      fit: BoxFit.cover,
-                                      errorBuilder: (_, __, ___) => Image.asset(
-                                        'assets/images/person.png',
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }),
-                          ),
-                        ),
-                      ],
-                    );
-                  }),
+                  buildUserAvatars(cubit, index),
                 ],
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildUserAvatars(TaskManagementCubit cubit, int index) {
+    final dynamic users = cubit.selectedIndex == 8
+        ? (cubit.deleteTaskListModel?.data?[index].users ?? [])
+        : (cubit.allTasksModel?.data?.data?[index].users ?? []);
+
+    final visibleUsers = users.take(2).toList();
+    final extraCount = users.length - visibleUsers.length;
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (extraCount > 0)
+          Padding(
+            padding: EdgeInsets.only(right: 8.w),
+            child: Text(
+              '+$extraCount',
+              style: const TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        SizedBox(
+          width: users.length == 1 ? 30.w : 50.w,
+          height: 30.h,
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: List.generate(visibleUsers.length, (i) {
+              final user = visibleUsers[i];
+              final imageUrl = cubit.selectedIndex == 8
+                  ? (user as DeleteTaskUser).image
+                  : (user as UserModel).image;
+              return Positioned(
+                left: i * 20.0,
+                child: Container(
+                  width: 30.w,
+                  height: 30.h,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 1.w),
+                  ),
+                  child: ClipOval(
+                    child: Image.network(
+                      imageUrl ?? '',
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => Image.asset(
+                        'assets/images/person.png',
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }),
+          ),
+        ),
+      ],
     );
   }
 }

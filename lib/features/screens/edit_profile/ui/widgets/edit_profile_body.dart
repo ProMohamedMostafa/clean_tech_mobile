@@ -7,7 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
-import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
@@ -86,7 +85,7 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                                               File(cubit.image!.path),
                                             )
                                           : NetworkImage(
-                                              '${ApiConstants.apiBaseUrlImage}${cubit.profileModel!.data!.image}',
+                                              '${cubit.profileModel!.data!.image}',
                                             ),
                                       errorBuilder:
                                           (context, error, stackTrace) {
@@ -129,7 +128,7 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                                       },
                                     )
                                   : Image.network(
-                                      '${ApiConstants.apiBaseUrlImage}${cubit.profileModel!.data!.image}',
+                                      '${cubit.profileModel!.data!.image}',
                                       fit: BoxFit.fill,
                                       errorBuilder:
                                           (context, error, stackTrace) {

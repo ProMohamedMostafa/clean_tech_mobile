@@ -4,6 +4,7 @@ class AssignModel {
   bool? succeeded;
   String? message;
   String? error;
+  int? businessErrorCode;
   String? data;
 
   AssignModel(
@@ -12,6 +13,7 @@ class AssignModel {
       this.succeeded,
       this.message,
       this.error,
+      this.businessErrorCode,
       this.data});
 
   AssignModel.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class AssignModel {
     succeeded = json['succeeded'];
     message = json['message'];
     error = json['error'];
+    businessErrorCode = json['businessErrorCode'];
     data = json['data'];
   }
 
@@ -30,7 +33,8 @@ class AssignModel {
     data['succeeded'] = succeeded;
     data['message'] = message;
     data['error'] = error;
-    data['data'] = data;
+    data['businessErrorCode'] = businessErrorCode;
+    data['data'] = this.data;
     return data;
   }
 }

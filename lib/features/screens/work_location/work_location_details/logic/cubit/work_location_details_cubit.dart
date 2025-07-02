@@ -185,7 +185,7 @@ class WorkLocationDetailsCubit extends Cubit<WorkLocationDetailsState> {
   }
 
 //*********************************************************************************** */
-  AllTasksModel? allareaTasksModel;
+  AllTasksModel? allAreaTasksModel;
   getAreaTasks(
     int? areaId,
   ) {
@@ -193,60 +193,60 @@ class WorkLocationDetailsCubit extends Cubit<WorkLocationDetailsState> {
     DioHelper.getData(url: "tasks/pagination", query: {
       'AreaId': areaId,
     }).then((value) {
-      allareaTasksModel = AllTasksModel.fromJson(value!.data);
-      emit(GetAllTasksSuccessState(allareaTasksModel!));
+      allAreaTasksModel = AllTasksModel.fromJson(value!.data);
+      emit(GetAllTasksSuccessState(allAreaTasksModel!));
     }).catchError((error) {
       emit(GetAllTasksErrorState(error.toString()));
     });
   }
 
-  AllTasksModel? allcityTasksModel;
+  AllTasksModel? allCityTasksModel;
   getCityTasks(int? cityId) {
     emit(GetAllTasksLoadingState());
     DioHelper.getData(url: "tasks/pagination", query: {
       'CityId': cityId,
     }).then((value) {
-      allcityTasksModel = AllTasksModel.fromJson(value!.data);
-      emit(GetAllTasksSuccessState(allcityTasksModel!));
+      allCityTasksModel = AllTasksModel.fromJson(value!.data);
+      emit(GetAllTasksSuccessState(allCityTasksModel!));
     }).catchError((error) {
       emit(GetAllTasksErrorState(error.toString()));
     });
   }
 
-  AllTasksModel? allorganizationTasksModel;
-  getorganizationTasks(int? organizationId) {
+  AllTasksModel? allOrganizationTasksModel;
+  getOrganizationTasks(int? organizationId) {
     emit(GetAllTasksLoadingState());
     DioHelper.getData(url: "tasks/pagination", query: {
       'OrganizationId': organizationId,
     }).then((value) {
-      allorganizationTasksModel = AllTasksModel.fromJson(value!.data);
-      emit(GetAllTasksSuccessState(allorganizationTasksModel!));
+      allOrganizationTasksModel = AllTasksModel.fromJson(value!.data);
+      emit(GetAllTasksSuccessState(allOrganizationTasksModel!));
     }).catchError((error) {
       emit(GetAllTasksErrorState(error.toString()));
     });
   }
 
-  AllTasksModel? allbuildingTasksModel;
-  getbuildingTasks(int? buildingId) {
+  AllTasksModel? allBuildingTasksModel;
+  getBuildingTasks(int? buildingId) {
     emit(GetAllTasksLoadingState());
     DioHelper.getData(url: "tasks/pagination", query: {
       'BuildingId': buildingId,
     }).then((value) {
-      allbuildingTasksModel = AllTasksModel.fromJson(value!.data);
-      emit(GetAllTasksSuccessState(allbuildingTasksModel!));
+      allBuildingTasksModel = AllTasksModel.fromJson(value!.data);
+      emit(GetAllTasksSuccessState(allBuildingTasksModel!));
     }).catchError((error) {
       emit(GetAllTasksErrorState(error.toString()));
     });
   }
 
-  AllTasksModel? allfloorTasksModel;
-  getfloorTasks(int? floorId) {
+  AllTasksModel? allFloorTasksModel;
+  getFloorTasks(int? floorId) {
     emit(GetAllTasksLoadingState());
     DioHelper.getData(url: "tasks/pagination", query: {
       'FloorId': floorId,
     }).then((value) {
-      allfloorTasksModel = AllTasksModel.fromJson(value!.data);
-      emit(GetAllTasksSuccessState(allfloorTasksModel!));
+      allFloorTasksModel = AllTasksModel.fromJson(value!.data);
+      emit(GetAllTasksSuccessState(allFloorTasksModel!));
     }).catchError((error) {
       emit(GetAllTasksErrorState(error.toString()));
     });
@@ -647,409 +647,30 @@ class WorkLocationDetailsCubit extends Cubit<WorkLocationDetailsState> {
   void initialize(int id, int selectedIndex) {
     if (selectedIndex == 0) {
       getAreaUsersDetails(id);
-      getAreaTasks(id);
-
-      getAttendanceHistoryArea(id);
-      getAllLeavesArea(id);
       getAreatree(id);
     }
     if (selectedIndex == 1) {
       getCityUsersDetails(id);
-      getCityTasks(id);
-      getAttendanceHistoryCity(id);
-      getAllLeavesCity(id);
       getCitytree(id);
     }
     if (selectedIndex == 2) {
       getOrganizationUsersDetails(id);
-      getorganizationTasks(id);
-      getAttendanceHistoryOrganization(id);
-      getAllLeavesOrganization(id);
       getOrganizationtree(id);
     }
     if (selectedIndex == 3) {
       getBuildingUsersDetails(id);
-      getbuildingTasks(id);
-      getAttendanceHistoryBuilding(id);
-      getAllLeavesBuilding(id);
       getBuildingtree(id);
     }
     if (selectedIndex == 4) {
       getFloorUsersDetails(id);
-      getfloorTasks(id);
-      getAttendanceHistoryFloor(id);
-      getAllLeavesFloor(id);
       getFloortree(id);
     }
     if (selectedIndex == 5) {
       getSectionUsersDetails(id);
-      getSectionTasks(id);
-      getAttendanceHistorySection(id);
-      getAllLeavesSection(id);
       getSectiontree(id);
     }
     if (selectedIndex == 6) {
       getPointUsersDetails(id);
-      getPointTasks(id);
-      getAttendanceHistoryPoint(id);
-      getAllLeavesPoint(id);
     }
   }
-
-// // Get counts for all levels below the current work location
-//   List<Map<String, String>> getCounts(dynamic treeModel, int selectedIndex) {
-//     if (treeModel == null) return [];
-
-//     switch (selectedIndex) {
-//       case 0: // Area
-//         return getAreaCounts(treeModel as AreaTreeModel);
-//       case 1: // City
-//         return getCityCounts(treeModel as CityTreeModel);
-//       case 2: // Organization
-//         return getOrganizationCounts(treeModel as OrganizationTreeModel);
-//       case 3: // Building
-//         return getBuildingCounts(treeModel as BuildingTreeModel);
-//       case 4: // Floor
-//         return getFloorCounts(treeModel as FloorTreeModel);
-//       case 5: // Section
-//         return getSectionCounts(treeModel as SectionTreeModel);
-//       default:
-//         return [];
-//     }
-//   }
-
-//   List<Map<String, String>> getAreaCounts(AreaTreeModel model) {
-//     List<Map<String, String>> counts = [];
-//     if (model.data == null) return counts;
-
-//     final cities = model.data!.cities ?? [];
-//     final organizations = cities.expand((c) => c.organizations ?? []).toList();
-//     final buildings = organizations.expand((o) => o.buildings ?? []).toList();
-//     final floors = buildings.expand((b) => b.floors ?? []).toList();
-//     final sections = floors.expand((f) => f.sections ?? []).toList();
-//     final points = sections.expand((s) => s.points ?? []).toList();
-
-//     if (cities.isNotEmpty)
-//       counts.add({"count": "${cities.length}", "title": "City"});
-//     if (organizations.isNotEmpty)
-//       counts.add({"count": "${organizations.length}", "title": "Organization"});
-//     if (buildings.isNotEmpty)
-//       counts.add({"count": "${buildings.length}", "title": "Building"});
-//     if (floors.isNotEmpty)
-//       counts.add({"count": "${floors.length}", "title": "Floor"});
-//     if (sections.isNotEmpty)
-//       counts.add({"count": "${sections.length}", "title": "Section"});
-//     if (points.isNotEmpty)
-//       counts.add({"count": "${points.length}", "title": "Point"});
-
-//     return counts;
-//   }
-
-//   List<Map<String, String>> getCityCounts(CityTreeModel model) {
-//     List<Map<String, String>> counts = [];
-//     if (model.data == null) return counts;
-
-//     final organizations = model.data!.organizations ?? [];
-//     final buildings = organizations.expand((o) => o.buildings ?? []).toList();
-//     final floors = buildings.expand((b) => b.floors ?? []).toList();
-//     final sections = floors.expand((f) => f.sections ?? []).toList();
-//     final points = sections.expand((s) => s.points ?? []).toList();
-
-//     if (organizations.isNotEmpty)
-//       counts.add({"count": "${organizations.length}", "title": "Organization"});
-//     if (buildings.isNotEmpty)
-//       counts.add({"count": "${buildings.length}", "title": "Building"});
-//     if (floors.isNotEmpty)
-//       counts.add({"count": "${floors.length}", "title": "Floor"});
-//     if (sections.isNotEmpty)
-//       counts.add({"count": "${sections.length}", "title": "Section"});
-//     if (points.isNotEmpty)
-//       counts.add({"count": "${points.length}", "title": "Point"});
-
-//     return counts;
-//   }
-
-//   List<Map<String, String>> getOrganizationCounts(
-//       OrganizationTreeModel model) {
-//     List<Map<String, String>> counts = [];
-//     if (model.data == null) return counts;
-
-//     final buildings = model.data!.buildings ?? [];
-//     final floors = buildings.expand((b) => b.floors ?? []).toList();
-//     final sections = floors.expand((f) => f.sections ?? []).toList();
-//     final points = sections.expand((s) => s.points ?? []).toList();
-
-//     if (buildings.isNotEmpty)
-//       counts.add({"count": "${buildings.length}", "title": "Building"});
-//     if (floors.isNotEmpty)
-//       counts.add({"count": "${floors.length}", "title": "Floor"});
-//     if (sections.isNotEmpty)
-//       counts.add({"count": "${sections.length}", "title": "Section"});
-//     if (points.isNotEmpty)
-//       counts.add({"count": "${points.length}", "title": "Point"});
-
-//     return counts;
-//   }
-
-//   List<Map<String, String>> getBuildingCounts(BuildingTreeModel model) {
-//     List<Map<String, String>> counts = [];
-//     if (model.data == null) return counts;
-
-//     final floors = model.data!.floors ?? [];
-//     final sections = floors.expand((f) => f.sections ?? []).toList();
-//     final points = sections.expand((s) => s.points ?? []).toList();
-
-//     if (floors.isNotEmpty)
-//       counts.add({"count": "${floors.length}", "title": "Floor"});
-//     if (sections.isNotEmpty)
-//       counts.add({"count": "${sections.length}", "title": "Section"});
-//     if (points.isNotEmpty)
-//       counts.add({"count": "${points.length}", "title": "Point"});
-
-//     return counts;
-//   }
-
-//   List<Map<String, String>> getFloorCounts(FloorTreeModel model) {
-//     List<Map<String, String>> counts = [];
-//     if (model.data == null) return counts;
-
-//     final sections = model.data!.sections ?? [];
-//     final points = sections.expand((s) => s.points ?? []).toList();
-
-//     if (sections.isNotEmpty)
-//       counts.add({"count": "${sections.length}", "title": "Section"});
-//     if (points.isNotEmpty)
-//       counts.add({"count": "${points.length}", "title": "Point"});
-
-//     return counts;
-//   }
-
-//   List<Map<String, String>> getSectionCounts(SectionTreeModel model) {
-//     List<Map<String, String>> counts = [];
-//     if (model.data == null) return counts;
-
-//     final points = model.data!.points ?? [];
-//     if (points.isNotEmpty)
-//       counts.add({"count": "${points.length}", "title": "Point"});
-
-//     return counts;
-//   }
-
-//   // Get filtered list for the selected tree level
-//   List<dynamic> getFilteredList(
-//       dynamic treeModel, int selectedIndex, int treeLevel) {
-//     if (treeModel == null) return [];
-
-//     switch (selectedIndex) {
-//       case 0: // Area
-//         return getAreaFilteredList(treeModel as AreaTreeModel, treeLevel);
-//       case 1: // City
-//         return getCityFilteredList(treeModel as CityTreeModel, treeLevel);
-//       case 2: // Organization
-//         return getOrganizationFilteredList(
-//             treeModel as OrganizationTreeModel, treeLevel);
-//       case 3: // Building
-//         return getBuildingFilteredList(
-//             treeModel as BuildingTreeModel, treeLevel);
-//       case 4: // Floor
-//         return getFloorFilteredList(treeModel as FloorTreeModel, treeLevel);
-//       case 5: // Section
-//         return getSectionFilteredList(
-//             treeModel as SectionTreeModel, treeLevel);
-//       default:
-//         return [];
-//     }
-//   }
-
-//   List<dynamic> getAreaFilteredList(AreaTreeModel model, int treeLevel) {
-//     if (model.data == null) return [];
-
-//     final cities = model.data!.cities ?? [];
-//     final organizations = cities.expand((c) => c.organizations ?? []).toList();
-//     final buildings = organizations.expand((o) => o.buildings ?? []).toList();
-//     final floors = buildings.expand((b) => b.floors ?? []).toList();
-//     final sections = floors.expand((f) => f.sections ?? []).toList();
-//     final points = sections.expand((s) => s.points ?? []).toList();
-
-//     switch (treeLevel) {
-//       case 0:
-//         return cities;
-//       case 1:
-//         return organizations;
-//       case 2:
-//         return buildings;
-//       case 3:
-//         return floors;
-//       case 4:
-//         return sections;
-//       case 5:
-//         return points;
-//       default:
-//         return [];
-//     }
-//   }
-
-//   List<dynamic> getCityFilteredList(CityTreeModel model, int treeLevel) {
-//     if (model.data == null) return [];
-
-//     final organizations = model.data!.organizations ?? [];
-//     final buildings = organizations.expand((o) => o.buildings ?? []).toList();
-//     final floors = buildings.expand((b) => b.floors ?? []).toList();
-//     final sections = floors.expand((f) => f.sections ?? []).toList();
-//     final points = sections.expand((s) => s.points ?? []).toList();
-
-//     switch (treeLevel) {
-//       case 0:
-//         return organizations;
-//       case 1:
-//         return buildings;
-//       case 2:
-//         return floors;
-//       case 3:
-//         return sections;
-//       case 4:
-//         return points;
-//       default:
-//         return [];
-//     }
-//   }
-
-//   List<dynamic> getOrganizationFilteredList(
-//       OrganizationTreeModel model, int treeLevel) {
-//     if (model.data == null) return [];
-
-//     final buildings = model.data!.buildings ?? [];
-//     final floors = buildings.expand((b) => b.floors ?? []).toList();
-//     final sections = floors.expand((f) => f.sections ?? []).toList();
-//     final points = sections.expand((s) => s.points ?? []).toList();
-
-//     switch (treeLevel) {
-//       case 0:
-//         return buildings;
-//       case 1:
-//         return floors;
-//       case 2:
-//         return sections;
-//       case 3:
-//         return points;
-//       default:
-//         return [];
-//     }
-//   }
-
-//   List<dynamic> getBuildingFilteredList(
-//       BuildingTreeModel model, int treeLevel) {
-//     if (model.data == null) return [];
-
-//     final floors = model.data!.floors ?? [];
-//     final sections = floors.expand((f) => f.sections ?? []).toList();
-//     final points = sections.expand((s) => s.points ?? []).toList();
-
-//     switch (treeLevel) {
-//       case 0:
-//         return floors;
-//       case 1:
-//         return sections;
-//       case 2:
-//         return points;
-//       default:
-//         return [];
-//     }
-//   }
-
-//   List<dynamic> getFloorFilteredList(FloorTreeModel model, int treeLevel) {
-//     if (model.data == null) return [];
-
-//     final sections = model.data!.sections ?? [];
-//     final points = sections.expand((s) => s.points ?? []).toList();
-
-//     switch (treeLevel) {
-//       case 0:
-//         return sections;
-//       case 1:
-//         return points;
-//       default:
-//         return [];
-//     }
-//   }
-
-//   List<dynamic> getSectionFilteredList(SectionTreeModel model, int treeLevel) {
-//     if (model.data == null) return [];
-
-//     final points = model.data!.points ?? [];
-//     return treeLevel == 0 ? points : [];
-//   }
-
-//   // bool descTextShowFlag = false;
-//   // int selectedTreeIndex = 0;
-//   //  if (widget.selectedIndex == 0) {
-//   //     context.read<WorkLocationDetailsCubit>().getAreaUsersDetails(widget.id);
-//   //     context.read<WorkLocationDetailsCubit>().getAreaTasks(widget.id);
-//   //     context
-//   //         .read<WorkLocationDetailsCubit>()
-//   //         .getAttendanceHistoryArea(widget.id);
-//   //     context.read<WorkLocationDetailsCubit>().getAllLeavesArea(widget.id);
-//   //     context.read<WorkLocationDetailsCubit>().getAreatree(widget.id);
-//   //   }
-//   //   if (widget.selectedIndex == 1) {
-//   //     context.read<WorkLocationDetailsCubit>().getCityUsersDetails(widget.id);
-//   //     context.read<WorkLocationDetailsCubit>().getCityTasks(widget.id);
-//   //     context
-//   //         .read<WorkLocationDetailsCubit>()
-//   //         .getAttendanceHistoryCity(widget.id);
-//   //     context.read<WorkLocationDetailsCubit>().getAllLeavesCity(widget.id);
-//   //     context.read<WorkLocationDetailsCubit>().getCitytree(widget.id);
-//   //   }
-//   //   if (widget.selectedIndex == 2) {
-//   //     context
-//   //         .read<WorkLocationDetailsCubit>()
-//   //         .getOrganizationUsersDetails(widget.id);
-//   //     context.read<WorkLocationDetailsCubit>().getorganizationTasks(widget.id);
-//   //     context
-//   //         .read<WorkLocationDetailsCubit>()
-//   //         .getAttendanceHistoryOrganization(widget.id);
-//   //     context
-//   //         .read<WorkLocationDetailsCubit>()
-//   //         .getAllLeavesOrganization(widget.id);
-//   //     context.read<WorkLocationDetailsCubit>().getOrganizationtree(widget.id);
-//   //   }
-//   //   if (widget.selectedIndex == 3) {
-//   //     context
-//   //         .read<WorkLocationDetailsCubit>()
-//   //         .getBuildingUsersDetails(widget.id);
-//   //     context.read<WorkLocationDetailsCubit>().getbuildingTasks(widget.id);
-//   //     context
-//   //         .read<WorkLocationDetailsCubit>()
-//   //         .getAttendanceHistoryBuilding(widget.id);
-//   //     context.read<WorkLocationDetailsCubit>().getAllLeavesBuilding(widget.id);
-//   //     context.read<WorkLocationDetailsCubit>().getBuildingtree(widget.id);
-//   //   }
-//   //   if (widget.selectedIndex == 4) {
-//   //     context.read<WorkLocationDetailsCubit>().getFloorUsersDetails(widget.id);
-//   //     context.read<WorkLocationDetailsCubit>().getfloorTasks(widget.id);
-//   //     context
-//   //         .read<WorkLocationDetailsCubit>()
-//   //         .getAttendanceHistoryFloor(widget.id);
-//   //     context.read<WorkLocationDetailsCubit>().getAllLeavesFloor(widget.id);
-//   //     context.read<WorkLocationDetailsCubit>().getFloortree(widget.id);
-//   //   }
-//   //   if (widget.selectedIndex == 5) {
-//   //     context
-//   //         .read<WorkLocationDetailsCubit>()
-//   //         .getSectionUsersDetails(widget.id);
-//   //     context.read<WorkLocationDetailsCubit>().getSectionTasks(widget.id);
-//   //     context
-//   //         .read<WorkLocationDetailsCubit>()
-//   //         .getAttendanceHistorySection(widget.id);
-//   //     context.read<WorkLocationDetailsCubit>().getAllLeavesSection(widget.id);
-//   //     context.read<WorkLocationDetailsCubit>().getSectiontree(widget.id);
-//   //   }
-//   //   if (widget.selectedIndex == 6) {
-//   //     context.read<WorkLocationDetailsCubit>().getPointUsersDetails(widget.id);
-//   //     context.read<WorkLocationDetailsCubit>().getPointTasks(widget.id);
-//   //     context
-//   //         .read<WorkLocationDetailsCubit>()
-//   //         .getAttendanceHistoryPoint(widget.id);
-//   //     context.read<WorkLocationDetailsCubit>().getAllLeavesPoint(widget.id);
-//   //   }
 }

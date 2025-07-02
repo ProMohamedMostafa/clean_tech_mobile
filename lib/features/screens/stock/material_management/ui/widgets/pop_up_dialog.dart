@@ -12,10 +12,11 @@ import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class PopUpDialog {
   static Future<String?> show(
-      {required BuildContext context, required int id}) async {
+      {required BuildContext context, required int id,required int categoryId}) async {
     return await showDialog(
       context: context,
       builder: (dialogContext) {
+        final cubit = context.read<MaterialManagementCubit>();
         return Dialog(
           insetPadding: EdgeInsets.all(20),
           backgroundColor: Colors.white,
@@ -28,9 +29,14 @@ class PopUpDialog {
               mainAxisSize: MainAxisSize.min,
               children: [
                 InkWell(
-                  onTap: () {
-                    context.pushReplacementNamed(Routes.editMaterialScreen,
+                  onTap: () async {
+                    final result = await context.pushReplacementNamed(
+                        Routes.editMaterialScreen,
                         arguments: id);
+
+                    if (result == true) {
+                      cubit.refreshMaterials(categoryId: categoryId);
+                    }
                   },
                   child: Container(
                       height: 50.h,
@@ -55,9 +61,7 @@ class PopUpDialog {
                               title: S.of(context).TitleDelete,
                               body: S.of(context).materialBody,
                               onPressed: () {
-                                context
-                                    .read<MaterialManagementCubit>()
-                                    .deleteMaterial(id);
+                                cubit.deleteMaterial(id);
                                 context.pop();
                               });
                         });

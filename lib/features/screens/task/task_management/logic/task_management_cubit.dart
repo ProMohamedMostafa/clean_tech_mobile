@@ -65,6 +65,15 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
       emit(GetAllTasksErrorState(error.toString()));
     });
   }
+  Future<void> refreshTasks({int? roleId}) async {
+    currentPage = 1;
+    allTasksModel = null;
+    deleteTaskListModel = null;
+    emit(GetAllTasksLoadingState());
+    emit(TaskDeleteListLoadingState());
+    await getAllTasks();
+    await getAllDeletedTasks();
+  }
 
   initialize() {
     scrollController = ScrollController()

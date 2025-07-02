@@ -30,7 +30,7 @@ class FilterAndSearchWidget extends StatelessWidget {
             keyboardType: TextInputType.text,
             onlyRead: false,
             onChanged: (searchedCharacter) {
-              cubit.getAllUsersInUserManage();
+              cubit.getAllUsers();
             },
           ),
         ),
@@ -50,7 +50,7 @@ class FilterAndSearchWidget extends StatelessWidget {
                     index: 'U',
                     onPressed: (data) {
                       cubit.filterModel = data;
-                      cubit.getAllUsersInUserManage();
+                      cubit.getAllUsers();
                     },
                   ),
                 );

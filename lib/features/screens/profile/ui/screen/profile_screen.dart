@@ -6,7 +6,6 @@ import 'package:photo_view/photo_view.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
-import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
@@ -35,9 +34,42 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   @override
   void initState() {
-    controller = TabController(length: role != 'Admin' ? 6 : 1, vsync: this);
+    int tabCount = role != 'Admin' ? 6 : 0;
+    controller = TabController(length: tabCount, vsync: this);
     controller.addListener(() {
-      setState(() {});
+      final cubit = context.read<ProfileCubit>();
+
+      if (controller.indexIsChanging) return;
+
+      final index = controller.index;
+
+      switch (index) {
+        case 1:
+          if (cubit.userWorkLocationDetailsModel == null) {
+            cubit.getUserWorkLocationDetails();
+          }
+          break;
+        case 2:
+          if (cubit.userShiftDetailsModel == null) {
+            cubit.getUserShiftDetails();
+          }
+          break;
+        case 3:
+          if (cubit.userTaskDetailsModel == null) {
+            cubit.getUserTaskDetails();
+          }
+          break;
+        case 4:
+          if (cubit.attendanceHistoryModel == null) {
+            cubit.getAllHistory();
+          }
+          break;
+        case 5:
+          if (cubit.attendanceLeavesModel == null) {
+            cubit.getAllLeaves();
+          }
+          break;
+      }
     });
     super.initState();
   }
@@ -84,23 +116,7 @@ class _ProfileScreenState extends State<ProfileScreen>
         listener: (context, state) {},
         builder: (context, state) {
           if (cubit.profileModel?.data == null) {
-            return Center(
-              child: Image.asset(
-                'assets/images/loading.gif',
-                width: 100.w,
-                height: 100.h,
-                fit: BoxFit.contain,
-              ),
-            );
-          }
-          if (role != 'Admin') {
-            if (cubit.profileModel?.data == null ||
-                cubit.userShiftDetailsModel?.data == null ||
-                cubit.userTaskDetailsModel?.data == null ||
-                cubit.userWorkLocationDetailsModel?.data == null ||
-                cubit.attendanceLeavesModel?.data == null) {
-              return Loading();
-            }
+            return Loading();
           }
 
           return Padding(
@@ -124,7 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   body: Center(
                                     child: PhotoView(
                                       imageProvider: NetworkImage(
-                                        '${ApiConstants.apiBaseUrlImage}${cubit.profileModel?.data?.image}',
+                                        '${cubit.profileModel?.data?.image}',
                                       ),
                                       errorBuilder:
                                           (context, error, stackTrace) {
@@ -150,7 +166,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                               ),
                               child: ClipOval(
                                 child: Image.network(
-                                  '${ApiConstants.apiBaseUrlImage}${cubit.profileModel!.data!.image}',
+                                  '${cubit.profileModel!.data!.image}',
                                   fit: BoxFit.fill,
                                   errorBuilder: (context, error, stackTrace) {
                                     return Image.asset(
@@ -200,34 +216,34 @@ class _ProfileScreenState extends State<ProfileScreen>
                     style: TextStyles.font12GreyRegular
                         .copyWith(color: AppColor.primaryColor)),
                 verticalSpace(15),
-                SizedBox(
-                  height: 42.h,
-                  width: double.infinity,
-                  child: TabBar(
-                      tabAlignment: TabAlignment.center,
-                      isScrollable: true,
-                      indicatorSize: TabBarIndicatorSize.tab,
-                      controller: controller,
-                      dividerColor: Colors.transparent,
-                      indicator: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(5.r)),
-                        color: controller.index == controller.index
-                            ? AppColor.primaryColor
-                            : Colors.transparent,
-                      ),
-                      tabs: [
-                        Tab(
-                          child: Text(
-                            S.of(context).userDetails,
-                            style: TextStyle(
-                                color: controller.index == 0
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14.sp),
-                          ),
+                if (role != 'Admin')
+                  SizedBox(
+                    height: 42.h,
+                    width: double.infinity,
+                    child: TabBar(
+                        tabAlignment: TabAlignment.center,
+                        isScrollable: true,
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        controller: controller,
+                        dividerColor: Colors.transparent,
+                        indicator: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(5.r)),
+                          color: controller.index == controller.index
+                              ? AppColor.primaryColor
+                              : Colors.transparent,
                         ),
-                        if (role != 'Admin') ...[
+                        tabs: [
+                          Tab(
+                            child: Text(
+                              S.of(context).userDetails,
+                              style: TextStyle(
+                                  color: controller.index == 0
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14.sp),
+                            ),
+                          ),
                           Tab(
                             child: Text(
                               S.of(context).integ2,
@@ -283,26 +299,50 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   fontSize: 14.sp),
                             ),
                           ),
-                        ]
-                      ]),
-                ),
+                        ]),
+                  ),
                 Divider(
                   color: Colors.grey[300],
                   height: 2,
                 ),
                 verticalSpace(5),
-                Expanded(
-                  child: TabBarView(controller: controller, children: [
-                    UserDetails(),
-                    if (role != 'Admin') ...[
-                      WorkLocationUserDetails(),
-                      UserShiftDetails(),
-                      UserTasksDetails(),
-                      UserAttendanceDetails(),
-                      UserLeavesDetails()
-                    ]
-                  ]),
-                ),
+                if (role != 'Admin')
+                  Expanded(
+                    child: TabBarView(
+                      controller: controller,
+                      children: [
+                        UserDetails(),
+                        // Tab 1: Work Location
+                        cubit.userWorkLocationDetailsModel == null
+                            ? Loading()
+                            : WorkLocationUserDetails(),
+
+                        // Tab 2: Shifts
+                        cubit.userShiftDetailsModel == null
+                            ? Loading()
+                            : UserShiftDetails(),
+
+                        // Tab 3: Tasks
+                        cubit.userTaskDetailsModel == null
+                            ? Loading()
+                            : UserTasksDetails(),
+
+                        // Tab 4: Attendance History
+                        cubit.attendanceHistoryModel == null
+                            ? Loading()
+                            : UserAttendanceDetails(),
+
+                        // Tab 5: Leaves
+                        cubit.attendanceLeavesModel == null
+                            ? Loading()
+                            : UserLeavesDetails(),
+                      ],
+                    ),
+                  )
+                else
+                  const Expanded(
+                    child: UserDetails(),
+                  ),
                 verticalSpace(20),
               ],
             ),

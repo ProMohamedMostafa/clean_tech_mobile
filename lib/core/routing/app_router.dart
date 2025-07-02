@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
+import 'package:smart_cleaning_application/features/layout/ip_screen/logic/cubit/ip_cubit.dart';
+import 'package:smart_cleaning_application/features/layout/ip_screen/ui/screen/ip_screen.dart';
 import 'package:smart_cleaning_application/features/layout/main_layout/ui/screen/main_layout.dart';
 import 'package:smart_cleaning_application/features/layout/splash/splash_screen.dart';
 import 'package:smart_cleaning_application/features/screens/activity/logic/activity_cubit.dart';
@@ -53,6 +55,7 @@ import 'package:smart_cleaning_application/features/screens/stock/view_material/
 import 'package:smart_cleaning_application/features/screens/stock/view_material/ui/screen/material_details_screen.dart';
 import 'package:smart_cleaning_application/features/screens/stock/view_transaction/logic/cubit/transaction_details_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/stock/view_transaction/ui/screen/transaction_details_screen.dart';
+import 'package:smart_cleaning_application/features/screens/task/select_task_view/select_task_view.dart';
 import 'package:smart_cleaning_application/features/screens/task/view_task/logic/task_details_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/technical_support/ui/screen/technical_support_screen.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/logic/cubit/user_details_cubit.dart';
@@ -64,7 +67,8 @@ import 'package:smart_cleaning_application/features/screens/work_location/add_wo
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/screens/add_organization_screen.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/screens/add_point_screen.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/screens/add_section_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/choose_view_work_location/choose_view_work_location.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/select_work_location_view/logic/cubit/choose_view_work_location_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/work_location/select_work_location_view/ui/choose_view_work_location.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/logic/cubit/edit_work_location_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/ui/screens/edit_area_screen.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/ui/screens/edit_building_screen.dart';
@@ -116,6 +120,14 @@ class AppRouter {
       case Routes.splashScreen:
         return MaterialPageRoute(
           builder: (_) => const SplashScreen(),
+        );
+
+      case Routes.ipScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => IpCubit()..checkIp(),
+            child: const IpScreen(),
+          ),
         );
 
       case Routes.loginScreen:
@@ -174,13 +186,7 @@ class AppRouter {
       case Routes.profileScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => ProfileCubit()
-              ..getUserProfileDetails()
-              ..getUserWorkLocationDetails()
-              ..getUserShiftDetails()
-              ..getUserTaskDetails()
-              ..getAllHistory()
-              ..getAllLeaves(),
+            create: (context) => ProfileCubit()..getUserProfileDetails(),
             child: const ProfileScreen(),
           ),
         );
@@ -205,7 +211,11 @@ class AppRouter {
 
       case Routes.chooseViewWorkLocationScreen:
         return MaterialPageRoute(
-          builder: (_) => const ChooseViewWorkLocation(),
+          builder: (_) => BlocProvider(
+            create: (context) =>
+                ChooseViewWorkLocationCubit()..getWorkLocations(),
+            child: const ChooseViewWorkLocation(),
+          ),
         );
 
       case Routes.workLocationScreen:
@@ -219,9 +229,10 @@ class AppRouter {
           ),
         );
       case Routes.shiftScreen:
+        final isActive = settings.arguments as String?;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => ShiftCubit()..initialize(),
+            create: (context) => ShiftCubit()..initialize(isActive: isActive),
             child: const ShiftScreen(),
           ),
         );
@@ -508,6 +519,10 @@ class AppRouter {
             ),
           ),
         );
+      case Routes.chooseViewTask:
+        return MaterialPageRoute(
+          builder: (_) => ChooseViewTask(),
+        );
       case Routes.taskManagementScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -528,7 +543,9 @@ class AppRouter {
       case Routes.assignScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => AssignCubit(),
+            create: (context) => AssignCubit()
+              ..getShifts()
+              ..getRole(),
             child: AssignScreen(),
           ),
         );

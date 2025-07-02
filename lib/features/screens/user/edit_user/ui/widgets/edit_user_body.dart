@@ -8,8 +8,6 @@ import 'package:photo_view/photo_view.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
-import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
-import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
@@ -44,7 +42,7 @@ class _EditUserBodyState extends State<EditUserBody> {
           listener: (context, state) {
         if (state is EditUserSuccessState) {
           toast(text: state.editModel.message!, color: Colors.blue);
-          context.pushNamedAndRemoveAllExceptFirst(Routes.userManagmentScreen);
+          context.popWithTrueResult();
         }
         if (state is EditUserErrorState) {
           toast(text: state.error, color: Colors.red);
@@ -81,7 +79,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                                               cubit.image!.path.isNotEmpty)
                                           ? FileImage(File(cubit.image!.path))
                                           : NetworkImage(
-                                              '${ApiConstants.apiBaseUrlImage}${cubit.userDetailsModel!.data!.image}',
+                                              '${cubit.userDetailsModel!.data!.image}',
                                             ) as ImageProvider,
                                       errorBuilder:
                                           (context, error, stackTrace) {
@@ -124,7 +122,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                                       },
                                     )
                                   : Image.network(
-                                      '${ApiConstants.apiBaseUrlImage}${cubit.userDetailsModel!.data!.image}',
+                                      '${cubit.userDetailsModel!.data!.image}',
                                       fit: BoxFit.cover,
                                       errorBuilder:
                                           (context, error, stackTrace) {

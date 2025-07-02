@@ -181,3 +181,8 @@ class AllOrganizationErrorState extends AssignStates {
   final String error;
   AllOrganizationErrorState(this.error);
 }
+//**************************** */
+
+class AssignClearState extends AssignStates {}
+class UsersClearedState extends AssignStates {}
+class LevelChanged extends AssignStates {}

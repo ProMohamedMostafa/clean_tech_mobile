@@ -90,6 +90,16 @@ class MaterialManagementCubit extends Cubit<MaterialManagementState> {
     }
   }
 
+  Future<void> refreshMaterials({int? categoryId}) async {
+    currentPage = 1;
+    materialManagementModel = null;
+    deletedMaterialListModel = null;
+    emit(MaterialManagementLoadingState());
+    emit(DeletedMaterialLoadingState());
+    await getAllDeletedMaterial();
+    await getMaterialList(categoryId: categoryId);
+  }
+
   DeletedMaterialListModel? deletedMaterialListModel;
   getAllDeletedMaterial() {
     emit(DeletedMaterialLoadingState());

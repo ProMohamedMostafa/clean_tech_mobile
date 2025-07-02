@@ -216,9 +216,12 @@ class UsersAttendance extends StatelessWidget {
                                 size: 24.sp,
                               ),
                               horizontalSpace(8),
-                              Text(
-                                S.of(context).attendance,
-                                style: TextStyles.font14BlackSemiBold,
+                              Flexible(
+                                child: Text(
+                                  S.of(context).attendance,
+                                  style: TextStyles.font14BlackSemiBold,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ],
                           ),

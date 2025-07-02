@@ -82,6 +82,7 @@ class FilterDialogCubit extends Cubit<FilterDialogState> {
   TextEditingController activityTypeController = TextEditingController();
   TextEditingController activityTypeIdController = TextEditingController();
   TextEditingController isAsignController = TextEditingController();
+  TextEditingController isActiveController = TextEditingController();
   TextEditingController deviceController = TextEditingController();
   TextEditingController deviceIdController = TextEditingController();
 

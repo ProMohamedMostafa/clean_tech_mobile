@@ -32,7 +32,7 @@ class EditCategoryCubit extends Cubit<EditCategoryState> {
           : parentCategoryIdController.text,
       "unit": unitController.text.isEmpty
           ? categoryDetailsModel!.data!.unitId
-          : unitIdController.text,
+          : int.parse(unitIdController.text),
     }).then((value) {
       editCategoryModel = EditCategoryModel.fromJson(value!.data);
       emit(EditCategorySuccessState(editCategoryModel!));

@@ -65,6 +65,16 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
     });
   }
 
+  Future<void> refreshAreas() async {
+    currentPage = 1;
+    areaModel = null;
+    deletedAreaList = null;
+    emit(AreaLoadingState());
+    emit(DeletedAreaLoadingState());
+    await getArea();
+    await getAllDeletedArea();
+  }
+
   CityListModel? cityModel;
   getCity() {
     emit(CityLoadingState());
@@ -88,6 +98,16 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
     }).catchError((error) {
       emit(CityErrorState(error.toString()));
     });
+  }
+
+  Future<void> refreshCities() async {
+    currentPage = 1;
+    cityModel = null;
+    deletedCityList = null;
+    emit(CityLoadingState());
+    emit(DeletedCityLoadingState());
+    await getCity();
+    await getAllDeletedCity();
   }
 
   OrganizationListModel? organizationModel;
@@ -117,6 +137,16 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
     });
   }
 
+  Future<void> refreshOrganizations() async {
+    currentPage = 1;
+    organizationModel = null;
+    deletedOrganizationList = null;
+    emit(OrganizationLoadingState());
+    emit(DeletedOrganizationLoadingState());
+    await getOrganization();
+    await getAllDeletedOrganization();
+  }
+
   BuildingListModel? buildingModel;
   getBuilding() {
     emit(BuildingLoadingState());
@@ -140,6 +170,16 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
     }).catchError((error) {
       emit(BuildingErrorState(error.toString()));
     });
+  }
+
+  Future<void> refreshBuildings() async {
+    currentPage = 1;
+    buildingModel = null;
+    deletedBuildingList = null;
+    emit(BuildingLoadingState());
+    emit(DeletedBuildingLoadingState());
+    await getBuilding();
+    await getAllDeletedBuilding();
   }
 
   FloorListModel? floorModel;
@@ -167,6 +207,16 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
     });
   }
 
+  Future<void> refreshFloors() async {
+    currentPage = 1;
+    floorModel = null;
+    deletedFloorList = null;
+    emit(FloorLoadingState());
+    emit(DeletedFloorLoadingState());
+    await getFloor();
+    await getAllDeletedFloor();
+  }
+
   SectionListModel? sectionModel;
   getSection() {
     emit(SectionLoadingState());
@@ -190,6 +240,16 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
     }).catchError((error) {
       emit(SectionErrorState(error.toString()));
     });
+  }
+
+  Future<void> refreshSections() async {
+    currentPage = 1;
+    sectionModel = null;
+    deletedSectionList = null;
+    emit(SectionLoadingState());
+    emit(DeletedSectionLoadingState());
+    await getSection();
+    await getAllDeletedSection();
   }
 
   PointListModel? pointModel;
@@ -216,6 +276,16 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
     }).catchError((error) {
       emit(PointErrorState(error.toString()));
     });
+  }
+
+  Future<void> refreshPoints() async {
+    currentPage = 1;
+    pointModel = null;
+    deletedPointList = null;
+    emit(PointLoadingState());
+    emit(DeletedPointLoadingState());
+    await getPoint();
+    await getAllDeletedPoint();
   }
 
   initialize(int? selectedIndex) {

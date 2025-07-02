@@ -34,7 +34,6 @@ class StockLineChart extends StatelessWidget {
             ),
             primaryYAxis: NumericAxis(
               minimum: 0,
-              maximum: 200,
               interval: 50,
               majorGridLines: MajorGridLines(
                 color: Colors.grey[200],

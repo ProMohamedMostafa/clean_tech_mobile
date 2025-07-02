@@ -23,7 +23,7 @@ class ShiftItemBuild extends StatelessWidget {
             arguments: cubit.userShiftDetailsModel!.data![index].id);
 
         if (result == true) {
-          cubit.getUserShiftDetails(cubit.userDetailsModel!.data!.id);
+          await cubit.refreshShifts(id: cubit.userDetailsModel!.data!.id);
         }
       },
       child: Card(

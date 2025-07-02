@@ -767,6 +767,25 @@ class FilterDialogWidget extends StatelessWidget {
                       verticalSpace(10),
                     ],
                     if (index == 'S') ...[
+                      Text(
+                        'Is Active',
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomDropDownList(
+                        hint: 'Select',
+                        controller: cubit.isActiveController,
+                        items: ['True', 'False'],
+                        onChanged: (selectedValue) {
+                          if (selectedValue == 'True') {
+                            cubit.isActiveController.text = 'true';
+                          } else if (selectedValue == 'False') {
+                            cubit.isActiveController.text = 'false';
+                          }
+                        },
+                        keyboardType: TextInputType.text,
+                        suffixIcon: IconBroken.arrowDown2,
+                      ),
+                      verticalSpace(10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -1160,7 +1179,7 @@ class FilterDialogWidget extends StatelessWidget {
                         name: 'Done',
                         onPressed: () {
                           final date =
-                              DateTime.tryParse(cubit.dateController.text );
+                              DateTime.tryParse(cubit.dateController.text);
                           final startDate =
                               DateTime.tryParse(cubit.startDateController.text);
                           final endDate =
@@ -1217,6 +1236,7 @@ class FilterDialogWidget extends StatelessWidget {
                               minBattery: cubit.currentRange.start.round(),
                               maxBattery: cubit.currentRange.end.round(),
                               isAsign: cubit.isAsignController.text,
+                              isActive: cubit.isActiveController.text,
                               typeId: cubit.typeIdController.text.isNotEmpty ? _tryParseInt(cubit.typeIdController.text) : null,
                               deviceId: cubit.deviceIdController.text.isNotEmpty ? _tryParseInt(cubit.deviceIdController.text) : null,
                               startDate: startDate,

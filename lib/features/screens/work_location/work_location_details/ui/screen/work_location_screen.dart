@@ -42,9 +42,129 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
   @override
   void initState() {
     controller = TabController(length: 8, vsync: this);
+
     controller.addListener(() {
-      setState(() {});
+      final cubit = context.read<WorkLocationDetailsCubit>();
+
+      if (controller.indexIsChanging) return;
+
+      final index = controller.index;
+
+      switch (index) {
+        case 5:
+          if (widget.selectedIndex == 0) {
+            if (cubit.allAreaTasksModel == null) {
+              cubit.getAreaTasks(widget.id);
+            }
+          }
+          if (widget.selectedIndex == 1) {
+            if (cubit.allCityTasksModel == null) {
+              cubit.getCityTasks(widget.id);
+            }
+          }
+          if (widget.selectedIndex == 2) {
+            if (cubit.allOrganizationTasksModel == null) {
+              cubit.getOrganizationTasks(widget.id);
+            }
+          }
+          if (widget.selectedIndex == 3) {
+            if (cubit.allBuildingTasksModel == null) {
+              cubit.getBuildingTasks(widget.id);
+            }
+          }
+          if (widget.selectedIndex == 4) {
+            if (cubit.allFloorTasksModel == null) {
+              cubit.getFloorTasks(widget.id);
+            }
+          }
+          if (widget.selectedIndex == 5) {
+            if (cubit.allSectionTasksModel == null) {
+              cubit.getSectionTasks(widget.id);
+            }
+          }
+          if (widget.selectedIndex == 6) {
+            if (cubit.allPointTasksModel == null) {
+              cubit.getPointTasks(widget.id);
+            }
+          }
+          break;
+        case 6:
+          if (widget.selectedIndex == 0) {
+            if (cubit.attendanceHistoryAreaModel == null) {
+              cubit.getAttendanceHistoryArea(widget.id);
+            }
+          }
+          if (widget.selectedIndex == 1) {
+            if (cubit.attendanceHistoryCityModel == null) {
+              cubit.getAttendanceHistoryCity(widget.id);
+            }
+          }
+          if (widget.selectedIndex == 2) {
+            if (cubit.attendanceHistoryOrganizationModel == null) {
+              cubit.getAttendanceHistoryOrganization(widget.id);
+            }
+          }
+          if (widget.selectedIndex == 3) {
+            if (cubit.attendanceHistoryBuildingModel == null) {
+              cubit.getAttendanceHistoryBuilding(widget.id);
+            }
+          }
+          if (widget.selectedIndex == 4) {
+            if (cubit.attendanceHistoryFloorModel == null) {
+              cubit.getAttendanceHistoryFloor(widget.id);
+            }
+          }
+          if (widget.selectedIndex == 5) {
+            if (cubit.attendanceHistorySectionModel == null) {
+              cubit.getAttendanceHistorySection(widget.id);
+            }
+          }
+          if (widget.selectedIndex == 6) {
+            if (cubit.attendanceHistoryPointModel == null) {
+              cubit.getAttendanceHistoryPoint(widget.id);
+            }
+          }
+          break;
+        case 7:
+          if (widget.selectedIndex == 0) {
+            if (cubit.attendanceLeavesAreaModel == null) {
+              cubit.getAllLeavesArea(widget.id);
+            }
+          }
+          if (widget.selectedIndex == 1) {
+            if (cubit.attendanceLeavesCityModel == null) {
+              cubit.getAllLeavesCity(widget.id);
+            }
+          }
+          if (widget.selectedIndex == 2) {
+            if (cubit.attendanceLeavesOrganizationModel == null) {
+              cubit.getAllLeavesOrganization(widget.id);
+            }
+          }
+          if (widget.selectedIndex == 3) {
+            if (cubit.attendanceLeavesBuildingModel == null) {
+              cubit.getAllLeavesBuilding(widget.id);
+            }
+          }
+          if (widget.selectedIndex == 4) {
+            if (cubit.attendanceLeavesFloorModel == null) {
+              cubit.getAllLeavesFloor(widget.id);
+            }
+          }
+          if (widget.selectedIndex == 5) {
+            if (cubit.attendanceLeavesSectionModel == null) {
+              cubit.getAllLeavesSection(widget.id);
+            }
+          }
+          if (widget.selectedIndex == 6) {
+            if (cubit.attendanceLeavesPointModel == null) {
+              cubit.getAllLeavesPoint(widget.id);
+            }
+          }
+          break;
+      }
     });
+
     super.initState();
   }
 
@@ -88,30 +208,41 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
           ),
           if (role == 'Admin') ...[
             IconButton(
-                onPressed: () {
-                  widget.selectedIndex == 0
-                      ? context.pushNamed(Routes.editAreaScreen,
-                          arguments: widget.id)
+                onPressed: () async {
+                  final route = widget.selectedIndex == 0
+                      ? Routes.editAreaScreen
                       : widget.selectedIndex == 1
-                          ? context.pushNamed(Routes.editCityScreen,
-                              arguments: widget.id)
+                          ? Routes.editCityScreen
                           : widget.selectedIndex == 2
-                              ? context.pushNamed(Routes.editOrganizationScreen,
-                                  arguments: widget.id)
+                              ? Routes.editOrganizationScreen
                               : widget.selectedIndex == 3
-                                  ? context.pushNamed(Routes.editBuildingScreen,
-                                      arguments: widget.id)
+                                  ? Routes.editBuildingScreen
                                   : widget.selectedIndex == 4
-                                      ? context.pushNamed(
-                                          Routes.editFloorScreen,
-                                          arguments: widget.id)
+                                      ? Routes.editFloorScreen
                                       : widget.selectedIndex == 5
-                                          ? context.pushNamed(
-                                              Routes.editSectionScreen,
-                                              arguments: widget.id)
-                                          : context.pushNamed(
-                                              Routes.editPointScreen,
-                                              arguments: widget.id);
+                                          ? Routes.editSectionScreen
+                                          : Routes.editPointScreen;
+
+                  final result =
+                      await context.pushNamed(route, arguments: widget.id);
+
+                  if (result == true) {
+                    widget.selectedIndex == 0
+                        ? cubit.getAreaUsersDetails(widget.id)
+                        : widget.selectedIndex == 1
+                            ? cubit.getCityUsersDetails(widget.id)
+                            : widget.selectedIndex == 2
+                                ? cubit.getOrganizationUsersDetails(widget.id)
+                                : widget.selectedIndex == 3
+                                    ? cubit.getBuildingUsersDetails(widget.id)
+                                    : widget.selectedIndex == 4
+                                        ? cubit.getFloorUsersDetails(widget.id)
+                                        : widget.selectedIndex == 5
+                                            ? cubit.getSectionUsersDetails(
+                                                widget.id)
+                                            : cubit.getPointUsersDetails(
+                                                widget.id);
+                  }
                 },
                 icon: Icon(
                   Icons.edit,
@@ -124,18 +255,14 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
         listener: (context, state) {
           if (state is AreaDeleteSuccessState) {
             toast(text: state.deleteAreaModel.message!, color: Colors.blue);
-            // context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
-            //     arguments: 0);
-            Navigator.of(context).pop(true);
+            context.popWithTrueResult();
           }
           if (state is AreaDeleteErrorState) {
             toast(text: state.error, color: Colors.red);
           }
           if (state is CityDeleteSuccessState) {
             toast(text: state.deleteCityModel.message!, color: Colors.blue);
-            // context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
-            //     arguments: 1);
-            Navigator.of(context).pop(true);
+            context.popWithTrueResult();
           }
           if (state is CityDeleteErrorState) {
             toast(text: state.error, color: Colors.red);
@@ -144,45 +271,35 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
             toast(
                 text: state.deleteOrganizationModel.message!,
                 color: Colors.blue);
-            // context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
-            //     arguments: 2);
-            Navigator.of(context).pop(true);
+            context.popWithTrueResult();
           }
           if (state is OrganizationDeleteErrorState) {
             toast(text: state.error, color: Colors.red);
           }
           if (state is BuildingDeleteSuccessState) {
             toast(text: state.deleteBuildingModel.message!, color: Colors.blue);
-            // context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
-            //     arguments: 3);
-            Navigator.of(context).pop(true);
+            context.popWithTrueResult();
           }
           if (state is BuildingDeleteErrorState) {
             toast(text: state.error, color: Colors.red);
           }
           if (state is FloorDeleteSuccessState) {
             toast(text: state.deleteFloorModel.message!, color: Colors.blue);
-            // context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
-            //     arguments: 4);
-            Navigator.of(context).pop(true);
+            context.popWithTrueResult();
           }
           if (state is FloorDeleteErrorState) {
             toast(text: state.error, color: Colors.red);
           }
           if (state is SectionDeleteSuccessState) {
             toast(text: state.deleteSectionModel.message!, color: Colors.blue);
-            // context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
-            //     arguments: 5);
-            Navigator.of(context).pop(true);
+            context.popWithTrueResult();
           }
           if (state is SectionDeleteErrorState) {
             toast(text: state.error, color: Colors.red);
           }
           if (state is PointDeleteSuccessState) {
             toast(text: state.deletePointModel.message!, color: Colors.blue);
-            // context.pushNamedAndRemoveLastTwo(Routes.workLocationScreen,
-            //     arguments: 6);
-            Navigator.of(context).pop(true);
+            context.popWithTrueResult();
           }
           if (state is PointDeleteErrorState) {
             toast(text: state.error, color: Colors.red);

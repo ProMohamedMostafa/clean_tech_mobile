@@ -5,19 +5,22 @@ import 'package:smart_cleaning_application/features/layout/main_layout/logic/bot
 
 Widget buildBottomNavigationBar(BuildContext context) {
   final cubit = context.read<BottomNavbarCubit>();
-  return Container(
-    height: 60.h,
-    decoration: const BoxDecoration(
-      boxShadow: [
-        BoxShadow(color: Colors.black12, blurRadius: 2),
-      ],
-    ),
-    child: BottomNavigationBar(
-      items: cubit.getBottomNavbarItems(context),
-      currentIndex: cubit.currentIndex,
-      onTap: (int index) {
-        cubit.changeBottomNavbar(index);
-      },
+  return SafeArea(
+    top: false,
+    child: Container(
+      height: 65.h,
+      decoration: const BoxDecoration(
+        boxShadow: [
+          BoxShadow(color: Colors.black12, blurRadius: 2),
+        ],
+      ),
+      child: BottomNavigationBar(
+        items: cubit.getBottomNavbarItems(context),
+        currentIndex: cubit.currentIndex,
+        onTap: (int index) {
+          cubit.changeBottomNavbar(index);
+        },
+      ),
     ),
   );
 }

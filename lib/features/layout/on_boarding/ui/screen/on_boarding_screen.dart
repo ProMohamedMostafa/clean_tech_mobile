@@ -137,7 +137,7 @@ class OnBoardingScreen extends StatelessWidget {
                       color: AppColor.primaryColor,
                       onPressed: () {
                         context.pushNamedAndRemoveUntil(
-                          Routes.loginScreen,
+                          Routes.ipScreen,
                           predicate: (route) => false,
                         );
                       },

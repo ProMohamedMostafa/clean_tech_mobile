@@ -219,4 +219,16 @@ class UserDetailsCubit extends Cubit<UserDetailsState> {
     }
     return Colors.black;
   }
+
+  Future<void> refreshShifts({int? id}) async {
+    userShiftDetailsModel = null;
+    emit(UserShiftDetailsLoadingState());
+    await getUserShiftDetails(id);
+  }
+
+  Future<void> refreshWorkLocations({int? id}) async {
+    userWorkLocationDetailsModel = null;
+    emit(UserWorkLocationDetailsLoadingState());
+    await getUserWorkLocationDetails(id);
+  }
 }

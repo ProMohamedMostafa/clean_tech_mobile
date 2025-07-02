@@ -67,9 +67,13 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
           ),
           if (role == 'Admin')
             IconButton(
-                onPressed: () {
-                  context.pushNamed(Routes.editShiftScreen,
+                onPressed: () async {
+                  final result = await context.pushNamed(Routes.editShiftScreen,
                       arguments: widget.id);
+
+                  if (result == true) {
+                    await cubit.getShiftDetails(widget.id);
+                  }
                 },
                 icon: Icon(
                   Icons.edit,
@@ -81,7 +85,7 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
         listener: (context, state) {
           if (state is ShiftDeleteSuccessState) {
             toast(text: state.deleteShiftModel.message!, color: Colors.blue);
-            Navigator.of(context).pop(true);
+            context.popWithTrueResult();
           }
           if (state is ShiftDeleteErrorState) {
             toast(text: state.error, color: Colors.red);

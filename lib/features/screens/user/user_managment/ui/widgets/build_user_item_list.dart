@@ -5,7 +5,6 @@ import 'package:smart_cleaning_application/core/helpers/constants/constants.dart
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
-import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
@@ -20,12 +19,15 @@ class BuildUserItemList extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<UserManagementCubit>();
     return InkWell(
-      onTap: () {
+      onTap: () async {
         if (cubit.selectedIndex == 0) {
-          context.pushNamed(
+          final result = await context.pushNamed(
             Routes.userDetailsScreen,
             arguments: cubit.usersModel!.data!.users![index].id,
           );
+          if (result == true) {
+            await cubit.refreshUsers();
+          }
         }
       },
       child: ListTile(
@@ -39,8 +41,8 @@ class BuildUserItemList extends StatelessWidget {
           clipBehavior: Clip.hardEdge,
           child: Image.network(
             cubit.selectedIndex == 0
-                ? '${ApiConstants.apiBaseUrlImage}${cubit.usersModel!.data!.users![index].image}'
-                : '${ApiConstants.apiBaseUrlImage}${cubit.deletedListModel!.data![index].image}',
+                ? '${cubit.usersModel!.data!.users![index].image}'
+                : '${cubit.deletedListModel!.data![index].image}',
             fit: BoxFit.fill,
             errorBuilder: (context, error, stackTrace) {
               return Image.asset(
@@ -55,6 +57,8 @@ class BuildUserItemList extends StatelessWidget {
               ? cubit.usersModel!.data!.users![index].userName!
               : cubit.deletedListModel!.data![index].userName!,
           style: TextStyles.font14BlackSemiBold,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
         ),
         subtitle: Text(
           cubit.selectedIndex == 0
@@ -72,13 +76,17 @@ class BuildUserItemList extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       InkWell(
-                        onTap: () {
+                        onTap: () async {
                           if (cubit.selectedIndex == 0) {
-                            context.pushNamed(
+                            final result = await context.pushNamed(
                               Routes.editUserScreen,
                               arguments:
                                   cubit.usersModel!.data!.users![index].id,
                             );
+
+                            if (result == true) {
+                              await cubit.refreshUsers();
+                            }
                           } else {
                             showDialog(
                                 context: context,

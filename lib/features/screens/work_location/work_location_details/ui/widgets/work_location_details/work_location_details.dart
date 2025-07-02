@@ -116,42 +116,24 @@ class WorkLocationDetails extends StatelessWidget {
             rowDetailsBuild(context, "Point", workLocationDetailsModel.name!,
                 color: selectedIndex == 6 ? AppColor.primaryColor : null),
             Divider(),
-            if (context
-                    .read<WorkLocationDetailsCubit>()
-                    .pointUsersDetailsModel
-                    ?.data
-                    ?.isCountable ==
-                true) ...[
+            if (cubit.pointUsersDetailsModel?.data?.isCountable == true) ...[
               rowDetailsBuild(
                 context,
                 "Capacity",
-                context
-                    .read<WorkLocationDetailsCubit>()
-                    .pointUsersDetailsModel!
-                    .data!
-                    .capacity!
-                    .toString(),
+                cubit.pointUsersDetailsModel!.data!.capacity!.toString(),
               ),
               Divider(),
               rowDetailsBuild(
                 context,
                 "Unit",
-                context
-                    .read<WorkLocationDetailsCubit>()
-                    .pointUsersDetailsModel!
-                    .data!
-                    .unit!,
+                cubit.pointUsersDetailsModel!.data!.unit!,
               ),
               Divider(),
-              rowDetailsBuild(
-                  context,
-                  "Device",
-                  context
-                      .read<WorkLocationDetailsCubit>()
-                      .pointUsersDetailsModel!
-                      .data!
-                      .deviceName!),
-              Divider()
+              if (cubit.pointUsersDetailsModel!.data!.deviceName != null) ...[
+                rowDetailsBuild(context, "Device",
+                    cubit.pointUsersDetailsModel!.data!.deviceName!),
+                Divider()
+              ]
             ],
           ],
           if (selectedIndex >= 3) ...[

@@ -66,6 +66,13 @@ class AttendanceLeavesCubit extends Cubit<AttendanceLeavesState> {
     }
   }
 
+  Future<void> refreshLeaves({int? status}) async {
+    currentPage = 1;
+    allLeaves = null;
+    emit(LeavesLoadingState());
+    await getAllLeaves(status: status);
+  }
+
   void initialize() {
     scrollController = ScrollController()
       ..addListener(() {

@@ -26,8 +26,12 @@ class CategoryManagmentBody extends StatelessWidget {
           leading: CustomBackButton()),
       floatingActionButton: floatingActionButton(
         icon: Icons.post_add_rounded,
-        onPressed: () {
-          context.pushNamed(Routes.addCategoryScreen);
+        onPressed: () async {
+          final result = await context.pushNamed(Routes.addCategoryScreen);
+
+          if (result == true) {
+            cubit.refreshCategories();
+          }
         },
       ),
       body: BlocConsumer<CategoryManagementCubit, CategoryManagementState>(

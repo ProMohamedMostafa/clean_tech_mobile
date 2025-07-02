@@ -37,7 +37,7 @@ class SensorDetailsBody extends StatelessWidget {
         listener: (context, state) {
           if (state is DeleteSensorSuccessState) {
             toast(text: state.deletedSensorModel.message!, color: Colors.blue);
-            context.pushNamedAndRemoveAllExceptFirst(Routes.sensorScreen);
+            context.popWithTrueResult();
           }
           if (state is DeleteSensorErrorState) {
             toast(text: state.error, color: Colors.red);

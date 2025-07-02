@@ -16,6 +16,7 @@ class PopUpDialog {
     return await showDialog(
       context: context,
       builder: (dialogContext) {
+        final cubit = context.read<TaskManagementCubit>();
         return Dialog(
           insetPadding: EdgeInsets.all(20),
           backgroundColor: Colors.white,
@@ -28,9 +29,13 @@ class PopUpDialog {
               mainAxisSize: MainAxisSize.min,
               children: [
                 InkWell(
-                  onTap: () {
-                    context.pushReplacementNamed(Routes.editTaskScreen,
+                  onTap: () async {
+                    final result = await context.pushReplacementNamed(
+                        Routes.editTaskScreen,
                         arguments: id);
+                    if (result == true) {
+                      await cubit.refreshTasks();
+                    }
                   },
                   child: Container(
                       height: 50.h,
@@ -53,11 +58,9 @@ class PopUpDialog {
                         builder: (dialogContext) {
                           return PopUpMessage(
                               title: S.of(context).TitleDelete,
-                              body: S.of(context).materialBody,
+                              body: 'task',
                               onPressed: () {
-                                context
-                                    .read<TaskManagementCubit>()
-                                    .taskDelete(id);
+                                cubit.taskDelete(id);
                                 context.pop();
                               });
                         });

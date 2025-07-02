@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
-import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/features/screens/notification/logic/notification_cubit.dart';
@@ -113,8 +112,8 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
           clipBehavior: Clip.hardEdge,
           child: Image.network(
             selectedIndex == 0
-                ? '${ApiConstants.apiBaseUrlImage}${context.read<NotificationCubit>().notificationModel!.data!.data![index].image}'
-                : '${ApiConstants.apiBaseUrlImage}${context.read<NotificationCubit>().unReadNotificationModel!.data!.data![index].image}',
+                ? '${context.read<NotificationCubit>().notificationModel!.data!.data![index].image}'
+                : '${context.read<NotificationCubit>().unReadNotificationModel!.data!.data![index].image}',
             fit: BoxFit.fill,
             errorBuilder: (context, error, stackTrace) {
               return Image.asset(

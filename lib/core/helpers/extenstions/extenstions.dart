@@ -9,15 +9,15 @@ extension NavigationExtensions on BuildContext {
 
 //pushNamedAndRemoveAllExceptFirst
   /// Pushes a new named route and removes all routes except the first
-  Future<T?> pushNamedAndRemoveAllExceptFirst<T extends Object?>(
-      String routeName,
-      {Object? arguments}) {
-    return Navigator.of(this).pushNamedAndRemoveUntil<T>(
-      routeName,
-      (route) => route.isFirst,
-      arguments: arguments,
-    );
-  }
+  // Future<T?> pushNamedAndRemoveAllExceptFirst<T extends Object?>(
+  //     String routeName,
+  //     {Object? arguments}) {
+  //   return Navigator.of(this).pushNamedAndRemoveUntil<T>(
+  //     routeName,
+  //     (route) => route.isFirst,
+  //     arguments: arguments,
+  //   );
+  // }
 
   /// Pushes a new route and removes all previous routes that do not satisfy [predicate]
   Future<T?> pushNamedAndRemoveUntil<T extends Object?>(

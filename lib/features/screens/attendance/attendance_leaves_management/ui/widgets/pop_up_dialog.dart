@@ -15,6 +15,7 @@ class PopUpDialog {
     return await showDialog(
       context: context,
       builder: (dialogContext) {
+        final cubit = context.read<AttendanceLeavesCubit>();
         return Dialog(
           insetPadding: EdgeInsets.all(20),
           backgroundColor: Colors.white,
@@ -27,9 +28,14 @@ class PopUpDialog {
               mainAxisSize: MainAxisSize.min,
               children: [
                 InkWell(
-                  onTap: () {
-                    context.pushReplacementNamed(Routes.editleavesScreen,
+                  onTap: () async {
+                    final result = await context.pushReplacementNamed(
+                        Routes.editleavesScreen,
                         arguments: id);
+
+                    if (result == true) {
+                      await cubit.refreshLeaves();
+                    }
                   },
                   child: Container(
                       height: 50.h,
@@ -54,9 +60,7 @@ class PopUpDialog {
                               title: 'delete',
                               body: 'leave',
                               onPressed: () {
-                                context
-                                    .read<AttendanceLeavesCubit>()
-                                    .leavesDelete(id);
+                                cubit.leavesDelete(id);
                                 context.pop();
                               });
                         });

@@ -82,6 +82,16 @@ class CategoryManagementCubit extends Cubit<CategoryManagementState> {
     }
   }
 
+  Future<void> refreshCategories() async {
+    currentPage = 1;
+    categoryManagementModel = null;
+    deletedCategoryListModel = null;
+    emit(CategoryManagementLoadingState());
+    emit(AllDeletedCategoryLoadingState());
+    await getCategoryList();
+    await getAllDeletedCategory();
+  }
+
   DeletedCategoryListModel? deletedCategoryListModel;
   getAllDeletedCategory() {
     emit(AllDeletedCategoryLoadingState());

@@ -56,16 +56,19 @@ class Stock extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Image.asset(
-                            'assets/images/stock.png',
+                            'assets/images/stock2.png',
                             height: 25.h,
                             width: 25.w,
                             fit: BoxFit.fill,
                           ),
                           horizontalSpace(8),
-                          Text(
-                            S.of(context).materialCount,
-                            style: TextStyles.font14BlackSemiBold,
-                          ),
+                           Flexible(
+      child: Text(
+        S.of(context).materialCount,
+        style: TextStyles.font14BlackSemiBold,
+        overflow: TextOverflow.ellipsis, 
+      ),
+    ),
                         ],
                       ),
                       verticalSpace(8),

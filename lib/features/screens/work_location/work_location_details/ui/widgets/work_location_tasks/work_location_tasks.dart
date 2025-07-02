@@ -108,15 +108,15 @@ class WorkLocationTasks extends StatelessWidget {
   Widget _buildWorklocationTaskDetails(BuildContext context) {
     final cubit = context.read<WorkLocationDetailsCubit>();
     final taskModel = selectedIndex == 0
-        ? cubit.allareaTasksModel
+        ? cubit.allAreaTasksModel
         : selectedIndex == 1
-            ? cubit.allcityTasksModel
+            ? cubit.allCityTasksModel
             : selectedIndex == 2
-                ? cubit.allorganizationTasksModel
+                ? cubit.allOrganizationTasksModel
                 : selectedIndex == 3
-                    ? cubit.allbuildingTasksModel
+                    ? cubit.allBuildingTasksModel
                     : selectedIndex == 4
-                        ? cubit.allfloorTasksModel
+                        ? cubit.allFloorTasksModel
                         : selectedIndex == 5
                             ? cubit.allSectionTasksModel
                             : cubit.allPointTasksModel;

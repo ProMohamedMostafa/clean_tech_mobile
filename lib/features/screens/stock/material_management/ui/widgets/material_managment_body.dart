@@ -23,11 +23,16 @@ class MaterialManagmentBody extends StatelessWidget {
     final cubit = context.read<MaterialManagementCubit>();
     return Scaffold(
       appBar: AppBar(
-          title: Text(S.of(context).materialManagement), leading: CustomBackButton()),
+          title: Text(S.of(context).materialManagement),
+          leading: CustomBackButton()),
       floatingActionButton: floatingActionButton(
         icon: Icons.library_add,
-        onPressed: () {
-          context.pushNamed(Routes.addMaterialScreen);
+        onPressed: () async {
+          final result = await context.pushNamed(Routes.addMaterialScreen);
+
+          if (result == true) {
+            cubit.refreshMaterials();
+          }
         },
       ),
       body: BlocConsumer<MaterialManagementCubit, MaterialManagementState>(

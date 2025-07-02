@@ -12,25 +12,27 @@ import 'package:smart_cleaning_application/features/screens/auth/login/ui/screen
 
 class DioHelper {
   static Dio? dio;
+  static bool _handling401 = false;
 
   static Future<Dio> initDio() async {
-    Duration timeOut = const Duration(seconds: 30);
+    Duration timeOut = const Duration(seconds: 10);
 
-    if (dio == null) {
-      dio = Dio(BaseOptions(
-        baseUrl: ApiConstants.apiBaseUrl,
-        receiveDataWhenStatusError: true,
-        connectTimeout: timeOut,
-        receiveTimeout: timeOut,
-      ));
-      await setHeaders();
-      addDioInterceptor();
-      (dio!.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-          (client) {
-        client.badCertificateCallback = (cert, host, port) => true;
-        return null; // Accept all certificates
-      };
-    }
+    dio = Dio(BaseOptions(
+      baseUrl: ApiConstants.apiBaseUrl,
+      receiveDataWhenStatusError: true,
+      connectTimeout: timeOut,
+      receiveTimeout: timeOut,
+    ));
+
+    await setHeaders();
+    addDioInterceptor();
+
+    (dio!.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (client) {
+      client.badCertificateCallback = (cert, host, port) => true;
+      return null;
+    };
+
     return dio!;
   }
 
@@ -47,21 +49,12 @@ class DioHelper {
     dio?.options.headers['Authorization'] = 'Bearer $token';
   }
 
-  // static void addDioInterceptor() {
-  //   dio?.interceptors.add(
-  //     PrettyDioLogger(
-  //       requestBody: true,
-  //       requestHeader: true,
-  //       responseHeader: true,
-  //     ),
-  //   );
-  // }
-
   static void addDioInterceptor() {
     dio?.interceptors.add(
       InterceptorsWrapper(
         onError: (DioException error, handler) async {
-          if (error.response?.statusCode == 401) {
+          if (error.response?.statusCode == 401 && !_handling401) {
+            _handling401 = true;
             await handleUnauthorized();
           }
           handler.next(error);
@@ -88,15 +81,23 @@ class DioHelper {
     role = null;
     isBoarding = null;
 
-    // Navigate to login screen
-    AppNavigator.navigatorKey.currentState?.pushAndRemoveUntil(
-      MaterialPageRoute(
+    final navigator = AppNavigator.navigatorKey.currentState;
+
+    if (navigator != null) {
+      navigator.pushAndRemoveUntil(
+        MaterialPageRoute(
           builder: (_) => BlocProvider(
-                create: (context) => LoginCubit(),
-                child: const LoginScreen(),
-              )),
-      (route) => false,
-    );
+            create: (context) => LoginCubit(),
+            child: const LoginScreen(),
+          ),
+        ),
+        (route) => false,
+      );
+    }
+
+    // Small delay to avoid race condition, then reset the flag
+    await Future.delayed(const Duration(milliseconds: 300));
+    _handling401 = false;
   }
 
   /// GET request
@@ -126,6 +127,7 @@ class DioHelper {
     }
   }
 
+  /// Multipart POST
   static Future<Response?> postData2({
     required String url,
     Map<String, dynamic>? query,
@@ -136,9 +138,7 @@ class DioHelper {
         url,
         queryParameters: query,
         data: data,
-        options: Options(
-          contentType: 'multipart/form-data', // ✅ Add this line
-        ),
+        options: Options(contentType: 'multipart/form-data'),
       );
     } on DioException catch (e) {
       final error = ApiErrorHandler.handle(e);

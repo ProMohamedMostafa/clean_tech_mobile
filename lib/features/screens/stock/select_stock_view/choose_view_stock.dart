@@ -8,14 +8,9 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
-class ChooseViewStock extends StatefulWidget {
+class ChooseViewStock extends StatelessWidget {
   const ChooseViewStock({super.key});
 
-  @override
-  State<ChooseViewStock> createState() => _ChooseViewStockState();
-}
-
-class _ChooseViewStockState extends State<ChooseViewStock> {
   @override
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> items = [

@@ -27,9 +27,14 @@ class ShiftBody extends StatelessWidget {
         floatingActionButton: role == 'Admin'
             ? floatingActionButton(
                 icon: Icons.post_add_outlined,
-                onPressed: () {
-                  context.pushNamed(Routes.addShiftScreen);
-                })
+                onPressed: () async {
+                  final result = await context.pushNamed(Routes.addShiftScreen);
+
+                  if (result == true) {
+                    cubit.refreshShifts();
+                  }
+                },
+              )
             : SizedBox.shrink(),
         body: BlocConsumer<ShiftCubit, ShiftState>(
           listener: (context, state) {

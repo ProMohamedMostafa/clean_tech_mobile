@@ -23,11 +23,15 @@ class MaterialListItemBuild extends StatelessWidget {
     final cubit = context.read<MaterialManagementCubit>();
     return InkWell(
       borderRadius: BorderRadius.circular(11.r),
-      onTap: () {
-        context.pushNamed(
+      onTap: () async {
+        final result = await context.pushNamed(
           Routes.materialDetailsScreen,
           arguments: cubit.materialManagementModel!.data!.materials![index].id,
         );
+
+        if (result == true) {
+          cubit.refreshMaterials();
+        }
       },
       child: Card(
           elevation: 1,
@@ -60,10 +64,11 @@ class MaterialListItemBuild extends StatelessWidget {
                         ? IconButton(
                             onPressed: () {
                               PopUpDialog.show(
-                                context: context,
-                                id: cubit.materialManagementModel!.data!
-                                    .materials![index].id!,
-                              );
+                                  context: context,
+                                  id: cubit.materialManagementModel!.data!
+                                      .materials![index].id!,
+                                  categoryId: cubit.materialManagementModel!
+                                      .data!.materials![index].categoryId!);
                             },
                             icon: Icon(
                               Icons.more_horiz_rounded,

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -20,27 +18,21 @@ void main() async {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await checkIfLoggedInUser();
-  await DioHelper.initDio();
   setupFirebaseMessagingListeners();
   await ScreenUtil.ensureScreenSize();
-  HttpOverrides.global = MyHttpOverrides();
   Bloc.observer = const SimpleBlocObserver();
   runApp(AppRoot(
     appRouter: AppRouter(),
   ));
 }
 
-class MyHttpOverrides extends HttpOverrides {
-  @override
-  HttpClient createHttpClient(SecurityContext? context) {
-    return super.createHttpClient(context)
-      ..badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-  }
-}
-
 checkIfLoggedInUser() async {
+  ip = await CacheHelper.getString(SharedPrefKeys.ip);
   token = await CacheHelper.getSecuredString(SharedPrefKeys.userToken);
   isBoarding = await CacheHelper.getString(SharedPrefKeys.isOnBoarding);
   role = await CacheHelper.getString(SharedPrefKeys.userRole);
+
+  if (ip != null && ip!.isNotEmpty) {
+    await DioHelper.initDio();
+  }
 }

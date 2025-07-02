@@ -61,11 +61,12 @@ class CompleteTasksLineChart extends StatelessWidget {
                 xValueMapper: (ChartData data, _) => data.month,
                 yValueMapper: (ChartData data, _) => data.value,
                 markerSettings: MarkerSettings(
-                  isVisible: true,
-                  shape: DataMarkerType.circle,
-                  borderColor: AppColor.primaryColor,
-                  color: AppColor.primaryColor,
-                ),
+                    isVisible: true,
+                    shape: DataMarkerType.diamond,
+                    borderColor: AppColor.primaryColor,
+                    color: AppColor.primaryColor,
+                    height: 12.h,
+                    width: 12.w),
                 dataLabelSettings: DataLabelSettings(
                   isVisible: true,
                   labelAlignment: ChartDataLabelAlignment.top,

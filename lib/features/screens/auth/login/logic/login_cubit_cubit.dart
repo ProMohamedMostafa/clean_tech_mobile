@@ -26,6 +26,7 @@ class LoginCubit extends Cubit<LoginStates> {
       await saveUserToken(logInModel!.data!.token!);
       await saveUserId(logInModel!.data!.id!);
       await saveRole(logInModel!.data!.role!);
+      await saveOnBoarding('ip');
       await saveOnBoarding('isOnBoarding');
       await sendTokenToServer();
       emit(LoginSuccessState(logInModel!));
@@ -53,6 +54,11 @@ class LoginCubit extends Cubit<LoginStates> {
     await CacheHelper.setData(
         key: SharedPrefKeys.isOnBoarding, value: onBoarding);
     isBoarding = await CacheHelper.getString(SharedPrefKeys.isOnBoarding);
+  }
+  Future<void> saveIp(String ip) async {
+    await CacheHelper.setData(
+        key: SharedPrefKeys.ip, value: ip);
+    ip = await CacheHelper.getString(SharedPrefKeys.ip);
   }
 
   Future<void> sendTokenToServer() async {

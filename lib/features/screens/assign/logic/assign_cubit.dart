@@ -21,226 +21,225 @@ class AssignCubit extends Cubit<AssignStates> {
 
   static AssignCubit get(context) => BlocProvider.of(context);
 
-  TextEditingController locationController = TextEditingController();
   TextEditingController areaController = TextEditingController();
+  TextEditingController areaIdController = TextEditingController();
   TextEditingController cityController = TextEditingController();
+  TextEditingController cityIdController = TextEditingController();
   TextEditingController organizationController = TextEditingController();
+  TextEditingController organizationIdController = TextEditingController();
   TextEditingController buildingController = TextEditingController();
+  TextEditingController buildingIdController = TextEditingController();
   TextEditingController floorController = TextEditingController();
+  TextEditingController floorIdController = TextEditingController();
   TextEditingController sectionController = TextEditingController();
+  TextEditingController sectionIdController = TextEditingController();
   TextEditingController pointController = TextEditingController();
+  TextEditingController pointIdController = TextEditingController();
   TextEditingController roleController = TextEditingController();
+  TextEditingController roleIdController = TextEditingController();
   TextEditingController userController = TextEditingController();
+  TextEditingController userIdController = TextEditingController();
+  TextEditingController levelController = TextEditingController();
+
   final usersController = MultiSelectController<UserItem>();
-  final shiftController = MultiSelectController<ShiftData>();
+  final shiftsController = MultiSelectController<ShiftData>();
   final formKey = GlobalKey<FormState>();
 
+  int selecteIndex = 0;
+  int selecteSecendIndex = 0;
+  int? selectedLocation;
+
+  List<int> selectedUsersIds = [];
+  List<int> selectedShiftsIds = [];
+
   AssignModel? assignModel;
-  assignArea(int? locationId, List<int>? selectedUsersIds) {
+  assignArea() {
     emit(AssignLoadingState());
     DioHelper.postData(url: ApiConstants.assignAreaUrl, data: {
-      "areaId": locationId,
+      "areaId": areaIdController.text,
       "userIds": selectedUsersIds,
     }).then((value) {
       assignModel = AssignModel.fromJson(value!.data);
+      clearAllControllers();
+
       emit(AssignSuccessState(assignModel!));
     }).catchError((error) {
       emit(AssignErrorState(error.toString()));
     });
   }
 
-  assignCity(int? locationId, List<int>? selectedUsersIds) {
+  assignCity() {
     emit(AssignLoadingState());
     DioHelper.postData(url: ApiConstants.assignCityUrl, data: {
-      "cityId": locationId,
+      "cityId": cityIdController.text,
       "userIds": selectedUsersIds,
     }).then((value) {
       assignModel = AssignModel.fromJson(value!.data);
+      clearAllControllers();
+
       emit(AssignSuccessState(assignModel!));
     }).catchError((error) {
       emit(AssignErrorState(error.toString()));
     });
   }
 
-  assignOrganization(int? locationId, List<int>? selectedUsersIds) {
+  assignOrganization() {
     emit(AssignLoadingState());
     DioHelper.postData(url: ApiConstants.assignOrganizationUrl, data: {
-      "organizationId": locationId,
+      "organizationId": organizationIdController.text,
       "userIds": selectedUsersIds,
     }).then((value) {
       assignModel = AssignModel.fromJson(value!.data);
+      clearAllControllers();
+
       emit(AssignSuccessState(assignModel!));
     }).catchError((error) {
       emit(AssignErrorState(error.toString()));
     });
   }
 
-  assignBuilding(int? locationId, List<int>? selectedUsersIds) {
+  assignBuilding() {
     emit(AssignLoadingState());
     DioHelper.postData(url: ApiConstants.assignBuildingUrl, data: {
-      "buildingId": locationId,
+      "buildingId": buildingIdController.text,
       "userIds": selectedUsersIds,
     }).then((value) {
       assignModel = AssignModel.fromJson(value!.data);
+      clearAllControllers();
+
       emit(AssignSuccessState(assignModel!));
     }).catchError((error) {
       emit(AssignErrorState(error.toString()));
     });
   }
 
-  assignFloor(int? locationId, List<int>? selectedUsersIds) {
+  assignFloor() {
     emit(AssignLoadingState());
     DioHelper.postData(url: ApiConstants.assignFloorUrl, data: {
-      "floorId": locationId,
+      "floorId": floorIdController.text,
       "userIds": selectedUsersIds,
     }).then((value) {
       assignModel = AssignModel.fromJson(value!.data);
+      clearAllControllers();
+
       emit(AssignSuccessState(assignModel!));
     }).catchError((error) {
       emit(AssignErrorState(error.toString()));
     });
   }
 
-  assignSection(int? locationId, List<int>? selectedUsersIds) {
+  assignSection() {
     emit(AssignLoadingState());
     DioHelper.postData(url: ApiConstants.assignSectionUrl, data: {
-      "sectionId": locationId,
+      "sectionId": sectionIdController.text,
       "userIds": selectedUsersIds,
     }).then((value) {
       assignModel = AssignModel.fromJson(value!.data);
+      clearAllControllers();
+
       emit(AssignSuccessState(assignModel!));
     }).catchError((error) {
       emit(AssignErrorState(error.toString()));
     });
   }
 
-  assignPoint(int? locationId, List<int>? selectedUsersIds) {
+  assignPoint() {
     emit(AssignLoadingState());
     DioHelper.postData(url: ApiConstants.assignPointUrl, data: {
-      "pointId": locationId,
+      "pointId": pointIdController.text,
       "userIds": selectedUsersIds,
     }).then((value) {
       assignModel = AssignModel.fromJson(value!.data);
+      clearAllControllers();
+
       emit(AssignSuccessState(assignModel!));
     }).catchError((error) {
       emit(AssignErrorState(error.toString()));
     });
   }
 
-  assignUserShift(List<int>? selectedShiftsIds, List<int>? selectedUsersIds,
-      {int? selectedUserId}) {
-    emit(AssignLoadingState());
-    DioHelper.postData(url: ApiConstants.assignShiftUrl, data: {
-      "shiftIds": selectedShiftsIds,
-      "userId": selectedUserId ?? selectedUsersIds,
-    }).then((value) {
-      assignModel = AssignModel.fromJson(value!.data);
-      emit(AssignSuccessState(assignModel!));
-    }).catchError((error) {
-      emit(AssignErrorState(error.toString()));
-    });
-  }
-
-  assignOrganizationShift(int? locationId, List<int>? selectedShiftsIds) {
+  assignOrganizationShift() {
     emit(AssignLoadingState());
     DioHelper.postData(url: ApiConstants.assignOrganizationShiftUrl, data: {
-      "organizationId": locationId,
+      "organizationId": organizationIdController.text,
       "shiftIds": selectedShiftsIds,
     }).then((value) {
       assignModel = AssignModel.fromJson(value!.data);
+      clearAllControllers();
+
       emit(AssignSuccessState(assignModel!));
     }).catchError((error) {
       emit(AssignErrorState(error.toString()));
     });
   }
 
-  assignBuildingShift(int? locationId, List<int>? selectedShiftsIds) {
+  assignBuildingShift() {
     emit(AssignLoadingState());
     DioHelper.postData(url: ApiConstants.assignBuildingShiftUrl, data: {
-      "buildingId": locationId,
+      "buildingId": buildingIdController.text,
       "shiftIds": selectedShiftsIds,
     }).then((value) {
       assignModel = AssignModel.fromJson(value!.data);
+      clearAllControllers();
+
       emit(AssignSuccessState(assignModel!));
     }).catchError((error) {
       emit(AssignErrorState(error.toString()));
     });
   }
 
-  assignFloorShift(int? locationId, List<int>? selectedShiftsIds) {
+  assignFloorShift() {
     emit(AssignLoadingState());
     DioHelper.postData(url: ApiConstants.assignFloorShiftUrl, data: {
-      "floorId": locationId,
+      "floorId": floorIdController.text,
       "shiftIds": selectedShiftsIds,
     }).then((value) {
       assignModel = AssignModel.fromJson(value!.data);
+      clearAllControllers();
+
       emit(AssignSuccessState(assignModel!));
     }).catchError((error) {
       emit(AssignErrorState(error.toString()));
     });
   }
 
-  assignSectionShift(int? locationId, List<int>? selectedShiftsIds) {
+  assignSectionShift() {
     emit(AssignLoadingState());
     DioHelper.postData(url: ApiConstants.assignSectionShiftUrl, data: {
-      "sectionId": locationId,
+      "sectionId": sectionIdController.text,
       "shiftIds": selectedShiftsIds,
     }).then((value) {
       assignModel = AssignModel.fromJson(value!.data);
+      clearAllControllers();
+
       emit(AssignSuccessState(assignModel!));
     }).catchError((error) {
       emit(AssignErrorState(error.toString()));
     });
   }
 
-  AllShiftsModel? allShiftsModel;
-  getAllShifts({
-    int? areaId,
-    int? cityId,
-    int? organizationId,
-    int? buildingId,
-    int? floorId,
-    int? sectionId,
-  }) {
-    emit(ShiftLoadingState());
-    DioHelper.getData(
-      url: ApiConstants.allShiftsUrl,
-    ).then((value) {
-      allShiftsModel = AllShiftsModel.fromJson(value!.data);
-      emit(ShiftSuccessState(allShiftsModel!));
-    }).catchError((error) {
-      emit(ShiftErrorState(error.toString()));
-    });
-  }
+  assignUserShift() {
+    emit(AssignLoadingState());
+    DioHelper.postData(url: ApiConstants.assignShiftUrl, data: {
+      "userId": userIdController.text,
+      "shiftIds": selectedShiftsIds,
+    }).then((value) {
+      assignModel = AssignModel.fromJson(value!.data);
+      clearAllControllers();
 
-  RoleModel? roleModel;
-  getRole() {
-    emit(RoleLoadingState());
-    DioHelper.getData(url: ApiConstants.rolesUrl).then((value) {
-      roleModel = RoleModel.fromJson(value!.data);
-      emit(RoleSuccessState(roleModel!));
+      emit(AssignSuccessState(assignModel!));
     }).catchError((error) {
-      emit(RoleErrorState(error.toString()));
-    });
-  }
-
-  UsersModel? usersModel;
-  getAllUsers(int id) {
-    emit(AllUsersLoadingState());
-    DioHelper.getData(url: "users/pagination", query: {'role': id})
-        .then((value) {
-      usersModel = UsersModel.fromJson(value!.data);
-      emit(AllUsersSuccessState(usersModel!));
-    }).catchError((error) {
-      emit(AllUsersErrorState(error.toString()));
+      emit(AssignErrorState(error.toString()));
     });
   }
 
   AreaListModel? areaListModel;
+  List<AreaItem> areaItem = [AreaItem(name: 'No Areas')];
   getArea() {
     emit(GetAreaLoadingState());
-    DioHelper.getData(url: ApiConstants.areaUrl).then((value) {
+    DioHelper.getData(url: "areas/pagination").then((value) {
       areaListModel = AreaListModel.fromJson(value!.data);
+      areaItem = areaListModel?.data?.data ?? [AreaItem(name: 'No Areas')];
       emit(GetAreaSuccessState(areaListModel!));
     }).catchError((error) {
       emit(GetAreaErrorState(error.toString()));
@@ -248,11 +247,14 @@ class AssignCubit extends Cubit<AssignStates> {
   }
 
   CityListModel? cityModel;
-  getCity(int areaId) {
+  List<CityItem> cityItem = [CityItem(name: 'No Cities')];
+  getCity() {
     emit(GetCityLoadingState());
-    DioHelper.getData(url: "cities/pagination", query: {'area': areaId})
-        .then((value) {
+    DioHelper.getData(
+        url: "cities/pagination",
+        query: {'Area': areaIdController.text}).then((value) {
       cityModel = CityListModel.fromJson(value!.data);
+      cityItem = cityModel?.data?.data ?? [CityItem(name: 'No Cities')];
       emit(GetCitySuccessState(cityModel!));
     }).catchError((error) {
       emit(GetCityErrorState(error.toString()));
@@ -260,11 +262,17 @@ class AssignCubit extends Cubit<AssignStates> {
   }
 
   OrganizationListModel? organizationModel;
-  getOrganization(int cityId) {
+  List<OrganizationItem> organizationItem = [
+    OrganizationItem(name: 'No organizations')
+  ];
+  getOrganization() {
     emit(GetOrganizationLoadingState());
-    DioHelper.getData(url: "organizations/pagination", query: {'city': cityId})
-        .then((value) {
+    DioHelper.getData(
+        url: "organizations/pagination",
+        query: {'City': cityIdController.text}).then((value) {
       organizationModel = OrganizationListModel.fromJson(value!.data);
+      organizationItem = organizationModel?.data?.data ??
+          [OrganizationItem(name: 'No organizations')];
       emit(GetOrganizationSuccessState(organizationModel!));
     }).catchError((error) {
       emit(GetOrganizationErrorState(error.toString()));
@@ -272,12 +280,15 @@ class AssignCubit extends Cubit<AssignStates> {
   }
 
   BuildingListModel? buildingModel;
-  getBuilding(int organizationId) {
+  List<BuildingItem> buildingItem = [BuildingItem(name: 'No building')];
+  getBuilding() {
     emit(GetBuildingLoadingState());
     DioHelper.getData(
         url: 'buildings/pagination',
-        query: {'organization': organizationId}).then((value) {
+        query: {'OrganizationId': organizationIdController.text}).then((value) {
       buildingModel = BuildingListModel.fromJson(value!.data);
+      buildingItem =
+          buildingModel?.data?.data ?? [BuildingItem(name: 'No building')];
       emit(GetBuildingSuccessState(buildingModel!));
     }).catchError((error) {
       emit(GetBuildingErrorState(error.toString()));
@@ -285,11 +296,14 @@ class AssignCubit extends Cubit<AssignStates> {
   }
 
   FloorListModel? floorModel;
-  getFloor(int buildingId) {
+  List<FloorItem> floorItem = [FloorItem(name: 'No floors')];
+  getFloor() {
     emit(GetFloorLoadingState());
-    DioHelper.getData(url: 'floors/pagination', query: {'building': buildingId})
-        .then((value) {
+    DioHelper.getData(
+        url: 'floors/pagination',
+        query: {'BuildingId': buildingIdController.text}).then((value) {
       floorModel = FloorListModel.fromJson(value!.data);
+      floorItem = floorModel?.data?.data ?? [FloorItem(name: 'No floors')];
       emit(GetFloorSuccessState(floorModel!));
     }).catchError((error) {
       emit(GetFloorErrorState(error.toString()));
@@ -297,11 +311,15 @@ class AssignCubit extends Cubit<AssignStates> {
   }
 
   SectionListModel? sectionModel;
-  getSection(int floorId) {
+  List<SectionItem> sectionItem = [SectionItem(name: 'No sections')];
+  getSection() {
     emit(GetSectionLoadingState());
-    DioHelper.getData(url: 'sections/pagination', query: {'floor': floorId})
-        .then((value) {
+    DioHelper.getData(
+        url: 'sections/pagination',
+        query: {'FloorId': floorIdController.text}).then((value) {
       sectionModel = SectionListModel.fromJson(value!.data);
+      sectionItem =
+          sectionModel?.data?.data ?? [SectionItem(name: 'No sections')];
       emit(GetSectionSuccessState(sectionModel!));
     }).catchError((error) {
       emit(GetSectionErrorState(error.toString()));
@@ -309,14 +327,61 @@ class AssignCubit extends Cubit<AssignStates> {
   }
 
   PointListModel? pointModel;
-  getPoint(int sectionId) {
+  List<PointItem> pointItem = [PointItem(name: 'No points')];
+  getPoint() {
     emit(GetPointLoadingState());
-    DioHelper.getData(url: 'points/pagination', query: {'section': sectionId})
-        .then((value) {
+    DioHelper.getData(
+        url: 'points/pagination',
+        query: {'SectionId': sectionIdController.text}).then((value) {
       pointModel = PointListModel.fromJson(value!.data);
+      pointItem = pointModel?.data?.data ?? [PointItem(name: 'No points')];
       emit(GetPointSuccessState(pointModel!));
     }).catchError((error) {
       emit(GetPointErrorState(error.toString()));
+    });
+  }
+
+  RoleModel? roleModel;
+  List<RoleDataItem> roleDataItem = [RoleDataItem(name: 'No roles available')];
+  getRole() {
+    emit(RoleLoadingState());
+
+    DioHelper.getData(url: ApiConstants.rolesUrl).then((value) {
+      roleModel = RoleModel.fromJson(value!.data);
+      roleDataItem =
+          roleModel?.data ?? [RoleDataItem(name: 'No roles available')];
+      emit(RoleSuccessState(roleModel!));
+    }).catchError((error) {
+      emit(RoleErrorState(error.toString()));
+    });
+  }
+
+  AllShiftsModel? shiftsModel;
+  List<ShiftData> shiftData = [ShiftData(name: 'No shifts available')];
+  getShifts() {
+    emit(ShiftLoadingState());
+    DioHelper.getData(url: ApiConstants.allShiftsUrl).then((value) {
+      shiftsModel = AllShiftsModel.fromJson(value!.data);
+      shiftData =
+          shiftsModel?.data?.shifts ?? [ShiftData(name: 'No shifts available')];
+      emit(ShiftSuccessState(shiftsModel!));
+    }).catchError((error) {
+      emit(ShiftErrorState(error.toString()));
+    });
+  }
+
+  UsersModel? usersModel;
+  List<UserItem> userItem = [UserItem(userName: 'No users available')];
+  getUsers({int? roleId}) {
+    emit(AllUsersLoadingState());
+    DioHelper.getData(url: "users/pagination", query: {'RoleId': roleId})
+        .then((value) {
+      usersModel = UsersModel.fromJson(value!.data);
+      userItem =
+          usersModel?.data?.users ?? [UserItem(userName: 'No users available')];
+      emit(AllUsersSuccessState(usersModel!));
+    }).catchError((error) {
+      emit(AllUsersErrorState(error.toString()));
     });
   }
 
@@ -324,9 +389,119 @@ class AssignCubit extends Cubit<AssignStates> {
     emit(AllOrganizationLoadingState());
     DioHelper.getData(url: ApiConstants.organizationUrl).then((value) {
       organizationModel = OrganizationListModel.fromJson(value!.data);
+      organizationItem = organizationModel?.data?.data ??
+          [OrganizationItem(name: 'No organizations')];
       emit(AllOrganizationSuccessState(organizationModel!));
     }).catchError((error) {
       emit(AllOrganizationErrorState(error.toString()));
     });
+  }
+
+  fetchAppropriateOrganizations() {
+    if ((selecteIndex == 1 && selecteSecendIndex == 1) ||
+        (selecteIndex == 2 && selecteSecendIndex == 1)) {
+      getAllOrganization();
+    } else if ((selecteIndex == 0 && selecteSecendIndex == 1) ||
+        (selecteIndex == 2 && selecteSecendIndex == 0)) {
+      getArea();
+      getOrganization();
+    }
+  }
+
+  void clearAllControllers() {
+    // Clear all text controllers
+    areaController.clear();
+    cityController.clear();
+    organizationController.clear();
+    buildingController.clear();
+    floorController.clear();
+    sectionController.clear();
+    pointController.clear();
+    roleController.clear();
+    userController.clear();
+    levelController.clear();
+
+    // Clear all ID controllers
+    areaIdController.clear();
+    cityIdController.clear();
+    organizationIdController.clear();
+    buildingIdController.clear();
+    floorIdController.clear();
+    sectionIdController.clear();
+    pointIdController.clear();
+    roleIdController.clear();
+    userIdController.clear();
+
+    // Clear multi-select controllers
+    usersController.clearAll();
+    shiftsController.clearAll();
+
+    // Clear selected IDs
+    selectedUsersIds.clear();
+    selectedShiftsIds.clear();
+
+    // Reset location selection
+    selectedLocation = 0;
+    selectedLevel = '';
+
+    // Reset models to force fresh data fetch
+    areaListModel = null;
+    cityModel = null;
+    organizationModel = null;
+    buildingModel = null;
+    floorModel = null;
+    sectionModel = null;
+    pointModel = null;
+    usersModel = null;
+
+    emit(AssignClearState());
+  }
+
+  List<String> get levelOrder {
+    if ((selecteIndex == 1 && selecteSecendIndex == 1) ||
+        (selecteIndex == 2 && selecteSecendIndex == 1)) {
+      return [
+        'Organization',
+        'Building',
+        'Floor',
+        'Section',
+      ];
+    } else {
+      return [
+        'Area',
+        'City',
+        'Organization',
+        'Building',
+        'Floor',
+        'Section',
+        'Point',
+      ];
+    }
+  }
+
+  String selectedLevel = '';
+  void setSelectedLevel(String level) {
+    selectedLevel = level;
+    selectedLocation = levelOrder.indexOf(level);
+    emit(LevelChanged());
+  }
+
+  bool shouldShow(String level) {
+    if (!levelOrder.contains(level)) return false;
+
+    final selectedIndex = levelOrder.indexOf(selectedLevel);
+    final levelIndex = levelOrder.indexOf(level);
+    return selectedIndex >= levelIndex;
+  }
+
+  String getFirstLabel(int selecteIndex) {
+    if (selecteIndex == 0) return 'Shift';
+    if (selecteIndex == 1) return 'User';
+    return 'User';
+  }
+
+  String getSecondLabel(int selecteIndex) {
+    if (selecteIndex == 0 || selecteIndex == 1) return 'Location';
+    return 'Shift';
   }
 }

@@ -20,11 +20,15 @@ class CategoryListItemBuild extends StatelessWidget {
     final cubit = context.read<CategoryManagementCubit>();
     return InkWell(
       borderRadius: BorderRadius.circular(11.r),
-      onTap: () {
+      onTap: () async {
         if (cubit.selectedIndex == 0) {
-          context.pushNamed(Routes.materialScreen,
+          final result = await context.pushNamed(Routes.materialScreen,
               arguments:
                   cubit.categoryManagementModel!.data!.categories![index].id);
+
+          if (result == true) {
+            cubit.refreshCategories();
+          }
         }
       },
       child: Card(
@@ -64,26 +68,32 @@ class CategoryListItemBuild extends StatelessWidget {
             child: Row(
               children: [
                 InkWell(
-                    onTap: () {
-                      cubit.selectedIndex == 0
-                          ? context.pushNamed(
-                              Routes.editCategoryScreen,
-                              arguments: cubit.categoryManagementModel!.data!
-                                  .categories![index].id,
-                            )
-                          : showDialog(
-                              context: context,
-                              builder: (dialogContext) {
-                                return PopUpMessage(
-                                    title: S.of(context).TitleRestore,
-                                    body: S.of(context).categoryBody,
-                                    onPressed: () {
-                                      cubit.restoreDeletedCategory(
-                                        cubit.deletedCategoryListModel!
-                                            .data![index].id!,
-                                      );
-                                    });
-                              });
+                    onTap: () async {
+                      if (cubit.selectedIndex == 0) {
+                        final result = await context.pushNamed(
+                          Routes.editCategoryScreen,
+                          arguments: cubit.categoryManagementModel!.data!
+                              .categories![index].id,
+                        );
+
+                        if (result == true) {
+                          cubit.refreshCategories();
+                        }
+                      } else {
+                        showDialog(
+                            context: context,
+                            builder: (dialogContext) {
+                              return PopUpMessage(
+                                  title: S.of(context).TitleRestore,
+                                  body: S.of(context).categoryBody,
+                                  onPressed: () {
+                                    cubit.restoreDeletedCategory(
+                                      cubit.deletedCategoryListModel!
+                                          .data![index].id!,
+                                    );
+                                  });
+                            });
+                      }
                     },
                     child: Icon(
                       cubit.selectedIndex == 0

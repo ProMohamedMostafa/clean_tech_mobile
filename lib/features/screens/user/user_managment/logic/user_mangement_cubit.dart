@@ -22,7 +22,7 @@ class UserManagementCubit extends Cubit<UserManagementState> {
   int currentPage = 1;
   FilterDialogDataModel? filterModel;
   UsersModel? usersModel;
-  getAllUsersInUserManage({int? roleId}) {
+  getAllUsers({int? roleId}) {
     emit(AllUsersLoadingState());
 
     DioHelper.getData(url: "users/pagination", query: {
@@ -64,10 +64,10 @@ class UserManagementCubit extends Cubit<UserManagementState> {
         if (scrollController.position.atEdge &&
             scrollController.position.pixels != 0) {
           currentPage++;
-          getAllUsersInUserManage(roleId: roleId);
+          getAllUsers(roleId: roleId);
         }
       });
-    getAllUsersInUserManage(roleId: roleId);
+    getAllUsers(roleId: roleId);
     if (role == "Admin") {
       getAllDeletedUser();
     }
@@ -80,7 +80,7 @@ class UserManagementCubit extends Cubit<UserManagementState> {
       if (usersModel == null) {
         currentPage = 1;
         usersModel = null;
-        getAllUsersInUserManage();
+        getAllUsers();
       } else {
         emit(AllUsersSuccessState(usersModel!));
       }
@@ -91,6 +91,16 @@ class UserManagementCubit extends Cubit<UserManagementState> {
         emit(AllDeletedUsersSuccessState(deletedListModel!));
       }
     }
+  }
+
+  Future<void> refreshUsers({int? roleId}) async {
+    currentPage = 1;
+    usersModel = null;
+    deletedListModel = null;
+    emit(AllUsersLoadingState());
+    emit(AllDeletedUsersLoadingState());
+    await getAllUsers(roleId: roleId);
+    await getAllDeletedUser();
   }
 
   DeletedListModel? deletedListModel;
@@ -129,7 +139,7 @@ class UserManagementCubit extends Cubit<UserManagementState> {
 
         if (currentPage == 1) {
           usersModel = null;
-          getAllUsersInUserManage();
+          getAllUsers();
         } else {
           emit(AllUsersSuccessState(usersModel!));
         }

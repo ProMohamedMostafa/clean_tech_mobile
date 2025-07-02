@@ -23,8 +23,10 @@ class AddCategoryCubit extends Cubit<AddCategoryState> {
     emit(AddCategoryLoadingState());
     DioHelper.postData(url: ApiConstants.createCategoryUrl, data: {
       "name": nameController.text,
-      "unit": unitIdController.text,
-      "parentCategoryId": parentCategoryIdController.text,
+      "unit": int.parse(unitIdController.text),
+      "parentCategoryId": parentCategoryController.text.isEmpty
+          ? null
+          : int.parse(parentCategoryIdController.text),
     }).then((value) {
       addCategoryModel = AddCategoryModel.fromJson(value!.data);
       emit(AddCategorySuccessState(addCategoryModel!));

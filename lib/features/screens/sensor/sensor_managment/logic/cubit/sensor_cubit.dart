@@ -86,6 +86,16 @@ class SensorCubit extends Cubit<SensorState> {
     }
   }
 
+  Future<void> refreshSensors() async {
+    currentPage = 1;
+    sensorModel = null;
+    deletedSensorListModel = null;
+    emit(SensorManagementLoading());
+    emit(DeletedSensorsLoadingState());
+    await getSensorsData();
+    await getAllDeletedSensors();
+  }
+
   DeletedSensorListModel? deletedSensorListModel;
   getAllDeletedSensors() {
     emit(DeletedSensorsLoadingState());

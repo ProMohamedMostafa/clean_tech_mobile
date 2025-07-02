@@ -20,12 +20,16 @@ class BuildSensorItemList extends StatelessWidget {
     final cubit = context.read<SensorCubit>();
     return InkWell(
       borderRadius: BorderRadius.circular(16.r),
-      onTap: () {
+      onTap: () async{
         if (cubit.selectedIndex == 0) {
-          context.pushNamed(
+          final result = await   context.pushNamed(
             Routes.sensorDetailsScreen,
             arguments: cubit.sensorModel!.data!.data![index].id,
           );
+
+          if (result == true) {
+            cubit.refreshSensors();
+          }
         }
       },
       child: Container(
@@ -219,9 +223,14 @@ class BuildSensorItemList extends StatelessWidget {
                   ),
                   InkWell(
                     borderRadius: BorderRadius.circular(8.r),
-                    onTap: () {
-                      context.pushNamed(Routes.sensorEditScreen,
+                    onTap: () async{
+                       final result = await   context.pushNamed(Routes.sensorEditScreen,
                           arguments: cubit.sensorModel!.data!.data![index].id);
+
+          if (result == true) {
+            cubit.refreshSensors();
+          }
+                      
                     },
                     child: Container(
                       decoration: BoxDecoration(

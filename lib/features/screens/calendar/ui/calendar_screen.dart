@@ -29,7 +29,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(S.of(context).botNavTitle3),
+        title: Text(S.of(context).botNavTitle3,
+            style: TextStyle(color: AppColor.primaryColor)),
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),

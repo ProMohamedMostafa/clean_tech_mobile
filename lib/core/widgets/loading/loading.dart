@@ -12,6 +12,8 @@ class Loading extends StatelessWidget {
         'assets/images/loading.json',
         width: 200.w,
         height: 200.h,
+        repeat: true,
+        animate: true,
       ),
     );
   }

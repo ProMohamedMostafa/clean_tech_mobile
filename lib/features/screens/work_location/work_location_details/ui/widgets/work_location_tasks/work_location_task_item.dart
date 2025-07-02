@@ -29,15 +29,15 @@ class WorkLocationTaskItem extends StatelessWidget {
     Color priorityColorForTask;
 
     taskPriority = selectedIndex == 0
-        ? cubit.allareaTasksModel!.data!.data![index].priority!
+        ? cubit.allAreaTasksModel!.data!.data![index].priority!
         : selectedIndex == 1
-            ? cubit.allcityTasksModel!.data!.data![index].priority!
+            ? cubit.allCityTasksModel!.data!.data![index].priority!
             : selectedIndex == 2
-                ? cubit.allorganizationTasksModel!.data!.data![index].priority!
+                ? cubit.allOrganizationTasksModel!.data!.data![index].priority!
                 : selectedIndex == 3
-                    ? cubit.allbuildingTasksModel!.data!.data![index].priority!
+                    ? cubit.allBuildingTasksModel!.data!.data![index].priority!
                     : selectedIndex == 4
-                        ? cubit.allfloorTasksModel!.data!.data![index].priority!
+                        ? cubit.allFloorTasksModel!.data!.data![index].priority!
                         : selectedIndex == 5
                             ? cubit.allSectionTasksModel!.data!.data![index]
                                 .priority!
@@ -55,18 +55,18 @@ class WorkLocationTaskItem extends StatelessWidget {
       onTap: () {
         context.pushNamed(Routes.taskDetailsScreen,
             arguments: selectedIndex == 0
-                ? cubit.allareaTasksModel!.data!.data![index].id!
+                ? cubit.allAreaTasksModel!.data!.data![index].id!
                 : selectedIndex == 1
-                    ? cubit.allcityTasksModel!.data!.data![index].id!
+                    ? cubit.allCityTasksModel!.data!.data![index].id!
                     : selectedIndex == 2
                         ? cubit
-                            .allorganizationTasksModel!.data!.data![index].id!
+                            .allOrganizationTasksModel!.data!.data![index].id!
                         : selectedIndex == 3
                             ? cubit
-                                .allbuildingTasksModel!.data!.data![index].id!
+                                .allBuildingTasksModel!.data!.data![index].id!
                             : selectedIndex == 4
                                 ? cubit
-                                    .allfloorTasksModel!.data!.data![index].id!
+                                    .allFloorTasksModel!.data!.data![index].id!
                                 : selectedIndex == 5
                                     ? cubit.allSectionTasksModel!.data!
                                         .data![index].id!
@@ -105,18 +105,18 @@ class WorkLocationTaskItem extends StatelessWidget {
                       child: Text(
                         selectedIndex == 0
                             ? cubit
-                                .allareaTasksModel!.data!.data![index].priority!
+                                .allAreaTasksModel!.data!.data![index].priority!
                             : selectedIndex == 1
-                                ? cubit.allcityTasksModel!.data!.data![index]
+                                ? cubit.allCityTasksModel!.data!.data![index]
                                     .priority!
                                 : selectedIndex == 2
-                                    ? cubit.allorganizationTasksModel!.data!
+                                    ? cubit.allOrganizationTasksModel!.data!
                                         .data![index].priority!
                                     : selectedIndex == 3
-                                        ? cubit.allbuildingTasksModel!.data!
+                                        ? cubit.allBuildingTasksModel!.data!
                                             .data![index].priority!
                                         : selectedIndex == 4
-                                            ? cubit.allfloorTasksModel!.data!
+                                            ? cubit.allFloorTasksModel!.data!
                                                 .data![index].priority!
                                             : selectedIndex == 5
                                                 ? cubit
@@ -148,18 +148,18 @@ class WorkLocationTaskItem extends StatelessWidget {
                       child: Text(
                         selectedIndex == 0
                             ? cubit
-                                .allareaTasksModel!.data!.data![index].status!
+                                .allAreaTasksModel!.data!.data![index].status!
                             : selectedIndex == 1
-                                ? cubit.allcityTasksModel!.data!.data![index]
+                                ? cubit.allCityTasksModel!.data!.data![index]
                                     .status!
                                 : selectedIndex == 2
-                                    ? cubit.allorganizationTasksModel!.data!
+                                    ? cubit.allOrganizationTasksModel!.data!
                                         .data![index].status!
                                     : selectedIndex == 3
-                                        ? cubit.allbuildingTasksModel!.data!
+                                        ? cubit.allBuildingTasksModel!.data!
                                             .data![index].status!
                                         : selectedIndex == 4
-                                            ? cubit.allfloorTasksModel!.data!
+                                            ? cubit.allFloorTasksModel!.data!
                                                 .data![index].status!
                                             : selectedIndex == 5
                                                 ? cubit.allSectionTasksModel!
@@ -175,17 +175,17 @@ class WorkLocationTaskItem extends StatelessWidget {
               ),
               Text(
                 selectedIndex == 0
-                    ? cubit.allareaTasksModel!.data!.data![index].title!
+                    ? cubit.allAreaTasksModel!.data!.data![index].title!
                     : selectedIndex == 1
-                        ? cubit.allcityTasksModel!.data!.data![index].title!
+                        ? cubit.allCityTasksModel!.data!.data![index].title!
                         : selectedIndex == 2
-                            ? cubit.allorganizationTasksModel!.data!
+                            ? cubit.allOrganizationTasksModel!.data!
                                 .data![index].title!
                             : selectedIndex == 3
-                                ? cubit.allbuildingTasksModel!.data!
+                                ? cubit.allBuildingTasksModel!.data!
                                     .data![index].title!
                                 : selectedIndex == 4
-                                    ? cubit.allfloorTasksModel!.data!
+                                    ? cubit.allFloorTasksModel!.data!
                                         .data![index].title!
                                     : selectedIndex == 5
                                         ? cubit.allSectionTasksModel!.data!
@@ -197,18 +197,18 @@ class WorkLocationTaskItem extends StatelessWidget {
               verticalSpace(10),
               Text(
                 selectedIndex == 0
-                    ? cubit.allareaTasksModel!.data!.data![index].description!
+                    ? cubit.allAreaTasksModel!.data!.data![index].description!
                     : selectedIndex == 1
                         ? cubit
-                            .allcityTasksModel!.data!.data![index].description!
+                            .allCityTasksModel!.data!.data![index].description!
                         : selectedIndex == 2
-                            ? cubit.allorganizationTasksModel!.data!
+                            ? cubit.allOrganizationTasksModel!.data!
                                 .data![index].description!
                             : selectedIndex == 3
-                                ? cubit.allbuildingTasksModel!.data!
+                                ? cubit.allBuildingTasksModel!.data!
                                     .data![index].description!
                                 : selectedIndex == 4
-                                    ? cubit.allfloorTasksModel!.data!
+                                    ? cubit.allFloorTasksModel!.data!
                                         .data![index].description!
                                     : selectedIndex == 5
                                         ? cubit.allSectionTasksModel!.data!
@@ -230,18 +230,18 @@ class WorkLocationTaskItem extends StatelessWidget {
                   horizontalSpace(5),
                   Text(
                     selectedIndex == 0
-                        ? cubit.allareaTasksModel!.data!.data![index].startTime!
+                        ? cubit.allAreaTasksModel!.data!.data![index].startTime!
                         : selectedIndex == 1
-                            ? cubit.allcityTasksModel!.data!.data![index]
+                            ? cubit.allCityTasksModel!.data!.data![index]
                                 .startTime!
                             : selectedIndex == 2
-                                ? cubit.allorganizationTasksModel!.data!
+                                ? cubit.allOrganizationTasksModel!.data!
                                     .data![index].startTime!
                                 : selectedIndex == 3
-                                    ? cubit.allbuildingTasksModel!.data!
+                                    ? cubit.allBuildingTasksModel!.data!
                                         .data![index].startTime!
                                     : selectedIndex == 4
-                                        ? cubit.allfloorTasksModel!.data!
+                                        ? cubit.allFloorTasksModel!.data!
                                             .data![index].startTime!
                                         : selectedIndex == 5
                                             ? cubit.allSectionTasksModel!.data!
