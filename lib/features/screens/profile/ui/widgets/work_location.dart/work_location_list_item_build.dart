@@ -7,21 +7,19 @@ import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/features/screens/profile/logic/profile_cubit.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class WorkLocationItemBuild extends StatelessWidget {
   const WorkLocationItemBuild({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<ProfileCubit>();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (context
-            .read<ProfileCubit>()
-            .userWorkLocationDetailsModel!
-            .data!
-            .areas!
-            .isNotEmpty) ...[
+        if (cubit.userWorkLocationDetailsModel!.data!.areas!.isNotEmpty) ...[
           Card(
             elevation: 1,
             margin: EdgeInsets.zero,
@@ -54,7 +52,7 @@ class WorkLocationItemBuild extends StatelessWidget {
                       ),
                       horizontalSpace(5),
                       Text(
-                        'Area',
+                        S.of(context).Area,
                         style: TextStyles.font16BlackSemiBold,
                       ),
                     ],
@@ -64,12 +62,8 @@ class WorkLocationItemBuild extends StatelessWidget {
                     shrinkWrap: true,
                     physics: const BouncingScrollPhysics(),
                     scrollDirection: Axis.vertical,
-                    itemCount: context
-                        .read<ProfileCubit>()
-                        .userWorkLocationDetailsModel!
-                        .data!
-                        .areas!
-                        .length,
+                    itemCount:
+                        cubit.userWorkLocationDetailsModel!.data!.areas!.length,
                     separatorBuilder: (context, index) {
                       return verticalSpace(10);
                     },
@@ -79,18 +73,18 @@ class WorkLocationItemBuild extends StatelessWidget {
                         children: [
                           InkWell(
                             borderRadius: BorderRadius.circular(5.r),
-                            onTap: () {
-                              context.pushNamed(
+                            onTap: () async {
+                              final result = await context.pushNamed(
                                   Routes.workLocationDetailsScreen,
                                   arguments: {
-                                    'id': context
-                                        .read<ProfileCubit>()
-                                        .userWorkLocationDetailsModel!
-                                        .data!
-                                        .areas![index]
-                                        .id,
+                                    'id': cubit.userWorkLocationDetailsModel!
+                                        .data!.areas![index].id,
                                     'selectedIndex': 0
                                   });
+
+                              if (result == true) {
+                                await cubit.refreshWorkLocations();
+                              }
                             },
                             child: Container(
                               padding: EdgeInsets.fromLTRB(10, 8, 8, 8),
@@ -102,16 +96,12 @@ class WorkLocationItemBuild extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
-                                    context
-                                        .read<ProfileCubit>()
-                                        .userWorkLocationDetailsModel!
-                                        .data!
-                                        .areas![index]
-                                        .name!,
+                                    cubit.userWorkLocationDetailsModel!.data!
+                                        .areas![index].name!,
                                     style: TextStyles.font14BlackSemiBold,
                                   ),
                                   Text(
-                                    " (${context.read<ProfileCubit>().userWorkLocationDetailsModel!.data!.areas![index].countryName})",
+                                    " (${cubit.userWorkLocationDetailsModel!.data!.areas![index].countryName})",
                                     style: TextStyles.font12GreyRegular,
                                   ),
                                   Spacer(),
@@ -133,12 +123,7 @@ class WorkLocationItemBuild extends StatelessWidget {
           ),
           verticalSpace(10),
         ],
-        if (context
-            .read<ProfileCubit>()
-            .userWorkLocationDetailsModel!
-            .data!
-            .cities!
-            .isNotEmpty) ...[
+        if (cubit.userWorkLocationDetailsModel!.data!.cities!.isNotEmpty) ...[
           Card(
             elevation: 1,
             margin: EdgeInsets.zero,
@@ -171,7 +156,7 @@ class WorkLocationItemBuild extends StatelessWidget {
                       ),
                       horizontalSpace(5),
                       Text(
-                        'City',
+                        S.of(context).City,
                         style: TextStyles.font16BlackSemiBold,
                       ),
                     ],
@@ -181,12 +166,8 @@ class WorkLocationItemBuild extends StatelessWidget {
                     shrinkWrap: true,
                     physics: const BouncingScrollPhysics(),
                     scrollDirection: Axis.vertical,
-                    itemCount: context
-                        .read<ProfileCubit>()
-                        .userWorkLocationDetailsModel!
-                        .data!
-                        .cities!
-                        .length,
+                    itemCount: cubit
+                        .userWorkLocationDetailsModel!.data!.cities!.length,
                     separatorBuilder: (context, index) {
                       return verticalSpace(10);
                     },
@@ -196,18 +177,18 @@ class WorkLocationItemBuild extends StatelessWidget {
                         children: [
                           InkWell(
                             borderRadius: BorderRadius.circular(5.r),
-                            onTap: () {
-                              context.pushNamed(
+                            onTap: () async {
+                              final result = await context.pushNamed(
                                   Routes.workLocationDetailsScreen,
                                   arguments: {
-                                    'id': context
-                                        .read<ProfileCubit>()
-                                        .userWorkLocationDetailsModel!
-                                        .data!
-                                        .cities![index]
-                                        .id,
+                                    'id': cubit.userWorkLocationDetailsModel!
+                                        .data!.cities![index].id,
                                     'selectedIndex': 1
                                   });
+
+                              if (result == true) {
+                                await cubit.refreshWorkLocations();
+                              }
                             },
                             child: Container(
                               padding: EdgeInsets.fromLTRB(10, 8, 8, 8),
@@ -219,16 +200,12 @@ class WorkLocationItemBuild extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
-                                    context
-                                        .read<ProfileCubit>()
-                                        .userWorkLocationDetailsModel!
-                                        .data!
-                                        .cities![index]
-                                        .name!,
+                                    cubit.userWorkLocationDetailsModel!.data!
+                                        .cities![index].name!,
                                     style: TextStyles.font14BlackSemiBold,
                                   ),
                                   Text(
-                                    " (${context.read<ProfileCubit>().userWorkLocationDetailsModel!.data!.cities![index].areaName})",
+                                    " (${cubit.userWorkLocationDetailsModel!.data!.cities![index].areaName})",
                                     style: TextStyles.font12GreyRegular,
                                   ),
                                   Spacer(),
@@ -250,12 +227,8 @@ class WorkLocationItemBuild extends StatelessWidget {
           ),
           verticalSpace(10),
         ],
-        if (context
-            .read<ProfileCubit>()
-            .userWorkLocationDetailsModel!
-            .data!
-            .organizations!
-            .isNotEmpty) ...[
+        if (cubit
+            .userWorkLocationDetailsModel!.data!.organizations!.isNotEmpty) ...[
           Card(
             elevation: 1,
             margin: EdgeInsets.zero,
@@ -288,7 +261,7 @@ class WorkLocationItemBuild extends StatelessWidget {
                       ),
                       horizontalSpace(5),
                       Text(
-                        'Organization',
+                        S.of(context).Organization,
                         style: TextStyles.font16BlackSemiBold,
                       ),
                     ],
@@ -298,12 +271,8 @@ class WorkLocationItemBuild extends StatelessWidget {
                     shrinkWrap: true,
                     physics: const BouncingScrollPhysics(),
                     scrollDirection: Axis.vertical,
-                    itemCount: context
-                        .read<ProfileCubit>()
-                        .userWorkLocationDetailsModel!
-                        .data!
-                        .organizations!
-                        .length,
+                    itemCount: cubit.userWorkLocationDetailsModel!.data!
+                        .organizations!.length,
                     separatorBuilder: (context, index) {
                       return verticalSpace(10);
                     },
@@ -313,18 +282,18 @@ class WorkLocationItemBuild extends StatelessWidget {
                         children: [
                           InkWell(
                             borderRadius: BorderRadius.circular(5.r),
-                            onTap: () {
-                              context.pushNamed(
+                            onTap: () async {
+                              final result = await context.pushNamed(
                                   Routes.workLocationDetailsScreen,
                                   arguments: {
-                                    'id': context
-                                        .read<ProfileCubit>()
-                                        .userWorkLocationDetailsModel!
-                                        .data!
-                                        .organizations![index]
-                                        .id,
+                                    'id': cubit.userWorkLocationDetailsModel!
+                                        .data!.organizations![index].id,
                                     'selectedIndex': 2
                                   });
+
+                              if (result == true) {
+                                await cubit.refreshWorkLocations();
+                              }
                             },
                             child: Container(
                               padding: EdgeInsets.fromLTRB(10, 8, 8, 8),
@@ -336,16 +305,12 @@ class WorkLocationItemBuild extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
-                                    context
-                                        .read<ProfileCubit>()
-                                        .userWorkLocationDetailsModel!
-                                        .data!
-                                        .organizations![index]
-                                        .name!,
+                                    cubit.userWorkLocationDetailsModel!.data!
+                                        .organizations![index].name!,
                                     style: TextStyles.font14BlackSemiBold,
                                   ),
                                   Text(
-                                    " (${context.read<ProfileCubit>().userWorkLocationDetailsModel!.data!.organizations![index].cityName})",
+                                    " (${cubit.userWorkLocationDetailsModel!.data!.organizations![index].cityName})",
                                     style: TextStyles.font12GreyRegular,
                                   ),
                                   Spacer(),
@@ -367,12 +332,8 @@ class WorkLocationItemBuild extends StatelessWidget {
           ),
           verticalSpace(10),
         ],
-        if (context
-            .read<ProfileCubit>()
-            .userWorkLocationDetailsModel!
-            .data!
-            .buildings!
-            .isNotEmpty) ...[
+        if (cubit
+            .userWorkLocationDetailsModel!.data!.buildings!.isNotEmpty) ...[
           Card(
             elevation: 1,
             margin: EdgeInsets.zero,
@@ -405,7 +366,7 @@ class WorkLocationItemBuild extends StatelessWidget {
                       ),
                       horizontalSpace(5),
                       Text(
-                        'Building',
+                        S.of(context).Building,
                         style: TextStyles.font16BlackSemiBold,
                       ),
                     ],
@@ -415,12 +376,8 @@ class WorkLocationItemBuild extends StatelessWidget {
                     shrinkWrap: true,
                     physics: const BouncingScrollPhysics(),
                     scrollDirection: Axis.vertical,
-                    itemCount: context
-                        .read<ProfileCubit>()
-                        .userWorkLocationDetailsModel!
-                        .data!
-                        .buildings!
-                        .length,
+                    itemCount: cubit
+                        .userWorkLocationDetailsModel!.data!.buildings!.length,
                     separatorBuilder: (context, index) {
                       return verticalSpace(10);
                     },
@@ -430,18 +387,18 @@ class WorkLocationItemBuild extends StatelessWidget {
                         children: [
                           InkWell(
                             borderRadius: BorderRadius.circular(5.r),
-                            onTap: () {
-                              context.pushNamed(
+                            onTap: () async {
+                              final result = await context.pushNamed(
                                   Routes.workLocationDetailsScreen,
                                   arguments: {
-                                    'id': context
-                                        .read<ProfileCubit>()
-                                        .userWorkLocationDetailsModel!
-                                        .data!
-                                        .buildings![index]
-                                        .id,
+                                    'id': cubit.userWorkLocationDetailsModel!
+                                        .data!.buildings![index].id,
                                     'selectedIndex': 3
                                   });
+
+                              if (result == true) {
+                                await cubit.refreshWorkLocations();
+                              }
                             },
                             child: Container(
                               padding: EdgeInsets.fromLTRB(10, 8, 8, 8),
@@ -453,16 +410,12 @@ class WorkLocationItemBuild extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
-                                    context
-                                        .read<ProfileCubit>()
-                                        .userWorkLocationDetailsModel!
-                                        .data!
-                                        .buildings![index]
-                                        .name!,
+                                    cubit.userWorkLocationDetailsModel!.data!
+                                        .buildings![index].name!,
                                     style: TextStyles.font14BlackSemiBold,
                                   ),
                                   Text(
-                                    " (${context.read<ProfileCubit>().userWorkLocationDetailsModel!.data!.buildings![index].organizationName})",
+                                    " (${cubit.userWorkLocationDetailsModel!.data!.buildings![index].organizationName})",
                                     style: TextStyles.font12GreyRegular,
                                   ),
                                   Spacer(),
@@ -484,12 +437,7 @@ class WorkLocationItemBuild extends StatelessWidget {
           ),
           verticalSpace(10),
         ],
-        if (context
-            .read<ProfileCubit>()
-            .userWorkLocationDetailsModel!
-            .data!
-            .floors!
-            .isNotEmpty) ...[
+        if (cubit.userWorkLocationDetailsModel!.data!.floors!.isNotEmpty) ...[
           Card(
             elevation: 1,
             margin: EdgeInsets.zero,
@@ -522,7 +470,7 @@ class WorkLocationItemBuild extends StatelessWidget {
                       ),
                       horizontalSpace(5),
                       Text(
-                        'Floor',
+                        S.of(context).Floor,
                         style: TextStyles.font16BlackSemiBold,
                       ),
                     ],
@@ -532,12 +480,8 @@ class WorkLocationItemBuild extends StatelessWidget {
                     shrinkWrap: true,
                     physics: const BouncingScrollPhysics(),
                     scrollDirection: Axis.vertical,
-                    itemCount: context
-                        .read<ProfileCubit>()
-                        .userWorkLocationDetailsModel!
-                        .data!
-                        .floors!
-                        .length,
+                    itemCount: cubit
+                        .userWorkLocationDetailsModel!.data!.floors!.length,
                     separatorBuilder: (context, index) {
                       return verticalSpace(10);
                     },
@@ -547,18 +491,18 @@ class WorkLocationItemBuild extends StatelessWidget {
                         children: [
                           InkWell(
                             borderRadius: BorderRadius.circular(5.r),
-                            onTap: () {
-                              context.pushNamed(
+                            onTap: () async {
+                              final result = await context.pushNamed(
                                   Routes.workLocationDetailsScreen,
                                   arguments: {
-                                    'id': context
-                                        .read<ProfileCubit>()
-                                        .userWorkLocationDetailsModel!
-                                        .data!
-                                        .floors![index]
-                                        .id,
+                                    'id': cubit.userWorkLocationDetailsModel!
+                                        .data!.floors![index].id,
                                     'selectedIndex': 4
                                   });
+
+                              if (result == true) {
+                                await cubit.refreshWorkLocations();
+                              }
                             },
                             child: Container(
                               padding: EdgeInsets.fromLTRB(10, 8, 8, 8),
@@ -570,16 +514,12 @@ class WorkLocationItemBuild extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
-                                    context
-                                        .read<ProfileCubit>()
-                                        .userWorkLocationDetailsModel!
-                                        .data!
-                                        .floors![index]
-                                        .name!,
+                                    cubit.userWorkLocationDetailsModel!.data!
+                                        .floors![index].name!,
                                     style: TextStyles.font14BlackSemiBold,
                                   ),
                                   Text(
-                                    " (${context.read<ProfileCubit>().userWorkLocationDetailsModel!.data!.floors![index].buildingName})",
+                                    " (${cubit.userWorkLocationDetailsModel!.data!.floors![index].buildingName})",
                                     style: TextStyles.font12GreyRegular,
                                   ),
                                   Spacer(),
@@ -601,12 +541,7 @@ class WorkLocationItemBuild extends StatelessWidget {
           ),
           verticalSpace(10),
         ],
-        if (context
-            .read<ProfileCubit>()
-            .userWorkLocationDetailsModel!
-            .data!
-            .points!
-            .isNotEmpty) ...[
+        if (cubit.userWorkLocationDetailsModel!.data!.sections!.isNotEmpty) ...[
           Card(
             elevation: 1,
             margin: EdgeInsets.zero,
@@ -639,7 +574,7 @@ class WorkLocationItemBuild extends StatelessWidget {
                       ),
                       horizontalSpace(5),
                       Text(
-                        'Point',
+                        S.of(context).Section,
                         style: TextStyles.font16BlackSemiBold,
                       ),
                     ],
@@ -649,12 +584,8 @@ class WorkLocationItemBuild extends StatelessWidget {
                     shrinkWrap: true,
                     physics: const BouncingScrollPhysics(),
                     scrollDirection: Axis.vertical,
-                    itemCount: context
-                        .read<ProfileCubit>()
-                        .userWorkLocationDetailsModel!
-                        .data!
-                        .points!
-                        .length,
+                    itemCount: cubit
+                        .userWorkLocationDetailsModel!.data!.sections!.length,
                     separatorBuilder: (context, index) {
                       return verticalSpace(10);
                     },
@@ -664,18 +595,18 @@ class WorkLocationItemBuild extends StatelessWidget {
                         children: [
                           InkWell(
                             borderRadius: BorderRadius.circular(5.r),
-                            onTap: () {
-                              context.pushNamed(
+                            onTap: () async {
+                              final result = await context.pushNamed(
                                   Routes.workLocationDetailsScreen,
                                   arguments: {
-                                    'id': context
-                                        .read<ProfileCubit>()
-                                        .userWorkLocationDetailsModel!
-                                        .data!
-                                        .points![index]
-                                        .id,
+                                    'id': cubit.userWorkLocationDetailsModel!
+                                        .data!.sections![index].id,
                                     'selectedIndex': 5
                                   });
+
+                              if (result == true) {
+                                await cubit.refreshWorkLocations();
+                              }
                             },
                             child: Container(
                               padding: EdgeInsets.fromLTRB(10, 8, 8, 8),
@@ -687,16 +618,116 @@ class WorkLocationItemBuild extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
-                                    context
-                                        .read<ProfileCubit>()
-                                        .userWorkLocationDetailsModel!
-                                        .data!
-                                        .points![index]
-                                        .name!,
+                                    cubit.userWorkLocationDetailsModel!.data!
+                                        .sections![index].name!,
                                     style: TextStyles.font14BlackSemiBold,
                                   ),
                                   Text(
-                                    " (${context.read<ProfileCubit>().userWorkLocationDetailsModel!.data!.points![index].floorName})",
+                                    " (${cubit.userWorkLocationDetailsModel!.data!.sections![index].buildingName})",
+                                    style: TextStyles.font12GreyRegular,
+                                  ),
+                                  Spacer(),
+                                  Icon(
+                                    Icons.arrow_forward_ios_rounded,
+                                    color: Colors.blue,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  )
+                ],
+              ),
+            ),
+          ),
+          verticalSpace(10),
+        ],
+        if (cubit.userWorkLocationDetailsModel!.data!.points!.isNotEmpty) ...[
+          Card(
+            elevation: 1,
+            margin: EdgeInsets.zero,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(11.r),
+            ),
+            child: Container(
+              constraints: BoxConstraints(
+                minHeight: 100.h,
+              ),
+              width: double.infinity,
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(11.r),
+                border: Border.all(color: AppColor.secondaryColor),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: 8.w,
+                        height: 24,
+                        decoration: BoxDecoration(
+                            color: AppColor.primaryColor,
+                            borderRadius: BorderRadius.circular(1.r)),
+                      ),
+                      horizontalSpace(5),
+                      Text(
+                        S.of(context).Point,
+                        style: TextStyles.font16BlackSemiBold,
+                      ),
+                    ],
+                  ),
+                  verticalSpace(20),
+                  ListView.separated(
+                    shrinkWrap: true,
+                    physics: const BouncingScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    itemCount: cubit
+                        .userWorkLocationDetailsModel!.data!.points!.length,
+                    separatorBuilder: (context, index) {
+                      return verticalSpace(10);
+                    },
+                    itemBuilder: (context, index) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          InkWell(
+                            borderRadius: BorderRadius.circular(5.r),
+                            onTap: () async {
+                              final result = await context.pushNamed(
+                                  Routes.workLocationDetailsScreen,
+                                  arguments: {
+                                    'id': cubit.userWorkLocationDetailsModel!
+                                        .data!.points![index].id,
+                                    'selectedIndex': 6
+                                  });
+
+                              if (result == true) {
+                                await cubit.refreshWorkLocations();
+                              }
+                            },
+                            child: Container(
+                              padding: EdgeInsets.fromLTRB(10, 8, 8, 8),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5.r),
+                                  border: Border.all(
+                                      color: AppColor.secondaryColor)),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    cubit.userWorkLocationDetailsModel!.data!
+                                        .points![index].name!,
+                                    style: TextStyles.font14BlackSemiBold,
+                                  ),
+                                  Text(
+                                    " (${cubit.userWorkLocationDetailsModel!.data!.points![index].floorName})",
                                     style: TextStyles.font12GreyRegular,
                                   ),
                                   Spacer(),

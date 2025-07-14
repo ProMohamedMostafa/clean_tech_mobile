@@ -31,11 +31,11 @@ class AddShiftBody extends StatelessWidget {
         body: BlocConsumer<AddShiftCubit, AddShiftState>(
           listener: (context, state) {
             if (state is AddShiftSuccessState) {
-              toast(text: state.createShiftModel.message!, color: Colors.blue);
+              toast(text: state.createShiftModel.message!, isSuccess: true);
               context.popWithTrueResult();
             }
             if (state is AddShiftErrorState) {
-              toast(text: state.error, color: Colors.red);
+              toast(text: state.error, isSuccess: false);
             }
           },
           builder: (context, state) {
@@ -402,8 +402,6 @@ class AddShiftBody extends StatelessWidget {
                                       }
                                     },
                                     color: AppColor.primaryColor,
-                                    height: 47,
-                                    width: double.infinity,
                                     textStyles:
                                         TextStyles.font20Whitesemimedium),
                               ),

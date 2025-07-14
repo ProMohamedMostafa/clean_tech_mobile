@@ -21,10 +21,10 @@ class NotificationBody extends StatelessWidget {
     return BlocConsumer<NotificationCubit, NotificationState>(
       listener: (context, state) {
         if (state is MarkReadSuccessState) {
-          toast(text: state.message, color: Colors.blue);
+          toast(text: state.message, isSuccess: true);
         }
         if (state is MarkReadErrorState) {
-          toast(text: state.error, color: Colors.red);
+          toast(text: state.error, isSuccess: false);
         }
       },
       builder: (context, state) {
@@ -43,7 +43,7 @@ class NotificationBody extends StatelessWidget {
                   } else {
                     toast(
                       text: S.of(context).alreadyMarkedAsRead,
-                      color: Colors.blue,
+                      isSuccess: true,
                     );
                   }
                 },

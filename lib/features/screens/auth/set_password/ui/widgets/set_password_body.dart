@@ -24,11 +24,11 @@ class SetPasswordbody extends StatelessWidget {
     return BlocConsumer<SetPasswordCubit, SetPasswordStates>(
       listener: (context, state) {
         if (state is SetPasswordSuccessState) {
-          toast(text: state.message, color: Colors.blue);
+          toast(text: state.message, isSuccess: true);
           context.pushNamed(Routes.doneScreen);
         }
         if (state is SetPasswordErrorState) {
-          toast(text: state.error, color: Colors.red);
+          toast(text: state.error, isSuccess: false);
         }
       },
       builder: (context, state) {
@@ -68,10 +68,8 @@ class SetPasswordbody extends StatelessWidget {
                       const NewPasswordBody(),
                       verticalSpace(60),
                       state is SetPasswordLoadingState
-                          ?  Loading()
+                          ? Loading()
                           : DefaultElevatedButton(
-                              width: 310,
-                              height: 50,
                               name: S.of(context).setButton,
                               color: AppColor.primaryColor,
                               textStyles: TextStyles.font16WhiteSemiBold,

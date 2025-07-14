@@ -29,11 +29,11 @@ class SensorEditBody extends StatelessWidget {
       body: BlocConsumer<EditSensorCubit, EditSensorState>(
         listener: (context, state) {
           if (state is EditSensorSuccessState) {
-            toast(text: state.editSensorModel.message!, color: Colors.blue);
+            toast(text: state.editSensorModel.message!, isSuccess: true);
             context.popWithTrueResult();
           }
           if (state is EditSensorErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
         },
         builder: (context, state) {
@@ -237,8 +237,6 @@ class SensorEditBody extends StatelessWidget {
                                   }
                                 },
                                 color: AppColor.primaryColor,
-                                height: 47,
-                                width: double.infinity,
                                 textStyles: TextStyles.font20Whitesemimedium,
                               ),
                             ),
@@ -264,8 +262,6 @@ class SensorEditBody extends StatelessWidget {
                                         });
                                   },
                                   color: Colors.red,
-                                  height: 48,
-                                  width: double.infinity,
                                   textStyles: TextStyles.font20Whitesemimedium,
                                 ),
                               ),

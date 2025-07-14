@@ -58,7 +58,7 @@ class PopUpDialog {
                         builder: (dialogContext) {
                           return PopUpMessage(
                               title: S.of(context).TitleDelete,
-                              body: 'task',
+                              body: S.of(context).taskbody,
                               onPressed: () {
                                 cubit.taskDelete(id);
                                 context.pop();

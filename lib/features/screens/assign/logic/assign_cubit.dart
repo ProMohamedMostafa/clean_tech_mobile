@@ -20,7 +20,7 @@ class AssignCubit extends Cubit<AssignStates> {
   AssignCubit() : super(AssignInitialState());
 
   static AssignCubit get(context) => BlocProvider.of(context);
-
+  Key userDropdownKey = UniqueKey();
   TextEditingController areaController = TextEditingController();
   TextEditingController areaIdController = TextEditingController();
   TextEditingController cityController = TextEditingController();
@@ -41,7 +41,8 @@ class AssignCubit extends Cubit<AssignStates> {
   TextEditingController userIdController = TextEditingController();
   TextEditingController levelController = TextEditingController();
 
-  final usersController = MultiSelectController<UserItem>();
+  MultiSelectController<UserItem> usersController =
+      MultiSelectController<UserItem>();
   final shiftsController = MultiSelectController<ShiftData>();
   final formKey = GlobalKey<FormState>();
 
@@ -374,15 +375,24 @@ class AssignCubit extends Cubit<AssignStates> {
   List<UserItem> userItem = [UserItem(userName: 'No users available')];
   getUsers({int? roleId}) {
     emit(AllUsersLoadingState());
+
     DioHelper.getData(url: "users/pagination", query: {'RoleId': roleId})
         .then((value) {
       usersModel = UsersModel.fromJson(value!.data);
       userItem =
           usersModel?.data?.users ?? [UserItem(userName: 'No users available')];
+
+      resetUsersController();
+      userDropdownKey = UniqueKey(); // force widget rebuild
       emit(AllUsersSuccessState(usersModel!));
     }).catchError((error) {
       emit(AllUsersErrorState(error.toString()));
     });
+  }
+
+  void resetUsersController() {
+    usersController = MultiSelectController<UserItem>();
+    emit(UpdateUsersDropdownState());
   }
 
   getAllOrganization() {
@@ -404,7 +414,6 @@ class AssignCubit extends Cubit<AssignStates> {
     } else if ((selecteIndex == 0 && selecteSecendIndex == 1) ||
         (selecteIndex == 2 && selecteSecendIndex == 0)) {
       getArea();
-      getOrganization();
     }
   }
 

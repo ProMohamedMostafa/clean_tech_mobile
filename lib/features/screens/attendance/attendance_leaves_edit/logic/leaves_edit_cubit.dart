@@ -53,7 +53,7 @@ class LeavesEditCubit extends Cubit<LeavesEditState> {
       "Reason": discriptionController.text.isNotEmpty
           ? discriptionController.text
           : leavesDetailsModel!.data!.reason,
-      "File": leavesDetailsModel!.data!.file ?? imageFile
+      "File": imageFile ?? leavesDetailsModel!.data!.file
     };
 
     FormData formData = FormData.fromMap(formDataMap);
@@ -92,7 +92,7 @@ class LeavesEditCubit extends Cubit<LeavesEditState> {
       "Reason": discriptionController.text.isNotEmpty
           ? discriptionController.text
           : leavesDetailsModel!.data!.reason,
-      "File": leavesDetailsModel!.data!.file ?? imageFile
+      "File": imageFile ?? leavesDetailsModel!.data!.file
     };
 
     FormData formData = FormData.fromMap(formDataMap);

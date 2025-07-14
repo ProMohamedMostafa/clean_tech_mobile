@@ -6,11 +6,13 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/core/widgets/filter/logic/cubit/filter_dialog_cubit.dart';
+import 'package:smart_cleaning_application/core/widgets/filter/ui/screen/filter_dialog_widget.dart';
+import 'package:smart_cleaning_application/core/widgets/filter_and_search_build/filter_search_build.dart';
 import 'package:smart_cleaning_application/core/widgets/floating_action_button/floating_action_button.dart';
 import 'package:smart_cleaning_application/core/widgets/integration_buttons/integrations_buttons.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_management/logic/attendance_leaves_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_management/logic/attendance_leaves_state.dart';
-import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_management/ui/widgets/attendance_leaves_filter_search_build.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_management/ui/widgets/attendance_leaves_list_build.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
@@ -22,15 +24,16 @@ class AttendanceLeavesBody extends StatelessWidget {
     final cubit = context.read<AttendanceLeavesCubit>();
 
     return Scaffold(
-      appBar: AppBar(title: Text(S.of(context).leaves), leading: CustomBackButton()),
+      appBar: AppBar(
+          title: Text(S.of(context).leaves), leading: CustomBackButton()),
       floatingActionButton: floatingActionButton(
           icon: Icons.assignment_add,
-          onPressed: () async{
-            final result = await  context.pushNamed(Routes.createleavesScreen);
+          onPressed: () async {
+            final result = await context.pushNamed(Routes.createleavesScreen);
 
-                if (result == true) {
-                  cubit.refreshLeaves();
-                }
+            if (result == true) {
+              cubit.refreshLeaves();
+            }
           }),
       body: BlocConsumer<AttendanceLeavesCubit, AttendanceLeavesState>(
         listener: (context, state) {
@@ -38,11 +41,11 @@ class AttendanceLeavesBody extends StatelessWidget {
             final errorMessage = state is LeavesErrorState
                 ? state.error
                 : (state as LeavesDeleteErrorState).error;
-            toast(text: errorMessage, color: Colors.red);
+            toast(text: errorMessage, isSuccess: false);
           }
 
           if (state is LeavesDeleteSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
             cubit.getAllLeaves();
           }
         },
@@ -59,7 +62,34 @@ class AttendanceLeavesBody extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   verticalSpace(10),
-                  FilterAndSearchWidget(),
+                  FilterAndSearchWidget(
+                    hintText: S.of(context).findLeaves,
+                    searchController: cubit.searchController,
+                    onSearchChanged: (value) {
+                      cubit.getAllLeaves();
+                    },
+                    onFilterTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (dialogContext) {
+                          return BlocProvider(
+                            create: (context) => FilterDialogCubit()
+                              ..getArea()
+                              ..getRole()
+                              ..getProviders()
+                              ..getUsers(),
+                            child: FilterDialogWidget(
+                              index: 'A-l',
+                              onPressed: (data) {
+                                cubit.filterModel = data;
+                                cubit.getAllLeaves();
+                              },
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
                   verticalSpace(10),
                   integrationsButtons(
                     selectedIndex: cubit.selectedIndex,

@@ -4,8 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
-import 'package:smart_cleaning_application/features/layout/ip_screen/logic/cubit/ip_cubit.dart';
-import 'package:smart_cleaning_application/features/layout/ip_screen/ui/screen/ip_screen.dart';
 import 'package:smart_cleaning_application/features/layout/main_layout/ui/screen/main_layout.dart';
 import 'package:smart_cleaning_application/features/layout/on_boarding/ui/screen/on_boarding_screen.dart';
 import 'package:smart_cleaning_application/features/screens/auth/login/logic/login_cubit_cubit.dart';
@@ -97,22 +95,17 @@ class _SplashScreenState extends State<SplashScreen>
                 ),
               );
             }),
-        nextScreen: isBoarding!.isNotEmpty
-            ? token != null
-                ? const MainLayout()
-                : ip!.isNotEmpty
-                    ? BlocProvider(
-                        create: (context) => LoginCubit(),
-                        child: const LoginScreen(),
-                      )
-                    : BlocProvider(
-                        create: (context) => IpCubit(),
-                        child: const IpScreen(),
-                      )
-            : BlocProvider(
-                create: (context) => AppCubit()..initNotifications(context),
-                child: const OnBoardingScreen(),
-              ),
+         nextScreen: isBoarding!.isNotEmpty
+    ? (token != null && token!.isNotEmpty)
+        ? const MainLayout()
+        : BlocProvider(
+            create: (context) => LoginCubit(),
+            child: const LoginScreen(),
+          )
+    : BlocProvider(
+        create: (context) => AppCubit()..initNotifications(context),
+        child: const OnBoardingScreen(),
+      ),
         splashIconSize: 600,
         duration: 3000,
       ),

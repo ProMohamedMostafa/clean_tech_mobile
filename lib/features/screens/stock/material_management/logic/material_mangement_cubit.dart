@@ -277,4 +277,15 @@ class MaterialManagementCubit extends Cubit<MaterialManagementState> {
       emit(ImageSelectedState(image!));
     }
   }
+
+  void clearAllControllers() {
+    quantityController.clear();
+    quantityIdController.clear();
+    priceController.clear();
+    priceIdController.clear();
+    providerController.clear();
+    providerIdController.clear();
+    image = null;
+    emit(MaterialClearState());
+  }
 }

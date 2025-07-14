@@ -125,7 +125,7 @@ class AppRouter {
       case Routes.ipScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => IpCubit()..checkIp(),
+            create: (context) => IpCubit(),
             child: const IpScreen(),
           ),
         );
@@ -553,9 +553,7 @@ class AppRouter {
         var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => TaskDetailsCubit()
-              ..getTaskDetails(id)
-              ..getAllUsers(),
+            create: (context) => TaskDetailsCubit()..getTaskDetails(id),
             child: TaskDetailsScreen(id: id),
           ),
         );

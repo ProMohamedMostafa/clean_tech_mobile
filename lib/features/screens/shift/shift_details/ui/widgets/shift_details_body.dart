@@ -84,11 +84,11 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
       body: BlocConsumer<ShiftDetailsCubit, ShiftDetailsState>(
         listener: (context, state) {
           if (state is ShiftDeleteSuccessState) {
-            toast(text: state.deleteShiftModel.message!, color: Colors.blue);
+            toast(text: state.deleteShiftModel.message!, isSuccess: true);
             context.popWithTrueResult();
           }
           if (state is ShiftDeleteErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
         },
         builder: (context, state) {
@@ -181,8 +181,6 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
                             });
                       },
                       color: Colors.red,
-                      height: 48,
-                      width: double.infinity,
                       textStyles: TextStyles.font20Whitesemimedium),
                 verticalSpace(20),
               ],

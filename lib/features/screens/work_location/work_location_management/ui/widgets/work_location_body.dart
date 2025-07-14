@@ -7,12 +7,15 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/core/widgets/filter/logic/cubit/filter_dialog_cubit.dart';
+import 'package:smart_cleaning_application/core/widgets/filter/ui/screen/filter_dialog_widget.dart';
+import 'package:smart_cleaning_application/core/widgets/filter_and_search_build/filter_search_build.dart';
 import 'package:smart_cleaning_application/core/widgets/floating_action_button/floating_action_button.dart';
 import 'package:smart_cleaning_application/core/widgets/integration_buttons/integrations_buttons.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_states.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/ui/widgets/work_location_list_build.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/ui/widgets/work_location_filter_search_build.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class WorkLocationBody extends StatelessWidget {
   final int selectedIndex;
@@ -26,18 +29,18 @@ class WorkLocationBody extends StatelessWidget {
       appBar: AppBar(
           leading: CustomBackButton(),
           title: Text(selectedIndex == 0
-              ? 'Areas'
+              ? S.of(context).areas
               : selectedIndex == 1
-                  ? 'Cities'
+                  ? S.of(context).cities
                   : selectedIndex == 2
-                      ? 'Organizations'
+                      ? S.of(context).organizations
                       : selectedIndex == 3
-                          ? 'Buildings'
+                          ? S.of(context).buildings
                           : selectedIndex == 4
-                              ? 'Floors'
+                              ? S.of(context).floors
                               : selectedIndex == 5
-                                  ? 'Sections'
-                                  : 'Points')),
+                                  ? S.of(context).sections
+                                  : S.of(context).points)),
       floatingActionButton: role == 'Admin'
           ? floatingActionButton(
               icon: Icons.add_home_outlined,
@@ -94,31 +97,31 @@ class WorkLocationBody extends StatelessWidget {
             final errorMessage = state is AreaErrorState
                 ? state.error
                 : (state as DeletedAreaErrorState).error;
-            toast(text: errorMessage, color: Colors.red);
+            toast(text: errorMessage, isSuccess: false);
           }
 
           if (state is DeleteForceAreaSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
             cubit.getArea();
             cubit.getAllDeletedArea();
           }
           if (state is DeleteForceAreaErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
           if (state is RestoreAreaSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
           }
           if (state is RestoreAreaErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
 
           if (state is AreaDeleteSuccessState) {
-            toast(text: state.deleteAreaModel.message!, color: Colors.blue);
+            toast(text: state.deleteAreaModel.message!, isSuccess: true);
             cubit.getAllDeletedArea();
           }
 
           if (state is AreaDeleteErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
 
           //****************** */
@@ -126,98 +129,96 @@ class WorkLocationBody extends StatelessWidget {
             final errorMessage = state is CityErrorState
                 ? state.error
                 : (state as DeletedCityErrorState).error;
-            toast(text: errorMessage, color: Colors.red);
+            toast(text: errorMessage, isSuccess: false);
           }
 
           if (state is DeleteForceCitySuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
             cubit.getCity();
             cubit.getAllDeletedCity();
           }
           if (state is DeleteForceCityErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
           if (state is RestoreCitySuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
           }
           if (state is RestoreCityErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
 
           if (state is CityDeleteSuccessState) {
-            toast(text: state.deleteCityModel.message!, color: Colors.blue);
+            toast(text: state.deleteCityModel.message!, isSuccess: true);
             cubit.getAllDeletedCity();
           }
 
           if (state is CityDeleteErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
           if (state is OrganizationErrorState ||
               state is DeletedOrganizationErrorState) {
             final errorMessage = state is OrganizationErrorState
                 ? state.error
                 : (state as DeletedOrganizationErrorState).error;
-            toast(text: errorMessage, color: Colors.red);
+            toast(text: errorMessage, isSuccess: false);
           }
 
           if (state is DeleteForceOrganizationSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
             cubit.getOrganization();
             cubit.getAllDeletedOrganization();
           }
           if (state is DeleteForceOrganizationErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
           if (state is RestoreOrganizationSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
           }
           if (state is RestoreOrganizationErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
 
           if (state is OrganizationDeleteSuccessState) {
             toast(
-                text: state.deleteOrganizationModel.message!,
-                color: Colors.blue);
+                text: state.deleteOrganizationModel.message!, isSuccess: true);
             cubit.getAllDeletedOrganization();
           }
 
           if (state is OrganizationDeleteErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
 
-          //****************** */
           //****************** */
           if (state is BuildingErrorState ||
               state is DeletedBuildingErrorState) {
             final errorMessage = state is BuildingErrorState
                 ? state.error
                 : (state as DeletedBuildingErrorState).error;
-            toast(text: errorMessage, color: Colors.red);
+            toast(text: errorMessage, isSuccess: false);
           }
 
           if (state is DeleteForceBuildingSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
             cubit.getBuilding();
             cubit.getAllDeletedBuilding();
           }
           if (state is DeleteForceBuildingErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
           if (state is RestoreBuildingSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
           }
           if (state is RestoreBuildingErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
 
           if (state is BuildingDeleteSuccessState) {
-            toast(text: state.deleteBuildingModel.message!, color: Colors.blue);
+            toast(text: state.deleteBuildingModel.message!, isSuccess: true);
             cubit.getAllDeletedBuilding();
           }
 
           if (state is BuildingDeleteErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
 
           //****************** */
@@ -226,31 +227,31 @@ class WorkLocationBody extends StatelessWidget {
             final errorMessage = state is FloorErrorState
                 ? state.error
                 : (state as DeletedFloorErrorState).error;
-            toast(text: errorMessage, color: Colors.red);
+            toast(text: errorMessage, isSuccess: false);
           }
 
           if (state is DeleteForceFloorSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
             cubit.getFloor();
             cubit.getAllDeletedFloor();
           }
           if (state is DeleteForceFloorErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
           if (state is RestoreFloorSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
           }
           if (state is RestoreFloorErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
 
           if (state is FloorDeleteSuccessState) {
-            toast(text: state.deleteFloorModel.message!, color: Colors.blue);
+            toast(text: state.deleteFloorModel.message!, isSuccess: true);
             cubit.getAllDeletedFloor();
           }
 
           if (state is FloorDeleteErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
 
           //****************** */
@@ -258,31 +259,31 @@ class WorkLocationBody extends StatelessWidget {
             final errorMessage = state is FloorErrorState
                 ? state.error
                 : (state as DeletedFloorErrorState).error;
-            toast(text: errorMessage, color: Colors.red);
+            toast(text: errorMessage, isSuccess: false);
           }
 
           if (state is DeleteForceFloorSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
             cubit.getFloor();
             cubit.getAllDeletedFloor();
           }
           if (state is DeleteForceFloorErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
           if (state is RestoreFloorSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
           }
           if (state is RestoreFloorErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
 
           if (state is FloorDeleteSuccessState) {
-            toast(text: state.deleteFloorModel.message!, color: Colors.blue);
+            toast(text: state.deleteFloorModel.message!, isSuccess: true);
             cubit.getAllDeletedFloor();
           }
 
           if (state is FloorDeleteErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
 
           //****************** */
@@ -290,31 +291,31 @@ class WorkLocationBody extends StatelessWidget {
             final errorMessage = state is SectionErrorState
                 ? state.error
                 : (state as DeletedSectionErrorState).error;
-            toast(text: errorMessage, color: Colors.red);
+            toast(text: errorMessage, isSuccess: false);
           }
 
           if (state is DeleteForceSectionSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
             cubit.getSection();
             cubit.getAllDeletedSection();
           }
           if (state is DeleteForceSectionErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
           if (state is RestoreSectionSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
           }
           if (state is RestoreSectionErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
 
           if (state is SectionDeleteSuccessState) {
-            toast(text: state.deleteSectionModel.message!, color: Colors.blue);
+            toast(text: state.deleteSectionModel.message!, isSuccess: true);
             cubit.getAllDeletedSection();
           }
 
           if (state is SectionDeleteErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
 
           //****************** */
@@ -322,31 +323,31 @@ class WorkLocationBody extends StatelessWidget {
             final errorMessage = state is PointErrorState
                 ? state.error
                 : (state as DeletedPointErrorState).error;
-            toast(text: errorMessage, color: Colors.red);
+            toast(text: errorMessage, isSuccess: false);
           }
 
           if (state is DeleteForcePointSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
             cubit.getPoint();
             cubit.getAllDeletedPoint();
           }
           if (state is DeleteForcePointErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
           if (state is RestorePointSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
           }
           if (state is RestorePointErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
 
           if (state is PointDeleteSuccessState) {
-            toast(text: state.deletePointModel.message!, color: Colors.blue);
+            toast(text: state.deletePointModel.message!, isSuccess: true);
             cubit.getAllDeletedPoint();
           }
 
           if (state is PointDeleteErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
 
           //****************** */
@@ -380,18 +381,126 @@ class WorkLocationBody extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   verticalSpace(10),
-                  FilterAndSearchWidget(selectedIndex: selectedIndex),
+                  FilterAndSearchWidget(
+                    hintText: S.of(context).find_name_of_work_location,
+                    searchController: cubit.searchController,
+                    onSearchChanged: (value) {
+                      selectedIndex == 0
+                          ? cubit.getArea()
+                          : selectedIndex == 1
+                              ? cubit.getCity()
+                              : selectedIndex == 2
+                                  ? cubit.getOrganization()
+                                  : selectedIndex == 3
+                                      ? cubit.getBuilding()
+                                      : selectedIndex == 4
+                                          ? cubit.getFloor()
+                                          : selectedIndex == 5
+                                              ? cubit.getSection()
+                                              : cubit.getPoint();
+                    },
+                    onFilterTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (dialogContext) {
+                          return BlocProvider(
+                            create: (context) {
+                              switch (selectedIndex) {
+                                case 0:
+                                  return FilterDialogCubit()
+                                    ..getCountry(false, true);
+                                case 1:
+                                  return FilterDialogCubit()
+                                    ..getCountry(false, true);
+                                case 2:
+                                  return FilterDialogCubit()..getArea();
+                                case 3:
+                                  return FilterDialogCubit()..getCity();
+                                case 4:
+                                  return FilterDialogCubit()..getOrganization();
+                                case 5:
+                                  return FilterDialogCubit()..getBuilding();
+                                case 6:
+                                  return FilterDialogCubit()..getFloor();
+
+                                default:
+                                  return FilterDialogCubit();
+                              }
+                            },
+                            child: selectedIndex == 0
+                                ? FilterDialogWidget(
+                                    index: 'W-a',
+                                    onPressed: (data) {
+                                      cubit.filterModel = data;
+                                      cubit.getArea();
+                                    },
+                                  )
+                                : selectedIndex == 1
+                                    ? FilterDialogWidget(
+                                        index: 'W-c',
+                                        onPressed: (data) {
+                                          cubit.filterModel = data;
+                                          cubit.getCity();
+                                        },
+                                      )
+                                    : selectedIndex == 2
+                                        ? FilterDialogWidget(
+                                            index: 'W-o',
+                                            onPressed: (data) {
+                                              cubit.filterModel = data;
+                                              cubit.getOrganization();
+                                            },
+                                          )
+                                        : selectedIndex == 3
+                                            ? FilterDialogWidget(
+                                                index: 'W-b',
+                                                onPressed: (data) {
+                                                  cubit.filterModel = data;
+                                                  cubit.getBuilding();
+                                                },
+                                              )
+                                            : selectedIndex == 4
+                                                ? FilterDialogWidget(
+                                                    index: 'W-f',
+                                                    onPressed: (data) {
+                                                      cubit.filterModel = data;
+                                                      cubit.getFloor();
+                                                    },
+                                                  )
+                                                : selectedIndex == 5
+                                                    ? FilterDialogWidget(
+                                                        index: 'W-s',
+                                                        onPressed: (data) {
+                                                          cubit.filterModel =
+                                                              data;
+                                                          cubit.getSection();
+                                                        },
+                                                      )
+                                                    : FilterDialogWidget(
+                                                        index: 'W-p',
+                                                        onPressed: (data) {
+                                                          cubit.filterModel =
+                                                              data;
+                                                          cubit.getPoint();
+                                                        },
+                                                      ),
+                          );
+                        },
+                      );
+                    },
+                  ),
                   verticalSpace(10),
                   integrationsButtons(
                     selectedIndex: cubit.tapIndex,
                     onTap: (index) => cubit.changeTap(index),
                     firstCount: cubit.getActiveCount(selectedIndex),
-                    firstLabel: "Total ${cubit.tapList[selectedIndex]}",
+                    firstLabel:
+                        "${S.of(context).total} ${cubit.tapList[selectedIndex]}",
                     secondCount: role == 'Admin'
                         ? cubit.getDeletedCount(selectedIndex)
                         : null,
                     secondLabel: role == 'Admin'
-                        ? "Deleted ${cubit.tapList[selectedIndex]}"
+                        ? "${S.of(context).deleted} ${cubit.tapList[selectedIndex]}"
                         : null,
                   ),
                   verticalSpace(10),

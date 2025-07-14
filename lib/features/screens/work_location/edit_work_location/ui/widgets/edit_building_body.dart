@@ -29,15 +29,16 @@ class EditBuildingBody extends StatelessWidget {
     final cubit = context.read<EditWorkLocationCubit>();
 
     return Scaffold(
-      appBar: AppBar(leading: CustomBackButton(), title: Text(S.of(context).EditBuilding)),
+      appBar: AppBar(
+          leading: CustomBackButton(), title: Text(S.of(context).EditBuilding)),
       body: BlocConsumer<EditWorkLocationCubit, EditWorkLocationState>(
         listener: (context, state) {
           if (state is EditWorkLocationSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
             context.popWithTrueResult();
           }
           if (state is EditWorkLocationErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
         },
         builder: (context, state) {
@@ -125,7 +126,7 @@ class EditBuildingBody extends StatelessWidget {
                     ),
                     verticalSpace(10),
                     Text(
-                     S.of(context).Organization,
+                      S.of(context).Organization,
                       style: TextStyles.font16BlackRegular,
                     ),
                     CustomDropDownList(
@@ -216,7 +217,7 @@ class EditBuildingBody extends StatelessWidget {
                             .description!),
                     verticalSpace(10),
                     Text(
-                     S.of(context).managers,
+                      S.of(context).managers,
                       style: TextStyles.font16BlackRegular,
                     ),
                     MultiDropdown<UserItem>(
@@ -514,8 +515,7 @@ class EditBuildingBody extends StatelessWidget {
                               }
                             },
                             color: AppColor.primaryColor,
-                            height: 47.h,
-                            width: double.infinity,
+
                             textStyles: TextStyles.font20Whitesemimedium,
                           ),
                     verticalSpace(20),

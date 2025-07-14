@@ -5,6 +5,7 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/date_picker.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class FilterHeader extends StatelessWidget {
   final String title;
@@ -42,26 +43,31 @@ class FilterHeader extends StatelessWidget {
       children: [
         Row(
           children: [
-            RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: title,
-                    style: TextStyles.font14BlackSemiBold,
-                  ),
-                  if (count1 != null)
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.center,
+              child: RichText(
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                text: TextSpan(
+                  children: [
                     TextSpan(
-                      text: ' ($count1)',
-                      style: TextStyles.font14Primarybold,
+                      text: title,
+                      style: TextStyles.font14BlackSemiBold,
                     ),
-                  if (count2 != null)
-                    TextSpan(
-                      text: ' ($count2)',
-                      style: TextStyles.font14Primarybold
-                          .copyWith(color: Color(0xff46B749)),
-                    ),
-                ],
+                    if (count1 != null)
+                      TextSpan(
+                        text: ' ($count1)',
+                        style: TextStyles.font14Primarybold,
+                      ),
+                    if (count2 != null)
+                      TextSpan(
+                        text: ' ($count2)',
+                        style: TextStyles.font14Primarybold
+                            .copyWith(color: Color(0xff46B749)),
+                      ),
+                  ],
+                ),
               ),
             ),
             const Spacer(),
@@ -84,12 +90,12 @@ class FilterHeader extends StatelessWidget {
           children: [
             _FilterDropdown(
               width: 120.w,
-              label: 'Chart Type: $chartType',
+              label: '${S.of(context).chart_type}: $chartType',
               onSelected: onChartTypeSelected,
-              items: const [
-                ('1', 'Line'),
-                ('2', 'Bar'),
-                ('3', 'Pie'),
+              items: [
+                ('1', S.of(context).line),
+                ('2', S.of(context).bar),
+                ('3', S.of(context).pie),
               ],
             ),
             const Spacer(),
@@ -338,7 +344,7 @@ class _FilterDropdownFormState extends State<_FilterDropdownForm> {
                   return InkWell(
                     onTap: () {
                       widget.onSelected?.call(item.$1);
-                      _toggleDropdown(); // closes dropdown and removes overlay
+                      _toggleDropdown();
                     },
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(6, 4, 4, 4),

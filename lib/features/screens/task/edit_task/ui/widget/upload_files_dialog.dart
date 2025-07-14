@@ -5,6 +5,7 @@ import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/logic/edit_task_cubit.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class UploadFilesBottomDialog {
   void showBottomDialog(BuildContext context, EditTaskCubit cubit) {
@@ -54,7 +55,7 @@ class UploadFilesBottomDialog {
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                _buildContinueText(),
+                _buildContinueText(context),
                 verticalSpace(25),
                 _buildContinueButton(context, cubit),
                 verticalSpace(15),
@@ -66,9 +67,9 @@ class UploadFilesBottomDialog {
     );
   }
 
-  Widget _buildContinueText() {
+  Widget _buildContinueText(context) {
     return Text(
-      'Upload file',
+      S.of(context).uploadFile,
       style: TextStyles.font18PrimBold,
     );
   }
@@ -96,7 +97,7 @@ class UploadFilesBottomDialog {
             ),
             verticalSpace(8),
             Text(
-              'Upload file',
+              S.of(context).uploadFile,
               style: TextStyles.font14BlackSemiBold,
             ),
           ],
@@ -120,7 +121,7 @@ class UploadFilesBottomDialog {
             ),
             verticalSpace(8),
             Text(
-              'Take photo',
+              S.of(context).take_photo,
               style: TextStyles.font14BlackSemiBold,
             ),
           ],

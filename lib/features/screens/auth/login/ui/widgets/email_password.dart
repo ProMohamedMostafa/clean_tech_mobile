@@ -22,14 +22,14 @@ class EmailAndPassword extends StatelessWidget {
     return BlocConsumer<LoginCubit, LoginStates>(
       listener: (context, state) {
         if (state is LoginSuccessState) {
-          toast(text: state.loginmodel.message!, color: Colors.blue);
+          toast(text: state.loginmodel.message!, isSuccess: true);
           context.pushNamedAndRemoveUntil(
             Routes.mainLayoutScreen,
             predicate: (route) => false,
           );
         }
         if (state is LoginErrorState) {
-          toast(text: state.error, color: Colors.red);
+          toast(text: state.error, isSuccess: false);
         }
       },
       builder: (context, state) {
@@ -85,10 +85,8 @@ class EmailAndPassword extends StatelessWidget {
               ),
               verticalSpace(60),
               state is LoginLoadingState
-                  ?  Loading()
+                  ? Loading()
                   : DefaultElevatedButton(
-                      width: 310,
-                      height: 50,
                       name: S.of(context).loginButton,
                       color: AppColor.primaryColor,
                       textStyles: TextStyles.font16WhiteSemiBold,

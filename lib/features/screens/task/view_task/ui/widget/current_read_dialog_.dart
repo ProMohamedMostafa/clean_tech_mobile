@@ -67,8 +67,7 @@ class CustomCurrentReadDialog {
                               context.pop();
                             },
                             color: AppColor.primaryColor,
-                            height: 47,
-                            width: double.infinity,
+
                             textStyles: TextStyles.font20Whitesemimedium),
                       ),
                       verticalSpace(30),

@@ -44,39 +44,44 @@ class CompleteTasksLineChart extends StatelessWidget {
               axisLine: AxisLine(width: 0),
             ),
             series: <CartesianSeries>[
-              SplineAreaSeries<ChartData, String>(
-                dataSource: _generateChartData(completeTaskData?.data?.labels,
-                    completeTaskData?.data?.values),
-                gradient: LinearGradient(
-                  colors: [
-                    AppColor.primaryColor.withOpacity(0.5),
-                    Colors.white.withOpacity(0.1),
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
+              SplineSeries<ChartData, String>(
+                dataSource: _generateChartData(
+                  completeTaskData?.data?.labels,
+                  completeTaskData?.data?.values,
                 ),
-                borderColor: AppColor.primaryColor,
-                borderWidth: 3,
-                splineType: SplineType.clamped,
                 xValueMapper: (ChartData data, _) => data.month,
                 yValueMapper: (ChartData data, _) => data.value,
+                splineType: SplineType.clamped,
+                width: 3,
                 markerSettings: MarkerSettings(
-                    isVisible: true,
-                    shape: DataMarkerType.diamond,
-                    borderColor: AppColor.primaryColor,
-                    color: AppColor.primaryColor,
-                    height: 12.h,
-                    width: 12.w),
+                  isVisible: true,
+                  shape: DataMarkerType.diamond,
+                  borderColor: AppColor.primaryColor,
+                  color: AppColor.primaryColor,
+                  height: 12.h,
+                  width: 12.w,
+                ),
                 dataLabelSettings: DataLabelSettings(
                   isVisible: true,
                   labelAlignment: ChartDataLabelAlignment.top,
                   textStyle: TextStyles.font10lightPrimary,
-                  offset: Offset(0, 3),
+                  offset: const Offset(0, 3),
                   builder: (dynamic data, dynamic point, dynamic series,
                       int pointIndex, int seriesIndex) {
-                    return Text('${data.value}');
+                    return Text('${data.value}%',
+                        style: TextStyles.font10lightPrimary);
                   },
                 ),
+                onCreateShader: (ShaderDetails details) {
+                  return LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      AppColor.primaryColor.withOpacity(0.8),
+                      AppColor.primaryColor.withOpacity(0.1),
+                    ],
+                  ).createShader(details.rect);
+                },
               ),
             ],
           ),

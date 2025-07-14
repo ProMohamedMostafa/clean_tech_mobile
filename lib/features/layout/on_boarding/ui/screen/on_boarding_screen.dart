@@ -141,8 +141,6 @@ class OnBoardingScreen extends StatelessWidget {
                           predicate: (route) => false,
                         );
                       },
-                      height: 48.h,
-                      width: double.infinity,
                       textStyles: TextStyles.font16WhiteSemiBold,
                     ),
                   ],

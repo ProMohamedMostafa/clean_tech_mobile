@@ -72,7 +72,7 @@ Widget _buildButton({
     child: GestureDetector(
       onTap: () => onTap(index),
       child: Container(
-        height: 45.h,
+        height: 50.h,
         padding: EdgeInsets.symmetric(horizontal: 2.w),
         decoration: BoxDecoration(
           color: isSelected ? AppColor.primaryColor : Colors.white,

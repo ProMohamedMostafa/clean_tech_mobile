@@ -147,4 +147,13 @@ class AttendanceLeavesCubit extends Cubit<AttendanceLeavesState> {
       emit(LeavesDeleteErrorState(error.toString()));
     });
   }
+  leavesDeleteRequest(int id) {
+    emit(LeavesDeleteLoadingState());
+    DioHelper.deleteData(url: 'leaves/delete/$id/request').then((value) {
+      final message = value?.data['message'] ?? "restored successfully";
+      emit(LeavesDeleteSuccessState(message!));
+    }).catchError((error) {
+      emit(LeavesDeleteErrorState(error.toString()));
+    });
+  }
 }

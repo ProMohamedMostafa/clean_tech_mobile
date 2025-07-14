@@ -45,10 +45,12 @@ class ActivityListItemBuild extends StatelessWidget {
             child: ListTile(
               contentPadding: EdgeInsets.symmetric(horizontal: 5),
               minTileHeight: 60.h,
-              leading: buildActionIcon(cubit.selectedIndex == 0
-                  ? cubit.myActivities!.data!.activities![index].actionTypeId!
-                  : cubit
-                      .teamActivities!.data!.activities![index].actionTypeId!),
+              leading: ActionIcon(
+                  actionId: cubit.selectedIndex == 0
+                      ? cubit
+                          .myActivities!.data!.activities![index].actionTypeId!
+                      : cubit.teamActivities!.data!.activities![index]
+                          .actionTypeId!),
               title: Row(
                 children: [
                   Text(

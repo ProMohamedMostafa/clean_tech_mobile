@@ -31,11 +31,11 @@ class AddAreaScreen extends StatelessWidget {
           child: BlocConsumer<AddWorkLocationCubit, AddWorkLocationState>(
         listener: (context, state) {
           if (state is CreateAreaSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
             context.popWithTrueResult();
           }
           if (state is CreateAreaErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
         },
         builder: (context, state) {
@@ -346,8 +346,7 @@ class AddAreaScreen extends StatelessWidget {
               }
             },
             color: AppColor.primaryColor,
-            height: 47.h,
-            width: double.infinity,
+
             textStyles: TextStyles.font20Whitesemimedium,
           );
   }

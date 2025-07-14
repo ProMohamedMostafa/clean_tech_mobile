@@ -27,14 +27,14 @@ class AssignBody extends StatelessWidget {
     final cubit = context.read<AssignCubit>();
     return Scaffold(
         appBar: AppBar(
-            leading: CustomBackButton(), title: Text('Assign Management')),
+            leading: CustomBackButton(), title: Text(S.of(context).integ3)),
         body:
             BlocConsumer<AssignCubit, AssignStates>(listener: (context, state) {
           if (state is AssignSuccessState) {
-            toast(text: state.assignModel.message!, color: Colors.blue);
+            toast(text: state.assignModel.message!, isSuccess: true);
           }
           if (state is AssignErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
         }, builder: (context, state) {
           if (cubit.shiftsModel == null || cubit.roleModel == null) {
@@ -61,9 +61,9 @@ class AssignBody extends StatelessWidget {
                                   cubit.clearAllControllers();
                                   cubit.fetchAppropriateOrganizations();
                                 },
-                                firstLabel: "User",
-                                secondLabel: 'Shift',
-                                thirdLabel: 'Location'),
+                                firstLabel: S.of(context).user,
+                                secondLabel: S.of(context).shiftBody,
+                                thirdLabel: S.of(context).workLocation),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -120,11 +120,11 @@ class AssignBody extends StatelessWidget {
                                   },
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return "Role is Required";
+                                      return S.of(context).validationRole;
                                     }
                                     return null;
                                   },
-                                  hint: 'Select Role',
+                                  hint: S.of(context).select_role,
                                   items: cubit.roleDataItem
                                       .map((e) => e.name ?? 'Unknown')
                                       .toList(),
@@ -214,15 +214,18 @@ class AssignBody extends StatelessWidget {
                                     cubit.roleIdController.text =
                                         selectedRole?.id?.toString() ?? '';
 
+                                    // VERY IMPORTANT
+                                    cubit.usersController
+                                        .clearAll(); // clear selected users
                                     cubit.getUsers(roleId: selectedRole!.id);
                                   },
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return "Role is Required";
+                                      return S.of(context).validationRole;
                                     }
                                     return null;
                                   },
-                                  hint: 'Select Role',
+                                  hint: S.of(context).select_role,
                                   items: cubit.roleDataItem
                                       .map((e) => e.name ?? 'Unknown')
                                       .toList(),
@@ -233,127 +236,100 @@ class AssignBody extends StatelessWidget {
                               if (cubit.roleController.text.isNotEmpty) ...[
                                 Text(
                                   cubit.roleController.text.isEmpty
-                                      ? 'User'
+                                      ? S.of(context).user
                                       : cubit.roleController.text,
                                   style: TextStyles.font16BlackRegular,
                                 ),
                                 state is AllUsersLoadingState
                                     ? Loading()
-                                    : MultiDropdown<UserItem>(
-                                        key: ValueKey(
-                                            cubit.roleIdController.text),
-                                        items: cubit.usersModel!.data?.users
-                                                    ?.isEmpty ??
-                                                true
-                                            ? [
-                                                DropdownItem(
-                                                  label: (cubit.roleIdController.text == '1' ||
-                                                          cubit.roleIdController
-                                                                  .text ==
-                                                              '2' ||
-                                                          cubit.roleIdController
-                                                                  .text ==
-                                                              '5')
-                                                      ? S
-                                                          .of(context)
-                                                          .noAdminsAvailable
-                                                      : (cubit.roleIdController
-                                                                  .text ==
-                                                              '3')
-                                                          ? S
-                                                              .of(context)
-                                                              .noManagersAvailable
-                                                          : (cubit.roleIdController
-                                                                      .text ==
-                                                                  '4')
-                                                              ? S
-                                                                  .of(context)
-                                                                  .noSupervisorsAvailable
-                                                              : S
-                                                                  .of(context)
-                                                                  .noUsersAvailable,
-                                                  value: UserItem(
-                                                      id: null, userName: ''),
-                                                )
-                                              ]
-                                            : cubit.usersModel!.data!.users!
-                                                .map((user) =>
-                                                    DropdownItem<UserItem>(
-                                                      label: user.userName ??
-                                                          S
-                                                              .of(context)
-                                                              .roleUsers,
-                                                      value: user,
-                                                    ))
-                                                .toList(),
-                                        controller: cubit.usersController,
-                                        enabled: true,
-                                        chipDecoration: ChipDecoration(
-                                          backgroundColor: Colors.grey[300],
-                                          wrap: true,
-                                          runSpacing: 5,
-                                          spacing: 5,
-                                        ),
-                                        fieldDecoration: FieldDecoration(
-                                          hintText: (cubit.roleIdController
-                                                          .text ==
-                                                      '1' ||
-                                                  cubit.roleIdController.text ==
-                                                      '2' ||
-                                                  cubit.roleIdController.text ==
-                                                      '5')
-                                              ? S.of(context).roleAdmin
-                                              : (cubit.roleIdController.text ==
-                                                      '3')
-                                                  ? S.of(context).roleManager
-                                                  : (cubit.roleIdController
-                                                              .text ==
-                                                          '4')
-                                                      ? S
-                                                          .of(context)
-                                                          .roleSupervisor
-                                                      : S.of(context).roleUsers,
-                                          hintStyle: TextStyle(
-                                              fontSize: 12.sp,
-                                              color: AppColor.thirdColor),
-                                          showClearIcon: false,
-                                          suffixIcon: Padding(
-                                            padding: EdgeInsets.only(right: 10),
-                                            child: Icon(IconBroken.arrowDown2),
-                                          ),
-                                          border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8.r),
-                                            borderSide: BorderSide(
-                                                color: Colors.grey[300]!),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8.r),
-                                            borderSide: const BorderSide(
-                                                color: AppColor.primaryColor),
-                                          ),
-                                          errorBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8.r),
-                                            borderSide: const BorderSide(
-                                                color: Colors.red),
-                                          ),
-                                        ),
-                                        dropdownDecoration:
-                                            const DropdownDecoration(
-                                                maxHeight: 200),
-                                        dropdownItemDecoration:
-                                            DropdownItemDecoration(
-                                          selectedIcon: const Icon(
-                                              Icons.check_box,
-                                              color: Colors.blue),
-                                        ),
-                                        onSelectionChange: (selectedItems) {
-                                          cubit.selectedUsersIds = selectedItems
-                                              .where((item) => item.id != null)
-                                              .map((item) => item.id!)
-                                              .toList();
+                                    : BlocBuilder<AssignCubit, AssignStates>(
+                                        buildWhen: (prev, curr) =>
+                                            curr is AllUsersSuccessState ||
+                                            curr is UpdateUsersDropdownState,
+                                        builder: (context, state) {
+                                          final users =
+                                              cubit.usersModel?.data?.users ??
+                                                  [];
+                                          return MultiDropdown<UserItem>(
+                                            key: cubit.userDropdownKey,
+                                            items: users.isEmpty
+                                                ? [
+                                                    DropdownItem(
+                                                        label: S
+                                                            .of(context)
+                                                            .noUsersAvailable,
+                                                        value: UserItem(
+                                                            id: null,
+                                                            userName: ''))
+                                                  ]
+                                                : users
+                                                    .map((user) =>
+                                                        DropdownItem<UserItem>(
+                                                          label: user
+                                                                  .userName ??
+                                                              'Unknown User',
+                                                          value: user,
+                                                        ))
+                                                    .toList(),
+                                            controller: cubit.usersController,
+                                            onSelectionChange: (selectedItems) {
+                                              cubit.selectedUsersIds =
+                                                  selectedItems
+                                                      .where((item) =>
+                                                          item.id != null)
+                                                      .map((item) => item.id!)
+                                                      .toList();
+                                            },
+                                            enabled: true,
+                                            chipDecoration: ChipDecoration(
+                                              backgroundColor: Colors.grey[300],
+                                              wrap: true,
+                                              runSpacing: 5,
+                                              spacing: 5,
+                                            ),
+                                            fieldDecoration: FieldDecoration(
+                                              hintText:
+                                                  cubit.roleController.text,
+                                              hintStyle: TextStyle(
+                                                  fontSize: 12.sp,
+                                                  color: AppColor.thirdColor),
+                                              showClearIcon: false,
+                                              suffixIcon: Padding(
+                                                padding:
+                                                    EdgeInsets.only(right: 10),
+                                                child:
+                                                    Icon(IconBroken.arrowDown2),
+                                              ),
+                                              border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8.r),
+                                                borderSide: BorderSide(
+                                                    color: Colors.grey[300]!),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8.r),
+                                                borderSide: const BorderSide(
+                                                    color:
+                                                        AppColor.primaryColor),
+                                              ),
+                                              errorBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8.r),
+                                                borderSide: const BorderSide(
+                                                    color: Colors.red),
+                                              ),
+                                            ),
+                                            dropdownDecoration:
+                                                const DropdownDecoration(
+                                                    maxHeight: 200),
+                                            dropdownItemDecoration:
+                                                DropdownItemDecoration(
+                                              selectedIcon: const Icon(
+                                                  Icons.check_box,
+                                                  color: Colors.blue),
+                                            ),
+                                          );
                                         },
                                       ),
                                 verticalSpace(10),
@@ -368,27 +344,28 @@ class AssignBody extends StatelessWidget {
                                 (cubit.selecteIndex == 2 &&
                                     cubit.selecteSecendIndex == 1)) ...[
                               Text(
-                                'Shift',
+                                S.of(context).shiftBody,
                                 style: TextStyles.font16BlackRegular,
                               ),
                               MultiDropdown<ShiftData>(
-                                items:
-                                    cubit.shiftsModel!.data?.shifts?.isEmpty ??
-                                            true
-                                        ? [
-                                            DropdownItem(
-                                              label: 'No users available',
-                                              value: ShiftData(
-                                                  id: null,
-                                                  name: 'No users available'),
-                                            )
-                                          ]
-                                        : cubit.shiftsModel!.data!.shifts!
-                                            .map((role) => DropdownItem(
-                                                  label: role.name!,
-                                                  value: role,
-                                                ))
-                                            .toList(),
+                                items: cubit.shiftsModel!.data?.shifts
+                                            ?.isEmpty ??
+                                        true
+                                    ? [
+                                        DropdownItem(
+                                          label:
+                                              S.of(context).noShiftsAvailable,
+                                          value: ShiftData(
+                                              id: null,
+                                              name: S.of(context).selectUnit),
+                                        )
+                                      ]
+                                    : cubit.shiftsModel!.data!.shifts!
+                                        .map((role) => DropdownItem(
+                                              label: role.name!,
+                                              value: role,
+                                            ))
+                                        .toList(),
                                 controller: cubit.shiftsController,
                                 enabled: true,
                                 chipDecoration: ChipDecoration(
@@ -398,7 +375,7 @@ class AssignBody extends StatelessWidget {
                                   spacing: 5,
                                 ),
                                 fieldDecoration: FieldDecoration(
-                                  hintText: 'Select shift',
+                                  hintText: S.of(context).selectShift,
                                   hintStyle: TextStyle(
                                       fontSize: 12.sp,
                                       color: AppColor.thirdColor),
@@ -448,11 +425,11 @@ class AssignBody extends StatelessWidget {
                                 (cubit.selecteIndex == 2 &&
                                     cubit.selecteSecendIndex == 1)) ...[
                               Text(
-                                'Work Location',
+                                S.of(context).workLocation,
                                 style: TextStyles.font16BlackRegular,
                               ),
                               CustomDropDownList(
-                                hint: 'Select Work location',
+                                hint: S.of(context).select_work_location,
                                 controller: cubit.levelController,
                                 color: AppColor.primaryColor,
                                 items: cubit.levelOrder,
@@ -466,10 +443,10 @@ class AssignBody extends StatelessWidget {
                               ),
                               verticalSpace(10),
                               if (cubit.shouldShow('Area')) ...[
-                                Text('Area',
+                                Text(S.of(context).Area,
                                     style: TextStyles.font16BlackRegular),
                                 CustomDropDownList(
-                                  hint: 'Select area',
+                                  hint: S.of(context).selectArea,
                                   controller: cubit.areaController,
                                   items: cubit.areaItem
                                       .map((e) => e.name ?? 'Unknown')
@@ -495,10 +472,10 @@ class AssignBody extends StatelessWidget {
                                 verticalSpace(10),
                               ],
                               if (cubit.shouldShow('City')) ...[
-                                Text('City',
+                                Text(S.of(context).City,
                                     style: TextStyles.font16BlackRegular),
                                 CustomDropDownList(
-                                  hint: 'Select cities',
+                                  hint: S.of(context).selectCity,
                                   controller: cubit.cityController,
                                   items: cubit.cityItem
                                       .map((e) => e.name ?? 'Unknown')
@@ -516,7 +493,7 @@ class AssignBody extends StatelessWidget {
                                       cubit.cityIdController.text =
                                           selectedCity;
                                     }
-                                    cubit.fetchAppropriateOrganizations();
+                                    cubit.getOrganization();
                                   },
                                   suffixIcon: IconBroken.arrowDown2,
                                   keyboardType: TextInputType.text,
@@ -525,7 +502,7 @@ class AssignBody extends StatelessWidget {
                               ],
                               if (cubit.shouldShow('Organization')) ...[
                                 Text(
-                                  'Organization',
+                                  S.of(context).Organization,
                                   style: TextStyles.font16BlackRegular,
                                 ),
                                 BlocBuilder<AssignCubit, AssignStates>(
@@ -534,7 +511,7 @@ class AssignBody extends StatelessWidget {
                                       current is AllOrganizationSuccessState,
                                   builder: (context, state) {
                                     return CustomDropDownList(
-                                      hint: 'Select organizations',
+                                      hint: S.of(context).selectOrganization,
                                       controller: cubit.organizationController,
                                       items: cubit.organizationItem
                                           .map((e) => e.name ?? 'Unknown')
@@ -563,10 +540,10 @@ class AssignBody extends StatelessWidget {
                                 verticalSpace(10),
                               ],
                               if (cubit.shouldShow('Building')) ...[
-                                Text('Building',
+                                Text(S.of(context).Building,
                                     style: TextStyles.font16BlackRegular),
                                 CustomDropDownList(
-                                  hint: 'Select building',
+                                  hint: S.of(context).selectBuilding,
                                   controller: cubit.buildingController,
                                   items: cubit.buildingItem
                                       .map((e) => e.name ?? 'Unknown')
@@ -592,10 +569,10 @@ class AssignBody extends StatelessWidget {
                                 verticalSpace(10),
                               ],
                               if (cubit.shouldShow('Floor')) ...[
-                                Text('Floor',
+                                Text(S.of(context).Floor,
                                     style: TextStyles.font16BlackRegular),
                                 CustomDropDownList(
-                                  hint: 'Select floor',
+                                  hint: S.of(context).selectFloor,
                                   controller: cubit.floorController,
                                   items: cubit.floorItem
                                       .map((e) => e.name ?? 'Unknown')
@@ -621,10 +598,10 @@ class AssignBody extends StatelessWidget {
                                 verticalSpace(10),
                               ],
                               if (cubit.shouldShow('Section')) ...[
-                                Text('Section',
+                                Text(S.of(context).Section,
                                     style: TextStyles.font16BlackRegular),
                                 CustomDropDownList(
-                                  hint: 'Select section',
+                                  hint: S.of(context).selectSection,
                                   controller: cubit.sectionController,
                                   items: cubit.sectionItem
                                       .map((e) => e.name ?? 'Unknown')
@@ -650,10 +627,10 @@ class AssignBody extends StatelessWidget {
                                 verticalSpace(10),
                               ],
                               if (cubit.shouldShow('Point')) ...[
-                                Text('Point',
+                                Text(S.of(context).Point,
                                     style: TextStyles.font16BlackRegular),
                                 CustomDropDownList(
-                                  hint: 'Select point',
+                                  hint: S.of(context).select_point,
                                   controller: cubit.pointController,
                                   items: cubit.pointItem
                                       .map((e) => e.name ?? 'Unknown')
@@ -686,7 +663,7 @@ class AssignBody extends StatelessWidget {
                           ? Loading()
                           : Center(
                               child: DefaultElevatedButton(
-                                  name: "Assign",
+                                  name: S.of(context).assignButton,
                                   onPressed: () {
                                     if ((cubit.selecteIndex == 0 &&
                                             cubit.selecteSecendIndex == 0) ||
@@ -733,8 +710,6 @@ class AssignBody extends StatelessWidget {
                                     }
                                   },
                                   color: AppColor.primaryColor,
-                                  height: 47,
-                                  width: double.infinity,
                                   textStyles: TextStyles.font16WhiteSemiBold),
                             ),
                       verticalSpace(20),

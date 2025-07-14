@@ -45,14 +45,19 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Section": MessageLookupByLibrary.simpleMessage("Section"),
     "TitleAdd": MessageLookupByLibrary.simpleMessage("add"),
+    "TitleChangePassword": MessageLookupByLibrary.simpleMessage(
+      "Change Password",
+    ),
     "TitleDelete": MessageLookupByLibrary.simpleMessage("delete"),
     "TitleEdit": MessageLookupByLibrary.simpleMessage("edit"),
     "TitleRemove": MessageLookupByLibrary.simpleMessage("remove location"),
     "TitleRestore": MessageLookupByLibrary.simpleMessage("restore"),
     "Titleapprove": MessageLookupByLibrary.simpleMessage("approve"),
     "absent": MessageLookupByLibrary.simpleMessage("Absent"),
+    "action": MessageLookupByLibrary.simpleMessage("Action"),
     "active": MessageLookupByLibrary.simpleMessage("Active"),
     "activities": MessageLookupByLibrary.simpleMessage("Activities"),
+    "activity_status": MessageLookupByLibrary.simpleMessage("Activity status"),
     "addAnotherButton": MessageLookupByLibrary.simpleMessage("Add Another"),
     "addArea": MessageLookupByLibrary.simpleMessage("Add Area"),
     "addBuilding": MessageLookupByLibrary.simpleMessage("Add Building"),
@@ -83,7 +88,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "addUserText8": MessageLookupByLibrary.simpleMessage("Nationality"),
     "addUserText9": MessageLookupByLibrary.simpleMessage("Gender"),
     "addUserTitle": MessageLookupByLibrary.simpleMessage("Add User"),
+    "add_comment": MessageLookupByLibrary.simpleMessage("Add Comment"),
     "admin": MessageLookupByLibrary.simpleMessage("Admin"),
+    "after_reading": MessageLookupByLibrary.simpleMessage("After Reading"),
     "all": MessageLookupByLibrary.simpleMessage("All"),
     "allTasks": MessageLookupByLibrary.simpleMessage("All Tasks"),
     "alreadyMarkedAsRead": MessageLookupByLibrary.simpleMessage(
@@ -104,7 +111,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "areaNameTooShort": MessageLookupByLibrary.simpleMessage(
       "Area name too short",
     ),
+    "area_details": MessageLookupByLibrary.simpleMessage("Area details"),
+    "areas": MessageLookupByLibrary.simpleMessage("Areas"),
+    "assignButton": MessageLookupByLibrary.simpleMessage("Assign"),
+    "assign_to": MessageLookupByLibrary.simpleMessage("Assign to"),
     "attendance": MessageLookupByLibrary.simpleMessage("Attendance"),
+    "bar": MessageLookupByLibrary.simpleMessage("Bar"),
     "battery": MessageLookupByLibrary.simpleMessage("Battery"),
     "botNavTitle1": MessageLookupByLibrary.simpleMessage("Home"),
     "botNavTitle2": MessageLookupByLibrary.simpleMessage("Integrations"),
@@ -131,6 +143,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "buildingNumberTooLong": MessageLookupByLibrary.simpleMessage(
       "Building number too long",
     ),
+    "building_details": MessageLookupByLibrary.simpleMessage(
+      "Building details",
+    ),
+    "buildings": MessageLookupByLibrary.simpleMessage("Buildings"),
     "calendar": MessageLookupByLibrary.simpleMessage("Calendar"),
     "cancelButton": MessageLookupByLibrary.simpleMessage("Cancel"),
     "capacity": MessageLookupByLibrary.simpleMessage("Capacity"),
@@ -157,9 +173,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "categoryNameTooShort": MessageLookupByLibrary.simpleMessage(
       "Category name too short",
     ),
+    "changePasswordbutton": MessageLookupByLibrary.simpleMessage(
+      "Change Password",
+    ),
+    "change_password": MessageLookupByLibrary.simpleMessage("Change Password"),
+    "change_password_description": MessageLookupByLibrary.simpleMessage(
+      "Please, setup a new password for your account",
+    ),
     "chartBar": MessageLookupByLibrary.simpleMessage("Bar"),
     "chartLine": MessageLookupByLibrary.simpleMessage("Line"),
     "chartPie": MessageLookupByLibrary.simpleMessage("Pie"),
+    "chart_type": MessageLookupByLibrary.simpleMessage("Chart Type"),
+    "check_ip": MessageLookupByLibrary.simpleMessage("Check IP"),
+    "cities": MessageLookupByLibrary.simpleMessage("Cities"),
     "cityBody": MessageLookupByLibrary.simpleMessage("city"),
     "cityName": MessageLookupByLibrary.simpleMessage("City Name"),
     "cityNameRequired": MessageLookupByLibrary.simpleMessage(
@@ -171,10 +197,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "cityNameTooShort": MessageLookupByLibrary.simpleMessage(
       "City name too short",
     ),
+    "city_details": MessageLookupByLibrary.simpleMessage("City details"),
     "cleaner": MessageLookupByLibrary.simpleMessage("Cleaner"),
     "cleaners": MessageLookupByLibrary.simpleMessage("Cleaners"),
     "cm": MessageLookupByLibrary.simpleMessage("Cm"),
+    "comment_or_image_required": MessageLookupByLibrary.simpleMessage(
+      "Comment or Image is required",
+    ),
+    "comments": MessageLookupByLibrary.simpleMessage("Comments"),
     "complete": MessageLookupByLibrary.simpleMessage("Complete"),
+    "completeButton": MessageLookupByLibrary.simpleMessage("Complete"),
     "completed": MessageLookupByLibrary.simpleMessage("Completed"),
     "confirmForcedDelete": MessageLookupByLibrary.simpleMessage(
       "Force delete this user?",
@@ -185,7 +217,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "confirmSaveEdit": MessageLookupByLibrary.simpleMessage(
       "Are you sure you want to save the edit of this user?",
     ),
-    "createButton": MessageLookupByLibrary.simpleMessage("create"),
+    "confirm_password": MessageLookupByLibrary.simpleMessage(
+      "Confirm Password",
+    ),
+    "country": MessageLookupByLibrary.simpleMessage("Country"),
+    "createButton": MessageLookupByLibrary.simpleMessage("Create"),
     "createCategory": MessageLookupByLibrary.simpleMessage("Create Category"),
     "createLeave": MessageLookupByLibrary.simpleMessage("Create Leave"),
     "createMaterial": MessageLookupByLibrary.simpleMessage("Create Material"),
@@ -203,11 +239,23 @@ class MessageLookup extends MessageLookupByLibrary {
       "At least 8 characters long",
     ),
     "createShift": MessageLookupByLibrary.simpleMessage("Create Shift"),
+    "create_task": MessageLookupByLibrary.simpleMessage("Create Task"),
+    "created_by": MessageLookupByLibrary.simpleMessage("Created By"),
+    "currently_reading": MessageLookupByLibrary.simpleMessage(
+      "Currently reading",
+    ),
+    "currently_reading_required": MessageLookupByLibrary.simpleMessage(
+      "Currently reading is Required",
+    ),
+    "currently_reading_too_long": MessageLookupByLibrary.simpleMessage(
+      "Currently reading too long",
+    ),
     "date": MessageLookupByLibrary.simpleMessage("Date"),
     "deleteButton": MessageLookupByLibrary.simpleMessage("Delete"),
     "deleteMessage": MessageLookupByLibrary.simpleMessage(
       "Are You Sure You Want To Remove This User ?",
     ),
+    "deleted": MessageLookupByLibrary.simpleMessage("Deleted"),
     "deletedCategories": MessageLookupByLibrary.simpleMessage(
       "Deleted Categories",
     ),
@@ -227,13 +275,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "descriptionTooShort": MessageLookupByLibrary.simpleMessage(
       "Description too short",
     ),
+    "device": MessageLookupByLibrary.simpleMessage("Device"),
+    "device_name": MessageLookupByLibrary.simpleMessage("Device name"),
     "discription": MessageLookupByLibrary.simpleMessage("Discription"),
+    "doneButton2": MessageLookupByLibrary.simpleMessage("Done"),
     "doneTitl1": MessageLookupByLibrary.simpleMessage("Password Changed!"),
     "doneTitl2": MessageLookupByLibrary.simpleMessage(
       "Your password has been changed successfully.",
     ),
     "donebutton": MessageLookupByLibrary.simpleMessage("Back to login"),
     "duration": MessageLookupByLibrary.simpleMessage("Duration : "),
+    "duration2": MessageLookupByLibrary.simpleMessage("Duration"),
     "editButton": MessageLookupByLibrary.simpleMessage("Edit"),
     "editCategory": MessageLookupByLibrary.simpleMessage("Edit Category"),
     "editLeave": MessageLookupByLibrary.simpleMessage("Edit Leave"),
@@ -242,6 +294,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "editProvider": MessageLookupByLibrary.simpleMessage("Edit Provider"),
     "editShift": MessageLookupByLibrary.simpleMessage("Edit Shift"),
     "editUserTitle": MessageLookupByLibrary.simpleMessage("Edit User"),
+    "edit_task": MessageLookupByLibrary.simpleMessage("Edit Task"),
+    "employee": MessageLookupByLibrary.simpleMessage("Employee"),
     "employeeName": MessageLookupByLibrary.simpleMessage("Employee Name"),
     "employeeNameRequiredValidation": MessageLookupByLibrary.simpleMessage(
       "Employee name is required",
@@ -254,14 +308,25 @@ class MessageLookup extends MessageLookupByLibrary {
     "endTimeRequiredValidation": MessageLookupByLibrary.simpleMessage(
       "End Time is required",
     ),
+    "end_time": MessageLookupByLibrary.simpleMessage("End:"),
     "enterCategory": MessageLookupByLibrary.simpleMessage("Enter Category"),
     "enterMaterial": MessageLookupByLibrary.simpleMessage("Enter Material"),
     "enterShift": MessageLookupByLibrary.simpleMessage("Enter Shift"),
+    "enter_network_ip": MessageLookupByLibrary.simpleMessage(
+      "Please enter your network IP",
+    ),
+    "enter_task_title": MessageLookupByLibrary.simpleMessage(
+      "Enter task title",
+    ),
     "experienceDescription": MessageLookupByLibrary.simpleMessage(
       "Experience a seamless way to manage\ncleaning services with just a few taps on your phone!",
     ),
+    "falseSelect": MessageLookupByLibrary.simpleMessage("False"),
+    "female": MessageLookupByLibrary.simpleMessage("Female"),
     "file": MessageLookupByLibrary.simpleMessage("File"),
+    "files": MessageLookupByLibrary.simpleMessage("Files"),
     "filesUploaded": MessageLookupByLibrary.simpleMessage("Files uploaded"),
+    "files_uploaded": MessageLookupByLibrary.simpleMessage("files uploaded"),
     "findActivity": MessageLookupByLibrary.simpleMessage("Find activity"),
     "findCategory": MessageLookupByLibrary.simpleMessage("Find category"),
     "findHistory": MessageLookupByLibrary.simpleMessage("Find history"),
@@ -271,6 +336,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "findShift": MessageLookupByLibrary.simpleMessage("Find shift"),
     "findSomeone": MessageLookupByLibrary.simpleMessage("Find someone"),
     "findTransaction": MessageLookupByLibrary.simpleMessage("Find transaction"),
+    "find_name_of_work_location": MessageLookupByLibrary.simpleMessage(
+      "Find name of work location",
+    ),
+    "find_task": MessageLookupByLibrary.simpleMessage("Find task"),
     "floorBody": MessageLookupByLibrary.simpleMessage("floor"),
     "floorDescription": MessageLookupByLibrary.simpleMessage(
       "Floor Description",
@@ -292,6 +361,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "floorNumberTooLong": MessageLookupByLibrary.simpleMessage(
       "Floor number too long",
     ),
+    "floor_details": MessageLookupByLibrary.simpleMessage("Floor details"),
+    "floors": MessageLookupByLibrary.simpleMessage("Floors"),
     "forgotPassButton": MessageLookupByLibrary.simpleMessage(
       "Forgot Password?",
     ),
@@ -303,6 +374,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Don’t worry, happens to all of us. Enter your email below to recover your password",
     ),
     "g": MessageLookupByLibrary.simpleMessage("G"),
+    "gender": MessageLookupByLibrary.simpleMessage("Gender"),
     "genderFemale": MessageLookupByLibrary.simpleMessage("Female"),
     "genderMale": MessageLookupByLibrary.simpleMessage("Male"),
     "hey": MessageLookupByLibrary.simpleMessage("Hey, "),
@@ -321,7 +393,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "inCost": MessageLookupByLibrary.simpleMessage("In Cost"),
     "inProgress": MessageLookupByLibrary.simpleMessage("In Progress"),
     "inProgressTask": MessageLookupByLibrary.simpleMessage("In Progress"),
+    "inSelect": MessageLookupByLibrary.simpleMessage("In"),
     "inSide": MessageLookupByLibrary.simpleMessage("In side"),
+    "in_progress": MessageLookupByLibrary.simpleMessage("In Progress"),
     "inactive": MessageLookupByLibrary.simpleMessage("InActive"),
     "inside": MessageLookupByLibrary.simpleMessage("Inside"),
     "integ1": MessageLookupByLibrary.simpleMessage("Users Management"),
@@ -335,17 +409,23 @@ class MessageLookup extends MessageLookupByLibrary {
     "integ8": MessageLookupByLibrary.simpleMessage("Activities"),
     "integ9": MessageLookupByLibrary.simpleMessage("Sensors"),
     "integrations": MessageLookupByLibrary.simpleMessage("Integrations"),
+    "ip_invalid_format": MessageLookupByLibrary.simpleMessage(
+      "Enter a valid IP (e.g. 192.168.1.1)",
+    ),
+    "ip_required": MessageLookupByLibrary.simpleMessage("IP is Required"),
     "isCountable": MessageLookupByLibrary.simpleMessage("Is Countable:"),
+    "is_active": MessageLookupByLibrary.simpleMessage("Is Active"),
+    "is_assign": MessageLookupByLibrary.simpleMessage("Is Assign"),
     "kg": MessageLookupByLibrary.simpleMessage("Kg"),
     "l": MessageLookupByLibrary.simpleMessage("L"),
     "labelEmail": MessageLookupByLibrary.simpleMessage("Email or userName"),
     "labelOptional": MessageLookupByLibrary.simpleMessage(" (Optional)"),
     "labelPassword": MessageLookupByLibrary.simpleMessage("Password"),
-    "late": MessageLookupByLibrary.simpleMessage("Late"),
     "leaveBody": MessageLookupByLibrary.simpleMessage("Leave"),
     "leaveDetails": MessageLookupByLibrary.simpleMessage("Leave details"),
     "leaves": MessageLookupByLibrary.simpleMessage("Leaves"),
     "limitBody": MessageLookupByLibrary.simpleMessage("limit"),
+    "line": MessageLookupByLibrary.simpleMessage("Line"),
     "loginButton": MessageLookupByLibrary.simpleMessage("Login"),
     "loginMessage": MessageLookupByLibrary.simpleMessage(
       "Login to access your Clean Tech\naccount",
@@ -356,6 +436,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "low": MessageLookupByLibrary.simpleMessage("Low"),
     "m": MessageLookupByLibrary.simpleMessage("M"),
+    "male": MessageLookupByLibrary.simpleMessage("Male"),
     "manager": MessageLookupByLibrary.simpleMessage("Manager"),
     "managers": MessageLookupByLibrary.simpleMessage("Managers"),
     "material": MessageLookupByLibrary.simpleMessage("Material"),
@@ -394,15 +475,23 @@ class MessageLookup extends MessageLookupByLibrary {
       "Minimum is too long",
     ),
     "ml": MessageLookupByLibrary.simpleMessage("Ml"),
+    "module": MessageLookupByLibrary.simpleMessage("Module"),
     "myActivities": MessageLookupByLibrary.simpleMessage("My Activities"),
     "myActivity": MessageLookupByLibrary.simpleMessage("My Activity"),
     "myTeamActivities": MessageLookupByLibrary.simpleMessage(
       "My Team Activities",
     ),
     "myTeamActivity": MessageLookupByLibrary.simpleMessage("My Team Activity"),
+    "my_tasks": MessageLookupByLibrary.simpleMessage("My tasks"),
+    "my_team_tasks": MessageLookupByLibrary.simpleMessage("My team tasks"),
     "name": MessageLookupByLibrary.simpleMessage("Name"),
+    "network_ip": MessageLookupByLibrary.simpleMessage("Network IP"),
+    "new_password": MessageLookupByLibrary.simpleMessage("New Password"),
     "nextButton": MessageLookupByLibrary.simpleMessage("Next"),
     "no": MessageLookupByLibrary.simpleMessage("No"),
+    "noActivities": MessageLookupByLibrary.simpleMessage(
+      "There\'s no activities",
+    ),
     "noAdminsAvailable": MessageLookupByLibrary.simpleMessage(
       "No Admins available",
     ),
@@ -439,10 +528,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "noUsersAvailable": MessageLookupByLibrary.simpleMessage(
       "No Users available",
     ),
+    "no_comments": MessageLookupByLibrary.simpleMessage("There\'s no comments"),
+    "no_employee_added": MessageLookupByLibrary.simpleMessage(
+      "No employee added",
+    ),
+    "no_file_uploaded": MessageLookupByLibrary.simpleMessage(
+      "No file uploaded",
+    ),
+    "no_user": MessageLookupByLibrary.simpleMessage("No user"),
     "notApproval": MessageLookupByLibrary.simpleMessage("Not Approval"),
     "notResolved": MessageLookupByLibrary.simpleMessage("Not Resolved"),
     "notResolvedTask": MessageLookupByLibrary.simpleMessage("Not Resolved"),
+    "not_approval": MessageLookupByLibrary.simpleMessage("Not Approval"),
+    "not_resolved": MessageLookupByLibrary.simpleMessage("Not Resolved"),
     "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
+    "notresolvedButton": MessageLookupByLibrary.simpleMessage("NotResolved"),
+    "old_password": MessageLookupByLibrary.simpleMessage("Old Password"),
     "ordinary": MessageLookupByLibrary.simpleMessage("Ordinary"),
     "organizationBody": MessageLookupByLibrary.simpleMessage("organization"),
     "organizationName": MessageLookupByLibrary.simpleMessage(
@@ -457,13 +558,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "organizationNameTooShort": MessageLookupByLibrary.simpleMessage(
       "Organization name too short",
     ),
+    "organization_details": MessageLookupByLibrary.simpleMessage(
+      "Organization details",
+    ),
+    "organizations": MessageLookupByLibrary.simpleMessage("Organizations"),
+    "outSelect": MessageLookupByLibrary.simpleMessage("Out"),
     "outSide": MessageLookupByLibrary.simpleMessage("Out side"),
     "outside": MessageLookupByLibrary.simpleMessage("Outside"),
     "overdue": MessageLookupByLibrary.simpleMessage("Overdue"),
     "overdueTask": MessageLookupByLibrary.simpleMessage("Overdue"),
     "parentCategory": MessageLookupByLibrary.simpleMessage("Parent Category"),
+    "parent_task": MessageLookupByLibrary.simpleMessage("Parent task"),
     "pending": MessageLookupByLibrary.simpleMessage("Pending"),
     "pendingTask": MessageLookupByLibrary.simpleMessage("Pending"),
+    "pie": MessageLookupByLibrary.simpleMessage("Pie"),
     "pieces": MessageLookupByLibrary.simpleMessage("Pieces"),
     "pointBody": MessageLookupByLibrary.simpleMessage("point"),
     "pointDescription": MessageLookupByLibrary.simpleMessage(
@@ -486,10 +594,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "pointNumberTooLong": MessageLookupByLibrary.simpleMessage(
       "Point number too long",
     ),
+    "point_details": MessageLookupByLibrary.simpleMessage("Point details"),
+    "points": MessageLookupByLibrary.simpleMessage("Points"),
     "present": MessageLookupByLibrary.simpleMessage("Present"),
     "price": MessageLookupByLibrary.simpleMessage("Price"),
     "priceRequired": MessageLookupByLibrary.simpleMessage("Price is required"),
     "priceTooLong": MessageLookupByLibrary.simpleMessage("Price is too long"),
+    "priority": MessageLookupByLibrary.simpleMessage("Priority"),
+    "priority_required": MessageLookupByLibrary.simpleMessage(
+      "Priority is Required",
+    ),
+    "profileBody": MessageLookupByLibrary.simpleMessage("profile"),
+    "provider": MessageLookupByLibrary.simpleMessage("Provider"),
     "providerBody": MessageLookupByLibrary.simpleMessage("Provider"),
     "providerName": MessageLookupByLibrary.simpleMessage("Provider Name"),
     "providerNameTooLongValidation": MessageLookupByLibrary.simpleMessage(
@@ -515,6 +631,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reasonRequiredValidation": MessageLookupByLibrary.simpleMessage(
       "Reason is required",
     ),
+    "received_tasks": MessageLookupByLibrary.simpleMessage("Received tasks"),
     "reduceButton": MessageLookupByLibrary.simpleMessage("Reduce"),
     "reduceMaterial": MessageLookupByLibrary.simpleMessage("Reduce material"),
     "reject": MessageLookupByLibrary.simpleMessage("Reject"),
@@ -552,7 +669,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "sectionNumberTooLong": MessageLookupByLibrary.simpleMessage(
       "Section number too long",
     ),
+    "section_details": MessageLookupByLibrary.simpleMessage("Section details"),
+    "sections": MessageLookupByLibrary.simpleMessage("Sections"),
     "seeMoreButton": MessageLookupByLibrary.simpleMessage("See More"),
+    "select": MessageLookupByLibrary.simpleMessage("Select"),
     "selectArea": MessageLookupByLibrary.simpleMessage("Select area"),
     "selectBuilding": MessageLookupByLibrary.simpleMessage("Select building"),
     "selectCategory": MessageLookupByLibrary.simpleMessage("Select category"),
@@ -563,7 +683,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "selectFloor": MessageLookupByLibrary.simpleMessage("Select floor"),
     "selectManagers": MessageLookupByLibrary.simpleMessage("Select managers"),
     "selectOrganization": MessageLookupByLibrary.simpleMessage(
-      "Select organizations",
+      "Select organization",
     ),
     "selectOrganizations": MessageLookupByLibrary.simpleMessage(
       "Select organizations",
@@ -576,6 +696,29 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "selectType": MessageLookupByLibrary.simpleMessage("Select type"),
     "selectUnit": MessageLookupByLibrary.simpleMessage("Select unit"),
+    "select_action": MessageLookupByLibrary.simpleMessage("Select action"),
+    "select_module": MessageLookupByLibrary.simpleMessage("Select module"),
+    "select_nationality": MessageLookupByLibrary.simpleMessage(
+      "Select Nationality",
+    ),
+    "select_parent_category": MessageLookupByLibrary.simpleMessage(
+      "Select Parent Category",
+    ),
+    "select_parent_task": MessageLookupByLibrary.simpleMessage(
+      "Select parent task",
+    ),
+    "select_point": MessageLookupByLibrary.simpleMessage("Select point"),
+    "select_priority": MessageLookupByLibrary.simpleMessage("Select Priority"),
+    "select_provider": MessageLookupByLibrary.simpleMessage("Select Provider"),
+    "select_role": MessageLookupByLibrary.simpleMessage("Select Role"),
+    "select_sensor": MessageLookupByLibrary.simpleMessage("Select Sensor"),
+    "select_shift": MessageLookupByLibrary.simpleMessage("Select shift"),
+    "select_status": MessageLookupByLibrary.simpleMessage("Select status"),
+    "select_user": MessageLookupByLibrary.simpleMessage("Select user"),
+    "select_users": MessageLookupByLibrary.simpleMessage("Select Users"),
+    "select_work_location": MessageLookupByLibrary.simpleMessage(
+      "Select Work location",
+    ),
     "sensor": MessageLookupByLibrary.simpleMessage("Sensor"),
     "sensorBody": MessageLookupByLibrary.simpleMessage("sensor"),
     "sensorDetails": MessageLookupByLibrary.simpleMessage("Sensor details"),
@@ -620,8 +763,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "shiftNameTooShortValidation": MessageLookupByLibrary.simpleMessage(
       "Shift name too short",
     ),
+    "shifts": MessageLookupByLibrary.simpleMessage("Shifts"),
     "showActivity": MessageLookupByLibrary.simpleMessage("Show Activity"),
     "sick": MessageLookupByLibrary.simpleMessage("Sick"),
+    "startButton": MessageLookupByLibrary.simpleMessage("Start"),
     "startDate": MessageLookupByLibrary.simpleMessage("Start Date"),
     "startDateRequiredValidation": MessageLookupByLibrary.simpleMessage(
       "Start date is required",
@@ -630,19 +775,45 @@ class MessageLookup extends MessageLookupByLibrary {
     "startTimeRequiredValidation": MessageLookupByLibrary.simpleMessage(
       "Start time is required",
     ),
+    "start_time": MessageLookupByLibrary.simpleMessage("Start:"),
+    "status": MessageLookupByLibrary.simpleMessage("Status"),
+    "status_required": MessageLookupByLibrary.simpleMessage(
+      "Status is Required",
+    ),
     "stock": MessageLookupByLibrary.simpleMessage("Stock"),
     "stockQuantity": MessageLookupByLibrary.simpleMessage("Stock Quantity"),
     "submitButton": MessageLookupByLibrary.simpleMessage("Submit"),
     "supervisor": MessageLookupByLibrary.simpleMessage("Supervisor"),
     "supervisors": MessageLookupByLibrary.simpleMessage("Supervisors"),
+    "take_photo": MessageLookupByLibrary.simpleMessage("Take photo"),
     "taskCompletionRate": MessageLookupByLibrary.simpleMessage(
       "Task completion rate",
     ),
+    "task_details": MessageLookupByLibrary.simpleMessage("Task details"),
+    "task_not_completed": MessageLookupByLibrary.simpleMessage(
+      "The task isn\'t complete yet.",
+    ),
+    "task_not_started": MessageLookupByLibrary.simpleMessage(
+      "The task isn\'t start yet.",
+    ),
+    "task_team": MessageLookupByLibrary.simpleMessage("Task Team"),
+    "task_title": MessageLookupByLibrary.simpleMessage("Task Title"),
+    "task_title_required": MessageLookupByLibrary.simpleMessage(
+      "Task title is Required",
+    ),
+    "task_title_too_long": MessageLookupByLibrary.simpleMessage(
+      "Task title too long",
+    ),
+    "task_title_too_short": MessageLookupByLibrary.simpleMessage(
+      "Task title too short",
+    ),
+    "taskbody": MessageLookupByLibrary.simpleMessage("task"),
     "tasks": MessageLookupByLibrary.simpleMessage("Tasks"),
     "termsConditions": MessageLookupByLibrary.simpleMessage(
       "Terms & Conditions and Conditions",
     ),
     "time": MessageLookupByLibrary.simpleMessage("Time"),
+    "total": MessageLookupByLibrary.simpleMessage("Total"),
     "totalCategories": MessageLookupByLibrary.simpleMessage("Total Categories"),
     "totalMaterials": MessageLookupByLibrary.simpleMessage("Total Materials"),
     "totalPrice": MessageLookupByLibrary.simpleMessage("Total Price"),
@@ -653,13 +824,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "totalShiftss": MessageLookupByLibrary.simpleMessage("Total Shifts"),
     "totalTask": MessageLookupByLibrary.simpleMessage("Total Task"),
     "totalUsers": MessageLookupByLibrary.simpleMessage("Total Users"),
+    "total_time": MessageLookupByLibrary.simpleMessage("Total Time"),
     "transactionDetails": MessageLookupByLibrary.simpleMessage(
       "Transaction details",
     ),
     "transactionManagement": MessageLookupByLibrary.simpleMessage(
       "Transaction Management",
     ),
+    "transaction_type": MessageLookupByLibrary.simpleMessage(
+      "Transaction type",
+    ),
     "transactions": MessageLookupByLibrary.simpleMessage("Transactions"),
+    "trueSelect": MessageLookupByLibrary.simpleMessage("True"),
     "type": MessageLookupByLibrary.simpleMessage("Type"),
     "typeRequired": MessageLookupByLibrary.simpleMessage("Type is required"),
     "unit": MessageLookupByLibrary.simpleMessage(" (unit)"),
@@ -819,6 +995,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "writeReason": MessageLookupByLibrary.simpleMessage(
       "Write the reason for the leave",
+    ),
+    "write_comment": MessageLookupByLibrary.simpleMessage("write your comment"),
+    "write_currently_reading": MessageLookupByLibrary.simpleMessage(
+      "Write Currently reading",
     ),
     "yes": MessageLookupByLibrary.simpleMessage("Yes"),
     "yesButtton": MessageLookupByLibrary.simpleMessage("Yes, i’m sure"),

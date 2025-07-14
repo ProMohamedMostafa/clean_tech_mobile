@@ -33,11 +33,11 @@ class AddBuildingScreen extends StatelessWidget {
           child: BlocConsumer<AddWorkLocationCubit, AddWorkLocationState>(
         listener: (context, state) {
           if (state is CreateBuildingSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
             context.popWithTrueResult();
           }
           if (state is CreateBuildingErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
         },
         builder: (context, state) {
@@ -531,8 +531,7 @@ class AddBuildingScreen extends StatelessWidget {
               }
             },
             color: AppColor.primaryColor,
-            height: 47.h,
-            width: double.infinity,
+
             textStyles: TextStyles.font20Whitesemimedium,
           );
   }

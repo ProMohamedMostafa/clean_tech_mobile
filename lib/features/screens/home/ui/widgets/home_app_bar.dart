@@ -28,8 +28,8 @@ class HomeAppBar extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                width: 40.w,
-                height: 40.h,
+                width: 45.r,
+                height: 45.r,
                 decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
@@ -73,15 +73,15 @@ class HomeAppBar extends StatelessWidget {
                         children: [
                           TextSpan(
                             text: S.of(context).hey,
-                            style: TextStyles.font12BlackSemi,
+                            style: TextStyles.font13Blackmedium,
                           ),
                           TextSpan(
                             text: data?.firstName ?? '',
-                            style: TextStyles.font12BlackSemi,
+                            style: TextStyles.font13Blackmedium,
                           ),
                           TextSpan(
-                            text: '..👋',
-                            style: TextStyles.font12BlackSemi,
+                            text: ' ..👋',
+                            style: TextStyles.font13Blackmedium,
                           ),
                         ],
                       ),

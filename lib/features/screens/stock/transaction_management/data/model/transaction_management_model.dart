@@ -8,13 +8,13 @@ class TransactionManagementModel {
   TransactionData? data;
 
   TransactionManagementModel({
-     this.statusCode,
+    this.statusCode,
     this.meta,
-     this.succeeded,
-     this.message,
+    this.succeeded,
+    this.message,
     this.error,
     this.businessErrorCode,
-     this.data,
+    this.data,
   });
 
   factory TransactionManagementModel.fromJson(Map<String, dynamic> json) {
@@ -42,15 +42,15 @@ class TransactionData {
   List<TransactionItem>? data;
 
   TransactionData({
-     this.currentPage,
-     this.totalPages,
-     this.totalCount,
+    this.currentPage,
+    this.totalPages,
+    this.totalCount,
     this.meta,
-     this.pageSize,
-     this.hasPreviousPage,
-     this.hasNextPage,
-     this.succeeded,
-     this.data,
+    this.pageSize,
+    this.hasPreviousPage,
+    this.hasNextPage,
+    this.succeeded,
+    this.data,
   });
 
   factory TransactionData.fromJson(Map<String, dynamic> json) {
@@ -87,24 +87,26 @@ class TransactionItem {
   int? typeId;
   String? type;
   int? unitId;
+  String? unitName;
 
   TransactionItem({
-     this.id,
-     this.name,
-     this.createdAt,
-     this.category,
-     this.categoryId,
-     this.provider,
-     this.providerId,
-     this.quantity,
+    this.id,
+    this.name,
+    this.createdAt,
+    this.category,
+    this.categoryId,
+    this.provider,
+    this.providerId,
+    this.quantity,
     this.price,
     this.totalPrice,
     this.file,
-     this.userName,
-     this.userId,
-     this.typeId,
-     this.type,
-     this.unitId,
+    this.userName,
+    this.userId,
+    this.typeId,
+    this.type,
+    this.unitId,
+    this.unitName,
   });
 
   factory TransactionItem.fromJson(Map<String, dynamic> json) {
@@ -125,6 +127,7 @@ class TransactionItem {
       typeId: json['typeId'],
       type: json['type'],
       unitId: json['unitId'],
+      unitName: json['unitName'],
     );
   }
 }

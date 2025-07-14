@@ -68,95 +68,105 @@ class ShowActivity extends StatelessWidget {
                 Divider(height: 1.h),
                 SizedBox(
                   height: 260.h,
-                  child: ListView.builder(
-                    itemCount: cubit.selectedIndex == 0
-                        ? cubit.myActivities?.data?.activities?.length ?? 0
-                        : cubit.teamActivities?.data?.activities?.length ?? 0,
-                    shrinkWrap: true,
-                    physics: ClampingScrollPhysics(),
-                    itemBuilder: (context, index) {
+                  child: Builder(
+                    builder: (context) {
                       final activitiesList = cubit.selectedIndex == 0
                           ? cubit.myActivities?.data?.activities
                           : cubit.teamActivities?.data?.activities;
 
-                      if (activitiesList == null ||
-                          index >= activitiesList.length) {
-                        return SizedBox.shrink();
+                      if (activitiesList == null || activitiesList.isEmpty) {
+                        return Center(
+                          child: Text(
+                            S.of(context).noActivities,
+                            style: TextStyles.font13Blackmedium,
+                          ),
+                        );
                       }
 
-                      final activity = activitiesList[index];
-                      final routeName = cubit.getRouteName(
-                          activity.module, activity.moduleId);
+                      return ListView.builder(
+                        itemCount: activitiesList.length,
+                        physics: const ClampingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          final activity = activitiesList[index];
+                          final routeName = cubit.getRouteName(
+                              activity.module, activity.moduleId);
 
-                      return InkWell(
-                        onTap: () {
-                          if (routeName.isNotEmpty) {
-                            if (routeName == Routes.workLocationDetailsScreen) {
-                              context.pushNamed(routeName, arguments: {
-                                'id': activity.moduleId,
-                                'selectedIndex':
-                                    cubit.getWorkLocationIndex(activity.module)
-                              });
-                            } else {
-                              context.pushNamed(routeName,
-                                  arguments: activity.moduleId);
-                            }
-                          }
-                        },
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: ListTile(
-                                contentPadding:
-                                    EdgeInsets.symmetric(horizontal: 5),
-                                minTileHeight: 60.h,
-                                leading:
-                                    buildActionIcon(activity.actionTypeId ?? 0),
-                                title: Row(
-                                  children: [
-                                    Text(activity.userName ?? '',
-                                        style: TextStyles.font14BlackRegular),
-                                    horizontalSpace(8),
-                                    Text(activity.role ?? '',
-                                        style: TextStyles.font9PrimRegular),
-                                  ],
-                                ),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      activity.actionType ?? '',
-                                      style:
-                                          TextStyles.font12BlackSemi.copyWith(
-                                        color: cubit.getActionColor(
-                                            activity.actionType ?? ''),
-                                      ),
+                          return InkWell(
+                            onTap: () {
+                              if (routeName.isNotEmpty) {
+                                if (routeName ==
+                                    Routes.workLocationDetailsScreen) {
+                                  context.pushNamed(routeName, arguments: {
+                                    'id': activity.moduleId,
+                                    'selectedIndex': cubit
+                                        .getWorkLocationIndex(activity.module),
+                                  });
+                                } else {
+                                  context.pushNamed(routeName,
+                                      arguments: activity.moduleId);
+                                }
+                              }
+                            },
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: ListTile(
+                                    contentPadding:
+                                        EdgeInsets.symmetric(horizontal: 5),
+                                    minTileHeight: 60.h,
+                                    leading: ActionIcon(
+                                        actionId: activity.actionTypeId ?? 0),
+                                    title: Row(
+                                      children: [
+                                        Text(activity.userName ?? '',
+                                            style:
+                                                TextStyles.font14BlackRegular),
+                                        horizontalSpace(8),
+                                        Text(activity.role ?? '',
+                                            style: TextStyles.font9PrimRegular),
+                                      ],
                                     ),
-                                    Text(activity.message ?? '',
-                                        style: TextStyles.font12GreyRegular),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 80.w,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    activity.createdAt != null
-                                        ? cubit.formatTimeDifference(
-                                            activity.createdAt!)
-                                        : '',
-                                    style: TextStyles.font11GreyMedium,
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          activity.actionType ?? '',
+                                          style: TextStyles.font12BlackSemi
+                                              .copyWith(
+                                            color: cubit.getActionColor(
+                                                activity.actionType ?? ''),
+                                          ),
+                                        ),
+                                        Text(activity.message ?? '',
+                                            style:
+                                                TextStyles.font12GreyRegular),
+                                      ],
+                                    ),
                                   ),
-                                ],
-                              ),
+                                ),
+                                SizedBox(
+                                  width: 80.w,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        activity.createdAt != null
+                                            ? cubit.formatTimeDifference(
+                                                activity.createdAt!)
+                                            : '',
+                                        style: TextStyles.font11GreyMedium,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          );
+                        },
                       );
                     },
                   ),

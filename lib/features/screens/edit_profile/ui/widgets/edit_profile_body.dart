@@ -44,13 +44,13 @@ class _EditProfileBodyState extends State<EditProfileBody> {
       body: BlocConsumer<EditProfileCubit, EditProfileState>(
           listener: (context, state) {
         if (state is EditProfileSuccessState) {
-          toast(text: state.editProfileModel.message!, color: Colors.blue);
+          toast(text: state.editProfileModel.message!, isSuccess: true);
           context
               .read<BottomNavbarCubit>()
               .changeBottomNavbarWithRoute(context, 3);
         }
         if (state is EditProfileErrorState) {
-          toast(text: state.error, color: Colors.red);
+          toast(text: state.error, isSuccess: false);
         }
       }, builder: (context, state) {
         if (context.read<EditProfileCubit>().profileModel?.data! == null) {
@@ -326,7 +326,7 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                                   selectedIndex.toString();
                             }
                           },
-                          hint: cubit.profileModel!.data!.gender!,
+                          hint: cubit.profileModel!.data!.gender!.toString(),
                           items: [
                             S.of(context).genderMale,
                             S.of(context).genderFemale
@@ -425,8 +425,6 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                                 }
                               },
                               color: AppColor.primaryColor,
-                              height: 47,
-                              width: double.infinity,
                               textStyles: TextStyles.font20Whitesemimedium),
                         ),
                   verticalSpace(30),

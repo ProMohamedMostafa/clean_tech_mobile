@@ -23,13 +23,13 @@ class ForgotScreenBody extends StatelessWidget {
     return BlocConsumer<ForgotPasswordCubit, ForgotPasswordStates>(
       listener: (context, state) {
         if (state is ForgotPasswordSuccessState) {
-          toast(text: state.message, color: Colors.blue);
+          toast(text: state.message, isSuccess: true);
           context.pushNamed(Routes.verifyScreen,
               arguments:
                   context.read<ForgotPasswordCubit>().emailController.text);
         }
         if (state is ForgotPasswordErrorState) {
-          toast(text: state.error, color: Colors.red);
+          toast(text: state.error, isSuccess: false);
         }
       },
       builder: (context, state) {
@@ -89,10 +89,8 @@ class ForgotScreenBody extends StatelessWidget {
                         ),
                         verticalSpace(60),
                         state is ForgotPasswordLoadingState
-                            ?  Loading()
+                            ? Loading()
                             : DefaultElevatedButton(
-                                width: 310,
-                                height: 50,
                                 name: S.of(context).submitButton,
                                 color: AppColor.primaryColor,
                                 textStyles: TextStyles.font16WhiteSemiBold,

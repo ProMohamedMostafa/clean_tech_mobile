@@ -10,6 +10,7 @@ import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class WorkLocationListItemBuild extends StatelessWidget {
   final int selectedIndex;
@@ -23,27 +24,7 @@ class WorkLocationListItemBuild extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(11.r),
       onTap: () async {
-        // if (selectedIndex == 0) {
-        //   final result = await context
-        //       .pushNamed(Routes.workLocationDetailsScreen, arguments: {
-        //     'id': cubit.areaModel!.data!.data![index].id!.toInt(),
-        //     'selectedIndex': 0
-        //   });
-        //   if (result == true) {
-        //     cubit.getArea();
-        //   }
-        // }
-
-        // if (selectedIndex == 6) {
-        //   final result = await context
-        //       .pushNamed(Routes.workLocationDetailsScreen, arguments: {
-        //     'id': cubit.pointModel!.data!.data![index].id!.toInt(),
-        //     'selectedIndex': 6
-        //   });
-        //   if (result == true) {
-        //     cubit.getPoint();
-        //   }
-        // }
+   
         if (cubit.tapIndex == 0) {
           final result = await context
               .pushNamed(Routes.workLocationDetailsScreen, arguments: {
@@ -251,20 +232,20 @@ class WorkLocationListItemBuild extends StatelessWidget {
                                   context: context,
                                   builder: (dialogContext) {
                                     return PopUpMessage(
-                                        title: 'restore',
+                                        title: S.of(context).TitleRestore,
                                         body: selectedIndex == 0
-                                            ? "area"
+                                            ?S.of(context).areaBody
                                             : selectedIndex == 1
-                                                ? "city"
+                                                ? S.of(context).cityBody
                                                 : selectedIndex == 2
-                                                    ? "organization"
+                                                    ? S.of(context).organizationBody
                                                     : selectedIndex == 3
-                                                        ? "building"
+                                                        ? S.of(context).buildingBody
                                                         : selectedIndex == 4
-                                                            ? "floor"
+                                                            ? S.of(context).floorBody
                                                             : selectedIndex == 5
-                                                                ? "section"
-                                                                : "point",
+                                                                ? S.of(context).sectionBody
+                                                                : S.of(context).pointBody,
                                         onPressed: () {
                                           selectedIndex == 0
                                               ? cubit.restoreDeletedArea(cubit
@@ -313,21 +294,20 @@ class WorkLocationListItemBuild extends StatelessWidget {
                                     context: context,
                                     builder: (dialogContext) {
                                       return PopUpMessage(
-                                          title: 'delete',
-                                          body: selectedIndex == 0
-                                              ? "area"
-                                              : selectedIndex == 1
-                                                  ? "city"
-                                                  : selectedIndex == 2
-                                                      ? "organization"
-                                                      : selectedIndex == 3
-                                                          ? "building"
-                                                          : selectedIndex == 4
-                                                              ? "floor"
-                                                              : selectedIndex ==
-                                                                      5
-                                                                  ? "section"
-                                                                  : "point",
+                                          title: S.of(context).TitleDelete,
+                                        body: selectedIndex == 0
+                                            ?S.of(context).areaBody
+                                            : selectedIndex == 1
+                                                ? S.of(context).cityBody
+                                                : selectedIndex == 2
+                                                    ? S.of(context).organizationBody
+                                                    : selectedIndex == 3
+                                                        ? S.of(context).buildingBody
+                                                        : selectedIndex == 4
+                                                            ? S.of(context).floorBody
+                                                            : selectedIndex == 5
+                                                                ? S.of(context).sectionBody
+                                                                : S.of(context).pointBody,
                                           onPressed: () {
                                             selectedIndex == 0
                                                 ? cubit.deleteArea(cubit
@@ -371,21 +351,20 @@ class WorkLocationListItemBuild extends StatelessWidget {
                                     context: context,
                                     builder: (dialogContext) {
                                       return PopUpMessage(
-                                          title: 'delete',
-                                          body: selectedIndex == 0
-                                              ? "area"
-                                              : selectedIndex == 1
-                                                  ? "city"
-                                                  : selectedIndex == 2
-                                                      ? "organization"
-                                                      : selectedIndex == 3
-                                                          ? "building"
-                                                          : selectedIndex == 4
-                                                              ? "floor"
-                                                              : selectedIndex ==
-                                                                      5
-                                                                  ? "section"
-                                                                  : "point",
+                                       title: S.of(context).TitleDelete,
+                                        body: selectedIndex == 0
+                                            ?S.of(context).areaBody
+                                            : selectedIndex == 1
+                                                ? S.of(context).cityBody
+                                                : selectedIndex == 2
+                                                    ? S.of(context).organizationBody
+                                                    : selectedIndex == 3
+                                                        ? S.of(context).buildingBody
+                                                        : selectedIndex == 4
+                                                            ? S.of(context).floorBody
+                                                            : selectedIndex == 5
+                                                                ? S.of(context).sectionBody
+                                                                : S.of(context).pointBody,
                                           onPressed: () {
                                             selectedIndex == 0
                                                 ? cubit.forcedDeletedArea(cubit

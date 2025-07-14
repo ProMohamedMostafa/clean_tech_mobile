@@ -186,3 +186,4 @@ class AllOrganizationErrorState extends AssignStates {
 class AssignClearState extends AssignStates {}
 class UsersClearedState extends AssignStates {}
 class LevelChanged extends AssignStates {}
+class UpdateUsersDropdownState extends AssignStates {}

@@ -30,11 +30,11 @@ class EditCategoryBody extends StatelessWidget {
         body: BlocConsumer<EditCategoryCubit, EditCategoryState>(
           listener: (context, state) {
             if (state is EditCategorySuccessState) {
-              toast(text: state.editCategoryModel.message!, color: Colors.blue);
+              toast(text: state.editCategoryModel.message!, isSuccess: true);
               context.popWithTrueResult();
             }
             if (state is EditCategoryErrorState) {
-              toast(text: state.error, color: Colors.red);
+              toast(text: state.error, isSuccess: false);
             }
           },
           builder: (context, state) {
@@ -192,8 +192,6 @@ class EditCategoryBody extends StatelessWidget {
                                       }
                                     },
                                     color: AppColor.primaryColor,
-                                    height: 47,
-                                    width: double.infinity,
                                     textStyles:
                                         TextStyles.font20Whitesemimedium),
                               ),

@@ -18,7 +18,7 @@ class StockLineChart extends StatelessWidget {
     }
     return SizedBox(
       width: double.infinity,
-      height: 200.h,
+      height: 225.h,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: SizedBox(

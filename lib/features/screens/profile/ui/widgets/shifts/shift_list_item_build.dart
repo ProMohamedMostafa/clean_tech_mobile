@@ -16,14 +16,15 @@ class ShiftItemBuild extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
      final cubit = context.read<ProfileCubit>();
-    return InkWell(
+   return InkWell(
       borderRadius: BorderRadius.circular(11.r),
-      onTap: () {
-        context.pushNamed(Routes.shiftDetailsScreen,
-            arguments: cubit
-                .userShiftDetailsModel!
-                .data![index]
-                .id);
+      onTap: () async {
+        final result = await context.pushNamed(Routes.shiftDetailsScreen,
+            arguments: cubit.userShiftDetailsModel!.data![index].id);
+
+        if (result == true) {
+          await cubit.refreshShifts();
+        }
       },
       child: Card(
         elevation: 1,
@@ -32,11 +33,8 @@ class ShiftItemBuild extends StatelessWidget {
           borderRadius: BorderRadius.circular(11.r),
         ),
         child: Container(
-          constraints: BoxConstraints(
-            minHeight: 125.h,
-          ),
           width: double.infinity,
-          padding: EdgeInsets.fromLTRB(10, 0, 10, 5),
+          padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(11.r),
@@ -46,32 +44,9 @@ class ShiftItemBuild extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Text(
-                    cubit
-                        .userShiftDetailsModel!
-                        .data![index]
-                        .name!,
-                    style: TextStyles.font16BlackSemiBold,
-                  ),
-                  Spacer(),
-                  IconButton(
-                    onPressed: () {
-                      // PopUpDialog.show(
-                      //     context: context,
-                      //     id: cubit
-                      //         .userTaskDetailsModel!
-                      //         .data!
-                      //         .data![index]
-                      //         .id!);
-                    },
-                    icon: Icon(
-                      Icons.more_horiz_rounded,
-                      size: 22.sp,
-                    ),
-                  )
-                ],
+              Text(
+                cubit.userShiftDetailsModel!.data![index].name!,
+                style: TextStyles.font16BlackSemiBold,
               ),
               verticalSpace(10),
               Row(
@@ -88,9 +63,7 @@ class ShiftItemBuild extends StatelessWidget {
                       children: [
                         TextSpan(
                           text: cubit
-                              .userShiftDetailsModel!
-                              .data![index]
-                              .startTime!,
+                              .userShiftDetailsModel!.data![index].startTime!,
                           style: TextStyles.font12GreyRegular,
                         ),
                         TextSpan(
@@ -99,9 +72,7 @@ class ShiftItemBuild extends StatelessWidget {
                         ),
                         TextSpan(
                           text: cubit
-                              .userShiftDetailsModel!
-                              .data![index]
-                              .endTime!,
+                              .userShiftDetailsModel!.data![index].endTime!,
                           style: TextStyles.font12GreyRegular,
                         ),
                       ],
@@ -109,7 +80,7 @@ class ShiftItemBuild extends StatelessWidget {
                   ),
                 ],
               ),
-              verticalSpace(20),
+              verticalSpace(10),
               Row(
                 children: [
                   Icon(
@@ -119,10 +90,7 @@ class ShiftItemBuild extends StatelessWidget {
                   ),
                   horizontalSpace(5),
                   Text(
-                    cubit
-                        .userShiftDetailsModel!
-                        .data![index]
-                        .startDate!,
+                    cubit.userShiftDetailsModel!.data![index].startDate!,
                     style: TextStyles.font11WhiteSemiBold
                         .copyWith(color: AppColor.primaryColor),
                   ),
@@ -134,10 +102,7 @@ class ShiftItemBuild extends StatelessWidget {
                   ),
                   horizontalSpace(5),
                   Text(
-                    cubit
-                        .userShiftDetailsModel!
-                        .data![index]
-                        .endDate!,
+                    cubit.userShiftDetailsModel!.data![index].endDate!,
                     style: TextStyles.font11WhiteSemiBold
                         .copyWith(color: AppColor.primaryColor),
                   ),

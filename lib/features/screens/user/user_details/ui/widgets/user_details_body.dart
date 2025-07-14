@@ -91,7 +91,18 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
     return Scaffold(
       appBar: AppBar(
           title: Text(S.of(context).userDetailsTitle),
-          leading: CustomBackButton(),
+          leading: IconButton(
+              onPressed: () {
+                if (controller.index == 2) {
+                  cubit.getUserShiftDetails(widget.id);
+                }
+                Navigator.of(context).pop(true);
+              },
+              icon: Icon(
+                Icons.arrow_back_ios_new_rounded,
+                size: 25.sp,
+                color: Colors.black,
+              )),
           actions: [
             IconButton(
               onPressed: () {
@@ -121,11 +132,14 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
       body: BlocConsumer<UserDetailsCubit, UserDetailsState>(
         listener: (context, state) {
           if (state is UserDeleteSuccessState) {
-            toast(text: state.deleteUserModel.message!, color: Colors.blue);
+            toast(text: state.deleteUserModel.message!, isSuccess: true);
             context.popWithTrueResult();
           }
           if (state is UserDeleteErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
+          }
+          if (state is UserShiftDetailsSuccessState) {
+            Loading();
           }
         },
         builder: (context, state) {
@@ -319,8 +333,6 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                             });
                       },
                       color: Colors.red,
-                      height: 48,
-                      width: double.infinity,
                       textStyles: TextStyles.font20Whitesemimedium),
                 verticalSpace(20),
               ],

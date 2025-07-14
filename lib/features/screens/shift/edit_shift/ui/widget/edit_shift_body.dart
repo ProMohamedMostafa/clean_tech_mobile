@@ -32,12 +32,11 @@ class EditShiftBody extends StatelessWidget {
           listener: (context, state) {
             if (state is EditShiftSuccessState) {
               toast(
-                  text: state.editShiftDetailsModel.message!,
-                  color: Colors.blue);
+                  text: state.editShiftDetailsModel.message!, isSuccess: true);
               context.popWithTrueResult();
             }
             if (state is EditShiftErrorState) {
-              toast(text: state.error, color: Colors.red);
+              toast(text: state.error, isSuccess: false);
             }
           },
           builder: (context, state) {
@@ -362,8 +361,6 @@ class EditShiftBody extends StatelessWidget {
                                       }
                                     },
                                     color: AppColor.primaryColor,
-                                    height: 47,
-                                    width: double.infinity,
                                     textStyles:
                                         TextStyles.font20Whitesemimedium),
                               ),

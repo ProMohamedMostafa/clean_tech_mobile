@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
+import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
@@ -83,7 +84,7 @@ class _TasksState extends State<Tasks> {
                       ),
                       const Spacer(),
                       Container(
-                        height: 21.h,
+                        height: 28.h,
                         padding: EdgeInsets.symmetric(horizontal: 8.w),
                         decoration: BoxDecoration(
                           color: priorityColors[selectedPriority]!
@@ -94,33 +95,6 @@ class _TasksState extends State<Tasks> {
                         ),
                         child: PopupMenuButton<String>(
                           padding: EdgeInsets.zero,
-                          color: Colors.white,
-                          icon: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 4.w),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  selectedPriority,
-                                  style: TextStyle(
-                                    color: priorityColors[selectedPriority],
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12.sp,
-                                  ),
-                                ),
-                                horizontalSpace(4.w),
-                                RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Icon(
-                                    Icons.arrow_back_ios_new,
-                                    color: priorityColors[selectedPriority],
-                                    size: 14.sp,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
                           menuPadding: EdgeInsets.zero,
                           itemBuilder: (context) {
                             List<PopupMenuEntry<String>> items = [];
@@ -168,6 +142,29 @@ class _TasksState extends State<Tasks> {
                           offset: Offset(10, 22.h),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5.r),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 4),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  selectedPriority,
+                                  style: TextStyle(
+                                    color: priorityColors[selectedPriority],
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 12.sp,
+                                  ),
+                                ),
+                                horizontalSpace(4.w),
+                                Icon(
+                                  IconBroken.arrowDown2,
+                                  color: priorityColors[selectedPriority],
+                                  size: 18.sp,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       )

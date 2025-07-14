@@ -73,7 +73,6 @@ class PopUpMessage extends StatelessWidget {
                         color: title == 'delete'
                             ? Colors.red
                             : AppColor.primaryColor,
-                        height: 43.h,
                         width: double.infinity)),
                 horizontalSpace(16),
                 Expanded(
@@ -88,7 +87,6 @@ class PopUpMessage extends StatelessWidget {
                         color: title == 'delete'
                             ? Color(0xffFFE3E4)
                             : AppColor.fourthColor,
-                        height: 43.h,
                         width: double.infinity)),
               ],
             ),

@@ -41,7 +41,7 @@ class Stock extends StatelessWidget {
                 context.pushNamed(Routes.materialScreen);
               },
               child: Container(
-                height: 90.h,
+                height: 100.h,
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black12),
                   borderRadius: BorderRadius.circular(6.r),
@@ -62,27 +62,30 @@ class Stock extends StatelessWidget {
                             fit: BoxFit.fill,
                           ),
                           horizontalSpace(8),
-                           Flexible(
-      child: Text(
-        S.of(context).materialCount,
-        style: TextStyles.font14BlackSemiBold,
-        overflow: TextOverflow.ellipsis, 
-      ),
-    ),
+                          Flexible(
+                            child: Text(
+                              S.of(context).materialCount,
+                              style: TextStyles.font14BlackSemiBold,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                         ],
                       ),
                       verticalSpace(8),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            cubit.materialCountModel?.data?.count?.toString() ??
-                                '0',
-                            style: TextStyles.font18PrimBold,
+                          Expanded(
+                            child: Text(
+                              cubit.materialCountModel?.data?.count
+                                      ?.toString() ??
+                                  '0',
+                              style: TextStyles.font18PrimBold,
+                            ),
                           ),
-                          Expanded(child: SizedBox()),
+                          horizontalSpace(8),
                           Container(
                             height: 20.h,
-                            width: 50.w,
                             padding: const EdgeInsets.symmetric(horizontal: 8),
                             decoration: BoxDecoration(
                               color: Colors.blue[100],
@@ -90,11 +93,23 @@ class Stock extends StatelessWidget {
                               border: Border.all(color: AppColor.primaryColor),
                             ),
                             child: Center(
-                              child: Text(
-                                cubit.materialCountModel?.data?.percentage
-                                        ?.toString() ??
-                                    '0',
-                                style: TextStyles.font11lightPrimary,
+                              child: RichText(
+                                textAlign: TextAlign.center,
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: cubit.materialCountModel?.data
+                                              ?.percentage
+                                              ?.toStringAsFixed(2) ??
+                                          '0',
+                                      style: TextStyles.font11lightPrimary,
+                                    ),
+                                    TextSpan(
+                                      text: ' %',
+                                      style: TextStyles.font11lightPrimary,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -108,120 +123,105 @@ class Stock extends StatelessWidget {
           ),
           horizontalSpace(10),
           Expanded(
-            child: InkWell(
-              onTap: () {
-                // context.pushNamed(Routes.materialScreen);
-              },
-              child: Container(
-                height: 90.h,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black12),
-                  borderRadius: BorderRadius.circular(6.r),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.attach_money_outlined,
-                            color: AppColor.primaryColor,
-                            size: 24.sp,
-                          ),
-                          horizontalSpace(2),
-                          Text(
-                            S.of(context).inCost,
-                            style: TextStyles.font14BlackSemiBold,
-                          ),
-                          Expanded(child: SizedBox()),
-                          GestureDetector(
-                            onTap: () async {
-                              final selectedDate =
-                                  await CustomStockMonthPicker.show(
-                                context: context,
-                                initialDate: displayDate,
+            child: Container(
+              height: 100.h,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black12),
+                borderRadius: BorderRadius.circular(6.r),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.attach_money_outlined,
+                          color: AppColor.primaryColor,
+                          size: 24.sp,
+                        ),
+                        horizontalSpace(2),
+                        Text(
+                          S.of(context).inCost,
+                          style: TextStyles.font14BlackSemiBold,
+                        ),
+                        Expanded(child: SizedBox()),
+                        GestureDetector(
+                          onTap: () async {
+                            final selectedDate =
+                                await CustomStockMonthPicker.show(
+                              context: context,
+                              initialDate: displayDate,
+                            );
+                            if (selectedDate != null) {
+                              cubit.getStockTotalPriceCount(
+                                month: selectedDate.month,
+                                year: selectedDate.year,
                               );
-                              if (selectedDate != null) {
-                                cubit.getStockTotalPriceCount(
-                                  month: selectedDate.month,
-                                  year: selectedDate.year,
-                                );
-                              }
-                            },
-                            child: Icon(
-                              Icons.calendar_month,
-                              size: 22.sp,
-                              color: AppColor.primaryColor,
+                            }
+                          },
+                          child: Icon(
+                            Icons.calendar_month,
+                            size: 22.sp,
+                            color: AppColor.primaryColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            alignment: Alignment.center,
+                            child: Text(
+                              '${cubit.stockTotalPriceModel?.data?.currentMonthTotal?.toString() ?? '0'}\$',
+                              style: TextStyles.font18PrimBold,
+                              maxLines: 1,
                             ),
                           ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          RichText(
-                            textAlign: TextAlign.center,
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: cubit.stockTotalPriceModel?.data
-                                          ?.currentMonthTotal
-                                          ?.toString() ??
-                                      '0',
-                                  style: TextStyles.font18PrimBold,
-                                ),
-                                TextSpan(
-                                  text: '\$',
-                                  style: TextStyles.font18PrimBold,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            height: 20.h,
-                            width: 50.w,
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
-                            decoration: BoxDecoration(
+                        ),
+                        horizontalSpace(8),
+                        Container(
+                          height: 20.h,
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          decoration: BoxDecoration(
+                            color:
+                                isNegative ? Colors.red[100] : Colors.blue[100],
+                            borderRadius: BorderRadius.circular(3.r),
+                            border: Border.all(
                               color: isNegative
-                                  ? Colors.red[100]
-                                  : Colors.blue[100],
-                              borderRadius: BorderRadius.circular(3.r),
-                              border: Border.all(
+                                  ? Colors.red
+                                  : AppColor.primaryColor,
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                '${percentageChange.toStringAsFixed(2)}%',
+                                style: isNegative
+                                    ? TextStyles.font11lightRed
+                                    : TextStyles.font11lightPrimary,
+                              ),
+                              Icon(
+                                isNegative
+                                    ? Icons.trending_down_rounded
+                                    : Icons.trending_up_rounded,
                                 color: isNegative
                                     ? Colors.red
                                     : AppColor.primaryColor,
+                                size: 16.sp,
                               ),
-                            ),
-                            child: Center(
-                              child: Row(
-                                children: [
-                                  Text(
-                                    percentageChange.toString(),
-                                    style: isNegative
-                                        ? TextStyles.font11lightRed
-                                        : TextStyles.font11lightPrimary,
-                                  ),
-                                  Expanded(child: SizedBox()),
-                                  Icon(
-                                    isNegative
-                                        ? Icons.trending_down_rounded
-                                        : Icons.trending_up_rounded,
-                                    color: isNegative
-                                        ? Colors.red
-                                        : AppColor.primaryColor,
-                                    size: 16.sp,
-                                  ),
-                                ],
-                              ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),

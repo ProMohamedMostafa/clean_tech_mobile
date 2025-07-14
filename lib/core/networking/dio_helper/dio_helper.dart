@@ -15,7 +15,7 @@ class DioHelper {
   static bool _handling401 = false;
 
   static Future<Dio> initDio() async {
-    Duration timeOut = const Duration(seconds: 10);
+    Duration timeOut = const Duration(seconds: 30);
 
     dio = Dio(BaseOptions(
       baseUrl: ApiConstants.apiBaseUrl,
@@ -71,18 +71,21 @@ class DioHelper {
     );
   }
 
-  /// Handle 401 by clearing cache and navigating to login screen
-  static Future<void> handleUnauthorized() async {
-    await CacheHelper.clearAllData();
-    await CacheHelper.clearAllSecuredData();
-
+  static Future<void> clearSessionData() async {
     token = null;
     uId = null;
     role = null;
-    isBoarding = null;
+    await CacheHelper.removeData(SharedPrefKeys.userToken);
+    await CacheHelper.removeData(SharedPrefKeys.userId);
+    await CacheHelper.removeData(SharedPrefKeys.userRole);
+  }
+
+  /// Handle 401 by clearing cache and navigating to login screen
+  static Future<void> handleUnauthorized() async {
+    await clearSessionData();
+    await CacheHelper.clearAllSecuredData();
 
     final navigator = AppNavigator.navigatorKey.currentState;
-
     if (navigator != null) {
       navigator.pushAndRemoveUntil(
         MaterialPageRoute(
@@ -95,7 +98,6 @@ class DioHelper {
       );
     }
 
-    // Small delay to avoid race condition, then reset the flag
     await Future.delayed(const Duration(milliseconds: 300));
     _handling401 = false;
   }

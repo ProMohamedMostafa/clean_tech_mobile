@@ -30,7 +30,7 @@ class SettingsBody extends StatelessWidget {
     return BlocConsumer<SettingsCubit, SettingsState>(
       listener: (context, state) {
         if (state is LogOutSuccessState) {
-          toast(text: state.messsage, color: Colors.blue);
+          toast(text: state.messsage, isSuccess: true);
           context.pushNamedAndRemoveUntil(Routes.loginScreen,
               predicate: (route) => false);
         }

@@ -13,6 +13,7 @@ import 'package:smart_cleaning_application/features/screens/task/task_management
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/delete_task_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/ui/widget/pop_up_dialog.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class TaskListItemBuild extends StatelessWidget {
   final int index;
@@ -105,8 +106,8 @@ class TaskListItemBuild extends StatelessWidget {
                                         context: context,
                                         builder: (dialogContext) {
                                           return PopUpMessage(
-                                              title: 'restore',
-                                              body: 'task',
+                                              title: S.of(context).TitleRestore,
+                                              body: S.of(context).taskbody,
                                               onPressed: () {
                                                 cubit.restoreDeletedTask(cubit
                                                     .deleteTaskListModel!
@@ -127,8 +128,8 @@ class TaskListItemBuild extends StatelessWidget {
                                         context: context,
                                         builder: (dialogContext) {
                                           return PopUpMessage(
-                                              title: 'delete',
-                                              body: 'task',
+                                              title: S.of(context).TitleDelete,
+                                              body: S.of(context).taskbody,
                                               onPressed: () {
                                                 cubit.selectedIndex == 8
                                                     ? cubit.forcedDeletedUser(

@@ -206,7 +206,7 @@ class TransactionListitembuild extends StatelessWidget {
                         ),
                         TextSpan(
                           text:
-                              ' ${cubit.selectedIndex == 0 ? cubit.transactionManagementModel?.data!.data![index].unitId : cubit.selectedIndex == 1 ? cubit.transactionManagementModel?.data!.data!.where((type) => type.typeId == 0).toList()[index].unitId : cubit.transactionManagementModel?.data!.data!.where((type) => type.typeId == 1).toList()[index].unitId ?? ''}',
+                              ' ${cubit.selectedIndex == 0 ? cubit.transactionManagementModel?.data!.data![index].unitName : cubit.selectedIndex == 1 ? cubit.transactionManagementModel?.data!.data!.where((type) => type.typeId == 0).toList()[index].unitName : cubit.transactionManagementModel?.data!.data!.where((type) => type.typeId == 1).toList()[index].unitName ?? ''}',
                           style: TextStyles.font12GreyRegular
                               .copyWith(color: AppColor.primaryColor),
                         ),

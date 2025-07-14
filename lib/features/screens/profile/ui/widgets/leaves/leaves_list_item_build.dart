@@ -18,16 +18,16 @@ class BuildLeavesCardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<ProfileCubit>();
     return InkWell(
       borderRadius: BorderRadius.circular(11.r),
-      onTap: () {
-        context.pushNamed(Routes.leavesDetailsScreen,
-            arguments: context
-                .read<ProfileCubit>()
-                .attendanceLeavesModel!
-                .data!
-                .leaves![index]
-                .id!);
+      onTap: () async {
+        final result = await context.pushNamed(Routes.leavesDetailsScreen,
+            arguments: cubit.attendanceLeavesModel!.data!.leaves![index].id!);
+
+        if (result == true) {
+          cubit.getAllLeaves();
+        }
       },
       child: Card(
         elevation: 1,
@@ -36,11 +36,8 @@ class BuildLeavesCardItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(11.r),
         ),
         child: Container(
-          constraints: BoxConstraints(
-            minHeight: 150.h,
-          ),
           width: double.infinity,
-          padding: EdgeInsets.fromLTRB(10, 0, 10, 5),
+          padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(11.r),
@@ -54,7 +51,6 @@ class BuildLeavesCardItem extends StatelessWidget {
                 children: [
                   Container(
                     height: 23.h,
-                    margin: EdgeInsets.zero,
                     padding: EdgeInsets.symmetric(horizontal: 5),
                     decoration: BoxDecoration(
                       color: Color(0xffF6DCDF),
@@ -62,12 +58,7 @@ class BuildLeavesCardItem extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        context
-                            .read<ProfileCubit>()
-                            .attendanceLeavesModel!
-                            .data!
-                            .leaves![index]
-                            .type!,
+                        cubit.attendanceLeavesModel!.data!.leaves![index].type!,
                         style: TextStyles.font11WhiteSemiBold.copyWith(
                           color: Color(0xffD25260),
                         ),
@@ -77,7 +68,6 @@ class BuildLeavesCardItem extends StatelessWidget {
                   horizontalSpace(5),
                   Container(
                     height: 23.h,
-                    margin: EdgeInsets.zero,
                     padding: EdgeInsets.symmetric(horizontal: 5),
                     decoration: BoxDecoration(
                       color: Colors.grey[300],
@@ -85,59 +75,28 @@ class BuildLeavesCardItem extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        context
-                            .read<ProfileCubit>()
-                            .attendanceLeavesModel!
-                            .data!
-                            .leaves![index]
+                        cubit.attendanceLeavesModel!.data!.leaves![index]
                             .userName!,
                         style: TextStyles.font11WhiteSemiBold
                             .copyWith(color: AppColor.primaryColor),
                       ),
                     ),
                   ),
-                  Spacer(),
-                  IconButton(
-                    onPressed: () {
-                      // PopUpDialog.show(
-                      //   context: context,
-                      //   id: context
-                      //       .read<ProfileCubit>()
-                      //       .attendanceLeavesModel!
-                      //       .data!
-                      //       .data![index]
-                      //       .id!,
-                      // );
-                    },
-                    icon: Icon(
-                      Icons.more_horiz_rounded,
-                      size: 22.sp,
-                    ),
-                  ),
                 ],
               ),
+              verticalSpace(5),
               Text(
-                context
-                    .read<ProfileCubit>()
-                    .attendanceLeavesModel!
-                    .data!
-                    .leaves![index]
-                    .userName!,
+                cubit.attendanceLeavesModel!.data!.leaves![index].userName!,
                 style: TextStyles.font16BlackSemiBold,
               ),
               verticalSpace(10),
               Text(
-                context
-                    .read<ProfileCubit>()
-                    .attendanceLeavesModel!
-                    .data!
-                    .leaves![index]
-                    .reason!,
+                cubit.attendanceLeavesModel!.data!.leaves![index].reason!,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
                 style: TextStyles.font11GreyMedium,
               ),
-              verticalSpace(20),
+              verticalSpace(10),
               Row(
                 children: [
                   Icon(
@@ -151,12 +110,8 @@ class BuildLeavesCardItem extends StatelessWidget {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: context
-                                  .read<ProfileCubit>()
-                                  .attendanceLeavesModel!
-                                  .data!
-                                  .leaves![index]
-                                  .startDate ??
+                          text: cubit.attendanceLeavesModel!.data!
+                                  .leaves![index].startDate ??
                               '',
                           style: TextStyles.font11WhiteSemiBold
                               .copyWith(color: AppColor.primaryColor),
@@ -166,12 +121,8 @@ class BuildLeavesCardItem extends StatelessWidget {
                           style: TextStyles.font14GreyRegular,
                         ),
                         TextSpan(
-                          text: context
-                                  .read<ProfileCubit>()
-                                  .attendanceLeavesModel!
-                                  .data!
-                                  .leaves![index]
-                                  .endDate ??
+                          text: cubit.attendanceLeavesModel!.data!
+                                  .leaves![index].endDate ??
                               '',
                           style: TextStyles.font11WhiteSemiBold
                               .copyWith(color: AppColor.primaryColor),
@@ -185,7 +136,20 @@ class BuildLeavesCardItem extends StatelessWidget {
                     height: 30.h,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.blue,
+                    ),
+                    child: ClipOval(
+                      child: Image.network(
+                        cubit.attendanceLeavesModel!.data!.leaves![index]
+                                .image ??
+                            '',
+                        fit: BoxFit.fill,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
+                            'assets/images/person.png',
+                            fit: BoxFit.fill,
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ],

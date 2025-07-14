@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/regx_validations/regx_validations.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
@@ -11,7 +10,7 @@ import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_me
 import 'package:smart_cleaning_application/features/layout/main_layout/logic/bottom_navbar_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/change_password/logic/change_password_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/change_password/logic/change_password_state.dart';
-import 'package:smart_cleaning_application/features/screens/change_password/ui/widgets/password_validation.dart';
+import 'package:smart_cleaning_application/core/widgets/Change_password_validations/password_validation.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
@@ -58,14 +57,14 @@ class _ChangeToNewPasswordBodyState extends State<ChangeToNewPasswordBody> {
     return BlocConsumer<ChangePasswordCubit, ChangePasswordStates>(
       listener: (context, state) {
         if (state is ChangePasswordSuccessState) {
-          toast(text: state.changePasswordModel.message!, color: Colors.blue);
+          toast(text: state.changePasswordModel.message!, isSuccess: true);
 
           context
               .read<BottomNavbarCubit>()
               .changeBottomNavbarWithRoute(context, 3);
         }
         if (state is ChangePasswordErrorState) {
-          toast(text: state.error, color: Colors.red);
+          toast(text: state.error, isSuccess: false);
         }
       },
       builder: (context, state) {
@@ -76,7 +75,7 @@ class _ChangeToNewPasswordBodyState extends State<ChangeToNewPasswordBody> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Old Password',
+                S.of(context).old_password,
                 style: TextStyles.font16BlackRegular,
               ),
               verticalSpace(5),
@@ -101,7 +100,7 @@ class _ChangeToNewPasswordBodyState extends State<ChangeToNewPasswordBody> {
               ),
               verticalSpace(10),
               Text(
-                'New Password',
+                S.of(context).new_password,
                 style: TextStyles.font16BlackRegular,
               ),
               verticalSpace(5),
@@ -136,7 +135,7 @@ class _ChangeToNewPasswordBodyState extends State<ChangeToNewPasswordBody> {
               ),
               verticalSpace(10),
               if (isShow == true)
-                ChangePasswordValidations(
+                PasswordValidations(
                   hasLowerCase: hasLowercase,
                   hasUpperCase: hasUppercase,
                   hasSpecialCharacters: hasSpecialCharacters,
@@ -145,7 +144,7 @@ class _ChangeToNewPasswordBodyState extends State<ChangeToNewPasswordBody> {
                 ),
               if (isShow == true) verticalSpace(12),
               Text(
-                'Confirm Password',
+                S.of(context).confirm_password,
                 style: TextStyles.font16BlackRegular,
               ),
               verticalSpace(5),
@@ -178,9 +177,7 @@ class _ChangeToNewPasswordBodyState extends State<ChangeToNewPasswordBody> {
               ),
               verticalSpace(30),
               DefaultElevatedButton(
-                width: double.infinity,
-                height: 48.h,
-                name: 'Change Password',
+                name: S.of(context).changePasswordbutton,
                 color: AppColor.primaryColor,
                 textStyles: TextStyles.font16WhiteSemiBold,
                 onPressed: () {
@@ -193,8 +190,8 @@ class _ChangeToNewPasswordBodyState extends State<ChangeToNewPasswordBody> {
                         context: context,
                         builder: (dialogContext) {
                           return PopUpMessage(
-                              title: 'change password',
-                              body: 'profile',
+                              title: S.of(context).TitleChangePassword,
+                              body: S.of(context).profileBody,
                               onPressed: () {
                                 context
                                     .read<ChangePasswordCubit>()

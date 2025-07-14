@@ -33,11 +33,11 @@ class EditPointBody extends StatelessWidget {
       body: BlocConsumer<EditWorkLocationCubit, EditWorkLocationState>(
         listener: (context, state) {
           if (state is EditWorkLocationSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
             context.popWithTrueResult();
           }
           if (state is EditWorkLocationErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
         },
         builder: (context, state) {
@@ -632,8 +632,7 @@ class EditPointBody extends StatelessWidget {
                               }
                             },
                             color: AppColor.primaryColor,
-                            height: 47.h,
-                            width: double.infinity,
+
                             textStyles: TextStyles.font20Whitesemimedium,
                           ),
                     verticalSpace(20),

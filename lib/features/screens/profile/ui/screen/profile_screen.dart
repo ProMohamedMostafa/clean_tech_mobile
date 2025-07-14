@@ -112,8 +112,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               ))
         ],
       ),
-      body: BlocConsumer<ProfileCubit, ProfileState>(
-        listener: (context, state) {},
+      body: BlocBuilder<ProfileCubit, ProfileState>(
         builder: (context, state) {
           if (cubit.profileModel?.data == null) {
             return Loading();
@@ -218,93 +217,46 @@ class _ProfileScreenState extends State<ProfileScreen>
                 verticalSpace(15),
                 if (role != 'Admin')
                   SizedBox(
-                    height: 42.h,
-                    width: double.infinity,
-                    child: TabBar(
-                        tabAlignment: TabAlignment.center,
-                        isScrollable: true,
-                        indicatorSize: TabBarIndicatorSize.tab,
-                        controller: controller,
-                        dividerColor: Colors.transparent,
-                        indicator: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(5.r)),
-                          color: controller.index == controller.index
-                              ? AppColor.primaryColor
-                              : Colors.transparent,
-                        ),
-                        tabs: [
-                          Tab(
-                            child: Text(
-                              S.of(context).userDetails,
-                              style: TextStyle(
-                                  color: controller.index == 0
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14.sp),
+                      height: 42.h,
+                      width: double.infinity,
+                      child: AnimatedBuilder(
+                        animation: controller,
+                        builder: (context, _) {
+                          return TabBar(
+                            controller: controller,
+                            tabAlignment: TabAlignment.center,
+                            isScrollable: true,
+                            indicatorSize: TabBarIndicatorSize.tab,
+                            indicator: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5.r),
+                              color: AppColor.primaryColor,
                             ),
-                          ),
-                          Tab(
-                            child: Text(
-                              S.of(context).integ2,
-                              style: TextStyle(
-                                  color: controller.index == 1
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14.sp),
-                            ),
-                          ),
-                          Tab(
-                            child: Text(
-                              S.of(context).integ4,
-                              style: TextStyle(
-                                  color: controller.index == 2
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14.sp),
-                            ),
-                          ),
-                          Tab(
-                            child: Text(
-                              S.of(context).integ5,
-                              style: TextStyle(
-                                  color: controller.index == 3
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14.sp),
-                            ),
-                          ),
-                          Tab(
-                            child: Text(
-                              S.of(context).attendance,
-                              style: TextStyle(
-                                  color: controller.index == 4
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14.sp),
-                            ),
-                          ),
-                          Tab(
-                            child: Text(
-                              S.of(context).leaves,
-                              style: TextStyle(
-                                  color: controller.index == 5
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14.sp),
-                            ),
-                          ),
-                        ]),
-                  ),
-                Divider(
-                  color: Colors.grey[300],
-                  height: 2,
-                ),
+                            tabs: List.generate(6, (index) {
+                              final labels = [
+                                S.of(context).userDetails,
+                                S.of(context).integ2,
+                                S.of(context).integ4,
+                                S.of(context).integ5,
+                                S.of(context).attendance,
+                                S.of(context).leaves,
+                              ];
+
+                              return Tab(
+                                child: Text(
+                                  labels[index],
+                                  style: TextStyle(
+                                    color: controller.index == index
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14.sp,
+                                  ),
+                                ),
+                              );
+                            }),
+                          );
+                        },
+                      )),
                 verticalSpace(5),
                 if (role != 'Admin')
                   Expanded(

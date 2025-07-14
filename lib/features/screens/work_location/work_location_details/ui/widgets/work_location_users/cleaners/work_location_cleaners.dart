@@ -14,25 +14,25 @@ class WorkLocationCleaners extends StatelessWidget {
     final cubit = context.read<WorkLocationDetailsCubit>();
     final usersData = selectedIndex == 0
         ? cubit.areaUsersDetailsModel!.data!.users!
-            .where((user) => user.role == 'Supervisor')
+            .where((user) => user.role == 'Cleaner')
         : selectedIndex == 1
             ? cubit.cityUsersDetailsModel!.data!.users!
-                .where((user) => user.role == 'Supervisor')
+                .where((user) => user.role == 'Cleaner')
             : selectedIndex == 2
                 ? cubit.organizationUsersShiftDetailsModel!.data!.users!
-                    .where((user) => user.role == 'Supervisor')
+                    .where((user) => user.role == 'Cleaner')
                 : selectedIndex == 3
                     ? cubit.buildingUsersShiftDetailsModel!.data!.users!
-                        .where((user) => user.role == 'Supervisor')
+                        .where((user) => user.role == 'Cleaner')
                     : selectedIndex == 4
                         ? cubit.floorUsersShiftDetailsModel!.data!.users!
-                            .where((user) => user.role == 'Supervisor')
+                            .where((user) => user.role == 'Cleaner')
                         : selectedIndex == 5
                             ? cubit.sectionUsersShiftDetailsModel!.data!.users!
-                                .where((user) => user.role == 'Supervisor')
+                                .where((user) => user.role == 'Cleaner')
                             : selectedIndex == 6
                                 ? cubit.pointUsersDetailsModel!.data!.users!
-                                    .where((user) => user.role == 'Supervisor')
+                                    .where((user) => user.role == 'Cleaner')
                                 : null;
 
     if (usersData == null || usersData.isEmpty) {
@@ -54,7 +54,8 @@ class WorkLocationCleaners extends StatelessWidget {
           );
         },
         itemBuilder: (context, index) {
-          return BuildCleanersItemList(selectedIndex: selectedIndex,index:index);
+          return BuildCleanersItemList(
+              selectedIndex: selectedIndex, index: index);
         },
       );
     }

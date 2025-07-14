@@ -23,23 +23,25 @@ class StockPieChart extends StatelessWidget {
       var valuesStockOut = stockData!.valuesStockOut;
 
       if (labels != null && valuesStockIn != null && valuesStockOut != null) {
-        for (int i = 0; i < labels.length; i++) {
-          chartData.add(
-            ChartData(labels[i], valuesStockIn[i] + valuesStockOut[i]),
-          );
-        }
+        int totalIn = valuesStockIn.reduce((a, b) => a + b);
+        int totalOut = valuesStockOut.reduce((a, b) => a + b);
+
+        chartData = [
+          ChartData('Stock In', totalIn),
+          ChartData('Stock Out', totalOut),
+        ];
       }
     }
 
     return SizedBox(
-      height: 200.h,
+      height: 225.h,
       child: SfCircularChart(
         series: <CircularSeries>[
           PieSeries<ChartData, String>(
             dataSource: chartData,
             xValueMapper: (ChartData data, _) => data.month,
             yValueMapper: (ChartData data, _) => data.value,
-            pointColorMapper: (ChartData data, _) => data.month == 'Dense'
+            pointColorMapper: (ChartData data, _) => data.month == 'Stock In'
                 ? AppColor.primaryColor
                 : const Color(0xff46B749),
             dataLabelSettings: DataLabelSettings(

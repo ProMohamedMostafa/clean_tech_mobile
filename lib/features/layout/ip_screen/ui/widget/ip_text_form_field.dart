@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class CustomIpTextFormField extends StatelessWidget {
   final TextEditingController controller;
@@ -29,7 +30,7 @@ class CustomIpTextFormField extends StatelessWidget {
       ],
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
-          return "IP is Required";
+          return S.of(context).ip_required;
         }
 
         final ipRegex = RegExp(
@@ -38,7 +39,7 @@ class CustomIpTextFormField extends StatelessWidget {
         );
 
         if (!ipRegex.hasMatch(value.trim())) {
-          return 'Enter a valid IP (e.g. 192.168.1.1)';
+          return S.of(context).ip_invalid_format;
         }
 
         return null;

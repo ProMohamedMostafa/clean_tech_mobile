@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/widgets/filter/data/model/filter_dialog_data_model.dart';
@@ -16,23 +17,22 @@ class ActivityCubit extends Cubit<ActivityState> {
   ScrollController activitiesScrollController = ScrollController();
 
   int selectedIndex = 0;
-  int currentPage = 1;
+  int myCurrentPage = 1;
+  int teamCurrentPage = 1;
+
   FilterDialogDataModel? filterModel;
+  FilterDialogDataModel? teamFilterModel;
   ActivitiesModel? myActivities;
   ActivitiesModel? teamActivities;
 
-  bool isPersonal = true;
-  Future<void> getActivities({
-    required bool isPersonal,
-    bool emitLoading = true,
-  }) async {
-    if (emitLoading) emit(ActivityLoadingState());
+  getActivities() async {
+    emit(ActivityLoadingState());
 
     try {
       final response = await DioHelper.getData(
         url: "logs",
         query: {
-          'PageNumber': currentPage,
+          'PageNumber': myCurrentPage,
           'PageSize': 15,
           'Search': searchController.text,
           'RoleId': filterModel?.roleId,
@@ -41,81 +41,104 @@ class ActivityCubit extends Cubit<ActivityState> {
           'UserId': filterModel?.userId,
           'StartDate': filterModel?.startDate,
           'EndDate': filterModel?.endDate,
-          'History': isPersonal,
+          'History': true,
         },
       );
 
       final activities = ActivitiesModel.fromJson(response!.data);
 
-      if (isPersonal) {
-        if (currentPage == 1 || myActivities == null) {
-          myActivities = activities;
-        } else {
-          myActivities?.data?.activities
-              ?.addAll(activities.data?.activities ?? []);
-          myActivities?.data?.currentPage = activities.data?.currentPage;
-          myActivities?.data?.totalPages = activities.data?.totalPages;
-        }
+      if (myCurrentPage == 1 || myActivities == null) {
+        myActivities = activities;
       } else {
-        if (currentPage == 1 || teamActivities == null) {
-          teamActivities = activities;
-        } else {
-          teamActivities?.data?.activities
-              ?.addAll(activities.data?.activities ?? []);
-          teamActivities?.data?.currentPage = activities.data?.currentPage;
-          teamActivities?.data?.totalPages = activities.data?.totalPages;
-        }
+        myActivities?.data?.activities
+            ?.addAll(activities.data?.activities ?? []);
+        myActivities?.data?.currentPage = activities.data?.currentPage;
+        myActivities?.data?.totalPages = activities.data?.totalPages;
       }
 
-      emit(ActivitySuccessState(isPersonal ? myActivities! : teamActivities!));
+      emit(ActivitySuccessState(myActivities!));
+    } catch (error) {
+      emit(ActivityErrorState(error.toString()));
+    }
+  }
+
+  getTeamActivities() async {
+    emit(ActivityLoadingState());
+
+    try {
+      final response = await DioHelper.getData(
+        url: "logs",
+        query: {
+          'PageNumber': teamCurrentPage,
+          'PageSize': 15,
+          'Search': searchController.text,
+          'RoleId': teamFilterModel?.roleId,
+          'Action': teamFilterModel?.actionId,
+          'Module': teamFilterModel?.moduleId,
+          'UserId': teamFilterModel?.userId,
+          'StartDate': teamFilterModel?.startDate,
+          'EndDate': teamFilterModel?.endDate,
+          'History': false,
+        },
+      );
+
+      final activities = ActivitiesModel.fromJson(response!.data);
+
+      if (teamCurrentPage == 1 || teamActivities == null) {
+        teamActivities = activities;
+      } else {
+        teamActivities?.data?.activities
+            ?.addAll(activities.data?.activities ?? []);
+        teamActivities?.data?.currentPage = activities.data?.currentPage;
+        teamActivities?.data?.totalPages = activities.data?.totalPages;
+      }
+
+      emit(ActivitySuccessState(teamActivities!));
     } catch (error) {
       emit(ActivityErrorState(error.toString()));
     }
   }
 
   void initialize() {
+    activitiesScrollController.dispose();
+
     activitiesScrollController = ScrollController()
       ..addListener(() {
         if (activitiesScrollController.position.atEdge &&
             activitiesScrollController.position.pixels != 0) {
-          currentPage++;
-          getActivities(isPersonal: isPersonal);
+          if (selectedIndex == 0) {
+            myCurrentPage++;
+            getActivities();
+          } else {
+            teamCurrentPage++;
+            getTeamActivities();
+          }
         }
       });
 
-    fetchAllActivityCounts();
-  }
+    myCurrentPage = 1;
+    myActivities = null;
+    getActivities();
 
-  Future<void> fetchAllActivityCounts() async {
-    emit(ActivityLoadingState());
-
-    try {
-      await getActivities(isPersonal: true, emitLoading: false);
-      await getActivities(isPersonal: false, emitLoading: false);
-
-      emit(ActivitySuccessState(myActivities!));
-    } catch (e) {
-      emit(ActivityErrorState(e.toString()));
+    if (role != "Cleaner") {
+      teamCurrentPage = 1;
+      teamActivities = null;
+      getTeamActivities();
     }
   }
 
   void changeTap(int index) {
     selectedIndex = index;
-    currentPage = 1;
-    isPersonal = (index == 0);
+    emit(ActivityLoadingState());
 
-    if (isPersonal) {
-      if (myActivities == null) {
-        getActivities(isPersonal: true);
-      } else {
-        emit(ActivitySuccessState(myActivities!));
-      }
+    if (index == 0) {
+      myCurrentPage = 1;
+      myActivities = null;
+      getActivities();
     } else {
-      if (teamActivities == null) {
-        getActivities(isPersonal: false);
-      } else {
-        emit(ActivitySuccessState(teamActivities!));
-      }
+      teamCurrentPage = 1;
+      teamActivities = null;
+      getTeamActivities();
     }
   }
 
@@ -140,6 +163,9 @@ class ActivityCubit extends Cubit<ActivityState> {
         return Routes.leavesDetailsScreen;
       case 'Material':
         return Routes.materialDetailsScreen;
+      case 'Device':
+      case 'DeviceLimit':
+        return Routes.sensorDetailsScreen;
       default:
         return '';
     }
@@ -182,7 +208,8 @@ class ActivityCubit extends Cubit<ActivityState> {
         return Colors.blue;
       case 'Logout':
         return Colors.indigo;
-      case 'ClockInOut':
+      case 'ClockIn':
+      case 'ClockOut':
         return Colors.cyan;
       case 'ChangePassword':
         return Colors.brown;
@@ -202,6 +229,19 @@ class ActivityCubit extends Cubit<ActivityState> {
         return Colors.amber;
       case 'EditSetting':
         return Colors.lightBlue;
+      case 'Reminder':
+        return Colors.deepOrangeAccent;
+      case 'Archive':
+      case 'UnArchive':
+        return Colors.grey;
+      case 'ReadData':
+        return Colors.lightBlueAccent;
+      case 'AssignShift':
+      case 'RemoveShift':
+        return Colors.cyanAccent;
+      case 'AssignTag':
+      case 'RemoveTag':
+        return Colors.purpleAccent;
       default:
         return Colors.black;
     }

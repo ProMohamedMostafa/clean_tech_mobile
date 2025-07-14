@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
+import 'package:smart_cleaning_application/core/widgets/filter/logic/cubit/filter_dialog_cubit.dart';
+import 'package:smart_cleaning_application/core/widgets/filter/ui/screen/filter_dialog_widget.dart';
+import 'package:smart_cleaning_application/core/widgets/filter_and_search_build/filter_search_build.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_history_management/logic/attendance_history_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_history_management/logic/attendance_history_state.dart';
-import 'package:smart_cleaning_application/features/screens/attendance/attendance_history_management/ui/widgets/attendance_history_filter_search_build.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_history_management/ui/widgets/attendance_history_list_details_build.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
@@ -28,7 +30,35 @@ class AttendanceHistoryBody extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   verticalSpace(10),
-                  FilterAndSearchWidget(),
+                  FilterAndSearchWidget(
+                    hintText: S.of(context).findHistory,
+                    searchController: cubit.searchController,
+                    onSearchChanged: (value) {
+                      cubit.getAllHistory();
+                    },
+                    onFilterTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (dialogContext) {
+                          return BlocProvider(
+                            create: (context) => FilterDialogCubit()
+                              ..getArea()
+                              ..getRole()
+                              ..getProviders()
+                              ..getShifts()
+                              ..getUsers(),
+                            child: FilterDialogWidget(
+                              index: 'A-h',
+                              onPressed: (data) {
+                                cubit.filterModel = data;
+                                cubit.getAllHistory();
+                              },
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
                   verticalSpace(5),
                   Divider(color: Colors.grey[300]),
                   verticalSpace(5),

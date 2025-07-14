@@ -35,12 +35,11 @@ class LeavesAddBody extends StatelessWidget {
         listener: (context, state) {
           if (state is LeavesAddSuccessState) {
             toast(
-                text: state.attendanceLeavesAddModel.message!,
-                color: Colors.blue);
+                text: state.attendanceLeavesAddModel.message!, isSuccess: true);
             context.popWithTrueResult();
           }
           if (state is LeavesAddErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
         },
         builder: (context, state) {
@@ -289,8 +288,6 @@ class LeavesAddBody extends StatelessWidget {
                                   }
                                 },
                                 color: AppColor.primaryColor,
-                                height: 47,
-                                width: double.infinity,
                                 textStyles: TextStyles.font20Whitesemimedium))
                   ],
                 ),

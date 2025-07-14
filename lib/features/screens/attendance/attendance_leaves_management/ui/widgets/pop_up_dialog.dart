@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
@@ -60,7 +61,9 @@ class PopUpDialog {
                               title: 'delete',
                               body: 'leave',
                               onPressed: () {
-                                cubit.leavesDelete(id);
+                                role == 'Admin'
+                                    ? cubit.leavesDelete(id)
+                                    : cubit.leavesDeleteRequest(id);
                                 context.pop();
                               });
                         });

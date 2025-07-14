@@ -189,6 +189,12 @@ class ProviderCubit extends Cubit<ProviderState> {
       final message = value?.data['message'] ?? "Created Successfully";
       providerController.clear();
       providerIdController.clear();
+
+      currentPage = 1;
+      providersModel = null;
+
+      getProviders();
+
       emit(AddProviderSuccessState(message!));
     }).catchError((error) {
       emit(AddProviderErrorState(error.toString()));
@@ -201,9 +207,14 @@ class ProviderCubit extends Cubit<ProviderState> {
       "id": id,
       "name": providerController.text,
     }).then((value) {
-      final message = value?.data['message'] ?? "Created Successfully";
+      final message = value?.data['message'] ?? "Updated Successfully";
       providerController.clear();
       providerIdController.clear();
+
+      currentPage = 1;
+      providersModel = null;
+      getProviders();
+
       emit(EditProviderSuccessState(message!));
     }).catchError((error) {
       emit(EditProviderErrorState(error.toString()));

@@ -8,7 +8,6 @@ import 'package:smart_cleaning_application/core/helpers/constants/constants.dart
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
-import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
@@ -37,13 +36,14 @@ class LeavesEditBody extends StatelessWidget {
       body: BlocConsumer<LeavesEditCubit, LeavesEditState>(
         listener: (context, state) {
           if (state is LeavesEditSuccessState) {
+            cubit.image = null;
             toast(
                 text: state.attendanceLeavesEditModel.message!,
-                color: Colors.blue);
+                isSuccess: true);
             context.popWithTrueResult();
           }
           if (state is LeavesEditErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
         },
         builder: (context, state) {
@@ -248,7 +248,7 @@ class LeavesEditBody extends StatelessWidget {
                                           body: Center(
                                             child: PhotoView(
                                               imageProvider: NetworkImage(
-                                                '${ApiConstants.apiBaseUrl}${cubit.leavesDetailsModel!.data!.file}',
+                                                '${cubit.leavesDetailsModel!.data!.file}',
                                               ),
                                               errorBuilder:
                                                   (context, error, stackTrace) {
@@ -275,7 +275,7 @@ class LeavesEditBody extends StatelessWidget {
                                         borderRadius:
                                             BorderRadius.circular(10.r)),
                                     child: Image.network(
-                                      '${ApiConstants.apiBaseUrl}${cubit.leavesDetailsModel!.data!.file}',
+                                      '${cubit.leavesDetailsModel!.data!.file}',
                                       fit: BoxFit.fill,
                                       errorBuilder:
                                           (context, error, stackTrace) {
@@ -339,8 +339,6 @@ class LeavesEditBody extends StatelessWidget {
                                       });
                                 },
                                 color: AppColor.primaryColor,
-                                height: 47,
-                                width: double.infinity,
                                 textStyles: TextStyles.font20Whitesemimedium),
                           ),
                   ],

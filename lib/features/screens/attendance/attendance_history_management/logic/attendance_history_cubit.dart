@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/core/widgets/filter/data/model/filter_dialog_data_model.dart';
@@ -21,16 +23,22 @@ class AttendanceHistoryCubit extends Cubit<AttendanceHistoryState> {
   AttendanceHistoryModel? attendanceHistoryModel;
   getAllHistory({int? status}) {
     emit(HistoryLoadingState());
+    final startDate = filterModel?.startDate;
+    final endDate = filterModel?.endDate;
     DioHelper.getData(url: ApiConstants.hisotryUrl, query: {
       'PageNumber': currentPage,
       'PageSize': 15,
       'Search': searchController.text,
       'UserId': filterModel?.userId,
-      'History': false,
+      'History': role == 'Cleaner' ? true : false,
       'RoleId': filterModel?.roleId,
       'Shift': filterModel?.shiftId,
-      'StartDate': filterModel?.startDate,
-      'EndDate': filterModel?.endDate,
+      'StartDate': startDate != null
+          ? DateFormat('yyyy-MM-dd', 'en').format(startDate)
+          : null,
+      'EndDate': endDate != null
+          ? DateFormat('yyyy-MM-dd', 'en').format(endDate)
+          : null,
       'Status': status ?? filterModel?.statusId,
       'AreaId': filterModel?.areaId,
       'CityId': filterModel?.cityId,

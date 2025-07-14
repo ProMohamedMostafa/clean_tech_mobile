@@ -31,7 +31,7 @@ class Shift extends StatelessWidget {
           context.pushNamed(Routes.shiftScreen);
         },
         child: Container(
-          height: 90.h,
+          height: 95.h,
           decoration: BoxDecoration(
             border: Border.all(color: Colors.black12),
             borderRadius: BorderRadius.circular(6.r),
@@ -39,7 +39,7 @@ class Shift extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
@@ -81,18 +81,6 @@ class Shift extends StatelessWidget {
                     ),
                     Spacer(),
                     _statusBox(
-                      color: Colors.redAccent,
-                      text: '${S.of(context).inactive} $inactiveCount',
-                      iconColor: Colors.redAccent,
-                      onTap: () {
-                        context.pushNamed(
-                          Routes.shiftScreen,
-                          arguments: 'false',
-                        );
-                      },
-                    ),
-                    horizontalSpace(10),
-                    _statusBox(
                       color: AppColor.primaryColor,
                       text: '${S.of(context).active} $activeCount',
                       iconColor: AppColor.primaryColor,
@@ -100,6 +88,18 @@ class Shift extends StatelessWidget {
                         context.pushNamed(
                           Routes.shiftScreen,
                           arguments: 'true',
+                        );
+                      },
+                    ),
+                    horizontalSpace(10),
+                    _statusBox(
+                      color: Colors.redAccent,
+                      text: '${S.of(context).inactive} $inactiveCount',
+                      iconColor: Colors.redAccent,
+                      onTap: () {
+                        context.pushNamed(
+                          Routes.shiftScreen,
+                          arguments: 'false',
                         );
                       },
                     ),

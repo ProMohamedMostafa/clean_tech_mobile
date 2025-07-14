@@ -43,14 +43,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "RemoveLocationButton": MessageLookupByLibrary.simpleMessage("مقام ہٹائیں"),
     "Section": MessageLookupByLibrary.simpleMessage("سیکشن"),
     "TitleAdd": MessageLookupByLibrary.simpleMessage("شامل کریں"),
+    "TitleChangePassword": MessageLookupByLibrary.simpleMessage(
+      "پاس ورڈ تبدیل کریں",
+    ),
     "TitleDelete": MessageLookupByLibrary.simpleMessage("حذف کریں"),
     "TitleEdit": MessageLookupByLibrary.simpleMessage("ترمیم"),
     "TitleRemove": MessageLookupByLibrary.simpleMessage("مقام ہٹائیں"),
     "TitleRestore": MessageLookupByLibrary.simpleMessage("بحال کریں"),
     "Titleapprove": MessageLookupByLibrary.simpleMessage("منظور کریں"),
     "absent": MessageLookupByLibrary.simpleMessage("فقدان"),
+    "action": MessageLookupByLibrary.simpleMessage("عمل"),
     "active": MessageLookupByLibrary.simpleMessage("فعال"),
     "activities": MessageLookupByLibrary.simpleMessage("سرگرمیاں"),
+    "activity_status": MessageLookupByLibrary.simpleMessage("سرگرمی کی حیثیت"),
     "addAnotherButton": MessageLookupByLibrary.simpleMessage(
       "ایک اور شامل کریں",
     ),
@@ -83,7 +88,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "addUserText8": MessageLookupByLibrary.simpleMessage("قومیت"),
     "addUserText9": MessageLookupByLibrary.simpleMessage("جنس"),
     "addUserTitle": MessageLookupByLibrary.simpleMessage("نیا صارف شامل کریں"),
+    "add_comment": MessageLookupByLibrary.simpleMessage("تبصرہ شامل کریں"),
     "admin": MessageLookupByLibrary.simpleMessage("ایڈمن"),
+    "after_reading": MessageLookupByLibrary.simpleMessage("پڑھنے کے بعد"),
     "all": MessageLookupByLibrary.simpleMessage("تمام"),
     "allTasks": MessageLookupByLibrary.simpleMessage("تمام کام"),
     "alreadyMarkedAsRead": MessageLookupByLibrary.simpleMessage(
@@ -104,7 +111,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "areaNameTooShort": MessageLookupByLibrary.simpleMessage(
       "علاقے کا نام بہت چھوٹا ہے",
     ),
+    "area_details": MessageLookupByLibrary.simpleMessage("علاقے کی تفصیلات"),
+    "areas": MessageLookupByLibrary.simpleMessage("علاقے"),
+    "assignButton": MessageLookupByLibrary.simpleMessage("تفویض کریں"),
+    "assign_to": MessageLookupByLibrary.simpleMessage("تفویض کریں"),
     "attendance": MessageLookupByLibrary.simpleMessage("حاضری"),
+    "bar": MessageLookupByLibrary.simpleMessage("بار"),
     "battery": MessageLookupByLibrary.simpleMessage("بیٹری"),
     "botNavTitle1": MessageLookupByLibrary.simpleMessage("ہوم"),
     "botNavTitle2": MessageLookupByLibrary.simpleMessage("انضمامات"),
@@ -131,6 +143,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "buildingNumberTooLong": MessageLookupByLibrary.simpleMessage(
       "عمارت کا نمبر بہت لمبا ہے",
     ),
+    "building_details": MessageLookupByLibrary.simpleMessage(
+      "عمارت کی تفصیلات",
+    ),
+    "buildings": MessageLookupByLibrary.simpleMessage("عمارتیں"),
     "calendar": MessageLookupByLibrary.simpleMessage("کیلنڈر"),
     "cancelButton": MessageLookupByLibrary.simpleMessage("منسوخ کریں"),
     "capacity": MessageLookupByLibrary.simpleMessage("گنجائش"),
@@ -155,9 +171,21 @@ class MessageLookup extends MessageLookupByLibrary {
     "categoryNameTooShort": MessageLookupByLibrary.simpleMessage(
       "زمرے کا نام بہت چھوٹا ہے",
     ),
+    "changePasswordbutton": MessageLookupByLibrary.simpleMessage(
+      "پاس ورڈ تبدیل کریں",
+    ),
+    "change_password": MessageLookupByLibrary.simpleMessage(
+      "پاس ورڈ تبدیل کریں",
+    ),
+    "change_password_description": MessageLookupByLibrary.simpleMessage(
+      "براہ کرم اپنے اکاؤنٹ کے لیے نیا پاس ورڈ سیٹ کریں",
+    ),
     "chartBar": MessageLookupByLibrary.simpleMessage("بار"),
     "chartLine": MessageLookupByLibrary.simpleMessage("لائن"),
     "chartPie": MessageLookupByLibrary.simpleMessage("پائی"),
+    "chart_type": MessageLookupByLibrary.simpleMessage("چارٹ کی قسم"),
+    "check_ip": MessageLookupByLibrary.simpleMessage("IP چیک کریں"),
+    "cities": MessageLookupByLibrary.simpleMessage("شہر"),
     "cityBody": MessageLookupByLibrary.simpleMessage("شہر"),
     "cityName": MessageLookupByLibrary.simpleMessage("شہر کا نام"),
     "cityNameRequired": MessageLookupByLibrary.simpleMessage(
@@ -169,10 +197,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "cityNameTooShort": MessageLookupByLibrary.simpleMessage(
       "شہر کا نام بہت چھوٹا ہے",
     ),
+    "city_details": MessageLookupByLibrary.simpleMessage("شہر کی تفصیلات"),
     "cleaner": MessageLookupByLibrary.simpleMessage("صفائی کرنے والا"),
     "cleaners": MessageLookupByLibrary.simpleMessage("صفائی کرنے والے"),
     "cm": MessageLookupByLibrary.simpleMessage("سینٹی میٹر"),
+    "comment_or_image_required": MessageLookupByLibrary.simpleMessage(
+      "تبصرہ یا تصویر درکار ہے",
+    ),
+    "comments": MessageLookupByLibrary.simpleMessage("تبصرے"),
     "complete": MessageLookupByLibrary.simpleMessage("مکمل"),
+    "completeButton": MessageLookupByLibrary.simpleMessage("مکمل کریں"),
     "completed": MessageLookupByLibrary.simpleMessage("مکمل"),
     "confirmForcedDelete": MessageLookupByLibrary.simpleMessage(
       "کیا آپ اس صارف کو ہمیشہ کے لیے حذف کرنا چاہتے ہیں؟",
@@ -183,6 +217,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "confirmSaveEdit": MessageLookupByLibrary.simpleMessage(
       "کیا آپ واقعی اس صارف کی ترمیم محفوظ کرنا چاہتے ہیں؟",
     ),
+    "confirm_password": MessageLookupByLibrary.simpleMessage(
+      "پاس ورڈ کی تصدیق کریں",
+    ),
+    "country": MessageLookupByLibrary.simpleMessage("ملک"),
     "createButton": MessageLookupByLibrary.simpleMessage("بنائیں"),
     "createCategory": MessageLookupByLibrary.simpleMessage("زمرہ بنائیں"),
     "createLeave": MessageLookupByLibrary.simpleMessage("چھٹی بنائیں"),
@@ -197,11 +235,21 @@ class MessageLookup extends MessageLookupByLibrary {
     "createPass4": MessageLookupByLibrary.simpleMessage("کم از کم ایک نمبر"),
     "createPass5": MessageLookupByLibrary.simpleMessage("کم از کم 8 حروف"),
     "createShift": MessageLookupByLibrary.simpleMessage("شفٹ بنائیں"),
+    "create_task": MessageLookupByLibrary.simpleMessage("کام بنائیں"),
+    "created_by": MessageLookupByLibrary.simpleMessage("بنایا گیا"),
+    "currently_reading": MessageLookupByLibrary.simpleMessage("موجودہ ریڈنگ"),
+    "currently_reading_required": MessageLookupByLibrary.simpleMessage(
+      "موجودہ ریڈنگ ضروری ہے",
+    ),
+    "currently_reading_too_long": MessageLookupByLibrary.simpleMessage(
+      "موجودہ ریڈنگ بہت لمبی ہے",
+    ),
     "date": MessageLookupByLibrary.simpleMessage("تاریخ"),
     "deleteButton": MessageLookupByLibrary.simpleMessage("حذف کریں"),
     "deleteMessage": MessageLookupByLibrary.simpleMessage(
       "کیا آپ واقعی اس صارف کو حذف کرنا چاہتے ہیں؟",
     ),
+    "deleted": MessageLookupByLibrary.simpleMessage("حذف شدہ"),
     "deletedCategories": MessageLookupByLibrary.simpleMessage("حذف شدہ زمرے"),
     "deletedMaterials": MessageLookupByLibrary.simpleMessage("حذف شدہ مواد"),
     "deletedProviders": MessageLookupByLibrary.simpleMessage(
@@ -217,13 +265,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "descriptionTooShort": MessageLookupByLibrary.simpleMessage(
       "تفصیل بہت مختصر ہے",
     ),
+    "device": MessageLookupByLibrary.simpleMessage("آلہ"),
+    "device_name": MessageLookupByLibrary.simpleMessage("ڈیوائس کا نام"),
     "discription": MessageLookupByLibrary.simpleMessage("تفصیل"),
+    "doneButton2": MessageLookupByLibrary.simpleMessage("مکمل"),
     "doneTitl1": MessageLookupByLibrary.simpleMessage("پاس ورڈ تبدیل ہوگیا!"),
     "doneTitl2": MessageLookupByLibrary.simpleMessage(
       "آپ کا پاس ورڈ کامیابی سے تبدیل ہوگیا۔",
     ),
     "donebutton": MessageLookupByLibrary.simpleMessage("لاگ ان پر واپس جائیں"),
     "duration": MessageLookupByLibrary.simpleMessage("دورانیہ : "),
+    "duration2": MessageLookupByLibrary.simpleMessage("دورانیہ"),
     "editButton": MessageLookupByLibrary.simpleMessage("ترمیم کریں"),
     "editCategory": MessageLookupByLibrary.simpleMessage("زمرہ میں ترمیم کریں"),
     "editLeave": MessageLookupByLibrary.simpleMessage("چھٹی میں ترمیم کریں"),
@@ -234,6 +286,8 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "editShift": MessageLookupByLibrary.simpleMessage("شفٹ میں ترمیم کریں"),
     "editUserTitle": MessageLookupByLibrary.simpleMessage("صارف ترمیم کریں"),
+    "edit_task": MessageLookupByLibrary.simpleMessage("کام میں ترمیم کریں"),
+    "employee": MessageLookupByLibrary.simpleMessage("ملازم"),
     "employeeName": MessageLookupByLibrary.simpleMessage("ملازم کا نام"),
     "employeeNameRequiredValidation": MessageLookupByLibrary.simpleMessage(
       "ملازم کا نام ضروری ہے",
@@ -246,14 +300,27 @@ class MessageLookup extends MessageLookupByLibrary {
     "endTimeRequiredValidation": MessageLookupByLibrary.simpleMessage(
       "خاتمے کا وقت ضروری ہے",
     ),
+    "end_time": MessageLookupByLibrary.simpleMessage("اختتام: "),
     "enterCategory": MessageLookupByLibrary.simpleMessage("زمرہ درج کریں"),
     "enterMaterial": MessageLookupByLibrary.simpleMessage("مواد درج کریں"),
     "enterShift": MessageLookupByLibrary.simpleMessage("شفٹ درج کریں"),
+    "enter_network_ip": MessageLookupByLibrary.simpleMessage(
+      "براہ کرم اپنا نیٹ ورک IP درج کریں",
+    ),
+    "enter_task_title": MessageLookupByLibrary.simpleMessage(
+      "کام کا عنوان درج کریں",
+    ),
     "experienceDescription": MessageLookupByLibrary.simpleMessage(
       "اپنے فون پر چند نلکوں سے صفائی کی خدمات آسانی سے سنبھالیں!",
     ),
+    "falseSelect": MessageLookupByLibrary.simpleMessage("غلط"),
+    "female": MessageLookupByLibrary.simpleMessage("خاتون"),
     "file": MessageLookupByLibrary.simpleMessage("فائل"),
+    "files": MessageLookupByLibrary.simpleMessage("فائلیں"),
     "filesUploaded": MessageLookupByLibrary.simpleMessage("اپ لوڈ کردہ فائلیں"),
+    "files_uploaded": MessageLookupByLibrary.simpleMessage(
+      "فائلیں اپ لوڈ ہو چکی ہیں",
+    ),
     "findActivity": MessageLookupByLibrary.simpleMessage("سرگرمی تلاش کریں"),
     "findCategory": MessageLookupByLibrary.simpleMessage("زمرہ تلاش کریں"),
     "findHistory": MessageLookupByLibrary.simpleMessage("تاریخ تلاش کریں"),
@@ -267,6 +334,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "findTransaction": MessageLookupByLibrary.simpleMessage(
       "لین دین تلاش کریں",
     ),
+    "find_name_of_work_location": MessageLookupByLibrary.simpleMessage(
+      "کام کی جگہ کا نام تلاش کریں",
+    ),
+    "find_task": MessageLookupByLibrary.simpleMessage("کام تلاش کریں"),
     "floorBody": MessageLookupByLibrary.simpleMessage("منزل"),
     "floorDescription": MessageLookupByLibrary.simpleMessage("منزلہ کی تفصیل"),
     "floorName": MessageLookupByLibrary.simpleMessage("منزلہ کا نام"),
@@ -286,6 +357,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "floorNumberTooLong": MessageLookupByLibrary.simpleMessage(
       "منزلہ کا نمبر بہت لمبا ہے",
     ),
+    "floor_details": MessageLookupByLibrary.simpleMessage("منزل کی تفصیلات"),
+    "floors": MessageLookupByLibrary.simpleMessage("منزلیں"),
     "forgotPassButton": MessageLookupByLibrary.simpleMessage(
       "پاس ورڈ بھول گئے؟",
     ),
@@ -297,6 +370,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "پریشان نہ ہوں، یہ ہم سب کے ساتھ ہوتا ہے۔ نیچے اپنا ای میل درج کریں",
     ),
     "g": MessageLookupByLibrary.simpleMessage("گرام"),
+    "gender": MessageLookupByLibrary.simpleMessage("صنف"),
     "genderFemale": MessageLookupByLibrary.simpleMessage("عورت"),
     "genderMale": MessageLookupByLibrary.simpleMessage("مرد"),
     "hey": MessageLookupByLibrary.simpleMessage("ہیلو، "),
@@ -315,7 +389,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "inCost": MessageLookupByLibrary.simpleMessage("لاگت اندر"),
     "inProgress": MessageLookupByLibrary.simpleMessage("زیر عمل"),
     "inProgressTask": MessageLookupByLibrary.simpleMessage("جاری ہے"),
+    "inSelect": MessageLookupByLibrary.simpleMessage("آمد"),
     "inSide": MessageLookupByLibrary.simpleMessage("اندر"),
+    "in_progress": MessageLookupByLibrary.simpleMessage("جاری ہے"),
     "inactive": MessageLookupByLibrary.simpleMessage("غیر فعال"),
     "inside": MessageLookupByLibrary.simpleMessage("اندر"),
     "integ1": MessageLookupByLibrary.simpleMessage("صارفین کا نظم و نسق"),
@@ -329,19 +405,25 @@ class MessageLookup extends MessageLookupByLibrary {
     "integ8": MessageLookupByLibrary.simpleMessage("سرگرمیاں"),
     "integ9": MessageLookupByLibrary.simpleMessage("سینسرز"),
     "integrations": MessageLookupByLibrary.simpleMessage("انضمامات"),
+    "ip_invalid_format": MessageLookupByLibrary.simpleMessage(
+      "درست IP درج کریں (مثلاً 192.168.1.1)",
+    ),
+    "ip_required": MessageLookupByLibrary.simpleMessage("IP درکار ہے"),
     "isCountable": MessageLookupByLibrary.simpleMessage(
       "کیا یہ قابلِ شمار ہے:",
     ),
+    "is_active": MessageLookupByLibrary.simpleMessage("کیا فعال ہے؟"),
+    "is_assign": MessageLookupByLibrary.simpleMessage("تفویض کیا گیا"),
     "kg": MessageLookupByLibrary.simpleMessage("کلوگرام"),
     "l": MessageLookupByLibrary.simpleMessage("لیٹر"),
     "labelEmail": MessageLookupByLibrary.simpleMessage("ای میل یا صارف نام"),
     "labelOptional": MessageLookupByLibrary.simpleMessage(" (اختیاری)"),
     "labelPassword": MessageLookupByLibrary.simpleMessage("پاس ورڈ"),
-    "late": MessageLookupByLibrary.simpleMessage("دیر"),
     "leaveBody": MessageLookupByLibrary.simpleMessage("چھٹی"),
     "leaveDetails": MessageLookupByLibrary.simpleMessage("چھٹی کی تفصیلات"),
     "leaves": MessageLookupByLibrary.simpleMessage("رخصتیں"),
     "limitBody": MessageLookupByLibrary.simpleMessage("حد"),
+    "line": MessageLookupByLibrary.simpleMessage("لکیر"),
     "loginButton": MessageLookupByLibrary.simpleMessage("لاگ ان"),
     "loginMessage": MessageLookupByLibrary.simpleMessage(
       "اپنے Clean Tech اکاؤنٹ تک رسائی کے لیے لاگ ان کریں",
@@ -352,6 +434,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "low": MessageLookupByLibrary.simpleMessage("کم"),
     "m": MessageLookupByLibrary.simpleMessage("میٹر"),
+    "male": MessageLookupByLibrary.simpleMessage("مرد"),
     "manager": MessageLookupByLibrary.simpleMessage("مینیجر"),
     "managers": MessageLookupByLibrary.simpleMessage("مینجرز"),
     "material": MessageLookupByLibrary.simpleMessage("مواد"),
@@ -390,6 +473,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "کم از کم مقدار بہت زیادہ ہے",
     ),
     "ml": MessageLookupByLibrary.simpleMessage("ملی لیٹر"),
+    "module": MessageLookupByLibrary.simpleMessage("ماڈیول"),
     "myActivities": MessageLookupByLibrary.simpleMessage("میری سرگرمیاں"),
     "myActivity": MessageLookupByLibrary.simpleMessage("میری سرگرمی"),
     "myTeamActivities": MessageLookupByLibrary.simpleMessage(
@@ -398,9 +482,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "myTeamActivity": MessageLookupByLibrary.simpleMessage(
       "میری ٹیم کی سرگرمی",
     ),
+    "my_tasks": MessageLookupByLibrary.simpleMessage("میرے کام"),
+    "my_team_tasks": MessageLookupByLibrary.simpleMessage("میری ٹیم کے کام"),
     "name": MessageLookupByLibrary.simpleMessage("نام"),
+    "network_ip": MessageLookupByLibrary.simpleMessage("نیٹ ورک IP"),
+    "new_password": MessageLookupByLibrary.simpleMessage("نیا پاس ورڈ"),
     "nextButton": MessageLookupByLibrary.simpleMessage("اگلا"),
     "no": MessageLookupByLibrary.simpleMessage("نہیں"),
+    "noActivities": MessageLookupByLibrary.simpleMessage(
+      "کوئی سرگرمیاں نہیں ہیں",
+    ),
     "noAdminsAvailable": MessageLookupByLibrary.simpleMessage(
       "کوئی ایڈمن دستیاب نہیں",
     ),
@@ -441,10 +532,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "noUsersAvailable": MessageLookupByLibrary.simpleMessage(
       "کوئی صارف دستیاب نہیں",
     ),
+    "no_comments": MessageLookupByLibrary.simpleMessage("کوئی تبصرے نہیں ہیں"),
+    "no_employee_added": MessageLookupByLibrary.simpleMessage(
+      "کوئی ملازم شامل نہیں کیا گیا",
+    ),
+    "no_file_uploaded": MessageLookupByLibrary.simpleMessage(
+      "کوئی فائل اپ لوڈ نہیں ہوئی",
+    ),
+    "no_user": MessageLookupByLibrary.simpleMessage("کوئی صارف نہیں"),
     "notApproval": MessageLookupByLibrary.simpleMessage("منظوری نہیں"),
     "notResolved": MessageLookupByLibrary.simpleMessage("حل نہ ہوا"),
     "notResolvedTask": MessageLookupByLibrary.simpleMessage("حل نہیں ہوا"),
+    "not_approval": MessageLookupByLibrary.simpleMessage("منظوری نہیں ملی"),
+    "not_resolved": MessageLookupByLibrary.simpleMessage("حل نہیں ہوا"),
     "notifications": MessageLookupByLibrary.simpleMessage("اطلاعات"),
+    "notresolvedButton": MessageLookupByLibrary.simpleMessage("حل نہیں ہوا"),
+    "old_password": MessageLookupByLibrary.simpleMessage("پرانا پاس ورڈ"),
     "ordinary": MessageLookupByLibrary.simpleMessage("معمولی"),
     "organizationBody": MessageLookupByLibrary.simpleMessage("ادارہ"),
     "organizationName": MessageLookupByLibrary.simpleMessage("ادارے کا نام"),
@@ -457,13 +560,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "organizationNameTooShort": MessageLookupByLibrary.simpleMessage(
       "ادارے کا نام بہت چھوٹا ہے",
     ),
+    "organization_details": MessageLookupByLibrary.simpleMessage(
+      "تنظیم کی تفصیلات",
+    ),
+    "organizations": MessageLookupByLibrary.simpleMessage("تنظیمات"),
+    "outSelect": MessageLookupByLibrary.simpleMessage("روانگی"),
     "outSide": MessageLookupByLibrary.simpleMessage("باہر"),
     "outside": MessageLookupByLibrary.simpleMessage("باہر"),
     "overdue": MessageLookupByLibrary.simpleMessage("ڈیڈ لائن گزر چکی ہے"),
     "overdueTask": MessageLookupByLibrary.simpleMessage("تاخیر شدہ"),
     "parentCategory": MessageLookupByLibrary.simpleMessage("مرکزی زمرہ"),
+    "parent_task": MessageLookupByLibrary.simpleMessage("مرکزی کام"),
     "pending": MessageLookupByLibrary.simpleMessage("زیر التوا"),
     "pendingTask": MessageLookupByLibrary.simpleMessage("زیر التواء"),
+    "pie": MessageLookupByLibrary.simpleMessage("پائی"),
     "pieces": MessageLookupByLibrary.simpleMessage("ٹکڑے"),
     "pointBody": MessageLookupByLibrary.simpleMessage("نقطہ"),
     "pointDescription": MessageLookupByLibrary.simpleMessage("پوائنٹ کی تفصیل"),
@@ -484,10 +594,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "pointNumberTooLong": MessageLookupByLibrary.simpleMessage(
       "پوائنٹ نمبر بہت لمبا ہے",
     ),
+    "point_details": MessageLookupByLibrary.simpleMessage("پوائنٹ کی تفصیلات"),
+    "points": MessageLookupByLibrary.simpleMessage("پوائنٹس"),
     "present": MessageLookupByLibrary.simpleMessage("حاضر"),
     "price": MessageLookupByLibrary.simpleMessage("قیمت"),
     "priceRequired": MessageLookupByLibrary.simpleMessage("قیمت ضروری ہے"),
     "priceTooLong": MessageLookupByLibrary.simpleMessage("قیمت بہت لمبی ہے"),
+    "priority": MessageLookupByLibrary.simpleMessage("ترجیح"),
+    "priority_required": MessageLookupByLibrary.simpleMessage("ترجیح ضروری ہے"),
+    "profileBody": MessageLookupByLibrary.simpleMessage("پروفائل"),
+    "provider": MessageLookupByLibrary.simpleMessage("فراہم کنندہ"),
     "providerBody": MessageLookupByLibrary.simpleMessage("فراہم کنندہ"),
     "providerName": MessageLookupByLibrary.simpleMessage("فراہم کنندہ کا نام"),
     "providers": MessageLookupByLibrary.simpleMessage("فراہم کنندگان"),
@@ -502,6 +618,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reasonRequiredValidation": MessageLookupByLibrary.simpleMessage(
       "وجہ ضروری ہے",
     ),
+    "received_tasks": MessageLookupByLibrary.simpleMessage("موصول شدہ کام"),
     "reduceButton": MessageLookupByLibrary.simpleMessage("کم کریں"),
     "reduceMaterial": MessageLookupByLibrary.simpleMessage("مواد کم کریں"),
     "reject": MessageLookupByLibrary.simpleMessage("مسترد"),
@@ -539,7 +656,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "sectionNumberTooLong": MessageLookupByLibrary.simpleMessage(
       "سیکشن نمبر بہت لمبا ہے",
     ),
+    "section_details": MessageLookupByLibrary.simpleMessage("سیکشن کی تفصیلات"),
+    "sections": MessageLookupByLibrary.simpleMessage("سیکشنز"),
     "seeMoreButton": MessageLookupByLibrary.simpleMessage("مزید دیکھیں"),
+    "select": MessageLookupByLibrary.simpleMessage("منتخب کریں"),
     "selectArea": MessageLookupByLibrary.simpleMessage("علاقہ منتخب کریں"),
     "selectBuilding": MessageLookupByLibrary.simpleMessage("عمارت منتخب کریں"),
     "selectCategory": MessageLookupByLibrary.simpleMessage("زمرہ منتخب کریں"),
@@ -565,6 +685,31 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "selectType": MessageLookupByLibrary.simpleMessage("قسم منتخب کریں"),
     "selectUnit": MessageLookupByLibrary.simpleMessage("یونٹ منتخب کریں"),
+    "select_action": MessageLookupByLibrary.simpleMessage("عمل منتخب کریں"),
+    "select_module": MessageLookupByLibrary.simpleMessage("ماڈیول منتخب کریں"),
+    "select_nationality": MessageLookupByLibrary.simpleMessage(
+      "قومیت منتخب کریں",
+    ),
+    "select_parent_category": MessageLookupByLibrary.simpleMessage(
+      "مرکزی زمرہ منتخب کریں",
+    ),
+    "select_parent_task": MessageLookupByLibrary.simpleMessage(
+      "مرکزی کام منتخب کریں",
+    ),
+    "select_point": MessageLookupByLibrary.simpleMessage("نقطہ منتخب کریں"),
+    "select_priority": MessageLookupByLibrary.simpleMessage("ترجیح منتخب کریں"),
+    "select_provider": MessageLookupByLibrary.simpleMessage(
+      "فراہم کنندہ منتخب کریں",
+    ),
+    "select_role": MessageLookupByLibrary.simpleMessage("کردار منتخب کریں"),
+    "select_sensor": MessageLookupByLibrary.simpleMessage("سینسر منتخب کریں"),
+    "select_shift": MessageLookupByLibrary.simpleMessage("شفٹ منتخب کریں"),
+    "select_status": MessageLookupByLibrary.simpleMessage("حیثیت منتخب کریں"),
+    "select_user": MessageLookupByLibrary.simpleMessage("صارف منتخب کریں"),
+    "select_users": MessageLookupByLibrary.simpleMessage("صارفین منتخب کریں"),
+    "select_work_location": MessageLookupByLibrary.simpleMessage(
+      "کام کی جگہ منتخب کریں",
+    ),
     "sensor": MessageLookupByLibrary.simpleMessage("سینسر"),
     "sensorBody": MessageLookupByLibrary.simpleMessage("سینسر"),
     "sensorDetails": MessageLookupByLibrary.simpleMessage("سینسر کی تفصیلات"),
@@ -609,8 +754,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "shiftNameTooShortValidation": MessageLookupByLibrary.simpleMessage(
       "شفٹ کا نام بہت چھوٹا ہے",
     ),
+    "shifts": MessageLookupByLibrary.simpleMessage("شفٹیں"),
     "showActivity": MessageLookupByLibrary.simpleMessage("سرگرمی دکھائیں"),
     "sick": MessageLookupByLibrary.simpleMessage("بیمار"),
+    "startButton": MessageLookupByLibrary.simpleMessage("شروع کریں"),
     "startDate": MessageLookupByLibrary.simpleMessage("آغاز کی تاریخ"),
     "startDateRequiredValidation": MessageLookupByLibrary.simpleMessage(
       "آغاز کی تاریخ ضروری ہے",
@@ -619,17 +766,41 @@ class MessageLookup extends MessageLookupByLibrary {
     "startTimeRequiredValidation": MessageLookupByLibrary.simpleMessage(
       "آغاز کا وقت ضروری ہے",
     ),
+    "start_time": MessageLookupByLibrary.simpleMessage("آغاز: "),
+    "status": MessageLookupByLibrary.simpleMessage("حیثیت"),
+    "status_required": MessageLookupByLibrary.simpleMessage("حیثیت ضروری ہے"),
     "stock": MessageLookupByLibrary.simpleMessage("اسٹاک"),
     "stockQuantity": MessageLookupByLibrary.simpleMessage("سٹاک کی مقدار"),
     "submitButton": MessageLookupByLibrary.simpleMessage("جمع کریں"),
     "supervisor": MessageLookupByLibrary.simpleMessage("نگران"),
     "supervisors": MessageLookupByLibrary.simpleMessage("سپر وائزرز"),
+    "take_photo": MessageLookupByLibrary.simpleMessage("تصویر لیں"),
     "taskCompletionRate": MessageLookupByLibrary.simpleMessage(
       "کام مکمل کرنے کی شرح",
     ),
+    "task_details": MessageLookupByLibrary.simpleMessage("تفصیل کام"),
+    "task_not_completed": MessageLookupByLibrary.simpleMessage(
+      "کام ابھی مکمل نہیں ہوا۔",
+    ),
+    "task_not_started": MessageLookupByLibrary.simpleMessage(
+      "کام ابھی شروع نہیں ہوا۔",
+    ),
+    "task_team": MessageLookupByLibrary.simpleMessage("ٹاسک ٹیم"),
+    "task_title": MessageLookupByLibrary.simpleMessage("کام کا عنوان"),
+    "task_title_required": MessageLookupByLibrary.simpleMessage(
+      "کام کا عنوان ضروری ہے",
+    ),
+    "task_title_too_long": MessageLookupByLibrary.simpleMessage(
+      "کام کا عنوان بہت لمبا ہے",
+    ),
+    "task_title_too_short": MessageLookupByLibrary.simpleMessage(
+      "کام کا عنوان بہت مختصر ہے",
+    ),
+    "taskbody": MessageLookupByLibrary.simpleMessage("کام"),
     "tasks": MessageLookupByLibrary.simpleMessage("کام"),
     "termsConditions": MessageLookupByLibrary.simpleMessage("شرائط و ضوابط"),
     "time": MessageLookupByLibrary.simpleMessage("وقت"),
+    "total": MessageLookupByLibrary.simpleMessage("کل"),
     "totalCategories": MessageLookupByLibrary.simpleMessage("کل زمرے"),
     "totalMaterials": MessageLookupByLibrary.simpleMessage("کل مواد"),
     "totalPrice": MessageLookupByLibrary.simpleMessage("کل قیمت"),
@@ -640,13 +811,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "totalShiftss": MessageLookupByLibrary.simpleMessage("کل شفٹس"),
     "totalTask": MessageLookupByLibrary.simpleMessage("کل کام"),
     "totalUsers": MessageLookupByLibrary.simpleMessage("کل صارفین"),
+    "total_time": MessageLookupByLibrary.simpleMessage("کل وقت"),
     "transactionDetails": MessageLookupByLibrary.simpleMessage(
       "لین دین کی تفصیلات",
     ),
     "transactionManagement": MessageLookupByLibrary.simpleMessage(
       "لین دین کا انتظام",
     ),
+    "transaction_type": MessageLookupByLibrary.simpleMessage(
+      "ٹرانزیکشن کی قسم",
+    ),
     "transactions": MessageLookupByLibrary.simpleMessage("لین دین"),
+    "trueSelect": MessageLookupByLibrary.simpleMessage("درست"),
     "type": MessageLookupByLibrary.simpleMessage("قسم"),
     "typeRequired": MessageLookupByLibrary.simpleMessage("قسم ضروری ہے"),
     "unit": MessageLookupByLibrary.simpleMessage(" (یونٹ)"),
@@ -797,6 +973,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "مقدار کا نمبر لکھیں",
     ),
     "writeReason": MessageLookupByLibrary.simpleMessage("چھٹی کی وجہ لکھیں"),
+    "write_comment": MessageLookupByLibrary.simpleMessage("اپنا تبصرہ لکھیں"),
+    "write_currently_reading": MessageLookupByLibrary.simpleMessage(
+      "موجودہ ریڈنگ لکھیں",
+    ),
     "yes": MessageLookupByLibrary.simpleMessage("ہاں"),
     "yesButtton": MessageLookupByLibrary.simpleMessage("ہاں، مجھے یقین ہے"),
   };

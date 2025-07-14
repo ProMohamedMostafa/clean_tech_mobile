@@ -48,11 +48,11 @@ class _MaterialDetailsBodyState extends State<MaterialDetailsBody> {
       body: BlocConsumer<MaterialDetailsCubit, MaterialDetailsState>(
         listener: (context, state) {
           if (state is DeleteMaterialSuccessState) {
-            toast(text: state.deleteMaterialModel.message!, color: Colors.blue);
+            toast(text: state.deleteMaterialModel.message!, isSuccess: true);
             context.popWithTrueResult();
           }
           if (state is DeleteMaterialErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
         },
         builder: (context, state) {
@@ -144,8 +144,6 @@ class _MaterialDetailsBodyState extends State<MaterialDetailsBody> {
                                     });
                               },
                               color: Colors.red,
-                              height: 47,
-                              width: double.infinity,
                               textStyles: TextStyles.font20Whitesemimedium),
                         ),
                   verticalSpace(20)

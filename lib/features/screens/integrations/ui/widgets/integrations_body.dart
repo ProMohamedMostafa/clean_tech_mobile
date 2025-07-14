@@ -31,10 +31,17 @@ class IntegrationsBody extends StatelessWidget {
           image: 'assets/images/shift.png',
           padding: 10),
       IntegrationItem(
-          onTap: () => context.pushNamed(Routes.taskManagementScreen),
-          label: S.of(context).integ5,
-          image: 'assets/images/task.png',
-          padding: 10),
+        onTap: () {
+          if (role == 'Admin' || role == 'Cleaner') {
+            context.pushNamed(Routes.taskManagementScreen);
+          } else {
+            context.pushNamed(Routes.chooseViewTask);
+          }
+        },
+        label: S.of(context).integ5,
+        image: 'assets/images/task.png',
+        padding: 10,
+      ),
       if (role == 'Admin')
         IntegrationItem(
             onTap: () => context.pushNamed(Routes.sensorScreen),
@@ -88,9 +95,8 @@ class IntegrationsBody extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
-                  mainAxisSpacing: 20.h,
                   crossAxisSpacing: 15.w,
-                  childAspectRatio: 0.74,
+                  childAspectRatio: 0.70,
                 ),
                 itemCount: integrationItems.length,
                 itemBuilder: (context, index) {

@@ -20,9 +20,9 @@ class BuildSensorItemList extends StatelessWidget {
     final cubit = context.read<SensorCubit>();
     return InkWell(
       borderRadius: BorderRadius.circular(16.r),
-      onTap: () async{
+      onTap: () async {
         if (cubit.selectedIndex == 0) {
-          final result = await   context.pushNamed(
+          final result = await context.pushNamed(
             Routes.sensorDetailsScreen,
             arguments: cubit.sensorModel!.data!.data![index].id,
           );
@@ -223,14 +223,14 @@ class BuildSensorItemList extends StatelessWidget {
                   ),
                   InkWell(
                     borderRadius: BorderRadius.circular(8.r),
-                    onTap: () async{
-                       final result = await   context.pushNamed(Routes.sensorEditScreen,
+                    onTap: () async {
+                      final result = await context.pushNamed(
+                          Routes.sensorEditScreen,
                           arguments: cubit.sensorModel!.data!.data![index].id);
 
-          if (result == true) {
-            cubit.refreshSensors();
-          }
-                      
+                      if (result == true) {
+                        cubit.refreshSensors();
+                      }
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -258,81 +258,77 @@ class BuildSensorItemList extends StatelessWidget {
               ),
               verticalSpace(10),
               Container(
-                height: 65.h,
-                padding: EdgeInsets.symmetric(vertical: 10),
+                height: 80.h,
+                padding: EdgeInsets.all(5),
                 decoration: BoxDecoration(
+                  color: Colors.white,
                   border: Border.all(color: Colors.green),
                   borderRadius: BorderRadius.circular(12.r),
                 ),
-                child: Center(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: List.generate(
-                        cubit.sensorModel!.data!.data![index].data!.length,
-                        (i) {
-                          final item =
-                              cubit.sensorModel!.data!.data![index].data![i];
-                          final limit =
-                              cubit.sensorModel!.data!.data![index].limit;
-
-                          // Check if limit is set for this key
-                          bool isOutOfBounds = false;
-                          if (limit != null &&
-                              limit.key == item.key &&
-                              item.value is num) {
-                            final value = item.value as num;
-                            if ((limit.min != null && value < limit.min!) ||
-                                (limit.max != null && value > limit.max!)) {
-                              isOutOfBounds = true;
-                            }
-                          }
-
-                          final color =
-                              isOutOfBounds ? Colors.red : Colors.black;
-
-                          return Row(
-                            children: [
-                              SizedBox(
-                                width: 100.w,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      item.key ?? '',
-                                      style: TextStyle(
-                                          color: isOutOfBounds
-                                              ? Colors.red
-                                              : Colors.grey),
-                                    ),
-                                    SizedBox(height: 4),
-                                    Text(
-                                      item.value.toString(),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: color,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              if (i !=
-                                  cubit.sensorModel!.data!.data![index].data!
-                                          .length -
-                                      1)
-                                Container(
-                                  height: 30.h,
-                                  width: 1.w,
-                                  color: Colors.green,
-                                  margin: EdgeInsets.symmetric(horizontal: 12),
-                                ),
-                            ],
-                          );
-                        },
-                      ),
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: cubit.sensorModel!.data!.data![index].data!.length,
+                  separatorBuilder: (context, index) => Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Container(
+                      height: 30.h,
+                      width: 1.w,
+                      color: Colors.green,
+                      margin: EdgeInsets.symmetric(horizontal: 12),
                     ),
                   ),
+                  itemBuilder: (context, i) {
+                    final item = cubit.sensorModel!.data!.data![index].data![i];
+                    final limit = cubit.sensorModel!.data!.data![index].limit;
+
+                    bool isOutOfBounds = false;
+                    if (limit != null &&
+                        limit.key == item.key &&
+                        item.value is num) {
+                      final value = item.value as num;
+                      if ((limit.min != null && value < limit.min!) ||
+                          (limit.max != null && value > limit.max!)) {
+                        isOutOfBounds = true;
+                      }
+                    }
+
+                    final keyColor = isOutOfBounds ? Colors.red : Colors.grey;
+                    final valueColor =
+                        isOutOfBounds ? Colors.red : Colors.black;
+
+                    return Container(
+                      width: 100.w,
+                      decoration: BoxDecoration(
+                        color: AppColor.fourthColor,
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            item.key ?? '',
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              color: keyColor,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            textAlign: TextAlign.center,
+                          ),
+                          verticalSpace(4),
+                          Text(
+                            item.value.toString(),
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.bold,
+                              color: valueColor,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                 ),
               ),
               verticalSpace(10),

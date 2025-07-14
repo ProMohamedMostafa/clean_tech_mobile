@@ -20,6 +20,7 @@ import 'package:smart_cleaning_application/features/screens/integrations/ui/widg
 import 'package:smart_cleaning_application/features/screens/task/view_task/logic/task_details_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/task/view_task/ui/widget/current_read_dialog_.dart';
 import 'package:smart_cleaning_application/features/screens/task/view_task/ui/widget/upload_files_dialog.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class TaskDetailsBody extends StatefulWidget {
   final int id;
@@ -35,7 +36,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
     final cubit = context.read<TaskDetailsCubit>();
     return Scaffold(
       appBar: AppBar(
-        title: Text("Task details"),
+        title: Text(S.of(context).task_details),
         leading: CustomBackButton(),
         actions: [
           role == 'Cleaner'
@@ -61,34 +62,31 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
             cubit.commentController.clear();
             cubit.image = null;
 
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
             cubit.getTaskDetails(widget.id);
-            cubit.getAllUsers();
           }
           if (state is GetChangeTaskStatusSuccessState) {
-            toast(
-                text: state.changeTaskStatusModel.message!, color: Colors.blue);
+            toast(text: state.changeTaskStatusModel.message!, isSuccess: true);
             cubit.getTaskDetails(widget.id);
-            cubit.getAllUsers();
           }
           if (state is AddCommentsErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
 
           if (state is GetChangeTaskStatusErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
 
           if (state is TaskDeleteSuccessState) {
-            toast(text: state.deleteTaskModel.message!, color: Colors.blue);
+            toast(text: state.deleteTaskModel.message!, isSuccess: true);
             context.popWithTrueResult();
           }
           if (state is TaskDeleteErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
         },
         builder: (context, state) {
-          if (cubit.taskDetailsModel == null || cubit.usersModel == null) {
+          if (cubit.taskDetailsModel == null) {
             return Loading();
           }
 
@@ -114,8 +112,8 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                         children: [
                           TextSpan(
                             text: cubit.taskDetailsModel!.data!.duration == null
-                                ? 'Duration'
-                                : 'Total Time',
+                                ? S.of(context).duration2
+                                : S.of(context).total_time,
                             style: TextStyles.font14BlackSemiBold,
                           ),
                           TextSpan(
@@ -125,8 +123,8 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                           TextSpan(
                             text: cubit.taskDetailsModel!.data!.duration == null
                                 ? cubit.taskDetailsModel!.data!.started == null
-                                    ? 'The task isn\'t start yet.'
-                                    : 'The task isn\'t complete yet.'
+                                    ? S.of(context).task_not_started
+                                    : S.of(context).task_not_completed
                                 : cubit.formatDuration(
                                     cubit.taskDetailsModel!.data!.duration!),
                             style: TextStyles.font13greymedium,
@@ -198,8 +196,8 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                           child: cubit.descTextShowFlag
                               ? Padding(
                                   padding: const EdgeInsets.all(10),
-                                  child: const Text(
-                                    "Read less",
+                                  child: Text(
+                                    S.of(context).ReadLessButton,
                                     style: TextStyle(
                                         color: AppColor.primaryColor,
                                         fontSize: 12),
@@ -207,8 +205,8 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                 )
                               : Padding(
                                   padding: const EdgeInsets.all(10),
-                                  child: const Text(
-                                    "Read more",
+                                  child: Text(
+                                    S.of(context).ReadMoreButton,
                                     style: TextStyle(
                                         color: AppColor.primaryColor,
                                         fontSize: 12),
@@ -217,14 +215,17 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(
-                        'Start Date',
-                        style: TextStyles.font14GreyRegular,
+                      Expanded(
+                        child: Text(
+                          S.of(context).startDate,
+                          style: TextStyles.font14GreyRegular,
+                        ),
                       ),
-                      horizontalSpace(MediaQuery.of(context).size.width / 3.5),
-                      Text(
-                        'End Date',
-                        style: TextStyles.font14GreyRegular,
+                      Expanded(
+                        child: Text(
+                          S.of(context).endDate,
+                          style: TextStyles.font14GreyRegular,
+                        ),
                       ),
                     ],
                   ),
@@ -232,45 +233,46 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: cubit.taskDetailsModel!.data!.startDate!,
-                              style: TextStyles.font14BlackRegular,
-                            ),
-                            TextSpan(
-                              text: ' Start: ',
-                              style: TextStyles.font14Primarybold,
-                            ),
-                            TextSpan(
-                              text: cubit.formatTime(
-                                  cubit.taskDetailsModel!.data!.startTime!),
-                              style: TextStyles.font14BlackRegular,
-                            ),
-                          ],
+                      Expanded(
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: cubit.taskDetailsModel!.data!.startDate!,
+                                style: TextStyles.font14BlackRegular,
+                              ),
+                              TextSpan(
+                                text: ' ${S.of(context).start_time} ',
+                                style: TextStyles.font14Primarybold,
+                              ),
+                              TextSpan(
+                                text: cubit.formatTime(
+                                    cubit.taskDetailsModel!.data!.startTime!),
+                                style: TextStyles.font14BlackRegular,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      horizontalSpace(MediaQuery.of(context).size.width / 11),
-                      RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: cubit.taskDetailsModel!.data!.endDate!,
-                              style: TextStyles.font14BlackRegular,
-                            ),
-                            TextSpan(
-                              text: ' End: ',
-                              style: TextStyles.font14Primarybold,
-                            ),
-                            TextSpan(
-                              text: cubit.formatTime(
-                                  cubit.taskDetailsModel!.data!.endTime!),
-                              style: TextStyles.font14BlackRegular,
-                            ),
-                          ],
+                      Expanded(
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: cubit.taskDetailsModel!.data!.endDate!,
+                                style: TextStyles.font14BlackRegular,
+                              ),
+                              TextSpan(
+                                text: ' ${S.of(context).end_time} ',
+                                style: TextStyles.font14Primarybold,
+                              ),
+                              TextSpan(
+                                text: cubit.formatTime(
+                                    cubit.taskDetailsModel!.data!.endTime!),
+                                style: TextStyles.font14BlackRegular,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -278,57 +280,39 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                   verticalSpace(3),
                   Divider(),
                   if (cubit.taskDetailsModel!.data!.deviceName == null) ...[
-                    rowDetailsBuild(context, 'Created By',
+                    rowDetailsBuild(context, S.of(context).created_by,
                         cubit.taskDetailsModel!.data!.createdUserName!),
                     Divider(),
                   ],
                   if (cubit.taskDetailsModel!.data!.createdBy == null) ...[
-                    rowDetailsBuild(context, 'Device name',
+                    rowDetailsBuild(context, S.of(context).device_name,
                         cubit.taskDetailsModel!.data!.deviceName!),
                     Divider(),
                   ],
                   if (role != 'Cleaner') ...[
-                    rowDetailsBuild(
-                        context,
-                        'Parent Task',
-                        cubit.taskDetailsModel!.data!.parentTitle ??
-                            'No parent task'),
+                    rowDetailsBuild(context, S.of(context).parent_task,
+                        cubit.taskDetailsModel!.data!.parentTitle ?? '--'),
                     Divider(),
                   ],
-                  rowDetailsBuild(
-                      context,
-                      'Organization',
-                      cubit.taskDetailsModel!.data!.organizationName ??
-                          "No item selected"),
+                  rowDetailsBuild(context, S.of(context).Organization,
+                      cubit.taskDetailsModel!.data!.organizationName ?? "--"),
                   Divider(),
-                  rowDetailsBuild(
-                      context,
-                      'Building',
-                      cubit.taskDetailsModel!.data!.buildingName ??
-                          "No item selected"),
+                  rowDetailsBuild(context, S.of(context).Building,
+                      cubit.taskDetailsModel!.data!.buildingName ?? "--"),
                   Divider(),
-                  rowDetailsBuild(
-                      context,
-                      'Floor',
-                      cubit.taskDetailsModel!.data!.floorName ??
-                          "No item selected"),
+                  rowDetailsBuild(context, S.of(context).Floor,
+                      cubit.taskDetailsModel!.data!.floorName ?? "--"),
                   Divider(),
-                  rowDetailsBuild(
-                      context,
-                      'Section',
-                      cubit.taskDetailsModel!.data!.sectionName ??
-                          "No item selected"),
+                  rowDetailsBuild(context, S.of(context).Section,
+                      cubit.taskDetailsModel!.data!.sectionName ?? "--"),
                   Divider(),
-                  rowDetailsBuild(
-                      context,
-                      'Point',
-                      cubit.taskDetailsModel!.data!.pointName ??
-                          "No item selected"),
+                  rowDetailsBuild(context, S.of(context).Point,
+                      cubit.taskDetailsModel!.data!.pointName ?? "--"),
                   Divider(),
                   if (cubit.taskDetailsModel?.data?.currentReading != null) ...[
                     rowDetailsBuild(
                       context,
-                      'Current Reading',
+                      S.of(context).currently_reading,
                       cubit.taskDetailsModel!.data!.currentReading.toString(),
                     ),
                     Divider()
@@ -336,7 +320,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                   if (cubit.taskDetailsModel?.data?.readingAfter != null) ...[
                     rowDetailsBuild(
                       context,
-                      'After Reading',
+                      S.of(context).after_reading,
                       cubit.taskDetailsModel!.data!.readingAfter.toString(),
                     ),
                     Divider()
@@ -345,112 +329,111 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Task Team',
+                        S.of(context).task_team,
                         style: TextStyles.font14BlackSemiBold,
                       ),
                       Text(
                         cubit.taskDetailsModel!.data!.users!.isEmpty
-                            ? "No employee added"
+                            ? S.of(context).no_employee_added
                             : '',
                         style: TextStyles.font13greymedium,
                       ),
                     ],
                   ),
-                  if (role != 'Cleaner' &&
-                      cubit.taskDetailsModel!.data!.users != null) ...[
-                    verticalSpace(10),
-                    GridView.count(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      childAspectRatio: 1 / 0.3,
-                      children: List.generate(
-                        cubit.taskDetailsModel!.data!.users!.length,
-                        (index) => InkWell(
-                          borderRadius: BorderRadius.circular(10.r),
-                          onTap: () {
-                            (uId == cubit.usersModel!.data!.users![index].id &&
-                                    role == 'Cleaner')
-                                ? null
-                                : context.pushNamed(
-                                    Routes.userDetailsScreen,
-                                    arguments: cubit
-                                        .usersModel!.data!.users![index].id,
-                                  );
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10.r),
-                              border: Border.all(color: Colors.black12),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                CircleAvatar(
-                                    radius: 20.r,
-                                    backgroundImage: cubit.usersModel!.data!
-                                                .users![index].image ==
-                                            null
-                                        ? AssetImage(
-                                            'assets/images/person.png',
-                                          )
-                                        : NetworkImage(
-                                            '${cubit.usersModel!.data!.users![index].image}',
-                                          )),
-                                horizontalSpace(10),
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      (cubit.usersModel?.data?.users?[index]
-                                                  .firstName ??
-                                              '')
-                                          .substring(
-                                              0,
-                                              (cubit
-                                                          .usersModel
-                                                          ?.data
-                                                          ?.users?[index]
-                                                          .firstName ??
-                                                      '')
-                                                  .length
-                                                  .clamp(0, 15)),
-                                      style: TextStyles.font12BlackSemi,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    Text(
-                                      cubit.usersModel!.data!.users![index]
-                                              .role ??
-                                          '',
-                                      style: TextStyles.font11lightPrimary,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                  verticalSpace(10),
+                  GridView.count(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    childAspectRatio: 1 / 0.3,
+                    children: List.generate(
+                      cubit.taskDetailsModel!.data!.users!.length,
+                      (index) => InkWell(
+                        borderRadius: BorderRadius.circular(10.r),
+                        onTap: () {
+                          (uId ==
+                                      cubit.taskDetailsModel!.data!
+                                          .users![index].id &&
+                                  role == 'Cleaner')
+                              ? null
+                              : context.pushNamed(
+                                  Routes.userDetailsScreen,
+                                  arguments: cubit
+                                      .taskDetailsModel!.data!.users![index].id,
+                                );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10.r),
+                            border: Border.all(color: Colors.black12),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              CircleAvatar(
+                                  radius: 20.r,
+                                  backgroundImage: cubit.taskDetailsModel!.data!
+                                              .users![index].image ==
+                                          null
+                                      ? AssetImage(
+                                          'assets/images/person.png',
+                                        )
+                                      : NetworkImage(
+                                          '${cubit.taskDetailsModel!.data!.users![index].image}',
+                                        )),
+                              horizontalSpace(10),
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    (cubit.taskDetailsModel?.data?.users?[index]
+                                                .firstName ??
+                                            '')
+                                        .substring(
+                                            0,
+                                            (cubit
+                                                        .taskDetailsModel
+                                                        ?.data
+                                                        ?.users?[index]
+                                                        .firstName ??
+                                                    '')
+                                                .length
+                                                .clamp(0, 14)),
+                                    style: TextStyles.font12BlackSemi,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Text(
+                                    cubit.taskDetailsModel!.data!.users![index]
+                                            .role ??
+                                        '',
+                                    style: TextStyles.font11lightPrimary,
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
                       ),
                     ),
-                    Divider(),
-                  ],
+                  ),
+                  Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Files',
+                        S.of(context).files,
                         style: TextStyles.font14BlackSemiBold,
                       ),
                       Text(
                         cubit.taskDetailsModel!.data!.files!.isEmpty
-                            ? 'No file uploaded'
-                            : '${cubit.taskDetailsModel!.data!.files!.length} files uploaded',
+                            ? S.of(context).no_file_uploaded
+                            : '${cubit.taskDetailsModel!.data!.files!.length} ${S.of(context).files_uploaded}',
                         style: TextStyles.font13greymedium,
                       ),
                     ],
@@ -528,7 +511,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                     ),
                   Divider(),
                   Text(
-                    'Comments',
+                    S.of(context).comments,
                     style: TextStyles.font14BlackSemiBold,
                   ),
                   verticalSpace(5),
@@ -537,15 +520,17 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                           (task.files == null || task.files!.isEmpty))
                       ? Center(
                           child: Text(
-                            'There\'s no comments',
+                            S.of(context).no_comments,
                             style: TextStyles.font13greymedium,
                           ),
                         )
-                      : ListView.builder(
+                      : ListView.separated(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           itemCount:
                               cubit.taskDetailsModel!.data!.comments!.length,
+                          separatorBuilder: (context, index) =>
+                              verticalSpace(8),
                           itemBuilder: (context, index) {
                             final task =
                                 cubit.taskDetailsModel!.data!.comments![index];
@@ -554,8 +539,6 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                 (task.files != null &&
                                     task.files!.isNotEmpty)) {
                               return Container(
-                                width: double.infinity,
-                                margin: EdgeInsets.symmetric(vertical: 5.h),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.r),
                                   border: Border.all(color: Colors.black12),
@@ -567,61 +550,26 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      if (task.files != null &&
-                                          task.files!.isNotEmpty)
-                                        GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (contextt) => Scaffold(
-                                                  appBar: AppBar(
-                                                    leading: CustomBackButton(),
-                                                  ),
-                                                  body: Center(
-                                                    child: PhotoView(
-                                                      imageProvider:
-                                                          NetworkImage(
-                                                        '${task.files!.first.path}',
-                                                      ),
-                                                      errorBuilder: (context,
-                                                          error, stackTrace) {
-                                                        return Image.asset(
-                                                          'assets/images/noImage.png',
-                                                          fit: BoxFit.fill,
-                                                        );
-                                                      },
-                                                      backgroundDecoration:
-                                                          const BoxDecoration(
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
+                                      Container(
+                                        height: 40.h,
+                                        width: 40.w,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle),
+                                        clipBehavior: Clip.hardEdge,
+                                        child: Image.network(
+                                          cubit.taskDetailsModel!.data!
+                                                  .comments![index].image ??
+                                              '',
+                                          fit: BoxFit.fill,
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
+                                            return Image.asset(
+                                              'assets/images/person.png',
+                                              fit: BoxFit.fill,
                                             );
                                           },
-                                          child: Container(
-                                            width: 50.w,
-                                            height: 50.h,
-                                            clipBehavior: Clip.hardEdge,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Colors.grey[200],
-                                            ),
-                                            child: Image.network(
-                                              '${task.files!.first.path}',
-                                              fit: BoxFit.cover,
-                                              errorBuilder:
-                                                  (context, error, stackTrace) {
-                                                return Image.asset(
-                                                  'assets/images/noImage.png',
-                                                  fit: BoxFit.fill,
-                                                );
-                                              },
-                                            ),
-                                          ),
                                         ),
+                                      ),
                                       horizontalSpace(10),
                                       Expanded(
                                         child: Column(
@@ -643,14 +591,13 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                 ),
                                               ],
                                             ),
-                                            verticalSpace(5),
                                             if (task.comment != null)
                                               Text(
                                                 task.comment!,
                                                 style: TextStyles
                                                     .font13Blackmedium,
                                               ),
-                                            verticalSpace(5),
+                                            verticalSpace(8),
                                             if (task.files != null &&
                                                 task.files!.isNotEmpty)
                                               Column(
@@ -696,18 +643,15 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                       );
                                                     },
                                                     child: Container(
-                                                      width: 80.w,
-                                                      height: 80.h,
-                                                      margin: EdgeInsets.only(
-                                                          bottom: 5.h),
+                                                      height: 80,
+                                                      width: 80,
+                                                      clipBehavior:
+                                                          Clip.hardEdge,
                                                       decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10.r),
-                                                        border: Border.all(
-                                                            color:
-                                                                Colors.black12),
-                                                      ),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      10.r)),
                                                       child: Image.network(
                                                         '${file.path}',
                                                         fit: BoxFit.fill,
@@ -745,18 +689,18 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                             return SizedBox.shrink();
                           },
                         ),
-                  if (cubit.taskDetailsModel!.data!.statusId == 3) ...[
+                  if (cubit.taskDetailsModel!.data!.statusId != 3) ...[
                     verticalSpace(10),
                     RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: 'Add Comment',
+                            text: S.of(context).add_comment,
                             style: TextStyles.font16BlackRegular,
                           ),
                           TextSpan(
-                            text: ' (Optional)',
+                            text: S.of(context).labelOptional,
                             style: TextStyles.font14GreyRegular,
                           ),
                         ],
@@ -766,24 +710,22 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                     Form(
                       key: cubit.formKey,
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(
+                            flex: 5,
                             child: TextFormField(
                               controller: cubit.commentController,
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
                                 isDense: true,
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(8.r),
-                                    bottomLeft: Radius.circular(8.r),
-                                  ),
+                                  borderRadius: BorderRadius.circular(8.r),
                                   borderSide: BorderSide(
                                     color: AppColor.thirdColor,
                                   ),
                                 ),
-                                hintText: 'write your comment',
+                                hintText: S.of(context).write_comment,
                                 helperStyle: TextStyles.font12GreyRegular,
                                 suffixIcon: IconButton(
                                   onPressed: () {
@@ -797,42 +739,44 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                               validator: (value) {
                                 if ((value == null || value.trim().isEmpty) &&
                                     (cubit.image == null)) {
-                                  return "Comment or Image is required";
+                                  return S
+                                      .of(context)
+                                      .comment_or_image_required;
                                 }
                                 return null;
                               },
                             ),
                           ),
-                          Container(
-                            width: 50.w,
-                            height: 47.h,
-                            decoration: BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(8.r),
-                                bottomRight: Radius.circular(8.r),
+                          horizontalSpace(4),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.blue,
+                                borderRadius: BorderRadius.circular(8.r),
                               ),
-                            ),
-                            child: MaterialButton(
-                                padding: EdgeInsets.zero,
-                                onPressed: () {
-                                  if (cubit.formKey.currentState!.validate()) {
-                                    final taskCubit = cubit;
-                                    final imagePath =
-                                        taskCubit.image?.path ?? "";
+                              child: MaterialButton(
+                                  padding: EdgeInsets.zero,
+                                  onPressed: () {
+                                    if (cubit.formKey.currentState!
+                                        .validate()) {
+                                      final taskCubit = cubit;
+                                      final imagePath =
+                                          taskCubit.image?.path ?? "";
 
-                                    taskCubit.addComment(
-                                      imagePath,
-                                      widget.id,
-                                      taskCubit
-                                          .taskDetailsModel!.data!.statusId!,
-                                    );
-                                  }
-                                },
-                                child: Icon(
-                                  IconBroken.send,
-                                  color: Colors.white,
-                                )),
+                                      taskCubit.addComment(
+                                        imagePath,
+                                        widget.id,
+                                        taskCubit
+                                            .taskDetailsModel!.data!.statusId!,
+                                      );
+                                    }
+                                  },
+                                  child: Icon(
+                                    IconBroken.send,
+                                    color: Colors.white,
+                                  )),
+                            ),
                           )
                         ],
                       ),
@@ -901,35 +845,44 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                       MainAxisAlignment
                                                           .spaceBetween,
                                                   children: [
-                                                    DefaultElevatedButton(
-                                                      name: "Start",
-                                                      onPressed: () {
-                                                        cubit.changeTaskStatus(
-                                                          widget.id,
-                                                          1,
-                                                        );
-                                                      },
-                                                      color:
-                                                          AppColor.primaryColor,
-                                                      height: 48.h,
-                                                      width: 157.w,
-                                                      textStyles: TextStyles
-                                                          .font16WhiteSemiBold,
+                                                    Expanded(
+                                                      child:
+                                                          DefaultElevatedButton(
+                                                        name: S
+                                                            .of(context)
+                                                            .startButton,
+                                                        onPressed: () {
+                                                          cubit
+                                                              .changeTaskStatus(
+                                                            widget.id,
+                                                            1,
+                                                          );
+                                                        },
+                                                        color: AppColor
+                                                            .primaryColor,
+                                                        textStyles: TextStyles
+                                                            .font16WhiteSemiBold,
+                                                      ),
                                                     ),
-                                                    DefaultElevatedButton(
-                                                      name: "NotResolved",
-                                                      onPressed: () {
-                                                        cubit.changeTaskStatus(
-                                                          widget.id,
-                                                          5,
-                                                        );
-                                                      },
-                                                      color: AppColor
-                                                          .secondaryColor,
-                                                      height: 48.h,
-                                                      width: 157.w,
-                                                      textStyles: TextStyles
-                                                          .font16WhiteSemiBold,
+                                                    horizontalSpace(8),
+                                                    Expanded(
+                                                      child:
+                                                          DefaultElevatedButton(
+                                                        name: S
+                                                            .of(context)
+                                                            .notresolvedButton,
+                                                        onPressed: () {
+                                                          cubit
+                                                              .changeTaskStatus(
+                                                            widget.id,
+                                                            5,
+                                                          );
+                                                        },
+                                                        color: AppColor
+                                                            .secondaryColor,
+                                                        textStyles: TextStyles
+                                                            .font16WhiteSemiBold,
+                                                      ),
                                                     ),
                                                   ],
                                                 )
@@ -947,45 +900,52 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                           MainAxisAlignment
                                                               .spaceBetween,
                                                       children: [
-                                                        DefaultElevatedButton(
-                                                          name: "Complete",
-                                                          onPressed: () {
-                                                            cubit.taskDetailsModel!.data!
-                                                                        .currentReading ==
-                                                                    null
-                                                                ? cubit
-                                                                    .changeTaskStatus(
-                                                                        widget
-                                                                            .id,
-                                                                        2)
-                                                                : CustomCurrentReadDialog.show(
-                                                                    context:
-                                                                        context,
-                                                                    id: widget
-                                                                        .id);
-                                                          },
-                                                          color: AppColor
-                                                              .primaryColor,
-                                                          height: 48.h,
-                                                          width: 157.w,
-                                                          textStyles: TextStyles
-                                                              .font16WhiteSemiBold,
+                                                        Expanded(
+                                                          child:
+                                                              DefaultElevatedButton(
+                                                            name: S
+                                                                .of(context)
+                                                                .completeButton,
+                                                            onPressed: () {
+                                                              cubit.taskDetailsModel!.data!
+                                                                          .currentReading ==
+                                                                      null
+                                                                  ? cubit
+                                                                      .changeTaskStatus(
+                                                                          widget
+                                                                              .id,
+                                                                          2)
+                                                                  : CustomCurrentReadDialog.show(
+                                                                      context:
+                                                                          context,
+                                                                      id: widget
+                                                                          .id);
+                                                            },
+                                                            color: AppColor
+                                                                .primaryColor,
+                                                            textStyles: TextStyles
+                                                                .font16WhiteSemiBold,
+                                                          ),
                                                         ),
-                                                        DefaultElevatedButton(
-                                                          name: "NotResolved",
-                                                          onPressed: () {
-                                                            cubit
-                                                                .changeTaskStatus(
-                                                              widget.id,
-                                                              5,
-                                                            );
-                                                          },
-                                                          color: AppColor
-                                                              .secondaryColor,
-                                                          height: 48.h,
-                                                          width: 157.w,
-                                                          textStyles: TextStyles
-                                                              .font16WhiteSemiBold,
+                                                        horizontalSpace(8),
+                                                        Expanded(
+                                                          child:
+                                                              DefaultElevatedButton(
+                                                            name: S
+                                                                .of(context)
+                                                                .notresolvedButton,
+                                                            onPressed: () {
+                                                              cubit
+                                                                  .changeTaskStatus(
+                                                                widget.id,
+                                                                5,
+                                                              );
+                                                            },
+                                                            color: AppColor
+                                                                .secondaryColor,
+                                                            textStyles: TextStyles
+                                                                .font16WhiteSemiBold,
+                                                          ),
                                                         ),
                                                       ],
                                                     )
@@ -1001,34 +961,40 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                DefaultElevatedButton(
-                                                  name: "Complete",
-                                                  onPressed: () {
-                                                    cubit.changeTaskStatus(
-                                                      widget.id,
-                                                      3,
-                                                    );
-                                                  },
-                                                  color: AppColor.primaryColor,
-                                                  height: 48.h,
-                                                  width: 157.w,
-                                                  textStyles: TextStyles
-                                                      .font16WhiteSemiBold,
+                                                Expanded(
+                                                  child: DefaultElevatedButton(
+                                                    name: S
+                                                        .of(context)
+                                                        .completeButton,
+                                                    onPressed: () {
+                                                      cubit.changeTaskStatus(
+                                                        widget.id,
+                                                        3,
+                                                      );
+                                                    },
+                                                    color:
+                                                        AppColor.primaryColor,
+                                                    textStyles: TextStyles
+                                                        .font16WhiteSemiBold,
+                                                  ),
                                                 ),
-                                                DefaultElevatedButton(
-                                                  name: "Rejected",
-                                                  onPressed: () {
-                                                    cubit.changeTaskStatus(
-                                                      widget.id,
-                                                      4,
-                                                    );
-                                                  },
-                                                  color:
-                                                      AppColor.secondaryColor,
-                                                  height: 48.h,
-                                                  width: 157.w,
-                                                  textStyles: TextStyles
-                                                      .font16WhiteSemiBold,
+                                                horizontalSpace(8),
+                                                Expanded(
+                                                  child: DefaultElevatedButton(
+                                                    name: S
+                                                        .of(context)
+                                                        .rejectButton,
+                                                    onPressed: () {
+                                                      cubit.changeTaskStatus(
+                                                        widget.id,
+                                                        4,
+                                                      );
+                                                    },
+                                                    color:
+                                                        AppColor.secondaryColor,
+                                                    textStyles: TextStyles
+                                                        .font16WhiteSemiBold,
+                                                  ),
                                                 ),
                                               ],
                                             )
@@ -1039,15 +1005,21 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                           .status! ==
                                                       "Completed")
                                               ? DefaultElevatedButton(
-                                                  name: "Delete",
+                                                  name: S
+                                                      .of(context)
+                                                      .deleteButton,
                                                   onPressed: () {
                                                     showDialog(
                                                         context: context,
                                                         builder:
                                                             (dialogContext) {
                                                           return PopUpMessage(
-                                                              title: 'delete',
-                                                              body: 'task',
+                                                              title: S
+                                                                  .of(context)
+                                                                  .TitleDelete,
+                                                              body: S
+                                                                  .of(context)
+                                                                  .taskbody,
                                                               onPressed: () {
                                                                 cubit.taskDelete(
                                                                     cubit
@@ -1058,7 +1030,6 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                         });
                                                   },
                                                   color: Colors.red,
-                                                  height: 48.h,
                                                   width: double.infinity,
                                                   textStyles: TextStyles
                                                       .font16WhiteSemiBold,
@@ -1073,7 +1044,9 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                               .data!.status! ==
                                                           "Overdue")
                                                   ? DefaultElevatedButton(
-                                                      name: "Not Resolve",
+                                                      name: S
+                                                          .of(context)
+                                                          .notresolvedButton,
                                                       onPressed: () {
                                                         cubit.changeTaskStatus(
                                                           widget.id,
@@ -1082,7 +1055,6 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                       },
                                                       color: AppColor
                                                           .secondaryColor,
-                                                      height: 48.h,
                                                       width: double.infinity,
                                                       textStyles: TextStyles
                                                           .font16WhiteSemiBold,
@@ -1095,46 +1067,54 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                               MainAxisAlignment
                                                                   .spaceBetween,
                                                           children: [
-                                                            DefaultElevatedButton(
-                                                              name: "Delete",
-                                                              onPressed: () {
-                                                                showDialog(
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (dialogContext) {
-                                                                      return PopUpMessage(
-                                                                          title:
-                                                                              'delete',
-                                                                          body:
-                                                                              'task',
-                                                                          onPressed:
-                                                                              () {
-                                                                            cubit.taskDelete(cubit.taskDetailsModel!.data!.id!);
-                                                                          });
-                                                                    });
-                                                              },
-                                                              color: Colors.red,
-                                                              height: 48.h,
-                                                              width: 157.w,
-                                                              textStyles: TextStyles
-                                                                  .font16WhiteSemiBold,
+                                                            Expanded(
+                                                              child:
+                                                                  DefaultElevatedButton(
+                                                                name: S
+                                                                    .of(context)
+                                                                    .deleteButton,
+                                                                onPressed: () {
+                                                                  showDialog(
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (dialogContext) {
+                                                                        return PopUpMessage(
+                                                                            title:
+                                                                                S.of(context).TitleDelete,
+                                                                            body: S.of(context).taskbody,
+                                                                            onPressed: () {
+                                                                              cubit.taskDelete(cubit.taskDetailsModel!.data!.id!);
+                                                                            });
+                                                                      });
+                                                                },
+                                                                color:
+                                                                    Colors.red,
+                                                                textStyles:
+                                                                    TextStyles
+                                                                        .font16WhiteSemiBold,
+                                                              ),
                                                             ),
-                                                            DefaultElevatedButton(
-                                                              name: "Rejected",
-                                                              onPressed: () {
-                                                                cubit
-                                                                    .changeTaskStatus(
-                                                                  widget.id,
-                                                                  4,
-                                                                );
-                                                              },
-                                                              color: AppColor
-                                                                  .secondaryColor,
-                                                              height: 48.h,
-                                                              width: 157.w,
-                                                              textStyles: TextStyles
-                                                                  .font16WhiteSemiBold,
+                                                            horizontalSpace(8),
+                                                            Expanded(
+                                                              child:
+                                                                  DefaultElevatedButton(
+                                                                name: S
+                                                                    .of(context)
+                                                                    .rejectButton,
+                                                                onPressed: () {
+                                                                  cubit
+                                                                      .changeTaskStatus(
+                                                                    widget.id,
+                                                                    4,
+                                                                  );
+                                                                },
+                                                                color: AppColor
+                                                                    .secondaryColor,
+                                                                textStyles:
+                                                                    TextStyles
+                                                                        .font16WhiteSemiBold,
+                                                              ),
                                                             ),
                                                           ],
                                                         )

@@ -33,7 +33,7 @@ class UsersAttendance extends StatelessWidget {
               if (role != 'Cleaner') ...[
                 Expanded(
                   child: Container(
-                    height: 100.h,
+                    height: 120.h,
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.black12),
                       borderRadius: BorderRadius.circular(6.r),
@@ -193,7 +193,7 @@ class UsersAttendance extends StatelessWidget {
               ],
               Expanded(
                 child: Container(
-                  height: 100.h,
+                  height: 120.h,
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black12),
                     borderRadius: BorderRadius.circular(6.r),
@@ -255,19 +255,19 @@ class UsersAttendance extends StatelessWidget {
                             Expanded(
                               child: InkWell(
                                 onTap: () {
-                                  // context.pushNamed(Routes.historyScreen,
-                                  //     arguments: 0);
+                                  context.pushNamed(Routes.historyScreen,
+                                      arguments: 2);
                                 },
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      S.of(context).late,
+                                      S.of(context).complete,
                                       style: TextStyles.font11lightblack,
                                     ),
                                     Text(
-                                      '1',
+                                      '${cubit.attendanceStatus?.data?.values?[2] ?? 0}',
                                       style: TextStyles.font11lightPrimary,
                                     ),
                                   ],
@@ -283,7 +283,7 @@ class UsersAttendance extends StatelessWidget {
                               child: InkWell(
                                 onTap: () {
                                   context.pushNamed(Routes.historyScreen,
-                                      arguments: 2);
+                                      arguments: 1);
                                 },
                                 child: Row(
                                   mainAxisAlignment:
@@ -294,7 +294,7 @@ class UsersAttendance extends StatelessWidget {
                                       style: TextStyles.font11lightblack,
                                     ),
                                     Text(
-                                      '0',
+                                      '${cubit.attendanceStatus?.data?.values?[1] ?? 0}',
                                       style: TextStyles.font11lightPrimary,
                                     ),
                                   ],
@@ -305,9 +305,7 @@ class UsersAttendance extends StatelessWidget {
                             Expanded(
                               child: InkWell(
                                 onTap: () {
-                                  context.pushNamed(
-                                    Routes.leavesScreen,
-                                  );
+                                  context.pushNamed(Routes.leavesScreen);
                                 },
                                 child: Row(
                                   mainAxisAlignment:
@@ -318,7 +316,7 @@ class UsersAttendance extends StatelessWidget {
                                       style: TextStyles.font11lightblack,
                                     ),
                                     Text(
-                                      '${cubit.attendanceStatus?.data?.values?[2] ?? 0}',
+                                      '${cubit.attendanceStatus?.data?.values?[3] ?? 0}',
                                       style: TextStyles.font11lightPrimary,
                                     ),
                                   ],

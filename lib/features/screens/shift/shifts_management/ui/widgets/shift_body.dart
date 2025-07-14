@@ -7,11 +7,13 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/core/widgets/filter/logic/cubit/filter_dialog_cubit.dart';
+import 'package:smart_cleaning_application/core/widgets/filter/ui/screen/filter_dialog_widget.dart';
+import 'package:smart_cleaning_application/core/widgets/filter_and_search_build/filter_search_build.dart';
 import 'package:smart_cleaning_application/core/widgets/floating_action_button/floating_action_button.dart';
 import 'package:smart_cleaning_application/core/widgets/integration_buttons/integrations_buttons.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/logic/shift_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/logic/shift_state.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shifts_management/ui/widgets/shift_filter_search_build.dart';
 import 'package:smart_cleaning_application/features/screens/shift/shifts_management/ui/widgets/shift_list_details_build.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
@@ -39,25 +41,25 @@ class ShiftBody extends StatelessWidget {
         body: BlocConsumer<ShiftCubit, ShiftState>(
           listener: (context, state) {
             if (state is ShiftDeleteSuccessState) {
-              toast(text: state.deleteShiftModel.message!, color: Colors.blue);
+              toast(text: state.deleteShiftModel.message!, isSuccess: true);
               cubit.getAllDeletedShifts();
             }
             if (state is ShiftDeleteErrorState) {
-              toast(text: state.error, color: Colors.red);
+              toast(text: state.error, isSuccess: false);
             }
             if (state is RestoreShiftSuccessState) {
-              toast(text: state.message, color: Colors.blue);
+              toast(text: state.message, isSuccess: true);
             }
             if (state is RestoreShiftErrorState) {
-              toast(text: state.error, color: Colors.red);
+              toast(text: state.error, isSuccess: false);
             }
             if (state is ForceDeleteShiftSuccessState) {
-              toast(text: state.message, color: Colors.blue);
+              toast(text: state.message, isSuccess: true);
               cubit.getAllShifts();
               cubit.getAllDeletedShifts();
             }
             if (state is ForceDeleteShiftErrorState) {
-              toast(text: state.error, color: Colors.red);
+              toast(text: state.error, isSuccess: false);
             }
           },
           builder: (context, state) {
@@ -69,7 +71,31 @@ class ShiftBody extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     verticalSpace(10),
-                    FilterAndSearchBuild(),
+                    FilterAndSearchWidget(
+                      hintText: S.of(context).findShift,
+                      searchController: cubit.searchController,
+                      onSearchChanged: (value) {
+                        cubit.getAllShifts();
+                      },
+                      onFilterTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (dialogContext) {
+                            return BlocProvider(
+                              create: (context) =>
+                                  FilterDialogCubit()..getArea(),
+                              child: FilterDialogWidget(
+                                index: 'S',
+                                onPressed: (data) {
+                                  cubit.filterModel = data;
+                                  cubit.getAllShifts();
+                                },
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
                     verticalSpace(10),
                     integrationsButtons(
                       selectedIndex: cubit.selectedIndex,

@@ -78,6 +78,16 @@ class _CompleteTasksPieChartState extends State<CompleteTasksPieChart> {
                 length: '15%',
                 type: ConnectorType.curve,
               ),
+              builder: (dynamic data,
+                  ChartPoint<dynamic> point,
+                  ChartSeries<dynamic, dynamic> series,
+                  int pointIndex,
+                  int seriesIndex) {
+                return Text(
+                  '${data.value}%',
+                  style: TextStyles.font11BlackMedium,
+                );
+              },
             ),
             explode: true,
             explodeIndex: selectedIndex,
@@ -109,9 +119,7 @@ class _CompleteTasksPieChartState extends State<CompleteTasksPieChart> {
                     style: TextStyles.font16PrimSemiBold,
                   ),
                   Text(
-                    chartDataList
-                        .fold(0, (sum, item) => sum + item.value.toInt())
-                        .toString(),
+                    '${chartDataList.fold(0, (sum, item) => sum + item.value.toInt()).toString()}%',
                     style: TextStyles.font12BlackSemi,
                   ),
                 ],

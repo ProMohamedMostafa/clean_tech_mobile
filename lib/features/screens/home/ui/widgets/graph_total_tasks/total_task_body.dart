@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
+import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
+import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_state.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/graph_total_tasks/total_task_bar_chart.dart';
@@ -20,8 +22,8 @@ class TotalTaskBody extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         final cubit = context.read<HomeCubit>();
-        final isLoading =
-            state is TaskStatusLoadingState || cubit.taskChartStatusModel == null;
+        final isLoading = state is TaskStatusLoadingState ||
+            cubit.taskChartStatusModel == null;
 
         final totalTask = cubit.taskChartStatusModel?.data?.values
                 ?.fold<int>(0, (a, b) => a + b) ??
@@ -125,7 +127,7 @@ class PrioritySelector extends StatelessWidget {
     if (role != 'Cleaner') return const SizedBox.shrink();
 
     return Container(
-      height: 21.h,
+      height: 28.h,
       padding: EdgeInsets.symmetric(horizontal: 8.w),
       decoration: BoxDecoration(
         color: cubit.priorityColors[cubit.selectedPriority]!.withOpacity(0.1),
@@ -134,64 +136,61 @@ class PrioritySelector extends StatelessWidget {
         borderRadius: BorderRadius.circular(5.r),
       ),
       child: PopupMenuButton<String>(
-        padding: EdgeInsets.zero,
-        color: Colors.white,
-        icon: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 4.w),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                cubit.selectedPriority,
-                style: TextStyle(
-                  color: cubit.priorityColors[cubit.selectedPriority],
-                  fontWeight: FontWeight.w500,
-                  fontSize: 12.sp,
+          padding: EdgeInsets.zero,
+          color: Colors.white,
+          menuPadding: EdgeInsets.zero,
+          itemBuilder: (context) {
+            return cubit.priorities.map((priority) {
+              return PopupMenuItem<String>(
+                value: priority,
+                height: 28.h,
+                padding: EdgeInsets.symmetric(horizontal: 5.w),
+                child: Text(
+                  priority,
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w600,
+                    color: cubit.priorityColors[priority],
+                  ),
                 ),
-              ),
-              SizedBox(width: 4.w),
-              RotatedBox(
-                quarterTurns: 3,
-                child: Icon(
-                  Icons.arrow_back_ios_new,
-                  color: cubit.priorityColors[cubit.selectedPriority],
-                  size: 14.sp,
-                ),
-              ),
-            ],
-          ),
-        ),
-        menuPadding: EdgeInsets.zero,
-        itemBuilder: (context) {
-          return cubit.priorities.map((priority) {
-            return PopupMenuItem<String>(
-              value: priority,
-              height: 28.h,
-              padding: EdgeInsets.symmetric(horizontal: 5.w),
-              child: Text(
-                priority,
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w600,
-                  color: cubit.priorityColors[priority],
-                ),
-              ),
-            );
-          }).toList();
-        },
-        onSelected: (value) {
-          cubit.selectedPriority = value;
+              );
+            }).toList();
+          },
+          onSelected: (value) {
+            cubit.selectedPriority = value;
 
-          final int? priorityValue = cubit.convertPriorityToInt(value);
-          if (priorityValue != null && onPrioritySelected != null) {
-            onPrioritySelected!(priorityValue);
-          }
-        },
-        offset: Offset(10, 22.h),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5.r),
-        ),
-      ),
+            final int? priorityValue = cubit.convertPriorityToInt(value);
+            if (priorityValue != null && onPrioritySelected != null) {
+              onPrioritySelected!(priorityValue);
+            }
+          },
+          offset: Offset(10, 22.h),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5.r),
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 4),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  cubit.selectedPriority,
+                  style: TextStyle(
+                    color: cubit.priorityColors[cubit.selectedPriority],
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12.sp,
+                  ),
+                ),
+                horizontalSpace(4.w),
+                Icon(
+                  IconBroken.arrowDown2,
+                  color: cubit.priorityColors[cubit.selectedPriority],
+                  size: 18.sp,
+                ),
+              ],
+            ),
+          )),
     );
   }
 }

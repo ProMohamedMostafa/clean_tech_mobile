@@ -28,15 +28,16 @@ class EditAreaBody extends StatelessWidget {
     final cubit = context.read<EditWorkLocationCubit>();
 
     return Scaffold(
-      appBar: AppBar(leading: CustomBackButton(), title: Text(S.of(context).EditArea)),
+      appBar: AppBar(
+          leading: CustomBackButton(), title: Text(S.of(context).EditArea)),
       body: BlocConsumer<EditWorkLocationCubit, EditWorkLocationState>(
         listener: (context, state) {
           if (state is EditWorkLocationSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
             context.popWithTrueResult();
           }
           if (state is EditWorkLocationErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
         },
         builder: (context, state) {
@@ -236,7 +237,7 @@ class EditAreaBody extends StatelessWidget {
                       ),
                       verticalSpace(10),
                       Text(
-                       S.of(context).cleaners,
+                        S.of(context).cleaners,
                         style: TextStyles.font16BlackRegular,
                       ),
                       MultiDropdown<UserItem>(
@@ -324,8 +325,7 @@ class EditAreaBody extends StatelessWidget {
                                 }
                               },
                               color: AppColor.primaryColor,
-                              height: 47.h,
-                              width: double.infinity,
+
                               textStyles: TextStyles.font20Whitesemimedium,
                             ),
                     ],

@@ -248,6 +248,9 @@ class HomeCubit extends Cubit<HomeState> {
         return Routes.leavesDetailsScreen;
       case 'Material':
         return Routes.materialDetailsScreen;
+      case 'Device':
+      case 'DeviceLimit':
+        return Routes.sensorDetailsScreen;
       default:
         return '';
     }
@@ -290,7 +293,8 @@ class HomeCubit extends Cubit<HomeState> {
         return Colors.blue;
       case 'Logout':
         return Colors.indigo;
-      case 'ClockInOut':
+      case 'ClockIn':
+      case 'ClockOut':
         return Colors.cyan;
       case 'ChangePassword':
         return Colors.brown;
@@ -310,6 +314,19 @@ class HomeCubit extends Cubit<HomeState> {
         return Colors.amber;
       case 'EditSetting':
         return Colors.lightBlue;
+      case 'Reminder':
+        return Colors.deepOrangeAccent;
+      case 'Archive':
+      case 'UnArchive':
+        return Colors.grey;
+      case 'ReadData':
+        return Colors.lightBlueAccent;
+      case 'AssignShift':
+      case 'RemoveShift':
+        return Colors.cyanAccent;
+      case 'AssignTag':
+      case 'RemoveTag':
+        return Colors.purpleAccent;
       default:
         return Colors.black;
     }
@@ -351,12 +368,14 @@ class HomeCubit extends Cubit<HomeState> {
 
     if (index == 0) {
       if (myActivities != null) {
+        emit(ActivityLoadingState());
         emit(ActivitySuccessState(myActivities!));
       } else {
         getMyActivities();
       }
     } else {
       if (teamActivities != null) {
+        emit(ActivityTeamLoadingState());
         emit(ActivityTeamSuccessState(teamActivities!));
       } else {
         getTeamActivities();
@@ -397,8 +416,7 @@ class HomeCubit extends Cubit<HomeState> {
       if (currentPage == 1 || providersModel == null) {
         providersModel = newProviders;
       } else {
-        providersModel?.data?.data
-            ?.addAll(newProviders.data?.data ?? []);
+        providersModel?.data?.data?.addAll(newProviders.data?.data ?? []);
         providersModel?.data?.currentPage = newProviders.data?.currentPage;
         providersModel?.data?.totalPages = newProviders.data?.totalPages;
       }
@@ -442,8 +460,8 @@ class HomeCubit extends Cubit<HomeState> {
     if (providerId == 0) {
       selectedProviderName = 'All Providers';
     } else {
-      final provider = providersModel?.data?.data
-          ?.firstWhere((p) => p.id == providerId);
+      final provider =
+          providersModel?.data?.data?.firstWhere((p) => p.id == providerId);
       selectedProviderName = provider?.name ?? 'All Providers';
     }
 
@@ -630,7 +648,7 @@ class HomeCubit extends Cubit<HomeState> {
             .id
         : null;
 
-    getTaskData(
+    getChartTaskData(
       userId: userId,
       startDate: _formatDateForApi(parsedDates.startDate!),
       endDate: _formatDateForApi(parsedDates.endDate!),
@@ -648,13 +666,13 @@ class HomeCubit extends Cubit<HomeState> {
     emit(ChangeUserTaskState());
 
     if (selectedDateRangeTask.contains('.....')) {
-      getTaskData(userId: userId == 0 ? null : userId);
+      getChartTaskData(userId: userId == 0 ? null : userId);
     }
     // Otherwise send both user ID and dates
     else {
       final parsedDates = _parseDateRange(selectedDateRangeTask);
       if (parsedDates.startDate != null && parsedDates.endDate != null) {
-        getTaskData(
+        getChartTaskData(
           userId: userId == 0 ? null : userId,
           startDate: _formatDateForApi(parsedDates.startDate!),
           endDate: _formatDateForApi(parsedDates.endDate!),

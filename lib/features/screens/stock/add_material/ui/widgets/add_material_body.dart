@@ -29,12 +29,12 @@ class AddMaterialBody extends StatelessWidget {
         body: BlocConsumer<AddMaterialCubit, AddMaterialState>(
           listener: (context, state) {
             if (state is AddMaterialSuccessState) {
-              toast(text: state.addMaterialModel.message!, color: Colors.blue);
+              toast(text: state.addMaterialModel.message!, isSuccess: true);
 
               context.popWithTrueResult();
             }
             if (state is AddMaterialErrorState) {
-              toast(text: state.error, color: Colors.red);
+              toast(text: state.error, isSuccess: false);
             }
           },
           builder: (context, state) {
@@ -151,8 +151,6 @@ class AddMaterialBody extends StatelessWidget {
                                       }
                                     },
                                     color: AppColor.primaryColor,
-                                    height: 47,
-                                    width: double.infinity,
                                     textStyles:
                                         TextStyles.font20Whitesemimedium),
                               ),

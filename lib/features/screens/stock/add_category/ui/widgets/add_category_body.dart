@@ -28,11 +28,11 @@ class AddCategoryBody extends StatelessWidget {
         body: BlocConsumer<AddCategoryCubit, AddCategoryState>(
           listener: (context, state) {
             if (state is AddCategorySuccessState) {
-              toast(text: state.addCategoryModel.message!, color: Colors.blue);
+              toast(text: state.addCategoryModel.message!, isSuccess: true);
               context.popWithTrueResult();
             }
             if (state is AddCategoryErrorState) {
-              toast(text: state.error, color: Colors.red);
+              toast(text: state.error, isSuccess: false);
             }
           },
           builder: (context, state) {
@@ -88,7 +88,6 @@ class AddCategoryBody extends StatelessWidget {
                             ];
                             final selectedIndex = items.indexOf(selectedValue);
                             if (selectedIndex != -1) {
-                              
                               cubit.unitIdController.text =
                                   selectedIndex.toString();
                             }
@@ -163,8 +162,6 @@ class AddCategoryBody extends StatelessWidget {
                                       }
                                     },
                                     color: AppColor.primaryColor,
-                                    height: 47,
-                                    width: double.infinity,
                                     textStyles:
                                         TextStyles.font20Whitesemimedium),
                               ),

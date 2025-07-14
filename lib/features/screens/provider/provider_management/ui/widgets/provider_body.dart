@@ -29,7 +29,7 @@ class ProviderBody extends StatelessWidget {
         title: Text(S.of(context).providers),
       ),
       floatingActionButton: floatingActionButton(
-        icon: Icons.add_location_outlined,
+        icon: Icons.add,
         onPressed: () {
           showDialog(
             context: context,
@@ -119,7 +119,7 @@ class ProviderBody extends StatelessWidget {
                                     }
                                   },
                                   color: AppColor.primaryColor,
-                                  height: 43.h,
+                                
                                   width: double.infinity),
                             ),
                             horizontalSpace(16),
@@ -131,7 +131,7 @@ class ProviderBody extends StatelessWidget {
                                     context.pop();
                                   },
                                   color: AppColor.fourthColor,
-                                  height: 43.h,
+                               
                                   width: double.infinity),
                             ),
                           ],
@@ -147,40 +147,40 @@ class ProviderBody extends StatelessWidget {
       body: BlocConsumer<ProviderCubit, ProviderState>(
         listener: (context, state) {
           if (state is ProviderDeleteSuccessState) {
-            toast(text: state.deleteProviderModel.message!, color: Colors.blue);
+            toast(text: state.deleteProviderModel.message!, isSuccess: true);
             cubit.getAllDeletedProviders();
           }
           if (state is ProviderDeleteErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
           if (state is RestoreProvidersSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
           }
           if (state is RestoreProvidersErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
           if (state is ForceDeleteProvidersSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
             cubit.getProviders();
             cubit.getAllDeletedProviders();
           }
           if (state is ForceDeleteProvidersErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
           if (state is AddProviderSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
             cubit.getProviders();
           }
           if (state is AddProviderErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
           if (state is EditProviderSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
             cubit.getProviders();
           }
 
           if (state is EditProviderErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
         },
         builder: (context, state) {

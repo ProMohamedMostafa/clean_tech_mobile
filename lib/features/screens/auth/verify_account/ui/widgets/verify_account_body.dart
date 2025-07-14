@@ -24,7 +24,7 @@ class VerifyAccountScreenBody extends StatelessWidget {
     return BlocConsumer<VerifyAccountCubit, VerifyAccountState>(
       listener: (context, state) {
         if (state is VerifyAccountSuccessState) {
-          toast(text: state.message, color: Colors.blue);
+          toast(text: state.message, isSuccess: true);
           context.pushReplacementNamed(Routes.setPassScreen, arguments: {
             'email': email,
             'code': int.parse(
@@ -32,7 +32,7 @@ class VerifyAccountScreenBody extends StatelessWidget {
           });
         }
         if (state is VerifyAccountErrorState) {
-          toast(text: state.error, color: Colors.red);
+          toast(text: state.error, isSuccess: false);
         }
       },
       builder: (context, state) {
@@ -85,8 +85,6 @@ class VerifyAccountScreenBody extends StatelessWidget {
                         state is VerifyAccountLoadingState
                             ? Loading()
                             : DefaultElevatedButton(
-                                width: 310,
-                                height: 50,
                                 name: S.of(context).verifyButton,
                                 color: AppColor.primaryColor,
                                 textStyles: TextStyles.font16WhiteSemiBold,

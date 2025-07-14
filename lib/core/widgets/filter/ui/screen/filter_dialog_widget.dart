@@ -58,11 +58,13 @@ class FilterDialogWidget extends StatelessWidget {
                     Header(),
                     if (index == 'S-c' || index == 'S-m' || index == 'S-t') ...[
                       Text(
-                        (index == 'S-c') ? 'Parent category' : 'Category',
+                        (index == 'S-c')
+                            ? S.of(context).parentCategory
+                            : S.of(context).category,
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
-                        hint: 'Select Parent category',
+                        hint: S.of(context).select_parent_category,
                         controller: cubit.parentCategoryController,
                         items: cubit.categoryModel
                             .map((e) => e.name ?? 'Unknown')
@@ -88,22 +90,30 @@ class FilterDialogWidget extends StatelessWidget {
                     ],
                     if (index == 'S-c') ...[
                       Text(
-                        'Unit',
+                        S.of(context).unitTitle,
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
-                        hint: 'Select unit',
+                        hint: S.of(context).selectUnit,
                         controller: cubit.unitController,
-                        items: ['Ml', 'L', 'Kg', 'G', 'M', 'Cm', 'Pieces'],
+                        items: [
+                          S.of(context).ml,
+                          S.of(context).l,
+                          S.of(context).kg,
+                          S.of(context).g,
+                          S.of(context).m,
+                          S.of(context).cm,
+                          S.of(context).pieces
+                        ],
                         onChanged: (selectedValue) {
                           final items = [
-                            'Ml',
-                            'L',
-                            'Kg',
-                            'G',
-                            'M',
-                            'Cm',
-                            'Pieces'
+                            S.of(context).ml,
+                            S.of(context).l,
+                            S.of(context).kg,
+                            S.of(context).g,
+                            S.of(context).m,
+                            S.of(context).cm,
+                            S.of(context).pieces
                           ];
                           final selectedIndex = items.indexOf(selectedValue!);
                           if (selectedIndex != -1) {
@@ -118,17 +128,20 @@ class FilterDialogWidget extends StatelessWidget {
                     ],
                     if (index == 'S-t') ...[
                       Text(
-                        'Transaction type',
+                        S.of(context).transaction_type,
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
-                        hint: 'Select type',
+                        hint: S.of(context).selectType,
                         controller: cubit.transactionController,
-                        items: ['In', 'Out'],
+                        items: [
+                          S.of(context).inSelect,
+                          S.of(context).outSelect
+                        ],
                         onChanged: (selectedValue) {
                           final items = [
-                            'In',
-                            'Out',
+                            S.of(context).inSelect,
+                            S.of(context).outSelect,
                           ];
                           final selectedIndex = items.indexOf(selectedValue!);
                           if (selectedIndex != -1) {
@@ -143,17 +156,17 @@ class FilterDialogWidget extends StatelessWidget {
                     ],
                     if (index == 'Se') ...[
                       Text(
-                        'Activity status',
+                        S.of(context).activity_status,
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
-                        hint: 'Select status',
+                        hint: S.of(context).select_status,
                         controller: cubit.activityStatusController,
-                        items: ['Active', 'InActive'],
+                        items: [S.of(context).active, S.of(context).inactive],
                         onChanged: (selectedValue) {
-                          if (selectedValue == 'Active') {
+                          if (selectedValue == S.of(context).active) {
                             cubit.activityStatusIdController.text = 'true';
-                          } else if (selectedValue == 'InActive') {
+                          } else if (selectedValue == S.of(context).inactive) {
                             cubit.activityStatusIdController.text = 'false';
                           }
                         },
@@ -164,11 +177,11 @@ class FilterDialogWidget extends StatelessWidget {
                     ],
                     if (index == 'Se') ...[
                       Text(
-                        'Type',
+                        S.of(context).type,
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
-                        hint: 'Select type',
+                        hint: S.of(context).selectType,
                         controller: cubit.activityTypeController,
                         items: cubit.activityTypeDataItem
                             .map((e) => e.name ?? 'Unknown')
@@ -191,17 +204,21 @@ class FilterDialogWidget extends StatelessWidget {
                     ],
                     if (index == 'W-p' || index == 'Se') ...[
                       Text(
-                        'Is Asign',
+                        S.of(context).is_assign,
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
-                        hint: 'Select',
+                        hint: S.of(context).select,
                         controller: cubit.isAsignController,
-                        items: ['True', 'False'],
+                        items: [
+                          S.of(context).trueSelect,
+                          S.of(context).falseSelect
+                        ],
                         onChanged: (selectedValue) {
-                          if (selectedValue == 'True') {
+                          if (selectedValue == S.of(context).trueSelect) {
                             cubit.isAsignController.text = 'true';
-                          } else if (selectedValue == 'False') {
+                          } else if (selectedValue ==
+                              S.of(context).falseSelect) {
                             cubit.isAsignController.text = 'false';
                           }
                         },
@@ -212,7 +229,7 @@ class FilterDialogWidget extends StatelessWidget {
                     ],
                     if (index == 'Se') ...[
                       Text(
-                        'Battery',
+                        S.of(context).battery,
                         style: TextStyles.font16BlackRegular,
                       ),
                       BatterySlider(),
@@ -221,22 +238,22 @@ class FilterDialogWidget extends StatelessWidget {
                     if (index == 'T' || index == 'TU') ...[
                       if (role == 'Admin' || role == 'Manager') ...[
                         Text(
-                          'Created By',
+                          S.of(context).created_by,
                           style: TextStyles.font16BlackRegular,
                         ),
                         CustomDropDownList(
-                          hint: "Select user",
+                          hint: S.of(context).select_user,
                           controller: cubit.createdByController,
                           items: role == 'Admin'
                               ? cubit.usersModel?.data?.users?.isEmpty ?? true
-                                  ? ['No user']
+                                  ? [S.of(context).no_user]
                                   : cubit.usersModel?.data?.users
                                           ?.where((e) => e.roleId != 4)
                                           .map((e) => e.userName ?? 'Unknown')
                                           .toList() ??
                                       []
                               : cubit.usersModel?.data?.users?.isEmpty ?? true
-                                  ? ['No user']
+                                  ? [S.of(context).no_user]
                                   : cubit.usersModel?.data?.users
                                           ?.where((e) => e.roleId == 3)
                                           .map((e) => e.userName ?? 'Unknown')
@@ -260,14 +277,14 @@ class FilterDialogWidget extends StatelessWidget {
                       ],
                       if (role != 'Cleaner' && !(index == 'TU')) ...[
                         Text(
-                          'Assgin to',
+                          S.of(context).assign_to,
                           style: TextStyles.font16BlackRegular,
                         ),
                         CustomDropDownList(
-                          hint: "Select user",
+                          hint: S.of(context).select_user,
                           controller: cubit.assignToController,
                           items: cubit.usersModel?.data?.users?.isEmpty ?? true
-                              ? ['No user']
+                              ? [S.of(context).no_user]
                               : cubit.usersModel?.data?.users
                                       ?.where((e) => e.roleId != 1)
                                       .map((e) => e.userName ?? 'Unknown')
@@ -292,30 +309,30 @@ class FilterDialogWidget extends StatelessWidget {
                         verticalSpace(10),
                       ],
                       Text(
-                        "Status",
+                        S.of(context).status,
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
-                        hint: 'status',
+                        hint: S.of(context).select_status,
                         controller: cubit.taskStatusController,
                         items: [
-                          'Pending',
-                          'In Progress',
-                          'Not Approval',
-                          'Rejected',
-                          'Completed',
-                          'Not Resolved',
-                          'Overdue',
+                          S.of(context).pending,
+                          S.of(context).inProgress,
+                          S.of(context).notApproval,
+                          S.of(context).rejected,
+                          S.of(context).completed,
+                          S.of(context).notResolved,
+                          S.of(context).overdue,
                         ],
                         onChanged: (selectedValue) {
                           final items = [
-                            'Pending',
-                            'In Progress',
-                            'Not Approval',
-                            'Rejected',
-                            'Completed',
-                            'Not Resolved',
-                            'Overdue',
+                            S.of(context).pending,
+                            S.of(context).inProgress,
+                            S.of(context).notApproval,
+                            S.of(context).rejected,
+                            S.of(context).completed,
+                            S.of(context).notResolved,
+                            S.of(context).overdue,
                           ];
                           final selectedIndex = items.indexOf(selectedValue!);
                           cubit.taskStatusIdController.text =
@@ -328,22 +345,22 @@ class FilterDialogWidget extends StatelessWidget {
                       ),
                       verticalSpace(10),
                       Text(
-                        "Priority",
+                        S.of(context).priority,
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
-                        hint: 'priority',
+                        hint: S.of(context).select_priority,
                         controller: cubit.priorityController,
                         items: [
-                          "Low",
-                          "Medium",
-                          "High",
+                          S.of(context).low,
+                          S.of(context).medium,
+                          S.of(context).high,
                         ],
                         onChanged: (selectedValue) {
                           final items = [
-                            "Low",
-                            "Medium",
-                            "High",
+                            S.of(context).low,
+                            S.of(context).medium,
+                            S.of(context).high,
                           ];
                           final selectedIndex = items.indexOf(selectedValue!);
                           cubit.priorityIdController.text =
@@ -366,7 +383,7 @@ class FilterDialogWidget extends StatelessWidget {
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
-                        hint: 'Select Role',
+                        hint: S.of(context).select_role,
                         controller: cubit.roleController,
                         items: cubit.roleDataItem
                             .map((e) => e.name ?? 'Unknown')
@@ -389,11 +406,11 @@ class FilterDialogWidget extends StatelessWidget {
                     ],
                     if (index == 'A-h' || index == 'A-hU') ...[
                       Text(
-                        'Shift',
+                        S.of(context).shiftBody,
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
-                        hint: 'Select shift',
+                        hint: S.of(context).selectShift,
                         controller: cubit.shiftController,
                         items: cubit.shiftData
                             .map((e) => e.name ?? 'Unknown')
@@ -416,20 +433,28 @@ class FilterDialogWidget extends StatelessWidget {
                     ],
                     if (index == 'A-l' || index == 'A-lU') ...[
                       Text(
-                        'Type',
+                        S.of(context).type,
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
                         onPressed: (selectedValue) {
-                          final items = ['Sick', 'Annual', 'Ordinary'];
+                          final items = [
+                            S.of(context).sick,
+                            S.of(context).annual,
+                            S.of(context).ordinary
+                          ];
                           final selectedIndex = items.indexOf(selectedValue);
                           if (selectedIndex != -1) {
                             cubit.typeIdController.text =
                                 selectedIndex.toString();
                           }
                         },
-                        hint: 'Select type',
-                        items: ['Sick', 'Annual', 'Ordinary'],
+                        hint: S.of(context).selectType,
+                        items: [
+                          S.of(context).sick,
+                          S.of(context).annual,
+                          S.of(context).ordinary
+                        ],
                         controller: cubit.typeController,
                         keyboardType: TextInputType.text,
                         suffixIcon: IconBroken.arrowDown2,
@@ -441,11 +466,11 @@ class FilterDialogWidget extends StatelessWidget {
                         index == 'A' ||
                         index == 'S-t') ...[
                       Text(
-                        'User',
+                        S.of(context).user,
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
-                        hint: 'Select Users',
+                        hint: S.of(context).select_user,
                         controller: cubit.userController,
                         items: cubit.userItem
                             .map((e) => e.userName ?? 'Unknown')
@@ -468,11 +493,11 @@ class FilterDialogWidget extends StatelessWidget {
                     ],
                     if (index == 'A') ...[
                       Text(
-                        "Module",
+                        S.of(context).module,
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
-                        hint: 'Select module',
+                        hint: S.of(context).select_module,
                         controller: cubit.moduleController,
                         items: cubit.allModules,
                         onChanged: (selectedValue) {
@@ -493,11 +518,11 @@ class FilterDialogWidget extends StatelessWidget {
                       ),
                       verticalSpace(10),
                       Text(
-                        "Action",
+                        S.of(context).action,
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
-                        hint: 'Select action',
+                        hint: S.of(context).select_action,
                         controller: cubit.actionController,
                         items: cubit.currentActions,
                         onChanged: (selectedValue) {
@@ -513,7 +538,7 @@ class FilterDialogWidget extends StatelessWidget {
                       ),
                       verticalSpace(10),
                       Text(
-                        "Date",
+                        S.of(context).date,
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomTextFormField(
@@ -535,16 +560,15 @@ class FilterDialogWidget extends StatelessWidget {
                     ],
                     if (index == 'A-h' || index == 'A-hU') ...[
                       Text(
-                        'Status',
+                        S.of(context).status,
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
                         onPressed: (selectedValue) {
                           final items = [
-                            'Late',
-                            'Present',
-                            'Completed',
-                            'Absent'
+                            S.of(context).present,
+                            S.of(context).absent,
+                            S.of(context).complete
                           ];
                           final selectedIndex = items.indexOf(selectedValue);
                           if (selectedIndex != -1) {
@@ -552,8 +576,12 @@ class FilterDialogWidget extends StatelessWidget {
                                 selectedIndex.toString();
                           }
                         },
-                        hint: 'Select status',
-                        items: ['Late', 'Present', 'Completed', 'Absent'],
+                        hint: S.of(context).select_status,
+                        items: [
+                          S.of(context).present,
+                          S.of(context).absent,
+                          S.of(context).complete
+                        ],
                         controller: cubit.statusController,
                         keyboardType: TextInputType.text,
                         suffixIcon: IconBroken.arrowDown2,
@@ -567,11 +595,11 @@ class FilterDialogWidget extends StatelessWidget {
                             index == 'S-t') &&
                         role == 'Admin') ...[
                       Text(
-                        'Provider',
+                        S.of(context).provider,
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
-                        hint: 'Select Provider',
+                        hint: S.of(context).select_provider,
                         controller: cubit.providerController,
                         items: cubit.providerItem
                             .map((e) => e.name ?? 'Unknown')
@@ -595,11 +623,11 @@ class FilterDialogWidget extends StatelessWidget {
                     ],
                     if ((index == 'T' || index == 'TU') && role == 'Admin') ...[
                       Text(
-                        'Sensor',
+                        S.of(context).sensor,
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
-                        hint: 'Select Sensor',
+                        hint: S.of(context).selectSensor,
                         controller: cubit.deviceController,
                         items: cubit.sensorItem
                             .map((e) => e.name ?? 'Unknown')
@@ -637,7 +665,7 @@ class FilterDialogWidget extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Start Date",
+                                S.of(context).startDate,
                                 style: TextStyles.font16BlackRegular,
                               ),
                               verticalSpace(5),
@@ -668,7 +696,7 @@ class FilterDialogWidget extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "End Date",
+                                S.of(context).endDate,
                                 style: TextStyles.font16BlackRegular,
                               ),
                               verticalSpace(5),
@@ -706,7 +734,7 @@ class FilterDialogWidget extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Start Time",
+                                S.of(context).startTime,
                                 style: TextStyles.font16BlackRegular,
                               ),
                               verticalSpace(5),
@@ -737,7 +765,7 @@ class FilterDialogWidget extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "End Time",
+                                S.of(context).endTime,
                                 style: TextStyles.font16BlackRegular,
                               ),
                               verticalSpace(5),
@@ -768,17 +796,21 @@ class FilterDialogWidget extends StatelessWidget {
                     ],
                     if (index == 'S') ...[
                       Text(
-                        'Is Active',
+                        S.of(context).is_active,
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
-                        hint: 'Select',
+                        hint: S.of(context).select,
                         controller: cubit.isActiveController,
-                        items: ['True', 'False'],
+                        items: [
+                          S.of(context).trueSelect,
+                          S.of(context).falseSelect
+                        ],
                         onChanged: (selectedValue) {
-                          if (selectedValue == 'True') {
+                          if (selectedValue == S.of(context).trueSelect) {
                             cubit.isActiveController.text = 'true';
-                          } else if (selectedValue == 'False') {
+                          } else if (selectedValue ==
+                              S.of(context).falseSelect) {
                             cubit.isActiveController.text = 'false';
                           }
                         },
@@ -794,7 +826,7 @@ class FilterDialogWidget extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Start Time",
+                                S.of(context).startTime,
                                 style: TextStyles.font16BlackRegular,
                               ),
                               verticalSpace(5),
@@ -816,12 +848,6 @@ class FilterDialogWidget extends StatelessWidget {
                                   }
                                 },
                                 keyboardType: TextInputType.none,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "Start time is required";
-                                  }
-                                  return null;
-                                },
                               ),
                             ],
                           )),
@@ -831,7 +857,7 @@ class FilterDialogWidget extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "End Time",
+                                S.of(context).endTime,
                                 style: TextStyles.font16BlackRegular,
                               ),
                               verticalSpace(5),
@@ -853,12 +879,6 @@ class FilterDialogWidget extends StatelessWidget {
                                   }
                                 },
                                 keyboardType: TextInputType.none,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "Start date is required";
-                                  }
-                                  return null;
-                                },
                               ),
                             ],
                           )),
@@ -873,21 +893,21 @@ class FilterDialogWidget extends StatelessWidget {
                       ),
                       CustomDropDownList(
                         onPressed: (selectedValue) {
-                          final items = ['Male', 'Female'];
+                          final items = [
+                            S.of(context).genderMale,
+                            S.of(context).genderFemale
+                          ];
                           final selectedIndex = items.indexOf(selectedValue);
                           if (selectedIndex != -1) {
                             cubit.genderIdController.text =
                                 selectedIndex.toString();
                           }
                         },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return S.of(context).validationGender;
-                          }
-                          return null;
-                        },
-                        hint: 'Gender',
-                        items: ['Male', 'Female'],
+                        hint: S.of(context).gender,
+                        items: [
+                          S.of(context).genderMale,
+                          S.of(context).genderFemale
+                        ],
                         controller: cubit.genderController,
                         keyboardType: TextInputType.text,
                         suffixIcon: IconBroken.arrowDown2,
@@ -900,7 +920,7 @@ class FilterDialogWidget extends StatelessWidget {
                         style: TextStyles.font16BlackRegular,
                       ),
                       CustomDropDownList(
-                        hint: 'Select Nationality',
+                        hint: S.of(context).select_nationality,
                         controller: cubit.nationalityController,
                         items: cubit.nationalityData
                             .map((e) => e.name ?? 'un known')
@@ -922,10 +942,10 @@ class FilterDialogWidget extends StatelessWidget {
                             index == 'S-m' ||
                             index == 'S-t') ||
                         index == 'Se') ...[
-                      Text('Work location',
+                      Text(S.of(context).workLocation,
                           style: TextStyles.font16BlackRegular),
                       CustomDropDownList(
-                        hint: 'Select Work location',
+                        hint: S.of(context).select_work_location,
                         controller: cubit.levelController,
                         color: AppColor.primaryColor,
                         items: filteredLevelOrder,
@@ -940,9 +960,10 @@ class FilterDialogWidget extends StatelessWidget {
                     if ((index == 'U' && cubit.shouldShow('Country') ||
                             index == 'W-a') ||
                         (index == 'W-c')) ...[
-                      Text('Country', style: TextStyles.font16BlackRegular),
+                      Text(S.of(context).country,
+                          style: TextStyles.font16BlackRegular),
                       CustomDropDownList(
-                        hint: 'Select Country',
+                        hint: S.of(context).selectCountry,
                         controller: cubit.countryController,
                         items: cubit.countryData.map((e) => e.name).toList(),
                         onChanged: (value) {
@@ -955,9 +976,10 @@ class FilterDialogWidget extends StatelessWidget {
                     ],
                     if ((index == 'U' && cubit.shouldShow('Area')) ||
                         (index == 'W-c')) ...[
-                      Text('Area', style: TextStyles.font16BlackRegular),
+                      Text(S.of(context).Area,
+                          style: TextStyles.font16BlackRegular),
                       CustomDropDownList(
-                        hint: 'Select area',
+                        hint: S.of(context).selectArea,
                         controller: cubit.areaController,
                         items: cubit.areaItem
                             .map((e) => e.name ?? 'Unknown')
@@ -988,9 +1010,10 @@ class FilterDialogWidget extends StatelessWidget {
                                 index == 'TU') &&
                             cubit.shouldShow('Area')) ||
                         (index == 'W-o')) ...[
-                      Text('Area', style: TextStyles.font16BlackRegular),
+                      Text(S.of(context).Area,
+                          style: TextStyles.font16BlackRegular),
                       CustomDropDownList(
-                        hint: 'Select area',
+                        hint: S.of(context).selectArea,
                         controller: cubit.areaController,
                         items: cubit.areaItem
                             .map((e) => e.name ?? 'Unknown')
@@ -1015,9 +1038,10 @@ class FilterDialogWidget extends StatelessWidget {
                     if (cubit.shouldShow('City') ||
                         (index == 'W-o') ||
                         (index == 'W-b')) ...[
-                      Text('City', style: TextStyles.font16BlackRegular),
+                      Text(S.of(context).City,
+                          style: TextStyles.font16BlackRegular),
                       CustomDropDownList(
-                        hint: 'Select cities',
+                        hint: S.of(context).selectCity,
                         controller: cubit.cityController,
                         items: cubit.cityItem
                             .map((e) => e.name ?? 'Unknown')
@@ -1042,10 +1066,10 @@ class FilterDialogWidget extends StatelessWidget {
                     if (cubit.shouldShow('Organization') ||
                         (index == 'W-b') ||
                         (index == 'W-f')) ...[
-                      Text('Organization',
+                      Text(S.of(context).Organization,
                           style: TextStyles.font16BlackRegular),
                       CustomDropDownList(
-                        hint: 'Select organizations',
+                        hint: S.of(context).selectOrganizations,
                         controller: cubit.organizationController,
                         items: cubit.organizationItem
                             .map((e) => e.name ?? 'Unknown')
@@ -1072,9 +1096,10 @@ class FilterDialogWidget extends StatelessWidget {
                     if (cubit.shouldShow('Building') ||
                         (index == 'W-f') ||
                         (index == 'W-s')) ...[
-                      Text('Building', style: TextStyles.font16BlackRegular),
+                      Text(S.of(context).Building,
+                          style: TextStyles.font16BlackRegular),
                       CustomDropDownList(
-                        hint: 'Select building',
+                        hint: S.of(context).selectBuilding,
                         controller: cubit.buildingController,
                         items: cubit.buildingItem
                             .map((e) => e.name ?? 'Unknown')
@@ -1100,9 +1125,10 @@ class FilterDialogWidget extends StatelessWidget {
                     if (cubit.shouldShow('Floor') ||
                         (index == 'W-s') ||
                         (index == 'W-p')) ...[
-                      Text('Floor', style: TextStyles.font16BlackRegular),
+                      Text(S.of(context).Floor,
+                          style: TextStyles.font16BlackRegular),
                       CustomDropDownList(
-                        hint: 'Select floor',
+                        hint: S.of(context).selectFloor,
                         controller: cubit.floorController,
                         items: cubit.floorItem
                             .map((e) => e.name ?? 'Unknown')
@@ -1125,9 +1151,10 @@ class FilterDialogWidget extends StatelessWidget {
                       verticalSpace(10),
                     ],
                     if (cubit.shouldShow('Section') || (index == 'W-p')) ...[
-                      Text('Section', style: TextStyles.font16BlackRegular),
+                      Text(S.of(context).Section,
+                          style: TextStyles.font16BlackRegular),
                       CustomDropDownList(
-                        hint: 'Select section',
+                        hint: S.of(context).selectSection,
                         controller: cubit.sectionController,
                         items: cubit.sectionItem
                             .map((e) => e.name ?? 'Unknown')
@@ -1150,9 +1177,10 @@ class FilterDialogWidget extends StatelessWidget {
                       verticalSpace(10),
                     ],
                     if (cubit.shouldShow('Point')) ...[
-                      Text('Point', style: TextStyles.font16BlackRegular),
+                      Text(S.of(context).Point,
+                          style: TextStyles.font16BlackRegular),
                       CustomDropDownList(
-                        hint: 'Select point',
+                        hint: S.of(context).select_point,
                         controller: cubit.pointController,
                         items: cubit.pointItem
                             .map((e) => e.name ?? 'Unknown')
@@ -1176,7 +1204,7 @@ class FilterDialogWidget extends StatelessWidget {
                     verticalSpace(10),
                     Center(
                       child: DefaultElevatedButton(
-                        name: 'Done',
+                        name: S.of(context).doneButton2,
                         onPressed: () {
                           final date =
                               DateTime.tryParse(cubit.dateController.text);
@@ -1233,6 +1261,7 @@ class FilterDialogWidget extends StatelessWidget {
                               transactionTypeId: cubit.transactionIdController.text.isNotEmpty ? _tryParseInt(cubit.transactionIdController.text) : null,
                               applicationId: cubit.activityTypeIdController.text.isNotEmpty ? _tryParseInt(cubit.activityTypeIdController.text) : null,
                               activityStatus: cubit.activityStatusIdController.text,
+                              statusId: _tryParseInt(cubit.statusIdController.text),
                               minBattery: cubit.currentRange.start.round(),
                               maxBattery: cubit.currentRange.end.round(),
                               isAsign: cubit.isAsignController.text,
@@ -1247,8 +1276,7 @@ class FilterDialogWidget extends StatelessWidget {
                           context.pop();
                         },
                         color: AppColor.primaryColor,
-                        height: 47,
-                        width: double.infinity,
+                      
                         textStyles: TextStyles.font20Whitesemimedium,
                       ),
                     ),

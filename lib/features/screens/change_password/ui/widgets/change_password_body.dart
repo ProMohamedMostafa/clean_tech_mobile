@@ -3,6 +3,7 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/features/screens/change_password/ui/widgets/new_password_body.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class ChangePasswordBody extends StatelessWidget {
   const ChangePasswordBody({super.key});
@@ -10,10 +11,8 @@ class ChangePasswordBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Change Password"),
-        leading: CustomBackButton(),
-      ),
+      appBar:
+          AppBar(title: Text(S.of(context).change_password), leading: CustomBackButton()),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -22,7 +21,7 @@ class ChangePasswordBody extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Please, setup a new password for your account",
+                S.of(context).change_password_description,
                 style: TextStyles.font14GreyRegular,
               ),
               verticalSpace(20),

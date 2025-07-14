@@ -4,6 +4,7 @@ import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class Header extends StatelessWidget {
   const Header({super.key});
@@ -20,7 +21,7 @@ class Header extends StatelessWidget {
               borderRadius: BorderRadius.circular(2.r)),
         ),
         horizontalSpace(8),
-        Text("Filter", style: TextStyles.font18BlackMedium),
+        Text(S.of(context).Filter, style: TextStyles.font18BlackMedium),
         const Spacer(),
         IconButton(
           icon: Icon(

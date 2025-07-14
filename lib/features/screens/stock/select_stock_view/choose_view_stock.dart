@@ -14,10 +14,14 @@ class ChooseViewStock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> items = [
-      {'title': S.of(context).categories},
-      {'title': S.of(context).materials},
-      {'title': S.of(context).transactions},
+      {'title': S.of(context).categories, 'icon': Icons.category},
+      {
+        'title': S.of(context).materials,
+        'icon': Icons.production_quantity_limits
+      },
+      {'title': S.of(context).transactions, 'icon': Icons.swap_horiz},
     ];
+
     return Scaffold(
       appBar:
           AppBar(title: Text(S.of(context).stock), leading: CustomBackButton()),
@@ -33,9 +37,7 @@ class ChooseViewStock extends StatelessWidget {
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: items.length,
-                separatorBuilder: (context, index) {
-                  return verticalSpace(10);
-                },
+                separatorBuilder: (context, index) => verticalSpace(10),
                 itemBuilder: (context, index) {
                   final item = items[index];
 
@@ -46,8 +48,7 @@ class ChooseViewStock extends StatelessWidget {
                     child: ListTile(
                       minTileHeight: 70,
                       dense: true,
-                      leading: Icon(Icons.co_present_rounded,
-                          color: AppColor.primaryColor),
+                      leading: Icon(item['icon'], color: AppColor.primaryColor),
                       title: Text(item['title'],
                           style: TextStyles.font16PrimSemiBold),
                       trailing: Icon(Icons.arrow_forward_ios,

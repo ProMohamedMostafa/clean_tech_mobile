@@ -31,20 +31,6 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
     });
   }
 
-  UsersModel? usersModel;
-  List<UserItem> userItem = [UserItem(userName: 'No users available')];
-  getAllUsers() {
-    emit(AllUsersLoadingState());
-    DioHelper.getData(url: "users/pagination").then((value) {
-      usersModel = UsersModel.fromJson(value!.data);
-      userItem =
-          usersModel?.data?.users ?? [UserItem(userName: 'No users available')];
-      emit(AllUsersSuccessState(usersModel!));
-    }).catchError((error) {
-      emit(AllUsersErrorState(error.toString()));
-    });
-  }
-
   DeleteTaskModel? deleteTaskModel;
   taskDelete(int id) {
     emit(TaskDeleteLoadingState());
@@ -125,7 +111,7 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
     }
   }
 
-final List<String> priority = ["High", "Medium", "Low"];
+  final List<String> priority = ["High", "Medium", "Low"];
   final List<Color> priorityColor = [
     Colors.red,
     Colors.orange,
@@ -171,6 +157,4 @@ final List<String> priority = ["High", "Medium", "Low"];
       return "Invalid duration";
     }
   }
-
-  
 }

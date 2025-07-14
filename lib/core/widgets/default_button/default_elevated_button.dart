@@ -4,8 +4,7 @@ import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 
 class DefaultElevatedButton extends StatelessWidget {
   final String name;
-  final num height;
-  final num width;
+  final num? width;
   final Function? onPressed;
   final Color color;
   final TextStyle? textStyles;
@@ -14,16 +13,15 @@ class DefaultElevatedButton extends StatelessWidget {
     required this.name,
     required this.onPressed,
     required this.color,
-    required this.height,
-    required this.width,
+    this.width,
     required this.textStyles,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width.w,
-      height: height.h,
+      width: (width ?? double.infinity).w,
+      height: 50.h,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5.r),

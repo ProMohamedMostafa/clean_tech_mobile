@@ -28,12 +28,9 @@ class IpCubit extends Cubit<IpState> {
       ApiConstants.apiBaseUrl = "http://$ip:8080/api/v1/";
       DioHelper.dio = null;
       await DioHelper.initDio();
-
-      // This will throw if status code is not 2xx
       await DioHelper.dio!.post("auth/login");
     } on DioException catch (e) {
       if (e.response?.statusCode == 400) {
-        // ✅ Means the server responded → the IP is correct
         await CacheHelper.setData(key: SharedPrefKeys.ip, value: ip);
         emit(IpSuccessState("IP is valid and reachable"));
       } else {

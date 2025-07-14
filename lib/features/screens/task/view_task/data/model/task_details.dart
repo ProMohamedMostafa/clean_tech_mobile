@@ -274,16 +274,24 @@ class Comments {
   String? role;
   String? comment;
   String? createdAt;
+  String? image;
+
   List<Files>? files;
 
   Comments(
-      {this.userName, this.role, this.comment, this.createdAt, this.files});
+      {this.userName,
+      this.role,
+      this.comment,
+      this.createdAt,
+      this.image,
+      this.files});
 
   Comments.fromJson(Map<String, dynamic> json) {
     userName = json['userName'];
     role = json['role'];
     comment = json['comment'];
     createdAt = json['createdAt'];
+    image = json['image'];
     if (json['files'] != null) {
       files = <Files>[];
       json['files'].forEach((v) {
@@ -298,6 +306,7 @@ class Comments {
     data['role'] = role;
     data['comment'] = comment;
     data['createdAt'] = createdAt;
+    data['image'] = image;
     if (files != null) {
       data['files'] = files!.map((v) => v.toJson()).toList();
     }

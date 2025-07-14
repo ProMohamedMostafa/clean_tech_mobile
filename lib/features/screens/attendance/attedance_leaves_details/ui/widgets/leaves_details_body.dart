@@ -45,18 +45,18 @@ class LeavesDetailsBody extends StatelessWidget {
       body: BlocConsumer<LeavesDetailsCubit, LeavesDetailsState>(
         listener: (context, state) {
           if (state is LeavesDeleteSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
             context.popWithTrueResult();
           }
           if (state is LeavesDeleteErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
           if (state is LeavesApproveSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
             context.popWithTrueResult();
           }
           if (state is LeavesApproveErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
         },
         builder: (context, state) {
@@ -269,7 +269,7 @@ class LeavesDetailsBody extends StatelessWidget {
                                         );
                                       },
                                       color: AppColor.primaryColor,
-                                      height: 47.h,
+                                 
                                       width: double.infinity,
                                       textStyles:
                                           TextStyles.font16WhiteSemiBold,
@@ -363,7 +363,7 @@ class LeavesDetailsBody extends StatelessWidget {
                                                                       false);
                                                             },
                                                             color: Colors.black,
-                                                            height: 47.h,
+                                                         
                                                             width: 125.w,
                                                             textStyles: TextStyles
                                                                 .font16WhiteSemiBold,
@@ -377,7 +377,7 @@ class LeavesDetailsBody extends StatelessWidget {
                                                             },
                                                             color: Colors
                                                                 .grey[300]!,
-                                                            height: 47.h,
+                                                         
                                                             width: 125.w,
                                                             textStyles: TextStyles
                                                                 .font16BlackSemiBold,
@@ -393,7 +393,7 @@ class LeavesDetailsBody extends StatelessWidget {
                                         );
                                       },
                                       color: Colors.black,
-                                      height: 47.h,
+                                   
                                       width: double.infinity,
                                       textStyles:
                                           TextStyles.font16WhiteSemiBold,
@@ -418,7 +418,7 @@ class LeavesDetailsBody extends StatelessWidget {
                                           });
                                     },
                                     color: Colors.red,
-                                    height: 47.h,
+                                 
                                     width: double.infinity,
                                     textStyles:
                                         TextStyles.font20Whitesemimedium)),

@@ -8,6 +8,7 @@ import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_details/logic/cubit/work_location_details_cubit.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class WorkLocationTaskItem extends StatelessWidget {
   final int selectedIndex;
@@ -19,7 +20,7 @@ class WorkLocationTaskItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<WorkLocationDetailsCubit>();
 
-    final List<String> priority = ["High", "Medium", "Low"];
+    final List<String> priority = [S.of(context).high, S.of(context).medium, S.of(context).low];
     final List<Color> priorityColor = [
       Colors.red,
       Colors.orange,

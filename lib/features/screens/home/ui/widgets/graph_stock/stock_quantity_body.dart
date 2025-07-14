@@ -42,7 +42,7 @@ class StockQuantityBody extends StatelessWidget {
         return Skeletonizer(
           enabled: isLoading,
           child: Container(
-            height: 300.h,
+            height: 330.h,
             decoration: BoxDecoration(
               border: Border.all(color: Colors.black12),
               borderRadius: BorderRadius.circular(6.r),

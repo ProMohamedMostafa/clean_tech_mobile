@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/cache_helper/cache_helper.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
+import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/core/routing/app_router.dart';
 import 'package:smart_cleaning_application/core/service/notification/firebase_messaging_helper.dart';
@@ -21,9 +22,7 @@ void main() async {
   setupFirebaseMessagingListeners();
   await ScreenUtil.ensureScreenSize();
   Bloc.observer = const SimpleBlocObserver();
-  runApp(AppRoot(
-    appRouter: AppRouter(),
-  ));
+  runApp(AppRoot(appRouter: AppRouter()));
 }
 
 checkIfLoggedInUser() async {
@@ -33,6 +32,12 @@ checkIfLoggedInUser() async {
   role = await CacheHelper.getString(SharedPrefKeys.userRole);
 
   if (ip != null && ip!.isNotEmpty) {
+    ApiConstants.apiBaseUrl = "http://$ip:8080/api/v1/";
+  } else {
+    await CacheHelper.removeData(SharedPrefKeys.ip);
+    ip = null;
+  }
+  if (token != null && ApiConstants.apiBaseUrl.isNotEmpty) {
     await DioHelper.initDio();
   }
 }

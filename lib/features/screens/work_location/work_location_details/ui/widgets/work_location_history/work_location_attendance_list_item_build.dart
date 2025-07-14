@@ -7,6 +7,7 @@ import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_details/logic/cubit/work_location_details_cubit.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class WorkLocationAttendanceListItemBuild extends StatelessWidget {
   final int selectedIndex;
@@ -350,7 +351,7 @@ class WorkLocationAttendanceListItemBuild extends StatelessWidget {
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: 'Shift : ',
+                    text: S.of(context).shift,
                     style: TextStyles.font12GreyRegular,
                   ),
                   TextSpan(
@@ -708,7 +709,7 @@ class WorkLocationAttendanceListItemBuild extends StatelessWidget {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: 'Duration : ',
+                        text: S.of(context).duration,
                         style: TextStyles.font12GreyRegular
                             .copyWith(color: AppColor.primaryColor),
                       ),

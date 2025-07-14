@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
@@ -43,9 +44,9 @@ class PasswordValidations extends StatelessWidget {
           '⚈ $text',
           style: TextStyles.font13Blackmedium.copyWith(
             decoration: hasValidated ? TextDecoration.lineThrough : null,
-            decorationColor: Colors.blue,
+            decorationColor: AppColor.primaryColor,
             decorationThickness: 2,
-            color: hasValidated ? Colors.blue : Colors.black,
+            color: hasValidated ? AppColor.primaryColor : Colors.black,
           ),
         ),
         const Spacer()

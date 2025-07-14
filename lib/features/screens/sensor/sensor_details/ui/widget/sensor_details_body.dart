@@ -27,8 +27,12 @@ class SensorDetailsBody extends StatelessWidget {
         leading: CustomBackButton(),
         actions: [
           IconButton(
-              onPressed: () {
-                context.pushNamed(Routes.sensorEditScreen, arguments: id);
+              onPressed: () async {
+                final result = await context.pushNamed(Routes.sensorEditScreen,
+                    arguments: id);
+                if (result == true) {
+                  cubit.getSensorDetails(id);
+                }
               },
               icon: Icon(Icons.edit, color: AppColor.primaryColor)),
         ],
@@ -36,33 +40,33 @@ class SensorDetailsBody extends StatelessWidget {
       body: BlocConsumer<SensorDetailsCubit, SensorDetailsState>(
         listener: (context, state) {
           if (state is DeleteSensorSuccessState) {
-            toast(text: state.deletedSensorModel.message!, color: Colors.blue);
+            toast(text: state.deletedSensorModel.message!, isSuccess: true);
             context.popWithTrueResult();
           }
           if (state is DeleteSensorErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
 
           if (state is DeleteLimitSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
           }
           if (state is DeleteLimitErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
           if (state is CreateLimitSensorSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
             context.read<SensorDetailsCubit>().getSensorDetails(id);
           }
           if (state is CreateLimitSensorErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
 
           if (state is EditLimitSensorSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
             context.read<SensorDetailsCubit>().getSensorDetails(id);
           }
           if (state is EditLimitSensorErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
         },
         builder: (context, state) {
@@ -582,8 +586,6 @@ class SensorDetailsBody extends StatelessWidget {
                                 cubit.getSensorDetails(id);
                               },
                               color: AppColor.primaryColor,
-                              height: 48,
-                              width: double.infinity,
                               textStyles: TextStyles.font16WhiteSemiBold),
                         ),
                         horizontalSpace(10),
@@ -603,8 +605,6 @@ class SensorDetailsBody extends StatelessWidget {
                                     });
                               },
                               color: Colors.red,
-                              height: 48,
-                              width: double.infinity,
                               textStyles: TextStyles.font16WhiteSemiBold),
                         ),
                       ],

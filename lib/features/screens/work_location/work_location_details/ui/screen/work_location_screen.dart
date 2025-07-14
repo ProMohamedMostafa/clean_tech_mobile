@@ -181,18 +181,18 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
       appBar: AppBar(
         title: Text(
           widget.selectedIndex == 0
-              ? 'Area details'
+              ? S.of(context).area_details
               : widget.selectedIndex == 1
-                  ? 'City details'
+                  ? S.of(context).city_details
                   : widget.selectedIndex == 2
-                      ? 'Organization details'
+                      ? S.of(context).organization_details
                       : widget.selectedIndex == 3
-                          ? 'Building details'
+                          ? S.of(context).building_details
                           : widget.selectedIndex == 4
-                              ? 'Floor details'
+                              ? S.of(context).floor_details
                               : widget.selectedIndex == 5
-                                  ? 'Section details'
-                                  : 'Point details',
+                                  ? S.of(context).section_details
+                                  : S.of(context).point_details,
         ),
         leading: CustomBackButton(),
         actions: [
@@ -254,55 +254,54 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
       body: BlocConsumer<WorkLocationDetailsCubit, WorkLocationDetailsState>(
         listener: (context, state) {
           if (state is AreaDeleteSuccessState) {
-            toast(text: state.deleteAreaModel.message!, color: Colors.blue);
+            toast(text: state.deleteAreaModel.message!, isSuccess: true);
             context.popWithTrueResult();
           }
           if (state is AreaDeleteErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
           if (state is CityDeleteSuccessState) {
-            toast(text: state.deleteCityModel.message!, color: Colors.blue);
+            toast(text: state.deleteCityModel.message!, isSuccess: true);
             context.popWithTrueResult();
           }
           if (state is CityDeleteErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
           if (state is OrganizationDeleteSuccessState) {
             toast(
-                text: state.deleteOrganizationModel.message!,
-                color: Colors.blue);
+                text: state.deleteOrganizationModel.message!, isSuccess: true);
             context.popWithTrueResult();
           }
           if (state is OrganizationDeleteErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
           if (state is BuildingDeleteSuccessState) {
-            toast(text: state.deleteBuildingModel.message!, color: Colors.blue);
+            toast(text: state.deleteBuildingModel.message!, isSuccess: true);
             context.popWithTrueResult();
           }
           if (state is BuildingDeleteErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
           if (state is FloorDeleteSuccessState) {
-            toast(text: state.deleteFloorModel.message!, color: Colors.blue);
+            toast(text: state.deleteFloorModel.message!, isSuccess: true);
             context.popWithTrueResult();
           }
           if (state is FloorDeleteErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
           if (state is SectionDeleteSuccessState) {
-            toast(text: state.deleteSectionModel.message!, color: Colors.blue);
+            toast(text: state.deleteSectionModel.message!, isSuccess: true);
             context.popWithTrueResult();
           }
           if (state is SectionDeleteErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
           if (state is PointDeleteSuccessState) {
-            toast(text: state.deletePointModel.message!, color: Colors.blue);
+            toast(text: state.deletePointModel.message!, isSuccess: true);
             context.popWithTrueResult();
           }
           if (state is PointDeleteErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
         },
         builder: (context, state) {
@@ -346,7 +345,7 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                         S.of(context).managers,
                         S.of(context).supervisors,
                         S.of(context).cleaners,
-                        "Shifts",
+                        S.of(context).shifts,
                         S.of(context).tasks,
                         S.of(context).attendance,
                         S.of(context).leaves,
@@ -405,19 +404,23 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                               return PopUpMessage(
                                   title: S.of(context).TitleDelete,
                                   body: widget.selectedIndex == 0
-                                      ? "area"
+                                      ? S.of(context).areaBody
                                       : widget.selectedIndex == 1
-                                          ? "city"
+                                          ? S.of(context).cityBody
                                           : widget.selectedIndex == 2
-                                              ? "organization"
+                                              ? S.of(context).organizationBody
                                               : widget.selectedIndex == 3
-                                                  ? "building"
+                                                  ? S.of(context).buildingBody
                                                   : widget.selectedIndex == 4
-                                                      ? "floor"
+                                                      ? S.of(context).floorBody
                                                       : widget.selectedIndex ==
                                                               5
-                                                          ? "section"
-                                                          : "point",
+                                                          ? S
+                                                              .of(context)
+                                                              .sectionBody
+                                                          : S
+                                                              .of(context)
+                                                              .pointBody,
                                   onPressed: () {
                                     widget.selectedIndex == 0
                                         ? cubit.deleteArea(widget.id)
@@ -443,8 +446,6 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                             });
                       },
                       color: Colors.red,
-                      height: 47,
-                      width: double.infinity,
                       textStyles: TextStyles.font20Whitesemimedium),
                 verticalSpace(20),
               ],

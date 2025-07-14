@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/helpers/cache_helper/cache_helper.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/settings/data/model/profile_model.dart';
 import 'package:smart_cleaning_application/features/screens/settings/logic/settings_state.dart';
@@ -60,11 +61,23 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   logout() {
     emit(LogOutLoadingState());
-    DioHelper.getData(url: 'auth/logout').then((value) {
+    DioHelper.getData(url: 'auth/logout').then((value) async {
       final message = value?.data['message'] ?? "logout successfully";
+
+      await CacheHelper.clearAllSecuredData();
+      await clearSessionData();
       emit(LogOutSuccessState(message));
     }).catchError((error) {
       emit(LogOutErrorState(error.toString()));
     });
+  }
+
+  static Future<void> clearSessionData() async {
+    token = null;
+    uId = null;
+    role = null;
+    await CacheHelper.removeData(SharedPrefKeys.userToken);
+    await CacheHelper.removeData(SharedPrefKeys.userId);
+    await CacheHelper.removeData(SharedPrefKeys.userRole);
   }
 }

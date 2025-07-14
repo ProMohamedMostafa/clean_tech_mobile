@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/helpers/regx_validations/regx_validations.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/widgets/Change_password_validations/password_validation.dart';
 import 'package:smart_cleaning_application/core/widgets/default_text_form_field/default_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/auth/set_password/logic/set_password_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/auth/set_password/logic/set_password_state.dart';
-import 'package:smart_cleaning_application/features/screens/auth/set_password/ui/widgets/password_validation.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class NewPasswordBody extends StatefulWidget {

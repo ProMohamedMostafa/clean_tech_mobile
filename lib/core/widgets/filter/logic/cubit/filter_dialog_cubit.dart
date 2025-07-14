@@ -445,7 +445,7 @@ class FilterDialogCubit extends Cubit<FilterDialogState> {
       'Restore',
       'ForceDelete',
       'ChangeStatus',
-      'Comment'
+      'Comment',
     ],
     'Shift': [
       'Create',
@@ -453,14 +453,25 @@ class FilterDialogCubit extends Cubit<FilterDialogState> {
       'Delete',
       'Restore',
       'ForceDelete',
-      'Assign',
-      'RemoveAssign'
+      'AssignShift',
+      'RemoveShift',
     ],
     'Attendacne': ['ClockIn', 'ClockOut'],
-    'Leave': ['Create', 'Edit', 'Delete'],
+    'Leave': ['Create', 'Edit', 'ForceDelete'],
     'Category': ['Create', 'Edit', 'Delete', 'Restore', 'ForceDelete'],
     'Material': ['Create', 'Edit', 'Delete', 'Restore', 'ForceDelete'],
     'Stock': ['StockIn', 'StockOut'],
+    'Device': ['Edit', 'Delete', 'Restore'],
+    'DeviceLimit': ['Create', 'Edit', 'Delete'],
+    'Tag': [
+      'Create',
+      'Edit',
+      'Delete',
+      'Restore',
+      'ForceDelete',
+      'AssignTag',
+      'RemoveTag',
+    ]
   };
   List<String> get allModules => moduleActions.keys.toList();
   List<String> get allActions =>

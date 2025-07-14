@@ -127,3 +127,4 @@ class ImageSelectedState extends MaterialManagementState {
   final XFile image;
   ImageSelectedState(this.image);
 }
+class MaterialClearState extends MaterialManagementState {}

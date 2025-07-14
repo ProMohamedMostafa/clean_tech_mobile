@@ -10,26 +10,25 @@ import 'package:smart_cleaning_application/core/widgets/default_toast/default_to
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/layout/ip_screen/logic/cubit/ip_cubit.dart';
 import 'package:smart_cleaning_application/features/layout/ip_screen/ui/widget/ip_text_form_field.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
-class IpScreenBody extends StatefulWidget {
+class IpScreenBody extends StatelessWidget {
   const IpScreenBody({super.key});
 
-  @override
-  State<IpScreenBody> createState() => _IpScreenBodyState();
-}
-
-class _IpScreenBodyState extends State<IpScreenBody> {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<IpCubit>();
     return BlocConsumer<IpCubit, IpState>(
       listener: (context, state) {
         if (state is IpSuccessState) {
-          toast(text: state.message, color: Colors.blue);
-          context.pushNamed(Routes.loginScreen);
+          toast(text: state.message, isSuccess: true);
+          context.pushNamedAndRemoveUntil(
+            Routes.loginScreen,
+            predicate: (route) => false,
+          );
         }
         if (state is IpErrorState) {
-          toast(text: state.error, color: Colors.red);
+          toast(text: state.error, isSuccess: false);
         }
       },
       builder: (context, state) {
@@ -41,42 +40,39 @@ class _IpScreenBodyState extends State<IpScreenBody> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: Image.asset(
-                      'assets/images/pdf_logo.png',
-                      height: 45,
-                      width: 165,
+                    padding: const EdgeInsets.fromLTRB(10, 20, 20, 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Image.asset(
+                          'assets/images/clean.png',
+                          height: 40,
+                          width: 120,
+                        ),
+                      ],
                     ),
                   ),
-                  Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Divider(
-                        height: 0,
-                        color: Colors.grey[300],
-                      )),
                   Padding(
                     padding: const EdgeInsets.all(20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Please enter your network IP',
+                          S.of(context).enter_network_ip,
                           style: TextStyles.font14GreyRegular,
                         ),
                         verticalSpace(40),
                         CustomIpTextFormField(
                           controller: cubit.ipController,
                           onlyRead: false,
-                          label: "Network IP",
+                          label: S.of(context).network_ip,
                         ),
                         verticalSpace(60),
                         state is IpLoadingState
                             ? Loading()
                             : Center(
                                 child: DefaultElevatedButton(
-                                  width: 310,
-                                  height: 50,
-                                  name: "Check IP",
+                                  name: S.of(context).check_ip,
                                   color: AppColor.primaryColor,
                                   textStyles: TextStyles.font16WhiteSemiBold,
                                   onPressed: () {

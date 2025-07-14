@@ -31,11 +31,11 @@ class EditMaterialBody extends StatelessWidget {
         body: BlocConsumer<EditMaterialCubit, EditMaterialState>(
           listener: (context, state) {
             if (state is EditMaterialSuccessState) {
-              toast(text: state.editMaterialModel.message!, color: Colors.blue);
+              toast(text: state.editMaterialModel.message!, isSuccess: true);
               context.popWithTrueResult();
             }
             if (state is EditMaterialErrorState) {
-              toast(text: state.error, color: Colors.red);
+              toast(text: state.error, isSuccess: false);
             }
           },
           builder: (context, state) {
@@ -174,8 +174,6 @@ class EditMaterialBody extends StatelessWidget {
                                       }
                                     },
                                     color: AppColor.primaryColor,
-                                    height: 47,
-                                    width: double.infinity,
                                     textStyles:
                                         TextStyles.font20Whitesemimedium)),
                         verticalSpace(30),

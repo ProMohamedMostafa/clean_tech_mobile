@@ -140,7 +140,7 @@ class BuildProviderItemList extends StatelessWidget {
                                             }
                                           },
                                           color: AppColor.primaryColor,
-                                          height: 43.h,
+                                     
                                           width: double.infinity),
                                     ),
                                     horizontalSpace(16),
@@ -153,7 +153,7 @@ class BuildProviderItemList extends StatelessWidget {
                                             context.pop();
                                           },
                                           color: AppColor.fourthColor,
-                                          height: 43.h,
+                                         
                                           width: double.infinity),
                                     ),
                                   ],

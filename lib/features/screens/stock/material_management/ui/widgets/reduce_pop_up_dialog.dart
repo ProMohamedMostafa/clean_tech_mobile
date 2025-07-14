@@ -18,7 +18,7 @@ class ReducePopUpDialog {
       context: context,
       builder: (dialogContext) {
         final cubit = context.read<MaterialManagementCubit>();
-
+        cubit.clearAllControllers();
         return Dialog(
           insetPadding: EdgeInsets.all(20),
           backgroundColor: Colors.white,
@@ -125,7 +125,7 @@ class ReducePopUpDialog {
                             context.pop();
                           },
                           color: Colors.red,
-                          height: 47.h,
+                   
                           width: 125.w,
                           textStyles: TextStyles.font16WhiteSemiBold,
                         ),
@@ -138,7 +138,7 @@ class ReducePopUpDialog {
                             context.pop();
                           },
                           color: Color(0xffFFE3E4),
-                          height: 47.h,
+                     
                           width: 125.w,
                           textStyles: TextStyles.font16RedSemiBold,
                         ),

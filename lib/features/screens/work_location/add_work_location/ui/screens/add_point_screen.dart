@@ -32,11 +32,11 @@ class AddPointScreen extends StatelessWidget {
           child: BlocConsumer<AddWorkLocationCubit, AddWorkLocationState>(
         listener: (context, state) {
           if (state is CreatePointSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
             context.popWithTrueResult();
           }
           if (state is CreatePointErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
         },
         builder: (context, state) {
@@ -74,8 +74,7 @@ class AddPointScreen extends StatelessWidget {
         Text(S.of(context).addUserText12, style: TextStyles.font16BlackRegular),
         CustomDropDownList(
           hint: S.of(context).selectCountry,
-          items:
-              cubit.nationalityData.map((e) => e.name ?? 'un known').toList(),
+          items: cubit.nationalityData.map((e) => e.name ?? 'Unknown').toList(),
           onChanged: (value) {
             cubit.getArea();
           },
@@ -660,14 +659,11 @@ class AddPointScreen extends StatelessWidget {
             name: S.of(context).addButton,
             onPressed: () {
               if (cubit.formAddKey.currentState!.validate()) {
-                cubit.createPoint(
-                 
-                );
+                cubit.createPoint();
               }
             },
             color: AppColor.primaryColor,
-            height: 47.h,
-            width: double.infinity,
+
             textStyles: TextStyles.font20Whitesemimedium,
           );
   }

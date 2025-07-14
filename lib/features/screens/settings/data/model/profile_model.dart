@@ -47,7 +47,8 @@ class Data {
   String? firstName;
   String? lastName;
   String? image;
-  String? gender;
+  int? gender;
+  String? genderName;
   String? countryName;
   String? nationalityName;
   String? email;
@@ -68,6 +69,7 @@ class Data {
       this.lastName,
       this.image,
       this.gender,
+      this.genderName,
       this.countryName,
       this.nationalityName,
       this.email,
@@ -88,6 +90,7 @@ class Data {
     lastName = json['lastName'];
     image = json['image'];
     gender = json['gender'];
+    genderName = json['genderName'];
     countryName = json['countryName'];
     nationalityName = json['nationalityName'];
     email = json['email'];
@@ -110,6 +113,7 @@ class Data {
     data['lastName'] = lastName;
     data['image'] = image;
     data['gender'] = gender;
+    data['genderName'] = genderName;
     data['countryName'] = countryName;
     data['nationalityName'] = nationalityName;
     data['email'] = email;

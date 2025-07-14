@@ -40,16 +40,16 @@ class _EditTaskBodyState extends State<EditTaskBody> {
   Widget build(BuildContext context) {
     final cubit = context.read<EditTaskCubit>();
     return Scaffold(
-        appBar:
-            AppBar(title: const Text("Edit Task"), leading: CustomBackButton()),
+        appBar: AppBar(
+            title: Text(S.of(context).edit_task), leading: CustomBackButton()),
         body: BlocConsumer<EditTaskCubit, EditTaskState>(
           listener: (context, state) {
             if (state is EditTaskSuccessState) {
-              toast(text: state.editTaskModel.message!, color: Colors.blue);
+              toast(text: state.editTaskModel.message!, isSuccess: true);
               context.popWithTrueResult();
             }
             if (state is EditTaskErrorState) {
-              toast(text: state.message, color: Colors.red);
+              toast(text: state.message, isSuccess: false);
             }
           },
           builder: (context, state) {
@@ -140,7 +140,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                 ),
                                 verticalSpace(10),
                                 Text(
-                                  'Parent task',
+                                  S.of(context).parent_task,
                                   style: TextStyles.font16BlackRegular,
                                 ),
                                 verticalSpace(5),
@@ -169,18 +169,18 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                 ),
                                 verticalSpace(10),
                                 Text(
-                                  "Task Title",
+                                  S.of(context).task_title,
                                   style: TextStyles.font16BlackRegular,
                                 ),
                                 verticalSpace(5),
                                 CustomTextFormField(
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return "Task title is Required";
+                                      return S.of(context).task_title_required;
                                     } else if (value.length > 55) {
-                                      return 'Task title too long';
+                                      return S.of(context).task_title_too_long;
                                     } else if (value.length < 3) {
-                                      return 'Task title too short';
+                                      return S.of(context).task_title_too_short;
                                     }
                                     return null;
                                   },
@@ -197,11 +197,11 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                   text: TextSpan(
                                     children: [
                                       TextSpan(
-                                        text: 'Organization',
+                                        text: S.of(context).Organization,
                                         style: TextStyles.font16BlackRegular,
                                       ),
                                       TextSpan(
-                                        text: ' (Optional)',
+                                        text: S.of(context).labelOptional,
                                         style: TextStyles.font14GreyRegular,
                                       ),
                                     ],
@@ -240,11 +240,11 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                   text: TextSpan(
                                     children: [
                                       TextSpan(
-                                        text: 'Building',
+                                        text: S.of(context).Building,
                                         style: TextStyles.font16BlackRegular,
                                       ),
                                       TextSpan(
-                                        text: ' (Optional)',
+                                        text: S.of(context).Organization,
                                         style: TextStyles.font14GreyRegular,
                                       ),
                                     ],
@@ -283,11 +283,11 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                   text: TextSpan(
                                     children: [
                                       TextSpan(
-                                        text: 'Floor',
+                                        text: S.of(context).Floor,
                                         style: TextStyles.font16BlackRegular,
                                       ),
                                       TextSpan(
-                                        text: ' (Optional)',
+                                        text: S.of(context).labelOptional,
                                         style: TextStyles.font14GreyRegular,
                                       ),
                                     ],
@@ -326,11 +326,11 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                   text: TextSpan(
                                     children: [
                                       TextSpan(
-                                        text: 'Section',
+                                        text: S.of(context).Section,
                                         style: TextStyles.font16BlackRegular,
                                       ),
                                       TextSpan(
-                                        text: ' (Optional)',
+                                        text: S.of(context).labelOptional,
                                         style: TextStyles.font14GreyRegular,
                                       ),
                                     ],
@@ -368,11 +368,11 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                   text: TextSpan(
                                     children: [
                                       TextSpan(
-                                        text: 'Points',
+                                        text: S.of(context).Point,
                                         style: TextStyles.font16BlackRegular,
                                       ),
                                       TextSpan(
-                                        text: ' (Optional)',
+                                        text: S.of(context).labelOptional,
                                         style: TextStyles.font14GreyRegular,
                                       ),
                                     ],
@@ -382,7 +382,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                 CustomDropDownList(
                                   hint:
                                       cubit.taskDetailsModel!.data!.pointName ??
-                                          'Select point',
+                                          S.of(context).select_point,
                                   controller: cubit.pointController,
                                   items: cubit.pointItem
                                       .map((e) => e.name ?? 'Unknown')
@@ -407,7 +407,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                 if (cubit.isPointCountable) ...[
                                   verticalSpace(10),
                                   Text(
-                                    "Currently reading",
+                                    S.of(context).currently_reading,
                                     style: TextStyles.font16BlackRegular,
                                   ),
                                   CustomTextFormField(
@@ -422,9 +422,13 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                     keyboardType: TextInputType.number,
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
-                                        return "Currently reading is Required";
+                                        return S
+                                            .of(context)
+                                            .currently_reading_required;
                                       } else if (value.length > 30) {
-                                        return 'Currently reading too long';
+                                        return S
+                                            .of(context)
+                                            .currently_reading_too_long;
                                       }
                                       return null;
                                     },
@@ -436,16 +440,16 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                   verticalSpace(10),
                                 ],
                                 Text(
-                                  "Status",
+                                  S.of(context).status,
                                   style: TextStyles.font16BlackRegular,
                                 ),
                                 verticalSpace(5),
                                 CustomDropDownList(
                                   onChanged: (selectedValue) {
                                     final items = [
-                                      'Pending',
-                                      'Completed',
-                                      'Overdue',
+                                      S.of(context).pending,
+                                      S.of(context).complete,
+                                      S.of(context).overdue,
                                     ];
                                     final selectedIndex =
                                         items.indexOf(selectedValue!);
@@ -463,7 +467,11 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                     cubit.statusController.text = selectedValue;
                                   },
                                   hint: cubit.taskDetailsModel!.data!.status!,
-                                  items: ['Pending', 'Completed', 'Overdue'],
+                                  items: [
+                                    S.of(context).pending,
+                                    S.of(context).complete,
+                                    S.of(context).overdue,
+                                  ],
                                   suffixIcon: IconBroken.arrowDown2,
                                   keyboardType: TextInputType.text,
                                   controller: cubit.statusController,
@@ -479,7 +487,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "Start Date",
+                                          S.of(context).startDate,
                                           style: TextStyles.font16BlackRegular,
                                         ),
                                         verticalSpace(5),
@@ -513,7 +521,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "End Date",
+                                          S.of(context).endDate,
                                           style: TextStyles.font16BlackRegular,
                                         ),
                                         verticalSpace(5),
@@ -553,7 +561,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "Start Time",
+                                          S.of(context).startTime,
                                           style: TextStyles.font16BlackRegular,
                                         ),
                                         verticalSpace(5),
@@ -587,7 +595,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "End Time",
+                                          S.of(context).endTime,
                                           style: TextStyles.font16BlackRegular,
                                         ),
                                         verticalSpace(5),
@@ -622,11 +630,11 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                   text: TextSpan(
                                     children: [
                                       TextSpan(
-                                        text: 'Employee',
+                                        text: S.of(context).employee,
                                         style: TextStyles.font16BlackRegular,
                                       ),
                                       TextSpan(
-                                        text: ' (Optional)',
+                                        text: S.of(context).labelOptional,
                                         style: TextStyles.font14GreyRegular,
                                       ),
                                     ],
@@ -685,16 +693,20 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                 ),
                                 verticalSpace(10),
                                 Text(
-                                  'Description',
+                                  S.of(context).description,
                                   style: TextStyles.font16BlackRegular,
                                 ),
                                 verticalSpace(5),
                                 CustomDescriptionTextFormField(
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
-                                        return "Task description is Required";
+                                        return S
+                                            .of(context)
+                                            .descriptionRequired;
                                       } else if (value.length < 3) {
-                                        return 'Task description too short';
+                                        return S
+                                            .of(context)
+                                            .descriptionTooShort;
                                       }
                                       return null;
                                     },
@@ -707,7 +719,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                 Row(
                                   children: [
                                     Text(
-                                      'Files',
+                                      S.of(context).files,
                                       style: TextStyles.font16BlackRegular,
                                     ),
                                     verticalSpace(5),
@@ -758,7 +770,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                                   BorderRadius.circular(10.r),
                                             ),
                                             child: Image.network(
-                                              "http://10.0.2.2:7111${file.path}",
+                                              "${file.path}",
                                               fit: BoxFit.cover,
                                               loadingBuilder:
                                                   (BuildContext context,
@@ -845,7 +857,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                     ? Loading()
                                     : Center(
                                         child: DefaultElevatedButton(
-                                            name: "Edit",
+                                            name: S.of(context).editButton,
                                             onPressed: () {
                                               if (context
                                                   .read<EditTaskCubit>()
@@ -856,8 +868,12 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                                     context: context,
                                                     builder: (dialogContext) {
                                                       return PopUpMessage(
-                                                          title: 'edit',
-                                                          body: 'task',
+                                                          title: S
+                                                              .of(context)
+                                                              .TitleEdit,
+                                                          body: S
+                                                              .of(context)
+                                                              .taskbody,
                                                           onPressed: () {
                                                             context
                                                                 .read<
@@ -871,8 +887,6 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                               }
                                             },
                                             color: AppColor.primaryColor,
-                                            height: 47,
-                                            width: double.infinity,
                                             textStyles: TextStyles
                                                 .font20Whitesemimedium),
                                       ),

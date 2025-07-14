@@ -15,7 +15,7 @@ class StockBarChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 200.h,
+      height: 225.h,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: SizedBox(
@@ -30,7 +30,6 @@ class StockBarChart extends StatelessWidget {
             ),
             primaryYAxis: NumericAxis(
               minimum: 0,
-              maximum: 200,
               interval: 50,
               majorGridLines: MajorGridLines(
                 color: Colors.grey[200],

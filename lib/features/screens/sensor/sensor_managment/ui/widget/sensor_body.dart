@@ -4,9 +4,11 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
+import 'package:smart_cleaning_application/core/widgets/filter/logic/cubit/filter_dialog_cubit.dart';
+import 'package:smart_cleaning_application/core/widgets/filter/ui/screen/filter_dialog_widget.dart';
+import 'package:smart_cleaning_application/core/widgets/filter_and_search_build/filter_search_build.dart';
 import 'package:smart_cleaning_application/core/widgets/integration_buttons/integrations_buttons.dart';
 import 'package:smart_cleaning_application/features/screens/sensor/sensor_managment/logic/cubit/sensor_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/sensor/sensor_managment/ui/widget/filter_search_build.dart';
 import 'package:smart_cleaning_application/features/screens/sensor/sensor_managment/ui/widget/sensor_list_build.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
@@ -22,10 +24,10 @@ class SensorBody extends StatelessWidget {
       body: BlocConsumer<SensorCubit, SensorState>(
         listener: (context, state) {
           if (state is RestoreSensorSuccessState) {
-            toast(text: state.message, color: Colors.blue);
+            toast(text: state.message, isSuccess: true);
           }
           if (state is RestoreSensorErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
         },
         builder: (context, state) {
@@ -38,7 +40,32 @@ class SensorBody extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   verticalSpace(10),
-                  SensorFilterAndSearchWidget(),
+                  FilterAndSearchWidget(
+                    hintText: S.of(context).sensorHint,
+                    searchController: cubit.searchController,
+                    onSearchChanged: (value) {
+                      cubit.getSensorsData();
+                    },
+                    onFilterTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (dialogContext) {
+                          return BlocProvider(
+                            create: (context) => FilterDialogCubit()
+                              ..getCity()
+                              ..getActivityType(),
+                            child: FilterDialogWidget(
+                              index: 'Se',
+                              onPressed: (data) {
+                                cubit.filterModel = data;
+                                cubit.getSensorsData();
+                              },
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
                   verticalSpace(10),
                   integrationsButtons(
                     selectedIndex: cubit.selectedIndex,

@@ -10,11 +10,11 @@ import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
+import 'package:smart_cleaning_application/core/widgets/Change_password_validations/password_validation.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
-import 'package:smart_cleaning_application/features/screens/auth/set_password/ui/widgets/password_validation.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/logic/add_user_cubit.dart';
@@ -38,11 +38,11 @@ class _AddUserBodyState extends State<AddUserBody> {
       body: BlocConsumer<AddUserCubit, AddUserState>(
         listener: (context, state) {
           if (state is AddUserSuccessState) {
-            toast(text: state.userCreateModel.message!, color: Colors.blue);
+            toast(text: state.userCreateModel.message!, isSuccess: true);
             context.popWithTrueResult();
           }
           if (state is AddUserErrorState) {
-            toast(text: state.error, color: Colors.red);
+            toast(text: state.error, isSuccess: false);
           }
         },
         builder: (context, state) {
@@ -690,8 +690,6 @@ class _AddUserBodyState extends State<AddUserBody> {
                                   }
                                 },
                                 color: AppColor.primaryColor,
-                                height: 47,
-                                width: double.infinity,
                                 textStyles: TextStyles.font20Whitesemimedium),
                           ),
                     verticalSpace(30),

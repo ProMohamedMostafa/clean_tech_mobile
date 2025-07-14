@@ -7,6 +7,7 @@ import 'package:smart_cleaning_application/core/theming/font_style/font_styles.d
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_details/logic/cubit/work_location_details_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/work_location/work_location_details/ui/widgets/work_location_details/work_location_tree.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class WorkLocationDetails extends StatelessWidget {
   final int selectedIndex;
@@ -49,13 +50,13 @@ class WorkLocationDetails extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          rowDetailsBuild(
-              context, "Country", workLocationDetailsModel.countryName!),
+          rowDetailsBuild(context, S.of(context).country,
+              workLocationDetailsModel.countryName!),
           Divider(),
           if (selectedIndex >= 0) ...[
             rowDetailsBuild(
                 context,
-                "Area",
+                S.of(context).Area,
                 selectedIndex == 0
                     ? workLocationDetailsModel.name!
                     : workLocationDetailsModel.areaName!,
@@ -65,7 +66,7 @@ class WorkLocationDetails extends StatelessWidget {
           if (selectedIndex >= 1) ...[
             rowDetailsBuild(
                 context,
-                "City",
+                S.of(context).City,
                 selectedIndex == 1
                     ? workLocationDetailsModel.name!
                     : workLocationDetailsModel.cityName!,
@@ -75,7 +76,7 @@ class WorkLocationDetails extends StatelessWidget {
           if (selectedIndex >= 2) ...[
             rowDetailsBuild(
                 context,
-                "Organization",
+                S.of(context).Organization,
                 selectedIndex == 2
                     ? workLocationDetailsModel.name!
                     : workLocationDetailsModel.organizationName!,
@@ -85,7 +86,7 @@ class WorkLocationDetails extends StatelessWidget {
           if (selectedIndex >= 3) ...[
             rowDetailsBuild(
                 context,
-                "Building",
+                S.of(context).Building,
                 selectedIndex == 3
                     ? workLocationDetailsModel.name!
                     : workLocationDetailsModel.buildingName!,
@@ -95,7 +96,7 @@ class WorkLocationDetails extends StatelessWidget {
           if (selectedIndex >= 4) ...[
             rowDetailsBuild(
                 context,
-                "Floor",
+                S.of(context).Floor,
                 selectedIndex == 4
                     ? workLocationDetailsModel.name!
                     : workLocationDetailsModel.floorName!,
@@ -105,7 +106,7 @@ class WorkLocationDetails extends StatelessWidget {
           if (selectedIndex >= 5) ...[
             rowDetailsBuild(
                 context,
-                "Section",
+                S.of(context).Section,
                 selectedIndex == 5
                     ? workLocationDetailsModel.name!
                     : workLocationDetailsModel.sectionName!,
@@ -113,32 +114,33 @@ class WorkLocationDetails extends StatelessWidget {
             Divider(),
           ],
           if (selectedIndex >= 6) ...[
-            rowDetailsBuild(context, "Point", workLocationDetailsModel.name!,
+            rowDetailsBuild(
+                context, S.of(context).Point, workLocationDetailsModel.name!,
                 color: selectedIndex == 6 ? AppColor.primaryColor : null),
             Divider(),
             if (cubit.pointUsersDetailsModel?.data?.isCountable == true) ...[
               rowDetailsBuild(
                 context,
-                "Capacity",
+                S.of(context).capacity,
                 cubit.pointUsersDetailsModel!.data!.capacity!.toString(),
               ),
               Divider(),
               rowDetailsBuild(
                 context,
-                "Unit",
-                cubit.pointUsersDetailsModel!.data!.unit!,
+                S.of(context).unitTitle,
+                cubit.pointUsersDetailsModel!.data!.unit ?? '__',
               ),
               Divider(),
-              if (cubit.pointUsersDetailsModel!.data!.deviceName != null) ...[
-                rowDetailsBuild(context, "Device",
-                    cubit.pointUsersDetailsModel!.data!.deviceName!),
-                Divider()
-              ]
             ],
+            if (cubit.pointUsersDetailsModel!.data!.deviceName != null) ...[
+              rowDetailsBuild(context, S.of(context).device,
+                  cubit.pointUsersDetailsModel!.data!.deviceName!),
+              Divider()
+            ]
           ],
           if (selectedIndex >= 3) ...[
             Text(
-              'Description',
+              S.of(context).description,
               style: TextStyles.font14GreyRegular.copyWith(color: Colors.black),
             ),
             verticalSpace(5),
@@ -158,15 +160,15 @@ class WorkLocationDetails extends StatelessWidget {
                   child: cubit.descTextShowFlag
                       ? Padding(
                           padding: const EdgeInsets.all(10),
-                          child: const Text(
-                            "Read less",
+                          child: Text(
+                            S.of(context).ReadLessButton,
                             style: TextStyle(color: Colors.blue, fontSize: 12),
                           ),
                         )
                       : Padding(
                           padding: const EdgeInsets.all(10),
-                          child: const Text(
-                            "Read more",
+                          child: Text(
+                            S.of(context).ReadMoreButton,
                             style: TextStyle(color: Colors.blue, fontSize: 12),
                           ),
                         )),
