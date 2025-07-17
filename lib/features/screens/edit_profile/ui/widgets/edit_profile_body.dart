@@ -19,6 +19,7 @@ import 'package:smart_cleaning_application/features/screens/edit_profile/logic/e
 import 'package:smart_cleaning_application/features/screens/edit_profile/logic/edit_profile_state.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/phone_number.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class EditProfileBody extends StatefulWidget {
@@ -253,28 +254,9 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                     hint: cubit.profileModel!.data!.email!,
                   ),
                   verticalSpace(15),
-                  CustomTextFormField(
-                    onlyRead: false,
+                  PhoneInputField(
                     controller: cubit.phoneController
-                      ..text = cubit.profileModel!.data!.phoneNumber!
-                          .replaceFirst('+966', ''),
-                    obscureText: false,
-                    keyboardType: TextInputType.phone,
-                    label: S.of(context).addUserText10,
-                    validator: (value) {
-                      if (!RegExp(r'^(?:[+0])?[0-9]{9}$').hasMatch(value!)) {
-                        return S.of(context).validationValidMobileNumber;
-                      }
-                      return null;
-                    },
-                    perfixIcon: Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 13, 5, 13),
-                      child: Text(
-                        '+966 |',
-                        style: TextStyle(color: Colors.black, fontSize: 14.sp),
-                      ),
-                    ),
-                    hint: cubit.profileModel!.data!.phoneNumber!,
+                      ..text = cubit.profileModel!.data!.phoneNumber!,
                   ),
                   verticalSpace(15),
                   CustomTextFormField(

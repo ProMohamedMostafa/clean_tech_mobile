@@ -17,6 +17,7 @@ import 'package:smart_cleaning_application/core/widgets/default_toast/default_to
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/phone_number.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/logic/add_user_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/logic/add_user_state.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
@@ -265,29 +266,8 @@ class _AddUserBodyState extends State<AddUserBody> {
                       S.of(context).addUserText10,
                       style: TextStyles.font16BlackRegular,
                     ),
-                    CustomTextFormField(
+                    PhoneInputField(
                       controller: cubit.phoneController,
-                      keyboardType: TextInputType.phone,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return S.of(context).validationPhoneNumber;
-                        } else if (!RegExp(r'(^(?:[+0])?[0-9]{9}$)')
-                            .hasMatch(value)) {
-                          return S.of(context).validationValidMobileNumber;
-                        }
-                        return null;
-                      },
-                      perfixIcon: Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 13, 5, 13),
-                        child: Text(
-                          '+966 |',
-                          style:
-                              TextStyle(color: Colors.black, fontSize: 14.sp),
-                        ),
-                      ),
-                      hint: S.of(context).hintPhoneNumber,
-                      obscureText: false,
-                      onlyRead: false,
                     ),
                     verticalSpace(10),
                     Row(

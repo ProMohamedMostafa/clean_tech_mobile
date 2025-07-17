@@ -57,7 +57,7 @@ class AddUserCubit extends Cubit<AddUserState> {
       "FirstName": firstNameController.text,
       "LastName": lastNameController.text,
       "Email": emailController.text,
-      "PhoneNumber": '+966${phoneController.text}',
+      "PhoneNumber": phoneController.text,
       "Password": passwordController.text,
       "PasswordConfirmation": passwordConfirmationController.text,
       "Image": imageFile,

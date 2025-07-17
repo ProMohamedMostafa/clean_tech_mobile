@@ -62,7 +62,7 @@ class EditUserCubit extends Cubit<EditUserState> {
           : emailController.text,
       "PhoneNumber": phoneController.text.isEmpty
           ? userDetailsModel!.data!.phoneNumber
-          : '+966${phoneController.text}',
+          : phoneController.text,
       "Password": passwordController.text,
       "PasswordConfirmation": passwordConfirmationController.text,
       "Birthdate": birthController.text.isEmpty

@@ -17,6 +17,7 @@ import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
+import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/phone_number.dart';
 import 'package:smart_cleaning_application/features/screens/user/edit_user/logic/edit_user_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/user/edit_user/logic/edit_user_state.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
@@ -256,27 +257,9 @@ class _EditUserBodyState extends State<EditUserBody> {
                     onlyRead: false,
                   ),
                   verticalSpace(15),
-                  CustomTextFormField(
+                  PhoneInputField(
                     controller: cubit.phoneController
-                      ..text = cubit.userDetailsModel!.data!.phoneNumber!
-                          .replaceFirst('+966', ''),
-                    keyboardType: TextInputType.phone,
-                    label: S.of(context).addUserText10,
-                    validator: (value) {
-                      if (!RegExp(r'^(?:[+0])?[0-9]{9}$').hasMatch(value!)) {
-                        return S.of(context).validationValidMobileNumber;
-                      }
-                      return null;
-                    },
-                    perfixIcon: Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 13, 5, 13),
-                      child: Text(
-                        '+966 |',
-                        style: TextStyle(color: Colors.black, fontSize: 14.sp),
-                      ),
-                    ),
-                    hint: cubit.userDetailsModel!.data!.phoneNumber!,
-                    onlyRead: false,
+                      ..text = cubit.userDetailsModel!.data!.phoneNumber!,
                   ),
                   verticalSpace(15),
                   CustomTextFormField(

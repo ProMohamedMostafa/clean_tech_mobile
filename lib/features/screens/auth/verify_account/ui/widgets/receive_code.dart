@@ -36,6 +36,7 @@ class _ReceiveCodeTextState extends State<ReceiveCodeText> {
   @override
   void initState() {
     super.initState();
+    start = 60;
     startTimer();
   }
 
@@ -59,8 +60,10 @@ class _ReceiveCodeTextState extends State<ReceiveCodeText> {
                 ),
                 InkWell(
                     onTap: () {
-                      start = 60;
-                      setState(() {});
+                      setState(() {
+                        start = 60;
+                        startTimer();
+                      });
                     },
                     child: Text(
                       S.of(context).resendButton,
