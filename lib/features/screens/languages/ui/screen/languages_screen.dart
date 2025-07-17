@@ -5,7 +5,6 @@ import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/src/app_cubit/app_cubit.dart';
-import 'package:smart_cleaning_application/src/app_cubit/app_states.dart';
 
 class LanguagesScreen extends StatefulWidget {
   const LanguagesScreen({super.key});
@@ -15,7 +14,12 @@ class LanguagesScreen extends StatefulWidget {
 }
 
 class _LanguagesScreenState extends State<LanguagesScreen> {
-  List<bool> isChecked = [false, false, false]; // Default selection
+  late String _selectedLanguage;
+  final List<Map<String, String>> _allLanguages = [
+    {'code': 'en', 'label': 'English'},
+    {'code': 'ar', 'label': 'العربية'},
+    {'code': 'ur', 'label': 'Urdu'},
+  ];
 
   @override
   void initState() {
@@ -23,76 +27,57 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
     _initializeLanguage();
   }
 
-  // Initialize the language selection based on saved language
   Future<void> _initializeLanguage() async {
-    // Get the saved language code
     final savedLanguage = await LanguageCacheHelper().getCachedLanguageCode();
-
-    // Update the `isChecked` list based on the saved language
     setState(() {
-      if (savedLanguage == 'en') {
-        isChecked = [true, false, false];
-      } else if (savedLanguage == 'ar') {
-        isChecked = [false, true, false];
-      } else if (savedLanguage == 'ur') {
-        isChecked = [false, false, true];
-      }
+      _selectedLanguage = savedLanguage;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Language'),
-        leading: CustomBackButton()
-      ),
-      body: BlocBuilder<AppCubit, AppStates>(
-        builder: (context, state) {
-          var appCubit = AppCubit.get(context);
+    final appCubit = context.read<AppCubit>();
 
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                InkWell(
-                  onTap: () {
-                    setState(() {
-                      isChecked = [true, false, false];
-                    });
-                    appCubit.changeLanguage('en');
-                  },
-                  child: _buildLanguageItem('English', isChecked[0]),
-                ),
-                Divider(),
-                Text(
-                  'Others',
-                  style: TextStyles.font16PrimSemiBold
-                      .copyWith(color: Colors.black),
-                ),
-                InkWell(
-                  onTap: () {
-                    setState(() {
-                      isChecked = [false, true, false];
-                    });
-                    appCubit.changeLanguage('ar');
-                  },
-                  child: _buildLanguageItem('العربية', isChecked[1]),
-                ),
-                InkWell(
-                  onTap: () {
-                    setState(() {
-                      isChecked = [false, false, true];
-                    });
-                    appCubit.changeLanguage('ur');
-                  },
-                  child: _buildLanguageItem('Urdu', isChecked[2]),
-                ),
-              ],
+    final currentLanguage =
+        _allLanguages.firstWhere((lang) => lang['code'] == _selectedLanguage);
+
+    final otherLanguages = _allLanguages
+        .where((lang) => lang['code'] != _selectedLanguage)
+        .toList();
+
+    return Scaffold(
+      appBar:
+          AppBar(title: const Text('Language'), leading: CustomBackButton()),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Selected language on top
+            InkWell(
+              onTap: () {},
+              child: _buildLanguageItem(currentLanguage['label']!, true),
             ),
-          );
-        },
+            const Divider(),
+            Text(
+              'Others',
+              style:
+                  TextStyles.font16PrimSemiBold.copyWith(color: Colors.black),
+            ),
+            ...otherLanguages.map((lang) => InkWell(
+                  onTap: () {
+                    setState(() {
+                      _selectedLanguage = lang['code']!;
+                    });
+                    appCubit.changeLanguage(lang['code']!);
+                  },
+                  child: _buildLanguageItem(
+                    lang['label']!,
+                    false,
+                  ),
+                )),
+          ],
+        ),
       ),
     );
   }
@@ -100,14 +85,14 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
   Widget _buildLanguageItem(String language, bool isSelected) {
     return ListTile(
       dense: true,
-      contentPadding: EdgeInsets.symmetric(horizontal: 5),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 5),
       leading: Text(
         language,
         style: TextStyles.font16BlackSemiBold,
       ),
       trailing: Container(
-        width: 22.w,
-        height: 22.h,
+        width: 22.r,
+        height: 22.r,
         decoration: BoxDecoration(
           color: isSelected
               ? Colors.transparent

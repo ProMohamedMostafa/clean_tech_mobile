@@ -16,7 +16,6 @@ import 'package:smart_cleaning_application/features/screens/settings/logic/setti
 import 'package:smart_cleaning_application/features/screens/settings/ui/widgets/list_tile_widget.dart';
 import 'package:smart_cleaning_application/features/screens/settings/ui/widgets/toggle_list_tile_widget.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
-import 'package:smart_cleaning_application/src/app_cubit/app_cubit.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../core/widgets/default_toast/default_toast.dart';
@@ -77,8 +76,8 @@ class SettingsBody extends StatelessWidget {
                           );
                         },
                         child: Container(
-                            width: 80.w,
-                            height: 80.h,
+                            width: 100.r,
+                            height: 100.r,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                             ),
@@ -163,17 +162,13 @@ class SettingsBody extends StatelessWidget {
                       cubit.toggleNotification();
                     }, S.of(context).settingTitle7, Icons.notifications_active,
                         cubit.isNotOpenNotif),
-                    toggleListTile(() {
-                      cubit.toggleDarkMode();
-                    }, S.of(context).settingTitle8, Icons.brightness_4_outlined,
-                        cubit.isNotDark),
                     ListTile(
                       onTap: () {
                         cubit.logout();
                       },
                       leading: Transform.flip(
                         flipX:
-                            context.read<AppCubit>().isArabic() ? false : true,
+                            cubit.isEnglish() ? true : false,
                         child: Icon(
                           Icons.logout_outlined,
                           size: 20.sp,

@@ -83,3 +83,4 @@ class CameraSelectedState extends TaskDetailsState {
   final XFile image;
   CameraSelectedState(this.image);
 }
+class RemoveSelectedFileState extends TaskDetailsState {}

@@ -254,16 +254,19 @@ class Users {
 }
 
 class Files {
+  int? id;
   String? path;
 
-  Files({this.path});
+  Files({this.id, this.path});
 
   Files.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     path = json['path'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
     data['path'] = path;
     return data;
   }
@@ -275,16 +278,16 @@ class Comments {
   String? comment;
   String? createdAt;
   String? image;
+  String? file;
 
-  List<Files>? files;
-
-  Comments(
-      {this.userName,
-      this.role,
-      this.comment,
-      this.createdAt,
-      this.image,
-      this.files});
+  Comments({
+    this.userName,
+    this.role,
+    this.comment,
+    this.createdAt,
+    this.image,
+    this.file,
+  });
 
   Comments.fromJson(Map<String, dynamic> json) {
     userName = json['userName'];
@@ -292,12 +295,7 @@ class Comments {
     comment = json['comment'];
     createdAt = json['createdAt'];
     image = json['image'];
-    if (json['files'] != null) {
-      files = <Files>[];
-      json['files'].forEach((v) {
-        files!.add(Files.fromJson(v));
-      });
-    }
+    file = json['file'];
   }
 
   Map<String, dynamic> toJson() {
@@ -307,9 +305,7 @@ class Comments {
     data['comment'] = comment;
     data['createdAt'] = createdAt;
     data['image'] = image;
-    if (files != null) {
-      data['files'] = files!.map((v) => v.toJson()).toList();
-    }
+    data['file'] = file;
     return data;
   }
 }

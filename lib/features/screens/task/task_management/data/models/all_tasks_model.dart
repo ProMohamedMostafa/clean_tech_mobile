@@ -108,7 +108,7 @@ class TaskData {
   String? endDate;
   String? startTime;
   String? endTime;
-  String? currentReading;
+  double? currentReading;
   String? readingAfter;
   String? organizationName;
   String? buildingName;
@@ -177,7 +177,8 @@ class TaskData {
     duration = json['duration'];
     started = json['started'];
     if (json['users'] != null) {
-      users = List<UserModel>.from(json['users'].map((v) => UserModel.fromJson(v)));
+      users =
+          List<UserModel>.from(json['users'].map((v) => UserModel.fromJson(v)));
     }
   }
 

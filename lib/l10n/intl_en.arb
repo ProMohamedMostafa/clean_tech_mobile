@@ -604,5 +604,6 @@
   "inSelect": "In",
   "outSelect": "Out",
   "assignButton": "Assign",
-  "noActivities": "There's no activities"
+  "noActivities": "There's no activities",
+  "loginDescription": "Login to access your Clean Tech\naccount"
 }

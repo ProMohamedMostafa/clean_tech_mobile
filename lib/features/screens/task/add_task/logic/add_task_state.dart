@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
@@ -39,6 +40,7 @@ class GetAllTasksErrorState extends AddTaskState {
   final String error;
   GetAllTasksErrorState(this.error);
 }
+
 //**************************************** */
 class GetOrganizationLoadingState extends AddTaskState {}
 
@@ -109,7 +111,6 @@ class GetPointErrorState extends AddTaskState {
   GetPointErrorState(this.error);
 }
 
-
 //**************************** */
 
 class AllUsersLoadingState extends AddTaskState {}
@@ -126,12 +127,14 @@ class AllUsersErrorState extends AddTaskState {
 }
 //***************************** */
 
-class ImageSelectedState extends AddTaskState {
-  final XFile image;
-  ImageSelectedState(this.image);
-}
-
 class CameraSelectedState extends AddTaskState {
   final XFile image;
   CameraSelectedState(this.image);
 }
+
+class FilesSelectedState extends AddTaskState {
+  final List<PlatformFile> files;
+  FilesSelectedState(this.files);
+}
+
+class RemoveSelectedFileState extends AddTaskState {}

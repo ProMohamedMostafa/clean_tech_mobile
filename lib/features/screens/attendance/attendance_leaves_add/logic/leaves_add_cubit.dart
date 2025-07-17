@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,7 +8,6 @@ import 'package:smart_cleaning_application/core/networking/api_constants/api_con
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_add/data/models/attendance_leaves_add_model.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_add/logic/leaves_add_state.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/gallary_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 
 class LeavesAddCubit extends Cubit<LeavesAddState> {
@@ -104,16 +104,20 @@ class LeavesAddCubit extends Cubit<LeavesAddState> {
     }
   }
 
-  GalleryModel? gellaryModel;
   XFile? image;
-  Future<void> galleryFile() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? selectedImage =
-        await picker.pickImage(source: ImageSource.gallery);
+  Future<void> pickSingleFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+    );
 
-    if (selectedImage != null) {
-      image = selectedImage;
+    if (result != null && result.files.single.path != null) {
+      image = XFile(result.files.single.path!);
       emit(ImageSelectedState(image!));
     }
+  }
+
+  void removeSelectedFile() {
+    image = null;
+    emit(RemoveSelectedFileState());
   }
 }

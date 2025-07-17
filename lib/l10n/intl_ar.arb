@@ -604,5 +604,6 @@
   "inSelect": "وارد",
   "outSelect": "صادر",
   "assignButton": "تعيين",
-  "noActivities": "لا توجد أنشطة"
+  "noActivities": "لا توجد أنشطة",
+  "loginDescription": "سجّل الدخول للوصول إلى حسابك في كلين تك"
 }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:open_file/open_file.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
@@ -224,7 +225,7 @@ class LeavesAddBody extends StatelessWidget {
                     Center(
                       child: ElevatedButton(
                         onPressed: () {
-                          cubit.galleryFile();
+                          cubit.pickSingleFile();
                         },
                         style: ElevatedButton.styleFrom(
                             shape: const CircleBorder(),
@@ -243,31 +244,74 @@ class LeavesAddBody extends StatelessWidget {
                     if (state is ImageSelectedState) ...[
                       Text(S.of(context).file,
                           style: TextStyles.font16BlackRegular),
-                      GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
+                      Stack(
+                        children: [
+                          GestureDetector(
+                            onTap: () async {
+                              final path = cubit.image!.path;
+                              final isPDF = path.toLowerCase().endsWith('.pdf');
+
+                              if (isPDF) {
+                                await OpenFile.open(path);
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
                                     builder: (contextt) => Scaffold(
-                                        appBar:
-                                            AppBar(leading: CustomBackButton()),
-                                        body: Center(
-                                            child: PhotoView(
-                                                imageProvider: FileImage(
-                                                    File(cubit.image!.path)),
-                                                backgroundDecoration:
-                                                    const BoxDecoration(
-                                                        color:
-                                                            Colors.white))))));
-                          },
-                          child: Container(
-                              height: 80,
-                              width: 80,
-                              clipBehavior: Clip.hardEdge,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.r)),
-                              child: Image.file(File(cubit.image!.path),
-                                  fit: BoxFit.cover)))
+                                      appBar:
+                                          AppBar(leading: CustomBackButton()),
+                                      body: Center(
+                                        child: PhotoView(
+                                          imageProvider: FileImage(File(path)),
+                                          backgroundDecoration:
+                                              const BoxDecoration(
+                                                  color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                            child: Builder(builder: (_) {
+                              final path = cubit.image!.path;
+                              final isPDF = path.toLowerCase().endsWith('.pdf');
+
+                              return Container(
+                                height: 80,
+                                width: 80,
+                                clipBehavior: Clip.hardEdge,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.r),
+                                  color: Colors.grey.shade200,
+                                ),
+                                child: isPDF
+                                    ? Icon(Icons.picture_as_pdf,
+                                        color: Colors.red, size: 40.sp)
+                                    : Image.file(File(path), fit: BoxFit.cover),
+                              );
+                            }),
+                          ),
+                          Positioned(
+                            top: 0,
+                            right: 0,
+                            child: GestureDetector(
+                              onTap: () {
+                                cubit.removeSelectedFile();
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.black.withOpacity(0.6),
+                                ),
+                                child: Icon(Icons.close,
+                                    size: 14, color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                     verticalSpace(20),
                     state is LeavesAddLoadingState
@@ -288,7 +332,8 @@ class LeavesAddBody extends StatelessWidget {
                                   }
                                 },
                                 color: AppColor.primaryColor,
-                                textStyles: TextStyles.font20Whitesemimedium))
+                                textStyles: TextStyles.font20Whitesemimedium)),
+                    verticalSpace(20),
                   ],
                 ),
               ),

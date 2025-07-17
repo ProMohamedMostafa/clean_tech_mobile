@@ -5,6 +5,7 @@ int? uId;
 String? isBoarding;
 String? ip;
 
+
 class SharedPrefKeys {
   static const String userToken = 'userToken';
   static const String userId = 'userId';

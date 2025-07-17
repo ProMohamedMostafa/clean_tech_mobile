@@ -17,7 +17,7 @@ Widget toggleListTile(
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 375),
-        height: 25.h,
+        height: 30.h,
         width: 50.w,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30.r),

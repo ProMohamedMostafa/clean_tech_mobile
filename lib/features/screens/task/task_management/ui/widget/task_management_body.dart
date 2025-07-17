@@ -27,7 +27,7 @@ class TaskManagementBody extends StatelessWidget {
     final cubit = context.read<TaskManagementCubit>();
 
     return Scaffold(
-      appBar: AppBar(title: Text('Tasks'), leading: CustomBackButton()),
+      appBar: AppBar(title: Text(S.of(context).tasks), leading: CustomBackButton()),
       floatingActionButton: role == 'Cleaner'
           ? SizedBox.shrink()
           : floatingActionButton(
@@ -188,12 +188,12 @@ class TaskManagementBody extends StatelessWidget {
         shrinkWrap: true,
         physics: BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
-        itemCount: cubit.tapList.length,
+        itemCount: cubit.getTapList(context).length,
         separatorBuilder: (context, index) => horizontalSpace(10),
         itemBuilder: (context, index) {
           final isSelected = cubit.selectedIndex == index;
           return GestureDetector(
-            onTap: () => cubit.changeTap(index),
+            onTap: () => cubit.changeTap(index,context),
             child: Container(
               height: 50.h,
               padding: EdgeInsets.symmetric(horizontal: 20),
@@ -207,7 +207,7 @@ class TaskManagementBody extends StatelessWidget {
               ),
               child: Center(
                 child: Text(
-                  cubit.tapList[index],
+                  cubit.getTapList(context)[index],
                   style: TextStyle(
                     fontSize: 14.sp,
                     color: isSelected ? Colors.white : AppColor.primaryColor,

@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/edit_profile/data/model/edit_profile_model.dart';
 import 'package:smart_cleaning_application/features/screens/edit_profile/logic/edit_profile_state.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/country_list_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/gallary_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/settings/data/model/profile_model.dart';
 
@@ -30,10 +30,11 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   final formKey = GlobalKey<FormState>();
   List<int> selectedShiftsIds = [];
   EditProfileModel? editProfileModel;
-  editProfile(String? image) async {
+
+  Future<void> editProfile() async {
     emit(EditProfileLoadingState());
 
-    Map<String, dynamic> formDataMap = {
+    final formDataMap = {
       "UserName": userNameController.text.isEmpty
           ? profileModel!.data!.userName
           : userNameController.text,
@@ -49,9 +50,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       "PhoneNumber": phoneController.text.isEmpty
           ? profileModel!.data!.phoneNumber
           : phoneController.text,
-      "Image": image != null && image.isNotEmpty
-          ? await MultipartFile.fromFile(image, filename: image.split('/').last)
-          : profileModel!.data!.image,
       "Birthdate": birthController.text.isEmpty
           ? profileModel!.data!.birthdate
           : birthController.text,
@@ -61,18 +59,35 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       "NationalityName": nationalityController.text.isEmpty
           ? profileModel!.data!.nationalityName
           : nationalityController.text,
-      "CountryName": nationalityController.text.isEmpty
+      "CountryName": countryController.text.isEmpty
           ? profileModel!.data!.countryName
           : countryController.text,
       "Gender": genderController.text.isEmpty
-          ? (profileModel!.data!.gender == "Male" ? "0" : "1")
+          ? profileModel!.data!.gender
           : genderIdController.text,
     };
+    if (image != null) {
+      final imageFile =
+          await MultipartFile.fromFile(image!.path, filename: image!.name);
+      formDataMap["Image"] = imageFile;
+    } else {
+      final imageUrl = profileModel!.data!.image;
+      final response = await http.get(Uri.parse(imageUrl!));
+      final fileName = imageUrl.split('/').last;
 
-    FormData formData = FormData.fromMap(formDataMap);
+      formDataMap["Image"] = MultipartFile.fromBytes(
+        response.bodyBytes,
+        filename: fileName,
+      );
+    }
+
+    final formData = FormData.fromMap(formDataMap);
+
     try {
-      final response =
-          await DioHelper.putData2(url: 'auth/profile/edit', data: formData);
+      final response = await DioHelper.putData2(
+        url: 'auth/profile/edit',
+        data: formData,
+      );
       editProfileModel = EditProfileModel.fromJson(response!.data);
       emit(EditProfileSuccessState(editProfileModel!));
     } catch (error) {
@@ -111,7 +126,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     });
   }
 
-  GalleryModel? gellaryModel;
   XFile? image;
   Future<void> galleryFile() async {
     final ImagePicker picker = ImagePicker();

@@ -37,3 +37,4 @@ class ImageSelectedState extends LeavesAddState {
   final XFile image;
   ImageSelectedState(this.image);
 }
+class RemoveSelectedFileState extends LeavesAddState {}

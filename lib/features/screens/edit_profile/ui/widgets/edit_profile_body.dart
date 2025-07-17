@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
@@ -14,7 +15,6 @@ import 'package:smart_cleaning_application/core/widgets/default_button/default_e
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
-import 'package:smart_cleaning_application/features/layout/main_layout/logic/bottom_navbar_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/edit_profile/logic/edit_profile_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/edit_profile/logic/edit_profile_state.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
@@ -45,15 +45,13 @@ class _EditProfileBodyState extends State<EditProfileBody> {
           listener: (context, state) {
         if (state is EditProfileSuccessState) {
           toast(text: state.editProfileModel.message!, isSuccess: true);
-          context
-              .read<BottomNavbarCubit>()
-              .changeBottomNavbarWithRoute(context, 3);
+          context.popWithTrueResult();
         }
         if (state is EditProfileErrorState) {
           toast(text: state.error, isSuccess: false);
         }
       }, builder: (context, state) {
-        if (context.read<EditProfileCubit>().profileModel?.data! == null) {
+        if (cubit.profileModel?.data! == null) {
           return Loading();
         }
         return SingleChildScrollView(
@@ -104,8 +102,8 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                             );
                           },
                           child: Container(
-                            width: 100.w,
-                            height: 100.h,
+                            width: 100.r,
+                            height: 100.r,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               border: Border.all(
@@ -246,7 +244,7 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                     keyboardType: TextInputType.emailAddress,
                     label: S.of(context).addUserText3,
                     validator: (value) {
-                      if (!RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                      if (!RegExp(r"^[a-zA-Z0-9._]+@[a-zA-Z0-9._]+\.[a-zA-Z]+$")
                           .hasMatch(value!)) {
                         return S.of(context).validationValidEmail;
                       }
@@ -414,12 +412,7 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                                             title: 'edit',
                                             body: 'profile',
                                             onPressed: () {
-                                              context
-                                                  .read<EditProfileCubit>()
-                                                  .editProfile(context
-                                                      .read<EditProfileCubit>()
-                                                      .image
-                                                      ?.path);
+                                              cubit.editProfile();
                                             });
                                       });
                                 }

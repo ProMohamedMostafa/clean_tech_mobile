@@ -83,7 +83,7 @@ class UploadFilesBottomDialog {
           children: [
             ElevatedButton(
               onPressed: () {
-                cubit.galleryFile();
+                cubit.pickFiles();
                 context.pop();
               },
               style: ElevatedButton.styleFrom(

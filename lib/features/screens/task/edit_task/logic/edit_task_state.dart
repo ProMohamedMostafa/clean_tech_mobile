@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
@@ -143,14 +144,18 @@ class AllUsersErrorState extends EditTaskState {
   AllUsersErrorState(this.error);
 }
 
-//************************** */
-
-class ImageSelectedState extends EditTaskState {
-  final XFile image;
-  ImageSelectedState(this.image);
-}
+//***************************** */
 
 class CameraSelectedState extends EditTaskState {
   final XFile image;
   CameraSelectedState(this.image);
 }
+
+class FilesSelectedState extends EditTaskState {
+  final List<PlatformFile> files;
+  FilesSelectedState(this.files);
+}
+
+class RemoveSelectedFileState extends EditTaskState {}
+class RemoveExistingFileState extends EditTaskState {}
+class FilesInitializedState extends EditTaskState {}

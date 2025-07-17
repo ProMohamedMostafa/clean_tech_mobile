@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,7 +10,6 @@ import 'package:smart_cleaning_application/core/networking/api_constants/api_con
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/gallary_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/data/models/edit_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/logic/edit_task_state.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/all_tasks_model.dart';
@@ -54,15 +56,26 @@ class EditTaskCubit extends Cubit<EditTaskState> {
 
   List<int>? selectedUsersIds = [];
   EditTaskModel? editTaskModel;
-  editTask(int id, String? image) async {
+  editTask(int id) async {
     emit(EditTaskLoadingState());
-    MultipartFile? imageFile;
-    if (image != null && image.isNotEmpty) {
-      imageFile = await MultipartFile.fromFile(
-        image,
-        filename: image.split('/').last,
-      );
+    List<MultipartFile> multipartNewFiles = await Future.wait(
+      selectedFiles.map((file) async {
+        return MultipartFile.fromFile(
+          file.path!,
+          filename: file.name,
+        );
+      }),
+    );
+
+    List<dynamic> allFilesToSend = [];
+
+    for (var file in existingFiles) {
+      if (file.path != null) {
+        allFilesToSend.add(file.path);
+      }
     }
+
+    allFilesToSend.addAll(multipartNewFiles);
     Map<String, dynamic> formDataMap = {
       "Id": id,
       "Title": taskTitleController.text.isEmpty
@@ -101,9 +114,9 @@ class EditTaskCubit extends Cubit<EditTaskState> {
       "UserIds": selectedUsersIds ??
           taskDetailsModel?.data?.users?.map((user) => user.id ?? 0).toList() ??
           [],
-      "Files": [
-        imageFile ?? taskDetailsModel!.data!.files,
-      ],
+      "Files": allFilesToSend,
+      "DeletedFileId": deletedFileIds,
+      "DeletedFilePath": deletedFilePaths,
     };
 
     FormData formData = FormData.fromMap(formDataMap);
@@ -122,6 +135,7 @@ class EditTaskCubit extends Cubit<EditTaskState> {
     emit(GetTaskDetailsLoadingState());
     DioHelper.getData(url: "tasks/$id").then((value) {
       taskDetailsModel = TaskDetailsModel.fromJson(value!.data);
+      clear();
       emit(GetTaskDetailsSuccessState(taskDetailsModel!));
     }).catchError((error) {
       emit(GetTaskDetailsErrorState(error.toString()));
@@ -234,16 +248,22 @@ class EditTaskCubit extends Cubit<EditTaskState> {
     });
   }
 
-  GalleryModel? gellaryModel;
+  List<PlatformFile> selectedFiles = [];
   XFile? image;
-  Future<void> galleryFile() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? selectedImage =
-        await picker.pickImage(source: ImageSource.gallery);
+  Future<void> pickFiles() async {
+    final result = await FilePicker.platform.pickFiles(
+      allowMultiple: true,
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'jpeg', 'png', 'pdf', 'webp'],
+    );
 
-    if (selectedImage != null) {
-      image = selectedImage;
-      emit(ImageSelectedState(image!));
+    if (result != null && result.files.isNotEmpty) {
+      for (var file in result.files) {
+        if (!selectedFiles.any((f) => f.path == file.path)) {
+          selectedFiles.add(file);
+        }
+      }
+      emit(FilesSelectedState(List.from(selectedFiles)));
     }
   }
 
@@ -253,9 +273,54 @@ class EditTaskCubit extends Cubit<EditTaskState> {
         await cameraPicker.pickImage(source: ImageSource.camera);
 
     if (selectedImage != null) {
-      image = selectedImage;
-      emit(CameraSelectedState(image!));
+      final file = File(selectedImage.path);
+      final fileBytes = await file.readAsBytes();
+
+      final platformFile = PlatformFile(
+        name: selectedImage.name,
+        path: selectedImage.path,
+        size: fileBytes.length,
+        bytes: fileBytes,
+      );
+
+      if (!selectedFiles.any((f) => f.path == platformFile.path)) {
+        selectedFiles.add(platformFile);
+        emit(FilesSelectedState(List.from(selectedFiles)));
+      }
     }
+  }
+
+  void removeSelectedFile(int index) {
+    selectedFiles.removeAt(index);
+    emit(RemoveSelectedFileState());
+  }
+
+  List<Files> existingFiles = [];
+  List<int> deletedFileIds = [];
+  List<String> deletedFilePaths = [];
+
+  void initializeFiles() {
+    existingFiles = taskDetailsModel?.data?.files ?? [];
+    emit(FilesInitializedState());
+  }
+
+  void removeExistingFile(int index) {
+    final removedFile = existingFiles[index];
+    if (removedFile.id != null) {
+      deletedFileIds.add(removedFile.id!);
+    }
+    if (removedFile.path != null) {
+      deletedFilePaths.add(removedFile.path!);
+    }
+
+    existingFiles.removeAt(index);
+    emit(RemoveExistingFileState());
+  }
+
+  void clear() {
+    deletedFileIds.clear();
+    deletedFilePaths.clear();
+    selectedFiles.clear();
   }
 
   final List<String> priority = ["Low", "Medium", "High"];

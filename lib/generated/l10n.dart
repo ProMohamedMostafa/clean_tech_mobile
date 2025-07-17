@@ -4768,6 +4768,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Login to access your Clean Tech\naccount`
+  String get loginDescription {
+    return Intl.message(
+      'Login to access your Clean Tech\naccount',
+      name: 'loginDescription',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

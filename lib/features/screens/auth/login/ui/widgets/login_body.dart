@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
@@ -10,9 +11,9 @@ class LoginBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          body: SingleChildScrollView(
+    return Scaffold(
+      body: SafeArea(
+          child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -31,8 +32,8 @@ class LoginBody extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 20),
                   child: Image.asset(
                     'assets/images/clean.png',
-                    height: 40,
-                    width: 120,
+                    height: 40.h,
+                    width: 120.w,
                   ),
                 )
               ],
@@ -41,11 +42,11 @@ class LoginBody extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Text(
-                'Login to access your Clean Tech\naccount',
+                S.of(context).loginDescription,
                 style: TextStyles.font14GreyRegular,
               ),
             ),
-            verticalSpace(24),
+            verticalSpace(40),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: const EmailAndPassword(),

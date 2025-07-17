@@ -20,9 +20,10 @@ class OnBoardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AppCubit, AppStates>(
+    return BlocConsumer<AppCubit, AppStates>(
+      listener: (context, state) {},
       builder: (context, state) {
-        final cubit = context.read<AppCubit>();
+        final cubit = context.watch<AppCubit>();
         return Scaffold(
           backgroundColor: Colors.white,
           body: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -39,48 +40,50 @@ class OnBoardingScreen extends StatelessWidget {
                   children: [
                     Align(
                       alignment: Alignment.topRight,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            textDirection: TextDirection.ltr,
-                            Icons.language,
-                            color: AppColor.primaryColor,
-                            size: 20.sp,
-                          ),
-                          horizontalSpace(4),
-                          DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              padding: EdgeInsets.zero,
-                              value: cubit.locale.toString(),
-                              dropdownColor: Colors.white,
-                              borderRadius: BorderRadius.circular(12.r),
-                              icon: SizedBox.shrink(),
-                              style: TextStyles.font14Primarybold.copyWith(
-                                color: AppColor.primaryColor,
-                              ),
-                              onChanged: (String? newLang) {
-                                if (newLang != null) {
-                                  cubit.changeLanguage(newLang);
-                                }
-                              },
-                              items: [
-                                DropdownMenuItem(
-                                  value: 'en',
-                                  child: Text('English'),
-                                ),
-                                DropdownMenuItem(
-                                  value: 'ar',
-                                  child: Text('عربي'),
-                                ),
-                                DropdownMenuItem(
-                                  value: 'ur',
-                                  child: Text('اردو'),
-                                ),
-                              ],
+                      child: Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.language,
+                              color: AppColor.primaryColor,
+                              size: 20.sp,
                             ),
-                          ),
-                        ],
+                            horizontalSpace(4),
+                            DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                padding: EdgeInsets.zero,
+                                value: cubit.locale.languageCode,
+                                dropdownColor: Colors.white,
+                                borderRadius: BorderRadius.circular(12.r),
+                                icon: SizedBox.shrink(),
+                                style: TextStyles.font14Primarybold.copyWith(
+                                  color: AppColor.primaryColor,
+                                ),
+                                onChanged: (String? newLang) {
+                                  if (newLang != null) {
+                                    cubit.changeLanguage(newLang);
+                                  }
+                                },
+                                items: [
+                                  DropdownMenuItem(
+                                    value: 'en',
+                                    child: Text('English'),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: 'ar',
+                                    child: Text('عربي'),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: 'ur',
+                                    child: Text('اردو'),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     CarouselSlider(

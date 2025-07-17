@@ -103,8 +103,13 @@ class _ProfileScreenState extends State<ProfileScreen>
             ),
           ),
           IconButton(
-              onPressed: () {
-                context.pushNamed(Routes.editProfileScreen, arguments: uId);
+              onPressed: () async {
+                final result = await context.pushNamed(Routes.editProfileScreen,
+                    arguments: uId);
+
+                if (result == true) {
+                  cubit.getUserProfileDetails();
+                }
               },
               icon: Icon(
                 Icons.edit,
@@ -158,8 +163,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                             );
                           },
                           child: Container(
-                              width: 80.w,
-                              height: 80.h,
+                              width: 100.r,
+                              height: 100.r,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                               ),

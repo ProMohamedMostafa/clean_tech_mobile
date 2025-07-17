@@ -25,6 +25,7 @@ import 'package:smart_cleaning_application/features/screens/task/edit_task/logic
 import 'package:smart_cleaning_application/features/screens/task/edit_task/logic/edit_task_state.dart';
 import 'package:smart_cleaning_application/features/screens/task/edit_task/ui/widget/upload_files_dialog.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import '../../../../../../core/helpers/constants/constants.dart';
 
 class EditTaskBody extends StatefulWidget {
@@ -44,6 +45,9 @@ class _EditTaskBodyState extends State<EditTaskBody> {
             title: Text(S.of(context).edit_task), leading: CustomBackButton()),
         body: BlocConsumer<EditTaskCubit, EditTaskState>(
           listener: (context, state) {
+            if (state is GetTaskDetailsSuccessState) {
+              cubit.initializeFiles();
+            }
             if (state is EditTaskSuccessState) {
               toast(text: state.editTaskModel.message!, isSuccess: true);
               context.popWithTrueResult();
@@ -504,10 +508,8 @@ class _EditTaskBodyState extends State<EditTaskBody> {
 
                                             if (selectedDate != null &&
                                                 context.mounted) {
-                                              context
-                                                  .read<EditTaskCubit>()
-                                                  .startDateController
-                                                  .text = selectedDate;
+                                              cubit.startDateController.text =
+                                                  selectedDate;
                                             }
                                           },
                                           keyboardType: TextInputType.none,
@@ -538,10 +540,8 @@ class _EditTaskBodyState extends State<EditTaskBody> {
 
                                             if (selectedDate != null &&
                                                 context.mounted) {
-                                              context
-                                                  .read<EditTaskCubit>()
-                                                  .endDateController
-                                                  .text = selectedDate;
+                                              cubit.endDateController.text =
+                                                  selectedDate;
                                             }
                                           },
                                           keyboardType: TextInputType.none,
@@ -578,10 +578,8 @@ class _EditTaskBodyState extends State<EditTaskBody> {
 
                                             if (selectedTime != null &&
                                                 context.mounted) {
-                                              context
-                                                  .read<EditTaskCubit>()
-                                                  .startTimeController
-                                                  .text = selectedTime;
+                                              cubit.startTimeController.text =
+                                                  selectedTime;
                                             }
                                           },
                                           keyboardType: TextInputType.none,
@@ -612,10 +610,8 @@ class _EditTaskBodyState extends State<EditTaskBody> {
 
                                             if (selectedTime != null &&
                                                 context.mounted) {
-                                              context
-                                                  .read<EditTaskCubit>()
-                                                  .endTimeController
-                                                  .text = selectedTime;
+                                              cubit.endTimeController.text =
+                                                  selectedTime;
                                             }
                                           },
                                           keyboardType: TextInputType.none,
@@ -737,121 +733,229 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                         ))
                                   ],
                                 ),
-                                if (context
-                                    .read<EditTaskCubit>()
-                                    .taskDetailsModel!
-                                    .data!
-                                    .files!
-                                    .isNotEmpty)
+                                if (cubit.existingFiles.isNotEmpty)
                                   SizedBox(
-                                    height: 80,
+                                    height: 80.h,
                                     child: ListView.builder(
                                       scrollDirection: Axis.horizontal,
                                       itemCount: cubit.taskDetailsModel!.data!
                                           .files!.length,
                                       itemBuilder: (context, index) {
-                                        final file = context
-                                            .read<EditTaskCubit>()
-                                            .taskDetailsModel!
-                                            .data!
-                                            .files![index];
-                                        return Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 5.h, horizontal: 10.w),
-                                          child: Container(
-                                            height: 70.h,
-                                            width: 70.w,
-                                            clipBehavior: Clip.hardEdge,
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                color: Colors.black12,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(10.r),
-                                            ),
-                                            child: Image.network(
-                                              "${file.path}",
-                                              fit: BoxFit.cover,
-                                              loadingBuilder:
-                                                  (BuildContext context,
-                                                      Widget child,
-                                                      ImageChunkEvent?
-                                                          loadingProgress) {
-                                                if (loadingProgress == null) {
-                                                  return child;
-                                                }
-                                                return Center(
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    value: loadingProgress
-                                                                .expectedTotalBytes !=
-                                                            null
-                                                        ? loadingProgress
-                                                                .cumulativeBytesLoaded /
-                                                            (loadingProgress
-                                                                    .expectedTotalBytes ??
-                                                                1)
-                                                        : null,
+                                        final file = cubit.taskDetailsModel!
+                                            .data!.files![index];
+                                        final filePath = file.path ?? '';
+                                        final isPDF = filePath
+                                            .toLowerCase()
+                                            .endsWith('.pdf');
+
+                                        return Stack(
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (_) => Scaffold(
+                                                      appBar: AppBar(
+                                                          leading:
+                                                              CustomBackButton()),
+                                                      body: Center(
+                                                        child: isPDF
+                                                            ? SfPdfViewer
+                                                                .network(
+                                                                    filePath)
+                                                            : PhotoView(
+                                                                imageProvider:
+                                                                    NetworkImage(
+                                                                        filePath),
+                                                                errorBuilder:
+                                                                    (context,
+                                                                        error,
+                                                                        stackTrace) {
+                                                                  return Image
+                                                                      .asset(
+                                                                    'assets/images/noImage.png',
+                                                                    fit: BoxFit
+                                                                        .fill,
+                                                                  );
+                                                                },
+                                                                backgroundDecoration:
+                                                                    const BoxDecoration(
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                              ),
+                                                      ),
+                                                    ),
                                                   ),
                                                 );
                                               },
-                                              errorBuilder:
-                                                  (context, error, stackTrace) {
-                                                return Image.asset(
-                                                  'assets/images/noImage.png',
-                                                  fit: BoxFit.fill,
-                                                );
-                                              },
+                                              child: Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 5.h,
+                                                    horizontal: 10.w),
+                                                child: Container(
+                                                  height: 70.h,
+                                                  width: 70.w,
+                                                  clipBehavior: Clip.hardEdge,
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: Colors.black12),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10.r),
+                                                  ),
+                                                  child: isPDF
+                                                      ? Icon(
+                                                          Icons.picture_as_pdf,
+                                                          color: Colors.red,
+                                                          size: 40.sp)
+                                                      : Image.network(
+                                                          filePath,
+                                                          fit: BoxFit.fill,
+                                                          errorBuilder:
+                                                              (context, error,
+                                                                  stackTrace) {
+                                                            return Image.asset(
+                                                              'assets/images/noImage.png',
+                                                              fit: BoxFit.fill,
+                                                            );
+                                                          },
+                                                        ),
+                                                ),
+                                              ),
                                             ),
-                                          ),
+                                            Positioned(
+                                              top: 0,
+                                              right: 0,
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  cubit.removeExistingFile(
+                                                      index);
+                                                },
+                                                child: Container(
+                                                  padding: EdgeInsets.all(4),
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: Colors.black
+                                                        .withOpacity(0.6),
+                                                  ),
+                                                  child: Icon(Icons.close,
+                                                      size: 14,
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         );
                                       },
                                     ),
                                   ),
                                 verticalSpace(20),
-                                (state is ImageSelectedState ||
-                                        state is CameraSelectedState)
-                                    ? GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (contextt) => Scaffold(
-                                                appBar: AppBar(
-                                                  leading: CustomBackButton(),
+                                if (cubit.selectedFiles.isNotEmpty)
+                                  SizedBox(
+                                    height: 80.h,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: cubit.selectedFiles.length,
+                                      itemBuilder: (context, index) {
+                                        final file = cubit.selectedFiles[index];
+                                        final isPDF =
+                                            file.extension?.toLowerCase() ==
+                                                'pdf';
+
+                                        return Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 5.w),
+                                          child: Stack(
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (_) => Scaffold(
+                                                        appBar: AppBar(
+                                                            leading:
+                                                                CustomBackButton()),
+                                                        body: Center(
+                                                          child: isPDF
+                                                              ? SfPdfViewer.file(
+                                                                  File(file
+                                                                      .path!))
+                                                              : PhotoView(
+                                                                  imageProvider:
+                                                                      FileImage(
+                                                                          File(file
+                                                                              .path!)),
+                                                                  backgroundDecoration:
+                                                                      const BoxDecoration(
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ),
+                                                                ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                child: Container(
+                                                  width: 80.w,
+                                                  height: 80.h,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10.r),
+                                                    border: Border.all(
+                                                        color: Colors
+                                                            .grey.shade300),
+                                                  ),
+                                                  clipBehavior: Clip.hardEdge,
+                                                  child: isPDF
+                                                      ? Icon(
+                                                          Icons.picture_as_pdf,
+                                                          color: Colors.red,
+                                                          size: 40.sp)
+                                                      : Image.file(
+                                                          File(file.path!),
+                                                          fit: BoxFit.cover,
+                                                          errorBuilder:
+                                                              (_, __, ___) {
+                                                            return Image.asset(
+                                                                'assets/images/noImage.png');
+                                                          },
+                                                        ),
                                                 ),
-                                                body: Center(
-                                                  child: PhotoView(
-                                                    imageProvider: FileImage(
-                                                      File(context
-                                                          .read<EditTaskCubit>()
-                                                          .image!
-                                                          .path),
+                                              ),
+                                              Positioned(
+                                                top: 0,
+                                                right: 0,
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    cubit.removeSelectedFile(
+                                                        index);
+                                                  },
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(4),
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: Colors.black
+                                                          .withOpacity(0.6),
                                                     ),
-                                                    backgroundDecoration:
-                                                        const BoxDecoration(
-                                                      color: Colors.white,
-                                                    ),
+                                                    child: Icon(Icons.close,
+                                                        size: 14,
+                                                        color: Colors.white),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                          );
-                                        },
-                                        child: Container(
-                                          height: 80,
-                                          width: 80,
-                                          clipBehavior: Clip.hardEdge,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.r)),
-                                          child: Image.file(
-                                            File(cubit.image!.path),
-                                            fit: BoxFit.cover,
+                                            ],
                                           ),
-                                        ),
-                                      )
-                                    : const SizedBox.shrink(),
+                                        );
+                                      },
+                                    ),
+                                  )
+                                else
+                                  const SizedBox.shrink(),
                                 verticalSpace(20),
                                 state is EditTaskLoadingState
                                     ? Loading()
@@ -859,10 +963,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                         child: DefaultElevatedButton(
                                             name: S.of(context).editButton,
                                             onPressed: () {
-                                              if (context
-                                                  .read<EditTaskCubit>()
-                                                  .formKey
-                                                  .currentState!
+                                              if (cubit.formKey.currentState!
                                                   .validate()) {
                                                 showDialog(
                                                     context: context,
@@ -879,9 +980,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                                                 .read<
                                                                     EditTaskCubit>()
                                                                 .editTask(
-                                                                    widget.id,
-                                                                    cubit.image
-                                                                        ?.path);
+                                                                    widget.id);
                                                           });
                                                     });
                                               }

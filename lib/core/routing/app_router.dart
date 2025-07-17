@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/features/layout/ip_screen/logic/cubit/ip_cubit.dart';
 import 'package:smart_cleaning_application/features/layout/ip_screen/ui/screen/ip_screen.dart';
+import 'package:smart_cleaning_application/features/layout/main_layout/logic/bottom_navbar_cubit.dart';
 import 'package:smart_cleaning_application/features/layout/main_layout/ui/screen/main_layout.dart';
 import 'package:smart_cleaning_application/features/layout/splash/splash_screen.dart';
 import 'package:smart_cleaning_application/features/screens/activity/logic/activity_cubit.dart';
@@ -173,7 +174,10 @@ class AppRouter {
         );
       case Routes.mainLayoutScreen:
         return MaterialPageRoute(
-          builder: (_) => const MainLayout(),
+          builder: (_) => BlocProvider(
+            create: (context) => BottomNavbarCubit(),
+            child: const MainLayout(),
+          ),
         );
       case Routes.languageScreen:
         return MaterialPageRoute(

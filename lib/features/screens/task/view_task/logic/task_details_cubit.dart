@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/gallary_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/delete_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/view_task/data/model/change_task_status.dart';
@@ -73,7 +73,7 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
     Map<String, dynamic> formDataMap = {
       "TaskId": taskId,
       "Comment": commentController.text,
-      "Files": imageFile,
+      "File": imageFile,
     };
     FormData formData = FormData.fromMap(formDataMap);
     try {
@@ -87,15 +87,14 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
     }
   }
 
-  GalleryModel? gellaryModel;
   XFile? image;
-  Future<void> galleryFile() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? selectedImage =
-        await picker.pickImage(source: ImageSource.gallery);
+  Future<void> pickSingleFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+    );
 
-    if (selectedImage != null) {
-      image = selectedImage;
+    if (result != null && result.files.single.path != null) {
+      image = XFile(result.files.single.path!);
       emit(ImageSelectedState(image!));
     }
   }
@@ -109,6 +108,11 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
       image = selectedImage;
       emit(CameraSelectedState(image!));
     }
+  }
+
+  void removeSelectedFile() {
+    image = null;
+    emit(RemoveSelectedFileState());
   }
 
   final List<String> priority = ["High", "Medium", "Low"];

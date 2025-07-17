@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:smart_cleaning_application/core/helpers/regx_validations/regx_validations.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
@@ -13,8 +14,6 @@ import 'package:smart_cleaning_application/features/screens/provider/provider_ma
 import 'package:smart_cleaning_application/features/screens/user/edit_user/data/model/edit_model.dart';
 import 'package:smart_cleaning_application/features/screens/user/edit_user/logic/edit_user_state.dart';
 import 'package:smart_cleaning_application/features/screens/user/user_details/data/models/user_details_model.dart';
-
-import '../../../integrations/data/models/gallary_model.dart';
 
 class EditUserCubit extends Cubit<EditUserState> {
   EditUserCubit() : super(EditUserInitialState());
@@ -44,30 +43,9 @@ class EditUserCubit extends Cubit<EditUserState> {
   final formKey = GlobalKey<FormState>();
 
   EditModel? editModel;
-  editUser(int? id, String? image) async {
+  editUser(int? id) async {
     emit(EditUserLoadingState());
-    int getRoleId(String role) {
-      switch (role.toLowerCase()) {
-        case 'admin':
-          return 1;
-        case 'manager':
-          return 2;
-        case 'supervisor':
-          return 3;
-        case 'cleaner':
-          return 4;
-        default:
-          return -1;
-      }
-    }
 
-    MultipartFile? imageFile;
-    if (image != null && image.isNotEmpty) {
-      imageFile = await MultipartFile.fromFile(
-        image,
-        filename: image.split('/').last,
-      );
-    }
     Map<String, dynamic> formDataMap = {
       "Id": id,
       "UserName": userNameController.text.isEmpty
@@ -87,7 +65,6 @@ class EditUserCubit extends Cubit<EditUserState> {
           : '+966${phoneController.text}',
       "Password": passwordController.text,
       "PasswordConfirmation": passwordConfirmationController.text,
-      "Image": imageFile ?? userDetailsModel!.data!.image,
       "Birthdate": birthController.text.isEmpty
           ? userDetailsModel!.data!.birthdate
           : birthController.text,
@@ -107,14 +84,30 @@ class EditUserCubit extends Cubit<EditUserState> {
           ? userDetailsModel!.data!.providerId
           : providerIdController.text,
       "Gender": genderController.text.isEmpty
-          ? (userDetailsModel!.data!.gender == "Male" ? "0" : "1")
+          ? userDetailsModel!.data!.genderId
           : genderIdController.text,
       "RoleId": roleController.text.isEmpty
-          ? getRoleId(userDetailsModel!.data!.role!)
+          ? userDetailsModel!.data!.roleId
           : roleIdController.text,
     };
 
+    if (image != null) {
+      final imageFile =
+          await MultipartFile.fromFile(image!.path, filename: image!.name);
+      formDataMap["Image"] = imageFile;
+    } else {
+      final imageUrl = userDetailsModel!.data!.image;
+      final response = await http.get(Uri.parse(imageUrl!));
+      final fileName = imageUrl.split('/').last;
+
+      formDataMap["Image"] = MultipartFile.fromBytes(
+        response.bodyBytes,
+        filename: fileName,
+      );
+    }
+
     FormData formData = FormData.fromMap(formDataMap);
+
     try {
       final response = await DioHelper.putData2(
           url: ApiConstants.editUserUrl, data: formData);
@@ -219,7 +212,6 @@ class EditUserCubit extends Cubit<EditUserState> {
     emit(PasswordValidationChangedState());
   }
 
-  GalleryModel? gellaryModel;
   XFile? image;
   Future<void> galleryFile() async {
     final ImagePicker picker = ImagePicker();

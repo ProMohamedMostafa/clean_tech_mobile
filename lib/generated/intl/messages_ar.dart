@@ -413,6 +413,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "limitBody": MessageLookupByLibrary.simpleMessage("الحد"),
     "line": MessageLookupByLibrary.simpleMessage("خط"),
     "loginButton": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
+    "loginDescription": MessageLookupByLibrary.simpleMessage(
+      "سجّل الدخول للوصول إلى حسابك في كلين تك",
+    ),
     "loginMessage": MessageLookupByLibrary.simpleMessage(
       "سجل الدخول للوصول إلى حساب Clean Tech",
     ),

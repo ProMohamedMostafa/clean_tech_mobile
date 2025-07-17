@@ -1,11 +1,14 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multi_dropdown/multi_dropdown.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/gallary_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/data/models/create_task_model.dart';
@@ -52,15 +55,17 @@ class AddTaskCubit extends Cubit<AddTaskState> {
 
   List<int>? selectedUsersIds = [];
   CreateTaskModel? createTaskModel;
-  addTask({String? image}) async {
+  addTask() async {
     emit(AddTaskLoadingState());
-    MultipartFile? imageFile;
-    if (image != null && image.isNotEmpty) {
-      imageFile = await MultipartFile.fromFile(
-        image,
-        filename: image.split('/').last,
-      );
-    }
+    List<MultipartFile> multipartFiles = await Future.wait(
+      selectedFiles.map((file) async {
+        return await MultipartFile.fromFile(
+          file.path!,
+          filename: file.name,
+        );
+      }),
+    );
+
     Map<String, dynamic> formDataMap = {
       "Title": taskTitleController.text,
       "Description": descriptionController.text,
@@ -74,7 +79,7 @@ class AddTaskCubit extends Cubit<AddTaskState> {
       "PointId": pointIdController.text,
       "ParentId": parentIdTaskController.text,
       "UserIds": selectedUsersIds,
-      "Files": imageFile,
+      "Files": multipartFiles,
     };
 
     FormData formData = FormData.fromMap(formDataMap);
@@ -93,7 +98,8 @@ class AddTaskCubit extends Cubit<AddTaskState> {
   List<TaskData> taskData = [TaskData(title: 'No tasks available')];
   getAllTasks() {
     emit(GetAllTasksLoadingState());
-    DioHelper.getData(url: "tasks/pagination").then((value) {
+    DioHelper.getData(url: "tasks/pagination", query: {'CreatedBy': uId})
+        .then((value) {
       allTasksModel = AllTasksModel.fromJson(value!.data);
       taskData =
           allTasksModel?.data?.data ?? [TaskData(title: 'No tasks available')];
@@ -195,16 +201,24 @@ class AddTaskCubit extends Cubit<AddTaskState> {
     });
   }
 
-  GalleryModel? gellaryModel;
-  XFile? image;
-  Future<void> galleryFile() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? selectedImage =
-        await picker.pickImage(source: ImageSource.gallery);
+  List<PlatformFile> selectedFiles = [];
 
-    if (selectedImage != null) {
-      image = selectedImage;
-      emit(ImageSelectedState(image!));
+  XFile? image;
+
+  Future<void> pickFiles() async {
+    final result = await FilePicker.platform.pickFiles(
+      allowMultiple: true,
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'jpeg', 'png', 'pdf', 'webp'],
+    );
+
+    if (result != null && result.files.isNotEmpty) {
+      for (var file in result.files) {
+        if (!selectedFiles.any((f) => f.path == file.path)) {
+          selectedFiles.add(file);
+        }
+      }
+      emit(FilesSelectedState(List.from(selectedFiles)));
     }
   }
 
@@ -214,9 +228,26 @@ class AddTaskCubit extends Cubit<AddTaskState> {
         await cameraPicker.pickImage(source: ImageSource.camera);
 
     if (selectedImage != null) {
-      image = selectedImage;
-      emit(CameraSelectedState(image!));
+      final file = File(selectedImage.path);
+      final fileBytes = await file.readAsBytes();
+
+      final platformFile = PlatformFile(
+        name: selectedImage.name,
+        path: selectedImage.path,
+        size: fileBytes.length,
+        bytes: fileBytes,
+      );
+
+      if (!selectedFiles.any((f) => f.path == platformFile.path)) {
+        selectedFiles.add(platformFile);
+        emit(FilesSelectedState(List.from(selectedFiles)));
+      }
     }
+  }
+
+  void removeSelectedFile(int index) {
+    selectedFiles.removeAt(index);
+    emit(RemoveSelectedFileState());
   }
 
   final Map<String, int> priorityMap = {

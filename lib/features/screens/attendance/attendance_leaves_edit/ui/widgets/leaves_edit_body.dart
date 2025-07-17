@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:open_file/open_file.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
@@ -14,6 +15,7 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
+import 'package:smart_cleaning_application/core/widgets/pdf_image_view/pdf_image_view.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_edit/logic/leaves_edit_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_edit/logic/leaves_edit_state.dart';
@@ -194,109 +196,65 @@ class LeavesEditBody extends StatelessWidget {
                           style: TextStyles.font16BlackRegular,
                         ),
                         horizontalSpace(20),
-                        Builder(
-                          builder: (context) {
-                            if (cubit.image?.path != null) {
-                              return GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (contextt) => Scaffold(
-                                        appBar: AppBar(
-                                          leading: CustomBackButton(),
-                                        ),
-                                        body: Center(
-                                          child: PhotoView(
-                                            imageProvider: FileImage(
-                                              File(cubit.image!.path),
-                                            ),
-                                            backgroundDecoration:
-                                                const BoxDecoration(
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  height: 80,
-                                  width: 80,
-                                  clipBehavior: Clip.hardEdge,
-                                  decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.circular(10.r)),
-                                  child: Image.file(
-                                    File(cubit.image!.path),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              );
-                            } else if (cubit.leavesDetailsModel!.data!.file !=
-                                null) {
-                              return GestureDetector(
-                                  onTap: () {
+                        cubit.image?.path != null
+                            ? GestureDetector(
+                                onTap: () async {
+                                  final path = cubit.image!.path;
+                                  final isPDF =
+                                      path.toLowerCase().endsWith('.pdf');
+
+                                  if (isPDF) {
+                                    await OpenFile.open(path);
+                                  } else {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                         builder: (contextt) => Scaffold(
                                           appBar: AppBar(
-                                            leading: CustomBackButton(),
-                                          ),
+                                              leading: CustomBackButton()),
                                           body: Center(
                                             child: PhotoView(
-                                              imageProvider: NetworkImage(
-                                                '${cubit.leavesDetailsModel!.data!.file}',
-                                              ),
-                                              errorBuilder:
-                                                  (context, error, stackTrace) {
-                                                return Image.asset(
-                                                  'assets/images/noImage.png',
-                                                  fit: BoxFit.fill,
-                                                );
-                                              },
+                                              imageProvider:
+                                                  FileImage(File(path)),
                                               backgroundDecoration:
                                                   const BoxDecoration(
-                                                color: Colors.white,
-                                              ),
+                                                      color: Colors.white),
                                             ),
                                           ),
                                         ),
                                       ),
                                     );
-                                  },
-                                  child: Container(
+                                  }
+                                },
+                                child: Builder(builder: (_) {
+                                  final path = cubit.image!.path;
+                                  final isPDF =
+                                      path.toLowerCase().endsWith('.pdf');
+
+                                  return Container(
                                     height: 80,
                                     width: 80,
                                     clipBehavior: Clip.hardEdge,
                                     decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(10.r)),
-                                    child: Image.network(
-                                      '${cubit.leavesDetailsModel!.data!.file}',
-                                      fit: BoxFit.fill,
-                                      errorBuilder:
-                                          (context, error, stackTrace) {
-                                        return Image.asset(
-                                          'assets/images/noImage.png',
-                                          fit: BoxFit.fill,
-                                        );
-                                      },
+                                      borderRadius: BorderRadius.circular(10.r),
+                                      color: Colors.grey.shade200,
                                     ),
-                                  ));
-                            } else {
-                              return Text(S.of(context).noFile);
-                            }
-                          },
-                        ),
+                                    child: isPDF
+                                        ? Icon(Icons.picture_as_pdf,
+                                            color: Colors.red, size: 40.sp)
+                                        : Image.file(File(path),
+                                            fit: BoxFit.cover),
+                                  );
+                                }),
+                              )
+                            : PdfImageView(
+                                fileUrl: cubit.leavesDetailsModel!.data!.file),
                         Spacer(),
                         Column(
                           children: [
                             ElevatedButton(
                               onPressed: () {
-                                cubit.galleryFile();
+                                cubit.pickSingleFile();
                               },
                               style: ElevatedButton.styleFrom(
                                   shape: const CircleBorder(),
@@ -331,10 +289,8 @@ class LeavesEditBody extends StatelessWidget {
                                             body: S.of(context).leaveBody,
                                             onPressed: () {
                                               role == 'Admin'
-                                                  ? cubit.editLeaves(
-                                                      cubit.image?.path, id)
-                                                  : cubit.editLeavesRequest(
-                                                      cubit.image?.path, id);
+                                                  ? cubit.editLeaves(id)
+                                                  : cubit.editLeavesRequest(id);
                                             });
                                       });
                                 },

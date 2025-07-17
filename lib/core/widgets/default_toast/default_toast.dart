@@ -8,7 +8,7 @@ Future<bool?> toast({
   required bool isSuccess,
 }) =>
     Fluttertoast.showToast(
-        msg: isSuccess ? '「✔」$text' : '❌ $text',
+        msg: isSuccess ? '「✔」$text' : '❗ $text',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,

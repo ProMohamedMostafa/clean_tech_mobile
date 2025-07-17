@@ -425,6 +425,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "limitBody": MessageLookupByLibrary.simpleMessage("حد"),
     "line": MessageLookupByLibrary.simpleMessage("لکیر"),
     "loginButton": MessageLookupByLibrary.simpleMessage("لاگ ان"),
+    "loginDescription": MessageLookupByLibrary.simpleMessage(
+      "کلین ٹیک اکاؤنٹ تک رسائی کے لیے لاگ ان کریں",
+    ),
     "loginMessage": MessageLookupByLibrary.simpleMessage(
       "اپنے Clean Tech اکاؤنٹ تک رسائی کے لیے لاگ ان کریں",
     ),

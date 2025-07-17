@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
+import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_state.dart';
-import 'package:smart_cleaning_application/src/app_cubit/app_cubit.dart';
 
 class NotificationBuild extends StatelessWidget {
   const NotificationBuild({super.key});
@@ -26,13 +26,13 @@ class NotificationBuild extends StatelessWidget {
               child: Icon(
                 IconBroken.notification,
                 size: 24.sp,
-                color: Colors.black,
+                color: AppColor.primaryColor,
               ),
             ),
             if (unreadCount > 0)
               Positioned(
-                right: context.read<AppCubit>().isArabic() ? null : 3,
-                left: context.read<AppCubit>().isArabic() ? 0 : null,
+                right: homeCubit.isArabic() ? null : 3,
+                left: homeCubit.isArabic() ? 0 : null,
                 top: 2,
                 child: Container(
                   padding: const EdgeInsets.all(2),

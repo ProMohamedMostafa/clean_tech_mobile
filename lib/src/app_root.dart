@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
-import 'package:smart_cleaning_application/core/theming/theme/logic/theme_cubit/theme_cubit.dart';
-import 'package:smart_cleaning_application/features/layout/main_layout/logic/bottom_navbar_cubit.dart';
 import 'package:smart_cleaning_application/src/app_cubit/app_cubit.dart';
 import 'package:smart_cleaning_application/src/app_cubit/app_states.dart';
 import 'package:smart_cleaning_application/core/routing/app_router.dart';
@@ -24,24 +22,15 @@ class AppRoot extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (BuildContext context, Widget? child) {
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (context) => AppCubit()..getSavedLanguage(),
-            ),
-            BlocProvider(
-              create: (context) => ThemeCubit(),
-            ),
-            BlocProvider(
-              create: (context) => BottomNavbarCubit(),
-            ),
-          ],
+        return BlocProvider(
+          create: (context) => AppCubit()..getSavedLanguage()..initNotifications(context),
           child: BlocBuilder<AppCubit, AppStates>(
             builder: (context, state) {
+              final cubit = context.watch<AppCubit>();
               return MaterialApp(
                 navigatorKey: AppNavigator.navigatorKey,
                 debugShowCheckedModeBanner: false,
-                locale: context.read<AppCubit>().locale,
+                locale: cubit.locale,
                 localizationsDelegates: const [
                   S.delegate,
                   GlobalMaterialLocalizations.delegate,
@@ -53,7 +42,7 @@ class AppRoot extends StatelessWidget {
                   floatingActionButtonTheme: FloatingActionButtonThemeData(
                     backgroundColor: AppColor.primaryColor,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30)),
+                        borderRadius: BorderRadius.circular(30.r)),
                   ),
                   appBarTheme: AppBarTheme(
                       titleTextStyle: TextStyles.font16BlackSemiBold,

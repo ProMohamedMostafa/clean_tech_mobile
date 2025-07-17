@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:smart_cleaning_application/core/helpers/cache_helper/cache_helper.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
@@ -79,5 +80,9 @@ class SettingsCubit extends Cubit<SettingsState> {
     await CacheHelper.removeData(SharedPrefKeys.userToken);
     await CacheHelper.removeData(SharedPrefKeys.userId);
     await CacheHelper.removeData(SharedPrefKeys.userRole);
+  }
+
+    bool isEnglish() {
+    return Intl.getCurrentLocale() == 'en';
   }
 }

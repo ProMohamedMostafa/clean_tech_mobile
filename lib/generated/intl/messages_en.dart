@@ -427,6 +427,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "limitBody": MessageLookupByLibrary.simpleMessage("limit"),
     "line": MessageLookupByLibrary.simpleMessage("Line"),
     "loginButton": MessageLookupByLibrary.simpleMessage("Login"),
+    "loginDescription": MessageLookupByLibrary.simpleMessage(
+      "Login to access your Clean Tech\naccount",
+    ),
     "loginMessage": MessageLookupByLibrary.simpleMessage(
       "Login to access your Clean Tech\naccount",
     ),

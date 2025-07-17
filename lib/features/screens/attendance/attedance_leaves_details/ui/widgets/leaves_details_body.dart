@@ -12,6 +12,7 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
+import 'package:smart_cleaning_application/core/widgets/pdf_image_view/pdf_image_view.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/attendance/attedance_leaves_details/logic/cubit/leaves_details_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_description_text_form_field.dart';
@@ -189,55 +190,7 @@ class LeavesDetailsBody extends StatelessWidget {
                     style: TextStyles.font16BlackRegular,
                   ),
                   verticalSpace(5),
-                  cubit.leavesDetailsModel!.data!.file != null
-                      ? GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (contextt) => Scaffold(
-                                  appBar: AppBar(
-                                    leading: CustomBackButton(),
-                                  ),
-                                  body: Center(
-                                    child: PhotoView(
-                                      imageProvider: NetworkImage(
-                                        '${cubit.leavesDetailsModel!.data!.file}',
-                                      ),
-                                      errorBuilder:
-                                          (context, error, stackTrace) {
-                                        return Image.asset(
-                                          'assets/images/noImage.png',
-                                          fit: BoxFit.fill,
-                                        );
-                                      },
-                                      backgroundDecoration: const BoxDecoration(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            height: 80,
-                            width: 80,
-                            clipBehavior: Clip.hardEdge,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.r)),
-                            child: Image.network(
-                              '${cubit.leavesDetailsModel!.data!.file}',
-                              fit: BoxFit.fill,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Image.asset(
-                                  'assets/images/noImage.png',
-                                  fit: BoxFit.fill,
-                                );
-                              },
-                            ),
-                          ))
-                      : Text(S.of(context).noFile),
+                  PdfImageView(fileUrl: cubit.leavesDetailsModel!.data!.file),
                   verticalSpace(20),
                   if (role == 'Admin' ||
                       (role == 'Cleaner' &&
@@ -269,7 +222,6 @@ class LeavesDetailsBody extends StatelessWidget {
                                         );
                                       },
                                       color: AppColor.primaryColor,
-                                 
                                       width: double.infinity,
                                       textStyles:
                                           TextStyles.font16WhiteSemiBold,
@@ -363,7 +315,6 @@ class LeavesDetailsBody extends StatelessWidget {
                                                                       false);
                                                             },
                                                             color: Colors.black,
-                                                         
                                                             width: 125.w,
                                                             textStyles: TextStyles
                                                                 .font16WhiteSemiBold,
@@ -377,7 +328,6 @@ class LeavesDetailsBody extends StatelessWidget {
                                                             },
                                                             color: Colors
                                                                 .grey[300]!,
-                                                         
                                                             width: 125.w,
                                                             textStyles: TextStyles
                                                                 .font16BlackSemiBold,
@@ -393,7 +343,6 @@ class LeavesDetailsBody extends StatelessWidget {
                                         );
                                       },
                                       color: Colors.black,
-                                   
                                       width: double.infinity,
                                       textStyles:
                                           TextStyles.font16WhiteSemiBold,
@@ -418,7 +367,6 @@ class LeavesDetailsBody extends StatelessWidget {
                                           });
                                     },
                                     color: Colors.red,
-                                 
                                     width: double.infinity,
                                     textStyles:
                                         TextStyles.font20Whitesemimedium)),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:open_file/open_file.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
@@ -15,12 +16,14 @@ import 'package:smart_cleaning_application/core/widgets/default_back_button/back
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
+import 'package:smart_cleaning_application/core/widgets/pdf_image_view/pdf_image_view.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/row_details_build.dart';
 import 'package:smart_cleaning_application/features/screens/task/view_task/logic/task_details_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/task/view_task/ui/widget/current_read_dialog_.dart';
 import 'package:smart_cleaning_application/features/screens/task/view_task/ui/widget/upload_files_dialog.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class TaskDetailsBody extends StatefulWidget {
   final int id;
@@ -279,14 +282,16 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                   ),
                   verticalSpace(3),
                   Divider(),
-                  if (cubit.taskDetailsModel!.data!.deviceName == null) ...[
-                    rowDetailsBuild(context, S.of(context).created_by,
-                        cubit.taskDetailsModel!.data!.createdUserName!),
-                    Divider(),
-                  ],
-                  if (cubit.taskDetailsModel!.data!.createdBy == null) ...[
-                    rowDetailsBuild(context, S.of(context).device_name,
-                        cubit.taskDetailsModel!.data!.deviceName!),
+                  if (cubit.taskDetailsModel!.data!.createdUserName != null ||
+                      cubit.taskDetailsModel!.data!.deviceName != null) ...[
+                    rowDetailsBuild(
+                      context,
+                      cubit.taskDetailsModel!.data!.createdUserName != null
+                          ? S.of(context).created_by
+                          : S.of(context).device_name,
+                      cubit.taskDetailsModel!.data!.createdUserName ??
+                          cubit.taskDetailsModel!.data!.deviceName!,
+                    ),
                     Divider(),
                   ],
                   if (role != 'Cleaner') ...[
@@ -448,33 +453,34 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                         itemBuilder: (context, index) {
                           final file =
                               cubit.taskDetailsModel!.data!.files![index];
+                          final filePath = file.path ?? '';
+                          final isPDF = filePath.toLowerCase().endsWith('.pdf');
 
                           return GestureDetector(
                             onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (contextt) => Scaffold(
-                                    appBar: AppBar(
-                                      leading: CustomBackButton(),
-                                    ),
+                                  builder: (_) => Scaffold(
+                                    appBar: AppBar(leading: CustomBackButton()),
                                     body: Center(
-                                      child: PhotoView(
-                                        imageProvider: NetworkImage(
-                                          '${file.path}',
-                                        ),
-                                        errorBuilder:
-                                            (context, error, stackTrace) {
-                                          return Image.asset(
-                                            'assets/images/noImage.png',
-                                            fit: BoxFit.fill,
-                                          );
-                                        },
-                                        backgroundDecoration:
-                                            const BoxDecoration(
-                                          color: Colors.white,
-                                        ),
-                                      ),
+                                      child: isPDF
+                                          ? SfPdfViewer.network(filePath)
+                                          : PhotoView(
+                                              imageProvider:
+                                                  NetworkImage(filePath),
+                                              errorBuilder:
+                                                  (context, error, stackTrace) {
+                                                return Image.asset(
+                                                  'assets/images/noImage.png',
+                                                  fit: BoxFit.fill,
+                                                );
+                                              },
+                                              backgroundDecoration:
+                                                  const BoxDecoration(
+                                                color: Colors.white,
+                                              ),
+                                            ),
                                     ),
                                   ),
                                 ),
@@ -488,21 +494,23 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                 width: 70.w,
                                 clipBehavior: Clip.hardEdge,
                                 decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.black12,
-                                  ),
+                                  border: Border.all(color: Colors.black12),
                                   borderRadius: BorderRadius.circular(10.r),
                                 ),
-                                child: Image.network(
-                                  '${file.path}',
-                                  fit: BoxFit.fill,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Image.asset(
-                                      'assets/images/noImage.png',
-                                      fit: BoxFit.fill,
-                                    );
-                                  },
-                                ),
+                                child: isPDF
+                                    ? Icon(Icons.picture_as_pdf,
+                                        color: Colors.red, size: 40.sp)
+                                    : Image.network(
+                                        filePath,
+                                        fit: BoxFit.fill,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return Image.asset(
+                                            'assets/images/noImage.png',
+                                            fit: BoxFit.fill,
+                                          );
+                                        },
+                                      ),
                               ),
                             ),
                           );
@@ -517,7 +525,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                   verticalSpace(5),
                   cubit.taskDetailsModel!.data!.comments!.every((task) =>
                           task.comment == null &&
-                          (task.files == null || task.files!.isEmpty))
+                          (task.file == null || task.file!.isEmpty))
                       ? Center(
                           child: Text(
                             S.of(context).no_comments,
@@ -536,8 +544,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                 cubit.taskDetailsModel!.data!.comments![index];
 
                             if (task.comment != null ||
-                                (task.files != null &&
-                                    task.files!.isNotEmpty)) {
+                                (task.file != null && task.file!.isNotEmpty)) {
                               return Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.r),
@@ -598,75 +605,9 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                     .font13Blackmedium,
                                               ),
                                             verticalSpace(8),
-                                            if (task.files != null &&
-                                                task.files!.isNotEmpty)
-                                              Column(
-                                                children:
-                                                    task.files!.map((file) {
-                                                  return GestureDetector(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (contextt) =>
-                                                              Scaffold(
-                                                            appBar: AppBar(
-                                                              leading:
-                                                                  CustomBackButton(),
-                                                            ),
-                                                            body: Center(
-                                                              child: PhotoView(
-                                                                imageProvider:
-                                                                    NetworkImage(
-                                                                  '${file.path}',
-                                                                ),
-                                                                errorBuilder:
-                                                                    (context,
-                                                                        error,
-                                                                        stackTrace) {
-                                                                  return Image
-                                                                      .asset(
-                                                                    'assets/images/noImage.png',
-                                                                    fit: BoxFit
-                                                                        .fill,
-                                                                  );
-                                                                },
-                                                                backgroundDecoration:
-                                                                    const BoxDecoration(
-                                                                  color: Colors
-                                                                      .white,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      );
-                                                    },
-                                                    child: Container(
-                                                      height: 80,
-                                                      width: 80,
-                                                      clipBehavior:
-                                                          Clip.hardEdge,
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      10.r)),
-                                                      child: Image.network(
-                                                        '${file.path}',
-                                                        fit: BoxFit.fill,
-                                                        errorBuilder: (context,
-                                                            error, stackTrace) {
-                                                          return Image.asset(
-                                                            'assets/images/noImage.png',
-                                                            fit: BoxFit.fill,
-                                                          );
-                                                        },
-                                                      ),
-                                                    ),
-                                                  );
-                                                }).toList(),
-                                              ),
+                                            if (task.file != null &&
+                                                task.file!.isNotEmpty)
+                                              PdfImageView(fileUrl: task.file),
                                             Align(
                                               alignment: Alignment.bottomRight,
                                               child: Text(
@@ -784,40 +725,77 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                     verticalSpace(10),
                   ],
                   (state is ImageSelectedState || state is CameraSelectedState)
-                      ? GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (contextt) => Scaffold(
-                                  appBar: AppBar(
-                                    leading: CustomBackButton(),
-                                  ),
-                                  body: Center(
-                                    child: PhotoView(
-                                      imageProvider: FileImage(
-                                        File(cubit.image!.path),
-                                      ),
-                                      backgroundDecoration: const BoxDecoration(
-                                        color: Colors.white,
+                      ? Stack(
+                          children: [
+                            GestureDetector(
+                              onTap: () async {
+                                final path = cubit.image!.path;
+                                final isPDF =
+                                    path.toLowerCase().endsWith('.pdf');
+
+                                if (isPDF) {
+                                  await OpenFile.open(path);
+                                } else {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (contextt) => Scaffold(
+                                        appBar:
+                                            AppBar(leading: CustomBackButton()),
+                                        body: Center(
+                                          child: PhotoView(
+                                            imageProvider:
+                                                FileImage(File(path)),
+                                            backgroundDecoration:
+                                                const BoxDecoration(
+                                                    color: Colors.white),
+                                          ),
+                                        ),
                                       ),
                                     ),
+                                  );
+                                }
+                              },
+                              child: Builder(builder: (_) {
+                                final path = cubit.image!.path;
+                                final isPDF =
+                                    path.toLowerCase().endsWith('.pdf');
+
+                                return Container(
+                                  height: 80,
+                                  width: 80,
+                                  clipBehavior: Clip.hardEdge,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.r),
+                                    color: Colors.grey.shade200,
                                   ),
+                                  child: isPDF
+                                      ? Icon(Icons.picture_as_pdf,
+                                          color: Colors.red, size: 40.sp)
+                                      : Image.file(File(path),
+                                          fit: BoxFit.cover),
+                                );
+                              }),
+                            ),
+                            Positioned(
+                              top: 0,
+                              right: 0,
+                              child: GestureDetector(
+                                onTap: () {
+                                  cubit.removeSelectedFile();
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.black.withOpacity(0.6),
+                                  ),
+                                  child: Icon(Icons.close,
+                                      size: 14, color: Colors.white),
                                 ),
                               ),
-                            );
-                          },
-                          child: Container(
-                            height: 80,
-                            width: 80,
-                            clipBehavior: Clip.hardEdge,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.r)),
-                            child: Image.file(
-                              File(cubit.image!.path),
-                              fit: BoxFit.cover,
                             ),
-                          ),
+                          ],
                         )
                       : const SizedBox.shrink(),
                   verticalSpace(20),

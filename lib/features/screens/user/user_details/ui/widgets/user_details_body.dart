@@ -96,7 +96,7 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                 if (controller.index == 2) {
                   cubit.getUserShiftDetails(widget.id);
                 }
-                Navigator.of(context).pop(true);
+                context.popWithTrueResult();
               },
               icon: Icon(
                 Icons.arrow_back_ios_new_rounded,
@@ -186,8 +186,8 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                           );
                         },
                         child: Container(
-                          width: 80.w,
-                          height: 80.h,
+                          width: 90.r,
+                          height: 90.r,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                           ),

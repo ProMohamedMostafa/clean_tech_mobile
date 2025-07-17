@@ -78,9 +78,15 @@ class _EditUserBodyState extends State<EditUserBody> {
                                       imageProvider: (cubit.image != null &&
                                               cubit.image!.path.isNotEmpty)
                                           ? FileImage(File(cubit.image!.path))
-                                          : NetworkImage(
-                                              '${cubit.userDetailsModel!.data!.image}',
-                                            ) as ImageProvider,
+                                          : (cubit.userDetailsModel!.data!.image
+                                                      ?.isNotEmpty ??
+                                                  false)
+                                              ? NetworkImage(cubit
+                                                  .userDetailsModel!
+                                                  .data!
+                                                  .image!) as ImageProvider
+                                              : const AssetImage(
+                                                  'assets/images/person.png'),
                                       errorBuilder:
                                           (context, error, stackTrace) {
                                         return Image.asset(
@@ -98,8 +104,8 @@ class _EditUserBodyState extends State<EditUserBody> {
                             );
                           },
                           child: Container(
-                            width: 100.r,
-                            height: 100.r,
+                            width: 90.r,
+                            height: 90.r,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               border: Border.all(
@@ -562,8 +568,7 @@ class _EditUserBodyState extends State<EditUserBody> {
                                             title: 'edit',
                                             body: 'user',
                                             onPressed: () {
-                                              cubit.editUser(
-                                                  widget.id, cubit.image?.path);
+                                              cubit.editUser(widget.id);
                                             });
                                       });
                                 }

@@ -8,6 +8,7 @@ import 'package:smart_cleaning_application/features/screens/task/task_management
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/delete_task_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/delete_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_state.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class TaskManagementCubit extends Cubit<TaskManagementState> {
   TaskManagementCubit() : super(TaskManagementInitialState());
@@ -88,10 +89,10 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
     getAllDeletedTasks();
   }
 
-  void changeTap(int index) {
+  void changeTap(int index, BuildContext context) {
     selectedIndex = index;
 
-    if (selectedIndex == tapList.length - 1) {
+    if (selectedIndex == getTapList(context).length - 1) {
       // Last tab (Deleted) - show deleted tasks
       if (deleteTaskListModel == null) {
         getAllDeletedTasks();
@@ -201,17 +202,19 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
     });
   }
 
-  List<String> tapList = [
-    'All',
-    'Pending',
-    'In Progress',
-    'Not Approval',
-    'Completed',
-    'Rejected',
-    'Not Resolved',
-    'Overdue',
-    'Deleted'
+  List<String> getTapList(BuildContext context) {
+  return [
+    S.of(context).all,
+    S.of(context).pending,
+    S.of(context).inProgress,
+    S.of(context).notApproval,
+    S.of(context).completed,
+    S.of(context).rejected,
+    S.of(context).notResolved,
+    S.of(context).overdue,
+    S.of(context).deleted,
   ];
+}
 
   Color getPriorityColor(String? priorityValue) {
     final List<String> priorities = ["High", "Medium", "Low"];

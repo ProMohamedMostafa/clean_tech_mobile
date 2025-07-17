@@ -199,12 +199,12 @@ class ShowActivity extends StatelessWidget {
                                 color: AppColor.primaryColor,
                               ),
                             ),
-                            SizedBox(width: 10),
+                            horizontalSpace( 10),
                             Text(
                               S.of(context).seeMoreButton,
                               style: TextStyles.font12PrimSemi,
                             ),
-                            SizedBox(width: 10),
+                            horizontalSpace( 10),
                             Expanded(
                               child: Divider(
                                 height: 1.h,

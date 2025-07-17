@@ -12,7 +12,6 @@ import 'package:smart_cleaning_application/features/screens/provider/provider_ma
 import 'package:smart_cleaning_application/features/screens/user/add_user/data/model/user_create.dart';
 import 'package:smart_cleaning_application/features/screens/user/add_user/logic/add_user_state.dart';
 
-import '../../../integrations/data/models/gallary_model.dart';
 import '../../../integrations/data/models/role_model.dart';
 
 class AddUserCubit extends Cubit<AddUserState> {
@@ -175,7 +174,6 @@ class AddUserCubit extends Cubit<AddUserState> {
     emit(ChangeSuffixIconVisiabiltyState());
   }
 
-  GalleryModel? gellaryModel;
   XFile? image;
   Future<void> galleryFile() async {
     final ImagePicker picker = ImagePicker();

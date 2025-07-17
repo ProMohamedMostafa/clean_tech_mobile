@@ -703,4 +703,7 @@ class HomeCubit extends Cubit<HomeState> {
         return null;
     }
   }
+    bool isArabic() {
+    return Intl.getCurrentLocale() == 'ar';
+  }
 }

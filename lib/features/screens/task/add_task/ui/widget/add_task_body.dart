@@ -23,6 +23,7 @@ import 'package:smart_cleaning_application/features/screens/integrations/ui/widg
 import 'package:smart_cleaning_application/features/screens/task/add_task/logic/add_task_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/task/add_task/logic/add_task_state.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class AddTaskBody extends StatefulWidget {
   const AddTaskBody({super.key});
@@ -706,7 +707,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                               children: [
                                 ElevatedButton(
                                   onPressed: () {
-                                    cubit.galleryFile();
+                                    cubit.pickFiles();
                                   },
                                   style: ElevatedButton.styleFrom(
                                       shape: const CircleBorder(),
@@ -748,46 +749,100 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                           ],
                         ),
                         verticalSpace(20),
-                        (state is ImageSelectedState ||
-                                state is CameraSelectedState)
-                            ? GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (contextt) => Scaffold(
-                                        appBar: AppBar(
-                                          leading: CustomBackButton(),
+                        if (cubit.selectedFiles.isNotEmpty)
+                          SizedBox(
+                            height: 80.h,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: cubit.selectedFiles.length,
+                              itemBuilder: (context, index) {
+                                final file = cubit.selectedFiles[index];
+                                final isPDF =
+                                    file.extension?.toLowerCase() == 'pdf';
+
+                                return Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 5.w),
+                                  child: Stack(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (_) => Scaffold(
+                                                appBar: AppBar(
+                                                    leading:
+                                                        CustomBackButton()),
+                                                body: Center(
+                                                  child: isPDF
+                                                      ? SfPdfViewer.file(
+                                                          File(file.path!))
+                                                      : PhotoView(
+                                                          imageProvider:
+                                                              FileImage(File(
+                                                                  file.path!)),
+                                                          backgroundDecoration:
+                                                              const BoxDecoration(
+                                                            color: Colors.white,
+                                                          ),
+                                                        ),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          width: 80.w,
+                                          height: 80.h,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10.r),
+                                            border: Border.all(
+                                                color: Colors.grey.shade300),
+                                          ),
+                                          clipBehavior: Clip.hardEdge,
+                                          child: isPDF
+                                              ? Icon(Icons.picture_as_pdf,
+                                                  color: Colors.red,
+                                                  size: 40.sp)
+                                              : Image.file(
+                                                  File(file.path!),
+                                                  fit: BoxFit.cover,
+                                                  errorBuilder: (_, __, ___) {
+                                                    return Image.asset(
+                                                        'assets/images/noImage.png');
+                                                  },
+                                                ),
                                         ),
-                                        body: Center(
-                                          child: PhotoView(
-                                            imageProvider: FileImage(
-                                              File(cubit.image!.path),
+                                      ),
+                                      Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            cubit.removeSelectedFile(index);
+                                          },
+                                          child: Container(
+                                            padding: EdgeInsets.all(4),
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color:
+                                                  Colors.black.withOpacity(0.6),
                                             ),
-                                            backgroundDecoration:
-                                                const BoxDecoration(
-                                              color: Colors.white,
-                                            ),
+                                            child: Icon(Icons.close,
+                                                size: 14, color: Colors.white),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  height: 80,
-                                  width: 80,
-                                  clipBehavior: Clip.hardEdge,
-                                  decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.circular(10.r)),
-                                  child: Image.file(
-                                    File(cubit.image!.path),
-                                    fit: BoxFit.cover,
+                                    ],
                                   ),
-                                ),
-                              )
-                            : const SizedBox.shrink(),
+                                );
+                              },
+                            ),
+                          )
+                        else
+                          const SizedBox.shrink(),
                         verticalSpace(20),
                         state is AddTaskLoadingState
                             ? Loading()
@@ -800,7 +855,7 @@ class _AddTaskBodyState extends State<AddTaskBody> {
                                       });
                                       if (cubit.formKey.currentState!
                                           .validate()) {
-                                        cubit.addTask(image: cubit.image?.path);
+                                        cubit.addTask();
                                       }
                                     },
                                     color: AppColor.primaryColor,

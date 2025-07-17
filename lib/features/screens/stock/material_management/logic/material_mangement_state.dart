@@ -128,3 +128,6 @@ class ImageSelectedState extends MaterialManagementState {
   ImageSelectedState(this.image);
 }
 class MaterialClearState extends MaterialManagementState {}
+
+class RemoveSelectedFileState extends MaterialManagementState {}
+

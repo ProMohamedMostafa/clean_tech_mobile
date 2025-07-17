@@ -9,7 +9,6 @@ import 'package:smart_cleaning_application/core/widgets/default_button/default_e
 import 'package:smart_cleaning_application/core/widgets/default_text_form_field/default_text_form_field.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
-import 'package:smart_cleaning_application/features/layout/main_layout/logic/bottom_navbar_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/auth/login/logic/login_cubit_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/auth/login/logic/login_cubit_state.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
@@ -19,6 +18,7 @@ class EmailAndPassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<LoginCubit>();
     return BlocConsumer<LoginCubit, LoginStates>(
       listener: (context, state) {
         if (state is LoginSuccessState) {
@@ -34,13 +34,13 @@ class EmailAndPassword extends StatelessWidget {
       },
       builder: (context, state) {
         return Form(
-          key: context.read<LoginCubit>().formKey,
+          key: cubit.formKey,
           child: Column(
             children: [
               DefaultTextField(
                 label: S.of(context).labelEmail,
                 keyboardType: TextInputType.emailAddress,
-                controller: context.read<LoginCubit>().emailController,
+                controller: cubit.emailController,
                 obscureText: false,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -56,12 +56,12 @@ class EmailAndPassword extends StatelessWidget {
               DefaultTextField(
                   label: S.of(context).labelPassword,
                   keyboardType: TextInputType.visiblePassword,
-                  controller: context.read<LoginCubit>().passwordController,
-                  suffixIcon: context.read<LoginCubit>().suffixIcon,
+                  controller: cubit.passwordController,
+                  suffixIcon: cubit.suffixIcon,
                   suffixPressed: () {
-                    context.read<LoginCubit>().changeSuffixIconVisiability();
+                    cubit.changeSuffixIconVisiability();
                   },
-                  obscureText: context.read<LoginCubit>().ispassword,
+                  obscureText: cubit.ispassword,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return S.of(context).validationPassword;
@@ -91,13 +91,8 @@ class EmailAndPassword extends StatelessWidget {
                       color: AppColor.primaryColor,
                       textStyles: TextStyles.font16WhiteSemiBold,
                       onPressed: () {
-                        context.read<BottomNavbarCubit>().currentIndex = 0;
-                        if (context
-                            .read<LoginCubit>()
-                            .formKey
-                            .currentState!
-                            .validate()) {
-                          context.read<LoginCubit>().userLogin(context);
+                        if (cubit.formKey.currentState!.validate()) {
+                          cubit.userLogin(context);
                         }
                       },
                     )

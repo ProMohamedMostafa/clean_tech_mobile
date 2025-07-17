@@ -604,5 +604,6 @@
     "inSelect": "آمد",
     "outSelect": "روانگی",
     "assignButton": "تفویض کریں",
-    "noActivities": "کوئی سرگرمیاں نہیں ہیں"
+    "noActivities": "کوئی سرگرمیاں نہیں ہیں",
+    "loginDescription": "کلین ٹیک اکاؤنٹ تک رسائی کے لیے لاگ ان کریں"
 }

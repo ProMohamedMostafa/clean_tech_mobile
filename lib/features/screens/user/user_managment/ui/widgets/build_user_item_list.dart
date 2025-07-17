@@ -54,8 +54,8 @@ class BuildUserItemList extends StatelessWidget {
         ),
         title: Text(
           cubit.selectedIndex == 0
-              ? cubit.usersModel!.data!.users![index].userName!
-              : cubit.deletedListModel!.data![index].userName!,
+              ? '${cubit.usersModel!.data!.users![index].firstName!} ${cubit.usersModel!.data!.users![index].lastName!}'
+              : '${cubit.deletedListModel!.data![index].firstName!} ${cubit.deletedListModel!.data![index].lastName!}',
           style: TextStyles.font14BlackSemiBold,
           overflow: TextOverflow.ellipsis,
           maxLines: 1,

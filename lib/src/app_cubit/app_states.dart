@@ -7,6 +7,9 @@ class AppInitialState extends AppStates {}
 class ChangeLocaleState extends AppStates {
   final Locale locale;
   ChangeLocaleState({required this.locale});
-}//**************************************** */
+}
+//**************************************** */
+
 class NotificationCountUpdatedState extends AppStates {}
+
 class ChangeCarouselIndexState extends AppStates {}
