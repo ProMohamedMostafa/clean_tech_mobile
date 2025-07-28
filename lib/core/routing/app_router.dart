@@ -6,96 +6,97 @@ import 'package:smart_cleaning_application/features/layout/ip_screen/ui/screen/i
 import 'package:smart_cleaning_application/features/layout/main_layout/logic/bottom_navbar_cubit.dart';
 import 'package:smart_cleaning_application/features/layout/main_layout/ui/screen/main_layout.dart';
 import 'package:smart_cleaning_application/features/layout/splash/splash_screen.dart';
-import 'package:smart_cleaning_application/features/screens/activity/logic/activity_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/activity/ui/screen/activity_screen.dart';
-import 'package:smart_cleaning_application/features/screens/assign/logic/assign_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/assign/ui/screen/assign_screen.dart';
-import 'package:smart_cleaning_application/features/screens/attendance/attedance_leaves_details/logic/cubit/leaves_details_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/attendance/attedance_leaves_details/ui/screen/leaves_details_screen.dart';
-import 'package:smart_cleaning_application/features/screens/attendance/attendance_history_management/logic/attendance_history_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/attendance/attendance_history_management/ui/screen/attendance_history_screen.dart';
-import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_management/logic/attendance_leaves_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_management/ui/screen/attendance_leaves_screen.dart';
-import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_add/logic/leaves_add_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_add/ui/screen/leaves_add_screen.dart';
-import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_edit/logic/leaves_edit_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/attendance/attendance_leaves_edit/ui/screen/leaves_edit_screen.dart';
-import 'package:smart_cleaning_application/features/screens/attendance/select_view/ui/attendance_screen.dart';
-import 'package:smart_cleaning_application/features/screens/edit_profile/logic/edit_profile_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/edit_profile/ui/screen/edit_profile_screen.dart';
-import 'package:smart_cleaning_application/features/screens/languages/ui/screen/languages_screen.dart';
-import 'package:smart_cleaning_application/features/screens/notification/logic/notification_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/notification/ui/screen/notification_screen.dart';
-import 'package:smart_cleaning_application/features/screens/profile/logic/profile_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/profile/ui/screen/profile_screen.dart';
-import 'package:smart_cleaning_application/features/screens/provider/provider_management/logic/cubit/provider_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/provider/provider_management/ui/screen/provider_screen.dart';
-import 'package:smart_cleaning_application/features/screens/sensor/sensor_edit/logic/cubit/edit_sensor_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/sensor/sensor_edit/ui/screen/sensor_edit_screen.dart';
-import 'package:smart_cleaning_application/features/screens/sensor/sensor_details/logic/cubit/sensor_details_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/sensor/sensor_details/ui/screen/sensor_details.dart';
-import 'package:smart_cleaning_application/features/screens/sensor/sensor_managment/logic/cubit/sensor_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/sensor/sensor_managment/ui/screen/sensor_screen.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shift_details/logic/cubit/shift_details_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/stock/add_category/logic/add_category_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/stock/add_category/ui/screen/add_category_screen.dart';
-import 'package:smart_cleaning_application/features/screens/stock/add_material/logic/add_material_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/stock/add_material/ui/screen/add_material_screen.dart';
-import 'package:smart_cleaning_application/features/screens/stock/category_management/logic/category_mangement_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/stock/category_management/ui/screen/material_managment.dart';
-import 'package:smart_cleaning_application/features/screens/stock/select_stock_view/choose_view_stock.dart';
-import 'package:smart_cleaning_application/features/screens/stock/edit_category/logic/edit_category_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/stock/edit_category/ui/screen/edit_category_screen.dart';
-import 'package:smart_cleaning_application/features/screens/stock/edit_material/logic/edit_material_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/stock/edit_material/ui/screen/edit_material_screen.dart';
-import 'package:smart_cleaning_application/features/screens/stock/material_management/logic/material_mangement_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/stock/material_management/ui/screen/category_managment.dart';
-import 'package:smart_cleaning_application/features/screens/stock/transaction_management/logic/transaction_mangement_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/stock/transaction_management/ui/screen/transaction_managment.dart';
-import 'package:smart_cleaning_application/features/screens/stock/view_material/logic/cubit/material_details_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/stock/view_material/ui/screen/material_details_screen.dart';
-import 'package:smart_cleaning_application/features/screens/stock/view_transaction/logic/cubit/transaction_details_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/stock/view_transaction/ui/screen/transaction_details_screen.dart';
-import 'package:smart_cleaning_application/features/screens/task/select_task_view/select_task_view.dart';
-import 'package:smart_cleaning_application/features/screens/task/view_task/logic/task_details_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/technical_support/ui/screen/technical_support_screen.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_details/logic/cubit/user_details_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/logic/add_work_location_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/screens/add_area_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/screens/add_building_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/screens/add_city_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/screens/add_floor_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/screens/add_organization_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/screens/add_point_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/add_work_location/ui/screens/add_section_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/select_work_location_view/logic/cubit/choose_view_work_location_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/select_work_location_view/ui/choose_view_work_location.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/logic/cubit/edit_work_location_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/ui/screens/edit_area_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/ui/screens/edit_building_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/ui/screens/edit_city_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/ui/screens/edit_floor_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/ui/screens/edit_organization_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/ui/screens/edit_point_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/edit_work_location/ui/screens/edit_section_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_details/logic/cubit/work_location_details_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_details/ui/screen/work_location_screen.dart';
-import 'package:smart_cleaning_application/features/screens/shift/add_shift/logic/add_shift_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/shift/add_shift/ui/screen/add_shift_screen.dart';
-import 'package:smart_cleaning_application/features/screens/shift/edit_shift/logic/edit_shift_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/shift/edit_shift/ui/screen/edit_shift_screen.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shift_details/ui/screen/shift_details_screen.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shifts_management/logic/shift_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shifts_management/ui/screen/shift_screen.dart';
-import 'package:smart_cleaning_application/features/screens/task/add_task/logic/add_task_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/task/add_task/ui/screen/add_task_screen.dart';
-import 'package:smart_cleaning_application/features/screens/task/edit_task/logic/edit_task_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/task/edit_task/ui/screen/edit_task_screen.dart';
-import 'package:smart_cleaning_application/features/screens/task/task_management/logic/task_management_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/task/task_management/ui/screen/task_managment_screen.dart';
-import 'package:smart_cleaning_application/features/screens/task/view_task/ui/screen/task_details_screen.dart';
-import 'package:smart_cleaning_application/features/screens/user/add_user/logic/add_user_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/user/add_user/ui/screen/add_user_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/activity/logic/activity_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/activity/ui/screen/activity_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/assign/logic/assign_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/assign/ui/select_assign_view/choose_view_assign.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/assign/ui/screen/assign_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attedance_leaves_details/logic/cubit/leaves_details_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attedance_leaves_details/ui/screen/leaves_details_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attendance_history_management/logic/attendance_history_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attendance_history_management/ui/screen/attendance_history_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attendance_leaves_management/logic/attendance_leaves_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attendance_leaves_management/ui/screen/attendance_leaves_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attendance_leaves_add/logic/leaves_add_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attendance_leaves_add/ui/screen/leaves_add_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attendance_leaves_edit/logic/leaves_edit_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attendance_leaves_edit/ui/screen/leaves_edit_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/attendance/select_view/ui/attendance_screen.dart';
+import 'package:smart_cleaning_application/features/screens/setting/edit_profile/logic/edit_profile_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/setting/edit_profile/ui/screen/edit_profile_screen.dart';
+import 'package:smart_cleaning_application/features/screens/setting/languages/ui/screen/languages_screen.dart';
+import 'package:smart_cleaning_application/features/screens/setting/notification/logic/notification_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/setting/notification/ui/screen/notification_screen.dart';
+import 'package:smart_cleaning_application/features/screens/setting/profile/logic/profile_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/setting/profile/ui/screen/profile_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/provider/provider_management/logic/cubit/provider_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/provider/provider_management/ui/screen/provider_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/sensor/sensor_edit/logic/cubit/edit_sensor_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/sensor/sensor_edit/ui/screen/sensor_edit_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/sensor/sensor_details/logic/cubit/sensor_details_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/sensor/sensor_details/ui/screen/sensor_details.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/sensor/sensor_managment/logic/cubit/sensor_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/sensor/sensor_managment/ui/screen/sensor_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/shift/shift_details/logic/cubit/shift_details_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/stock/add_category/logic/add_category_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/stock/add_category/ui/screen/add_category_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/stock/add_material/logic/add_material_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/stock/add_material/ui/screen/add_material_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/stock/category_management/logic/category_mangement_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/stock/category_management/ui/screen/material_managment.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/stock/select_stock_view/choose_view_stock.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/stock/edit_category/logic/edit_category_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/stock/edit_category/ui/screen/edit_category_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/stock/edit_material/logic/edit_material_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/stock/edit_material/ui/screen/edit_material_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/stock/material_management/logic/material_mangement_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/stock/material_management/ui/screen/category_managment.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/stock/transaction_management/logic/transaction_mangement_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/stock/transaction_management/ui/screen/transaction_managment.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/stock/view_material/logic/cubit/material_details_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/stock/view_material/ui/screen/material_details_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/stock/view_transaction/logic/cubit/transaction_details_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/stock/view_transaction/ui/screen/transaction_details_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/task/select_task_view/select_task_view.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/task/view_task/logic/task_details_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/setting/technical_support/ui/screen/technical_support_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/user/user_details/logic/cubit/user_details_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/add_work_location/logic/add_work_location_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/add_work_location/ui/screens/add_area_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/add_work_location/ui/screens/add_building_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/add_work_location/ui/screens/add_city_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/add_work_location/ui/screens/add_floor_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/add_work_location/ui/screens/add_organization_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/add_work_location/ui/screens/add_point_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/add_work_location/ui/screens/add_section_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/select_work_location_view/logic/cubit/choose_view_work_location_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/select_work_location_view/ui/choose_view_work_location.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/edit_work_location/logic/cubit/edit_work_location_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/edit_work_location/ui/screens/edit_area_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/edit_work_location/ui/screens/edit_building_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/edit_work_location/ui/screens/edit_city_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/edit_work_location/ui/screens/edit_floor_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/edit_work_location/ui/screens/edit_organization_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/edit_work_location/ui/screens/edit_point_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/edit_work_location/ui/screens/edit_section_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/work_location_details/logic/cubit/work_location_details_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/work_location_details/ui/screen/work_location_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/shift/add_shift/logic/add_shift_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/shift/add_shift/ui/screen/add_shift_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/shift/edit_shift/logic/edit_shift_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/shift/edit_shift/ui/screen/edit_shift_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/shift/shift_details/ui/screen/shift_details_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/shift/shifts_management/logic/shift_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/shift/shifts_management/ui/screen/shift_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/task/add_task/logic/add_task_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/task/add_task/ui/screen/add_task_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/logic/edit_task_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/ui/screen/edit_task_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/task/task_management/logic/task_management_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/task/task_management/ui/screen/task_managment_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/task/view_task/ui/screen/task_details_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/user/add_user/logic/add_user_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/user/add_user/ui/screen/add_user_screen.dart';
 import 'package:smart_cleaning_application/features/screens/auth/done_screen/ui/screen/done_screen.dart';
 import 'package:smart_cleaning_application/features/screens/auth/forgot_password/logic/forgot_password_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/auth/forgot_password/ui/screen/forgot_password.dart';
@@ -104,16 +105,16 @@ import 'package:smart_cleaning_application/features/screens/auth/set_password/lo
 import 'package:smart_cleaning_application/features/screens/auth/set_password/ui/screen/set_password_screen.dart';
 import 'package:smart_cleaning_application/features/screens/auth/verify_account/logic/verify_account_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/auth/verify_account/ui/screen/verify_account.dart';
-import 'package:smart_cleaning_application/features/screens/change_password/logic/change_password_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/change_password/ui/screen/change_password_screen.dart';
-import 'package:smart_cleaning_application/features/screens/user/edit_user/logic/edit_user_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/user/edit_user/ui/screen/edit_user_screen.dart';
+import 'package:smart_cleaning_application/features/screens/setting/change_password/logic/change_password_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/setting/change_password/ui/screen/change_password_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/user/edit_user/logic/edit_user_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/user/edit_user/ui/screen/edit_user_screen.dart';
 import 'package:smart_cleaning_application/features/screens/auth/login/ui/screen/login_screen.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/logic/work_location_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/work_location/work_location_management/ui/screen/work_location_screen.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_details/ui/screen/user_details_screen.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/logic/user_mangement_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/user/user_managment/ui/screen/user_managment.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/work_location_management/logic/work_location_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/work_location_management/ui/screen/work_location_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/user/user_details/ui/screen/user_details_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/user/user_managment/logic/user_mangement_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/user/user_managment/ui/screen/user_managment.dart';
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
@@ -268,7 +269,9 @@ class AppRouter {
         var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => SensorDetailsCubit()..getSensorDetails(id),
+            create: (context) => SensorDetailsCubit()
+              ..getSensorDetails(id)
+              ..getAllTasks(id),
             child: SensorDetailsScreen(id: id),
           ),
         );
@@ -497,7 +500,11 @@ class AppRouter {
       case Routes.addShiftScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => AddShiftCubit()..getOrganization(),
+            create: (context) => AddShiftCubit()
+              ..getOrganization()
+              ..getBuilding()
+              ..getFloor()
+              ..getSection(),
             child: AddShiftScreen(),
           ),
         );
@@ -517,7 +524,10 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (context) => EditShiftCubit()
               ..getShiftDetails(id)
-              ..getOrganization(),
+              ..getOrganization()
+              ..getBuilding()
+              ..getFloor()
+              ..getSection(),
             child: EditShiftScreen(
               id: id,
             ),
@@ -528,10 +538,11 @@ class AppRouter {
           builder: (_) => ChooseViewTask(),
         );
       case Routes.taskManagementScreen:
+        var index = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => TaskManagementCubit()..initialize(),
-            child: TaskManagementScreen(),
+            create: (context) => TaskManagementCubit()..initialize(index),
+            child: TaskManagementScreen(index: index),
           ),
         );
       case Routes.addTaskScreen:
@@ -544,13 +555,18 @@ class AppRouter {
             child: AddTaskScreen(),
           ),
         );
+
+      case Routes.chooseViewAssignScreen:
+        return MaterialPageRoute(
+          builder: (_) => ChooseViewAssign(),
+        );
       case Routes.assignScreen:
+        var index = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => AssignCubit()
-              ..getShifts()
-              ..getRole(),
-            child: AssignScreen(),
+            create: (context) =>
+                AssignCubit()..fetchAppropriateOrganizations(index),
+            child: AssignScreen(index: index),
           ),
         );
       case Routes.taskDetailsScreen:

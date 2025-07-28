@@ -1,4 +1,4 @@
-import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/all_tasks_model.dart';
+import 'package:smart_cleaning_application/features/screens/calendar/data/model/tasks_calendar.dart';
 
 abstract class CalendarState {}
 
@@ -17,9 +17,9 @@ class CalendarErrorState extends CalendarState {
 class GetAllTasksLoadingState extends CalendarState {}
 
 class GetAllTasksSuccessState extends CalendarState {
-  final AllTasksModel allTasksModel;
+  final TasksCalendar tasksCalendar;
 
-  GetAllTasksSuccessState(this.allTasksModel);
+  GetAllTasksSuccessState(this.tasksCalendar);
 }
 
 class GetAllTasksErrorState extends CalendarState {

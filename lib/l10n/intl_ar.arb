@@ -115,7 +115,7 @@
   "myActivity": "نشاطي",
   "myTeamActivity": "نشاط فريقي",
   "seeMoreButton": "عرض المزيد",
-  "materialCount": "عدد المواد",
+  "lowStock": "كمية منخفضة",
   "inCost": "تكلفة داخلية",
   "cancelButton": "إلغاء",
   "saveButton": "حفظ",
@@ -605,5 +605,7 @@
   "outSelect": "صادر",
   "assignButton": "تعيين",
   "noActivities": "لا توجد أنشطة",
-  "loginDescription": "سجّل الدخول للوصول إلى حسابك في كلين تك"
+  "loginDescription": "سجّل الدخول للوصول إلى حسابك في كلين تك",
+  "profile_details": "تفاصيل الملف الشخصي",
+  "edit_profile_details": "تعديل تفاصيل الملف الشخصي"
 }

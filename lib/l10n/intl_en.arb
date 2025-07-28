@@ -115,7 +115,7 @@
   "myActivity": "My Activity",
   "myTeamActivity": "My Team Activity",
   "seeMoreButton": "See More",
-  "materialCount": "Material Count",
+  "lowStock": "Low Stock",
   "inCost": "In Cost",
   "cancelButton": "Cancel",
   "saveButton": "Save",
@@ -605,5 +605,7 @@
   "outSelect": "Out",
   "assignButton": "Assign",
   "noActivities": "There's no activities",
-  "loginDescription": "Login to access your Clean Tech\naccount"
+  "loginDescription": "Login to access your Clean Tech\naccount",
+  "profile_details": "Profile Details",
+  "edit_profile_details": "Edit Profile Details"
 }

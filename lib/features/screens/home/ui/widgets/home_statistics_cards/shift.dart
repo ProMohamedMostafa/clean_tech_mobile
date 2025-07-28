@@ -56,8 +56,8 @@ class Shift extends StatelessWidget {
                     ),
                     const Spacer(),
                     Container(
-                      height: 20.h,
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 2),
                       decoration: BoxDecoration(
                         color: Colors.blue[100],
                         borderRadius: BorderRadius.circular(3.r),

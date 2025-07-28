@@ -68,6 +68,7 @@ class ClockInOutBody extends StatelessWidget {
                     color: Colors.white,
                   ),
                 ),
+                horizontalSpace(5),
               ],
             ),
           ),

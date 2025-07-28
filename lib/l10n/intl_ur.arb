@@ -115,7 +115,7 @@
     "myActivity": "میری سرگرمی",
     "myTeamActivity": "میری ٹیم کی سرگرمی",
     "seeMoreButton": "مزید دیکھیں",
-    "materialCount": "مواد کی مقدار",
+    "lowStock": "کم اسٹاک",
     "inCost": "لاگت اندر",
     "cancelButton": "منسوخ کریں",
     "saveButton": "محفوظ کریں",
@@ -605,5 +605,7 @@
     "outSelect": "روانگی",
     "assignButton": "تفویض کریں",
     "noActivities": "کوئی سرگرمیاں نہیں ہیں",
-    "loginDescription": "کلین ٹیک اکاؤنٹ تک رسائی کے لیے لاگ ان کریں"
+    "loginDescription": "کلین ٹیک اکاؤنٹ تک رسائی کے لیے لاگ ان کریں",
+    "profile_details": "پروفائل کی تفصیلات",
+  "edit_profile_details": "پروفائل کی تفصیلات میں ترمیم کریں"
 }

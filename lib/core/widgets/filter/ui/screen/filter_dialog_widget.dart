@@ -7,15 +7,15 @@ import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
+import 'package:smart_cleaning_application/core/widgets/custom_time_picker/custom_time_picker.dart';
 import 'package:smart_cleaning_application/core/widgets/default_button/default_elevated_button.dart';
 import 'package:smart_cleaning_application/core/widgets/filter/logic/cubit/filter_dialog_cubit.dart';
 import 'package:smart_cleaning_application/core/widgets/filter/data/model/filter_dialog_data_model.dart';
 import 'package:smart_cleaning_application/core/widgets/filter/ui/widget/battery_indicator.dart';
 import 'package:smart_cleaning_application/core/widgets/filter/ui/widget/filter_top_widget.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_date_picker.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_drop_down_list.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_text_form_field.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/ui/widgets/custom_time_picker.dart';
+import 'package:smart_cleaning_application/core/widgets/custom_date_picker/custom_date_picker.dart';
+import 'package:smart_cleaning_application/core/widgets/custom_drop_down_list/custom_drop_down_list.dart';
+import 'package:smart_cleaning_application/core/widgets/default_text_form_field/custom_text_form_field.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class FilterDialogWidget extends StatelessWidget {
@@ -416,7 +416,7 @@ class FilterDialogWidget extends StatelessWidget {
                             .map((e) => e.name ?? 'Unknown')
                             .toList(),
                         onChanged: (selectedValue) {
-                          final selectedId = cubit.shiftsModel?.data?.shifts!
+                          final selectedId = cubit.shiftsModel?.data?.data!
                               .firstWhere(
                                   (shift) => shift.name == selectedValue)
                               .id

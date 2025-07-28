@@ -1,4 +1,4 @@
-import 'package:smart_cleaning_application/features/screens/activity/data/model/activities_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/activity/data/model/activities_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/attendance_status.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/attendance_status_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/completetion_task.dart';
@@ -9,10 +9,10 @@ import 'package:smart_cleaning_application/features/screens/home/data/model/task
 import 'package:smart_cleaning_application/features/screens/home/data/model/task_status_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/total_stock.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/users_count_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
-import 'package:smart_cleaning_application/features/screens/notification/data/model/notification_model.dart';
-import 'package:smart_cleaning_application/features/screens/provider/provider_management/data/models/providers_model.dart';
-import 'package:smart_cleaning_application/features/screens/settings/data/model/profile_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/users_model.dart';
+import 'package:smart_cleaning_application/features/screens/setting/notification/data/model/notification_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/provider/provider_management/data/models/providers_model.dart';
+import 'package:smart_cleaning_application/features/screens/setting/settings/data/model/profile_model.dart';
 
 abstract class HomeState {}
 

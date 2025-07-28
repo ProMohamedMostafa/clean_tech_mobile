@@ -8,7 +8,7 @@ import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/integration_buttons/integrations_buttons.dart';
-import 'package:smart_cleaning_application/features/screens/activity/ui/widgets/icons_widget.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/activity/ui/widgets/icons_widget.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_cubit.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 

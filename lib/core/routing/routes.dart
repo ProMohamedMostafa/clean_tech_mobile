@@ -12,6 +12,7 @@ class Routes {
   static const String integrationsScreen = '/integrationsScreen';
   static const String userManagmentScreen = '/userManagmentScreen';
   static const String workLocationScreen = '/organizationsScreen';
+  static const String chooseViewAssignScreen = '/chooseViewAssignScreen';
   static const String assignScreen = '/assignScreen';
   static const String shiftScreen = '/shiftScreen';
   static const String sensorScreen = '/sensorScreen';

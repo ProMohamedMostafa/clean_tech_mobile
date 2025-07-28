@@ -39,35 +39,39 @@ class FilterHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final bool isSmallScreen = screenWidth < 360;
+
+    final TextStyle countStyle = TextStyles.font12PrimSemi.copyWith(
+      fontSize: isSmallScreen ? 10 : 12,
+    );
+    final TextStyle titleStyle = TextStyles.font12PrimSemi.copyWith(
+      fontSize: isSmallScreen ? 12 : 14,
+      color: Colors.black,
+    );
     return Column(
       children: [
         Row(
           children: [
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              alignment: Alignment.center,
-              child: RichText(
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                text: TextSpan(
-                  children: [
+            Text(title, style: titleStyle),
+            RichText(
+              maxLines: 1,
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                children: [
+                  if (count1 != null)
                     TextSpan(
-                      text: title,
-                      style: TextStyles.font14BlackSemiBold,
+                      text: ' ($count1)',
+                      style: countStyle,
                     ),
-                    if (count1 != null)
-                      TextSpan(
-                        text: ' ($count1)',
-                        style: TextStyles.font14Primarybold,
+                  if (count2 != null)
+                    TextSpan(
+                      text: ' ($count2)',
+                      style: countStyle.copyWith(
+                        color: const Color(0xff46B749),
                       ),
-                    if (count2 != null)
-                      TextSpan(
-                        text: ' ($count2)',
-                        style: TextStyles.font14Primarybold
-                            .copyWith(color: Color(0xff46B749)),
-                      ),
-                  ],
-                ),
+                    ),
+                ],
               ),
             ),
             const Spacer(),

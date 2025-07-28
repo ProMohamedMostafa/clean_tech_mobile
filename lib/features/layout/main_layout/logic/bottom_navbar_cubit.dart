@@ -7,9 +7,9 @@ import 'package:smart_cleaning_application/features/screens/calendar/logic/calen
 import 'package:smart_cleaning_application/features/screens/calendar/ui/calendar_screen.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/screen/home_screen.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/ui/screen/integrations_screen.dart';
-import 'package:smart_cleaning_application/features/screens/settings/logic/settings_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/settings/ui/screen/settings_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/integrations/ui/screen/integrations_screen.dart';
+import 'package:smart_cleaning_application/features/screens/setting/settings/logic/settings_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/setting/settings/ui/screen/settings_screen.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class BottomNavbarCubit extends Cubit<BottomNavbarStates> {

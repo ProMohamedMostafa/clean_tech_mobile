@@ -1,29 +1,28 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
+import 'package:smart_cleaning_application/features/screens/calendar/data/model/tasks_calendar.dart';
 import 'package:smart_cleaning_application/features/screens/calendar/logic/calendar_state.dart';
-import 'package:smart_cleaning_application/features/screens/task/task_management/data/models/all_tasks_model.dart';
 
 class CalendarCubit extends Cubit<CalendarState> {
   CalendarCubit() : super(CalendarInitialState());
 
-  static CalendarCubit get(context) => BlocProvider.of(context);
+  TasksCalendar? tasksCalendar;
+  DateTime selectedDate = DateTime.now();
 
-// Start of the week (Saturday)
-  final startOfWeek =
-      DateTime.now().subtract(Duration(days: DateTime.now().weekday % 7));
+  void updateSelectedDate(DateTime newDate) {
+    selectedDate = newDate;
+    getAllTasks(startDate: newDate);
+  }
 
-  AllTasksModel? allTasksModel;
-  getAllTasks({DateTime? startDate, DateTime? endDate}) {
+  getAllTasks({DateTime? startDate}) {
+    final date = startDate ?? selectedDate;
     emit(GetAllTasksLoadingState());
-    DioHelper.getData(url: "tasks/pagination", query: {
-      'StartDate':
-          DateFormat('yyyy-MM-dd', 'en').format(startDate ?? startOfWeek),
-      'EndDate': DateFormat('yyyy-MM-dd', 'en')
-          .format(endDate ?? startOfWeek.add(const Duration(days: 6))),
+    DioHelper.getData(url: "tasks/calendar", query: {
+      'StartDate': DateFormat('yyyy-MM-dd', 'en').format(date),
     }).then((value) {
-      allTasksModel = AllTasksModel.fromJson(value!.data);
-      emit(GetAllTasksSuccessState(allTasksModel!));
+      tasksCalendar = TasksCalendar.fromJson(value!.data);
+      emit(GetAllTasksSuccessState(tasksCalendar!));
     }).catchError((error) {
       emit(GetAllTasksErrorState(error.toString()));
     });

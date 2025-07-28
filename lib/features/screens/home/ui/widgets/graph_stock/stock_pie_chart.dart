@@ -57,7 +57,7 @@ class StockPieChart extends StatelessWidget {
                 type: ConnectorType.curve,
               ),
             ),
-            radius: '90%',
+            radius: '65%',
             explode: true,
             explodeIndex: 0,
             explodeOffset: '10%',

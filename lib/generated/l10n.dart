@@ -989,14 +989,9 @@ class S {
     return Intl.message('See More', name: 'seeMoreButton', desc: '', args: []);
   }
 
-  /// `Material Count`
-  String get materialCount {
-    return Intl.message(
-      'Material Count',
-      name: 'materialCount',
-      desc: '',
-      args: [],
-    );
+  /// `Low Stock`
+  String get lowStock {
+    return Intl.message('Low Stock', name: 'lowStock', desc: '', args: []);
   }
 
   /// `In Cost`
@@ -4774,6 +4769,26 @@ class S {
     return Intl.message(
       'Login to access your Clean Tech\naccount',
       name: 'loginDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Profile Details`
+  String get profile_details {
+    return Intl.message(
+      'Profile Details',
+      name: 'profile_details',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Profile Details`
+  String get edit_profile_details {
+    return Intl.message(
+      'Edit Profile Details',
+      name: 'edit_profile_details',
       desc: '',
       args: [],
     );

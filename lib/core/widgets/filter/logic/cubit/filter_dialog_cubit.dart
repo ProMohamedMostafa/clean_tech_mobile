@@ -2,22 +2,22 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/country_list_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/nationality_list_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/role_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/users_model.dart';
-import 'package:smart_cleaning_application/features/screens/provider/provider_management/data/models/providers_model.dart';
-import 'package:smart_cleaning_application/features/screens/sensor/sensor_managment/data/model/activity_type_model.dart';
-import 'package:smart_cleaning_application/features/screens/sensor/sensor_managment/data/model/sensor_model.dart';
-import 'package:smart_cleaning_application/features/screens/shift/shifts_management/data/model/all_shifts_model.dart';
-import 'package:smart_cleaning_application/features/screens/stock/category_management/data/model/category_management_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/area_list_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/building_list_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/city_list_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/floor_list_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/organization_list_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/point_list_model.dart';
-import 'package:smart_cleaning_application/features/screens/integrations/data/models/section_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/country_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/nationality_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/role_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/shift_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/users_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/provider/provider_management/data/models/providers_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/sensor/sensor_managment/data/model/activity_type_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/sensor/sensor_managment/data/model/sensor_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/stock/category_management/data/model/category_management_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/area_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/building_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/city_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/floor_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/organization_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/point_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/section_list_model.dart';
 part 'filter_dialog_state.dart';
 
 class FilterDialogCubit extends Cubit<FilterDialogState> {
@@ -234,17 +234,17 @@ class FilterDialogCubit extends Cubit<FilterDialogState> {
     });
   }
 
-  AllShiftsModel? shiftsModel;
-  List<ShiftData> shiftData = [ShiftData(name: 'No shifts available')];
+  ShiftModel? shiftsModel;
+  List<ShiftItem> shiftData = [ShiftItem(name: 'No shifts available')];
   getShifts() {
-    emit(FilterDialogLoading<AllShiftsModel>());
+    emit(FilterDialogLoading<ShiftModel>());
     DioHelper.getData(url: ApiConstants.allShiftsUrl).then((value) {
-      shiftsModel = AllShiftsModel.fromJson(value!.data);
+      shiftsModel = ShiftModel.fromJson(value!.data);
       shiftData =
-          shiftsModel?.data?.shifts ?? [ShiftData(name: 'No shifts available')];
-      emit(FilterDialogSuccess<AllShiftsModel>());
+          shiftsModel?.data?.data ?? [ShiftItem(name: 'No shifts available')];
+      emit(FilterDialogSuccess<ShiftModel>());
     }).catchError((error) {
-      emit(FilterDialogError<AllShiftsModel>());
+      emit(FilterDialogError<ShiftModel>());
     });
   }
 

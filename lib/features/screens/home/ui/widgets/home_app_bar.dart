@@ -33,13 +33,13 @@ class HomeAppBar extends StatelessWidget {
                 decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
+                      color: Colors.grey[300]!,
                       offset: const Offset(0, 1),
                       blurRadius: 4,
                     )
                   ],
                   border: Border.all(
-                    color: Colors.grey[300]!,
+                    color: Colors.grey[100]!,
                     width: 1.w,
                   ),
                   borderRadius: BorderRadius.circular(14.r),
@@ -47,10 +47,10 @@ class HomeAppBar extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(14.r),
                   child: isLoading
-                      ? Container(color: Colors.grey[300])
+                      ? Container(color: Colors.grey[50])
                       : Image.network(
                           data.image ?? '',
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fill,
                           errorBuilder: (context, error, stackTrace) {
                             return Image.asset(
                               'assets/images/person.png',

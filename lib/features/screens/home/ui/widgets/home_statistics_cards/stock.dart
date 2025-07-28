@@ -64,7 +64,7 @@ class Stock extends StatelessWidget {
                           horizontalSpace(8),
                           Flexible(
                             child: Text(
-                              S.of(context).materialCount,
+                              S.of(context).lowStock,
                               style: TextStyles.font14BlackSemiBold,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -85,8 +85,8 @@ class Stock extends StatelessWidget {
                           ),
                           horizontalSpace(8),
                           Container(
-                            height: 20.h,
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 2),
                             decoration: BoxDecoration(
                               color: Colors.blue[100],
                               borderRadius: BorderRadius.circular(3.r),
@@ -186,8 +186,8 @@ class Stock extends StatelessWidget {
                         ),
                         horizontalSpace(8),
                         Container(
-                          height: 20.h,
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 4, vertical: 2),
                           decoration: BoxDecoration(
                             color:
                                 isNegative ? Colors.red[100] : Colors.blue[100],
