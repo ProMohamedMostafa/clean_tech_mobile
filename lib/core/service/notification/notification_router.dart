@@ -22,6 +22,9 @@ class NotificationRouter {
         return Routes.leavesDetailsScreen;
       case 'Material':
         return Routes.materialDetailsScreen;
+      case 'Device':
+      case 'DeviceLimit':
+        return Routes.sensorDetailsScreen;
       default:
         return '';
     }

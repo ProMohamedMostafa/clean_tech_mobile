@@ -95,7 +95,7 @@ class IntegrationsBody extends StatelessWidget {
                   crossAxisCount: 3,
                   crossAxisSpacing: 12.w,
                   mainAxisSpacing: 12.h,
-                  childAspectRatio: 0.75,
+                  childAspectRatio: 0.7,
                 ),
                 itemCount: integrationItems.length,
                 itemBuilder: (context, index) {

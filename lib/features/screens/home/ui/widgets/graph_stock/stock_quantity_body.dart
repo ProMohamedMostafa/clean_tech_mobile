@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
+import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_state.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/graph_stock/build_legend.dart';
@@ -55,8 +56,6 @@ class StockQuantityBody extends StatelessWidget {
                 children: [
                   FilterHeader(
                     title: S.of(context).stockQuantity,
-                    count1: totalIn,
-                    count2: totalOut,
                     chartType: cubit.selectedChartTypeProvider,
                     dateRange: cubit.selectedDateRangeProvider,
                     onChartTypeSelected: (value) {
@@ -70,16 +69,25 @@ class StockQuantityBody extends StatelessWidget {
                     onFilterSelected: (value) {
                       cubit.changeSelectedProvider(int.parse(value));
                     },
-                    scrollController: cubit.providerScrollController,
+                    scrollController: cubit.providerScrollController,showOnlyYear: true,
                   ),
                   _buildChart(context, cubit, isLoading),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       buildLegend(S.of(context).inSide, AppColor.primaryColor),
+                      Text(
+                        ' $totalIn',
+                        style: TextStyles.font14PrimRegular,
+                      ),
                       horizontalSpace(16),
                       buildLegend(
                           S.of(context).outSide, const Color(0xff46B749)),
+                      Text(
+                        ' $totalOut',
+                        style: TextStyles.font14PrimRegular
+                            .copyWith(color: const Color(0xff46B749)),
+                      ),
                     ],
                   ),
                 ],

@@ -6,11 +6,11 @@ import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/date_picker.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class FilterHeader extends StatelessWidget {
   final String title;
   final int? count1;
-  final int? count2;
   final String chartType;
   final String dateRange;
   final ValueChanged<String>? onFilterSelected;
@@ -20,12 +20,13 @@ class FilterHeader extends StatelessWidget {
   final List<(String, String)> filterDropdownItems;
   final ScrollController? scrollController;
   final Widget? extraWidget;
+  final Future<DateTime?> Function()? onPickYear;
+  final bool showOnlyYear;
 
   const FilterHeader({
     super.key,
     required this.title,
     this.count1,
-    this.count2,
     required this.chartType,
     required this.dateRange,
     this.onFilterSelected,
@@ -35,42 +36,26 @@ class FilterHeader extends StatelessWidget {
     required this.filterDropdownItems,
     this.scrollController,
     this.extraWidget,
+    this.onPickYear,
+    this.showOnlyYear = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final bool isSmallScreen = screenWidth < 360;
-
-    final TextStyle countStyle = TextStyles.font12PrimSemi.copyWith(
-      fontSize: isSmallScreen ? 10 : 12,
-    );
-    final TextStyle titleStyle = TextStyles.font12PrimSemi.copyWith(
-      fontSize: isSmallScreen ? 12 : 14,
-      color: Colors.black,
-    );
     return Column(
       children: [
         Row(
           children: [
-            Text(title, style: titleStyle),
             RichText(
               maxLines: 1,
               textAlign: TextAlign.center,
               text: TextSpan(
                 children: [
+                  TextSpan(text: title, style: TextStyles.font14BlackMedium),
                   if (count1 != null)
                     TextSpan(
-                      text: ' ($count1)',
-                      style: countStyle,
-                    ),
-                  if (count2 != null)
-                    TextSpan(
-                      text: ' ($count2)',
-                      style: countStyle.copyWith(
-                        color: const Color(0xff46B749),
-                      ),
-                    ),
+                        text: ' ($count1)',
+                        style: TextStyles.font14PrimRegular),
                 ],
               ),
             ),
@@ -104,14 +89,22 @@ class FilterHeader extends StatelessWidget {
             ),
             const Spacer(),
             _DateRangeSelector(
-              dateRange: dateRange,
-              onPressed: () async {
-                final result = await CustomMonthPicker.show(context: context);
-                if (result != null && onDateRangeSelected != null) {
-                  onDateRangeSelected!(result);
-                }
-              },
-            ),
+                dateRange: dateRange,
+                showOnlyYear: showOnlyYear,
+                onPressed: () async {
+                  final result = await (showOnlyYear
+                      ? CustomStockYearPicker.show(context: context)
+                      : CustomMonthPicker.show(context: context));
+
+                  if (onDateRangeSelected != null) {
+                    if (showOnlyYear && result is DateTime) {
+                      final text = '${result.year}';
+                      onDateRangeSelected!(text);
+                    } else if (result is String) {
+                      onDateRangeSelected!(result);
+                    }
+                  }
+                }),
           ],
         ),
       ],
@@ -122,10 +115,12 @@ class FilterHeader extends StatelessWidget {
 class _DateRangeSelector extends StatelessWidget {
   final String dateRange;
   final VoidCallback onPressed;
+  final bool showOnlyYear;
 
   const _DateRangeSelector({
     required this.dateRange,
     required this.onPressed,
+    this.showOnlyYear = false,
   });
 
   @override
@@ -404,6 +399,128 @@ class _FilterDropdownFormState extends State<_FilterDropdownForm> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class CustomStockYearPicker {
+  static Future<DateTime?> show({
+    required BuildContext context,
+    DateTime? initialDate,
+  }) async {
+    DateTime? selectedDate = initialDate ?? DateTime.now();
+
+    return await showDialog<DateTime>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+          insetPadding: const EdgeInsets.all(20),
+          contentPadding: const EdgeInsets.all(20),
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16.r)),
+          ),
+          content: StatefulBuilder(
+            builder: (context, setState) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: 280.h,
+                    child: SfDateRangePicker(
+                      initialSelectedDate: selectedDate,
+                      minDate: DateTime(2025, 1),
+                      allowViewNavigation: false,
+                      view: DateRangePickerView.decade,
+                      selectionMode: DateRangePickerSelectionMode.single,
+                      rangeSelectionColor:
+                          AppColor.primaryColor.withOpacity(0.3),
+                      startRangeSelectionColor: AppColor.primaryColor,
+                      endRangeSelectionColor: AppColor.primaryColor,
+                      backgroundColor: Colors.white,
+                      selectionColor: AppColor.primaryColor,
+                      headerStyle: DateRangePickerHeaderStyle(
+                        textAlign: TextAlign.center,
+                        backgroundColor: AppColor.primaryColor.withOpacity(0.1),
+                        textStyle: TextStyle(
+                          color: AppColor.primaryColor,
+                        ),
+                      ),
+                      yearCellStyle: DateRangePickerYearCellStyle(
+                        todayTextStyle: TextStyle(color: AppColor.primaryColor),
+                        todayCellDecoration: BoxDecoration(),
+                      ),
+                      onSelectionChanged:
+                          (DateRangePickerSelectionChangedArgs args) {
+                        if (args.value is DateTime) {
+                          setState(() {
+                            selectedDate = args.value;
+                          });
+                        }
+                      },
+                    ),
+                  ),
+                  verticalSpace(10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SizedBox(
+                        height: 45.h,
+                        width: 130.w,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            side: BorderSide(color: Colors.grey),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
+                            elevation: 1,
+                          ),
+                          onPressed: () {
+                            Navigator.pop(dialogContext);
+                          },
+                          child: Text(
+                            S.of(context).cancelButton,
+                            style:
+                                TextStyle(fontSize: 14.sp, color: Colors.black),
+                          ),
+                        ),
+                      ),
+                      horizontalSpace(10),
+                      SizedBox(
+                        height: 45.h,
+                        width: 130.w,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColor.primaryColor,
+                            side: BorderSide(color: Colors.blue),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
+                            elevation: 1,
+                          ),
+                          onPressed: () {
+                            Navigator.pop(dialogContext, selectedDate);
+                          },
+                          child: Text(
+                            S.of(context).saveButton,
+                            style:
+                                TextStyle(fontSize: 14.sp, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

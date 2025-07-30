@@ -47,7 +47,7 @@ class HomeAppBar extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(14.r),
                   child: isLoading
-                      ? Container(color: Colors.grey[50])
+                      ? Container(color: const Color(0xffEBEBF4))
                       : Image.network(
                           data.image ?? '',
                           fit: BoxFit.fill,

@@ -16,6 +16,10 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
 
   static TaskManagementCubit get(context) => BlocProvider.of(context);
 
+
+
+DateTime? filterStartDate;
+DateTime? filterEndDate;
   TextEditingController searchController = TextEditingController();
   ScrollController scrollController = ScrollController();
   ScrollController horizontalScrollController = ScrollController();

@@ -386,7 +386,7 @@ class HomeCubit extends Cubit<HomeState> {
   //Stock Part
   String selectedProviderName = 'All Providers';
   String selectedChartTypeProvider = 'Line';
-  String selectedDateRangeProvider = '..... - ..... ${DateTime.now().year}';
+  String selectedDateRangeProvider = '${DateTime.now().year}';
 
   TotalStockModel? totalStockModel;
   getQuantity({int? year, providerId}) {
@@ -473,7 +473,7 @@ class HomeCubit extends Cubit<HomeState> {
   // completetion task part
   String selectedUserName = 'All Users';
   String selectedChartTypeCompleteTask = 'Line';
-  String selectedDateRangeCompleteTask = '..... - ..... ${DateTime.now().year}';
+  String selectedDateRangeCompleteTask = '${DateTime.now().year}';
 
   CompletetionTaskModel? completetionTaskModel;
   getCompleteiontask({int? year, userId}) {
@@ -703,7 +703,8 @@ class HomeCubit extends Cubit<HomeState> {
         return null;
     }
   }
-    bool isArabic() {
+
+  bool isArabic() {
     return Intl.getCurrentLocale() == 'ar';
   }
 }

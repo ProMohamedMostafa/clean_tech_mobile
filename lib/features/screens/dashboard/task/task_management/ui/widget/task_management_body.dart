@@ -97,10 +97,13 @@ class TaskManagementBody extends StatelessWidget {
                               ..getDevices(),
                             child: FilterDialogWidget(
                               index: 'T',
-                              onPressed: (data) {
-                                cubit.filterModel = data;
-                                cubit.getAllTasks(index);
-                              },
+                             onPressed: (data) {
+  cubit.filterModel = data;
+  cubit.filterStartDate = data.startDate;
+  cubit.filterEndDate = data.endDate;
+  cubit.getAllTasks(index);
+}
+
                             ));
                       },
                     );
@@ -126,63 +129,87 @@ class TaskManagementBody extends StatelessWidget {
   }
 
   Widget _buildDatePicker(BuildContext context) {
-    final cubit = context.read<TaskManagementCubit>();
-    return EasyDateTimeLinePicker.itemBuilder(
-      headerOptions: HeaderOptions(headerType: HeaderType.none),
-      firstDate: DateTime(2025, 1, 1),
-      lastDate: DateTime(3000, 3, 18),
-      focusedDate: cubit.selectedDate,
-      itemExtent: 69.0,
-      itemBuilder: (context, date, isSelected, isDisabled, isToday, onTap) {
-        String monthName = DateFormat.MMM().format(date);
-        String weekdayName = DateFormat.E().format(date);
-        return InkWell(
-          onTap: onTap,
-          child: Container(
-            width: 44.w,
-            height: 64.h,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(11.r),
-                border: Border.all(color: Colors.black12),
-                color: isSelected ? AppColor.primaryColor : Colors.white),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  monthName,
-                  style: TextStyle(
-                      color: isSelected ? Colors.white : Colors.black,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14.sp),
-                ),
-                Text(
-                  date.day.toString(),
-                  style: TextStyle(
-                      color: isSelected ? Colors.white : Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.sp),
-                ),
-                Text(
-                  weekdayName,
-                  style: TextStyle(
-                      color: isSelected ? Colors.white : Colors.black,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14.sp),
-                ),
-              ],
-            ),
+  final cubit = context.read<TaskManagementCubit>();
+  return EasyDateTimeLinePicker.itemBuilder(
+    headerOptions: HeaderOptions(headerType: HeaderType.none),
+    firstDate: DateTime(2025, 1, 1),
+    lastDate: DateTime(3000, 3, 18),
+    focusedDate: cubit.selectedDate,
+    itemExtent: 69.0,
+    itemBuilder: (context, date, isSelected, isDisabled, isToday, onTap) {
+      String monthName = DateFormat.MMM().format(date);
+      String weekdayName = DateFormat.E().format(date);
+
+      // check if this day is in filter range
+      bool isInRange = false;
+      if (cubit.filterStartDate != null && cubit.filterEndDate != null) {
+        isInRange = date.isAfter(cubit.filterStartDate!.subtract(const Duration(days: 1))) &&
+                    date.isBefore(cubit.filterEndDate!.add(const Duration(days: 1)));
+      }
+
+      Color backgroundColor = Colors.white;
+      Color textColor = Colors.black;
+
+      if (isSelected) {
+        backgroundColor = AppColor.primaryColor;
+        textColor = Colors.white;
+      } else if (isInRange) {
+        backgroundColor = AppColor.fourthColor;
+        textColor = AppColor.primaryColor;
+      }
+
+      return InkWell(
+        onTap: onTap,
+        child: Container(
+          width: 44.w,
+          height: 64.h,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(11.r),
+            border: Border.all(color: Colors.black12),
+            color: backgroundColor,
           ),
-        );
-      },
-      onDateChange: (date) {
-        cubit.selectedDate = date;
-        cubit.currentPage = 1;
-        cubit.allTasksModel = null;
-        cubit.getAllTasks(index);
-      },
-    );
-  }
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(
+                monthName,
+                style: TextStyle(
+                    color: textColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14.sp),
+              ),
+              Text(
+                date.day.toString(),
+                style: TextStyle(
+                    color: textColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.sp),
+              ),
+              Text(
+                weekdayName,
+                style: TextStyle(
+                    color: textColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14.sp),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+    onDateChange: (date) {
+  cubit.filterStartDate = null;
+  cubit.filterEndDate = null;
+  cubit.filterModel = null;
+  cubit.selectedDate = date;
+  cubit.currentPage = 1;
+  cubit.allTasksModel = null;
+  cubit.getAllTasks(index);
+},
+
+  );
+}
+
 
   Widget _buildTabBar(BuildContext context) {
     final cubit = context.read<TaskManagementCubit>();

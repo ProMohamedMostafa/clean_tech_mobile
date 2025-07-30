@@ -56,7 +56,7 @@ class CompleteTasksRateBody extends StatelessWidget {
                     onFilterSelected: (value) {
                       cubit.changeSelectedUser(int.parse(value));
                     },
-                    scrollController: cubit.userScrollController,
+                    scrollController: cubit.userScrollController,showOnlyYear: true,
                   ),
                   verticalSpace(10),
                   Expanded(

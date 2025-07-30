@@ -539,9 +539,9 @@ class S {
     return Intl.message('Settings', name: 'botNavTitle4', desc: '', args: []);
   }
 
-  /// `Users Management`
+  /// `Users`
   String get integ1 {
-    return Intl.message('Users Management', name: 'integ1', desc: '', args: []);
+    return Intl.message('Users', name: 'integ1', desc: '', args: []);
   }
 
   /// `Work Locations`
@@ -549,14 +549,9 @@ class S {
     return Intl.message('Work Locations', name: 'integ2', desc: '', args: []);
   }
 
-  /// `Assign Management`
+  /// `Assign`
   String get integ3 {
-    return Intl.message(
-      'Assign Management',
-      name: 'integ3',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Assign', name: 'integ3', desc: '', args: []);
   }
 
   /// `Shifts`

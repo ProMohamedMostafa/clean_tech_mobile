@@ -29,15 +29,26 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
 
   Future<void> _setInitialPhoneNumber() async {
     if (widget.controller.text.isNotEmpty) {
-      String phone = widget.controller.text;
+      String phone = widget.controller.text.trim();
 
-      // If number starts with 0 and looks Egyptian, assume +20
-      if (phone.startsWith('0')) {
-        phone = '+20${phone.substring(1)}';
+      // Default fallback region
+      String defaultRegion = 'SA'; // or 'EG' depending on your app logic
+
+      // If the phone doesn't start with '+', assume local and fix it
+      if (!phone.startsWith('+')) {
+        // Egyptian number fallback if starts with 0
+        if (phone.startsWith('0')) {
+          phone = '+20${phone.substring(1)}';
+          defaultRegion = 'EG';
+        } else {
+          // Default to Saudi if unsure
+          phone = '+966$phone';
+          defaultRegion = 'SA';
+        }
       }
 
       final parsedNumber =
-          await PhoneNumber.getRegionInfoFromPhoneNumber(phone);
+          await PhoneNumber.getRegionInfoFromPhoneNumber(phone, defaultRegion);
       setState(() {
         number = parsedNumber;
         widget.controller.text = parsedNumber.phoneNumber ?? phone;
