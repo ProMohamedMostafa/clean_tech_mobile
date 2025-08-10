@@ -63,6 +63,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "Total_completed_sensors_tasks": MessageLookupByLibrary.simpleMessage(
       "کل مکمل شدہ سینسرز کے ٹاسک",
     ),
+    "Total_inProgress_sensors_tasks": MessageLookupByLibrary.simpleMessage(
+      "کل جاری کام کے سینسرز",
+    ),
+    "Total_overdue_sensors_tasks": MessageLookupByLibrary.simpleMessage(
+      "کل لیٹ کام کے سینسرز",
+    ),
+    "Total_pending_sensors_tasks": MessageLookupByLibrary.simpleMessage(
+      "کل زیر التوا کام کے سینسرز",
+    ),
     "absent": MessageLookupByLibrary.simpleMessage("فقدان"),
     "action": MessageLookupByLibrary.simpleMessage("عمل"),
     "active": MessageLookupByLibrary.simpleMessage("فعال"),

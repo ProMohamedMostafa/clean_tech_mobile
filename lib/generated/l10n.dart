@@ -4819,6 +4819,36 @@ class S {
     );
   }
 
+  /// `Total pending sensors tasks`
+  String get Total_pending_sensors_tasks {
+    return Intl.message(
+      'Total pending sensors tasks',
+      name: 'Total_pending_sensors_tasks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total in progress sensors tasks`
+  String get Total_inProgress_sensors_tasks {
+    return Intl.message(
+      'Total in progress sensors tasks',
+      name: 'Total_inProgress_sensors_tasks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total overdue sensors tasks`
+  String get Total_overdue_sensors_tasks {
+    return Intl.message(
+      'Total overdue sensors tasks',
+      name: 'Total_overdue_sensors_tasks',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Sensors`
   String get Sensors {
     return Intl.message('Sensors', name: 'Sensors', desc: '', args: []);

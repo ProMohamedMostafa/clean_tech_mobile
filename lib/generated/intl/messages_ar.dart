@@ -63,6 +63,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "Total_completed_sensors_tasks": MessageLookupByLibrary.simpleMessage(
       "إجمالي مهام المستشعرات المكتملة",
     ),
+    "Total_inProgress_sensors_tasks": MessageLookupByLibrary.simpleMessage(
+      "إجمالي المهام قيد التنفيذ",
+    ),
+    "Total_overdue_sensors_tasks": MessageLookupByLibrary.simpleMessage(
+      "إجمالي المهام المتأخرة",
+    ),
+    "Total_pending_sensors_tasks": MessageLookupByLibrary.simpleMessage(
+      "إجمالي المهام المعلقة",
+    ),
     "absent": MessageLookupByLibrary.simpleMessage("غائب"),
     "action": MessageLookupByLibrary.simpleMessage("الإجراء"),
     "active": MessageLookupByLibrary.simpleMessage("نشط"),

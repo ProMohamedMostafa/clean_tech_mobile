@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/chart_data.dart';
@@ -30,6 +32,9 @@ class _SensorTasksRateBodyState extends State<SensorTasksRateBody> {
     AppColor.primaryColor,
     Color(0xFF8338EC),
   ];
+  int selectedIndex = 2;
+  String selectedKey = '';
+  String selectedValue = '';
 
   @override
   void initState() {
@@ -38,6 +43,14 @@ class _SensorTasksRateBodyState extends State<SensorTasksRateBody> {
     final cubit = context.read<HomeCubit>();
     cubit.getSection();
     cubit.getChartSensorData();
+
+    // Initialize the selected label/value with default data if available:
+    final status = cubit.sensorChartModel?.data?.status;
+    if (status != null) {
+      selectedKey = S.current.Total_completed_sensors_tasks;
+      selectedValue =
+          '${cubit.sensorChartModel?.data?.totalCompletionPercentage ?? 0}%';
+    }
   }
 
   void _fetchData() {
@@ -66,7 +79,12 @@ class _SensorTasksRateBodyState extends State<SensorTasksRateBody> {
           ChartData('Completed', status?.completedPercentage ?? 0),
           ChartData('Overdue', status?.overduePercentage ?? 0),
         ];
-
+        // Initialize selectedKey and selectedValue at build if empty (to show default)
+        if (selectedKey.isEmpty && status != null) {
+          selectedKey = S.current.Total_completed_sensors_tasks;
+          selectedValue =
+              '${cubit.sensorChartModel?.data?.totalCompletionPercentage ?? 0}%';
+        }
         final isLoading =
             state is HomeLoadingState || cubit.sensorChartModel == null;
         return Skeletonizer(
@@ -180,6 +198,15 @@ class _SensorTasksRateBodyState extends State<SensorTasksRateBody> {
                           ),
                           dataLabelMapper: (ChartData data, _) =>
                               '${data.value}%',
+                          enableTooltip: true,
+                          selectionBehavior: SelectionBehavior(
+                            enable: true,
+                            selectedColor: null,
+                            unselectedColor: null,
+                            selectedOpacity: 1.0,
+                            unselectedOpacity: 1.0,
+                            toggleSelection: true,
+                          ),
                         ),
                       ],
                       legend: Legend(
@@ -188,6 +215,36 @@ class _SensorTasksRateBodyState extends State<SensorTasksRateBody> {
                         shouldAlwaysShowScrollbar: true,
                         textStyle: TextStyles.font12BlackSemi,
                       ),
+                      onSelectionChanged: (SelectionArgs args) {
+                        final index = args.pointIndex;
+                        final selected = chartDataList[index];
+
+                        setState(() {
+                          selectedIndex = index;
+
+                          switch (selected.month) {
+                            case 'Pending':
+                              selectedKey =
+                                  S.current.Total_pending_sensors_tasks;
+                              break;
+                            case 'In Progress':
+                              selectedKey =
+                                  S.current.Total_inProgress_sensors_tasks;
+                              break;
+                            case 'Completed':
+                              selectedKey =
+                                  S.current.Total_completed_sensors_tasks;
+                              break;
+                            case 'Overdue':
+                              selectedKey =
+                                  S.current.Total_overdue_sensors_tasks;
+                              break;
+                            default:
+                              selectedKey = selected.month;
+                          }
+                          selectedValue = '${selected.value}%';
+                        });
+                      },
                     ),
                   ),
                   verticalSpace(10),
@@ -200,18 +257,18 @@ class _SensorTasksRateBodyState extends State<SensorTasksRateBody> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(S.of(context).Total_completed_sensors_tasks),
+                        Text(selectedKey),
                         Container(
-                          padding: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(13),
                           decoration: BoxDecoration(
-                            color: AppColor.primaryColor,
+                            color: colorMap[selectedIndex % colorMap.length],
                             shape: BoxShape.circle,
                           ),
                           child: Center(
                             child: Padding(
-                              padding: const EdgeInsets.all(2),
+                              padding: const EdgeInsets.all(3),
                               child: Text(
-                                '${cubit.sensorChartModel?.data?.totalCompletionPercentage ?? 0}%',
+                                selectedValue,
                                 style: TextStyles.font13WhiteRegular,
                               ),
                             ),
@@ -244,14 +301,20 @@ class _SensorTasksRateBodyState extends State<SensorTasksRateBody> {
                       itemBuilder: (context, index) {
                         final sensor = cubit.sensorChartModel!.data!
                             .getCompletionDeviceTask![index];
-                        return SizedBox(
-                          height: 40,
-                          child: SensorTile(
-                            name: sensor.name ?? 'Unknown',
-                            battery: sensor.battery ?? 0,
-                            tasks:
-                                (sensor.completionPercentage ?? 0).toDouble(),
-                            isOnline: (sensor.battery ?? 0) > 50,
+                        return InkWell(
+                          onTap: () {
+                            context.pushNamed(Routes.sensorDetailsScreen,
+                                arguments: sensor.id);
+                          },
+                          child: SizedBox(
+                            height: 40,
+                            child: SensorTile(
+                              name: sensor.name ?? 'Unknown',
+                              battery: sensor.battery ?? 0,
+                              tasks:
+                                  (sensor.completionPercentage ?? 0).toDouble(),
+                              isOnline: (sensor.battery ?? 0) > 50,
+                            ),
                           ),
                         );
                       },
