@@ -22,7 +22,10 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "All_Providers": MessageLookupByLibrary.simpleMessage("تمام فراہم کنندگان"),
+    "All_Users": MessageLookupByLibrary.simpleMessage("تمام صارفین"),
     "Area": MessageLookupByLibrary.simpleMessage("علاقہ"),
+    "Battery": MessageLookupByLibrary.simpleMessage("بیٹری"),
     "Building": MessageLookupByLibrary.simpleMessage("عمارت"),
     "City": MessageLookupByLibrary.simpleMessage("شہر"),
     "EditArea": MessageLookupByLibrary.simpleMessage("علاقہ ترمیم کریں"),
@@ -42,6 +45,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "ReadMoreButton": MessageLookupByLibrary.simpleMessage("مزید پڑھیں"),
     "RemoveLocationButton": MessageLookupByLibrary.simpleMessage("مقام ہٹائیں"),
     "Section": MessageLookupByLibrary.simpleMessage("سیکشن"),
+    "Select_section": MessageLookupByLibrary.simpleMessage("حصہ منتخب کریں"),
+    "Sensors": MessageLookupByLibrary.simpleMessage("سینسرز"),
+    "Sensors_Task_Completion_Rates": MessageLookupByLibrary.simpleMessage(
+      "سینسرز ٹاسک مکمل کرنے کی شرحیں",
+    ),
+    "Tasks": MessageLookupByLibrary.simpleMessage("ٹاسک"),
     "TitleAdd": MessageLookupByLibrary.simpleMessage("شامل کریں"),
     "TitleChangePassword": MessageLookupByLibrary.simpleMessage(
       "پاس ورڈ تبدیل کریں",
@@ -51,6 +60,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "TitleRemove": MessageLookupByLibrary.simpleMessage("مقام ہٹائیں"),
     "TitleRestore": MessageLookupByLibrary.simpleMessage("بحال کریں"),
     "Titleapprove": MessageLookupByLibrary.simpleMessage("منظور کریں"),
+    "Total_completed_sensors_tasks": MessageLookupByLibrary.simpleMessage(
+      "کل مکمل شدہ سینسرز کے ٹاسک",
+    ),
     "absent": MessageLookupByLibrary.simpleMessage("فقدان"),
     "action": MessageLookupByLibrary.simpleMessage("عمل"),
     "active": MessageLookupByLibrary.simpleMessage("فعال"),
@@ -91,6 +103,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "add_comment": MessageLookupByLibrary.simpleMessage("تبصرہ شامل کریں"),
     "admin": MessageLookupByLibrary.simpleMessage("ایڈمن"),
     "after_reading": MessageLookupByLibrary.simpleMessage("پڑھنے کے بعد"),
+    "after_reading_or_feedback_device_not_exists":
+        MessageLookupByLibrary.simpleMessage(
+          "پڑھنے کے بعد یا فیڈبیک ڈیوائس موجود نہیں ہے۔",
+        ),
     "all": MessageLookupByLibrary.simpleMessage("تمام"),
     "allTasks": MessageLookupByLibrary.simpleMessage("تمام کام"),
     "alreadyMarkedAsRead": MessageLookupByLibrary.simpleMessage(
@@ -112,10 +128,23 @@ class MessageLookup extends MessageLookupByLibrary {
       "علاقے کا نام بہت چھوٹا ہے",
     ),
     "area_details": MessageLookupByLibrary.simpleMessage("علاقے کی تفصیلات"),
+    "area_not_exists_or_reading_out_of_limit":
+        MessageLookupByLibrary.simpleMessage(
+          "علاقہ موجود نہیں یا ریڈنگ حد سے باہر ہے۔",
+        ),
     "areas": MessageLookupByLibrary.simpleMessage("علاقے"),
     "assignButton": MessageLookupByLibrary.simpleMessage("تفویض کریں"),
     "assign_to": MessageLookupByLibrary.simpleMessage("تفویض کریں"),
     "attendance": MessageLookupByLibrary.simpleMessage("حاضری"),
+    "bad_certificate": MessageLookupByLibrary.simpleMessage(
+      "غلط سرٹیفکیٹ موصول ہوا",
+    ),
+    "bad_gateway": MessageLookupByLibrary.simpleMessage(
+      "خراب گیٹ وے۔ بعد میں دوبارہ کوشش کریں۔",
+    ),
+    "bad_request": MessageLookupByLibrary.simpleMessage(
+      "غلط درخواست۔ بھیجا گیا ڈیٹا چیک کریں۔",
+    ),
     "bar": MessageLookupByLibrary.simpleMessage("بار"),
     "battery": MessageLookupByLibrary.simpleMessage("بیٹری"),
     "botNavTitle1": MessageLookupByLibrary.simpleMessage("ہوم"),
@@ -146,7 +175,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "building_details": MessageLookupByLibrary.simpleMessage(
       "عمارت کی تفصیلات",
     ),
+    "building_not_exists_or_cannot_delete_shift":
+        MessageLookupByLibrary.simpleMessage(
+          "عمارت موجود نہیں یا شفٹ حذف نہیں کی جا سکتی۔",
+        ),
     "buildings": MessageLookupByLibrary.simpleMessage("عمارتیں"),
+    "buildings_not_found_or_already_assign_limit":
+        MessageLookupByLibrary.simpleMessage(
+          "عمارتیں نہیں ملیں یا حد پہلے ہی پوری ہو چکی ہے۔",
+        ),
     "calendar": MessageLookupByLibrary.simpleMessage("کیلنڈر"),
     "cancelButton": MessageLookupByLibrary.simpleMessage("منسوخ کریں"),
     "capacity": MessageLookupByLibrary.simpleMessage("گنجائش"),
@@ -171,6 +208,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "categoryNameTooShort": MessageLookupByLibrary.simpleMessage(
       "زمرے کا نام بہت چھوٹا ہے",
     ),
+    "category_cannot_be_own_parent": MessageLookupByLibrary.simpleMessage(
+      "زمرہ اپنا والدین نہیں ہو سکتا۔",
+    ),
+    "category_not_exists_or_leave_start_future":
+        MessageLookupByLibrary.simpleMessage(
+          "زمرہ موجود نہیں یا چھٹی مستقبل میں شروع ہوگی۔",
+        ),
     "changePasswordbutton": MessageLookupByLibrary.simpleMessage(
       "پاس ورڈ تبدیل کریں",
     ),
@@ -198,6 +242,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "شہر کا نام بہت چھوٹا ہے",
     ),
     "city_details": MessageLookupByLibrary.simpleMessage("شہر کی تفصیلات"),
+    "city_not_exists_or_task_completed": MessageLookupByLibrary.simpleMessage(
+      "شہر موجود نہیں یا کام مکمل ہو چکا ہے۔",
+    ),
     "cleaner": MessageLookupByLibrary.simpleMessage("صفائی کرنے والا"),
     "cleaners": MessageLookupByLibrary.simpleMessage("صفائی کرنے والے"),
     "cm": MessageLookupByLibrary.simpleMessage("سینٹی میٹر"),
@@ -220,7 +267,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "confirm_password": MessageLookupByLibrary.simpleMessage(
       "پاس ورڈ کی تصدیق کریں",
     ),
+    "connection_timeout": MessageLookupByLibrary.simpleMessage(
+      "سرور کے ساتھ کنکشن کا وقت ختم ہوگیا",
+    ),
     "country": MessageLookupByLibrary.simpleMessage("ملک"),
+    "country_or_device_already_assigned": MessageLookupByLibrary.simpleMessage(
+      "ملک موجود نہیں یا ڈیوائس پہلے سے مختص ہے۔",
+    ),
     "createButton": MessageLookupByLibrary.simpleMessage("بنائیں"),
     "createCategory": MessageLookupByLibrary.simpleMessage("زمرہ بنائیں"),
     "createLeave": MessageLookupByLibrary.simpleMessage("چھٹی بنائیں"),
@@ -238,6 +291,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "create_task": MessageLookupByLibrary.simpleMessage("کام بنائیں"),
     "created_by": MessageLookupByLibrary.simpleMessage("بنایا گیا"),
     "currently_reading": MessageLookupByLibrary.simpleMessage("موجودہ ریڈنگ"),
+    "currently_reading_or_feedback_device_assigned":
+        MessageLookupByLibrary.simpleMessage(
+          "فی الحال پڑھ رہے ہیں یا فیڈبیک ڈیوائس پہلے سے مختص ہے۔",
+        ),
     "currently_reading_required": MessageLookupByLibrary.simpleMessage(
       "موجودہ ریڈنگ ضروری ہے",
     ),
@@ -290,6 +347,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "پروفائل کی تفصیلات میں ترمیم کریں",
     ),
     "edit_task": MessageLookupByLibrary.simpleMessage("کام میں ترمیم کریں"),
+    "email_already_exists": MessageLookupByLibrary.simpleMessage(
+      "یہ ای میل پہلے سے رجسٹرڈ ہے۔",
+    ),
+    "email_or_username_not_found": MessageLookupByLibrary.simpleMessage(
+      "ای میل یا صارف نام نہیں ملا۔",
+    ),
     "employee": MessageLookupByLibrary.simpleMessage("ملازم"),
     "employeeName": MessageLookupByLibrary.simpleMessage("ملازم کا نام"),
     "employeeNameRequiredValidation": MessageLookupByLibrary.simpleMessage(
@@ -302,6 +365,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "endTime": MessageLookupByLibrary.simpleMessage("خاتمے کا وقت"),
     "endTimeRequiredValidation": MessageLookupByLibrary.simpleMessage(
       "خاتمے کا وقت ضروری ہے",
+    ),
+    "end_date_greater_start_date": MessageLookupByLibrary.simpleMessage(
+      "اختتامی تاریخ آغاز کی تاریخ سے زیادہ نہیں ہو سکتی۔",
     ),
     "end_time": MessageLookupByLibrary.simpleMessage("اختتام: "),
     "enterCategory": MessageLookupByLibrary.simpleMessage("زمرہ درج کریں"),
@@ -316,6 +382,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "experienceDescription": MessageLookupByLibrary.simpleMessage(
       "اپنے فون پر چند نلکوں سے صفائی کی خدمات آسانی سے سنبھالیں!",
     ),
+    "failed": MessageLookupByLibrary.simpleMessage("عمل ناکام ہو گیا۔"),
     "falseSelect": MessageLookupByLibrary.simpleMessage("غلط"),
     "female": MessageLookupByLibrary.simpleMessage("خاتون"),
     "file": MessageLookupByLibrary.simpleMessage("فائل"),
@@ -361,7 +428,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "منزلہ کا نمبر بہت لمبا ہے",
     ),
     "floor_details": MessageLookupByLibrary.simpleMessage("منزل کی تفصیلات"),
+    "floor_not_exists_or_user_not_exists": MessageLookupByLibrary.simpleMessage(
+      "منزل موجود نہیں یا صارف موجود نہیں ہے۔",
+    ),
     "floors": MessageLookupByLibrary.simpleMessage("منزلیں"),
+    "floors_not_found_or_min_or_max_not_exists":
+        MessageLookupByLibrary.simpleMessage(
+          "منزلیں نہیں ملیں یا کم سے کم/زیادہ سے زیادہ موجود نہیں ہے۔",
+        ),
+    "forbidden": MessageLookupByLibrary.simpleMessage(
+      "ممنوع۔ آپ کو اجازت نہیں ہے۔",
+    ),
     "forgotPassButton": MessageLookupByLibrary.simpleMessage(
       "پاس ورڈ بھول گئے؟",
     ),
@@ -373,6 +450,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "پریشان نہ ہوں، یہ ہم سب کے ساتھ ہوتا ہے۔ نیچے اپنا ای میل درج کریں",
     ),
     "g": MessageLookupByLibrary.simpleMessage("گرام"),
+    "gateway_timeout": MessageLookupByLibrary.simpleMessage(
+      "گیٹ وے کا وقت ختم ہوگیا۔ بعد میں دوبارہ کوشش کریں۔",
+    ),
     "gender": MessageLookupByLibrary.simpleMessage("صنف"),
     "genderFemale": MessageLookupByLibrary.simpleMessage("عورت"),
     "genderMale": MessageLookupByLibrary.simpleMessage("مرد"),
@@ -389,6 +469,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "hintSelectRole": MessageLookupByLibrary.simpleMessage("کردار منتخب کریں"),
     "history": MessageLookupByLibrary.simpleMessage("تاریخ"),
+    "id_number_already_exists": MessageLookupByLibrary.simpleMessage(
+      "شناختی نمبر پہلے سے موجود ہے۔",
+    ),
     "inCost": MessageLookupByLibrary.simpleMessage("لاگت اندر"),
     "inProgress": MessageLookupByLibrary.simpleMessage("زیر عمل"),
     "inProgressTask": MessageLookupByLibrary.simpleMessage("جاری ہے"),
@@ -408,6 +491,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "integ8": MessageLookupByLibrary.simpleMessage("سرگرمیاں"),
     "integ9": MessageLookupByLibrary.simpleMessage("سینسرز"),
     "integrations": MessageLookupByLibrary.simpleMessage("انضمامات"),
+    "invalid_otp": MessageLookupByLibrary.simpleMessage("غلط او ٹی پی۔"),
     "ip_invalid_format": MessageLookupByLibrary.simpleMessage(
       "درست IP درج کریں (مثلاً 192.168.1.1)",
     ),
@@ -466,6 +550,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "materialNameTooShort": MessageLookupByLibrary.simpleMessage(
       "مواد کا نام بہت چھوٹا ہے",
     ),
+    "material_not_exists_or_choice_not_exists":
+        MessageLookupByLibrary.simpleMessage("مواد یا انتخاب موجود نہیں ہے۔"),
     "materials": MessageLookupByLibrary.simpleMessage("مواد"),
     "max": MessageLookupByLibrary.simpleMessage("زیادہ سے زیادہ"),
     "medium": MessageLookupByLibrary.simpleMessage("درمیانہ"),
@@ -491,6 +577,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "my_tasks": MessageLookupByLibrary.simpleMessage("میرے کام"),
     "my_team_tasks": MessageLookupByLibrary.simpleMessage("میری ٹیم کے کام"),
     "name": MessageLookupByLibrary.simpleMessage("نام"),
+    "name_already_exists": MessageLookupByLibrary.simpleMessage(
+      "یہ نام پہلے سے موجود ہے۔",
+    ),
+    "nationality_not_exists": MessageLookupByLibrary.simpleMessage(
+      "قومیت موجود نہیں ہے۔",
+    ),
     "network_ip": MessageLookupByLibrary.simpleMessage("نیٹ ورک IP"),
     "new_password": MessageLookupByLibrary.simpleMessage("نیا پاس ورڈ"),
     "nextButton": MessageLookupByLibrary.simpleMessage("اگلا"),
@@ -545,11 +637,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "no_file_uploaded": MessageLookupByLibrary.simpleMessage(
       "کوئی فائل اپ لوڈ نہیں ہوئی",
     ),
+    "no_internet": MessageLookupByLibrary.simpleMessage(
+      "انٹرنیٹ کنکشن دستیاب نہیں",
+    ),
     "no_user": MessageLookupByLibrary.simpleMessage("کوئی صارف نہیں"),
     "notApproval": MessageLookupByLibrary.simpleMessage("منظوری نہیں"),
     "notResolved": MessageLookupByLibrary.simpleMessage("حل نہ ہوا"),
     "notResolvedTask": MessageLookupByLibrary.simpleMessage("حل نہیں ہوا"),
     "not_approval": MessageLookupByLibrary.simpleMessage("منظوری نہیں ملی"),
+    "not_assigned_to_task_or_limit_not_exists":
+        MessageLookupByLibrary.simpleMessage(
+          "اس کام کے لیے مقرر نہیں یا حد موجود نہیں ہے۔",
+        ),
+    "not_found": MessageLookupByLibrary.simpleMessage("وسیلہ نہیں ملا۔"),
     "not_resolved": MessageLookupByLibrary.simpleMessage("حل نہیں ہوا"),
     "notifications": MessageLookupByLibrary.simpleMessage("اطلاعات"),
     "notresolvedButton": MessageLookupByLibrary.simpleMessage("حل نہیں ہوا"),
@@ -569,7 +669,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "organization_details": MessageLookupByLibrary.simpleMessage(
       "تنظیم کی تفصیلات",
     ),
+    "organization_or_shift_not_exists": MessageLookupByLibrary.simpleMessage(
+      "تنظیم یا شفٹ موجود نہیں ہے۔",
+    ),
     "organizations": MessageLookupByLibrary.simpleMessage("تنظیمات"),
+    "organizations_not_found_or_quantity_greater":
+        MessageLookupByLibrary.simpleMessage(
+          "تنظیمیں نہیں ملیں یا مقدار زیادہ ہے۔",
+        ),
+    "otp_expired": MessageLookupByLibrary.simpleMessage(
+      "او ٹی پی کی مدت ختم ہو گئی ہے۔",
+    ),
     "outSelect": MessageLookupByLibrary.simpleMessage("روانگی"),
     "outSide": MessageLookupByLibrary.simpleMessage("باہر"),
     "outside": MessageLookupByLibrary.simpleMessage("باہر"),
@@ -577,8 +687,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "overdueTask": MessageLookupByLibrary.simpleMessage("تاخیر شدہ"),
     "parentCategory": MessageLookupByLibrary.simpleMessage("مرکزی زمرہ"),
     "parent_task": MessageLookupByLibrary.simpleMessage("مرکزی کام"),
+    "password_is_incorrect": MessageLookupByLibrary.simpleMessage(
+      "پاس ورڈ غلط ہے۔",
+    ),
+    "password_reset_required": MessageLookupByLibrary.simpleMessage(
+      "آپ کو پاس ورڈ دوبارہ سیٹ کرنے کی ضرورت ہے۔",
+    ),
     "pending": MessageLookupByLibrary.simpleMessage("زیر التوا"),
     "pendingTask": MessageLookupByLibrary.simpleMessage("زیر التواء"),
+    "phone_number_already_exists": MessageLookupByLibrary.simpleMessage(
+      "فون نمبر پہلے سے موجود ہے۔",
+    ),
     "pie": MessageLookupByLibrary.simpleMessage("پائی"),
     "pieces": MessageLookupByLibrary.simpleMessage("ٹکڑے"),
     "pointBody": MessageLookupByLibrary.simpleMessage("نقطہ"),
@@ -601,6 +720,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "پوائنٹ نمبر بہت لمبا ہے",
     ),
     "point_details": MessageLookupByLibrary.simpleMessage("پوائنٹ کی تفصیلات"),
+    "point_not_exists_or_leave_not_exists":
+        MessageLookupByLibrary.simpleMessage(
+          "پوائنٹ موجود نہیں یا چھٹی موجود نہیں ہے۔",
+        ),
     "points": MessageLookupByLibrary.simpleMessage("پوائنٹس"),
     "present": MessageLookupByLibrary.simpleMessage("حاضر"),
     "price": MessageLookupByLibrary.simpleMessage("قیمت"),
@@ -615,6 +738,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "provider": MessageLookupByLibrary.simpleMessage("فراہم کنندہ"),
     "providerBody": MessageLookupByLibrary.simpleMessage("فراہم کنندہ"),
     "providerName": MessageLookupByLibrary.simpleMessage("فراہم کنندہ کا نام"),
+    "provider_not_exists_or_question_not_exists":
+        MessageLookupByLibrary.simpleMessage(
+          "فراہم کنندہ یا سوال موجود نہیں ہے۔",
+        ),
     "providers": MessageLookupByLibrary.simpleMessage("فراہم کنندگان"),
     "quantity": MessageLookupByLibrary.simpleMessage("مقدار"),
     "quantityLabel": MessageLookupByLibrary.simpleMessage("مقدار: "),
@@ -627,7 +754,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "reasonRequiredValidation": MessageLookupByLibrary.simpleMessage(
       "وجہ ضروری ہے",
     ),
+    "receive_timeout": MessageLookupByLibrary.simpleMessage(
+      "سرور سے جواب کا وقت ختم ہوگیا",
+    ),
     "received_tasks": MessageLookupByLibrary.simpleMessage("موصول شدہ کام"),
+    "redirection": MessageLookupByLibrary.simpleMessage(
+      "دوبارہ لاگ ان کریں۔ ری ڈائریکشن ہوا۔",
+    ),
     "reduceButton": MessageLookupByLibrary.simpleMessage("کم کریں"),
     "reduceMaterial": MessageLookupByLibrary.simpleMessage("مواد کم کریں"),
     "reject": MessageLookupByLibrary.simpleMessage("مسترد"),
@@ -637,11 +770,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "مسترد کرنے کی وجہ",
     ),
     "reloadButton": MessageLookupByLibrary.simpleMessage("دوبارہ لوڈ کریں"),
+    "request_cancelled": MessageLookupByLibrary.simpleMessage(
+      "سرور کو بھیجا گیا درخواست منسوخ کر دیا گیا",
+    ),
     "resendButton": MessageLookupByLibrary.simpleMessage("دوبارہ بھیجیں"),
     "roleAdmin": MessageLookupByLibrary.simpleMessage("ایڈمن"),
     "roleManager": MessageLookupByLibrary.simpleMessage("مینیجر"),
     "roleSupervisor": MessageLookupByLibrary.simpleMessage("نگران"),
     "roleUsers": MessageLookupByLibrary.simpleMessage("صارفین"),
+    "role_or_parent_task_not_exists": MessageLookupByLibrary.simpleMessage(
+      "کردار یا بنیادی کام موجود نہیں ہے۔",
+    ),
     "saveButton": MessageLookupByLibrary.simpleMessage("محفوظ کریں"),
     "saveButtton": MessageLookupByLibrary.simpleMessage("محفوظ کریں"),
     "sectionBody": MessageLookupByLibrary.simpleMessage("سیکشن"),
@@ -666,7 +805,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "سیکشن نمبر بہت لمبا ہے",
     ),
     "section_details": MessageLookupByLibrary.simpleMessage("سیکشن کی تفصیلات"),
+    "section_not_exists_or_tag_not_exists":
+        MessageLookupByLibrary.simpleMessage("سیکشن یا ٹیگ موجود نہیں ہے۔"),
     "sections": MessageLookupByLibrary.simpleMessage("سیکشنز"),
+    "sections_not_found_or_key_not_exists":
+        MessageLookupByLibrary.simpleMessage(
+          "سیکشنز نہیں ملے یا کلید موجود نہیں ہے۔",
+        ),
     "seeMoreButton": MessageLookupByLibrary.simpleMessage("مزید دیکھیں"),
     "select": MessageLookupByLibrary.simpleMessage("منتخب کریں"),
     "selectArea": MessageLookupByLibrary.simpleMessage("علاقہ منتخب کریں"),
@@ -719,6 +864,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "select_work_location": MessageLookupByLibrary.simpleMessage(
       "کام کی جگہ منتخب کریں",
     ),
+    "send_timeout": MessageLookupByLibrary.simpleMessage(
+      "سرور کو بھیجنے کا وقت ختم ہوگیا",
+    ),
     "sensor": MessageLookupByLibrary.simpleMessage("سینسر"),
     "sensorBody": MessageLookupByLibrary.simpleMessage("سینسر"),
     "sensorDetails": MessageLookupByLibrary.simpleMessage("سینسر کی تفصیلات"),
@@ -727,6 +875,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "sensorSecondLabel": MessageLookupByLibrary.simpleMessage("حذف شدہ سینسرز"),
     "sensorTextAgo": MessageLookupByLibrary.simpleMessage("پہلے "),
     "sensorTextLastRead": MessageLookupByLibrary.simpleMessage(" آخری ریڈنگ"),
+    "server_error": MessageLookupByLibrary.simpleMessage(
+      "سرور کی خرابی۔ بعد میں دوبارہ کوشش کریں۔",
+    ),
+    "service_unavailable": MessageLookupByLibrary.simpleMessage(
+      "سروس دستیاب نہیں۔ بعد میں دوبارہ کوشش کریں۔",
+    ),
     "setButton": MessageLookupByLibrary.simpleMessage("پاس ورڈ ری سیٹ کریں"),
     "setPassTextField1": MessageLookupByLibrary.simpleMessage(
       "نیا پاس ورڈ بنائیں",
@@ -764,6 +918,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "شفٹ کا نام بہت چھوٹا ہے",
     ),
     "shifts": MessageLookupByLibrary.simpleMessage("شفٹیں"),
+    "shifts_not_found_or_shift_overlaps": MessageLookupByLibrary.simpleMessage(
+      "شفٹس نہیں ملیں یا شفٹ اوورلیپ کر رہی ہے۔",
+    ),
     "showActivity": MessageLookupByLibrary.simpleMessage("سرگرمی دکھائیں"),
     "sick": MessageLookupByLibrary.simpleMessage("بیمار"),
     "startButton": MessageLookupByLibrary.simpleMessage("شروع کریں"),
@@ -777,6 +934,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "start_time": MessageLookupByLibrary.simpleMessage("آغاز: "),
     "status": MessageLookupByLibrary.simpleMessage("حیثیت"),
+    "status_code_error": MessageLookupByLibrary.simpleMessage(
+      "غیر متوقع خرابی، اسٹیٹس کوڈ: {}",
+    ),
     "status_required": MessageLookupByLibrary.simpleMessage("حیثیت ضروری ہے"),
     "stock": MessageLookupByLibrary.simpleMessage("اسٹاک"),
     "stockQuantity": MessageLookupByLibrary.simpleMessage("سٹاک کی مقدار"),
@@ -786,6 +946,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "take_photo": MessageLookupByLibrary.simpleMessage("تصویر لیں"),
     "taskCompletionRate": MessageLookupByLibrary.simpleMessage(
       "کام مکمل کرنے کی شرح",
+    ),
+    "task_cannot_be_own_parent": MessageLookupByLibrary.simpleMessage(
+      "کام اپنا والدین نہیں ہو سکتا۔",
     ),
     "task_details": MessageLookupByLibrary.simpleMessage("تفصیل کام"),
     "task_not_completed": MessageLookupByLibrary.simpleMessage(
@@ -834,17 +997,36 @@ class MessageLookup extends MessageLookupByLibrary {
     "trueSelect": MessageLookupByLibrary.simpleMessage("درست"),
     "type": MessageLookupByLibrary.simpleMessage("قسم"),
     "typeRequired": MessageLookupByLibrary.simpleMessage("قسم ضروری ہے"),
+    "unauthorized": MessageLookupByLibrary.simpleMessage(
+      "غیر مجاز۔ دوبارہ لاگ ان کریں۔",
+    ),
+    "unexpected_error": MessageLookupByLibrary.simpleMessage(
+      "غیر متوقع خرابی: {}",
+    ),
     "unit": MessageLookupByLibrary.simpleMessage(" (یونٹ)"),
     "unitLabel": MessageLookupByLibrary.simpleMessage("یونٹ: "),
     "unitRequired": MessageLookupByLibrary.simpleMessage("یونٹ ضروری ہے"),
     "unitTitle": MessageLookupByLibrary.simpleMessage("یونٹ"),
+    "unknown_error": MessageLookupByLibrary.simpleMessage(
+      "ایک نامعلوم خرابی پیش آ گئی۔ دوبارہ کوشش کریں۔",
+    ),
     "unread": MessageLookupByLibrary.simpleMessage("غیر مطالعہ"),
     "uploadFile": MessageLookupByLibrary.simpleMessage("فائل اپ لوڈ کریں"),
     "user": MessageLookupByLibrary.simpleMessage("صارف"),
     "userDetails": MessageLookupByLibrary.simpleMessage("صارف کی تفصیلات"),
     "userDetailsTitle": MessageLookupByLibrary.simpleMessage("صارف کی تفصیلات"),
     "userManagement": MessageLookupByLibrary.simpleMessage("صارف انتظام"),
+    "user_cannot_manage_themselves_or_task_not_exists":
+        MessageLookupByLibrary.simpleMessage(
+          "صارف خود کو منظم نہیں کر سکتا یا کام موجود نہیں ہے۔",
+        ),
+    "username_already_exists": MessageLookupByLibrary.simpleMessage(
+      "یہ صارف نام پہلے سے موجود ہے۔",
+    ),
     "users": MessageLookupByLibrary.simpleMessage("صارفین"),
+    "users_not_found_or_leave_overlaps": MessageLookupByLibrary.simpleMessage(
+      "صارفین نہیں ملے یا چھٹی اوورلیپ کر رہی ہے۔",
+    ),
     "validationAddEmail": MessageLookupByLibrary.simpleMessage(
       "ای میل ضروری ہے",
     ),

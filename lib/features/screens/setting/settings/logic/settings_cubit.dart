@@ -11,42 +11,31 @@ class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit() : super(SettingsInitialState());
 
   static SettingsCubit get(context) => BlocProvider.of(context);
-  bool isNotOpenNotif = true;
-  bool isNotDark = true;
+
+  bool isNotificationEnabled = true;
 
   Future<void> toggleNotification() async {
-    isNotOpenNotif = !isNotOpenNotif;
-    await CacheHelper.setData(key: 'notification', value: isNotOpenNotif);
+    isNotificationEnabled = !isNotificationEnabled;
+    await CacheHelper.setData(
+        key: 'notification', value: isNotificationEnabled);
 
-    // Only manage Firebase subscription here
-    if (isNotOpenNotif) {
-      await FirebaseMessaging.instance.unsubscribeFromTopic('notifications');
-    } else {
+    if (isNotificationEnabled) {
       await FirebaseMessaging.instance.subscribeToTopic('notifications');
-    }
-
-    emit(NotificationToggleChangedState());
-  }
-
-  // Initialize notification status
-  Future<void> initializeNotificationStatus() async {
-    isNotOpenNotif = await CacheHelper.getBool('notification') ?? false;
-    // Set initial subscription state
-    if (isNotOpenNotif) {
+    } else {
       await FirebaseMessaging.instance.unsubscribeFromTopic('notifications');
     }
+
     emit(NotificationToggleChangedState());
   }
 
-  getDarkModeStatus() async {
-    isNotDark = await CacheHelper.getBool('darkMode') ?? false;
-    emit(DarkModeToggleChangedState());
-  }
+  Future<void> initializeNotificationStatus() async {
+    isNotificationEnabled = await CacheHelper.getBool('notification') ?? true;
 
-  toggleDarkMode() async {
-    isNotDark = !isNotDark;
-    await CacheHelper.setData(key: 'darkMode', value: isNotDark);
-    emit(DarkModeToggleChangedState());
+    if (!isNotificationEnabled) {
+      await FirebaseMessaging.instance.unsubscribeFromTopic('notifications');
+    }
+
+    emit(NotificationToggleChangedState());
   }
 
   ProfileModel? profileModel;
@@ -60,16 +49,30 @@ class SettingsCubit extends Cubit<SettingsState> {
     });
   }
 
-  logout() {
+  logout() async {
     emit(LogOutLoadingState());
-    DioHelper.getData(url: 'auth/logout').then((value) async {
-      final message = value?.data['message'] ?? "logout successfully";
+    try {
+      await deleteToken();
+      final response = await DioHelper.getData(url: 'auth/logout');
+      final message = response?.data['message'] ?? "Logged out successfully";
 
       await CacheHelper.clearAllSecuredData();
       await clearSessionData();
+
       emit(LogOutSuccessState(message));
-    }).catchError((error) {
+    } catch (error) {
       emit(LogOutErrorState(error.toString()));
+    }
+  }
+
+  deleteToken() {
+    emit(DeleteTokenLoadingState());
+    DioHelper.deleteData(
+        url: 'device/token/delete', data: {'token': deviceToken}).then((value) {
+      final message = value?.data['message'] ?? "deleted successfully";
+      emit(DeleteTokenSuccessState(message));
+    }).catchError((error) {
+      emit(DeleteTokenErrorState(error.toString()));
     });
   }
 
@@ -82,7 +85,11 @@ class SettingsCubit extends Cubit<SettingsState> {
     await CacheHelper.removeData(SharedPrefKeys.userRole);
   }
 
-    bool isEnglish() {
+  bool isEnglish() {
     return Intl.getCurrentLocale() == 'en';
   }
+}
+
+class NotificationSettings {
+  static bool isNotificationEnabled = true;
 }

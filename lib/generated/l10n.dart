@@ -4788,6 +4788,616 @@ class S {
       args: [],
     );
   }
+
+  /// `Sensors Task Completion Rates`
+  String get Sensors_Task_Completion_Rates {
+    return Intl.message(
+      'Sensors Task Completion Rates',
+      name: 'Sensors_Task_Completion_Rates',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select section`
+  String get Select_section {
+    return Intl.message(
+      'Select section',
+      name: 'Select_section',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total completed sensors tasks`
+  String get Total_completed_sensors_tasks {
+    return Intl.message(
+      'Total completed sensors tasks',
+      name: 'Total_completed_sensors_tasks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sensors`
+  String get Sensors {
+    return Intl.message('Sensors', name: 'Sensors', desc: '', args: []);
+  }
+
+  /// `Battery`
+  String get Battery {
+    return Intl.message('Battery', name: 'Battery', desc: '', args: []);
+  }
+
+  /// `Tasks`
+  String get Tasks {
+    return Intl.message('Tasks', name: 'Tasks', desc: '', args: []);
+  }
+
+  /// `All Users`
+  String get All_Users {
+    return Intl.message('All Users', name: 'All_Users', desc: '', args: []);
+  }
+
+  /// `All Providers`
+  String get All_Providers {
+    return Intl.message(
+      'All Providers',
+      name: 'All_Providers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An unknown error occurred. Please try again.`
+  String get unknown_error {
+    return Intl.message(
+      'An unknown error occurred. Please try again.',
+      name: 'unknown_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This username is already taken.`
+  String get username_already_exists {
+    return Intl.message(
+      'This username is already taken.',
+      name: 'username_already_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This email is already registered.`
+  String get email_already_exists {
+    return Intl.message(
+      'This email is already registered.',
+      name: 'email_already_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You need to reset your password.`
+  String get password_reset_required {
+    return Intl.message(
+      'You need to reset your password.',
+      name: 'password_reset_required',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This name already exists.`
+  String get name_already_exists {
+    return Intl.message(
+      'This name already exists.',
+      name: 'name_already_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone number already exists.`
+  String get phone_number_already_exists {
+    return Intl.message(
+      'Phone number already exists.',
+      name: 'phone_number_already_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email or username not found.`
+  String get email_or_username_not_found {
+    return Intl.message(
+      'Email or username not found.',
+      name: 'email_or_username_not_found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Incorrect password.`
+  String get password_is_incorrect {
+    return Intl.message(
+      'Incorrect password.',
+      name: 'password_is_incorrect',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ID number already exists.`
+  String get id_number_already_exists {
+    return Intl.message(
+      'ID number already exists.',
+      name: 'id_number_already_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nationality does not exist.`
+  String get nationality_not_exists {
+    return Intl.message(
+      'Nationality does not exist.',
+      name: 'nationality_not_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `End date cannot be greater than start date.`
+  String get end_date_greater_start_date {
+    return Intl.message(
+      'End date cannot be greater than start date.',
+      name: 'end_date_greater_start_date',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Country does not exist or device already assigned.`
+  String get country_or_device_already_assigned {
+    return Intl.message(
+      'Country does not exist or device already assigned.',
+      name: 'country_or_device_already_assigned',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Role or parent task does not exist.`
+  String get role_or_parent_task_not_exists {
+    return Intl.message(
+      'Role or parent task does not exist.',
+      name: 'role_or_parent_task_not_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User cannot manage themselves or task does not exist.`
+  String get user_cannot_manage_themselves_or_task_not_exists {
+    return Intl.message(
+      'User cannot manage themselves or task does not exist.',
+      name: 'user_cannot_manage_themselves_or_task_not_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Area does not exist or reading out of allowed limit.`
+  String get area_not_exists_or_reading_out_of_limit {
+    return Intl.message(
+      'Area does not exist or reading out of allowed limit.',
+      name: 'area_not_exists_or_reading_out_of_limit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `City does not exist or task is already completed.`
+  String get city_not_exists_or_task_completed {
+    return Intl.message(
+      'City does not exist or task is already completed.',
+      name: 'city_not_exists_or_task_completed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Organization or shift does not exist.`
+  String get organization_or_shift_not_exists {
+    return Intl.message(
+      'Organization or shift does not exist.',
+      name: 'organization_or_shift_not_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Building does not exist or cannot delete shift.`
+  String get building_not_exists_or_cannot_delete_shift {
+    return Intl.message(
+      'Building does not exist or cannot delete shift.',
+      name: 'building_not_exists_or_cannot_delete_shift',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Floor does not exist or user not exists.`
+  String get floor_not_exists_or_user_not_exists {
+    return Intl.message(
+      'Floor does not exist or user not exists.',
+      name: 'floor_not_exists_or_user_not_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Section or tag does not exist.`
+  String get section_not_exists_or_tag_not_exists {
+    return Intl.message(
+      'Section or tag does not exist.',
+      name: 'section_not_exists_or_tag_not_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Point does not exist or leave does not exist.`
+  String get point_not_exists_or_leave_not_exists {
+    return Intl.message(
+      'Point does not exist or leave does not exist.',
+      name: 'point_not_exists_or_leave_not_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Users not found or leave overlaps.`
+  String get users_not_found_or_leave_overlaps {
+    return Intl.message(
+      'Users not found or leave overlaps.',
+      name: 'users_not_found_or_leave_overlaps',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shifts not found or shift overlaps.`
+  String get shifts_not_found_or_shift_overlaps {
+    return Intl.message(
+      'Shifts not found or shift overlaps.',
+      name: 'shifts_not_found_or_shift_overlaps',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Organizations not found or quantity exceeds available.`
+  String get organizations_not_found_or_quantity_greater {
+    return Intl.message(
+      'Organizations not found or quantity exceeds available.',
+      name: 'organizations_not_found_or_quantity_greater',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Buildings not found or already assigned limit reached.`
+  String get buildings_not_found_or_already_assign_limit {
+    return Intl.message(
+      'Buildings not found or already assigned limit reached.',
+      name: 'buildings_not_found_or_already_assign_limit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Floors not found or min/max not exists.`
+  String get floors_not_found_or_min_or_max_not_exists {
+    return Intl.message(
+      'Floors not found or min/max not exists.',
+      name: 'floors_not_found_or_min_or_max_not_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sections not found or key not exists.`
+  String get sections_not_found_or_key_not_exists {
+    return Intl.message(
+      'Sections not found or key not exists.',
+      name: 'sections_not_found_or_key_not_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not assigned to this task or limit not exists.`
+  String get not_assigned_to_task_or_limit_not_exists {
+    return Intl.message(
+      'Not assigned to this task or limit not exists.',
+      name: 'not_assigned_to_task_or_limit_not_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Category does not exist or leave starts in future.`
+  String get category_not_exists_or_leave_start_future {
+    return Intl.message(
+      'Category does not exist or leave starts in future.',
+      name: 'category_not_exists_or_leave_start_future',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Provider or question does not exist.`
+  String get provider_not_exists_or_question_not_exists {
+    return Intl.message(
+      'Provider or question does not exist.',
+      name: 'provider_not_exists_or_question_not_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Material or choice does not exist.`
+  String get material_not_exists_or_choice_not_exists {
+    return Intl.message(
+      'Material or choice does not exist.',
+      name: 'material_not_exists_or_choice_not_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Currently reading or feedback device already assigned.`
+  String get currently_reading_or_feedback_device_assigned {
+    return Intl.message(
+      'Currently reading or feedback device already assigned.',
+      name: 'currently_reading_or_feedback_device_assigned',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `After reading or feedback device does not exist.`
+  String get after_reading_or_feedback_device_not_exists {
+    return Intl.message(
+      'After reading or feedback device does not exist.',
+      name: 'after_reading_or_feedback_device_not_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Category cannot be its own parent.`
+  String get category_cannot_be_own_parent {
+    return Intl.message(
+      'Category cannot be its own parent.',
+      name: 'category_cannot_be_own_parent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Task cannot be its own parent.`
+  String get task_cannot_be_own_parent {
+    return Intl.message(
+      'Task cannot be its own parent.',
+      name: 'task_cannot_be_own_parent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid OTP.`
+  String get invalid_otp {
+    return Intl.message(
+      'Invalid OTP.',
+      name: 'invalid_otp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `OTP has expired.`
+  String get otp_expired {
+    return Intl.message(
+      'OTP has expired.',
+      name: 'otp_expired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Operation failed.`
+  String get failed {
+    return Intl.message(
+      'Operation failed.',
+      name: 'failed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No Internet Connection`
+  String get no_internet {
+    return Intl.message(
+      'No Internet Connection',
+      name: 'no_internet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Request to server was canceled`
+  String get request_cancelled {
+    return Intl.message(
+      'Request to server was canceled',
+      name: 'request_cancelled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Connection timeout with server`
+  String get connection_timeout {
+    return Intl.message(
+      'Connection timeout with server',
+      name: 'connection_timeout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unexpected error: {}`
+  String get unexpected_error {
+    return Intl.message(
+      'Unexpected error: {}',
+      name: 'unexpected_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Receive timeout from server`
+  String get receive_timeout {
+    return Intl.message(
+      'Receive timeout from server',
+      name: 'receive_timeout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send timeout to server`
+  String get send_timeout {
+    return Intl.message(
+      'Send timeout to server',
+      name: 'send_timeout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid certificate received`
+  String get bad_certificate {
+    return Intl.message(
+      'Invalid certificate received',
+      name: 'bad_certificate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Redirection occurred. Please login again.`
+  String get redirection {
+    return Intl.message(
+      'Redirection occurred. Please login again.',
+      name: 'redirection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bad request. Please check the data sent.`
+  String get bad_request {
+    return Intl.message(
+      'Bad request. Please check the data sent.',
+      name: 'bad_request',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unauthorized. Please log in again.`
+  String get unauthorized {
+    return Intl.message(
+      'Unauthorized. Please log in again.',
+      name: 'unauthorized',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Forbidden. You do not have permission.`
+  String get forbidden {
+    return Intl.message(
+      'Forbidden. You do not have permission.',
+      name: 'forbidden',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Resource not found.`
+  String get not_found {
+    return Intl.message(
+      'Resource not found.',
+      name: 'not_found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Server error. Please try again later.`
+  String get server_error {
+    return Intl.message(
+      'Server error. Please try again later.',
+      name: 'server_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bad Gateway. Please try again later.`
+  String get bad_gateway {
+    return Intl.message(
+      'Bad Gateway. Please try again later.',
+      name: 'bad_gateway',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Service Unavailable. Please try again later.`
+  String get service_unavailable {
+    return Intl.message(
+      'Service Unavailable. Please try again later.',
+      name: 'service_unavailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Gateway Timeout. Please try again later.`
+  String get gateway_timeout {
+    return Intl.message(
+      'Gateway Timeout. Please try again later.',
+      name: 'gateway_timeout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unexpected error with status code {}`
+  String get status_code_error {
+    return Intl.message(
+      'Unexpected error with status code {}',
+      name: 'status_code_error',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

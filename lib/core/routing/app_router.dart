@@ -25,8 +25,8 @@ import 'package:smart_cleaning_application/features/screens/dashboard/attendance
 import 'package:smart_cleaning_application/features/screens/setting/edit_profile/logic/edit_profile_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/setting/edit_profile/ui/screen/edit_profile_screen.dart';
 import 'package:smart_cleaning_application/features/screens/setting/languages/ui/screen/languages_screen.dart';
-import 'package:smart_cleaning_application/features/screens/setting/notification/logic/notification_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/setting/notification/ui/screen/notification_screen.dart';
+import 'package:smart_cleaning_application/features/screens/home/ui/widgets/notification/logic/notification_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/home/ui/widgets/notification/ui/screen/notification_screen.dart';
 import 'package:smart_cleaning_application/features/screens/setting/profile/logic/profile_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/setting/profile/ui/screen/profile_screen.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/provider/provider_management/logic/cubit/provider_cubit.dart';

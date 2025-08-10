@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,6 +14,7 @@ import 'package:smart_cleaning_application/core/widgets/floating_action_button/f
 import 'package:smart_cleaning_application/core/widgets/integration_buttons/integrations_buttons.dart';
 import 'package:smart_cleaning_application/core/widgets/default_text_form_field/custom_text_form_field.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/provider/provider_management/logic/cubit/provider_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/provider/provider_management/ui/widgets/pdf.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/provider/provider_management/ui/widgets/provider_details_list_build.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/provider/provider_management/ui/widgets/search_build.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
@@ -25,9 +27,21 @@ class ProviderBody extends StatelessWidget {
     final cubit = context.read<ProviderCubit>();
     return Scaffold(
       appBar: AppBar(
-        leading: CustomBackButton(),
-        title: Text(S.of(context).providers),
-      ),
+          leading: CustomBackButton(),
+          title: Text(S.of(context).providers),
+          actions: [
+            IconButton(
+              onPressed: () {
+                createProviderPDF(context);
+              },
+              icon: Icon(
+                CupertinoIcons.tray_arrow_down,
+                color: Colors.red,
+                size: 22.sp,
+              ),
+            ),
+            horizontalSpace(10)
+          ]),
       floatingActionButton: floatingActionButton(
         icon: Icons.add,
         onPressed: () {
@@ -119,7 +133,6 @@ class ProviderBody extends StatelessWidget {
                                     }
                                   },
                                   color: AppColor.primaryColor,
-                                
                                   width: double.infinity),
                             ),
                             horizontalSpace(16),
@@ -131,7 +144,6 @@ class ProviderBody extends StatelessWidget {
                                     context.pop();
                                   },
                                   color: AppColor.fourthColor,
-                               
                                   width: double.infinity),
                             ),
                           ],

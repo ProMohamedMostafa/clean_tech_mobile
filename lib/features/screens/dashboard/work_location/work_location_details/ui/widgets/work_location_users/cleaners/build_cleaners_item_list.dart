@@ -54,11 +54,26 @@ class BuildCleanersItemList extends StatelessWidget {
     final cleaner = cleaners![index];
 
     return InkWell(
-      onTap: () {
-        context.pushNamed(
+      onTap: () async {
+        final result = await context.pushNamed(
           Routes.userDetailsScreen,
           arguments: cleaner.id,
         );
+        if (result == true) {
+          selectedIndex == 0
+              ? cubit.getAreaUsersDetails(cleaner.id)
+              : selectedIndex == 1
+                  ? cubit.getCityUsersDetails(cleaner.id)
+                  : selectedIndex == 2
+                      ? cubit.getOrganizationUsersDetails(cleaner.id)
+                      : selectedIndex == 3
+                          ? cubit.getBuildingUsersDetails(cleaner.id)
+                          : selectedIndex == 4
+                              ? cubit.getFloorUsersDetails(cleaner.id)
+                              : selectedIndex == 5
+                                  ? cubit.getSectionUsersDetails(cleaner.id)
+                                  : cubit.getPointUsersDetails(cleaner.id);
+        }
       },
       child: ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 5),

@@ -45,6 +45,20 @@ class LogOutErrorState extends SettingsState {
 
 //********************************* */
 
+class DeleteTokenLoadingState extends SettingsState {}
+
+class DeleteTokenSuccessState extends SettingsState {
+  final String message;
+
+  DeleteTokenSuccessState(this.message);
+}
+
+class DeleteTokenErrorState extends SettingsState {
+  final String error;
+  DeleteTokenErrorState(this.error);
+}
+
+//***************** */
 class NotificationToggleChangedState extends SettingsState {}
 
 class DarkModeToggleChangedState extends SettingsState {}

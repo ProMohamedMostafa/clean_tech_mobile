@@ -28,11 +28,15 @@ class TotalTaskBody extends StatelessWidget {
         final totalTask = cubit.taskChartStatusModel?.data?.values
                 ?.fold<int>(0, (a, b) => a + b) ??
             0;
-        List<(String, String)> userDropdownItems = cubit.usersModel?.data?.users
+        List<(String, String)> userDropdownItems = cubit.usersBasicModel?.data
                 ?.map(
                     (user) => (user.id.toString(), user.userName ?? 'Unknown'))
                 .toList() ??
             [];
+
+        String selectedUserNametask =
+            cubit.selectedUserNametask ?? S.of(context).All_Users;
+
         return Skeletonizer(
           enabled: isLoading,
           child: Container(
@@ -58,7 +62,7 @@ class TotalTaskBody extends StatelessWidget {
                     onDateRangeSelected: (value) {
                       cubit.changeDateRangeUserTask(value);
                     },
-                    filterDropdownLabel: cubit.selectedUserNametask,
+                    filterDropdownLabel: selectedUserNametask,
                     filterDropdownItems: userDropdownItems,
                     onFilterSelected: (value) {
                       cubit.changeSelectedUsertask(int.parse(value));

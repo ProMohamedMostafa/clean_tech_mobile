@@ -52,317 +52,319 @@ class EditBuildingBody extends StatelessWidget {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             cubit.initializeBuildingControllers();
           });
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: SingleChildScrollView(
-              child: Form(
-                key: cubit.formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(S.of(context).addUserText12,
-                        style: TextStyles.font16BlackRegular),
-                    CustomDropDownList(
-                      hint: cubit
-                          .buildingUsersShiftsDetailsModel!.data!.countryName!,
-                      items: cubit.nationalityData
-                          .map((e) => e.name ?? 'un known')
-                          .toList(),
-                      onChanged: (value) {
-                        cubit.getArea();
-                      },
-                      suffixIcon: IconBroken.arrowDown2,
-                      controller: cubit.nationalityController,
-                      isRead: false,
-                      keyboardType: TextInputType.text,
-                    ),
-                    verticalSpace(10),
-                    Text(S.of(context).Area,
-                        style: TextStyles.font16BlackRegular),
-                    CustomDropDownList(
-                      hint: cubit
-                          .buildingUsersShiftsDetailsModel!.data!.areaName!,
-                      controller: cubit.areaController,
-                      items: cubit.areaItem
-                          .map((e) => e.name ?? 'Unknown')
-                          .toList(),
-                      onChanged: (value) {
-                        final selectedArea = cubit.areaListModel?.data?.data
-                            ?.firstWhere((area) =>
-                                area.name == cubit.areaController.text)
-                            .id
-                            ?.toString();
-
-                        if (selectedArea != null) {
-                          cubit.areaIdController.text = selectedArea;
-                        }
-                        cubit.getCity();
-                      },
-                      suffixIcon: IconBroken.arrowDown2,
-                      keyboardType: TextInputType.text,
-                    ),
-                    verticalSpace(10),
-                    Text(
-                      S.of(context).City,
-                      style: TextStyles.font16BlackRegular,
-                    ),
-                    CustomDropDownList(
-                      hint: cubit
-                          .buildingUsersShiftsDetailsModel!.data!.cityName!,
-                      items: cubit.cityItem
-                          .map((e) => e.name ?? 'Unknown')
-                          .toList(),
-                      onPressed: (value) {
-                        final selectedCity = cubit.cityModel?.data?.data
-                            ?.firstWhere((city) =>
-                                city.name == cubit.cityController.text);
-
-                        cubit.cityIdController.text =
-                            selectedCity!.id!.toString();
-                        cubit.getOrganization();
-                      },
-                      suffixIcon: IconBroken.arrowDown2,
-                      controller: cubit.cityController,
-                      isRead: false,
-                      keyboardType: TextInputType.text,
-                    ),
-                    verticalSpace(10),
-                    Text(
-                      S.of(context).Organization,
-                      style: TextStyles.font16BlackRegular,
-                    ),
-                    CustomDropDownList(
-                      hint: cubit.buildingUsersShiftsDetailsModel!.data!
-                          .organizationName!,
-                      items: cubit.organizationItem
-                          .map((e) => e.name ?? 'Unknown')
-                          .toList(),
-                      onPressed: (value) {
-                        final selectedOrganization = cubit
-                            .organizationModel?.data?.data!
-                            .firstWhere((organization) =>
-                                organization.name ==
-                                cubit.organizationController.text);
-
-                        cubit.organizationIdController.text =
-                            selectedOrganization!.id!.toString();
-                      },
-                      suffixIcon: IconBroken.arrowDown2,
-                      controller: cubit.organizationController,
-                      isRead: false,
-                      keyboardType: TextInputType.text,
-                    ),
-                    verticalSpace(10),
-                    Text(
-                      S.of(context).buildingName,
-                      style: TextStyles.font16BlackRegular,
-                    ),
-                    CustomTextFormField(
-                      hint: cubit.buildingUsersShiftsDetailsModel!.data!.name!,
-                      controller: cubit.buildingController
-                        ..text =
-                            cubit.buildingUsersShiftsDetailsModel!.data!.name!,
-                      keyboardType: TextInputType.text,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return S.of(context).buildingNameRequired;
-                        } else if (value.length > 55) {
-                          return S.of(context).buildingNameTooLong;
-                        } else if (value.length < 3) {
-                          return S.of(context).buildingNameTooShort;
-                        }
-                        return null;
-                      },
-                      onlyRead: false,
-                    ),
-                    verticalSpace(10),
-                    Text(
-                      S.of(context).buildingNumber,
-                      style: TextStyles.font16BlackRegular,
-                    ),
-                    CustomTextFormField(
-                      hint:
-                          cubit.buildingUsersShiftsDetailsModel!.data!.number!,
-                      controller: cubit.buildingNumberController
-                        ..text = cubit
-                            .buildingUsersShiftsDetailsModel!.data!.number!,
-                      onlyRead: false,
-                      keyboardType: TextInputType.text,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return S.of(context).buildingNumberRequired;
-                        } else if (value.length > 55) {
-                          return S.of(context).buildingNumberTooLong;
-                        }
-
-                        return null;
-                      },
-                    ),
-                    verticalSpace(10),
-                    Text(
-                      S.of(context).buildingDescription,
-                      style: TextStyles.font16BlackRegular,
-                    ),
-                    CustomDescriptionTextFormField(
+          return SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: SingleChildScrollView(
+                child: Form(
+                  key: cubit.formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(S.of(context).addUserText12,
+                          style: TextStyles.font16BlackRegular),
+                      CustomDropDownList(
+                        hint: cubit
+                            .buildingUsersShiftsDetailsModel!.data!.countryName!,
+                        items: cubit.nationalityData
+                            .map((e) => e.name ?? 'un known')
+                            .toList(),
+                        onChanged: (value) {
+                          cubit.getArea();
+                        },
+                        suffixIcon: IconBroken.arrowDown2,
+                        controller: cubit.nationalityController,
+                        isRead: false,
+                        keyboardType: TextInputType.text,
+                      ),
+                      verticalSpace(10),
+                      Text(S.of(context).Area,
+                          style: TextStyles.font16BlackRegular),
+                      CustomDropDownList(
+                        hint: cubit
+                            .buildingUsersShiftsDetailsModel!.data!.areaName!,
+                        controller: cubit.areaController,
+                        items: cubit.areaItem
+                            .map((e) => e.name ?? 'Unknown')
+                            .toList(),
+                        onChanged: (value) {
+                          final selectedArea = cubit.areaListModel?.data?.data
+                              ?.firstWhere((area) =>
+                                  area.name == cubit.areaController.text)
+                              .id
+                              ?.toString();
+            
+                          if (selectedArea != null) {
+                            cubit.areaIdController.text = selectedArea;
+                          }
+                          cubit.getCity();
+                        },
+                        suffixIcon: IconBroken.arrowDown2,
+                        keyboardType: TextInputType.text,
+                      ),
+                      verticalSpace(10),
+                      Text(
+                        S.of(context).City,
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomDropDownList(
+                        hint: cubit
+                            .buildingUsersShiftsDetailsModel!.data!.cityName!,
+                        items: cubit.cityItem
+                            .map((e) => e.name ?? 'Unknown')
+                            .toList(),
+                        onPressed: (value) {
+                          final selectedCity = cubit.cityModel?.data?.data
+                              ?.firstWhere((city) =>
+                                  city.name == cubit.cityController.text);
+            
+                          cubit.cityIdController.text =
+                              selectedCity!.id!.toString();
+                          cubit.getOrganization();
+                        },
+                        suffixIcon: IconBroken.arrowDown2,
+                        controller: cubit.cityController,
+                        isRead: false,
+                        keyboardType: TextInputType.text,
+                      ),
+                      verticalSpace(10),
+                      Text(
+                        S.of(context).Organization,
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomDropDownList(
+                        hint: cubit.buildingUsersShiftsDetailsModel!.data!
+                            .organizationName!,
+                        items: cubit.organizationItem
+                            .map((e) => e.name ?? 'Unknown')
+                            .toList(),
+                        onPressed: (value) {
+                          final selectedOrganization = cubit
+                              .organizationModel?.data?.data!
+                              .firstWhere((organization) =>
+                                  organization.name ==
+                                  cubit.organizationController.text);
+            
+                          cubit.organizationIdController.text =
+                              selectedOrganization!.id!.toString();
+                        },
+                        suffixIcon: IconBroken.arrowDown2,
+                        controller: cubit.organizationController,
+                        isRead: false,
+                        keyboardType: TextInputType.text,
+                      ),
+                      verticalSpace(10),
+                      Text(
+                        S.of(context).buildingName,
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomTextFormField(
+                        hint: cubit.buildingUsersShiftsDetailsModel!.data!.name!,
+                        controller: cubit.buildingController
+                          ..text =
+                              cubit.buildingUsersShiftsDetailsModel!.data!.name!,
+                        keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return S.of(context).descriptionRequired;
+                            return S.of(context).buildingNameRequired;
+                          } else if (value.length > 55) {
+                            return S.of(context).buildingNameTooLong;
                           } else if (value.length < 3) {
-                            return S.of(context).descriptionTooShort;
+                            return S.of(context).buildingNameTooShort;
                           }
                           return null;
                         },
-                        controller: cubit.buildingDescriptionController
-                          ..text = cubit.buildingUsersShiftsDetailsModel!.data!
-                              .description!,
-                        hint: cubit.buildingUsersShiftsDetailsModel!.data!
-                            .description!),
-                    verticalSpace(10),
-                    Text(
-                      S.of(context).managers,
-                      style: TextStyles.font16BlackRegular,
-                    ),
-                    CustomMultiDropdown(
-                      items: cubit.usersModel!.data!.users!
-                              .where((user) => user.role == 'Manager')
-                              .isEmpty
-                          ? [
-                              DropdownItem(
-                                label: S.of(context).noManagers,
-                                value: UserItem(
-                                    id: null,
-                                    userName: S.of(context).noManagers),
-                              )
-                            ]
-                          : cubit.usersModel!.data!.users!
-                              .where((user) => user.role == 'Manager')
-                              .map((manager) => DropdownItem(
-                                    label: manager.userName!,
-                                    value: manager,
-                                  ))
-                              .toList(),
-                      controller: cubit.allManagersController,
-                      onSelectionChange: (selectedItems) {
-                        cubit.selectedManagersIds =
-                            selectedItems.map((item) => (item).id!).toList();
-                      },
-                      hint: S.of(context).selectManagers,
-                    ),
-                    verticalSpace(10),
-                    Text(
-                      S.of(context).supervisors,
-                      style: TextStyles.font16BlackRegular,
-                    ),
-                    CustomMultiDropdown(
-                      items: cubit.usersModel!.data!.users!
-                              .where((user) => user.role == 'Supervisor')
-                              .isEmpty
-                          ? [
-                              DropdownItem(
-                                label: S.of(context).noSupervisors,
-                                value: UserItem(
-                                    id: null,
-                                    userName: S.of(context).noSupervisors),
-                              )
-                            ]
-                          : cubit.usersModel!.data!.users!
-                              .where((user) => user.role == 'Supervisor')
-                              .map((supervisor) => DropdownItem(
-                                    label: supervisor.userName!,
-                                    value: supervisor,
-                                  ))
-                              .toList(),
-                      controller: cubit.allSupervisorsController,
-                      onSelectionChange: (selectedItems) {
-                        cubit.selectedSupervisorsIds =
-                            selectedItems.map((item) => (item).id!).toList();
-                      },
-                      hint: S.of(context).selectSupervisors,
-                    ),
-                    verticalSpace(10),
-                    Text(
-                      S.of(context).cleaners,
-                      style: TextStyles.font16BlackRegular,
-                    ),
-                    CustomMultiDropdown(
-                      items: cubit.usersModel!.data!.users!
-                              .where((user) => user.role == 'Cleaner')
-                              .isEmpty
-                          ? [
-                              DropdownItem(
-                                label: S.of(context).noCleaners,
-                                value: UserItem(
-                                    id: null,
-                                    userName: S.of(context).noCleaners),
-                              )
-                            ]
-                          : cubit.usersModel!.data!.users!
-                              .where((user) => user.role == 'Cleaner')
-                              .map((cleaner) => DropdownItem(
-                                    label: cleaner.userName!,
-                                    value: cleaner,
-                                  ))
-                              .toList(),
-                      controller: cubit.allCleanersController,
-                      onSelectionChange: (selectedItems) {
-                        cubit.selectedCleanersIds =
-                            selectedItems.map((item) => (item).id!).toList();
-                      },
-                      hint: S.of(context).selectCleaners,
-                    ),
-                    verticalSpace(10),
-                    Text(
-                      S.of(context).shiftBody,
-                      style: TextStyles.font16BlackRegular,
-                    ),
-                    CustomMultiDropdown(
-                      items: cubit.shiftModel?.data?.data?.isEmpty ?? true
-                          ? [
-                              DropdownItem(
-                                label: S.of(context).noShiftsAvailable,
-                                value: ShiftItem(
-                                    id: null,
-                                    name: S.of(context).noShiftsAvailable),
-                              )
-                            ]
-                          : cubit.shiftModel!.data!.data!
-                              .map((shift) => DropdownItem(
-                                    label: shift.name!,
-                                    value: shift,
-                                  ))
-                              .toList(),
-                      controller: cubit.allShiftsController,
-                      onSelectionChange: (selectedItems) {
-                        cubit.selectedShiftsIds =
-                            selectedItems.map((item) => (item).id!).toList();
-                      },
-                      hint: S.of(context).selectShift,
-                    ),
-                    verticalSpace(20),
-                    state is EditWorkLocationLoadingState
-                        ? Loading()
-                        : DefaultElevatedButton(
-                            name: S.of(context).editButton,
-                            onPressed: () {
-                              if (cubit.formKey.currentState!.validate()) {
-                                showDialog(
-                                    context: context,
-                                    builder: (dialogContext) {
-                                      return PopUpMessage(
-                                          title: S.of(context).TitleEdit,
-                                          body: S.of(context).buildingBody,
-                                          onPressed: () {
-                                            cubit.editBuilding(id);
-                                          });
-                                    });
-                              }
-                            },
-                            color: AppColor.primaryColor,
-                            textStyles: TextStyles.font20Whitesemimedium,
-                          ),
-                    verticalSpace(20),
-                  ],
+                        onlyRead: false,
+                      ),
+                      verticalSpace(10),
+                      Text(
+                        S.of(context).buildingNumber,
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomTextFormField(
+                        hint:
+                            cubit.buildingUsersShiftsDetailsModel!.data!.number!,
+                        controller: cubit.buildingNumberController
+                          ..text = cubit
+                              .buildingUsersShiftsDetailsModel!.data!.number!,
+                        onlyRead: false,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return S.of(context).buildingNumberRequired;
+                          } else if (value.length > 55) {
+                            return S.of(context).buildingNumberTooLong;
+                          }
+            
+                          return null;
+                        },
+                      ),
+                      verticalSpace(10),
+                      Text(
+                        S.of(context).buildingDescription,
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomDescriptionTextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return S.of(context).descriptionRequired;
+                            } else if (value.length < 3) {
+                              return S.of(context).descriptionTooShort;
+                            }
+                            return null;
+                          },
+                          controller: cubit.buildingDescriptionController
+                            ..text = cubit.buildingUsersShiftsDetailsModel!.data!
+                                .description!,
+                          hint: cubit.buildingUsersShiftsDetailsModel!.data!
+                              .description!),
+                      verticalSpace(10),
+                      Text(
+                        S.of(context).managers,
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomMultiDropdown(
+                        items: cubit.usersModel!.data!.users!
+                                .where((user) => user.role == 'Manager')
+                                .isEmpty
+                            ? [
+                                DropdownItem(
+                                  label: S.of(context).noManagers,
+                                  value: UserItem(
+                                      id: null,
+                                      userName: S.of(context).noManagers),
+                                )
+                              ]
+                            : cubit.usersModel!.data!.users!
+                                .where((user) => user.role == 'Manager')
+                                .map((manager) => DropdownItem(
+                                      label: manager.userName!,
+                                      value: manager,
+                                    ))
+                                .toList(),
+                        controller: cubit.allManagersController,
+                        onSelectionChange: (selectedItems) {
+                          cubit.selectedManagersIds =
+                              selectedItems.map((item) => (item).id!).toList();
+                        },
+                        hint: S.of(context).selectManagers,
+                      ),
+                      verticalSpace(10),
+                      Text(
+                        S.of(context).supervisors,
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomMultiDropdown(
+                        items: cubit.usersModel!.data!.users!
+                                .where((user) => user.role == 'Supervisor')
+                                .isEmpty
+                            ? [
+                                DropdownItem(
+                                  label: S.of(context).noSupervisors,
+                                  value: UserItem(
+                                      id: null,
+                                      userName: S.of(context).noSupervisors),
+                                )
+                              ]
+                            : cubit.usersModel!.data!.users!
+                                .where((user) => user.role == 'Supervisor')
+                                .map((supervisor) => DropdownItem(
+                                      label: supervisor.userName!,
+                                      value: supervisor,
+                                    ))
+                                .toList(),
+                        controller: cubit.allSupervisorsController,
+                        onSelectionChange: (selectedItems) {
+                          cubit.selectedSupervisorsIds =
+                              selectedItems.map((item) => (item).id!).toList();
+                        },
+                        hint: S.of(context).selectSupervisors,
+                      ),
+                      verticalSpace(10),
+                      Text(
+                        S.of(context).cleaners,
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomMultiDropdown(
+                        items: cubit.usersModel!.data!.users!
+                                .where((user) => user.role == 'Cleaner')
+                                .isEmpty
+                            ? [
+                                DropdownItem(
+                                  label: S.of(context).noCleaners,
+                                  value: UserItem(
+                                      id: null,
+                                      userName: S.of(context).noCleaners),
+                                )
+                              ]
+                            : cubit.usersModel!.data!.users!
+                                .where((user) => user.role == 'Cleaner')
+                                .map((cleaner) => DropdownItem(
+                                      label: cleaner.userName!,
+                                      value: cleaner,
+                                    ))
+                                .toList(),
+                        controller: cubit.allCleanersController,
+                        onSelectionChange: (selectedItems) {
+                          cubit.selectedCleanersIds =
+                              selectedItems.map((item) => (item).id!).toList();
+                        },
+                        hint: S.of(context).selectCleaners,
+                      ),
+                      verticalSpace(10),
+                      Text(
+                        S.of(context).shiftBody,
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomMultiDropdown(
+                        items: cubit.shiftModel?.data?.data?.isEmpty ?? true
+                            ? [
+                                DropdownItem(
+                                  label: S.of(context).noShiftsAvailable,
+                                  value: ShiftItem(
+                                      id: null,
+                                      name: S.of(context).noShiftsAvailable),
+                                )
+                              ]
+                            : cubit.shiftModel!.data!.data!
+                                .map((shift) => DropdownItem(
+                                      label: shift.name!,
+                                      value: shift,
+                                    ))
+                                .toList(),
+                        controller: cubit.allShiftsController,
+                        onSelectionChange: (selectedItems) {
+                          cubit.selectedShiftsIds =
+                              selectedItems.map((item) => (item).id!).toList();
+                        },
+                        hint: S.of(context).selectShift,
+                      ),
+                      verticalSpace(20),
+                      state is EditWorkLocationLoadingState
+                          ? Loading()
+                          : DefaultElevatedButton(
+                              name: S.of(context).editButton,
+                              onPressed: () {
+                                if (cubit.formKey.currentState!.validate()) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (dialogContext) {
+                                        return PopUpMessage(
+                                            title: S.of(context).TitleEdit,
+                                            body: S.of(context).buildingBody,
+                                            onPressed: () {
+                                              cubit.editBuilding(id);
+                                            });
+                                      });
+                                }
+                              },
+                              color: AppColor.primaryColor,
+                              textStyles: TextStyles.font20Whitesemimedium,
+                            ),
+                      verticalSpace(20),
+                    ],
+                  ),
                 ),
               ),
             ),

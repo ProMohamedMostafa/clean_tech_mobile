@@ -257,6 +257,9 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                   PhoneInputField(
                     controller: cubit.phoneController
                       ..text = cubit.profileModel!.data!.phoneNumber!,
+                    onChanged: (value) {
+                      cubit.editedPhone = value;
+                    },
                   ),
                   verticalSpace(15),
                   CustomTextFormField(
@@ -374,7 +377,7 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                           },
                           keyboardType: TextInputType.none,
                           label: S.of(context).addUserText4,
-                          hint: cubit.profileModel!.data!.birthdate!,
+                          hint: cubit.profileModel!.data!.birthdate ?? '',
                         ),
                       ),
                     ],
@@ -394,7 +397,9 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                                             title: 'edit',
                                             body: 'profile',
                                             onPressed: () {
-                                              cubit.editProfile();
+                                              cubit.editProfile(
+                                                phone: cubit.editedPhone,
+                                              );
                                             });
                                       });
                                 }

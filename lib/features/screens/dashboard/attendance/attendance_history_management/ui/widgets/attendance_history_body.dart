@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
@@ -9,6 +11,7 @@ import 'package:smart_cleaning_application/core/widgets/filter_and_search_build/
 import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attendance_history_management/logic/attendance_history_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attendance_history_management/logic/attendance_history_state.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attendance_history_management/ui/widgets/attendance_history_list_details_build.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attendance_history_management/ui/widgets/pdf.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class AttendanceHistoryBody extends StatelessWidget {
@@ -19,7 +22,21 @@ class AttendanceHistoryBody extends StatelessWidget {
     final cubit = context.read<AttendanceHistoryCubit>();
     return Scaffold(
       appBar: AppBar(
-          title: Text(S.of(context).history), leading: CustomBackButton()),
+          title: Text(S.of(context).history),
+          leading: CustomBackButton(),
+          actions: [
+            IconButton(
+              onPressed: () {
+                createAttendanceHistoryPDF(context);
+              },
+              icon: Icon(
+                CupertinoIcons.tray_arrow_down,
+                color: Colors.red,
+                size: 22.sp,
+              ),
+            ),
+            horizontalSpace(10)
+          ]),
       body: BlocBuilder<AttendanceHistoryCubit, AttendanceHistoryState>(
         builder: (context, state) {
           return Skeletonizer(
@@ -57,6 +74,11 @@ class AttendanceHistoryBody extends StatelessWidget {
                           );
                         },
                       );
+                    },isFilterActive: cubit.filterModel != null,
+                    onClearFilter: () {
+                      cubit.filterModel = null;
+                      cubit.searchController.clear();
+                      cubit.getAllHistory();
                     },
                   ),
                   verticalSpace(5),

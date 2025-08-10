@@ -43,8 +43,8 @@ class UserItemDetailsBuild extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: Divider(),
         ),
-        rowDetailsBuild(
-            context, S.of(context).addUserText4, userModel.data!.birthdate!),
+        rowDetailsBuild(context, S.of(context).addUserText4,
+            userModel.data!.birthdate ?? ''),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: Divider(),

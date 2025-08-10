@@ -8,7 +8,8 @@ class CalendarCubit extends Cubit<CalendarState> {
   CalendarCubit() : super(CalendarInitialState());
 
   TasksCalendar? tasksCalendar;
-  DateTime selectedDate = DateTime.now();
+  DateTime selectedDate =
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
   void updateSelectedDate(DateTime newDate) {
     selectedDate = newDate;

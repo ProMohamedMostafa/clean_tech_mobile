@@ -54,11 +54,26 @@ class BuildSupervisorsItemList extends StatelessWidget {
     final supervisor = supervisors![index];
 
     return InkWell(
-      onTap: () {
-        context.pushNamed(
+      onTap: () async {
+        final result = await context.pushNamed(
           Routes.userDetailsScreen,
           arguments: supervisor.id,
         );
+        if (result == true) {
+          selectedIndex == 0
+              ? cubit.getAreaUsersDetails(supervisor.id)
+              : selectedIndex == 1
+                  ? cubit.getCityUsersDetails(supervisor.id)
+                  : selectedIndex == 2
+                      ? cubit.getOrganizationUsersDetails(supervisor.id)
+                      : selectedIndex == 3
+                          ? cubit.getBuildingUsersDetails(supervisor.id)
+                          : selectedIndex == 4
+                              ? cubit.getFloorUsersDetails(supervisor.id)
+                              : selectedIndex == 5
+                                  ? cubit.getSectionUsersDetails(supervisor.id)
+                                  : cubit.getPointUsersDetails(supervisor.id);
+        }
       },
       child: ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 5),

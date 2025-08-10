@@ -148,7 +148,7 @@ class SettingsBody extends StatelessWidget {
                       context.pushNamed(Routes.technicalSupportScreen);
                     }, S.of(context).settingTitle4, Icons.phone),
                     listTileWidget(() async {
-                      Uri url = Uri.https('aicloud.sa');
+                      Uri url = Uri.parse('https://ai-cloud.sa');
                       await launchUrl(url);
                     }, S.of(context).settingTitle5,
                         Icons.desktop_windows_outlined),
@@ -158,17 +158,20 @@ class SettingsBody extends StatelessWidget {
                     listTileWidget(() {
                       context.pushNamed(Routes.languageScreen);
                     }, S.of(context).settingTitle6, Icons.language),
-                    toggleListTile(() {
-                      cubit.toggleNotification();
-                    }, S.of(context).settingTitle7, Icons.notifications_active,
-                        cubit.isNotOpenNotif),
+                    toggleListTile(
+                      () {
+                        cubit.toggleNotification();
+                      },
+                      S.of(context).settingTitle7,
+                      Icons.notifications_active,
+                      !cubit.isNotificationEnabled,
+                    ),
                     ListTile(
                       onTap: () {
                         cubit.logout();
                       },
                       leading: Transform.flip(
-                        flipX:
-                            cubit.isEnglish() ? true : false,
+                        flipX: cubit.isEnglish() ? true : false,
                         child: Icon(
                           Icons.logout_outlined,
                           size: 20.sp,

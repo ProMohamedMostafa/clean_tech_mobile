@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
-import 'package:smart_cleaning_application/features/screens/setting/notification/data/model/notification_model.dart';
-import 'package:smart_cleaning_application/features/screens/setting/notification/logic/notification_state.dart';
+import 'package:smart_cleaning_application/features/screens/home/ui/widgets/notification/data/model/notification_model.dart';
+import 'package:smart_cleaning_application/features/screens/home/ui/widgets/notification/logic/notification_state.dart';
 
 class NotificationCubit extends Cubit<NotificationState> {
   NotificationCubit() : super(NotificationInitialState());
@@ -19,7 +19,6 @@ class NotificationCubit extends Cubit<NotificationState> {
       url: 'notifications',
       query: {
         'PageNumber': readNotificationCurrentPage,
-        'PageSize': 10,
       },
     ).then((value) {
       final readNotification = NotificationModel.fromJson(value!.data);
@@ -47,7 +46,6 @@ class NotificationCubit extends Cubit<NotificationState> {
       url: 'notifications',
       query: {
         'PageNumber': unReadNotificationCurrentPage,
-        'PageSize': 10,
         'IsRead': false,
       },
     ).then((value) {

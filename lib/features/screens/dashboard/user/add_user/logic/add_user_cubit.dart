@@ -40,9 +40,9 @@ class AddUserCubit extends Cubit<AddUserState> {
   TextEditingController providerIdController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
-
+  String fullPhoneNumber = '';
   UserCreateModel? userCreateModel;
-  addUser({String? image}) async {
+  addUser({String? image, required String phone}) async {
     emit(AddUserLoadingState());
 
     MultipartFile? imageFile;
@@ -57,7 +57,7 @@ class AddUserCubit extends Cubit<AddUserState> {
       "FirstName": firstNameController.text,
       "LastName": lastNameController.text,
       "Email": emailController.text,
-      "PhoneNumber": phoneController.text,
+      "PhoneNumber": phone,
       "Password": passwordController.text,
       "PasswordConfirmation": passwordConfirmationController.text,
       "Image": imageFile,

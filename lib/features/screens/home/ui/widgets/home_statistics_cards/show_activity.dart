@@ -110,23 +110,55 @@ class ShowActivity extends StatelessWidget {
                             },
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Expanded(
+                                Flexible(
+                                  flex: 3,
                                   child: ListTile(
                                     contentPadding:
                                         EdgeInsets.symmetric(horizontal: 5),
                                     minTileHeight: 60.h,
                                     leading: ActionIcon(
-                                        actionId: activity.actionTypeId ?? 0),
+                                      actionId: cubit.selectedIndex == 0
+                                          ? cubit.myActivities!.data!
+                                              .activities![index].actionTypeId!
+                                          : cubit.teamActivities!.data!
+                                              .activities![index].actionTypeId!,
+                                    ),
                                     title: Row(
                                       children: [
-                                        Text(activity.userName ?? '',
+                                        Flexible(
+                                          child: Text(
+                                            cubit.selectedIndex == 0
+                                                ? cubit
+                                                    .myActivities!
+                                                    .data!
+                                                    .activities![index]
+                                                    .userName!
+                                                : cubit
+                                                        .teamActivities!
+                                                        .data!
+                                                        .activities![index]
+                                                        .userName ??
+                                                    '',
                                             style:
-                                                TextStyles.font14BlackRegular),
+                                                TextStyles.font14BlackRegular,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
                                         horizontalSpace(8),
-                                        Text(activity.role ?? '',
-                                            style: TextStyles.font9PrimRegular),
+                                        Text(
+                                          cubit.selectedIndex == 0
+                                              ? cubit.myActivities!.data!
+                                                  .activities![index].role!
+                                              : cubit
+                                                      .teamActivities!
+                                                      .data!
+                                                      .activities![index]
+                                                      .role ??
+                                                  '',
+                                          style: TextStyles.font9PrimRegular,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ],
                                     ),
                                     subtitle: Column(
@@ -134,33 +166,63 @@ class ShowActivity extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          activity.actionType ?? '',
+                                          cubit.selectedIndex == 0
+                                              ? cubit
+                                                  .myActivities!
+                                                  .data!
+                                                  .activities![index]
+                                                  .actionType!
+                                              : cubit
+                                                  .teamActivities!
+                                                  .data!
+                                                  .activities![index]
+                                                  .actionType!,
                                           style: TextStyles.font12BlackSemi
                                               .copyWith(
                                             color: cubit.getActionColor(
-                                                activity.actionType ?? ''),
+                                              cubit.selectedIndex == 0
+                                                  ? cubit
+                                                      .myActivities!
+                                                      .data!
+                                                      .activities![index]
+                                                      .actionType!
+                                                  : cubit
+                                                      .teamActivities!
+                                                      .data!
+                                                      .activities![index]
+                                                      .actionType!,
+                                            ),
                                           ),
+                                          overflow: TextOverflow.ellipsis,
                                         ),
-                                        Text(activity.message ?? '',
-                                            style:
-                                                TextStyles.font12GreyRegular),
+                                        Text(
+                                          cubit.selectedIndex == 0
+                                              ? cubit.myActivities!.data!
+                                                  .activities![index].message!
+                                              : cubit.teamActivities!.data!
+                                                  .activities![index].message!,
+                                          style: TextStyles.font12GreyRegular,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ],
                                     ),
                                   ),
                                 ),
                                 SizedBox(
                                   width: 80.w,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        activity.createdAt != null
-                                            ? cubit.formatTimeDifference(
-                                                activity.createdAt!)
-                                            : '',
-                                        style: TextStyles.font11GreyMedium,
-                                      ),
-                                    ],
+                                  child: Text(
+                                    cubit.selectedIndex == 0
+                                        ? cubit.formatTimeDifference(cubit
+                                            .myActivities!
+                                            .data!
+                                            .activities![index]
+                                            .createdAt!)
+                                        : cubit.formatTimeDifference(cubit
+                                            .teamActivities!
+                                            .data!
+                                            .activities![index]
+                                            .createdAt!),
+                                    style: TextStyles.font11GreyMedium,
                                   ),
                                 ),
                               ],
@@ -199,12 +261,12 @@ class ShowActivity extends StatelessWidget {
                                 color: AppColor.primaryColor,
                               ),
                             ),
-                            horizontalSpace( 10),
+                            horizontalSpace(10),
                             Text(
                               S.of(context).seeMoreButton,
                               style: TextStyles.font12PrimSemi,
                             ),
-                            horizontalSpace( 10),
+                            horizontalSpace(10),
                             Expanded(
                               child: Divider(
                                 height: 1.h,

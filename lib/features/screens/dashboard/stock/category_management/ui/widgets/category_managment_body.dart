@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -14,6 +16,7 @@ import 'package:smart_cleaning_application/core/widgets/integration_buttons/inte
 import 'package:smart_cleaning_application/features/screens/dashboard/stock/category_management/logic/category_mangement_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/stock/category_management/logic/category_mangement_state.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/stock/category_management/ui/widgets/category_details_list_build.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/stock/category_management/ui/widgets/pdf.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class CategoryManagmentBody extends StatelessWidget {
@@ -25,7 +28,19 @@ class CategoryManagmentBody extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
           title: Text(S.of(context).categoryManagement),
-          leading: CustomBackButton()),
+          leading: CustomBackButton(),actions: [
+            IconButton(
+              onPressed: () {
+                createCategoryPDF(context);
+              },
+              icon: Icon(
+                CupertinoIcons.tray_arrow_down,
+                color: Colors.red,
+                size: 22.sp,
+              ),
+            ),
+            horizontalSpace(10)
+          ]),
       floatingActionButton: floatingActionButton(
         icon: Icons.post_add_rounded,
         onPressed: () async {
@@ -97,6 +112,11 @@ class CategoryManagmentBody extends StatelessWidget {
                           );
                         },
                       );
+                    },isFilterActive: cubit.filterModel != null,
+                    onClearFilter: () {
+                      cubit.filterModel = null;
+                      cubit.searchController.clear();
+                      cubit.getCategoryList();
                     },
                   ),
                   verticalSpace(10),

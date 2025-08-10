@@ -11,6 +11,7 @@ import 'package:smart_cleaning_application/features/screens/home/logic/home_cubi
 import 'package:smart_cleaning_application/features/screens/home/logic/home_state.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/notification_build.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
+import 'package:smart_cleaning_application/src/app_cubit/app_cubit.dart';
 
 class HomeAppBar extends StatelessWidget {
   const HomeAppBar({super.key});
@@ -20,11 +21,10 @@ class HomeAppBar extends StatelessWidget {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
         final cubit = context.read<HomeCubit>();
-        final data = cubit.profileModel?.data;
-        final isLoading = data == null;
 
         return Skeletonizer(
-          enabled: isLoading,
+          enabled: (cubit.profileModel?.data == null &&
+              cubit.notificationModel?.data == null),
           child: Row(
             children: [
               Container(
@@ -46,18 +46,16 @@ class HomeAppBar extends StatelessWidget {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(14.r),
-                  child: isLoading
-                      ? Container(color: const Color(0xffEBEBF4))
-                      : Image.network(
-                          data.image ?? '',
-                          fit: BoxFit.fill,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Image.asset(
-                              'assets/images/person.png',
-                              fit: BoxFit.fill,
-                            );
-                          },
-                        ),
+                  child: Image.network(
+                    cubit.profileModel?.data?.image ?? '',
+                    fit: BoxFit.fill,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        'assets/images/person.png',
+                        fit: BoxFit.fill,
+                      );
+                    },
+                  ),
                 ),
               ),
               horizontalSpace(6),
@@ -76,7 +74,7 @@ class HomeAppBar extends StatelessWidget {
                             style: TextStyles.font13Blackmedium,
                           ),
                           TextSpan(
-                            text: data?.firstName ?? '',
+                            text: cubit.profileModel?.data?.firstName ?? '',
                             style: TextStyles.font13Blackmedium,
                           ),
                           TextSpan(
@@ -88,7 +86,7 @@ class HomeAppBar extends StatelessWidget {
                     ),
                     verticalSpace(3),
                     Text(
-                      data?.role ?? '',
+                      cubit.profileModel?.data?.role ?? '',
                       style: TextStyles.font11lightPrimary,
                     ),
                   ],
@@ -97,7 +95,9 @@ class HomeAppBar extends StatelessWidget {
               const Spacer(),
               IconButton(
                 onPressed: () {
-                  context.pushNamed(Routes.notificationScreen);
+                  context.pushNamed(Routes.notificationScreen).then((_) {
+                    AppCubit.get(context).getUnReadNotification();
+                  });
                 },
                 icon: NotificationBuild(),
               )

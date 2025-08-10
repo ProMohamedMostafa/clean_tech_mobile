@@ -16,6 +16,7 @@ part 'user_details_state.dart';
 class UserDetailsCubit extends Cubit<UserDetailsState> {
   UserDetailsCubit() : super(UserDetailsInitial());
 
+
   FilterDialogDataModel? taskFilterModel;
   FilterDialogDataModel? attendanceFilterModel;
   FilterDialogDataModel? leavesFilterModel;

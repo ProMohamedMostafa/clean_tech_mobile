@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
@@ -9,6 +11,7 @@ import 'package:smart_cleaning_application/core/widgets/filter_and_search_build/
 import 'package:smart_cleaning_application/core/widgets/integration_buttons/integrations_buttons.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/stock/transaction_management/logic/transaction_mangement_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/stock/transaction_management/logic/transaction_mangement_state.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/stock/transaction_management/ui/widgets/pdf.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/stock/transaction_management/ui/widgets/transaction_details_list_build.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
@@ -21,7 +24,20 @@ class TransactionManagmentBody extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
           title: Text(S.of(context).transactionManagement),
-          leading: CustomBackButton()),
+          leading: CustomBackButton(),
+          actions: [
+            IconButton(
+              onPressed: () {
+                createTransactionPDF(context);
+              },
+              icon: Icon(
+                CupertinoIcons.tray_arrow_down,
+                color: Colors.red,
+                size: 22.sp,
+              ),
+            ),
+            horizontalSpace(10)
+          ]),
       body:
           BlocConsumer<TransactionManagementCubit, TransactionManagementState>(
         listener: (context, state) {},
@@ -70,6 +86,11 @@ class TransactionManagmentBody extends StatelessWidget {
                           );
                         },
                       );
+                    },isFilterActive: cubit.filterModel != null,
+                    onClearFilter: () {
+                      cubit.filterModel = null;
+                      cubit.searchController.clear();
+                      cubit.getTransactionList();
                     },
                   ),
                   verticalSpace(10),

@@ -9,15 +9,15 @@ import 'package:smart_cleaning_application/core/helpers/constants/constants.dart
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/organization_list_model.dart';
-import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/task/add_task/data/models/create_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/task/add_task/logic/add_task_state.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/building_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/floor_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/point_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/section_list_model.dart';
-import 'package:smart_cleaning_application/features/screens/dashboard/task/task_management/data/models/all_tasks_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/data/models/organization_basic_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/data/models/tasks_basic_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/data/models/users_basic_model.dart';
 
 class AddTaskCubit extends Cubit<AddTaskState> {
   AddTaskCubit() : super(AddTaskInitialState());
@@ -98,50 +98,42 @@ class AddTaskCubit extends Cubit<AddTaskState> {
     if (role == "Manager" || role == "Supervisor") {
       return "tasks/receive";
     } else {
-      return "tasks/pagination";
+      return "tasks/basic";
     }
   }
 
-  AllTasksModel? allTasksModel;
-  List<TaskData> taskData = [TaskData(title: 'No tasks available')];
+  TasksBasicModel? tasksBasicModel;
   getAllTasks() {
     emit(GetAllTasksLoadingState());
     final url = getTasksUrl();
     DioHelper.getData(url: url).then((value) {
-      allTasksModel = AllTasksModel.fromJson(value!.data);
-      taskData =
-          allTasksModel?.data?.data ?? [TaskData(title: 'No tasks available')];
-      emit(GetAllTasksSuccessState(allTasksModel!));
+      tasksBasicModel = TasksBasicModel.fromJson(value!.data);
+
+      emit(GetAllTasksSuccessState(tasksBasicModel!));
     }).catchError((error) {
       emit(GetAllTasksErrorState(error.toString()));
     });
   }
 
-  UsersModel? usersModel;
-  List<UserItem> userItem = [UserItem(userName: 'No users available')];
+  UsersBasicModel? usersBasicModel;
   getAllUsers() {
     emit(AllUsersLoadingState());
-    DioHelper.getData(url: "users/pagination").then((value) {
-      usersModel = UsersModel.fromJson(value!.data);
-      userItem =
-          usersModel?.data?.users ?? [UserItem(userName: 'No users available')];
-      emit(AllUsersSuccessState(usersModel!));
+    DioHelper.getData(url: "users/basic").then((value) {
+      usersBasicModel = UsersBasicModel.fromJson(value!.data);
+
+      emit(AllUsersSuccessState(usersBasicModel!));
     }).catchError((error) {
       emit(AllUsersErrorState(error.toString()));
     });
   }
 
-  OrganizationListModel? organizationModel;
-  List<OrganizationItem> organizationItem = [
-    OrganizationItem(name: 'No organizations')
-  ];
+  OrganizationBasicModel? organizationBasicModel;
   getOrganization() {
     emit(GetOrganizationLoadingState());
-    DioHelper.getData(url: "organizations/pagination").then((value) {
-      organizationModel = OrganizationListModel.fromJson(value!.data);
-      organizationItem = organizationModel?.data?.data ??
-          [OrganizationItem(name: 'No organizations')];
-      emit(GetOrganizationSuccessState(organizationModel!));
+    DioHelper.getData(url: "organizations/basic").then((value) {
+      organizationBasicModel = OrganizationBasicModel.fromJson(value!.data);
+
+      emit(GetOrganizationSuccessState(organizationBasicModel!));
     }).catchError((error) {
       emit(GetOrganizationErrorState(error.toString()));
     });

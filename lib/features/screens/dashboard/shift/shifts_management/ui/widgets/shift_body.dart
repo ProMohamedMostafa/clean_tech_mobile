@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
@@ -14,6 +16,7 @@ import 'package:smart_cleaning_application/core/widgets/floating_action_button/f
 import 'package:smart_cleaning_application/core/widgets/integration_buttons/integrations_buttons.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/shift/shifts_management/logic/shift_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/shift/shifts_management/logic/shift_state.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/shift/shifts_management/ui/widgets/pdf.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/shift/shifts_management/ui/widgets/shift_list_details_build.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
@@ -25,7 +28,19 @@ class ShiftBody extends StatelessWidget {
     final cubit = context.read<ShiftCubit>();
     return Scaffold(
         appBar: AppBar(
-            title: Text(S.of(context).integ4), leading: CustomBackButton()),
+            title: Text(S.of(context).integ4), leading: CustomBackButton(),actions: [
+            IconButton(
+              onPressed: () {
+                createShiftPDF(context);
+              },
+              icon: Icon(
+                CupertinoIcons.tray_arrow_down,
+                color: Colors.red,
+                size: 22.sp,
+              ),
+            ),
+            horizontalSpace(10)
+          ]),
         floatingActionButton: role == 'Admin'
             ? floatingActionButton(
                 icon: Icons.post_add_outlined,
@@ -94,7 +109,12 @@ class ShiftBody extends StatelessWidget {
                             );
                           },
                         );
-                      },
+                      },isFilterActive: cubit.filterModel != null,
+                    onClearFilter: () {
+                      cubit.filterModel = null;
+                      cubit.searchController.clear();
+                      cubit.getAllShifts();
+                    },
                     ),
                     verticalSpace(10),
                     integrationsButtons(

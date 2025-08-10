@@ -7,9 +7,9 @@ import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
 import 'package:smart_cleaning_application/core/widgets/default_toast/default_toast.dart';
 import 'package:smart_cleaning_application/core/widgets/integration_buttons/integrations_buttons.dart';
-import 'package:smart_cleaning_application/features/screens/setting/notification/logic/notification_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/setting/notification/logic/notification_state.dart';
-import 'package:smart_cleaning_application/features/screens/setting/notification/ui/widgets/notification_list_details_build.dart';
+import 'package:smart_cleaning_application/features/screens/home/ui/widgets/notification/logic/notification_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/home/ui/widgets/notification/logic/notification_state.dart';
+import 'package:smart_cleaning_application/features/screens/home/ui/widgets/notification/ui/widgets/notification_list_details_build.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class NotificationBody extends StatelessWidget {
@@ -17,7 +17,7 @@ class NotificationBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final NotificationCubit cubit = context.read<NotificationCubit>();
+    final cubit = context.read<NotificationCubit>();
     return BlocConsumer<NotificationCubit, NotificationState>(
       listener: (context, state) {
         if (state is MarkReadSuccessState) {
@@ -28,7 +28,7 @@ class NotificationBody extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        final isRead = context.read<NotificationCubit>().allNotificationsRead();
+        final isRead = cubit.allNotificationsRead();
         return Scaffold(
           appBar: AppBar(
             leading: CustomBackButton(),
@@ -39,7 +39,7 @@ class NotificationBody extends StatelessWidget {
                 overlayColor: const WidgetStatePropertyAll(Colors.white),
                 onTap: () {
                   if (!isRead) {
-                    context.read<NotificationCubit>().markRead();
+                    cubit.markRead();
                   } else {
                     toast(
                       text: S.of(context).alreadyMarkedAsRead,
@@ -72,20 +72,8 @@ class NotificationBody extends StatelessWidget {
             ],
           ),
           body: Skeletonizer(
-            enabled: (context
-                        .read<NotificationCubit>()
-                        .notificationModel
-                        ?.data
-                        ?.data
-                        ?.length ==
-                    null &&
-                context
-                        .read<NotificationCubit>()
-                        .unReadNotificationModel
-                        ?.data
-                        ?.data
-                        ?.length ==
-                    null),
+            enabled: (cubit.notificationModel?.data?.data?.length == null &&
+                cubit.unReadNotificationModel?.data?.data?.length == null),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(

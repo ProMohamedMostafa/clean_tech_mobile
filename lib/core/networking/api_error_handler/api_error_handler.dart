@@ -1,38 +1,73 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:smart_cleaning_application/core/networking/business_error/business_error.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class ApiErrorHandler {
-  static ApiErrorModel handle(dynamic error) {
+  static ApiErrorModel handle(dynamic error, {BuildContext? context}) {
+    String tr(String Function(S) key, String fallback) {
+      if (context != null) {
+        return key(S.of(context));
+      }
+      return fallback;
+    }
+
     if (error is DioException) {
       switch (error.type) {
         case DioExceptionType.connectionError:
-          return ApiErrorModel(message: 'No Internet Connection');
+          return ApiErrorModel(
+              message: tr((s) => s.no_internet, "No Internet Connection"));
         case DioExceptionType.cancel:
-          return ApiErrorModel(message: 'Request to server was canceled');
+          return ApiErrorModel(
+              message: tr((s) => s.request_cancelled,
+                  "Request to server was canceled"));
         case DioExceptionType.connectionTimeout:
-          return ApiErrorModel(message: 'Connection timeout with server');
+          return ApiErrorModel(
+              message: tr((s) => s.connection_timeout,
+                  "Connection timeout with server"));
         case DioExceptionType.unknown:
-          return ApiErrorModel(message: 'Unexpected error: ${error.message}');
+          return ApiErrorModel(
+              message:
+                  "${tr((s) => s.unexpected_error, "Unexpected error:")} ${error.message}");
         case DioExceptionType.receiveTimeout:
-          return ApiErrorModel(message: 'Receive timeout from server');
+          return ApiErrorModel(
+              message:
+                  tr((s) => s.receive_timeout, "Receive timeout from server"));
         case DioExceptionType.sendTimeout:
-          return ApiErrorModel(message: 'Send timeout to server');
+          return ApiErrorModel(
+              message: tr((s) => s.send_timeout, "Send timeout to server"));
         case DioExceptionType.badCertificate:
-          return ApiErrorModel(message: 'Invalid certificate received');
+          return ApiErrorModel(
+              message:
+                  tr((s) => s.bad_certificate, "Invalid certificate received"));
         case DioExceptionType.badResponse:
           return _handleBadResponse(
-              error.response?.data, error.response?.statusCode);
+              error.response?.data, error.response?.statusCode, context);
       }
-    } else {
-      return ApiErrorModel(message: "Unknown error occurred");
     }
+    return ApiErrorModel(message: tr((s) => s.failed, "Operation failed."));
   }
 
   static ApiErrorModel _handleBadResponse(
-      dynamic responseData, int? statusCode) {
-    if (responseData != null && responseData is Map<String, dynamic>) {
-      String? errorMessage;
+      dynamic responseData, int? statusCode, BuildContext? context) {
+    String tr(String Function(S) key, String fallback) {
+      if (context != null) {
+        return key(S.of(context));
+      }
+      return fallback;
+    }
 
-      // Check for `error` field
+    // ✅ If status code is not 200, handle error
+    if (statusCode != 200 && responseData is Map<String, dynamic>) {
+      // Check for businessErrorCode first
+      if (responseData['businessErrorCode'] != null) {
+        final code = responseData['businessErrorCode'] as int?;
+        final message = BusinessErrorMapper.getMessage(code);
+        return ApiErrorModel(message: message);
+      }
+
+      // If no businessErrorCode, try "error" or "message"
+      String? errorMessage;
       if (responseData['error'] != null) {
         if (responseData['error'] is String) {
           errorMessage = responseData['error'];
@@ -41,106 +76,46 @@ class ApiErrorHandler {
           errorMessage = responseData['error'][0];
         }
       }
-
-      // Default to `message` field if `error` is null
-      errorMessage ??= responseData['message'] ?? 'Unknown error occurred';
-
+      errorMessage ??=
+          responseData['message'] ?? tr((s) => s.failed, "Operation failed.");
       return ApiErrorModel(message: errorMessage!);
     }
 
-    // Handle specific HTTP status codes
+    // Generic HTTP status fallback
     switch (statusCode) {
       case 302:
         return ApiErrorModel(
-            message: 'Redirection occurred. Please login again.');
+            message: tr((s) => s.redirection,
+                "Redirection occurred. Please login again."));
       case 400:
         return ApiErrorModel(
-            message: 'Bad request. Please check the data sent.');
+            message: tr((s) => s.bad_request,
+                "Bad request. Please check the data sent."));
       case 401:
-        return ApiErrorModel(message: 'Unauthorized. Please log in again.');
+        return ApiErrorModel(
+            message: tr(
+                (s) => s.unauthorized, "Unauthorized. Please log in again."));
       case 403:
-        return ApiErrorModel(message: 'Forbidden. You do not have permission.');
+        return ApiErrorModel(
+            message: tr(
+                (s) => s.forbidden, "Forbidden. You do not have permission."));
       case 404:
-        return ApiErrorModel(message: 'Resource not found.');
+        return ApiErrorModel(
+            message: tr((s) => s.not_found, "Resource not found."));
       case 500:
-        return ApiErrorModel(message: 'Server error. Please try again later.');
-      case 502:
-        return ApiErrorModel(message: 'Bad Gateway. Please try again later.');
-      case 503:
         return ApiErrorModel(
-            message: 'Service Unavailable. Please try again later.');
-      case 504:
-        return ApiErrorModel(
-            message: 'Gateway Timeout. Please try again later.');
+            message: tr((s) => s.server_error,
+                "Server error. Please try again later."));
       default:
         return ApiErrorModel(
-            message: 'Unexpected error with status code $statusCode');
+            message: tr((s) => s.status_code_error,
+                    "Unexpected error with status code {}")
+                .replaceFirst("{}", "$statusCode"));
     }
   }
 }
 
 class ApiErrorModel {
   final String message;
-
   ApiErrorModel({required this.message});
 }
-
-// static ApiErrorModel _handleBadResponse(
-//       dynamic responseData, int? statusCode) {
-//     if (responseData != null && responseData is Map<String, dynamic>) {
-//       if (statusCode == 400 && responseData['errors'] != null) {
-//         String formattedErrors =
-//             _formatValidationErrors(responseData['errors']);
-//         return ApiErrorModel(message: formattedErrors);
-//       }
-
-//       String errorMessage = responseData['message'] ?? 'Unknown error occurred';
-//       return ApiErrorModel(message: errorMessage);
-//     }
-
-//     switch (statusCode) {
-//       case 302:
-//         return ApiErrorModel(
-//             message: 'Redirection occurred. Please login again.');
-//       case 400:
-//         return ApiErrorModel(
-//             message: 'Bad request. Please check the data sent.');
-//       case 401:
-//         return ApiErrorModel(message: 'Unauthorized. Please log in again.');
-//       case 403:
-//         return ApiErrorModel(message: 'Forbidden. You do not have permission.');
-//       case 404:
-//         return ApiErrorModel(message: 'Resource not found.');
-//       case 500:
-//         return ApiErrorModel(message: 'Server error. Please try again later.');
-//       case 502:
-//         return ApiErrorModel(message: 'Bad Gateway. Please try again later.');
-//       case 503:
-//         return ApiErrorModel(
-//             message: 'Service Unavailable. Please try again later.');
-//       case 504:
-//         return ApiErrorModel(
-//             message: 'Gateway Timeout. Please try again later.');
-//       default:
-//         return ApiErrorModel(
-//             message: 'Unexpected error with status code $statusCode');
-//     }
-//   }
-
-//   static String _formatValidationErrors(Map<String, dynamic> errors) {
-//     for (var messages in errors.values) {
-//       if (messages is List && messages.isNotEmpty) {
-//         return messages.first.toString(); // Return the first error message.
-//       } else if (messages is String) {
-//         return messages; // Handle single string error.
-//       }
-//     }
-//     return 'Validation error occurred.'; // Default message if no errors found.
-//   }
-// }
-
-// class ApiErrorModel {
-//   final String message;
-
-//   ApiErrorModel({required this.message});
-// }

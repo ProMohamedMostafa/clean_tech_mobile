@@ -39,28 +39,32 @@ class ActivityListItemBuild extends StatelessWidget {
       },
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(
+          Flexible(
+            flex: 3,
             child: ListTile(
               contentPadding: EdgeInsets.symmetric(horizontal: 5),
               minTileHeight: 60.h,
               leading: ActionIcon(
-                  actionId: cubit.selectedIndex == 0
-                      ? cubit
-                          .myActivities!.data!.activities![index].actionTypeId!
-                      : cubit.teamActivities!.data!.activities![index]
-                          .actionTypeId!),
+                actionId: cubit.selectedIndex == 0
+                    ? cubit.myActivities!.data!.activities![index].actionTypeId!
+                    : cubit
+                        .teamActivities!.data!.activities![index].actionTypeId!,
+              ),
               title: Row(
                 children: [
-                  Text(
+                  Flexible(
+                    child: Text(
                       cubit.selectedIndex == 0
                           ? cubit
                               .myActivities!.data!.activities![index].userName!
                           : cubit.teamActivities!.data!.activities![index]
                                   .userName ??
                               '',
-                      style: TextStyles.font14BlackRegular),
+                      style: TextStyles.font14BlackRegular,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
                   horizontalSpace(8),
                   Text(
                     cubit.selectedIndex == 0
@@ -68,11 +72,11 @@ class ActivityListItemBuild extends StatelessWidget {
                         : cubit.teamActivities!.data!.activities![index].role ??
                             '',
                     style: TextStyles.font9PrimRegular,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
               subtitle: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
@@ -90,6 +94,7 @@ class ActivityListItemBuild extends StatelessWidget {
                                 .actionType!,
                       ),
                     ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                   Text(
                     cubit.selectedIndex == 0
@@ -97,6 +102,7 @@ class ActivityListItemBuild extends StatelessWidget {
                         : cubit
                             .teamActivities!.data!.activities![index].message!,
                     style: TextStyles.font12GreyRegular,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
@@ -104,17 +110,13 @@ class ActivityListItemBuild extends StatelessWidget {
           ),
           SizedBox(
             width: 80.w,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                    cubit.selectedIndex == 0
-                        ? cubit.formatTimeDifference(cubit
-                            .myActivities!.data!.activities![index].createdAt!)
-                        : cubit.formatTimeDifference(cubit.teamActivities!.data!
-                            .activities![index].createdAt!),
-                    style: TextStyles.font11GreyMedium),
-              ],
+            child: Text(
+              cubit.selectedIndex == 0
+                  ? cubit.formatTimeDifference(
+                      cubit.myActivities!.data!.activities![index].createdAt!)
+                  : cubit.formatTimeDifference(cubit
+                      .teamActivities!.data!.activities![index].createdAt!),
+              style: TextStyles.font11GreyMedium,
             ),
           ),
         ],

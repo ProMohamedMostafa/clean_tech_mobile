@@ -92,7 +92,7 @@ class EmailAndPassword extends StatelessWidget {
                       textStyles: TextStyles.font16WhiteSemiBold,
                       onPressed: () {
                         if (cubit.formKey.currentState!.validate()) {
-                          cubit.userLogin(context);
+                          cubit.userLogin();
                         }
                       },
                     )

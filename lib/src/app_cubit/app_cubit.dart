@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
+import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
+import 'package:smart_cleaning_application/features/screens/home/ui/widgets/notification/data/model/notification_model.dart';
 import 'package:smart_cleaning_application/src/app_cubit/app_states.dart';
 
 class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitialState());
+  static AppCubit get(BuildContext context) =>
+      BlocProvider.of<AppCubit>(context);
 
   Locale locale = Locale('en');
 
@@ -31,6 +35,19 @@ class AppCubit extends Cubit<AppStates> {
     );
 
     deviceToken = await FirebaseMessaging.instance.getToken();
+  }
+
+  NotificationModel? notificationModel;
+
+  void getUnReadNotification() {
+    emit(UnReadNotificationLoadingState());
+    DioHelper.getData(url: 'notifications', query: {'IsRead': false})
+        .then((value) {
+      notificationModel = NotificationModel.fromJson(value!.data);
+      emit(UnReadNotificationSuccessState(notificationModel!));
+    }).catchError((error) {
+      emit(UnReadNotificationErrorState(error.toString()));
+    });
   }
 
   int currentIndex = 0;

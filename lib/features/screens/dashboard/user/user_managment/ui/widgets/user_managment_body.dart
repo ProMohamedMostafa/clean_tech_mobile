@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
@@ -14,6 +16,7 @@ import 'package:smart_cleaning_application/core/widgets/integration_buttons/inte
 import 'package:smart_cleaning_application/features/screens/dashboard/user/user_managment/logic/user_mangement_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/user/user_managment/logic/user_mangement_state.dart';
 import 'package:smart_cleaning_application/core/widgets/filter_and_search_build/filter_search_build.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/user/user_managment/ui/widgets/pdf.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/user/user_managment/ui/widgets/user_details_list_build.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
@@ -25,9 +28,19 @@ class UserManagmentBody extends StatelessWidget {
     final cubit = context.read<UserManagementCubit>();
     return Scaffold(
       appBar: AppBar(
-        leading: CustomBackButton(),
-        title: Text(S.of(context).userManagement),
-      ),
+          leading: CustomBackButton(),
+          title: Text(S.of(context).userManagement),
+          actions: [
+            IconButton(
+              onPressed: () => createPDF(context),
+              icon: Icon(
+                CupertinoIcons.tray_arrow_down,
+                color: Colors.red,
+                size: 22.sp,
+              ),
+            ),
+            horizontalSpace(10)
+          ]),
       floatingActionButton: role == 'Admin'
           ? floatingActionButton(
               icon: Icons.person_add,
@@ -99,6 +112,12 @@ class UserManagmentBody extends StatelessWidget {
                           );
                         },
                       );
+                    },
+                    isFilterActive: cubit.filterModel != null,
+                    onClearFilter: () {
+                      cubit.filterModel = null;
+                      cubit.searchController.clear();
+                      cubit.getAllUsers();
                     },
                   ),
                   verticalSpace(10),

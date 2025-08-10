@@ -123,185 +123,188 @@ class _ProfileScreenState extends State<ProfileScreen>
             return Loading();
           }
 
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Center(
-                  child: Stack(
-                    children: [
-                      GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (contextt) => Scaffold(
-                                  appBar: AppBar(
-                                    leading: CustomBackButton(),
-                                  ),
-                                  body: Center(
-                                    child: PhotoView(
-                                      imageProvider: NetworkImage(
-                                        '${cubit.profileModel?.data?.image}',
-                                      ),
-                                      errorBuilder:
-                                          (context, error, stackTrace) {
-                                        return Image.asset(
-                                          'assets/images/person.png',
-                                          fit: BoxFit.fill,
-                                        );
-                                      },
-                                      backgroundDecoration: const BoxDecoration(
-                                        color: Colors.white,
+          return SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Center(
+                    child: Stack(
+                      children: [
+                        GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (contextt) => Scaffold(
+                                    appBar: AppBar(
+                                      leading: CustomBackButton(),
+                                    ),
+                                    body: Center(
+                                      child: PhotoView(
+                                        imageProvider: NetworkImage(
+                                          '${cubit.profileModel?.data?.image}',
+                                        ),
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return Image.asset(
+                                            'assets/images/person.png',
+                                            fit: BoxFit.fill,
+                                          );
+                                        },
+                                        backgroundDecoration:
+                                            const BoxDecoration(
+                                          color: Colors.white,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            );
-                          },
-                          child: Container(
-                              width: 100.r,
-                              height: 100.r,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                              ),
-                              child: ClipOval(
-                                child: Image.network(
-                                  '${cubit.profileModel!.data!.image}',
-                                  fit: BoxFit.fill,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Image.asset(
-                                      'assets/images/person.png',
-                                      fit: BoxFit.fill,
-                                    );
-                                  },
-                                ),
-                              ))),
-                      if (role != 'Admin')
-                        Positioned(
-                          bottom: 1,
-                          right: 10,
-                          child: Container(
-                            width: 15.w,
-                            height: 15.h,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: cubit.profileModel!.data == null
-                                    ? Colors.red
-                                    : cubit.profileModel!.data!.isWorking ==
-                                            true
-                                        ? Colors.green
-                                        : Colors.red,
-                                border: Border.all(
-                                    color: Colors.white, width: 2.w)),
-                          ),
-                        )
-                    ],
-                  ),
-                ),
-                verticalSpace(5),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(cubit.profileModel?.data?.firstName ?? '',
-                        style: TextStyles.font14Redbold
-                            .copyWith(color: Colors.black)),
-                    horizontalSpace(5),
-                    Text(cubit.profileModel?.data?.lastName ?? '',
-                        style: TextStyles.font14Redbold
-                            .copyWith(color: Colors.black)),
-                  ],
-                ),
-                verticalSpace(5),
-                Text(cubit.profileModel!.data!.role!,
-                    style: TextStyles.font12GreyRegular
-                        .copyWith(color: AppColor.primaryColor)),
-                verticalSpace(15),
-                if (role != 'Admin')
-                  SizedBox(
-                      height: 42.h,
-                      width: double.infinity,
-                      child: AnimatedBuilder(
-                        animation: controller,
-                        builder: (context, _) {
-                          return TabBar(
-                            controller: controller,
-                            tabAlignment: TabAlignment.center,
-                            isScrollable: true,
-                            indicatorSize: TabBarIndicatorSize.tab,
-                            indicator: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5.r),
-                              color: AppColor.primaryColor,
-                            ),
-                            tabs: List.generate(6, (index) {
-                              final labels = [
-                                S.of(context).userDetails,
-                                S.of(context).integ2,
-                                S.of(context).integ4,
-                                S.of(context).integ5,
-                                S.of(context).attendance,
-                                S.of(context).leaves,
-                              ];
-
-                              return Tab(
-                                child: Text(
-                                  labels[index],
-                                  style: TextStyle(
-                                    color: controller.index == index
-                                        ? Colors.white
-                                        : Colors.black,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14.sp,
-                                  ),
-                                ),
                               );
-                            }),
-                          );
-                        },
-                      )),
-                verticalSpace(5),
-                if (role != 'Admin')
-                  Expanded(
-                    child: TabBarView(
-                      controller: controller,
-                      children: [
-                        UserDetails(),
-                        // Tab 1: Work Location
-                        cubit.userWorkLocationDetailsModel == null
-                            ? Loading()
-                            : WorkLocationUserDetails(),
-
-                        // Tab 2: Shifts
-                        cubit.userShiftDetailsModel == null
-                            ? Loading()
-                            : UserShiftDetails(),
-
-                        // Tab 3: Tasks
-                        cubit.userTaskDetailsModel == null
-                            ? Loading()
-                            : UserTasksDetails(),
-
-                        // Tab 4: Attendance History
-                        cubit.attendanceHistoryModel == null
-                            ? Loading()
-                            : UserAttendanceDetails(),
-
-                        // Tab 5: Leaves
-                        cubit.attendanceLeavesModel == null
-                            ? Loading()
-                            : UserLeavesDetails(),
+                            },
+                            child: Container(
+                                width: 100.r,
+                                height: 100.r,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                ),
+                                child: ClipOval(
+                                  child: Image.network(
+                                    '${cubit.profileModel!.data!.image}',
+                                    fit: BoxFit.fill,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Image.asset(
+                                        'assets/images/person.png',
+                                        fit: BoxFit.fill,
+                                      );
+                                    },
+                                  ),
+                                ))),
+                        if (role != 'Admin')
+                          Positioned(
+                            bottom: 1,
+                            right: 10,
+                            child: Container(
+                              width: 15.w,
+                              height: 15.h,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: cubit.profileModel!.data == null
+                                      ? Colors.red
+                                      : cubit.profileModel!.data!.isWorking ==
+                                              true
+                                          ? Colors.green
+                                          : Colors.red,
+                                  border: Border.all(
+                                      color: Colors.white, width: 2.w)),
+                            ),
+                          )
                       ],
                     ),
-                  )
-                else
-                  const Expanded(
-                    child: UserDetails(),
                   ),
-                verticalSpace(20),
-              ],
+                  verticalSpace(5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(cubit.profileModel?.data?.firstName ?? '',
+                          style: TextStyles.font14Redbold
+                              .copyWith(color: Colors.black)),
+                      horizontalSpace(5),
+                      Text(cubit.profileModel?.data?.lastName ?? '',
+                          style: TextStyles.font14Redbold
+                              .copyWith(color: Colors.black)),
+                    ],
+                  ),
+                  verticalSpace(5),
+                  Text(cubit.profileModel!.data!.role!,
+                      style: TextStyles.font12GreyRegular
+                          .copyWith(color: AppColor.primaryColor)),
+                  verticalSpace(15),
+                  if (role != 'Admin')
+                    SizedBox(
+                        height: 42.h,
+                        width: double.infinity,
+                        child: AnimatedBuilder(
+                          animation: controller,
+                          builder: (context, _) {
+                            return TabBar(
+                              controller: controller,
+                              tabAlignment: TabAlignment.center,
+                              isScrollable: true,
+                              indicatorSize: TabBarIndicatorSize.tab,
+                              indicator: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5.r),
+                                color: AppColor.primaryColor,
+                              ),
+                              tabs: List.generate(6, (index) {
+                                final labels = [
+                                  S.of(context).userDetails,
+                                  S.of(context).integ2,
+                                  S.of(context).integ4,
+                                  S.of(context).integ5,
+                                  S.of(context).attendance,
+                                  S.of(context).leaves,
+                                ];
+
+                                return Tab(
+                                  child: Text(
+                                    labels[index],
+                                    style: TextStyle(
+                                      color: controller.index == index
+                                          ? Colors.white
+                                          : Colors.black,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 14.sp,
+                                    ),
+                                  ),
+                                );
+                              }),
+                            );
+                          },
+                        )),
+                  verticalSpace(5),
+                  if (role != 'Admin')
+                    Expanded(
+                      child: TabBarView(
+                        controller: controller,
+                        children: [
+                          UserDetails(),
+                          // Tab 1: Work Location
+                          cubit.userWorkLocationDetailsModel == null
+                              ? Loading()
+                              : WorkLocationUserDetails(),
+
+                          // Tab 2: Shifts
+                          cubit.userShiftDetailsModel == null
+                              ? Loading()
+                              : UserShiftDetails(),
+
+                          // Tab 3: Tasks
+                          cubit.userTaskDetailsModel == null
+                              ? Loading()
+                              : UserTasksDetails(),
+
+                          // Tab 4: Attendance History
+                          cubit.attendanceHistoryModel == null
+                              ? Loading()
+                              : UserAttendanceDetails(),
+
+                          // Tab 5: Leaves
+                          cubit.attendanceLeavesModel == null
+                              ? Loading()
+                              : UserLeavesDetails(),
+                        ],
+                      ),
+                    )
+                  else
+                    const Expanded(
+                      child: UserDetails(),
+                    ),
+                  verticalSpace(20),
+                ],
+              ),
             ),
           );
         },

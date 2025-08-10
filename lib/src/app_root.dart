@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
+import 'package:smart_cleaning_application/core/theming/app_theme.dart';
 import 'package:smart_cleaning_application/src/app_cubit/app_cubit.dart';
 import 'package:smart_cleaning_application/src/app_cubit/app_states.dart';
 import 'package:smart_cleaning_application/core/routing/app_router.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
-import 'package:smart_cleaning_application/core/theming/colors/color.dart';
-import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class AppRoot extends StatelessWidget {
@@ -23,47 +23,33 @@ class AppRoot extends StatelessWidget {
       splitScreenMode: true,
       builder: (BuildContext context, Widget? child) {
         return BlocProvider(
-          create: (context) => AppCubit()..getSavedLanguage()..initNotifications(context),
+          create: (context) => AppCubit()
+            ..getSavedLanguage()
+            ..initNotifications(context),
           child: BlocBuilder<AppCubit, AppStates>(
             builder: (context, state) {
               final cubit = context.watch<AppCubit>();
-              return MaterialApp(
-                navigatorKey: AppNavigator.navigatorKey,
-                debugShowCheckedModeBanner: false,
-                locale: cubit.locale,
-                localizationsDelegates: const [
-                  S.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                supportedLocales: S.delegate.supportedLocales,
-                theme: ThemeData(
-                  floatingActionButtonTheme: FloatingActionButtonThemeData(
-                    backgroundColor: AppColor.primaryColor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.r)),
-                  ),
-                  appBarTheme: AppBarTheme(
-                      titleTextStyle: TextStyles.font16BlackSemiBold,
-                      centerTitle: true,
-                      backgroundColor: Colors.white,
-                      surfaceTintColor: Colors.white),
-                  bottomNavigationBarTheme: BottomNavigationBarThemeData(
-                      type: BottomNavigationBarType.fixed,
-                      backgroundColor: Colors.white,
-                      elevation: 12,
-                      selectedItemColor: AppColor.primaryColor,
-                      unselectedItemColor: AppColor.thirdColor,
-                      selectedLabelStyle: TextStyles.font12PrimSemi,
-                      unselectedLabelStyle: TextStyles.font11lightPrimary,
-                      selectedIconTheme: IconThemeData(size: 21.sp),
-                      unselectedIconTheme: IconThemeData(size: 20.sp)),
-                  scaffoldBackgroundColor: Colors.white,
-                  fontFamily: 'Poppins',
+              return AnnotatedRegion<SystemUiOverlayStyle>(
+                value: SystemUiOverlayStyle.light.copyWith(
+                  statusBarColor: Colors.white,
+                  statusBarIconBrightness: Brightness.dark,
+                  statusBarBrightness: Brightness.light,
                 ),
-                initialRoute: Routes.splashScreen,
-                onGenerateRoute: appRouter.generateRoute,
+                child: MaterialApp(
+                  navigatorKey: AppNavigator.navigatorKey,
+                  debugShowCheckedModeBanner: false,
+                  locale: cubit.locale,
+                  localizationsDelegates: const [
+                    S.delegate,
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                  supportedLocales: S.delegate.supportedLocales,
+                  theme:  AppTheme.lightTheme,
+                  initialRoute: Routes.splashScreen,
+                  onGenerateRoute: appRouter.generateRoute,
+                ),
               );
             },
           ),

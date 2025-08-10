@@ -1,4 +1,4 @@
-import 'package:smart_cleaning_application/features/screens/setting/notification/data/model/notification_model.dart';
+import 'package:smart_cleaning_application/features/screens/home/ui/widgets/notification/data/model/notification_model.dart';
 
 abstract class NotificationState {}
 

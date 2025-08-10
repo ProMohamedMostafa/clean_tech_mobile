@@ -1,6 +1,4 @@
-import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
@@ -30,14 +28,15 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 2),
+      duration: const Duration(seconds: 2),
     );
 
-    _iconPosition = Tween<double>(begin: 0, end: -80).animate(
+    // Only move logo left (not up)
+    _iconPosition = Tween<double>(begin: 0, end: -70).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
 
-    _cleanPosition = Tween<double>(begin: 80, end: 50).animate(
+    _cleanPosition = Tween<double>(begin: 70, end: 50).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
 
@@ -45,8 +44,20 @@ class _SplashScreenState extends State<SplashScreen>
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
 
-    Future.delayed(Duration(seconds: 2), () {
+    // Start animation after 1 second delay
+    Future.delayed(const Duration(seconds: 2), () {
       _controller.forward();
+    });
+
+    // Navigate to next screen after animation completes
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        Future.delayed(const Duration(seconds: 1), () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => getStartWidget()),
+          );
+        });
+      }
     });
   }
 
@@ -58,46 +69,42 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light.copyWith(
-          statusBarColor: Colors.white,
-          statusBarIconBrightness: Brightness.dark),
-      child: AnimatedSplashScreen(
-        splash: AnimatedBuilder(
-            animation: _controller,
-            builder: (context, child) {
-              return Transform.translate(
-                offset: const Offset(0, 12),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Positioned(
-                      left: (MediaQuery.of(context).size.width - 102) / 2 +
-                          _iconPosition.value,
-                      child: Image.asset(
-                        "assets/images/logo_launcher.png",
-                        width: 102.w,
-                        height: 102.h,
-                      ),
-                    ),
-                    Positioned(
-                      left: MediaQuery.of(context).size.width / 2 -
-                          _cleanPosition.value,
-                      child: Opacity(
-                        opacity: _fadeAnimation.value,
-                        child: Image.asset(
-                          "assets/images/clean.png",
-                          width: 150.w,
-                        ),
-                      ),
-                    ),
-                  ],
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: AnimatedBuilder(
+          animation: _controller,
+          builder: (context, child) {
+            return Stack(
+              alignment: Alignment.center,
+              children: [
+                // LOGO moving left only
+                Positioned(
+                  left: (MediaQuery.of(context).size.width - 80) / 2 +
+                      _iconPosition.value,
+                  child: Image.asset(
+                    "assets/images/logo_launcher.png",
+                    width: 90.r,
+                    height: 90.r,
+                  ),
                 ),
-              );
-            }),
-        nextScreen: getStartWidget(),
-        splashIconSize: 600,
-        duration: 3000,
+
+                // CLEAN text fades in and moves left slightly
+                Positioned(
+                  left: MediaQuery.of(context).size.width / 2 -
+                      _cleanPosition.value,
+                  child: Opacity(
+                    opacity: _fadeAnimation.value,
+                    child: Image.asset(
+                      "assets/images/clean.png",
+                      width: 200.w,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

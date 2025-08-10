@@ -51,346 +51,348 @@ class AddShiftBody extends StatelessWidget {
             }
 
             return SingleChildScrollView(
-                child: Form(
-              key: cubit.formKey,
-              child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          S.of(context).shiftName,
-                          style: TextStyles.font16BlackRegular,
-                        ),
-                        verticalSpace(5),
-                        CustomTextFormField(
-                          onlyRead: false,
-                          hint: S.of(context).enterShift,
-                          controller: cubit.shiftNameController,
-                          keyboardType: TextInputType.text,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return S.of(context).shiftNameRequiredValidation;
-                            } else if (value.length > 55) {
-                              return S.of(context).shiftNameTooLongValidation;
-                            } else if (value.length < 3) {
-                              return S.of(context).shiftNameTooShortValidation;
-                            }
-                            return null;
-                          },
-                        ),
-                        verticalSpace(10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                                child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  S.of(context).startDate,
-                                  style: TextStyles.font16BlackRegular,
-                                ),
-                                verticalSpace(5),
-                                CustomTextFormField(
-                                  onlyRead: true,
-                                  hint: "--/--/---",
-                                  controller: cubit.startDateController,
-                                  suffixIcon: Icons.calendar_today,
-                                  suffixPressed: () async {
-                                    final selectedDate =
-                                        await CustomDatePicker.show(
-                                            context: context);
-
-                                    if (selectedDate != null &&
-                                        context.mounted) {
-                                      cubit.startDateController.text =
-                                          selectedDate;
-                                    }
-                                  },
-                                  keyboardType: TextInputType.none,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return S
-                                          .of(context)
-                                          .startDateRequiredValidation;
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ],
-                            )),
-                            horizontalSpace(10),
-                            Expanded(
-                                child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  S.of(context).endDate,
-                                  style: TextStyles.font16BlackRegular,
-                                ),
-                                verticalSpace(5),
-                                CustomTextFormField(
-                                  onlyRead: true,
-                                  hint: "--/--/---",
-                                  controller: cubit.endDateController,
-                                  suffixIcon: Icons.calendar_today,
-                                  suffixPressed: () async {
-                                    final selectedDate =
-                                        await CustomDatePicker.show(
-                                            context: context);
-
-                                    if (selectedDate != null &&
-                                        context.mounted) {
-                                      cubit.endDateController.text =
-                                          selectedDate;
-                                    }
-                                  },
-                                  keyboardType: TextInputType.none,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return S
-                                          .of(context)
-                                          .endDateRequiredValidation;
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ],
-                            )),
-                          ],
-                        ),
-                        verticalSpace(10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                                child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  S.of(context).startTime,
-                                  style: TextStyles.font16BlackRegular,
-                                ),
-                                verticalSpace(5),
-                                CustomTextFormField(
-                                  onlyRead: true,
-                                  hint: '00:00 AM',
-                                  controller: cubit.startTimeController,
-                                  suffixIcon: Icons.timer_sharp,
-                                  suffixPressed: () async {
-                                    final selectedTime =
-                                        await CustomTimePicker.show(
-                                            context: context);
-
-                                    if (selectedTime != null &&
-                                        context.mounted) {
-                                      cubit.startTimeController.text =
-                                          selectedTime;
-                                    }
-                                  },
-                                  keyboardType: TextInputType.none,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return S
-                                          .of(context)
-                                          .startTimeRequiredValidation;
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ],
-                            )),
-                            horizontalSpace(10),
-                            Expanded(
-                                child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  S.of(context).endTime,
-                                  style: TextStyles.font16BlackRegular,
-                                ),
-                                verticalSpace(5),
-                                CustomTextFormField(
-                                  onlyRead: true,
-                                  hint: "09:30 PM",
-                                  controller: cubit.endTimeController,
-                                  suffixIcon: Icons.timer_sharp,
-                                  suffixPressed: () async {
-                                    final selectedTime =
-                                        await CustomTimePicker.show(
-                                            context: context);
-
-                                    if (selectedTime != null &&
-                                        context.mounted) {
-                                      cubit.endTimeController.text =
-                                          selectedTime;
-                                    }
-                                  },
-                                  keyboardType: TextInputType.none,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return S
-                                          .of(context)
-                                          .endTimeRequiredValidation;
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ],
-                            )),
-                          ],
-                        ),
-                        verticalSpace(10),
-                        RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: S.of(context).Organization,
-                                style: TextStyles.font16BlackRegular,
-                              ),
-                              TextSpan(
-                                text: S.of(context).labelOptional,
-                                style: TextStyles.font14GreyRegular,
-                              ),
-                            ],
+                child: SafeArea(
+                  child: Form(
+                                key: cubit.formKey,
+                                child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            S.of(context).shiftName,
+                            style: TextStyles.font16BlackRegular,
                           ),
-                        ),
-                        verticalSpace(5),
-
-                        CustomMultiDropdown(
-                          hint: S.of(context).selectOrganization,
-                          controller: cubit.allOrganizationsController,
-                          items: cubit.organizationItem
-                              .map((e) => DropdownItem<OrganizationItem>(
-                                    value: e,
-                                    label: e.name ?? 'Unknown',
-                                  ))
-                              .toList(),
-                          onSelectionChange: (selectedItems) {
-                            cubit.selectedOrganizationsIds =
-                                selectedItems.map((item) => item.id!).toList();
-                          },
-                        ),
-
-                       
-                        verticalSpace(10),
-                        RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: S.of(context).Building,
-                                style: TextStyles.font16BlackRegular,
-                              ),
-                              TextSpan(
-                                text: S.of(context).labelOptional,
-                                style: TextStyles.font14GreyRegular,
-                              ),
-                            ],
+                          verticalSpace(5),
+                          CustomTextFormField(
+                            onlyRead: false,
+                            hint: S.of(context).enterShift,
+                            controller: cubit.shiftNameController,
+                            keyboardType: TextInputType.text,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return S.of(context).shiftNameRequiredValidation;
+                              } else if (value.length > 55) {
+                                return S.of(context).shiftNameTooLongValidation;
+                              } else if (value.length < 3) {
+                                return S.of(context).shiftNameTooShortValidation;
+                              }
+                              return null;
+                            },
                           ),
-                        ),
-                        verticalSpace(5),
-                        CustomMultiDropdown(
-                          hint: S.of(context).selectBuilding,
-                          controller: cubit.allBuildingsController,
-                          items: cubit.buildingItem
-                              .map((e) => DropdownItem<BuildingItem>(
-                                    value: e,
-                                    label: e.name ?? 'Unknown',
-                                  ))
-                              .toList(),
-                          onSelectionChange: (selectedItems) {
-                            cubit.selectedBuildingsIds =
-                                selectedItems.map((item) => item.id!).toList();
-                          },
-                        ),
-                      
-                        verticalSpace(10),
-                        RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
+                          verticalSpace(10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              TextSpan(
-                                text: S.of(context).Floor,
-                                style: TextStyles.font16BlackRegular,
-                              ),
-                              TextSpan(
-                                text: S.of(context).labelOptional,
-                                style: TextStyles.font14GreyRegular,
-                              ),
-                            ],
-                          ),
-                        ),
-                        verticalSpace(5),
-                        CustomMultiDropdown(
-                          hint: S.of(context).selectFloor,
-                          controller: cubit.allFloorsController,
-                          items: cubit.floorItem
-                              .map((e) => DropdownItem<FloorItem>(
-                                    value: e,
-                                    label: e.name ?? 'Unknown',
-                                  ))
-                              .toList(),
-                          onSelectionChange: (selectedItems) {
-                            cubit.selectedFloorsIds =
-                                selectedItems.map((item) => item.id!).toList();
-                          },
-                        ),
-                       
-                        verticalSpace(10),
-                        RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: S.of(context).Section,
-                                style: TextStyles.font16BlackRegular,
-                              ),
-                              TextSpan(
-                                text: S.of(context).labelOptional,
-                                style: TextStyles.font14GreyRegular,
-                              ),
-                            ],
-                          ),
-                        ),
-                        verticalSpace(5),
-                        CustomMultiDropdown(
-                          hint: S.of(context).selectSection,
-                          controller: cubit.allSectionsController,
-                          items: cubit.sectionItem
-                              .map((e) => DropdownItem<SectionItem>(
-                                    value: e,
-                                    label: e.name ?? 'Unknown',
-                                  ))
-                              .toList(),
-                          onSelectionChange: (selectedItems) {
-                            cubit.selectedSectionsIds =
-                                selectedItems.map((item) => item.id!).toList();
-                          },
-                        ),
-                       
-                        verticalSpace(20),
-                        state is AddShiftLoadingState
-                            ? Loading()
-                            : Center(
-                                child: DefaultElevatedButton(
-                                    name: S.of(context).createButton,
-                                    onPressed: () {
-                                      if (cubit.formKey.currentState!
-                                          .validate()) {
-                                        cubit.addShift();
+                              Expanded(
+                                  child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    S.of(context).startDate,
+                                    style: TextStyles.font16BlackRegular,
+                                  ),
+                                  verticalSpace(5),
+                                  CustomTextFormField(
+                                    onlyRead: true,
+                                    hint: "--/--/---",
+                                    controller: cubit.startDateController,
+                                    suffixIcon: Icons.calendar_today,
+                                    suffixPressed: () async {
+                                      final selectedDate =
+                                          await CustomDatePicker.show(
+                                              context: context);
+                  
+                                      if (selectedDate != null &&
+                                          context.mounted) {
+                                        cubit.startDateController.text =
+                                            selectedDate;
                                       }
                                     },
-                                    color: AppColor.primaryColor,
-                                    textStyles:
-                                        TextStyles.font20Whitesemimedium),
+                                    keyboardType: TextInputType.none,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return S
+                                            .of(context)
+                                            .startDateRequiredValidation;
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ],
+                              )),
+                              horizontalSpace(10),
+                              Expanded(
+                                  child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    S.of(context).endDate,
+                                    style: TextStyles.font16BlackRegular,
+                                  ),
+                                  verticalSpace(5),
+                                  CustomTextFormField(
+                                    onlyRead: true,
+                                    hint: "--/--/---",
+                                    controller: cubit.endDateController,
+                                    suffixIcon: Icons.calendar_today,
+                                    suffixPressed: () async {
+                                      final selectedDate =
+                                          await CustomDatePicker.show(
+                                              context: context);
+                  
+                                      if (selectedDate != null &&
+                                          context.mounted) {
+                                        cubit.endDateController.text =
+                                            selectedDate;
+                                      }
+                                    },
+                                    keyboardType: TextInputType.none,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return S
+                                            .of(context)
+                                            .endDateRequiredValidation;
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ],
+                              )),
+                            ],
+                          ),
+                          verticalSpace(10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                  child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    S.of(context).startTime,
+                                    style: TextStyles.font16BlackRegular,
+                                  ),
+                                  verticalSpace(5),
+                                  CustomTextFormField(
+                                    onlyRead: true,
+                                    hint: '00:00 AM',
+                                    controller: cubit.startTimeController,
+                                    suffixIcon: Icons.timer_sharp,
+                                    suffixPressed: () async {
+                                      final selectedTime =
+                                          await CustomTimePicker.show(
+                                              context: context);
+                  
+                                      if (selectedTime != null &&
+                                          context.mounted) {
+                                        cubit.startTimeController.text =
+                                            selectedTime;
+                                      }
+                                    },
+                                    keyboardType: TextInputType.none,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return S
+                                            .of(context)
+                                            .startTimeRequiredValidation;
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ],
+                              )),
+                              horizontalSpace(10),
+                              Expanded(
+                                  child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    S.of(context).endTime,
+                                    style: TextStyles.font16BlackRegular,
+                                  ),
+                                  verticalSpace(5),
+                                  CustomTextFormField(
+                                    onlyRead: true,
+                                    hint: "09:30 PM",
+                                    controller: cubit.endTimeController,
+                                    suffixIcon: Icons.timer_sharp,
+                                    suffixPressed: () async {
+                                      final selectedTime =
+                                          await CustomTimePicker.show(
+                                              context: context);
+                  
+                                      if (selectedTime != null &&
+                                          context.mounted) {
+                                        cubit.endTimeController.text =
+                                            selectedTime;
+                                      }
+                                    },
+                                    keyboardType: TextInputType.none,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return S
+                                            .of(context)
+                                            .endTimeRequiredValidation;
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ],
+                              )),
+                            ],
+                          ),
+                          verticalSpace(10),
+                          RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: S.of(context).Organization,
+                                  style: TextStyles.font16BlackRegular,
+                                ),
+                                TextSpan(
+                                  text: S.of(context).labelOptional,
+                                  style: TextStyles.font14GreyRegular,
+                                ),
+                              ],
+                            ),
+                          ),
+                          verticalSpace(5),
+                  
+                          CustomMultiDropdown(
+                            hint: S.of(context).selectOrganization,
+                            controller: cubit.allOrganizationsController,
+                            items: cubit.organizationItem
+                                .map((e) => DropdownItem<OrganizationItem>(
+                                      value: e,
+                                      label: e.name ?? 'Unknown',
+                                    ))
+                                .toList(),
+                            onSelectionChange: (selectedItems) {
+                              cubit.selectedOrganizationsIds =
+                                  selectedItems.map((item) => item.id!).toList();
+                            },
+                          ),
+                  
+                         
+                          verticalSpace(10),
+                          RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: S.of(context).Building,
+                                  style: TextStyles.font16BlackRegular,
+                                ),
+                                TextSpan(
+                                  text: S.of(context).labelOptional,
+                                  style: TextStyles.font14GreyRegular,
+                                ),
+                              ],
+                            ),
+                          ),
+                          verticalSpace(5),
+                          CustomMultiDropdown(
+                            hint: S.of(context).selectBuilding,
+                            controller: cubit.allBuildingsController,
+                            items: cubit.buildingItem
+                                .map((e) => DropdownItem<BuildingItem>(
+                                      value: e,
+                                      label: e.name ?? 'Unknown',
+                                    ))
+                                .toList(),
+                            onSelectionChange: (selectedItems) {
+                              cubit.selectedBuildingsIds =
+                                  selectedItems.map((item) => item.id!).toList();
+                            },
+                          ),
+                        
+                          verticalSpace(10),
+                          RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: S.of(context).Floor,
+                                  style: TextStyles.font16BlackRegular,
+                                ),
+                                TextSpan(
+                                  text: S.of(context).labelOptional,
+                                  style: TextStyles.font14GreyRegular,
+                                ),
+                              ],
+                            ),
+                          ),
+                          verticalSpace(5),
+                          CustomMultiDropdown(
+                            hint: S.of(context).selectFloor,
+                            controller: cubit.allFloorsController,
+                            items: cubit.floorItem
+                                .map((e) => DropdownItem<FloorItem>(
+                                      value: e,
+                                      label: e.name ?? 'Unknown',
+                                    ))
+                                .toList(),
+                            onSelectionChange: (selectedItems) {
+                              cubit.selectedFloorsIds =
+                                  selectedItems.map((item) => item.id!).toList();
+                            },
+                          ),
+                         
+                          verticalSpace(10),
+                          RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: S.of(context).Section,
+                                  style: TextStyles.font16BlackRegular,
+                                ),
+                                TextSpan(
+                                  text: S.of(context).labelOptional,
+                                  style: TextStyles.font14GreyRegular,
+                                ),
+                              ],
+                            ),
+                          ),
+                          verticalSpace(5),
+                          CustomMultiDropdown(
+                            hint: S.of(context).selectSection,
+                            controller: cubit.allSectionsController,
+                            items: cubit.sectionItem
+                                .map((e) => DropdownItem<SectionItem>(
+                                      value: e,
+                                      label: e.name ?? 'Unknown',
+                                    ))
+                                .toList(),
+                            onSelectionChange: (selectedItems) {
+                              cubit.selectedSectionsIds =
+                                  selectedItems.map((item) => item.id!).toList();
+                            },
+                          ),
+                         
+                          verticalSpace(20),
+                          state is AddShiftLoadingState
+                              ? Loading()
+                              : Center(
+                                  child: DefaultElevatedButton(
+                                      name: S.of(context).createButton,
+                                      onPressed: () {
+                                        if (cubit.formKey.currentState!
+                                            .validate()) {
+                                          cubit.addShift();
+                                        }
+                                      },
+                                      color: AppColor.primaryColor,
+                                      textStyles:
+                                          TextStyles.font20Whitesemimedium),
+                                ),
+                          verticalSpace(30),
+                        ])),
                               ),
-                        verticalSpace(30),
-                      ])),
-            ));
+                ));
           },
         ));
   }

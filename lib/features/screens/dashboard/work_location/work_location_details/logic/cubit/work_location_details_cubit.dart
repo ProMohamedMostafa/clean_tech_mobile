@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/core/widgets/filter/data/model/filter_dialog_data_model.dart';
@@ -285,6 +286,7 @@ class WorkLocationDetailsCubit extends Cubit<WorkLocationDetailsState> {
     emit(AttendanceHistoryAreaLoadingState());
     DioHelper.getData(url: ApiConstants.hisotryUrl, query: {
       'AreaId': id,
+      'History': (role == "Cleaner") ? true : false
     }).then((value) {
       attendanceHistoryAreaModel = AttendanceHistoryModel.fromJson(value!.data);
       emit(AttendanceHistoryAreaSuccessState(attendanceHistoryAreaModel!));
@@ -298,6 +300,7 @@ class WorkLocationDetailsCubit extends Cubit<WorkLocationDetailsState> {
     emit(AttendanceHistoryCityLoadingState());
     DioHelper.getData(url: ApiConstants.hisotryUrl, query: {
       'CityId': id,
+      'History': (role == "Cleaner") ? true : false
     }).then((value) {
       attendanceHistoryCityModel = AttendanceHistoryModel.fromJson(value!.data);
       emit(AttendanceHistoryCitySuccessState(attendanceHistoryCityModel!));
@@ -311,6 +314,7 @@ class WorkLocationDetailsCubit extends Cubit<WorkLocationDetailsState> {
     emit(AttendanceHistoryOrganizationLoadingState());
     DioHelper.getData(url: ApiConstants.hisotryUrl, query: {
       'OrganizationId': id,
+      'History': (role == "Cleaner") ? true : false
     }).then((value) {
       attendanceHistoryOrganizationModel =
           AttendanceHistoryModel.fromJson(value!.data);
@@ -326,6 +330,7 @@ class WorkLocationDetailsCubit extends Cubit<WorkLocationDetailsState> {
     emit(AttendanceHistoryBuildingLoadingState());
     DioHelper.getData(url: ApiConstants.hisotryUrl, query: {
       'BuildingId': id,
+      'History': (role == "Cleaner") ? true : false
     }).then((value) {
       attendanceHistoryBuildingModel =
           AttendanceHistoryModel.fromJson(value!.data);
@@ -341,6 +346,7 @@ class WorkLocationDetailsCubit extends Cubit<WorkLocationDetailsState> {
     emit(AttendanceHistoryFloorLoadingState());
     DioHelper.getData(url: ApiConstants.hisotryUrl, query: {
       'FloorId': id,
+      'History': (role == "Cleaner") ? true : false
     }).then((value) {
       attendanceHistoryFloorModel =
           AttendanceHistoryModel.fromJson(value!.data);
@@ -355,6 +361,7 @@ class WorkLocationDetailsCubit extends Cubit<WorkLocationDetailsState> {
     emit(AttendanceHistorySectionLoadingState());
     DioHelper.getData(url: ApiConstants.hisotryUrl, query: {
       'SectionId': id,
+      'History': (role == "Cleaner") ? true : false
     }).then((value) {
       attendanceHistorySectionModel =
           AttendanceHistoryModel.fromJson(value!.data);
@@ -370,6 +377,7 @@ class WorkLocationDetailsCubit extends Cubit<WorkLocationDetailsState> {
     emit(AttendanceHistoryPointLoadingState());
     DioHelper.getData(url: ApiConstants.hisotryUrl, query: {
       'PointId': id,
+      'History': (role == "Cleaner") ? true : false
     }).then((value) {
       attendanceHistoryPointModel =
           AttendanceHistoryModel.fromJson(value!.data);
@@ -386,6 +394,7 @@ class WorkLocationDetailsCubit extends Cubit<WorkLocationDetailsState> {
     emit(LeavesLoadingState());
     DioHelper.getData(url: ApiConstants.leavesUrl, query: {
       'AreaId': id,
+      'History': (role == "Cleaner") ? true : false
     }).then((value) {
       attendanceLeavesAreaModel = AttendanceLeavesModel.fromJson(value!.data);
       emit(LeavesSuccessState(attendanceLeavesAreaModel!));
@@ -399,6 +408,7 @@ class WorkLocationDetailsCubit extends Cubit<WorkLocationDetailsState> {
     emit(LeavesLoadingState());
     DioHelper.getData(url: ApiConstants.leavesUrl, query: {
       'CityId': id,
+      'History': (role == "Cleaner") ? true : false
     }).then((value) {
       attendanceLeavesCityModel = AttendanceLeavesModel.fromJson(value!.data);
       emit(LeavesSuccessState(attendanceLeavesCityModel!));
@@ -412,6 +422,7 @@ class WorkLocationDetailsCubit extends Cubit<WorkLocationDetailsState> {
     emit(LeavesLoadingState());
     DioHelper.getData(url: ApiConstants.leavesUrl, query: {
       'OrganizationId': id,
+      'History': (role == "Cleaner") ? true : false
     }).then((value) {
       attendanceLeavesOrganizationModel =
           AttendanceLeavesModel.fromJson(value!.data);
@@ -426,6 +437,7 @@ class WorkLocationDetailsCubit extends Cubit<WorkLocationDetailsState> {
     emit(LeavesLoadingState());
     DioHelper.getData(url: ApiConstants.leavesUrl, query: {
       'BuildingId': id,
+      'History': (role == "Cleaner") ? true : false
     }).then((value) {
       attendanceLeavesBuildingModel =
           AttendanceLeavesModel.fromJson(value!.data);
@@ -440,6 +452,7 @@ class WorkLocationDetailsCubit extends Cubit<WorkLocationDetailsState> {
     emit(LeavesLoadingState());
     DioHelper.getData(url: ApiConstants.leavesUrl, query: {
       'FloorId': id,
+      'History': (role == "Cleaner") ? true : false
     }).then((value) {
       attendanceLeavesFloorModel = AttendanceLeavesModel.fromJson(value!.data);
       emit(LeavesSuccessState(attendanceLeavesFloorModel!));
@@ -453,6 +466,7 @@ class WorkLocationDetailsCubit extends Cubit<WorkLocationDetailsState> {
     emit(LeavesLoadingState());
     DioHelper.getData(url: ApiConstants.leavesUrl, query: {
       'SectionId': id,
+      'History': (role == "Cleaner") ? true : false
     }).then((value) {
       attendanceLeavesSectionModel =
           AttendanceLeavesModel.fromJson(value!.data);
@@ -467,6 +481,7 @@ class WorkLocationDetailsCubit extends Cubit<WorkLocationDetailsState> {
     emit(LeavesLoadingState());
     DioHelper.getData(url: ApiConstants.leavesUrl, query: {
       'PointId': id,
+      'History': (role == "Cleaner") ? true : false
     }).then((value) {
       attendanceLeavesPointModel = AttendanceLeavesModel.fromJson(value!.data);
       emit(LeavesSuccessState(attendanceLeavesPointModel!));

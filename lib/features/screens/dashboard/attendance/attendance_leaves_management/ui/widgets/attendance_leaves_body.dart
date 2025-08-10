@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -14,6 +16,7 @@ import 'package:smart_cleaning_application/core/widgets/integration_buttons/inte
 import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attendance_leaves_management/logic/attendance_leaves_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attendance_leaves_management/logic/attendance_leaves_state.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attendance_leaves_management/ui/widgets/attendance_leaves_list_build.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attendance_leaves_management/ui/widgets/pdf.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class AttendanceLeavesBody extends StatelessWidget {
@@ -25,7 +28,19 @@ class AttendanceLeavesBody extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-          title: Text(S.of(context).leaves), leading: CustomBackButton()),
+          title: Text(S.of(context).leaves), leading: CustomBackButton(), actions: [
+            IconButton(
+              onPressed: () {
+                createLeavesPDF(context);
+              },
+              icon: Icon(
+                CupertinoIcons.tray_arrow_down,
+                color: Colors.red,
+                size: 22.sp,
+              ),
+            ),
+            horizontalSpace(10)
+          ]),
       floatingActionButton: floatingActionButton(
           icon: Icons.assignment_add,
           onPressed: () async {
@@ -88,6 +103,11 @@ class AttendanceLeavesBody extends StatelessWidget {
                           );
                         },
                       );
+                    },isFilterActive: cubit.filterModel != null,
+                    onClearFilter: () {
+                      cubit.filterModel = null;
+                      cubit.searchController.clear();
+                      cubit.getAllLeaves();
                     },
                   ),
                   verticalSpace(10),

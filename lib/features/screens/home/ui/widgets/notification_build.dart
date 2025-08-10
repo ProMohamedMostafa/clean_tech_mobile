@@ -6,17 +6,19 @@ import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_state.dart';
+import 'package:smart_cleaning_application/src/app_cubit/app_cubit.dart';
 
 class NotificationBuild extends StatelessWidget {
   const NotificationBuild({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<HomeCubit, HomeState>(
-      listener: (context, state) {},
+    return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
-        final homeCubit = HomeCubit.get(context);
-        final unreadCount = homeCubit.unReadCount;
+        final cubit = HomeCubit.get(context);
+        final unreadCount =
+            context.watch<AppCubit>().notificationModel?.data?.data?.length ??
+                0;
 
         return Stack(
           alignment: Alignment.center,
@@ -31,8 +33,8 @@ class NotificationBuild extends StatelessWidget {
             ),
             if (unreadCount > 0)
               Positioned(
-                right: homeCubit.isArabic() ? null : 3,
-                left: homeCubit.isArabic() ? 0 : null,
+                right: cubit.isArabic() ? null : 3,
+                left: cubit.isArabic() ? 0 : null,
                 top: 2,
                 child: Container(
                   padding: const EdgeInsets.all(2),
@@ -40,9 +42,9 @@ class NotificationBuild extends StatelessWidget {
                     color: Colors.red,
                     shape: BoxShape.circle,
                   ),
-                  constraints: const BoxConstraints(
-                    minWidth: 14,
-                    minHeight: 14,
+                  constraints: BoxConstraints(
+                    minWidth: 14.w,
+                    minHeight: 14.h,
                   ),
                   child: Center(
                     child: Text(

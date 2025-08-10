@@ -1,15 +1,14 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/organization_list_model.dart';
-import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/data/models/edit_task_model.dart';
-import 'package:smart_cleaning_application/features/screens/dashboard/task/task_management/data/models/all_tasks_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/data/models/organization_basic_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/data/models/tasks_basic_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/data/models/users_basic_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/task/view_task/data/model/task_details.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/building_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/floor_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/point_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/section_list_model.dart';
-
 
 abstract class EditTaskState {}
 
@@ -47,9 +46,9 @@ class GetTaskDetailsErrorState extends EditTaskState {
 class GetAllTasksLoadingState extends EditTaskState {}
 
 class GetAllTasksSuccessState extends EditTaskState {
-  final AllTasksModel allTasksModel;
+  final TasksBasicModel tasksBasicModel;
 
-  GetAllTasksSuccessState(this.allTasksModel);
+  GetAllTasksSuccessState(this.tasksBasicModel);
 }
 
 class GetAllTasksErrorState extends EditTaskState {
@@ -61,16 +60,15 @@ class GetAllTasksErrorState extends EditTaskState {
 class GetOrganizationLoadingState extends EditTaskState {}
 
 class GetOrganizationSuccessState extends EditTaskState {
-  final OrganizationListModel organizationListModel;
+  final OrganizationBasicModel organizationBasicModel;
 
-  GetOrganizationSuccessState(this.organizationListModel);
+  GetOrganizationSuccessState(this.organizationBasicModel);
 }
 
 class GetOrganizationErrorState extends EditTaskState {
   final String error;
   GetOrganizationErrorState(this.error);
 }
-//**************************** */
 
 //**************************** */
 
@@ -134,9 +132,9 @@ class GetPointErrorState extends EditTaskState {
 class AllUsersLoadingState extends EditTaskState {}
 
 class AllUsersSuccessState extends EditTaskState {
-  final UsersModel usersModel;
+  final UsersBasicModel usersBasicModel;
 
-  AllUsersSuccessState(this.usersModel);
+  AllUsersSuccessState(this.usersBasicModel);
 }
 
 class AllUsersErrorState extends EditTaskState {
@@ -157,5 +155,7 @@ class FilesSelectedState extends EditTaskState {
 }
 
 class RemoveSelectedFileState extends EditTaskState {}
+
 class RemoveExistingFileState extends EditTaskState {}
+
 class FilesInitializedState extends EditTaskState {}

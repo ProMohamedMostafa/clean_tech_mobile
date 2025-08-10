@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
@@ -9,6 +11,7 @@ import 'package:smart_cleaning_application/core/widgets/filter/ui/screen/filter_
 import 'package:smart_cleaning_application/core/widgets/filter_and_search_build/filter_search_build.dart';
 import 'package:smart_cleaning_application/core/widgets/integration_buttons/integrations_buttons.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/sensor/sensor_managment/logic/cubit/sensor_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/sensor/sensor_managment/ui/widget/pdf.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/sensor/sensor_managment/ui/widget/sensor_list_build.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
@@ -20,7 +23,21 @@ class SensorBody extends StatelessWidget {
     final cubit = context.read<SensorCubit>();
     return Scaffold(
       appBar: AppBar(
-          title: Text(S.of(context).integ9), leading: CustomBackButton()),
+          title: Text(S.of(context).integ9),
+          leading: CustomBackButton(),
+          actions: [
+            IconButton(
+              onPressed: () {
+                createSensorPDF(context);
+              },
+              icon: Icon(
+                CupertinoIcons.tray_arrow_down,
+                color: Colors.red,
+                size: 22.sp,
+              ),
+            ),
+            horizontalSpace(10)
+          ]),
       body: BlocConsumer<SensorCubit, SensorState>(
         listener: (context, state) {
           if (state is RestoreSensorSuccessState) {
@@ -64,6 +81,11 @@ class SensorBody extends StatelessWidget {
                           );
                         },
                       );
+                    },isFilterActive: cubit.filterModel != null,
+                    onClearFilter: () {
+                      cubit.filterModel = null;
+                      cubit.searchController.clear();
+                      cubit.getSensorsData();
                     },
                   ),
                   verticalSpace(10),

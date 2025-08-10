@@ -16,7 +16,7 @@ class LoginCubit extends Cubit<LoginStates> {
   final formKey = GlobalKey<FormState>();
 
   LoginModel? logInModel;
-  userLogin(BuildContext context) {
+  userLogin() {
     emit(LoginLoadingState());
     DioHelper.postData(url: ApiConstants.loginUrl, data: {
       'emailOrUserName': emailController.text,

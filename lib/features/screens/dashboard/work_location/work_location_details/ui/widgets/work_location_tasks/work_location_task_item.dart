@@ -11,16 +11,24 @@ import 'package:smart_cleaning_application/features/screens/dashboard/work_locat
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class WorkLocationTaskItem extends StatelessWidget {
+  final int id;
   final int selectedIndex;
   final int index;
   const WorkLocationTaskItem(
-      {super.key, required this.selectedIndex, required this.index});
+      {super.key,
+      required this.selectedIndex,
+      required this.index,
+      required this.id});
 
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<WorkLocationDetailsCubit>();
 
-    final List<String> priority = [S.of(context).high, S.of(context).medium, S.of(context).low];
+    final List<String> priority = [
+      S.of(context).high,
+      S.of(context).medium,
+      S.of(context).low
+    ];
     final List<Color> priorityColor = [
       Colors.red,
       Colors.orange,
@@ -53,8 +61,8 @@ class WorkLocationTaskItem extends StatelessWidget {
     }
     return InkWell(
       borderRadius: BorderRadius.circular(11.r),
-      onTap: () {
-        context.pushNamed(Routes.taskDetailsScreen,
+      onTap: () async {
+        final result = await context.pushNamed(Routes.taskDetailsScreen,
             arguments: selectedIndex == 0
                 ? cubit.allAreaTasksModel!.data!.data![index].id!
                 : selectedIndex == 1
@@ -73,6 +81,22 @@ class WorkLocationTaskItem extends StatelessWidget {
                                         .data![index].id!
                                     : cubit.allPointTasksModel!.data!
                                         .data![index].id!);
+
+        if (result == true) {
+          selectedIndex == 0
+              ? cubit.getAreaTasks(id)
+              : selectedIndex == 1
+                  ? cubit.getCityTasks(id)
+                  : selectedIndex == 2
+                      ? cubit.getOrganizationTasks(id)
+                      : selectedIndex == 3
+                          ? cubit.getBuildingTasks(id)
+                          : selectedIndex == 4
+                              ? cubit.getFloorTasks(id)
+                              : selectedIndex == 5
+                                  ? cubit.getSectionTasks(id)
+                                  : cubit.getPointTasks(id);
+        }
       },
       child: Card(
         elevation: 1,

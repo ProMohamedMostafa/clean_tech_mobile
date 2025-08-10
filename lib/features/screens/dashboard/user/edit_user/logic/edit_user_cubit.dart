@@ -40,9 +40,9 @@ class EditUserCubit extends Cubit<EditUserState> {
   TextEditingController passwordConfirmationController =
       TextEditingController();
   final formKey = GlobalKey<FormState>();
-
+  String editedPhone = '';
   EditModel? editModel;
-  editUser(int? id) async {
+  editUser(int? id, {required String phone}) async {
     emit(EditUserLoadingState());
 
     MultipartFile? imageFile;
@@ -69,7 +69,7 @@ class EditUserCubit extends Cubit<EditUserState> {
           : emailController.text,
       "PhoneNumber": phoneController.text.isEmpty
           ? userDetailsModel!.data!.phoneNumber
-          : phoneController.text,
+          : phone,
       "Password": passwordController.text,
       "PasswordConfirmation": passwordConfirmationController.text,
       "Birthdate": birthController.text.isEmpty

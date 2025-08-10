@@ -1,13 +1,13 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/organization_list_model.dart';
-import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/users_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/task/add_task/data/models/create_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/building_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/floor_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/point_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/section_list_model.dart';
-import 'package:smart_cleaning_application/features/screens/dashboard/task/task_management/data/models/all_tasks_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/data/models/organization_basic_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/data/models/tasks_basic_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/data/models/users_basic_model.dart';
 
 abstract class AddTaskState {}
 
@@ -26,14 +26,29 @@ class AddTaskErrorState extends AddTaskState {
   AddTaskErrorState(this.message);
 }
 
+
 //**************************** */
+
+class AllUsersLoadingState extends AddTaskState {}
+
+class AllUsersSuccessState extends AddTaskState {
+  final UsersBasicModel usersBasicModel;
+
+  AllUsersSuccessState(this.usersBasicModel);
+}
+
+class AllUsersErrorState extends AddTaskState {
+  final String error;
+  AllUsersErrorState(this.error);
+}
+//***************************** */
 
 class GetAllTasksLoadingState extends AddTaskState {}
 
 class GetAllTasksSuccessState extends AddTaskState {
-  final AllTasksModel allTasksModel;
+  final TasksBasicModel tasksBasicModel;
 
-  GetAllTasksSuccessState(this.allTasksModel);
+  GetAllTasksSuccessState(this.tasksBasicModel);
 }
 
 class GetAllTasksErrorState extends AddTaskState {
@@ -45,15 +60,17 @@ class GetAllTasksErrorState extends AddTaskState {
 class GetOrganizationLoadingState extends AddTaskState {}
 
 class GetOrganizationSuccessState extends AddTaskState {
-  final OrganizationListModel organizationListModel;
+  final OrganizationBasicModel organizationBasicModel;
 
-  GetOrganizationSuccessState(this.organizationListModel);
+  GetOrganizationSuccessState(this.organizationBasicModel);
 }
 
 class GetOrganizationErrorState extends AddTaskState {
   final String error;
   GetOrganizationErrorState(this.error);
 }
+
+
 //**************************** */
 
 class GetBuildingLoadingState extends AddTaskState {}
@@ -111,20 +128,7 @@ class GetPointErrorState extends AddTaskState {
   GetPointErrorState(this.error);
 }
 
-//**************************** */
 
-class AllUsersLoadingState extends AddTaskState {}
-
-class AllUsersSuccessState extends AddTaskState {
-  final UsersModel usersModel;
-
-  AllUsersSuccessState(this.usersModel);
-}
-
-class AllUsersErrorState extends AddTaskState {
-  final String error;
-  AllUsersErrorState(this.error);
-}
 //***************************** */
 
 class CameraSelectedState extends AddTaskState {

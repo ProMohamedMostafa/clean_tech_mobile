@@ -64,7 +64,7 @@ class _TotalTaskPieChartState extends State<TotalTaskPieChart> {
                 : 100,
             radius: '110%',
             gap: '5 %',
-            cornerStyle: CornerStyle.endCurve,
+            cornerStyle: CornerStyle.bothCurve,
             trackOpacity: 0.8,
             innerRadius: '30%',
             useSeriesColor: false,

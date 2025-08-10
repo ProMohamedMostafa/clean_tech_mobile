@@ -96,94 +96,96 @@ class _ShiftDetailsBodyState extends State<ShiftDetailsBody>
             return Loading();
           }
 
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 42.h,
-                  width: double.infinity,
-                  child: AnimatedBuilder(
-                    animation: controller,
-                    builder: (context, _) {
-                      final shiftLabels = [
-                        S.of(context).shiftDetails,
-                        S.of(context).Organization,
-                        S.of(context).Building,
-                        S.of(context).Floor,
-                        S.of(context).Section,
-                      ];
-                      return TabBar(
-                        controller: controller,
-                        tabAlignment: TabAlignment.center,
-                        isScrollable: true,
-                        indicatorSize: TabBarIndicatorSize.tab,
-                        indicator: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5.r),
-                          color: AppColor.primaryColor,
-                        ),
-                        tabs: List.generate(shiftLabels.length, (index) {
-                          return Tab(
-                            child: Text(
-                              shiftLabels[index],
-                              style: TextStyle(
-                                color: controller.index == index
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14.sp,
+          return SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 42.h,
+                    width: double.infinity,
+                    child: AnimatedBuilder(
+                      animation: controller,
+                      builder: (context, _) {
+                        final shiftLabels = [
+                          S.of(context).shiftDetails,
+                          S.of(context).Organization,
+                          S.of(context).Building,
+                          S.of(context).Floor,
+                          S.of(context).Section,
+                        ];
+                        return TabBar(
+                          controller: controller,
+                          tabAlignment: TabAlignment.center,
+                          isScrollable: true,
+                          indicatorSize: TabBarIndicatorSize.tab,
+                          indicator: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5.r),
+                            color: AppColor.primaryColor,
+                          ),
+                          tabs: List.generate(shiftLabels.length, (index) {
+                            return Tab(
+                              child: Text(
+                                shiftLabels[index],
+                                style: TextStyle(
+                                  color: controller.index == index
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14.sp,
+                                ),
                               ),
-                            ),
-                          );
-                        }),
-                      );
-                    },
-                  ),
-                ),
-                verticalSpace(20),
-                Expanded(
-                  child: TabBarView(controller: controller, children: [
-                    cubit.shiftDetailsModel == null
-                        ? Loading()
-                        : ShiftDetails(),
-                    cubit.shiftDetailsModel == null
-                        ? Loading()
-                        : OrganizationListBuild(),
-                    cubit.shiftDetailsModel == null
-                        ? Loading()
-                        : BuildingListBuild(),
-                    cubit.shiftDetailsModel == null
-                        ? Loading()
-                        : FloorListBuild(),
-                    cubit.shiftDetailsModel == null
-                        ? Loading()
-                        : SectionListBuild(),
-                  ]),
-                ),
-                verticalSpace(15),
-                if (role == 'Admin')
-                  DefaultElevatedButton(
-                      name: S.of(context).deleteButton,
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (dialogContext) {
-                              return PopUpMessage(
-                                  title: S.of(context).TitleDelete,
-                                  body: S.of(context).shiftBody,
-                                  onPressed: () {
-                                    context
-                                        .read<ShiftDetailsCubit>()
-                                        .shiftDelete(widget.id);
-                                  });
-                            });
+                            );
+                          }),
+                        );
                       },
-                      color: Colors.red,
-                      textStyles: TextStyles.font20Whitesemimedium),
-                verticalSpace(20),
-              ],
+                    ),
+                  ),
+                  verticalSpace(20),
+                  Expanded(
+                    child: TabBarView(controller: controller, children: [
+                      cubit.shiftDetailsModel == null
+                          ? Loading()
+                          : ShiftDetails(),
+                      cubit.shiftDetailsModel == null
+                          ? Loading()
+                          : OrganizationListBuild(),
+                      cubit.shiftDetailsModel == null
+                          ? Loading()
+                          : BuildingListBuild(),
+                      cubit.shiftDetailsModel == null
+                          ? Loading()
+                          : FloorListBuild(),
+                      cubit.shiftDetailsModel == null
+                          ? Loading()
+                          : SectionListBuild(),
+                    ]),
+                  ),
+                  verticalSpace(15),
+                  if (role == 'Admin')
+                    DefaultElevatedButton(
+                        name: S.of(context).deleteButton,
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (dialogContext) {
+                                return PopUpMessage(
+                                    title: S.of(context).TitleDelete,
+                                    body: S.of(context).shiftBody,
+                                    onPressed: () {
+                                      context
+                                          .read<ShiftDetailsCubit>()
+                                          .shiftDelete(widget.id);
+                                    });
+                              });
+                        },
+                        color: Colors.red,
+                        textStyles: TextStyles.font20Whitesemimedium),
+                  verticalSpace(20),
+                ],
+              ),
             ),
           );
         },

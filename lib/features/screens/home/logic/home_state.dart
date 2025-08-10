@@ -1,16 +1,18 @@
 import 'package:smart_cleaning_application/features/screens/dashboard/activity/data/model/activities_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/data/models/section_basic_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/data/models/users_basic_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/attendance_status.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/attendance_status_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/completetion_task.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/material_count_model.dart';
+import 'package:smart_cleaning_application/features/screens/home/data/model/sensor_chart_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/shifts_count_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/stock_total_price_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/task_chart_status_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/task_status_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/total_stock.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/users_count_model.dart';
-import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/users_model.dart';
-import 'package:smart_cleaning_application/features/screens/setting/notification/data/model/notification_model.dart';
+import 'package:smart_cleaning_application/features/screens/home/ui/widgets/notification/data/model/notification_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/provider/provider_management/data/models/providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/setting/settings/data/model/profile_model.dart';
 
@@ -143,6 +145,33 @@ class TaskStatusErrorState extends HomeState {
 }
 //********************************* */
 
+class SensorChartLoadingState extends HomeState {}
+
+class SensorChartSuccessState extends HomeState {
+  final SensorChartModel sensorChartModel;
+
+  SensorChartSuccessState(this.sensorChartModel);
+}
+
+class SensorChartErrorState extends HomeState {
+  final String error;
+  SensorChartErrorState(this.error);
+}
+//**************************************** */
+class GetSectionLoadingState extends HomeState {}
+
+class GetSectionSuccessState extends HomeState {
+  final SectionBasicModel sectionBasicModel;
+
+  GetSectionSuccessState(this.sectionBasicModel);
+}
+
+class GetSectionErrorState extends HomeState {
+  final String error;
+  GetSectionErrorState(this.error);
+}
+//********************************* */
+
 class TaskChartStatusLoadingState extends HomeState {}
 
 class TaskChartStatusSuccessState extends HomeState {
@@ -169,14 +198,14 @@ class AllProvidersErrorState extends HomeState {
   final String error;
   AllProvidersErrorState(this.error);
 }
-//***************** */
+//**************************** */
 
 class AllUsersLoadingState extends HomeState {}
 
 class AllUsersSuccessState extends HomeState {
-  final UsersModel usersModel;
+  final UsersBasicModel usersBasicModel;
 
-  AllUsersSuccessState(this.usersModel);
+  AllUsersSuccessState(this.usersBasicModel);
 }
 
 class AllUsersErrorState extends HomeState {
@@ -257,7 +286,6 @@ class ShiftsCountErrorState extends HomeState {
 }
 
 //************************** */
-//************ */
 
 class UnReadNotificationLoadingState extends HomeState {}
 

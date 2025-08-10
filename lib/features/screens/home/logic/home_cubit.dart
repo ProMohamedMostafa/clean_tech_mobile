@@ -6,10 +6,13 @@ import 'package:smart_cleaning_application/core/networking/api_constants/api_con
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/activity/data/model/activities_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/data/models/section_basic_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/data/models/users_basic_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/attendance_status.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/attendance_status_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/completetion_task.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/material_count_model.dart';
+import 'package:smart_cleaning_application/features/screens/home/data/model/sensor_chart_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/shifts_count_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/stock_total_price_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/task_chart_status_model.dart';
@@ -17,8 +20,7 @@ import 'package:smart_cleaning_application/features/screens/home/data/model/task
 import 'package:smart_cleaning_application/features/screens/home/data/model/total_stock.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/users_count_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_state.dart';
-import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/users_model.dart';
-import 'package:smart_cleaning_application/features/screens/setting/notification/data/model/notification_model.dart';
+import 'package:smart_cleaning_application/features/screens/home/ui/widgets/notification/data/model/notification_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/provider/provider_management/data/models/providers_model.dart';
 import 'package:smart_cleaning_application/features/screens/setting/settings/data/model/profile_model.dart';
 
@@ -26,7 +28,8 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitialState());
 
   static HomeCubit get(context) => BlocProvider.of(context);
-
+  TextEditingController sectionController = TextEditingController();
+  TextEditingController sectionIdController = TextEditingController();
   void initializeHome() {
     if (role == 'Admin') {
       getUserDetails();
@@ -44,7 +47,7 @@ class HomeCubit extends Cubit<HomeState> {
       getQuantity();
       initialize();
       getCompleteiontask();
-      initializeUser();
+      getAllUsers();
     }
     if (role == 'Manager' || role == 'Supervisor') {
       getUserDetails();
@@ -57,7 +60,7 @@ class HomeCubit extends Cubit<HomeState> {
       getTaskData();
       getChartTaskData();
       getCompleteiontask();
-      initializeUser();
+      getAllUsers();
     }
     if (role == 'Cleaner') {
       getUserDetails();
@@ -113,14 +116,13 @@ class HomeCubit extends Cubit<HomeState> {
     });
   }
 
-  NotificationModel? unReadNotificationModel;
-  int get unReadCount => unReadNotificationModel?.data?.data?.length ?? 0;
+  NotificationModel? notificationModel;
   void getUnReadNotification() {
     emit(UnReadNotificationLoadingState());
     DioHelper.getData(url: 'notifications', query: {'IsRead': false})
         .then((value) {
-      unReadNotificationModel = NotificationModel.fromJson(value!.data);
-      emit(UnReadNotificationSuccessState(unReadNotificationModel!));
+      notificationModel = NotificationModel.fromJson(value!.data);
+      emit(UnReadNotificationSuccessState(notificationModel!));
     }).catchError((error) {
       emit(UnReadNotificationErrorState(error.toString()));
     });
@@ -383,8 +385,49 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
+  // sensor part
+
+  SensorChartModel? sensorChartModel;
+  getChartSensorData({int? month, int? year}) {
+    emit(SensorChartLoadingState());
+    DioHelper.getData(url: 'devices/completion/tasks', query: {
+      'SectionId': sectionIdController.text,
+      'Year': year,
+      'Month': month,
+    }).then((value) {
+      sensorChartModel = SensorChartModel.fromJson(value!.data);
+      emit(SensorChartSuccessState(sensorChartModel!));
+    }).catchError((error) {
+      emit(SensorChartErrorState(error.toString()));
+    });
+  }
+
+  List<(String, String)> sectionItems = [];
+  String? selectedSectionId;
+  SectionBasicModel? sectionBasicModel;
+  String? selectedSectionName;
+  getSection() {
+    emit(GetSectionLoadingState());
+    DioHelper.getData(url: "sections/basic", query: {'HasDevices': true})
+        .then((value) {
+      sectionBasicModel = SectionBasicModel.fromJson(value!.data);
+      sectionItems = sectionBasicModel?.data
+              ?.map(
+                (e) => (e.id.toString(), e.name ?? "Unknown"),
+              )
+              .toList() ??
+          [];
+      if (sectionItems.isNotEmpty) {
+        selectedSectionId = sectionItems.first.$1;
+      }
+      emit(GetSectionSuccessState(sectionBasicModel!));
+    }).catchError((error) {
+      emit(GetSectionErrorState(error.toString()));
+    });
+  }
+
   //Stock Part
-  String selectedProviderName = 'All Providers';
+  String? selectedProviderName;
   String selectedChartTypeProvider = 'Line';
   String selectedDateRangeProvider = '${DateTime.now().year}';
 
@@ -471,7 +514,7 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   // completetion task part
-  String selectedUserName = 'All Users';
+  String? selectedUserName;
   String selectedChartTypeCompleteTask = 'Line';
   String selectedDateRangeCompleteTask = '${DateTime.now().year}';
 
@@ -491,37 +534,16 @@ class HomeCubit extends Cubit<HomeState> {
 
   int currentPageUser = 1;
   ScrollController userScrollController = ScrollController();
-  UsersModel? usersModel;
-  getUsers() {
+  UsersBasicModel? usersBasicModel;
+  getAllUsers() {
     emit(AllUsersLoadingState());
-    DioHelper.getData(
-        url: "users/pagination",
-        query: {'PageNumber': currentPageUser, 'PageSize': 10}).then((value) {
-      final newUsers = UsersModel.fromJson(value!.data);
+    DioHelper.getData(url: "users/basic").then((value) {
+      usersBasicModel = UsersBasicModel.fromJson(value!.data);
 
-      if (currentPageUser == 1 || usersModel == null) {
-        usersModel = newUsers;
-      } else {
-        usersModel?.data?.users?.addAll(newUsers.data?.users ?? []);
-        usersModel?.data?.currentPage = newUsers.data?.currentPage;
-        usersModel?.data?.totalPages = newUsers.data?.totalPages;
-      }
-      emit(AllUsersSuccessState(usersModel!));
+      emit(AllUsersSuccessState(usersBasicModel!));
     }).catchError((error) {
       emit(AllUsersErrorState(error.toString()));
     });
-  }
-
-  void initializeUser() {
-    userScrollController = ScrollController()
-      ..addListener(() {
-        if (userScrollController.position.pixels ==
-            userScrollController.position.maxScrollExtent) {
-          currentPageUser++;
-          getUsers();
-        }
-      });
-    getUsers();
   }
 
   void changeChartTypeCompleteTask(String type) {
@@ -534,7 +556,7 @@ class HomeCubit extends Cubit<HomeState> {
     emit(ChangeChartTypeCompleteTaskState());
     final selectedYear = _extractYearFromRange(range);
     final userId = selectedUserName != 'All Users'
-        ? usersModel?.data?.users
+        ? usersBasicModel?.data
             ?.firstWhere((u) => u.userName == selectedUserName)
             .id
         : null;
@@ -546,7 +568,7 @@ class HomeCubit extends Cubit<HomeState> {
     if (userId == 0) {
       selectedUserName = 'All Users';
     } else {
-      final user = usersModel?.data?.users?.firstWhere((p) => p.id == userId);
+      final user = usersBasicModel?.data?.firstWhere((p) => p.id == userId);
       selectedUserName = user?.userName ?? 'All Users';
     }
 
@@ -556,7 +578,7 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   // task part
-  String selectedUserNametask = 'All Users';
+  String? selectedUserNametask;
   String selectedChartTypeTask = 'Line';
   String selectedDateRangeTask = '..... - ..... ${DateTime.now().year}';
 
@@ -643,7 +665,7 @@ class HomeCubit extends Cubit<HomeState> {
     if (parsedDates.startDate == null || parsedDates.endDate == null) return;
 
     final userId = selectedUserNametask != 'All Users'
-        ? usersModel?.data?.users
+        ? usersBasicModel?.data
             ?.firstWhere((u) => u.userName == selectedUserNametask)
             .id
         : null;
@@ -659,7 +681,7 @@ class HomeCubit extends Cubit<HomeState> {
     if (userId == 0) {
       selectedUserNametask = 'All Users';
     } else {
-      final user = usersModel?.data?.users?.firstWhere((p) => p.id == userId);
+      final user = usersBasicModel?.data?.firstWhere((p) => p.id == userId);
       selectedUserNametask = user?.userName ?? 'All Users';
     }
 

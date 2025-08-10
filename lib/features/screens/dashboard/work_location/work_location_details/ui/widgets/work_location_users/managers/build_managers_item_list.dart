@@ -54,11 +54,25 @@ class BuildManagersItemList extends StatelessWidget {
     final manager = managers![index];
 
     return InkWell(
-      onTap: () {
-        context.pushNamed(
+      onTap: ()async {
+        final result = await context.pushNamed(
           Routes.userDetailsScreen,
           arguments: manager.id,
-        );
+        );if (result == true) {
+          selectedIndex == 0
+              ? cubit.getAreaUsersDetails(manager.id)
+              : selectedIndex == 1
+                  ? cubit.getCityUsersDetails(manager.id)
+                  : selectedIndex == 2
+                      ? cubit.getOrganizationUsersDetails(manager.id)
+                      : selectedIndex == 3
+                          ? cubit.getBuildingUsersDetails(manager.id)
+                          : selectedIndex == 4
+                              ? cubit.getFloorUsersDetails(manager.id)
+                              : selectedIndex == 5
+                                  ? cubit.getSectionUsersDetails(manager.id)
+                                  : cubit.getPointUsersDetails(manager.id);
+        }
       },
       child: ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 5),

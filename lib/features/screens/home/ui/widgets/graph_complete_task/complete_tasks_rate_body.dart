@@ -22,11 +22,13 @@ class CompleteTasksRateBody extends StatelessWidget {
         final cubit = context.read<HomeCubit>();
         final isLoading = state is CompletetionTaskLoadingState ||
             cubit.completetionTaskModel == null;
-        List<(String, String)> userDropdownItems = cubit.usersModel?.data?.users
+        List<(String, String)> userDropdownItems = cubit.usersBasicModel?.data
                 ?.map(
                     (user) => (user.id.toString(), user.userName ?? 'Unknown'))
                 .toList() ??
             [];
+            String selectedUserName = cubit.selectedUserName ?? S.of(context).All_Users;
+
         return Skeletonizer(
           enabled: isLoading,
           child: Container(
@@ -51,7 +53,7 @@ class CompleteTasksRateBody extends StatelessWidget {
                     onDateRangeSelected: (value) {
                       cubit.changeDateRangeUser(value);
                     },
-                    filterDropdownLabel: cubit.selectedUserName,
+                    filterDropdownLabel: selectedUserName,
                     filterDropdownItems: userDropdownItems,
                     onFilterSelected: (value) {
                       cubit.changeSelectedUser(int.parse(value));

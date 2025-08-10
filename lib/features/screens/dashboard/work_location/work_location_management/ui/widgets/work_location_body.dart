@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
@@ -14,6 +16,7 @@ import 'package:smart_cleaning_application/core/widgets/floating_action_button/f
 import 'package:smart_cleaning_application/core/widgets/integration_buttons/integrations_buttons.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/work_location/work_location_management/logic/work_location_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/work_location/work_location_management/logic/work_location_states.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/work_location_management/ui/widgets/pdf.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/work_location/work_location_management/ui/widgets/work_location_list_build.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
@@ -40,7 +43,20 @@ class WorkLocationBody extends StatelessWidget {
                               ? S.of(context).floors
                               : selectedIndex == 5
                                   ? S.of(context).sections
-                                  : S.of(context).points)),
+                                  : S.of(context).points),
+          actions: [
+            IconButton(
+              onPressed: () {
+                createWorkLocationPDF(context, selectedIndex);
+              },
+              icon: Icon(
+                CupertinoIcons.tray_arrow_down,
+                color: Colors.red,
+                size: 22.sp,
+              ),
+            ),
+            horizontalSpace(10)
+          ]),
       floatingActionButton: role == 'Admin'
           ? floatingActionButton(
               icon: Icons.add_home_outlined,
@@ -487,6 +503,24 @@ class WorkLocationBody extends StatelessWidget {
                           );
                         },
                       );
+                    },
+                    isFilterActive: cubit.filterModel != null,
+                    onClearFilter: () {
+                      cubit.filterModel = null;
+                      cubit.searchController.clear();
+                      selectedIndex == 0
+                          ? cubit.getArea()
+                          : selectedIndex == 1
+                              ? cubit.getCity()
+                              : selectedIndex == 2
+                                  ? cubit.getOrganization()
+                                  : selectedIndex == 3
+                                      ? cubit.getBuilding()
+                                      : selectedIndex == 4
+                                          ? cubit.getFloor()
+                                          : selectedIndex == 5
+                                              ? cubit.getSection()
+                                              : cubit.getPoint();
                     },
                   ),
                   verticalSpace(10),

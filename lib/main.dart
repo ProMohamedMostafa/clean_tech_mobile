@@ -19,7 +19,7 @@ void main() async {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await checkIfLoggedInUser();
-  setupFirebaseMessagingListeners();
+  await FirebaseMessagingHelper.init();
   await ScreenUtil.ensureScreenSize();
   Bloc.observer = const SimpleBlocObserver();
   runApp(AppRoot(appRouter: AppRouter()));

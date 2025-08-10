@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
-import 'package:smart_cleaning_application/features/screens/setting/notification/logic/notification_cubit.dart';
-import 'package:smart_cleaning_application/features/screens/setting/notification/ui/widgets/list_item_build.dart';
+import 'package:smart_cleaning_application/features/screens/home/ui/widgets/notification/logic/notification_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/home/ui/widgets/notification/ui/widgets/list_item_build.dart';
 
 Widget notificationListDetailsBuild(BuildContext context, int selectedIndex) {
+  final cubit = context.read<NotificationCubit>();
   String getDateOnly(String dateTimeString) {
     final dateTime = DateTime.parse(dateTimeString);
     final now = DateTime.now();
@@ -24,8 +25,8 @@ Widget notificationListDetailsBuild(BuildContext context, int selectedIndex) {
   }
 
   final notificationData = selectedIndex == 0
-      ? context.read<NotificationCubit>().notificationModel?.data?.data
-      : context.read<NotificationCubit>().unReadNotificationModel?.data?.data;
+      ? cubit.notificationModel?.data?.data
+      : cubit.unReadNotificationModel?.data?.data;
 
   if (notificationData == null || notificationData.isEmpty) {
     return Center(
@@ -56,8 +57,8 @@ Widget notificationListDetailsBuild(BuildContext context, int selectedIndex) {
 
   return ListView.builder(
     controller: selectedIndex == 0
-        ? context.read<NotificationCubit>().scrollController
-        : context.read<NotificationCubit>().unreadScrollController,
+        ? cubit.scrollController
+        : cubit.unreadScrollController,
     shrinkWrap: true,
     itemCount: groupedKeys.length,
     itemBuilder: (context, groupIndex) {

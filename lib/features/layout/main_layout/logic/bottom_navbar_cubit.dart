@@ -33,8 +33,7 @@ class BottomNavbarCubit extends Cubit<BottomNavbarStates> {
     BlocProvider(
       create: (context) => SettingsCubit()
         ..getUserDetails()
-        ..initializeNotificationStatus()
-        ..getDarkModeStatus(),
+        ..initializeNotificationStatus(),
       child: const SettingsScreen(),
     )
   ];

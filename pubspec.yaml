@@ -66,19 +66,11 @@ dependencies:
   audioplayers: ^6.4.0
   intl_utils: ^2.8.10
   lottie: ^3.3.1
-  flutter_launcher_icons: ^0.14.4
   file_picker: ^10.2.0
   syncfusion_flutter_pdfviewer: ^28.2.12
   intl_phone_number_input: ^0.7.4
   syncfusion_flutter_datepicker: ^28.2.12
-
-flutter_launcher_icons:
-  android: true
-  ios: true
-  image_path: "assets/images/logo_launcher.png"
-  min_sdk_android: 21
-  background_color: "#FFFFFF"
-
+  flutter_native_splash: ^2.4.6
 
 dev_dependencies:
   flutter_test:

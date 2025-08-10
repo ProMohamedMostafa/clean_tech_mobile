@@ -84,6 +84,14 @@ class ActivityBody extends StatelessWidget {
                         },
                       );
                     },
+                    isFilterActive: cubit.filterModel != null,
+                    onClearFilter: () {
+                      cubit.filterModel = null;
+                      cubit.searchController.clear();
+                      cubit.selectedIndex == 0
+                          ? cubit.getActivities()
+                          : cubit.getTeamActivities();
+                    },
                   ),
                   verticalSpace(10),
                   integrationsButtons(

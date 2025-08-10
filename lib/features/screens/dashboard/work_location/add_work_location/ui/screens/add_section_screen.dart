@@ -46,19 +46,21 @@ class AddSectionScreen extends StatelessWidget {
               cubit.shiftModel == null) {
             return Loading();
           }
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Form(
-              key: cubit.formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildDetailsField(context, cubit),
-                  verticalSpace(20),
-                  _buildContinueButton(context, cubit, state),
-                  verticalSpace(20),
-                ],
+          return SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Form(
+                key: cubit.formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildDetailsField(context, cubit),
+                    verticalSpace(20),
+                    _buildContinueButton(context, cubit, state),
+                    verticalSpace(20),
+                  ],
+                ),
               ),
             ),
           );
@@ -267,7 +269,7 @@ class AddSectionScreen extends StatelessWidget {
             },
           ),
           verticalSpace(10),
-         RichText(
+          RichText(
             textAlign: TextAlign.center,
             text: TextSpan(
               children: [

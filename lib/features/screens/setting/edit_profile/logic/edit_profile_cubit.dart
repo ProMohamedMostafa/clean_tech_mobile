@@ -27,10 +27,11 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   TextEditingController genderIdController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
+  String editedPhone = '';
   List<int> selectedShiftsIds = [];
   EditProfileModel? editProfileModel;
 
-  Future<void> editProfile() async {
+  Future<void> editProfile({required String phone}) async {
     emit(EditProfileLoadingState());
     MultipartFile? imageFile;
     if (image != null) {
@@ -54,7 +55,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           : emailController.text,
       "PhoneNumber": phoneController.text.isEmpty
           ? profileModel!.data!.phoneNumber
-          : phoneController.text,
+          : phone,
       "Birthdate": birthController.text.isEmpty
           ? profileModel!.data!.birthdate
           : birthController.text,

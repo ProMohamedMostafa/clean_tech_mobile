@@ -46,19 +46,19 @@ class FilterHeader extends StatelessWidget {
       children: [
         Row(
           children: [
-            RichText(
+            Text(
+              title,
+              style: TextStyles.font14BlackSemiBold,
               maxLines: 1,
               textAlign: TextAlign.center,
-              text: TextSpan(
-                children: [
-                  TextSpan(text: title, style: TextStyles.font14BlackMedium),
-                  if (count1 != null)
-                    TextSpan(
-                        text: ' ($count1)',
-                        style: TextStyles.font14PrimRegular),
-                ],
-              ),
             ),
+            if (count1 != null)
+              Text(
+                ' ($count1)',
+                style: TextStyles.font14PrimRegular,
+                maxLines: 1,
+                textAlign: TextAlign.center,
+              ),
             const Spacer(),
             if (role != 'Cleaner')
               _FilterDropdownForm(
@@ -386,7 +386,13 @@ class _FilterDropdownFormState extends State<_FilterDropdownForm> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(widget.label, style: TextStyles.font12PrimSemi),
+              Expanded(
+                child: Text(
+                  widget.label,
+                  style: TextStyles.font12PrimSemi,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
               RotatedBox(
                 quarterTurns: isOpen ? 3 : 1,
                 child: Icon(

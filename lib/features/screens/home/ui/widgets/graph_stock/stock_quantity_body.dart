@@ -39,7 +39,7 @@ class StockQuantityBody extends StatelessWidget {
                     (provider.id.toString(), provider.name ?? 'Unknown'))
                 .toList() ??
             [];
-
+ String selectedProviderName = cubit.selectedProviderName ?? S.of(context).All_Providers;
         return Skeletonizer(
           enabled: isLoading,
           child: Container(
@@ -64,7 +64,7 @@ class StockQuantityBody extends StatelessWidget {
                     onDateRangeSelected: (value) {
                       cubit.changeDateRangeProvider(value);
                     },
-                    filterDropdownLabel: cubit.selectedProviderName,
+                    filterDropdownLabel: selectedProviderName,
                     filterDropdownItems: providerDropdownItems,
                     onFilterSelected: (value) {
                       cubit.changeSelectedProvider(int.parse(value));

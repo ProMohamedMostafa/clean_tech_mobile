@@ -10,6 +10,8 @@ class FilterAndSearchWidget extends StatelessWidget {
   final VoidCallback onFilterTap;
   final ValueChanged<String> onSearchChanged;
   final String? hintText;
+  final bool isFilterActive;
+  final VoidCallback onClearFilter;
 
   const FilterAndSearchWidget({
     super.key,
@@ -17,6 +19,8 @@ class FilterAndSearchWidget extends StatelessWidget {
     required this.onFilterTap,
     required this.onSearchChanged,
     required this.hintText,
+    required this.isFilterActive,
+    required this.onClearFilter,
   });
 
   @override
@@ -42,7 +46,7 @@ class FilterAndSearchWidget extends StatelessWidget {
             flex: 1,
             child: InkWell(
               borderRadius: BorderRadius.circular(10.r),
-              onTap: onFilterTap,
+              onTap: isFilterActive ? onClearFilter : onFilterTap,
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8.r),
@@ -50,9 +54,9 @@ class FilterAndSearchWidget extends StatelessWidget {
                 ),
                 child: Center(
                   child: Icon(
-                    Icons.tune,
-                    color: AppColor.primaryColor,
-                    size: 25.sp,
+                    isFilterActive ? Icons.close_rounded : Icons.tune,
+                    color: isFilterActive ? Colors.red : AppColor.primaryColor,
+                    size: isFilterActive ? 30.sp : 25.sp,
                   ),
                 ),
               ),
