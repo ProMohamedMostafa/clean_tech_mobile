@@ -51,6 +51,7 @@ class AssignCubit extends Cubit<AssignStates> {
   final allManagersController = MultiSelectController<UserItem>();
   final allSupervisorsController = MultiSelectController<UserItem>();
   final allCleanersController = MultiSelectController<UserItem>();
+  final allAuditorsController = MultiSelectController<UserItem>();
 
   int? selectedLocation;
   int index = 0;
@@ -58,6 +59,7 @@ class AssignCubit extends Cubit<AssignStates> {
   List<int> selectedManagersIds = [];
   List<int> selectedSupervisorsIds = [];
   List<int> selectedCleanersIds = [];
+  List<int> selectedAuditorsIds = [];
   List<int> selectedShiftsIds = [];
 
   AssignModel? assignModel;
@@ -68,7 +70,8 @@ class AssignCubit extends Cubit<AssignStates> {
       "userIds": [
         ...selectedManagersIds,
         ...selectedSupervisorsIds,
-        ...selectedCleanersIds
+        ...selectedCleanersIds,
+        ...selectedAuditorsIds
       ],
     }).then((value) {
       assignModel = AssignModel.fromJson(value!.data);
@@ -86,7 +89,8 @@ class AssignCubit extends Cubit<AssignStates> {
       "userIds": [
         ...selectedManagersIds,
         ...selectedSupervisorsIds,
-        ...selectedCleanersIds
+        ...selectedCleanersIds,
+        ...selectedAuditorsIds
       ],
     }).then((value) {
       assignModel = AssignModel.fromJson(value!.data);
@@ -104,7 +108,8 @@ class AssignCubit extends Cubit<AssignStates> {
       "userIds": [
         ...selectedManagersIds,
         ...selectedSupervisorsIds,
-        ...selectedCleanersIds
+        ...selectedCleanersIds,
+        ...selectedAuditorsIds
       ],
     }).then((value) {
       assignModel = AssignModel.fromJson(value!.data);
@@ -122,7 +127,8 @@ class AssignCubit extends Cubit<AssignStates> {
       "userIds": [
         ...selectedManagersIds,
         ...selectedSupervisorsIds,
-        ...selectedCleanersIds
+        ...selectedCleanersIds,
+        ...selectedAuditorsIds
       ],
     }).then((value) {
       assignModel = AssignModel.fromJson(value!.data);
@@ -140,7 +146,8 @@ class AssignCubit extends Cubit<AssignStates> {
       "userIds": [
         ...selectedManagersIds,
         ...selectedSupervisorsIds,
-        ...selectedCleanersIds
+        ...selectedCleanersIds,
+        ...selectedAuditorsIds
       ],
     }).then((value) {
       assignModel = AssignModel.fromJson(value!.data);
@@ -158,7 +165,8 @@ class AssignCubit extends Cubit<AssignStates> {
       "userIds": [
         ...selectedManagersIds,
         ...selectedSupervisorsIds,
-        ...selectedCleanersIds
+        ...selectedCleanersIds,
+        ...selectedAuditorsIds
       ],
     }).then((value) {
       assignModel = AssignModel.fromJson(value!.data);
@@ -176,7 +184,8 @@ class AssignCubit extends Cubit<AssignStates> {
       "userIds": [
         ...selectedManagersIds,
         ...selectedSupervisorsIds,
-        ...selectedCleanersIds
+        ...selectedCleanersIds,
+        ...selectedAuditorsIds
       ],
     }).then((value) {
       assignModel = AssignModel.fromJson(value!.data);
@@ -758,13 +767,18 @@ class AssignCubit extends Cubit<AssignStates> {
     userController.clear();
     userIdController.clear();
 
-    [...selectedManagersIds, ...selectedSupervisorsIds, ...selectedCleanersIds]
-        .clear();
+    [
+      ...selectedManagersIds,
+      ...selectedSupervisorsIds,
+      ...selectedCleanersIds,
+      ...selectedAuditorsIds
+    ].clear();
     selectedShiftsIds.clear();
 
     allManagersController.clearAll();
     allSupervisorsController.clearAll();
     allCleanersController.clearAll();
+    allAuditorsController.clearAll();
     allShiftsController.clearAll();
 
     emit(ControllersClearedState());
@@ -823,6 +837,23 @@ class AssignCubit extends Cubit<AssignStates> {
           .toList();
       allCleanersController
           .selectWhere((item) => selectedCleanersIds.contains(item.value.id));
+
+      // Initialize auditors
+      final auditors = usersModel!.data!.users!
+          .where((user) => user.role == 'Auditor')
+          .map((auditor) => DropdownItem(
+                label: auditor.userName!,
+                value: UserItem(id: auditor.id, userName: auditor.userName),
+              ))
+          .toList();
+
+      allAuditorsController.setItems(auditors);
+      selectedAuditorsIds = areaUsersDetailsModel!.data!.users!
+          .where((user) => user.role == 'Auditor')
+          .map((user) => user.id!)
+          .toList();
+      allAuditorsController
+          .selectWhere((item) => selectedAuditorsIds.contains(item.value.id));
     }
   }
 
@@ -879,10 +910,27 @@ class AssignCubit extends Cubit<AssignStates> {
           .toList();
       allCleanersController
           .selectWhere((item) => selectedCleanersIds.contains(item.value.id));
+
+      // Initialize auditors
+      final auditors = usersModel!.data!.users!
+          .where((user) => user.role == 'Auditor')
+          .map((auditor) => DropdownItem(
+                label: auditor.userName!,
+                value: UserItem(id: auditor.id, userName: auditor.userName),
+              ))
+          .toList();
+
+      allAuditorsController.setItems(auditors);
+      selectedAuditorsIds = cityUsersDetailsModel!.data!.users!
+          .where((user) => user.role == 'Auditor')
+          .map((user) => user.id!)
+          .toList();
+      allAuditorsController
+          .selectWhere((item) => selectedAuditorsIds.contains(item.value.id));
     }
   }
 
- void initializePointControllers() {
+  void initializePointControllers() {
     if (pointUsersDetailsModel != null && usersModel != null) {
       // Initialize managers
       final managers = usersModel!.data!.users!
@@ -935,6 +983,23 @@ class AssignCubit extends Cubit<AssignStates> {
           .toList();
       allCleanersController
           .selectWhere((item) => selectedCleanersIds.contains(item.value.id));
+
+      // Initialize auditors
+      final auditors = usersModel!.data!.users!
+          .where((user) => user.role == 'Auditor')
+          .map((auditor) => DropdownItem(
+                label: auditor.userName!,
+                value: UserItem(id: auditor.id, userName: auditor.userName),
+              ))
+          .toList();
+
+      allAuditorsController.setItems(auditors);
+      selectedAuditorsIds = pointUsersDetailsModel!.data!.users!
+          .where((user) => user.role == 'Auditor')
+          .map((user) => user.id!)
+          .toList();
+      allAuditorsController
+          .selectWhere((item) => selectedAuditorsIds.contains(item.value.id));
     }
   }
 }

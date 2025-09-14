@@ -16,14 +16,12 @@ class TaskManagementCubit extends Cubit<TaskManagementState> {
 
   static TaskManagementCubit get(context) => BlocProvider.of(context);
 
-
-
-DateTime? filterStartDate;
-DateTime? filterEndDate;
+  DateTime? filterStartDate;
+  DateTime? filterEndDate;
   TextEditingController searchController = TextEditingController();
   ScrollController scrollController = ScrollController();
   ScrollController horizontalScrollController = ScrollController();
-  DateTime selectedDate = DateTime.now();
+  DateTime? selectedDate;
   int selectedIndex = 0;
   int currentPage = 1;
 
@@ -34,9 +32,6 @@ DateTime? filterEndDate;
       case 'Cleaner':
         return 'tasks/receive';
       case 'Supervisor':
-        if (index == 0) return 'tasks/receive';
-        if (index == 1) return 'tasks/my';
-        break;
       case 'Manager':
         if (index == 0) return 'tasks/receive';
         if (index == 1) return 'tasks/my';
@@ -70,14 +65,18 @@ DateTime? filterEndDate;
       'SectionId': filterModel?.sectionId,
       'PointId': filterModel?.pointId,
       'ProviderId': filterModel?.providerId,
-      'StartDate': DateFormat('yyyy-MM-dd', 'en')
-          .format(filterModel?.startDate ?? selectedDate),
+      'StartDate': filterModel?.startDate != null
+          ? DateFormat('yyyy-MM-dd', 'en').format(filterModel!.startDate!)
+          : (selectedDate != null
+              ? DateFormat('yyyy-MM-dd', 'en').format(selectedDate!)
+              : null),
       'EndDate': filterModel?.endDate != null
           ? DateFormat('yyyy-MM-dd', 'en').format(filterModel!.endDate!)
           : null,
       'StartTime': filterModel?.startTime,
       'EndTime': filterModel?.endTime,
-      'DeviceId': filterModel?.deviceId
+      'DeviceId': filterModel?.deviceId,
+      'ShiftId': filterModel?.shiftId
     }).then((value) {
       final newTask = AllTasksModel.fromJson(value!.data);
 
@@ -94,7 +93,7 @@ DateTime? filterEndDate;
     });
   }
 
-  Future<void> refreshTasks(int index,{int? roleId}) async {
+  Future<void> refreshTasks(int index, {int? roleId}) async {
     currentPage = 1;
     allTasksModel = null;
     deleteTaskListModel = null;
@@ -104,7 +103,9 @@ DateTime? filterEndDate;
     await getAllDeletedTasks();
   }
 
-  initialize(int index,) {
+  initialize(
+    int index,
+  ) {
     scrollController = ScrollController()
       ..addListener(() {
         if (scrollController.position.atEdge &&
@@ -117,7 +118,7 @@ DateTime? filterEndDate;
     getAllDeletedTasks();
   }
 
-  void changeTap(int index, BuildContext context,int indexx) {
+  void changeTap(int index, BuildContext context, int indexx) {
     selectedIndex = index;
 
     if (selectedIndex == getTapList(context).length - 1) {
@@ -150,7 +151,7 @@ DateTime? filterEndDate;
 
   DeleteTaskModel? deleteTaskModel;
   List<TaskData> deletedTasks = [];
-  taskDelete(int id,int index) {
+  taskDelete(int id, int index) {
     emit(TaskDeleteLoadingState());
     DioHelper.postData(url: 'tasks/delete/$id').then((value) {
       deleteTaskModel = DeleteTaskModel.fromJson(value!.data);
@@ -243,7 +244,6 @@ DateTime? filterEndDate;
       S.of(context).deleted,
     ];
   }
-  
 
   Color getPriorityColor(String? priorityValue) {
     final List<String> priorities = ["High", "Medium", "Low"];

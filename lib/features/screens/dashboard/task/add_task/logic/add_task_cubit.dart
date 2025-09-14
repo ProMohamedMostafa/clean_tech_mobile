@@ -5,11 +5,12 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multi_dropdown/multi_dropdown.dart';
-import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/task/add_task/data/models/create_task_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/task/add_task/data/models/users_shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/task/add_task/logic/add_task_state.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/building_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/floor_list_model.dart';
@@ -17,7 +18,6 @@ import 'package:smart_cleaning_application/features/screens/dashboard/integratio
 import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/section_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/data/models/organization_basic_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/data/models/tasks_basic_model.dart';
-import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/data/models/users_basic_model.dart';
 
 class AddTaskCubit extends Cubit<AddTaskState> {
   AddTaskCubit() : super(AddTaskInitialState());
@@ -47,13 +47,15 @@ class AddTaskCubit extends Cubit<AddTaskState> {
   TextEditingController sectionController = TextEditingController();
   TextEditingController sectionIdController = TextEditingController();
 
-  final usersController = MultiSelectController<UserItem>();
+  final allShiftsController = MultiSelectController<ShiftItem>();
+  final usersController = MultiSelectController<UserShiftData>();
   final formKey = GlobalKey<FormState>();
 
   bool isFormSubmitted = false;
   bool isPointCountable = false;
 
-  List<int>? selectedUsersIds = [];
+  List<int> selectedShiftsIds = [];
+  List<int> selectedUsersIds = [];
   CreateTaskModel? createTaskModel;
   addTask() async {
     emit(AddTaskLoadingState());
@@ -78,6 +80,7 @@ class AddTaskCubit extends Cubit<AddTaskState> {
       "EndTime": endTimeController.text,
       "PointId": pointIdController.text,
       "ParentId": parentIdTaskController.text,
+      "ShiftId": selectedShiftsIds.isNotEmpty ? selectedShiftsIds.first : null,
       "UserIds": selectedUsersIds,
       "Files": multipartFiles,
     };
@@ -94,19 +97,11 @@ class AddTaskCubit extends Cubit<AddTaskState> {
     }
   }
 
-  String getTasksUrl() {
-    if (role == "Manager" || role == "Supervisor") {
-      return "tasks/receive";
-    } else {
-      return "tasks/basic";
-    }
-  }
-
   TasksBasicModel? tasksBasicModel;
   getAllTasks() {
     emit(GetAllTasksLoadingState());
-    final url = getTasksUrl();
-    DioHelper.getData(url: url).then((value) {
+
+    DioHelper.getData(url: 'tasks/basic').then((value) {
       tasksBasicModel = TasksBasicModel.fromJson(value!.data);
 
       emit(GetAllTasksSuccessState(tasksBasicModel!));
@@ -115,13 +110,20 @@ class AddTaskCubit extends Cubit<AddTaskState> {
     });
   }
 
-  UsersBasicModel? usersBasicModel;
+  UsersShiftModel? usersShiftModel;
+  List<UserShiftData> userShiftData = [
+    UserShiftData(userName: 'No shifts available')
+  ];
+
   getAllUsers() {
     emit(AllUsersLoadingState());
-    DioHelper.getData(url: "users/basic").then((value) {
-      usersBasicModel = UsersBasicModel.fromJson(value!.data);
-
-      emit(AllUsersSuccessState(usersBasicModel!));
+    DioHelper.getData(url: "users/shift/${selectedShiftsIds.first}")
+        .then((value) {
+      usersShiftModel = UsersShiftModel.fromJson(value!.data);
+      userShiftData = usersShiftModel?.data ??
+          [UserShiftData(userName: 'No shifts available')];
+      initializeUserPointControllers();
+      emit(AllUsersSuccessState(usersShiftModel!));
     }).catchError((error) {
       emit(AllUsersErrorState(error.toString()));
     });
@@ -261,4 +263,78 @@ class AddTaskCubit extends Cubit<AddTaskState> {
     Colors.orange,
     Colors.green,
   ];
+
+  ShiftModel? shiftModel;
+  List<ShiftItem> shiftData = [ShiftItem(name: 'No shifts available')];
+  getShifts() {
+    emit(ShiftLoadingState());
+    DioHelper.getData(
+        url: ApiConstants.allShiftsUrl,
+        query: {'PointId': pointIdController.text}).then((value) {
+      shiftModel = ShiftModel.fromJson(value!.data);
+      shiftData =
+          shiftModel?.data?.data ?? [ShiftItem(name: 'No shifts available')];
+      initializePointControllers();
+      emit(ShiftSuccessState(shiftModel!));
+    }).catchError((error) {
+      emit(ShiftErrorState(error.toString()));
+    });
+  }
+
+  void initializePointControllers() {
+    if (pointModel != null && shiftModel != null) {
+      final shifts = shiftModel!.data!.data!
+          .map((shift) => DropdownItem(
+                label: shift.name ?? '',
+                value: ShiftItem(
+                  id: shift.id,
+                  name: shift.name,
+                  startDate: shift.startDate,
+                  endDate: shift.endDate,
+                  startTime: shift.startTime,
+                  endTime: shift.endTime,
+                ),
+              ))
+          .toList();
+
+      allShiftsController.setItems(shifts);
+
+      final assignedShifts = pointModel!.data?.data;
+
+      selectedShiftsIds = assignedShifts
+              ?.where((shift) => shift.id != null)
+              .map((shift) => shift.id!)
+              .toList() ??
+          [];
+
+      allShiftsController.selectWhere(
+        (item) => selectedShiftsIds.contains(item.value.id),
+      );
+    }
+  }
+
+  void initializeUserPointControllers() {
+    if (usersShiftModel != null) {
+      final users = usersShiftModel!.data!
+          .map((user) => DropdownItem(
+                label: user.userName ?? '',
+                value: UserShiftData(
+                  id: user.id,
+                  userName: user.userName,
+                ),
+              ))
+          .toList();
+
+      usersController.setItems(users);
+
+      selectedUsersIds = usersShiftModel!.data!
+          .where((users) => users.id != null)
+          .map((users) => users.id!)
+          .toList();
+
+      usersController.selectWhere(
+        (item) => selectedUsersIds.contains(item.value.id),
+      );
+    }
+  }
 }

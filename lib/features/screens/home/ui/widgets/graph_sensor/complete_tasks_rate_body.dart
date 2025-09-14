@@ -74,10 +74,10 @@ class _SensorTasksRateBodyState extends State<SensorTasksRateBody> {
             cubit.sensorChartModel?.data?.getCompletionDeviceTask?.length ?? 0;
 
         final List<ChartData> chartDataList = [
-          ChartData('Pending', status?.pendingPercentage ?? 0),
-          ChartData('In Progress', status?.inProgressPercentage ?? 0),
-          ChartData('Completed', status?.completedPercentage ?? 0),
-          ChartData('Overdue', status?.overduePercentage ?? 0),
+          ChartData('Pending', status?.pendingPercentage!.toInt() ?? 0),
+          ChartData('In Progress', status?.inProgressPercentage!.toInt() ?? 0),
+          ChartData('Completed', status?.completedPercentage!.toInt() ?? 0),
+          ChartData('Overdue', status?.overduePercentage!.toInt() ?? 0),
         ];
         // Initialize selectedKey and selectedValue at build if empty (to show default)
         if (selectedKey.isEmpty && status != null) {
@@ -109,64 +109,74 @@ class _SensorTasksRateBodyState extends State<SensorTasksRateBody> {
                     children: [
                       // Section Dropdown
                       if (cubit.sectionBasicModel?.data != null)
-                        _FilterDropdown(
-                          width: 150.w,
-                          label: cubit.selectedSectionName ??
-                              S.of(context).Select_section,
-                          items: cubit.sectionBasicModel!.data!
-                              .map((section) => (
-                                    section.id.toString(),
-                                    section.name ?? 'Unknown',
-                                  ))
-                              .toList(),
-                          onSelected: (value) {
-                            final selected = cubit.sectionBasicModel!.data!
-                                .firstWhere((s) => s.name == value);
-                            setState(() {
-                              cubit.selectedSectionId = selected.id.toString();
-                              cubit.selectedSectionName = selected.name;
-                              _fetchData();
-                            });
-                          },
+                        SizedBox(
+                          width: 120.w,
+                          child: _FilterDropdown(
+                            width: 150.w,
+                            label: cubit.selectedSectionName ??
+                                S.of(context).Select_section,
+                            items: cubit.sectionBasicModel!.data!
+                                .map((section) => (
+                                      section.id.toString(),
+                                      section.name ?? 'Unknown',
+                                    ))
+                                .toList(),
+                            onSelected: (value) {
+                              final selected = cubit.sectionBasicModel!.data!
+                                  .firstWhere((s) => s.name == value);
+                              setState(() {
+                                cubit.selectedSectionId =
+                                    selected.id.toString();
+                                cubit.selectedSectionName = selected.name;
+                                _fetchData();
+                              });
+                            },
+                          ),
                         ),
                       horizontalSpace(8),
                       // Date Picker
-                      Container(
-                        height: 36.h,
-                        padding: EdgeInsets.all(3),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey[300]!),
-                          borderRadius: BorderRadius.circular(5.r),
-                        ),
-                        child: GestureDetector(
-                          onTap: () async {
-                            final pickedDate =
-                                await CustomSensorMonthPicker.show(
-                              context: context,
-                              initialDate: selectedDate ?? DateTime.now(),
-                            );
-                            if (pickedDate != null) {
-                              setState(() {
-                                selectedDate = pickedDate;
-                                selectedData = null;
-                              });
-                              _fetchData();
-                            }
-                          },
-                          child: Row(
-                            children: [
-                              Text(
-                                selectedDate != null
-                                    ? DateFormat('MMMM yyyy')
-                                        .format(selectedDate!)
-                                    : DateFormat('MMMM yyyy')
-                                        .format(DateTime.now()),
-                                style: TextStyles.font14BlackRegular,
-                              ),
-                              horizontalSpace(3),
-                              Icon(Icons.calendar_month,
-                                  size: 22.sp, color: AppColor.primaryColor),
-                            ],
+                      SizedBox(
+                        width: 120.w,
+                        child: Container(
+                          height: 36.h,
+                          padding: EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey[300]!),
+                            borderRadius: BorderRadius.circular(5.r),
+                          ),
+                          child: GestureDetector(
+                            onTap: () async {
+                              final pickedDate =
+                                  await CustomSensorMonthPicker.show(
+                                context: context,
+                                initialDate: selectedDate ?? DateTime.now(),
+                              );
+                              if (pickedDate != null) {
+                                setState(() {
+                                  selectedDate = pickedDate;
+                                  selectedData = null;
+                                });
+                                _fetchData();
+                              }
+                            },
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    selectedDate != null
+                                        ? DateFormat('MMM yyyy')
+                                            .format(selectedDate!)
+                                        : DateFormat('MMM yyyy')
+                                            .format(DateTime.now()),
+                                    style: TextStyles.font12BlackSemi,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                horizontalSpace(3),
+                                Icon(Icons.calendar_month,
+                                    size: 22.sp, color: AppColor.primaryColor),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -180,21 +190,20 @@ class _SensorTasksRateBodyState extends State<SensorTasksRateBody> {
                         PieSeries<ChartData, String>(
                           dataSource: chartDataList,
                           xValueMapper: (ChartData data, _) => data.month,
-                          yValueMapper: (ChartData data, _) =>
-                              data.value.toDouble(),
+                          yValueMapper: (ChartData data, _) => data.value,
                           pointColorMapper: (ChartData data, int index) =>
                               colorMap[index % colorMap.length],
                           pointRadiusMapper: (ChartData data, _) =>
                               '${70 + (data.value % 30)}%',
-                          radius: '80%',
-                          dataLabelSettings: const DataLabelSettings(
+                          radius: '60%',
+                          dataLabelSettings: DataLabelSettings(
                             isVisible: true,
                             labelPosition: ChartDataLabelPosition.inside,
-                            textStyle: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            connectorLineSettings: ConnectorLineSettings(
+                                length: '0%',
+                                type: ConnectorType.line,
+                                color: Colors.transparent),
+                            textStyle: TextStyles.font11WhiteSemiBold,
                           ),
                           dataLabelMapper: (ChartData data, _) =>
                               '${data.value}%',
@@ -364,10 +373,12 @@ class _FilterDropdown extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                label,
-                style: TextStyles.font12PrimSemi,
-                overflow: TextOverflow.ellipsis,
+              Expanded(
+                child: Text(
+                  label,
+                  style: TextStyles.font12PrimSemi,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
               RotatedBox(
                 quarterTurns: 1,

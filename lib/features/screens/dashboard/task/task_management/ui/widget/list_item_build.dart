@@ -17,9 +17,9 @@ import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class TaskListItemBuild extends StatelessWidget {
   final int index;
-  final int indexx;
+  final int selectedIndex;
   const TaskListItemBuild(
-      {super.key, required this.index, required this.indexx});
+      {super.key, required this.index, required this.selectedIndex});
 
   @override
   Widget build(BuildContext context) {
@@ -29,14 +29,24 @@ class TaskListItemBuild extends StatelessWidget {
         : cubit.allTasksModel!.data!.data![index].priority!;
 
     final Color priorityColorForTask = cubit.getPriorityColor(taskPriority);
+    String formatTime(String? time) {
+      if (time == null || time.isEmpty) return "--:--";
+      return time.substring(0, 5);
+    }
+
     return InkWell(
       borderRadius: BorderRadius.circular(11.r),
       onTap: () async {
-        final result = await context.pushNamed(Routes.taskDetailsScreen,
-            arguments: cubit.allTasksModel!.data!.data![index].id!);
+        final result = await context.pushNamed(
+          Routes.taskDetailsScreen,
+          arguments: {
+            'id': cubit.allTasksModel!.data!.data![index].id!,
+            'selectedIndex': selectedIndex
+          },
+        );
 
         if (result == true) {
-          cubit.refreshTasks(indexx);
+          cubit.refreshTasks(selectedIndex);
         }
       },
       child: Card(
@@ -47,7 +57,7 @@ class TaskListItemBuild extends StatelessWidget {
         ),
         child: Container(
           width: double.infinity,
-          padding: EdgeInsets.fromLTRB(10, role == 'Cleaner' ? 10 : 5, 5, 10),
+          padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(11.r),
@@ -96,7 +106,12 @@ class TaskListItemBuild extends StatelessWidget {
                     ),
                   ),
                   Spacer(),
-                  role == 'Cleaner'
+                  (role == 'Cleaner' ||
+                          (role != 'Admin' &&
+                              cubit.allTasksModel!.data!.data![index]
+                                      .createdBy !=
+                                  uId) ||
+                          selectedIndex == 2)
                       ? horizontalSpace(30)
                       : cubit.selectedIndex == 8
                           ? Row(
@@ -145,7 +160,7 @@ class TaskListItemBuild extends StatelessWidget {
                                                             .deleteTaskListModel!
                                                             .data![index]
                                                             .id!,
-                                                        indexx);
+                                                        selectedIndex);
                                               });
                                         });
                                   },
@@ -172,11 +187,19 @@ class TaskListItemBuild extends StatelessWidget {
                             ),
                 ],
               ),
-              Text(
-                cubit.selectedIndex == 8
-                    ? cubit.deleteTaskListModel!.data![index].title!
-                    : cubit.allTasksModel!.data!.data![index].title!,
-                style: TextStyles.font16BlackSemiBold,
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      cubit.selectedIndex == 8
+                          ? cubit.deleteTaskListModel!.data![index].title!
+                          : cubit.allTasksModel!.data!.data![index].title!,
+                      style: TextStyles.font16BlackSemiBold,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ),
+                ],
               ),
               verticalSpace(10),
               Text(
@@ -196,12 +219,32 @@ class TaskListItemBuild extends StatelessWidget {
                     size: 22.sp,
                   ),
                   horizontalSpace(5),
-                  Text(
-                    cubit.selectedIndex == 8
-                        ? cubit.deleteTaskListModel!.data![index].startTime!
-                        : cubit.allTasksModel!.data!.data![index].startTime!,
-                    style: TextStyles.font11WhiteSemiBold
-                        .copyWith(color: AppColor.primaryColor),
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: cubit.selectedIndex == 8
+                              ? formatTime(cubit
+                                  .deleteTaskListModel?.data?[index].startTime)
+                              : formatTime(cubit
+                                  .allTasksModel?.data?.data?[index].startTime),
+                          style: TextStyles.font11PrimMedium,
+                        ),
+                        TextSpan(
+                          text: ' & ',
+                          style: TextStyles.font11BlackMedium,
+                        ),
+                        TextSpan(
+                          text: cubit.selectedIndex == 8
+                              ? cubit
+                                  .deleteTaskListModel!.data![index].startDate!
+                              : cubit
+                                  .allTasksModel!.data!.data![index].startDate!,
+                          style: TextStyles.font11PrimMedium,
+                        ),
+                      ],
+                    ),
                   ),
                   Spacer(),
                   buildUserAvatars(cubit, index),

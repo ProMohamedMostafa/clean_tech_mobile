@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/sensor/sensor_details/data/model/sensor_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/sensor/sensor_details/data/model/delete_sensor_model.dart';
@@ -96,7 +95,7 @@ class SensorDetailsCubit extends Cubit<SensorDetailsState> {
     null, // index 0: All Tasks (no status filter)
     "Pending", // index 1
     "InProgress", // index 2
-    "NotApproval", // index 3
+    "WaitingForApproval", // index 3
     "Completed", // index 4
     "Rejected", // index 5
     "NotResolved", // index 6
@@ -177,14 +176,9 @@ class SensorDetailsCubit extends Cubit<SensorDetailsState> {
     }
   }
 
-  String formatTime(String? timeString) {
-    if (timeString == null) return "--:--";
-    try {
-      final parsed = DateTime.parse("2023-01-01T$timeString");
-      return DateFormat.Hm().format(parsed);
-    } catch (e) {
-      return "--:--";
-    }
+  String formatTime(String? time) {
+    if (time == null || time.isEmpty) return "--:--";
+    return time.substring(0, 5);
   }
 
   deletelimit(int id) {

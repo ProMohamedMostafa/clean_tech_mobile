@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -33,10 +34,14 @@ class LeavesListItemBuild extends StatelessWidget {
     final item = leavesList[index];
 
     return InkWell(
+      borderRadius: BorderRadius.circular(11.r),
       onTap: () async {
         final result = await context.pushNamed(
           Routes.leavesDetailsScreen,
-          arguments: item.id!,
+          arguments: {
+            'id': item.id!,
+            'isProfile': false,
+          },
         );
         if (result == true) {
           await cubit.refreshLeaves();
@@ -50,7 +55,7 @@ class LeavesListItemBuild extends StatelessWidget {
         ),
         child: Container(
           width: double.infinity,
-          padding: EdgeInsets.fromLTRB(10, 0, 5, 5),
+          padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(11.r),
@@ -72,15 +77,16 @@ class LeavesListItemBuild extends StatelessWidget {
                         color: Colors.grey[300]!,
                         textColor: AppColor.primaryColor),
                   Spacer(),
-                  IconButton(
-                    onPressed: () {
-                      PopUpDialog.show(
-                        context: context,
-                        id: item.id!,
-                      );
-                    },
-                    icon: Icon(Icons.more_horiz_rounded, size: 22.sp),
-                  ),
+                  if (item.status == 'Created By Admin' && role == 'Admin')
+                    IconButton(
+                      onPressed: () {
+                        PopUpDialog.show(
+                          context: context,
+                          id: item.id!,
+                        );
+                      },
+                      icon: Icon(Icons.more_horiz_rounded, size: 22.sp),
+                    ),
                 ],
               ),
               RichText(

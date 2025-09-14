@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,6 +13,7 @@ import 'package:smart_cleaning_application/core/widgets/default_toast/default_to
 import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/user/user_details/logic/cubit/user_details_cubit.dart';
 import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/user/user_details/ui/widgets/audit_answers/audit_answers_screen.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/user/user_details/ui/widgets/history/user_attendance_details.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/user/user_details/ui/widgets/leaves/user_leaves_details.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/user/user_details/ui/widgets/shifts/user_shift_details.dart';
@@ -24,8 +24,9 @@ import 'package:smart_cleaning_application/generated/l10n.dart';
 import 'package:photo_view/photo_view.dart';
 
 class UserDetailsBody extends StatefulWidget {
+  final int roleId;
   final int id;
-  const UserDetailsBody({super.key, required this.id});
+  const UserDetailsBody({super.key, required this.id, required this.roleId});
 
   @override
   State<UserDetailsBody> createState() => _UserDetailsBodyState();
@@ -33,45 +34,62 @@ class UserDetailsBody extends StatefulWidget {
 
 class _UserDetailsBodyState extends State<UserDetailsBody>
     with TickerProviderStateMixin {
+  late int tabCount;
   late TabController controller;
 
   @override
   void initState() {
-    controller = TabController(length: 6, vsync: this);
+    final cubit = context.read<UserDetailsCubit>();
 
+    tabCount = (widget.roleId == 1002) ? 3 : 6;
+
+    controller = TabController(length: tabCount, vsync: this);
     controller.addListener(() {
-      final cubit = context.read<UserDetailsCubit>();
-
       if (controller.indexIsChanging) return;
 
       final index = controller.index;
 
-      switch (index) {
-        case 1:
-          if (cubit.userWorkLocationDetailsModel == null) {
-            cubit.getUserWorkLocationDetails(widget.id);
-          }
-          break;
-        case 2:
-          if (cubit.userShiftDetailsModel == null) {
-            cubit.getUserShiftDetails(widget.id);
-          }
-          break;
-        case 3:
-          if (cubit.userTaskDetailsModel == null) {
-            cubit.initialize(widget.id);
-          }
-          break;
-        case 4:
-          if (cubit.attendanceHistoryModel == null) {
-            cubit.getAllHistory(widget.id);
-          }
-          break;
-        case 5:
-          if (cubit.attendanceLeavesModel == null) {
-            cubit.getAllLeaves(widget.id);
-          }
-          break;
+      if (widget.roleId == 1002) {
+        switch (index) {
+          case 1:
+            if (cubit.userWorkLocationDetailsModel == null) {
+              cubit.getUserWorkLocationDetails(widget.id);
+            }
+            break;
+          case 2:
+            if (cubit.auditorsModel == null) {
+              cubit.getAuditorAnswers(widget.id);
+            }
+            break;
+        }
+      } else {
+        switch (index) {
+          case 1:
+            if (cubit.userWorkLocationDetailsModel == null) {
+              cubit.getUserWorkLocationDetails(widget.id);
+            }
+            break;
+          case 2:
+            if (cubit.userShiftDetailsModel == null) {
+              cubit.getUserShiftDetails(widget.id);
+            }
+            break;
+          case 3:
+            if (cubit.userTaskDetailsModel == null) {
+              cubit.initialize(widget.id);
+            }
+            break;
+          case 4:
+            if (cubit.attendanceHistoryModel == null) {
+              cubit.getAllHistory(widget.id);
+            }
+            break;
+          case 5:
+            if (cubit.attendanceLeavesModel == null) {
+              cubit.getAllLeaves(widget.id);
+            }
+            break;
+        }
       }
     });
 
@@ -116,7 +134,8 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                   icon: Icon(
                     Icons.edit,
                     color: AppColor.primaryColor,
-                  ))
+                  )),
+           
           ]),
       body: BlocConsumer<UserDetailsCubit, UserDetailsState>(
         listener: (context, state) {
@@ -234,22 +253,19 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                       style: TextStyles.font11GreyMedium),
                   verticalSpace(15),
                   SizedBox(
-                      height: 42.h,
-                      width: double.infinity,
-                      child: AnimatedBuilder(
-                        animation: controller,
-                        builder: (context, _) {
-                          return TabBar(
-                            controller: controller,
-                            tabAlignment: TabAlignment.center,
-                            isScrollable: true,
-                            indicatorSize: TabBarIndicatorSize.tab,
-                            indicator: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5.r),
-                              color: AppColor.primaryColor,
-                            ),
-                            tabs: List.generate(6, (index) {
-                              final labels = [
+                    height: 42.h,
+                    width: double.infinity,
+                    child: AnimatedBuilder(
+                      animation: controller,
+                      builder: (context, _) {
+                        final roleId = cubit.userDetailsModel?.data?.roleId;
+                        final labels = (roleId == 1002)
+                            ? [
+                                S.of(context).userDetails,
+                                S.of(context).integ2,
+                                "History",
+                              ]
+                            : [
                                 S.of(context).userDetails,
                                 S.of(context).integ2,
                                 S.of(context).integ4,
@@ -258,54 +274,65 @@ class _UserDetailsBodyState extends State<UserDetailsBody>
                                 S.of(context).leaves,
                               ];
 
-                              return Tab(
-                                child: Text(
-                                  labels[index],
-                                  style: TextStyle(
-                                    color: controller.index == index
-                                        ? Colors.white
-                                        : Colors.black,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14.sp,
-                                  ),
+                        return TabBar(
+                          controller: controller,
+                          tabAlignment: TabAlignment.center,
+                          isScrollable: true,
+                          indicatorSize: TabBarIndicatorSize.tab,
+                          indicator: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5.r),
+                            color: AppColor.primaryColor,
+                          ),
+                          tabs: List.generate(labels.length, (index) {
+                            return Tab(
+                              child: Text(
+                                labels[index],
+                                style: TextStyle(
+                                  color: controller.index == index
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14.sp,
                                 ),
-                              );
-                            }),
-                          );
-                        },
-                      )),
+                              ),
+                            );
+                          }),
+                        );
+                      },
+                    ),
+                  ),
                   verticalSpace(5),
                   Expanded(
                     child: TabBarView(
                       controller: controller,
-                      children: [
-                        UserDetails(),
-
-                        // Tab 1: Work Location
-                        cubit.userWorkLocationDetailsModel == null
-                            ? Loading()
-                            : WorkLocationUserDetails(),
-
-                        // Tab 2: Shifts
-                        cubit.userShiftDetailsModel == null
-                            ? Loading()
-                            : UserShiftDetails(),
-
-                        // Tab 3: Tasks
-                        cubit.userTaskDetailsModel == null
-                            ? Loading()
-                            : UserTasksDetails(),
-
-                        // Tab 4: Attendance History
-                        cubit.attendanceHistoryModel == null
-                            ? Loading()
-                            : UserAttendanceDetails(),
-
-                        // Tab 5: Leaves
-                        cubit.attendanceLeavesModel == null
-                            ? Loading()
-                            : UserLeavesDetails(),
-                      ],
+                      children: (cubit.userDetailsModel?.data?.roleId == 1002)
+                          ? [
+                              UserDetails(),
+                              cubit.userWorkLocationDetailsModel == null
+                                  ? Loading()
+                                  : WorkLocationUserDetails(),
+                              cubit.auditorsModel == null
+                                  ? Loading()
+                                  : AuditAnswersDetails(),
+                            ]
+                          : [
+                              UserDetails(),
+                              cubit.userWorkLocationDetailsModel == null
+                                  ? Loading()
+                                  : WorkLocationUserDetails(),
+                              cubit.userShiftDetailsModel == null
+                                  ? Loading()
+                                  : UserShiftDetails(),
+                              cubit.userTaskDetailsModel == null
+                                  ? Loading()
+                                  : UserTasksDetails(),
+                              cubit.attendanceHistoryModel == null
+                                  ? Loading()
+                                  : UserAttendanceDetails(),
+                              cubit.attendanceLeavesModel == null
+                                  ? Loading()
+                                  : UserLeavesDetails(),
+                            ],
                     ),
                   ),
                   verticalSpace(15),

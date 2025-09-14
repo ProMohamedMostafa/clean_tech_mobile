@@ -10,6 +10,7 @@ class CustomMultiDropdown<T extends Object> extends StatelessWidget {
   final MultiSelectController<T> controller;
   final ValueChanged<List<T>> onSelectionChange;
   final String hint;
+  final int? maxSelections;
 
   const CustomMultiDropdown({
     super.key,
@@ -17,6 +18,7 @@ class CustomMultiDropdown<T extends Object> extends StatelessWidget {
     required this.controller,
     required this.onSelectionChange,
     required this.hint,
+    this.maxSelections,
   });
 
   @override
@@ -27,6 +29,7 @@ class CustomMultiDropdown<T extends Object> extends StatelessWidget {
       onSelectionChange: (selectedItems) {
         onSelectionChange(selectedItems);
       },
+      maxSelections: maxSelections ?? items.length,
       enabled: true,
       chipDecoration: ChipDecoration(
         backgroundColor: Colors.grey[300],

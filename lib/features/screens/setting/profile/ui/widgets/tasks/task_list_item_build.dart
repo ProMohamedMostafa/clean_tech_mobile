@@ -16,6 +16,11 @@ class TaskCardItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<ProfileCubit>();
+    String formatTime(String? time) {
+      if (time == null || time.isEmpty) return "--:--";
+      return time.substring(0, 5);
+    }
+
     return InkWell(
       borderRadius: BorderRadius.circular(11.r),
       onTap: () async {
@@ -91,9 +96,17 @@ class TaskCardItem extends StatelessWidget {
                 ],
               ),
               verticalSpace(5),
-              Text(
-                cubit.userTaskDetailsModel!.data!.data![index].title!,
-                style: TextStyles.font16BlackSemiBold,
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      cubit.userTaskDetailsModel!.data!.data![index].title!,
+                      style: TextStyles.font16BlackSemiBold,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ),
+                ],
               ),
               verticalSpace(10),
               Text(
@@ -111,14 +124,28 @@ class TaskCardItem extends StatelessWidget {
                     size: 22.sp,
                   ),
                   horizontalSpace(5),
-                  Text(
-                    cubit.userTaskDetailsModel!.data!.data![index].startTime!,
-                    style: TextStyles.font11WhiteSemiBold
-                        .copyWith(color: AppColor.primaryColor),
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: formatTime(cubit.userTaskDetailsModel!.data!
+                              .data![index].startTime!),
+                          style: TextStyles.font11PrimMedium,
+                        ),
+                        TextSpan(
+                          text: ' & ',
+                          style: TextStyles.font11BlackMedium,
+                        ),
+                        TextSpan(
+                          text: cubit.userTaskDetailsModel!.data!.data![index]
+                              .startDate!,
+                          style: TextStyles.font11PrimMedium,
+                        ),
+                      ],
+                    ),
                   ),
                   const Spacer(),
-
-                 
                   Builder(builder: (_) {
                     final users =
                         cubit.userTaskDetailsModel!.data!.data![index].users ??

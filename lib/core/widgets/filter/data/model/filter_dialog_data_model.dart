@@ -12,6 +12,7 @@ class FilterDialogDataModel {
   int? roleId;
   int? typeId;
   int? genderId;
+  int? questionTypeId;
   int? userId;
   int? shiftId;
   int? statusId;
@@ -29,7 +30,7 @@ class FilterDialogDataModel {
   int? minBattery;
   int? maxBattery;
   int? deviceId;
-  DateTime? date;
+  String? date;
   DateTime? startDate;
   DateTime? endDate;
   String? startTime;
@@ -51,6 +52,7 @@ class FilterDialogDataModel {
     this.roleId,
     this.typeId,
     this.genderId,
+    this.questionTypeId,
     this.userId,
     this.shiftId,
     this.statusId,
@@ -94,6 +96,7 @@ class FilterDialogDataModel {
       roleId: json['roleId'],
       typeId: json['typeId'],
       genderId: json['genderId'],
+      questionTypeId: json['questionTypeId'],
       userId: json['userId'],
       shiftId: json['shiftId'],
       statusId: json['statusId'],
@@ -136,6 +139,7 @@ class FilterDialogDataModel {
       'roleId': roleId,
       'typeId': typeId,
       'genderId': genderId,
+      'questionTypeId': questionTypeId,
       'userId': userId,
       'shiftId': shiftId,
       'statusId': statusId,

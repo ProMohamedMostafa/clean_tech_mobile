@@ -30,7 +30,7 @@ class LeavesEditCubit extends Cubit<LeavesEditState> {
   Future<void> editLeaves(int id) async {
     emit(LeavesEditLoadingState());
 
-     MultipartFile? imageFile;
+    MultipartFile? imageFile;
     if (image != null) {
       imageFile = await MultipartFile.fromFile(
         image!.path,
@@ -77,25 +77,27 @@ class LeavesEditCubit extends Cubit<LeavesEditState> {
     emit(LeavesEditLoadingState());
 
     MultipartFile? imageFile;
-    imageFile = await MultipartFile.fromFile(
-      image!.path,
-      filename: image!.name,
-    );
+    if (image != null) {
+      imageFile = await MultipartFile.fromFile(
+        image!.path,
+        filename: image!.name,
+      );
+    }
 
     final formDataMap = {
       "Id": id,
       "StartDate": startDateController.text.isNotEmpty
           ? startDateController.text
-          : leavesDetailsModel!.data!.startDate,
+          : leavesDetailsModel?.data?.startDate,
       "EndDate": endDateController.text.isNotEmpty
           ? endDateController.text
-          : leavesDetailsModel!.data!.endDate,
+          : leavesDetailsModel?.data?.endDate,
       "Type": typeController.text.isEmpty
-          ? leavesDetailsModel!.data!.typeId
+          ? leavesDetailsModel?.data?.typeId
           : typeIdController.text,
       "Reason": discriptionController.text.isNotEmpty
           ? discriptionController.text
-          : leavesDetailsModel!.data!.reason,
+          : leavesDetailsModel?.data?.reason,
       "File": imageFile,
     };
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
+import 'package:smart_cleaning_application/features/screens/home/ui/widgets/auditor_graph/auditor_home_screen.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/clock_in_out_body.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/graph_complete_task/complete_tasks_rate_body.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/graph_sensor/complete_tasks_rate_body.dart';
@@ -29,20 +30,20 @@ class HomeBody extends StatelessWidget {
               verticalSpace(5),
               HomeAppBar(),
               verticalSpace(15),
-              if (role != 'Admin') ...[
+              if (role != 'Admin' && role != 'Auditor') ...[
                 ClockInOutBody(),
                 verticalSpace(10),
               ],
-              if (role != 'Cleaner') ...[
-                ShowActivity(),
-                verticalSpace(10),
-              ],
+              ShowActivity(),
+              verticalSpace(10),
               if (role == 'Admin') ...[
                 Stock(),
                 verticalSpace(10),
               ],
-              UsersAttendance(),
-              verticalSpace(10),
+              if (role != 'Auditor') ...[
+                UsersAttendance(),
+                verticalSpace(10),
+              ],
               if (role == 'Admin') ...[
                 Shift(),
                 verticalSpace(10),
@@ -51,7 +52,7 @@ class HomeBody extends StatelessWidget {
                 SensorTasksRateBody(),
                 verticalSpace(10),
               ],
-              if (role != 'Admin') ...[
+              if (role != 'Admin' && role != 'Auditor') ...[
                 Tasks(),
                 verticalSpace(10),
               ],
@@ -59,10 +60,16 @@ class HomeBody extends StatelessWidget {
                 StockQuantityBody(),
                 verticalSpace(10),
               ],
-              CompleteTasksRateBody(),
-              verticalSpace(10),
-              TotalTaskBody(),
-              verticalSpace(10),
+              if (role != 'Auditor') ...[
+                CompleteTasksRateBody(),
+                verticalSpace(10),
+                TotalTaskBody(),
+                verticalSpace(10),
+              ],
+              if (role == 'Auditor') ...[
+                AuditorHomeScreen(),
+                verticalSpace(10),
+              ],
             ],
           ),
         ),

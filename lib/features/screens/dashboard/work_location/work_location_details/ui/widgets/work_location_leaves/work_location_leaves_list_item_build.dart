@@ -24,8 +24,11 @@ class WorkLocationLeavesListItemBuild extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(11.r),
       onTap: () async {
-        final result = await context.pushNamed(Routes.leavesDetailsScreen,
-            arguments: selectedIndex == 0
+        final result = await context.pushNamed(
+          
+           Routes.leavesDetailsScreen,
+          arguments: {
+            'id': selectedIndex == 0
                 ? cubit.attendanceLeavesAreaModel!.data!.leaves![index].id!
                 : selectedIndex == 1
                     ? cubit.attendanceLeavesCityModel!.data!.leaves![index].id!
@@ -42,30 +45,46 @@ class WorkLocationLeavesListItemBuild extends StatelessWidget {
                                     ? cubit.attendanceLeavesSectionModel!.data!
                                         .leaves![index].id!
                                     : cubit.attendanceLeavesPointModel!.data!
-                                        .leaves![index].id!);
+                                        .leaves![index].id!,
+            'isProfile': false,
+          },
+          
+          
+        );
 
         if (result == true) {
           selectedIndex == 0
-              ?  cubit.getAllLeavesArea( cubit.attendanceLeavesAreaModel!.data!.leaves![index].id!
-              )
+              ? cubit.getAllLeavesArea(
+                  cubit.attendanceLeavesAreaModel!.data!.leaves![index].id!)
               : selectedIndex == 1
-                  ? cubit.getAllLeavesCity( cubit.attendanceLeavesCityModel!.data!.leaves![index].id!
-              )
+                  ? cubit.getAllLeavesCity(
+                      cubit.attendanceLeavesCityModel!.data!.leaves![index].id!)
                   : selectedIndex == 2
-                      ? cubit.getAllLeavesOrganization( cubit.attendanceLeavesOrganizationModel!.data!.leaves![index].id!
-              )
+                      ? cubit.getAllLeavesOrganization(cubit
+                          .attendanceLeavesOrganizationModel!
+                          .data!
+                          .leaves![index]
+                          .id!)
                       : selectedIndex == 3
-                          ? cubit.getAllLeavesBuilding( cubit.attendanceLeavesBuildingModel!.data!.leaves![index].id!
-              )
+                          ? cubit.getAllLeavesBuilding(cubit
+                              .attendanceLeavesBuildingModel!
+                              .data!
+                              .leaves![index]
+                              .id!)
                           : selectedIndex == 4
-                              ? cubit.getAllLeavesFloor( cubit.attendanceLeavesFloorModel!.data!.leaves![index].id!
-              )
+                              ? cubit.getAllLeavesFloor(cubit
+                                  .attendanceLeavesFloorModel!
+                                  .data!
+                                  .leaves![index]
+                                  .id!)
                               : selectedIndex == 5
-                                  ? cubit.getAllLeavesSection( cubit.attendanceLeavesSectionModel!.data!.leaves![index].id!
-              )
-                                  : cubit.getAllLeavesPoint( cubit.attendanceLeavesPointModel!.data!.leaves![index].id!
-              );
-         
+                                  ? cubit.getAllLeavesSection(cubit
+                                      .attendanceLeavesSectionModel!
+                                      .data!
+                                      .leaves![index]
+                                      .id!)
+                                  : cubit.getAllLeavesPoint(
+                                      cubit.attendanceLeavesPointModel!.data!.leaves![index].id!);
         }
       },
       child: Card(

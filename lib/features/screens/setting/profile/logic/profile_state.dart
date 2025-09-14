@@ -1,5 +1,7 @@
 import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attendance_history_management/data/models/attendance_history_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attendance_leaves_management/data/models/attendance_leaves_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/feedback_audit_view/feedback_audit_mangement/data/auditor_answer_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/auditor/data/model/auditor_answer.dart';
 import 'package:smart_cleaning_application/features/screens/setting/settings/data/model/profile_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/task/task_management/data/models/all_tasks_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/user/user_details/data/models/user_shift_details_model.dart';
@@ -104,3 +106,37 @@ class LeavesErrorState extends ProfileState {
   final String error;
   LeavesErrorState(this.error);
 }
+//************************** */
+final class AuditorAnswersLoadingState extends ProfileState {}
+
+final class AuditorAnswersSuccessState extends ProfileState {
+  final AuditorAnswersModel auditorsAnswersModel;
+
+  AuditorAnswersSuccessState(this.auditorsAnswersModel);
+}
+
+final class AuditorAnswersErrorState extends ProfileState {
+  final String error;
+
+  AuditorAnswersErrorState(this.error);
+}
+
+
+//************************** */
+final class AuditorAnswerDetailsLoadingState extends ProfileState {}
+
+final class AuditorAnswerDetailsSuccessState extends ProfileState {
+  final AuditorAnswerDetailsModel auditorAnswerDetailsModel;
+
+  AuditorAnswerDetailsSuccessState(this.auditorAnswerDetailsModel);
+}
+
+final class AuditorAnswerDetailsErrorState extends ProfileState {
+  final String error;
+
+  AuditorAnswerDetailsErrorState(this.error);
+}
+
+
+//************************** */
+final class QuestionToggleSelectAllState extends ProfileState {}

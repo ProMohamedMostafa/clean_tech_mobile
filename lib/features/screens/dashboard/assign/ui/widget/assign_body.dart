@@ -440,6 +440,44 @@ class AssignBody extends StatelessWidget {
                                   },
                                   hint: S.of(context).selectCleaners,
                                 ),
+                                verticalSpace(10),
+                                Text(
+                                  S.of(context).auditors,
+                                  style: TextStyles.font16BlackRegular,
+                                ),
+                                CustomMultiDropdown(
+                                  items: cubit.usersModel!.data!.users!
+                                          .where(
+                                              (user) => user.role == 'Auditor')
+                                          .isEmpty
+                                      ? [
+                                          DropdownItem(
+                                            label: S
+                                                .of(context)
+                                                .no_auditors_available,
+                                            value: UserItem(
+                                                id: null,
+                                                userName: S
+                                                    .of(context)
+                                                    .no_auditors_available),
+                                          )
+                                        ]
+                                      : cubit.usersModel!.data!.users!
+                                          .where(
+                                              (user) => user.role == 'Auditor')
+                                          .map((auditor) => DropdownItem(
+                                                label: auditor.userName!,
+                                                value: auditor,
+                                              ))
+                                          .toList(),
+                                  controller: cubit.allAuditorsController,
+                                  onSelectionChange: (selectedItems) {
+                                    cubit.selectedAuditorsIds = selectedItems
+                                        .map((item) => (item).id!)
+                                        .toList();
+                                  },
+                                  hint: S.of(context).select_auditors,
+                                ),
                               ],
 
                               // role + single users

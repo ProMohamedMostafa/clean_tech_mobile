@@ -83,6 +83,11 @@ class TextStyles {
     fontWeight: FontWeightHelper.medium,
     color: AppColor.thirdColor,
   );
+  static TextStyle font16BlackMedium = TextStyle(
+    fontSize: 16.sp,
+    fontWeight: FontWeightHelper.medium,
+    color: Colors.black,
+  );
   static TextStyle font16BlackRegular = TextStyle(
     fontSize: 16.sp,
     fontWeight: FontWeightHelper.regular,
@@ -221,6 +226,11 @@ class TextStyles {
     fontWeight: FontWeightHelper.medium,
     color: Colors.black,
   );
+  static TextStyle font11PrimMedium = TextStyle(
+    fontSize: 11.sp,
+    fontWeight: FontWeightHelper.medium,
+    color: AppColor.primaryColor,
+  );
   static TextStyle font11lightPrimary = TextStyle(
     fontSize: 11.sp,
     fontWeight: FontWeightHelper.light,
@@ -244,10 +254,21 @@ class TextStyles {
     color: AppColor.primaryColor,
   );
 
+  static TextStyle font10MediumWhite = TextStyle(
+    fontSize: 10.sp,
+    fontWeight: FontWeightHelper.medium,
+    color: Colors.white,
+  );
+
   // ===== 9.sp =====
   static TextStyle font9PrimRegular = TextStyle(
     fontSize: 9.sp,
     fontWeight: FontWeightHelper.regular,
     color: AppColor.primaryColor,
+  );
+  static TextStyle font9GreyLight = TextStyle(
+    fontSize: 9.sp,
+    fontWeight: FontWeightHelper.light,
+    color: AppColor.thirdColor,
   );
 }

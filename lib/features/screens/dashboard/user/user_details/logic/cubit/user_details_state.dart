@@ -17,7 +17,6 @@ class UserDetailsErrorState extends UserDetailsState {
   UserDetailsErrorState(this.error);
 }
 
-
 //*********************** */
 
 class UserWorkLocationDetailsLoadingState extends UserDetailsState {}
@@ -103,3 +102,36 @@ class UserDeleteErrorState extends UserDetailsState {
   final String error;
   UserDeleteErrorState(this.error);
 }
+//************************* */
+
+final class AuditorAnswerDetailsLoadingState extends UserDetailsState {}
+
+final class AuditorAnswerDetailsSuccessState extends UserDetailsState {
+  final AuditorAnswerDetailsModel auditorAnswerDetailsModel;
+
+  AuditorAnswerDetailsSuccessState(this.auditorAnswerDetailsModel);
+}
+
+final class AuditorAnswerDetailsErrorState extends UserDetailsState {
+  final String error;
+
+  AuditorAnswerDetailsErrorState(this.error);
+}
+
+//************************** */
+final class AuditorAnswersLoadingState extends UserDetailsState {}
+
+final class AuditorAnswersSuccessState extends UserDetailsState {
+  final AuditorAnswersModel auditorsAnswersModel;
+
+  AuditorAnswersSuccessState(this.auditorsAnswersModel);
+}
+
+final class AuditorAnswersErrorState extends UserDetailsState {
+  final String error;
+
+  AuditorAnswersErrorState(this.error);
+}
+
+//************************** */
+final class QuestionToggleSelectAllState extends UserDetailsState {}

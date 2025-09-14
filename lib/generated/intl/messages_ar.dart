@@ -87,6 +87,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "addOrganization": MessageLookupByLibrary.simpleMessage("إضافة مؤسسة"),
     "addPoint": MessageLookupByLibrary.simpleMessage("إضافة نقطة"),
     "addProvider": MessageLookupByLibrary.simpleMessage("إضافة مزود"),
+    "addQuestion": MessageLookupByLibrary.simpleMessage("إضافة سؤال"),
     "addSection": MessageLookupByLibrary.simpleMessage("إضافة قسم"),
     "addUserButton": MessageLookupByLibrary.simpleMessage("إضافة مستخدم"),
     "addUserText1": MessageLookupByLibrary.simpleMessage("الاسم الأول"),
@@ -106,18 +107,33 @@ class MessageLookup extends MessageLookupByLibrary {
     "addUserText9": MessageLookupByLibrary.simpleMessage("الجنس"),
     "addUserTitle": MessageLookupByLibrary.simpleMessage("إضافة مستخدم"),
     "add_comment": MessageLookupByLibrary.simpleMessage("إضافة تعليق"),
+    "add_more_option": MessageLookupByLibrary.simpleMessage("أضف خيارًا آخر"),
     "admin": MessageLookupByLibrary.simpleMessage("مسؤول"),
     "after_reading": MessageLookupByLibrary.simpleMessage("بعد القراءة"),
-    "after_reading_or_feedback_device_not_exists":
+    "after_reading_required_countable_point":
         MessageLookupByLibrary.simpleMessage(
-          "بعد القراءة أو جهاز الملاحظات غير موجود.",
+          "بعد القراءة تتطلب نقطة قابلة للعد.",
         ),
     "all": MessageLookupByLibrary.simpleMessage("الكل"),
     "allTasks": MessageLookupByLibrary.simpleMessage("كل المهام"),
     "alreadyMarkedAsRead": MessageLookupByLibrary.simpleMessage(
       "تم تعليمها كمقروءة",
     ),
+    "already_assign_limit": MessageLookupByLibrary.simpleMessage(
+      "تم التعيين بالفعل حتى الحد الأقصى.",
+    ),
+    "already_assigned_an_another": MessageLookupByLibrary.simpleMessage(
+      "تم تعيين القسم بالفعل لعنصر آخر",
+    ),
     "annual": MessageLookupByLibrary.simpleMessage("سنوي"),
+    "answer": MessageLookupByLibrary.simpleMessage("إجابة"),
+    "answer_details": MessageLookupByLibrary.simpleMessage("تفاصيل الإجابة"),
+    "answer_too_long": MessageLookupByLibrary.simpleMessage(
+      "الإجابة طويلة جدًا",
+    ),
+    "answer_too_short": MessageLookupByLibrary.simpleMessage(
+      "الإجابة قصيرة جدًا",
+    ),
     "approveBody": MessageLookupByLibrary.simpleMessage("موافقة"),
     "approveButton": MessageLookupByLibrary.simpleMessage("موافقة"),
     "approved": MessageLookupByLibrary.simpleMessage("موافق عليه"),
@@ -133,19 +149,32 @@ class MessageLookup extends MessageLookupByLibrary {
       "اسم المنطقة قصير جدًا",
     ),
     "area_details": MessageLookupByLibrary.simpleMessage("تفاصيل المنطقة"),
-    "area_not_exists_or_reading_out_of_limit":
-        MessageLookupByLibrary.simpleMessage(
-          "المنطقة غير موجودة أو القراءة خارج النطاق المسموح.",
-        ),
+    "area_not_exists": MessageLookupByLibrary.simpleMessage(
+      "المنطقة غير موجودة.",
+    ),
     "areas": MessageLookupByLibrary.simpleMessage("المناطق"),
     "assignButton": MessageLookupByLibrary.simpleMessage("تعيين"),
+    "assign_more_questions": MessageLookupByLibrary.simpleMessage(
+      "تعيين المزيد من الأسئلة",
+    ),
+    "assign_questions": MessageLookupByLibrary.simpleMessage("تعيين الأسئلة"),
     "assign_to": MessageLookupByLibrary.simpleMessage("تعيين إلى"),
     "attendance": MessageLookupByLibrary.simpleMessage("الحضور"),
+    "audit": MessageLookupByLibrary.simpleMessage("تدقيق"),
+    "audit_history": MessageLookupByLibrary.simpleMessage("سجل التدقيق"),
+    "auditor": MessageLookupByLibrary.simpleMessage("المدقق"),
+    "auditor_questions": MessageLookupByLibrary.simpleMessage("أسئلة المدقق"),
+    "auditor_work_location": MessageLookupByLibrary.simpleMessage(
+      "موقع عمل المدقق",
+    ),
+    "auditors": MessageLookupByLibrary.simpleMessage("المدققون"),
+    "audits": MessageLookupByLibrary.simpleMessage("عمليات تدقيق"),
+    "bad": MessageLookupByLibrary.simpleMessage("سيئ"),
     "bad_certificate": MessageLookupByLibrary.simpleMessage(
       "تم استلام شهادة غير صالحة",
     ),
     "bad_gateway": MessageLookupByLibrary.simpleMessage(
-      "بوابة غير صالحة. حاول مرة أخرى لاحقاً.",
+      "بوابة غير صالحة. يرجى المحاولة مرة أخرى لاحقًا.",
     ),
     "bad_request": MessageLookupByLibrary.simpleMessage(
       "طلب غير صالح. يرجى التحقق من البيانات المرسلة.",
@@ -176,17 +205,19 @@ class MessageLookup extends MessageLookupByLibrary {
       "رقم المبنى طويل جدًا",
     ),
     "building_details": MessageLookupByLibrary.simpleMessage("تفاصيل المبنى"),
-    "building_not_exists_or_cannot_delete_shift":
-        MessageLookupByLibrary.simpleMessage(
-          "المبنى غير موجود أو لا يمكن حذف الوردية.",
-        ),
+    "building_not_exists": MessageLookupByLibrary.simpleMessage(
+      "المبنى غير موجود.",
+    ),
     "buildings": MessageLookupByLibrary.simpleMessage("المباني"),
-    "buildings_not_found_or_already_assign_limit":
-        MessageLookupByLibrary.simpleMessage(
-          "المباني غير موجودة أو تم الوصول للحد المسموح.",
-        ),
+    "buildings_not_found": MessageLookupByLibrary.simpleMessage(
+      "المباني غير موجودة.",
+    ),
     "calendar": MessageLookupByLibrary.simpleMessage("التقويم"),
     "cancelButton": MessageLookupByLibrary.simpleMessage("إلغاء"),
+    "cannot_delete_shift_assigned_user_work_location":
+        MessageLookupByLibrary.simpleMessage(
+          "لا يمكن حذف وردية معينة لموقع عمل المستخدم.",
+        ),
     "capacity": MessageLookupByLibrary.simpleMessage("السعة"),
     "capacityRequired": MessageLookupByLibrary.simpleMessage("السعة مطلوبة"),
     "capacityTooLong": MessageLookupByLibrary.simpleMessage("السعة طويلة جدًا"),
@@ -206,12 +237,11 @@ class MessageLookup extends MessageLookupByLibrary {
       "اسم الفئة قصير جدًا",
     ),
     "category_cannot_be_own_parent": MessageLookupByLibrary.simpleMessage(
-      "لا يمكن أن تكون الفئة أصل نفسها.",
+      "لا يمكن للفئة أن تكون والدها الخاص.",
     ),
-    "category_not_exists_or_leave_start_future":
-        MessageLookupByLibrary.simpleMessage(
-          "الفئة غير موجودة أو الإجازة تبدأ في المستقبل.",
-        ),
+    "category_not_exists": MessageLookupByLibrary.simpleMessage(
+      "الفئة غير موجودة.",
+    ),
     "changePasswordbutton": MessageLookupByLibrary.simpleMessage(
       "تغيير كلمة المرور",
     ),
@@ -226,6 +256,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "chartPie": MessageLookupByLibrary.simpleMessage("دائري"),
     "chart_type": MessageLookupByLibrary.simpleMessage("نوع الرسم البياني"),
     "check_ip": MessageLookupByLibrary.simpleMessage("تحقق من IP"),
+    "checkbox": MessageLookupByLibrary.simpleMessage("خانة اختيار"),
+    "choice_not_exists": MessageLookupByLibrary.simpleMessage(
+      "الخيار غير موجود.",
+    ),
+    "choices": MessageLookupByLibrary.simpleMessage("خيارات"),
     "cities": MessageLookupByLibrary.simpleMessage("المدن"),
     "cityBody": MessageLookupByLibrary.simpleMessage("المدينة"),
     "cityName": MessageLookupByLibrary.simpleMessage("اسم المدينة"),
@@ -239,8 +274,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "اسم المدينة قصير جدًا",
     ),
     "city_details": MessageLookupByLibrary.simpleMessage("تفاصيل المدينة"),
-    "city_not_exists_or_task_completed": MessageLookupByLibrary.simpleMessage(
-      "المدينة غير موجودة أو المهمة مكتملة بالفعل.",
+    "city_not_exists": MessageLookupByLibrary.simpleMessage(
+      "المدينة غير موجودة.",
     ),
     "cleaner": MessageLookupByLibrary.simpleMessage("عامل نظافة"),
     "cleaners": MessageLookupByLibrary.simpleMessage("عمال النظافة"),
@@ -268,9 +303,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "انتهت مهلة الاتصال بالخادم",
     ),
     "country": MessageLookupByLibrary.simpleMessage("الدولة"),
-    "country_or_device_already_assigned": MessageLookupByLibrary.simpleMessage(
-      "البلد غير موجود أو الجهاز معين بالفعل.",
+    "country_not_exists": MessageLookupByLibrary.simpleMessage(
+      "الدولة غير موجودة.",
     ),
+    "create": MessageLookupByLibrary.simpleMessage("إنشاء"),
     "createButton": MessageLookupByLibrary.simpleMessage("إنشاء"),
     "createCategory": MessageLookupByLibrary.simpleMessage("إنشاء فئة"),
     "createLeave": MessageLookupByLibrary.simpleMessage("إنشاء إجازة"),
@@ -287,18 +323,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "createPass4": MessageLookupByLibrary.simpleMessage("على الأقل رقم واحد"),
     "createPass5": MessageLookupByLibrary.simpleMessage("على الأقل 8 أحرف"),
     "createShift": MessageLookupByLibrary.simpleMessage("إنشاء وردية"),
+    "create_device": MessageLookupByLibrary.simpleMessage("إنشاء جهاز"),
+    "create_question": MessageLookupByLibrary.simpleMessage("إنشاء أسئلة"),
     "create_task": MessageLookupByLibrary.simpleMessage("إنشاء مهمة"),
     "created_by": MessageLookupByLibrary.simpleMessage("تم الإنشاء بواسطة"),
     "currently_reading": MessageLookupByLibrary.simpleMessage(
       "القراءة الحالية",
     ),
-    "currently_reading_or_feedback_device_assigned":
-        MessageLookupByLibrary.simpleMessage(
-          "يتم القراءة حالياً أو تم تعيين جهاز الملاحظات.",
-        ),
     "currently_reading_required": MessageLookupByLibrary.simpleMessage(
       "القراءة الحالية مطلوبة",
     ),
+    "currently_reading_required_countable_point":
+        MessageLookupByLibrary.simpleMessage(
+          "القراءة الحالية تتطلب نقطة قابلة للعد.",
+        ),
     "currently_reading_too_long": MessageLookupByLibrary.simpleMessage(
       "القراءة الحالية طويلة جداً",
     ),
@@ -325,8 +363,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "descriptionTooShort": MessageLookupByLibrary.simpleMessage(
       "الوصف قصير جدًا",
     ),
+    "details": MessageLookupByLibrary.simpleMessage("التفاصيل"),
     "device": MessageLookupByLibrary.simpleMessage("الجهاز"),
+    "device_already_assigned_point": MessageLookupByLibrary.simpleMessage(
+      "الجهاز معين بالفعل إلى نقطة.",
+    ),
+    "device_answers": MessageLookupByLibrary.simpleMessage("إجابات الجهاز"),
     "device_name": MessageLookupByLibrary.simpleMessage("اسم الجهاز"),
+    "device_not_exists": MessageLookupByLibrary.simpleMessage(
+      "الجهاز غير موجود.",
+    ),
+    "devices": MessageLookupByLibrary.simpleMessage("الأجهزة"),
     "discription": MessageLookupByLibrary.simpleMessage("الوصف"),
     "doneButton2": MessageLookupByLibrary.simpleMessage("مکمل"),
     "doneTitl1": MessageLookupByLibrary.simpleMessage("تم تغيير كلمة المرور!"),
@@ -346,16 +393,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "editProvider": MessageLookupByLibrary.simpleMessage("تعديل المزود"),
     "editShift": MessageLookupByLibrary.simpleMessage("تعديل الوردية"),
     "editUserTitle": MessageLookupByLibrary.simpleMessage("تعديل المستخدم"),
+    "edit_device": MessageLookupByLibrary.simpleMessage("تعديل الجهاز"),
     "edit_profile_details": MessageLookupByLibrary.simpleMessage(
       "تعديل تفاصيل الملف الشخصي",
     ),
+    "edit_question": MessageLookupByLibrary.simpleMessage("تعديل السؤال"),
     "edit_task": MessageLookupByLibrary.simpleMessage("تعديل المهمة"),
     "email_already_exists": MessageLookupByLibrary.simpleMessage(
-      "هذا البريد الإلكتروني مسجل بالفعل.",
+      "البريد الإلكتروني مسجل بالفعل.",
     ),
     "email_or_username_not_found": MessageLookupByLibrary.simpleMessage(
       "البريد الإلكتروني أو اسم المستخدم غير موجود.",
     ),
+    "emotions": MessageLookupByLibrary.simpleMessage("⚈ مشاعر"),
     "employee": MessageLookupByLibrary.simpleMessage("الموظف"),
     "employeeName": MessageLookupByLibrary.simpleMessage("اسم الموظف"),
     "employeeNameRequiredValidation": MessageLookupByLibrary.simpleMessage(
@@ -370,7 +420,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "وقت الانتهاء مطلوب",
     ),
     "end_date_greater_start_date": MessageLookupByLibrary.simpleMessage(
-      "تاريخ الانتهاء لا يمكن أن يكون بعد تاريخ البدء.",
+      "لا يمكن أن يكون تاريخ الانتهاء أكبر من تاريخ البدء.",
     ),
     "end_time": MessageLookupByLibrary.simpleMessage("الانتهاء: "),
     "enterCategory": MessageLookupByLibrary.simpleMessage("أدخل الفئة"),
@@ -382,11 +432,25 @@ class MessageLookup extends MessageLookupByLibrary {
     "enter_task_title": MessageLookupByLibrary.simpleMessage(
       "أدخل عنوان المهمة",
     ),
+    "enter_your_answer": MessageLookupByLibrary.simpleMessage("أدخل إجابتك..."),
     "experienceDescription": MessageLookupByLibrary.simpleMessage(
       "اختبر طريقة سهلة لإدارة\nخدمات التنظيف بنقرات قليلة!",
     ),
     "failed": MessageLookupByLibrary.simpleMessage("فشلت العملية."),
     "falseSelect": MessageLookupByLibrary.simpleMessage("خطأ"),
+    "false_value": MessageLookupByLibrary.simpleMessage("خطأ"),
+    "feedback": MessageLookupByLibrary.simpleMessage("التغذية الراجعة"),
+    "feedbackAndAudit": MessageLookupByLibrary.simpleMessage(
+      "التغذية الراجعة والتدقيق",
+    ),
+    "feedback_device_already_assigned_section":
+        MessageLookupByLibrary.simpleMessage(
+          "تم تعيين جهاز الملاحظات بالفعل إلى قسم.",
+        ),
+    "feedback_device_not_exists": MessageLookupByLibrary.simpleMessage(
+      "جهاز الملاحظات غير موجود.",
+    ),
+    "feedback_name": MessageLookupByLibrary.simpleMessage("اسم الملاحظات"),
     "female": MessageLookupByLibrary.simpleMessage("أنثى"),
     "file": MessageLookupByLibrary.simpleMessage("الملف"),
     "files": MessageLookupByLibrary.simpleMessage("الملفات"),
@@ -401,9 +465,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "findShift": MessageLookupByLibrary.simpleMessage("ابحث عن وردية"),
     "findSomeone": MessageLookupByLibrary.simpleMessage("ابحث عن شخص"),
     "findTransaction": MessageLookupByLibrary.simpleMessage("البحث عن معاملة"),
+    "find_device": MessageLookupByLibrary.simpleMessage("ابحث عن الجهاز"),
+    "find_location": MessageLookupByLibrary.simpleMessage("ابحث عن الموقع"),
     "find_name_of_work_location": MessageLookupByLibrary.simpleMessage(
       "ابحث عن اسم موقع العمل",
     ),
+    "find_question": MessageLookupByLibrary.simpleMessage("ابحث عن سؤال"),
     "find_task": MessageLookupByLibrary.simpleMessage("ابحث عن مهمة"),
     "floorBody": MessageLookupByLibrary.simpleMessage("الطابق"),
     "floorDescription": MessageLookupByLibrary.simpleMessage("وصف الطابق"),
@@ -425,14 +492,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "رقم الطابق طويل جدًا",
     ),
     "floor_details": MessageLookupByLibrary.simpleMessage("تفاصيل الطابق"),
-    "floor_not_exists_or_user_not_exists": MessageLookupByLibrary.simpleMessage(
-      "الطابق غير موجود أو المستخدم غير موجود.",
+    "floor_not_exists": MessageLookupByLibrary.simpleMessage(
+      "الطابق غير موجود.",
     ),
     "floors": MessageLookupByLibrary.simpleMessage("الطوابق"),
-    "floors_not_found_or_min_or_max_not_exists":
-        MessageLookupByLibrary.simpleMessage(
-          "الطوابق غير موجودة أو الحد الأدنى/الأقصى غير موجود.",
-        ),
+    "floors_not_found": MessageLookupByLibrary.simpleMessage(
+      "الطوابق غير موجودة.",
+    ),
     "forbidden": MessageLookupByLibrary.simpleMessage("ممنوع. ليس لديك إذن."),
     "forgotPassButton": MessageLookupByLibrary.simpleMessage(
       "نسيت كلمة المرور؟",
@@ -448,11 +514,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "g": MessageLookupByLibrary.simpleMessage("جم"),
     "gateway_timeout": MessageLookupByLibrary.simpleMessage(
-      "انتهت مهلة البوابة. حاول مرة أخرى لاحقاً.",
+      "انتهت مهلة البوابة. يرجى المحاولة مرة أخرى لاحقًا.",
     ),
     "gender": MessageLookupByLibrary.simpleMessage("الجنس"),
     "genderFemale": MessageLookupByLibrary.simpleMessage("أنثى"),
     "genderMale": MessageLookupByLibrary.simpleMessage("ذكر"),
+    "good": MessageLookupByLibrary.simpleMessage("جيد"),
     "hey": MessageLookupByLibrary.simpleMessage("مرحبًا، "),
     "high": MessageLookupByLibrary.simpleMessage("عالي"),
     "hintPhoneNumber": MessageLookupByLibrary.simpleMessage("123456789"),
@@ -477,6 +544,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "inside": MessageLookupByLibrary.simpleMessage("داخلي"),
     "integ1": MessageLookupByLibrary.simpleMessage("إدارة المستخدمين"),
     "integ10": MessageLookupByLibrary.simpleMessage("المزودين"),
+    "integ11": MessageLookupByLibrary.simpleMessage("ملاحظات"),
     "integ2": MessageLookupByLibrary.simpleMessage("مواقع العمل"),
     "integ3": MessageLookupByLibrary.simpleMessage("إدارة التعيينات"),
     "integ4": MessageLookupByLibrary.simpleMessage("الورديات"),
@@ -486,7 +554,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "integ8": MessageLookupByLibrary.simpleMessage("الأنشطة"),
     "integ9": MessageLookupByLibrary.simpleMessage("المستشعرات"),
     "integrations": MessageLookupByLibrary.simpleMessage("التكاملات"),
-    "invalid_otp": MessageLookupByLibrary.simpleMessage("رمز التحقق غير صحيح."),
+    "invalid_otp": MessageLookupByLibrary.simpleMessage("رمز التحقق غير صالح."),
     "ip_invalid_format": MessageLookupByLibrary.simpleMessage(
       "أدخل عنوان IP صالحًا (مثل 192.168.1.1)",
     ),
@@ -494,6 +562,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "isCountable": MessageLookupByLibrary.simpleMessage("هل يمكن العد:"),
     "is_active": MessageLookupByLibrary.simpleMessage("نشط؟"),
     "is_assign": MessageLookupByLibrary.simpleMessage("تم التعيين"),
+    "key_not_exists": MessageLookupByLibrary.simpleMessage(
+      "المفتاح غير موجود.",
+    ),
     "kg": MessageLookupByLibrary.simpleMessage("كجم"),
     "l": MessageLookupByLibrary.simpleMessage("لتر"),
     "labelEmail": MessageLookupByLibrary.simpleMessage(
@@ -503,9 +574,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "labelPassword": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
     "leaveBody": MessageLookupByLibrary.simpleMessage("إجازة"),
     "leaveDetails": MessageLookupByLibrary.simpleMessage("تفاصيل الإجازة"),
+    "leave_not_exists": MessageLookupByLibrary.simpleMessage(
+      "الإجازة غير موجودة.",
+    ),
+    "leave_overlaps": MessageLookupByLibrary.simpleMessage(
+      "الإجازة تتداخل مع إجازة موجودة.",
+    ),
+    "leave_start_future": MessageLookupByLibrary.simpleMessage(
+      "تاريخ بدء الإجازة في المستقبل.",
+    ),
     "leaves": MessageLookupByLibrary.simpleMessage("الإجازات"),
     "limitBody": MessageLookupByLibrary.simpleMessage("الحد"),
+    "limit_not_exists": MessageLookupByLibrary.simpleMessage("الحد غير موجود."),
     "line": MessageLookupByLibrary.simpleMessage("خط"),
+    "location": MessageLookupByLibrary.simpleMessage("الموقع"),
     "loginButton": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "loginDescription": MessageLookupByLibrary.simpleMessage(
       "سجّل الدخول للوصول إلى حسابك في كلين تك",
@@ -522,6 +604,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "m": MessageLookupByLibrary.simpleMessage("متر"),
     "male": MessageLookupByLibrary.simpleMessage("ذكر"),
     "manager": MessageLookupByLibrary.simpleMessage("مدير"),
+    "manager_does_not_exist": MessageLookupByLibrary.simpleMessage(
+      "المدير غير موجود.",
+    ),
     "managers": MessageLookupByLibrary.simpleMessage("المديرون"),
     "material": MessageLookupByLibrary.simpleMessage("المادة"),
     "materialBody": MessageLookupByLibrary.simpleMessage("مادة"),
@@ -543,12 +628,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "materialNameTooShort": MessageLookupByLibrary.simpleMessage(
       "اسم المادة قصير جدًا",
     ),
-    "material_not_exists_or_choice_not_exists":
-        MessageLookupByLibrary.simpleMessage("المادة أو الخيار غير موجود."),
+    "material_not_exists": MessageLookupByLibrary.simpleMessage(
+      "المادة غير موجودة.",
+    ),
     "materials": MessageLookupByLibrary.simpleMessage("الفئات"),
     "max": MessageLookupByLibrary.simpleMessage("الحد الأقصى"),
     "medium": MessageLookupByLibrary.simpleMessage("متوسط"),
     "min": MessageLookupByLibrary.simpleMessage("الحد الأدنى"),
+    "min_or_max_not_exists": MessageLookupByLibrary.simpleMessage(
+      "الحد الأدنى أو الأقصى غير موجود.",
+    ),
     "minimum": MessageLookupByLibrary.simpleMessage("الحد الأدنى"),
     "minimumLabel": MessageLookupByLibrary.simpleMessage("الحد الأدنى: "),
     "minimumRequired": MessageLookupByLibrary.simpleMessage(
@@ -559,6 +648,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "ml": MessageLookupByLibrary.simpleMessage("مل"),
     "module": MessageLookupByLibrary.simpleMessage("الوحدة"),
+    "multiple_options": MessageLookupByLibrary.simpleMessage("خيارات متعددة"),
     "myActivities": MessageLookupByLibrary.simpleMessage("أنشطتي"),
     "myActivity": MessageLookupByLibrary.simpleMessage("نشاطي"),
     "myTeamActivities": MessageLookupByLibrary.simpleMessage("أنشطة فريقي"),
@@ -566,6 +656,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "my_tasks": MessageLookupByLibrary.simpleMessage("مهامي"),
     "my_team_tasks": MessageLookupByLibrary.simpleMessage("مهام فريقي"),
     "name": MessageLookupByLibrary.simpleMessage("الاسم"),
+    "nameRequired": MessageLookupByLibrary.simpleMessage("الاسم مطلوب"),
+    "nameTooLong": MessageLookupByLibrary.simpleMessage("الاسم طويل جدًا"),
+    "nameTooShort": MessageLookupByLibrary.simpleMessage("الاسم قصير جدًا"),
     "name_already_exists": MessageLookupByLibrary.simpleMessage(
       "هذا الاسم موجود بالفعل.",
     ),
@@ -615,6 +708,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "noUsersAvailable": MessageLookupByLibrary.simpleMessage(
       "لا يتوفر مستخدمون",
     ),
+    "no_auditors_available": MessageLookupByLibrary.simpleMessage(
+      "لا يوجد مدققون متاحون",
+    ),
     "no_comments": MessageLookupByLibrary.simpleMessage("لا توجد تعليقات"),
     "no_employee_added": MessageLookupByLibrary.simpleMessage(
       "لم يتم إضافة موظف",
@@ -625,15 +721,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "no_internet": MessageLookupByLibrary.simpleMessage(
       "لا يوجد اتصال بالإنترنت",
     ),
+    "no_options_available": MessageLookupByLibrary.simpleMessage(
+      "لا توجد خيارات متاحة",
+    ),
+    "no_questions": MessageLookupByLibrary.simpleMessage("لا توجد أسئلة"),
     "no_user": MessageLookupByLibrary.simpleMessage("لا يوجد مستخدم"),
+    "no_work_location_assigned": MessageLookupByLibrary.simpleMessage(
+      "لم يتم تعيين موقع عمل لهذا المستخدم",
+    ),
+    "normal": MessageLookupByLibrary.simpleMessage("عادي"),
     "notApproval": MessageLookupByLibrary.simpleMessage("لم تتم الموافقة"),
     "notResolved": MessageLookupByLibrary.simpleMessage("غير محلول"),
     "notResolvedTask": MessageLookupByLibrary.simpleMessage("لم تُحل"),
     "not_approval": MessageLookupByLibrary.simpleMessage("لم تتم الموافقة"),
-    "not_assigned_to_task_or_limit_not_exists":
-        MessageLookupByLibrary.simpleMessage(
-          "غير معين لهذه المهمة أو الحد غير موجود.",
-        ),
+    "not_assigned_to_task": MessageLookupByLibrary.simpleMessage(
+      "أنت غير معين لهذه المهمة.",
+    ),
     "not_found": MessageLookupByLibrary.simpleMessage("المورد غير موجود."),
     "not_resolved": MessageLookupByLibrary.simpleMessage("لم يتم الحل"),
     "notifications": MessageLookupByLibrary.simpleMessage("الإشعارات"),
@@ -654,17 +757,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "organization_details": MessageLookupByLibrary.simpleMessage(
       "تفاصيل المؤسسة",
     ),
-    "organization_or_shift_not_exists": MessageLookupByLibrary.simpleMessage(
-      "المنظمة أو الوردية غير موجودة.",
+    "organization_not_exists": MessageLookupByLibrary.simpleMessage(
+      "المؤسسة غير موجودة.",
     ),
     "organizations": MessageLookupByLibrary.simpleMessage("المؤسسات"),
-    "organizations_not_found_or_quantity_greater":
-        MessageLookupByLibrary.simpleMessage(
-          "المنظمات غير موجودة أو الكمية أكبر من المتاح.",
-        ),
+    "organizations_not_found": MessageLookupByLibrary.simpleMessage(
+      "المؤسسات غير موجودة.",
+    ),
     "otp_expired": MessageLookupByLibrary.simpleMessage(
       "انتهت صلاحية رمز التحقق.",
     ),
+    "outOf": MessageLookupByLibrary.simpleMessage("من أصل"),
     "outSelect": MessageLookupByLibrary.simpleMessage("صادر"),
     "outSide": MessageLookupByLibrary.simpleMessage("خارجي"),
     "outside": MessageLookupByLibrary.simpleMessage("خارجي"),
@@ -672,11 +775,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "overdueTask": MessageLookupByLibrary.simpleMessage("متأخرة"),
     "parentCategory": MessageLookupByLibrary.simpleMessage("الفئة الرئيسية"),
     "parent_task": MessageLookupByLibrary.simpleMessage("المهمة الرئيسية"),
+    "parent_task_not_exists": MessageLookupByLibrary.simpleMessage(
+      "المهمة الرئيسية غير موجودة.",
+    ),
     "password_is_incorrect": MessageLookupByLibrary.simpleMessage(
       "كلمة المرور غير صحيحة.",
     ),
     "password_reset_required": MessageLookupByLibrary.simpleMessage(
-      "يجب إعادة تعيين كلمة المرور الخاصة بك.",
+      "تحتاج إلى إعادة تعيين كلمة المرور الخاصة بك.",
     ),
     "pending": MessageLookupByLibrary.simpleMessage("قيد الانتظار"),
     "pendingTask": MessageLookupByLibrary.simpleMessage("قيد الانتظار"),
@@ -685,6 +791,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "pie": MessageLookupByLibrary.simpleMessage("دائري"),
     "pieces": MessageLookupByLibrary.simpleMessage("قطع"),
+    "please_add_4_choices": MessageLookupByLibrary.simpleMessage(
+      "يرجى إضافة 4 خيارات",
+    ),
+    "please_select_type_of_rating": MessageLookupByLibrary.simpleMessage(
+      "يرجى تحديد نوع التقييم",
+    ),
     "pointBody": MessageLookupByLibrary.simpleMessage("النقطة"),
     "pointDescription": MessageLookupByLibrary.simpleMessage("وصف النقطة"),
     "pointName": MessageLookupByLibrary.simpleMessage("اسم النقطة"),
@@ -705,10 +817,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "رقم النقطة طويل جدًا",
     ),
     "point_details": MessageLookupByLibrary.simpleMessage("تفاصيل النقطة"),
-    "point_not_exists_or_leave_not_exists":
-        MessageLookupByLibrary.simpleMessage(
-          "النقطة غير موجودة أو الإجازة غير موجودة.",
-        ),
+    "point_not_exists": MessageLookupByLibrary.simpleMessage(
+      "النقطة غير موجودة.",
+    ),
     "points": MessageLookupByLibrary.simpleMessage("النقاط"),
     "present": MessageLookupByLibrary.simpleMessage("حاضر"),
     "price": MessageLookupByLibrary.simpleMessage("السعر"),
@@ -725,14 +836,38 @@ class MessageLookup extends MessageLookupByLibrary {
     "provider": MessageLookupByLibrary.simpleMessage("المزود"),
     "providerBody": MessageLookupByLibrary.simpleMessage("مزود"),
     "providerName": MessageLookupByLibrary.simpleMessage("اسم المزود"),
-    "provider_not_exists_or_question_not_exists":
-        MessageLookupByLibrary.simpleMessage("المزود أو السؤال غير موجود."),
+    "provider_not_exists": MessageLookupByLibrary.simpleMessage(
+      "المزود غير موجود.",
+    ),
     "providers": MessageLookupByLibrary.simpleMessage("المزودون"),
     "quantity": MessageLookupByLibrary.simpleMessage("الكمية"),
     "quantityLabel": MessageLookupByLibrary.simpleMessage("الكمية: "),
     "quantityRequired": MessageLookupByLibrary.simpleMessage("الكمية مطلوبة"),
     "quantityTooLong": MessageLookupByLibrary.simpleMessage(
       "الكمية طويلة جدًا",
+    ),
+    "quantity_greater_available": MessageLookupByLibrary.simpleMessage(
+      "الكمية أكبر من المتاح.",
+    ),
+    "question": MessageLookupByLibrary.simpleMessage("الأسئلة"),
+    "question_label": MessageLookupByLibrary.simpleMessage("السؤال:"),
+    "question_not_exists": MessageLookupByLibrary.simpleMessage(
+      "السؤال غير موجود.",
+    ),
+    "question_number": MessageLookupByLibrary.simpleMessage("رقم السؤال"),
+    "question_required": MessageLookupByLibrary.simpleMessage("السؤال مطلوب"),
+    "question_too_long": MessageLookupByLibrary.simpleMessage(
+      "السؤال طويل جدًا",
+    ),
+    "question_too_short": MessageLookupByLibrary.simpleMessage(
+      "السؤال قصير جدًا",
+    ),
+    "question_type": MessageLookupByLibrary.simpleMessage("نوع السؤال"),
+    "questions": MessageLookupByLibrary.simpleMessage("الأسئلة"),
+    "rating": MessageLookupByLibrary.simpleMessage("تقييم"),
+    "reStartButton": MessageLookupByLibrary.simpleMessage("إعادة التشغيل"),
+    "reading_out_allowed_limit_range": MessageLookupByLibrary.simpleMessage(
+      "القراءة خارج النطاق المسموح به.",
     ),
     "reason": MessageLookupByLibrary.simpleMessage("السبب"),
     "reasonHint": MessageLookupByLibrary.simpleMessage("السبب.."),
@@ -761,11 +896,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "roleManager": MessageLookupByLibrary.simpleMessage("مدير"),
     "roleSupervisor": MessageLookupByLibrary.simpleMessage("مشرف"),
     "roleUsers": MessageLookupByLibrary.simpleMessage("مستخدمون"),
-    "role_or_parent_task_not_exists": MessageLookupByLibrary.simpleMessage(
-      "الدور أو المهمة الأصلية غير موجودة.",
+    "role_does_not_exist": MessageLookupByLibrary.simpleMessage(
+      "الدور غير موجود.",
     ),
     "saveButton": MessageLookupByLibrary.simpleMessage("حفظ"),
     "saveButtton": MessageLookupByLibrary.simpleMessage("حفظ"),
+    "search": MessageLookupByLibrary.simpleMessage("بحث"),
+    "section": MessageLookupByLibrary.simpleMessage("القسم:"),
     "sectionBody": MessageLookupByLibrary.simpleMessage("القسم"),
     "sectionDescription": MessageLookupByLibrary.simpleMessage("وصف القسم"),
     "sectionName": MessageLookupByLibrary.simpleMessage("اسم القسم"),
@@ -786,13 +923,16 @@ class MessageLookup extends MessageLookupByLibrary {
       "رقم القسم طويل جدًا",
     ),
     "section_details": MessageLookupByLibrary.simpleMessage("تفاصيل القسم"),
-    "section_not_exists_or_tag_not_exists":
-        MessageLookupByLibrary.simpleMessage("القسم أو العلامة غير موجود."),
+    "section_not_exists": MessageLookupByLibrary.simpleMessage(
+      "القسم غير موجود.",
+    ),
+    "section_usage_not_exists": MessageLookupByLibrary.simpleMessage(
+      "استخدام القسم غير موجود.",
+    ),
     "sections": MessageLookupByLibrary.simpleMessage("الأقسام"),
-    "sections_not_found_or_key_not_exists":
-        MessageLookupByLibrary.simpleMessage(
-          "الأقسام غير موجودة أو المفتاح غير موجود.",
-        ),
+    "sections_not_found": MessageLookupByLibrary.simpleMessage(
+      "الأقسام غير موجودة.",
+    ),
     "seeMoreButton": MessageLookupByLibrary.simpleMessage("عرض المزيد"),
     "select": MessageLookupByLibrary.simpleMessage("اختر"),
     "selectArea": MessageLookupByLibrary.simpleMessage("اختر المنطقة"),
@@ -815,6 +955,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "selectType": MessageLookupByLibrary.simpleMessage("اختر النوع"),
     "selectUnit": MessageLookupByLibrary.simpleMessage("اختر الوحدة"),
     "select_action": MessageLookupByLibrary.simpleMessage("اختر الإجراء"),
+    "select_all": MessageLookupByLibrary.simpleMessage("اختر الكل"),
+    "select_auditors": MessageLookupByLibrary.simpleMessage("اختر المدققين"),
+    "select_device": MessageLookupByLibrary.simpleMessage("اختر الجهاز"),
+    "select_feedback": MessageLookupByLibrary.simpleMessage(
+      "اختر التغذية الراجعة",
+    ),
     "select_module": MessageLookupByLibrary.simpleMessage("اختر الوحدة"),
     "select_nationality": MessageLookupByLibrary.simpleMessage("اختر الجنسية"),
     "select_parent_category": MessageLookupByLibrary.simpleMessage(
@@ -826,15 +972,23 @@ class MessageLookup extends MessageLookupByLibrary {
     "select_point": MessageLookupByLibrary.simpleMessage("اختر النقطة"),
     "select_priority": MessageLookupByLibrary.simpleMessage("اختر الأولوية"),
     "select_provider": MessageLookupByLibrary.simpleMessage("اختر المزود"),
+    "select_question_type": MessageLookupByLibrary.simpleMessage(
+      "اختر نوع السؤال",
+    ),
     "select_role": MessageLookupByLibrary.simpleMessage("اختر الدور"),
     "select_sensor": MessageLookupByLibrary.simpleMessage("اختر المستشعر"),
     "select_shift": MessageLookupByLibrary.simpleMessage("اختر الوردية"),
     "select_status": MessageLookupByLibrary.simpleMessage("اختر الحالة"),
+    "select_type": MessageLookupByLibrary.simpleMessage("اختر النوع"),
+    "select_type_of_rating": MessageLookupByLibrary.simpleMessage(
+      "اختر نوع التقييم",
+    ),
     "select_user": MessageLookupByLibrary.simpleMessage("اختر المستخدم"),
     "select_users": MessageLookupByLibrary.simpleMessage("اختر المستخدمين"),
     "select_work_location": MessageLookupByLibrary.simpleMessage(
       "اختر موقع العمل",
     ),
+    "send": MessageLookupByLibrary.simpleMessage("إرسال"),
     "send_timeout": MessageLookupByLibrary.simpleMessage(
       "انتهت مهلة الإرسال إلى الخادم",
     ),
@@ -849,10 +1003,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "sensorTextAgo": MessageLookupByLibrary.simpleMessage("منذ "),
     "sensorTextLastRead": MessageLookupByLibrary.simpleMessage(" آخر قراءة"),
     "server_error": MessageLookupByLibrary.simpleMessage(
-      "خطأ في الخادم. حاول مرة أخرى لاحقاً.",
+      "خطأ في الخادم. يرجى المحاولة مرة أخرى لاحقًا.",
     ),
     "service_unavailable": MessageLookupByLibrary.simpleMessage(
-      "الخدمة غير متاحة. حاول مرة أخرى لاحقاً.",
+      "الخدمة غير متاحة. يرجى المحاولة مرة أخرى لاحقًا.",
     ),
     "setButton": MessageLookupByLibrary.simpleMessage(
       "إعادة تعيين كلمة المرور",
@@ -892,12 +1046,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "shiftNameTooShortValidation": MessageLookupByLibrary.simpleMessage(
       "اسم الوردية قصير جدًا",
     ),
+    "shift_not_exists": MessageLookupByLibrary.simpleMessage(
+      "الوردية غير موجودة.",
+    ),
+    "shift_overlaps": MessageLookupByLibrary.simpleMessage(
+      "الوردية تتداخل مع وردية موجودة.",
+    ),
     "shifts": MessageLookupByLibrary.simpleMessage("الورديات"),
-    "shifts_not_found_or_shift_overlaps": MessageLookupByLibrary.simpleMessage(
-      "الورديات غير موجودة أو الوردية تتداخل.",
+    "shifts_not_found": MessageLookupByLibrary.simpleMessage(
+      "الورديات غير موجودة.",
     ),
     "showActivity": MessageLookupByLibrary.simpleMessage("عرض النشاط"),
     "sick": MessageLookupByLibrary.simpleMessage("مرضي"),
+    "stars": MessageLookupByLibrary.simpleMessage("⚈ نجوم"),
+    "start": MessageLookupByLibrary.simpleMessage("ابدأ"),
     "startButton": MessageLookupByLibrary.simpleMessage("ابدأ"),
     "startDate": MessageLookupByLibrary.simpleMessage("تاريخ البدء"),
     "startDateRequiredValidation": MessageLookupByLibrary.simpleMessage(
@@ -918,16 +1080,25 @@ class MessageLookup extends MessageLookupByLibrary {
     "submitButton": MessageLookupByLibrary.simpleMessage("إرسال"),
     "supervisor": MessageLookupByLibrary.simpleMessage("مشرف"),
     "supervisors": MessageLookupByLibrary.simpleMessage("المشرفون"),
+    "tag_not_exists": MessageLookupByLibrary.simpleMessage(
+      "العلامة غير موجودة.",
+    ),
     "take_photo": MessageLookupByLibrary.simpleMessage("التقاط صورة"),
     "taskCompletionRate": MessageLookupByLibrary.simpleMessage(
       "نسبة إكمال المهام",
     ),
     "task_cannot_be_own_parent": MessageLookupByLibrary.simpleMessage(
-      "لا يمكن أن تكون المهمة أصل نفسها.",
+      "لا يمكن للمهمة أن تكون والدها الخاص.",
     ),
     "task_details": MessageLookupByLibrary.simpleMessage("تفاصيل المهمة"),
+    "task_is_completed": MessageLookupByLibrary.simpleMessage(
+      "المهمة مكتملة بالفعل.",
+    ),
     "task_not_completed": MessageLookupByLibrary.simpleMessage(
       "لم تكتمل المهمة بعد.",
+    ),
+    "task_not_exists": MessageLookupByLibrary.simpleMessage(
+      "المهمة غير موجودة.",
     ),
     "task_not_started": MessageLookupByLibrary.simpleMessage(
       "لم تبدأ المهمة بعد.",
@@ -946,6 +1117,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "taskbody": MessageLookupByLibrary.simpleMessage("المهمة"),
     "tasks": MessageLookupByLibrary.simpleMessage("المهام"),
     "termsConditions": MessageLookupByLibrary.simpleMessage("الشروط والأحكام"),
+    "text_input": MessageLookupByLibrary.simpleMessage("إدخال نص"),
+    "the_question": MessageLookupByLibrary.simpleMessage("السؤال"),
     "time": MessageLookupByLibrary.simpleMessage("الوقت"),
     "total": MessageLookupByLibrary.simpleMessage("الإجمالي"),
     "totalCategories": MessageLookupByLibrary.simpleMessage("إجمالي الفئات"),
@@ -968,10 +1141,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "transaction_type": MessageLookupByLibrary.simpleMessage("نوع المعاملة"),
     "transactions": MessageLookupByLibrary.simpleMessage("المعاملات"),
     "trueSelect": MessageLookupByLibrary.simpleMessage("صحيح"),
+    "true_or_false": MessageLookupByLibrary.simpleMessage("صح أو خطأ"),
+    "true_value": MessageLookupByLibrary.simpleMessage("صحيح"),
     "type": MessageLookupByLibrary.simpleMessage("النوع"),
     "typeRequired": MessageLookupByLibrary.simpleMessage("النوع مطلوب"),
     "unauthorized": MessageLookupByLibrary.simpleMessage(
-      "غير مصرح. يرجى تسجيل الدخول مرة أخرى.",
+      "غير مصرح به. يرجى تسجيل الدخول مرة أخرى.",
     ),
     "unexpected_error": MessageLookupByLibrary.simpleMessage(
       "خطأ غير متوقع: {}",
@@ -989,16 +1164,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "userDetails": MessageLookupByLibrary.simpleMessage("تفاصيل المستخدم"),
     "userDetailsTitle": MessageLookupByLibrary.simpleMessage("تفاصيل المستخدم"),
     "userManagement": MessageLookupByLibrary.simpleMessage("إدارة المستخدمين"),
-    "user_cannot_manage_themselves_or_task_not_exists":
-        MessageLookupByLibrary.simpleMessage(
-          "لا يمكن للمستخدم إدارة نفسه أو المهمة غير موجودة.",
-        ),
+    "user_cannot_manage_themselves": MessageLookupByLibrary.simpleMessage(
+      "لا يمكن للمستخدم إدارة نفسه.",
+    ),
+    "user_not_exists": MessageLookupByLibrary.simpleMessage(
+      "المستخدم غير موجود.",
+    ),
     "username_already_exists": MessageLookupByLibrary.simpleMessage(
       "اسم المستخدم هذا مستخدم بالفعل.",
     ),
     "users": MessageLookupByLibrary.simpleMessage("المستخدمون"),
-    "users_not_found_or_leave_overlaps": MessageLookupByLibrary.simpleMessage(
-      "المستخدمون غير موجودين أو الإجازة تتداخل.",
+    "users_not_found": MessageLookupByLibrary.simpleMessage(
+      "المستخدمون غير موجودين.",
     ),
     "validationAddEmail": MessageLookupByLibrary.simpleMessage(
       "البريد الإلكتروني مطلوب",
@@ -1132,6 +1309,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "welcome": MessageLookupByLibrary.simpleMessage("مرحبًا!"),
     "workLocation": MessageLookupByLibrary.simpleMessage("موقع العمل"),
+    "write": MessageLookupByLibrary.simpleMessage("اكتب"),
     "writeCapacity": MessageLookupByLibrary.simpleMessage("أدخل السعة"),
     "writeMinimum": MessageLookupByLibrary.simpleMessage("أدخل الحد الأدنى"),
     "writePrice": MessageLookupByLibrary.simpleMessage("اكتب رقم السعر"),
@@ -1140,6 +1318,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "write_comment": MessageLookupByLibrary.simpleMessage("اكتب تعليقك"),
     "write_currently_reading": MessageLookupByLibrary.simpleMessage(
       "اكتب القراءة الحالية",
+    ),
+    "write_question_here": MessageLookupByLibrary.simpleMessage(
+      "اكتب السؤال هنا",
     ),
     "yes": MessageLookupByLibrary.simpleMessage("نعم"),
     "yesButtton": MessageLookupByLibrary.simpleMessage("نعم، أنا متأكد"),

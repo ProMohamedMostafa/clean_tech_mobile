@@ -20,52 +20,59 @@ import 'package:smart_cleaning_application/core/widgets/custom_description_text_
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class LeavesDetailsBody extends StatelessWidget {
+  final bool isProfile;
   final int id;
-  const LeavesDetailsBody({super.key, required this.id});
+  const LeavesDetailsBody(
+      {super.key, required this.id, required this.isProfile});
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<LeavesDetailsCubit>();
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(S.of(context).leaveDetails),
-        leading: CustomBackButton(),
-        actions: [
-          IconButton(
-              onPressed: () async {
-                final result = await context.pushNamed(Routes.editleavesScreen,
-                    arguments: id);
+    return BlocConsumer<LeavesDetailsCubit, LeavesDetailsState>(
+      listener: (context, state) {
+        if (state is LeavesDeleteSuccessState) {
+          toast(text: state.message, isSuccess: true);
+          context.popWithTrueResult();
+        }
+        if (state is LeavesDeleteErrorState) {
+          toast(text: state.error, isSuccess: false);
+        }
+        if (state is LeavesApproveSuccessState) {
+          toast(text: state.message, isSuccess: true);
+          context.popWithTrueResult();
+        }
+        if (state is LeavesApproveErrorState) {
+          toast(text: state.error, isSuccess: false);
+        }
+      },
+      builder: (context, state) {
+        final cubit = context.watch<LeavesDetailsCubit>();
 
-                if (result == true) {
-                  cubit.refresLeaves(id: id);
-                }
-              },
-              icon: Icon(Icons.edit, color: AppColor.primaryColor))
-        ],
-      ),
-      body: BlocConsumer<LeavesDetailsCubit, LeavesDetailsState>(
-        listener: (context, state) {
-          if (state is LeavesDeleteSuccessState) {
-            toast(text: state.message, isSuccess: true);
-            context.popWithTrueResult();
-          }
-          if (state is LeavesDeleteErrorState) {
-            toast(text: state.error, isSuccess: false);
-          }
-          if (state is LeavesApproveSuccessState) {
-            toast(text: state.message, isSuccess: true);
-            context.popWithTrueResult();
-          }
-          if (state is LeavesApproveErrorState) {
-            toast(text: state.error, isSuccess: false);
-          }
-        },
-        builder: (context, state) {
-          if (cubit.leavesDetailsModel == null) {
-            return Loading();
-          }
+        if (state is LeavesDetailsLoadingState &&
+            cubit.leavesDetailsModel == null) {
+          return Loading();
+        }
 
-          return SingleChildScrollView(
+        final status = cubit.leavesDetailsModel!.data!.status;
+        final isAuthorized = role == 'Admin' || role == 'Manager';
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(S.of(context).leaveDetails),
+            leading: CustomBackButton(),
+            actions: [
+              if (status == 'Created By Admin' || isProfile == true)
+                IconButton(
+                    onPressed: () async {
+                      final result = await context
+                          .pushNamed(Routes.editleavesScreen, arguments: id);
+
+                      if (result == true) {
+                        cubit.refresLeaves(id: id);
+                      }
+                    },
+                    icon: Icon(Icons.edit, color: AppColor.primaryColor))
+            ],
+          ),
+          body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
@@ -192,191 +199,176 @@ class LeavesDetailsBody extends StatelessWidget {
                   verticalSpace(5),
                   PdfImageView(fileUrl: cubit.leavesDetailsModel!.data!.file),
                   verticalSpace(20),
-                  if (role == 'Admin' ||
-                      (role == 'Cleaner' &&
-                          cubit.leavesDetailsModel!.data!.status == 'Pending'))
+                  if (status == 'Pending' && isAuthorized && isProfile == false)
                     state is LeavesDeleteLoadingState
                         ? Loading()
-                        : cubit.leavesDetailsModel!.data!.status == 'Pending' &&
-                                role == 'Admin'
-                            ? Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    child: DefaultElevatedButton(
-                                      name: S.of(context).approveButton,
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (dialogContext) {
-                                            return PopUpMessage(
-                                              title: S.of(context).Titleapprove,
-                                              body: S.of(context).leaveBody,
-                                              onPressed: () {
-                                                cubit.approveLeaveRequest(
-                                                    id, true);
-                                                context.pop();
-                                              },
-                                            );
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: DefaultElevatedButton(
+                                  name: S.of(context).approveButton,
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (dialogContext) {
+                                        return PopUpMessage(
+                                          title: S.of(context).Titleapprove,
+                                          body: S.of(context).leaveBody,
+                                          onPressed: () {
+                                            cubit.approveLeaveRequest(id, true);
                                           },
                                         );
                                       },
-                                      color: AppColor.primaryColor,
-                                      width: double.infinity,
-                                      textStyles:
-                                          TextStyles.font16WhiteSemiBold,
-                                    ),
-                                  ),
-                                  horizontalSpace(10),
-                                  Expanded(
-                                    child: DefaultElevatedButton(
-                                      name: S.of(context).rejectButton,
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (dialogContext) {
-                                            final cubit = context
-                                                .read<LeavesDetailsCubit>();
+                                    );
+                                  },
+                                  color: AppColor.primaryColor,
+                                  width: double.infinity,
+                                  textStyles: TextStyles.font16WhiteSemiBold,
+                                ),
+                              ),
+                              horizontalSpace(10),
+                              Expanded(
+                                child: DefaultElevatedButton(
+                                  name: S.of(context).rejectButton,
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (dialogContext) {
+                                        final cubit =
+                                            context.read<LeavesDetailsCubit>();
 
-                                            return Dialog(
-                                              insetPadding: EdgeInsets.all(20),
-                                              backgroundColor: Colors.white,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(12.r),
-                                              ),
-                                              child: SingleChildScrollView(
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(20),
-                                                  child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                        return Dialog(
+                                          insetPadding: EdgeInsets.all(20),
+                                          backgroundColor: Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12.r),
+                                          ),
+                                          child: SingleChildScrollView(
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(20),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
                                                     children: [
-                                                      Row(
-                                                        children: [
-                                                          Container(
-                                                            width: 8.w,
-                                                            height: 24.h,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color:
-                                                                  Colors.black,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          2.r),
-                                                            ),
-                                                          ),
-                                                          horizontalSpace(8),
-                                                          Text(
-                                                            S
-                                                                .of(context)
-                                                                .rejectionReason,
-                                                            style: TextStyles
-                                                                .font18BlackMedium,
-                                                          ),
-                                                          const Spacer(),
-                                                          IconButton(
-                                                            icon: Icon(
-                                                                Icons
-                                                                    .close_rounded,
-                                                                size: 26.sp),
-                                                            onPressed: () =>
-                                                                context.pop(),
-                                                          ),
-                                                        ],
+                                                      Container(
+                                                        width: 8.w,
+                                                        height: 24.h,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors.black,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      2.r),
+                                                        ),
                                                       ),
-                                                      verticalSpace(10),
-                                                      CustomDescriptionTextFormField(
-                                                        controller: cubit
-                                                            .rejectionReasonController,
-                                                        hint: S
+                                                      horizontalSpace(8),
+                                                      Text(
+                                                        S
                                                             .of(context)
-                                                            .reasonHint,
+                                                            .rejectionReason,
+                                                        style: TextStyles
+                                                            .font18BlackMedium,
                                                       ),
-                                                      verticalSpace(20),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceAround,
-                                                        children: [
-                                                          DefaultElevatedButton(
-                                                            name: S
-                                                                .of(context)
-                                                                .rejectButton,
-                                                            onPressed: () {
-                                                              cubit
-                                                                  .approveLeaveRequest(
-                                                                      id,
-                                                                      false);
-                                                            },
-                                                            color: Colors.black,
-                                                            width: 125.w,
-                                                            textStyles: TextStyles
-                                                                .font16WhiteSemiBold,
-                                                          ),
-                                                          DefaultElevatedButton(
-                                                            name: S
-                                                                .of(context)
-                                                                .cancelButton,
-                                                            onPressed: () {
-                                                              context.pop();
-                                                            },
-                                                            color: Colors
-                                                                .grey[300]!,
-                                                            width: 125.w,
-                                                            textStyles: TextStyles
-                                                                .font16BlackSemiBold,
-                                                          ),
-                                                        ],
+                                                      const Spacer(),
+                                                      IconButton(
+                                                        icon: Icon(
+                                                            Icons.close_rounded,
+                                                            size: 26.sp),
+                                                        onPressed: () =>
+                                                            context.pop(),
                                                       ),
                                                     ],
                                                   ),
-                                                ),
+                                                  verticalSpace(10),
+                                                  CustomDescriptionTextFormField(
+                                                    controller: cubit
+                                                        .rejectionReasonController,
+                                                    hint: S
+                                                        .of(context)
+                                                        .reasonHint,
+                                                  ),
+                                                  verticalSpace(20),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceAround,
+                                                    children: [
+                                                      DefaultElevatedButton(
+                                                        name: S
+                                                            .of(context)
+                                                            .rejectButton,
+                                                        onPressed: () {
+                                                          cubit
+                                                              .approveLeaveRequest(
+                                                                  id, false);
+                                                        },
+                                                        color: Colors.black,
+                                                        width: 125.w,
+                                                        textStyles: TextStyles
+                                                            .font16WhiteSemiBold,
+                                                      ),
+                                                      DefaultElevatedButton(
+                                                        name: S
+                                                            .of(context)
+                                                            .cancelButton,
+                                                        onPressed: () {
+                                                          context.pop();
+                                                        },
+                                                        color:
+                                                            Colors.grey[300]!,
+                                                        width: 125.w,
+                                                        textStyles: TextStyles
+                                                            .font16BlackSemiBold,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
                                               ),
-                                            );
-                                          },
+                                            ),
+                                          ),
                                         );
                                       },
-                                      color: Colors.black,
-                                      width: double.infinity,
-                                      textStyles:
-                                          TextStyles.font16WhiteSemiBold,
-                                    ),
-                                  ),
-                                ],
-                              )
-                            : Center(
-                                child: DefaultElevatedButton(
-                                    name: S.of(context).deleteButton,
-                                    onPressed: () {
-                                      showDialog(
-                                          context: context,
-                                          builder: (dialogContext) {
-                                            return PopUpMessage(
-                                                title:
-                                                    S.of(context).TitleDelete,
-                                                body: S.of(context).leaveBody,
-                                                onPressed: () {
-                                                  cubit.leavesDelete(id);
-                                                });
-                                          });
-                                    },
-                                    color: Colors.red,
-                                    width: double.infinity,
-                                    textStyles:
-                                        TextStyles.font20Whitesemimedium)),
+                                    );
+                                  },
+                                  color: Colors.black,
+                                  width: double.infinity,
+                                  textStyles: TextStyles.font16WhiteSemiBold,
+                                ),
+                              ),
+                            ],
+                          ),
+                  if (status == 'Pending' && isProfile == true)
+                    Center(
+                        child: DefaultElevatedButton(
+                            name: S.of(context).deleteButton,
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (dialogContext) {
+                                    return PopUpMessage(
+                                        title: S.of(context).TitleDelete,
+                                        body: S.of(context).leaveBody,
+                                        onPressed: () {
+                                          cubit.leavesRquestDelete(id);
+                                        });
+                                  });
+                            },
+                            color: Colors.red,
+                            width: double.infinity,
+                            textStyles: TextStyles.font20Whitesemimedium)),
                   verticalSpace(20)
                 ],
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 

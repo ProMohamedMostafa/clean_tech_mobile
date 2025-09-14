@@ -91,9 +91,17 @@ class TaskItemBuild extends StatelessWidget {
                 ],
               ),
               verticalSpace(10),
-              Text(
-                cubit.allTasksModel!.data!.data![index].title!,
-                style: TextStyles.font16BlackSemiBold,
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      cubit.allTasksModel!.data!.data![index].title!,
+                      style: TextStyles.font16BlackSemiBold,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ),
+                ],
               ),
               verticalSpace(10),
               Text(
@@ -111,11 +119,26 @@ class TaskItemBuild extends StatelessWidget {
                     size: 22.sp,
                   ),
                   horizontalSpace(5),
-                  Text(
-                    cubit.formatTime(
-                        cubit.allTasksModel?.data?.data?[index].startTime),
-                    style: TextStyles.font11WhiteSemiBold
-                        .copyWith(color: AppColor.primaryColor),
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: cubit.formatTime(cubit
+                              .allTasksModel?.data?.data?[index].startTime),
+                          style: TextStyles.font11PrimMedium,
+                        ),
+                        TextSpan(
+                          text: ' & ',
+                          style: TextStyles.font11BlackMedium,
+                        ),
+                        TextSpan(
+                          text:
+                              cubit.allTasksModel?.data?.data?[index].startDate,
+                          style: TextStyles.font11PrimMedium,
+                        ),
+                      ],
+                    ),
                   ),
                   Spacer(),
                   Container(

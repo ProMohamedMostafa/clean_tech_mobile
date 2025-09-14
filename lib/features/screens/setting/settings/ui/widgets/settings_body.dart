@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -144,17 +143,17 @@ class SettingsBody extends StatelessWidget {
                     listTileWidget(() {
                       context.pushNamed(Routes.changepasswordScreen);
                     }, S.of(context).settingTitle2, Icons.password_sharp),
-                    listTileWidget(() {
-                      context.pushNamed(Routes.technicalSupportScreen);
-                    }, S.of(context).settingTitle4, Icons.phone),
+                    // listTileWidget(() {
+                    //   context.pushNamed(Routes.technicalSupportScreen);
+                    // }, S.of(context).settingTitle4, Icons.phone),
                     listTileWidget(() async {
                       Uri url = Uri.parse('https://ai-cloud.sa');
                       await launchUrl(url);
                     }, S.of(context).settingTitle5,
                         Icons.desktop_windows_outlined),
-                    listTileWidget(() {
-                      Share.share('check out my website https://example.com');
-                    }, S.of(context).settingTitle3, Icons.share),
+                    // listTileWidget(() {
+                    //   Share.share('check out my website https://example.com');
+                    // }, S.of(context).settingTitle3, Icons.share),
                     listTileWidget(() {
                       context.pushNamed(Routes.languageScreen);
                     }, S.of(context).settingTitle6, Icons.language),

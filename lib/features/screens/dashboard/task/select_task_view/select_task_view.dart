@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/icons/icons.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -24,11 +23,10 @@ class ChooseViewTask extends StatelessWidget {
         'title': S.of(context).my_tasks,
         'icon': IconBroken.document,
       },
-      if (role == 'Manager')
-        {
-          'title': S.of(context).my_team_tasks,
-          'icon': Icons.library_books_sharp,
-        },
+      {
+        'title': S.of(context).my_team_tasks,
+        'icon': Icons.library_books_sharp,
+      },
     ];
 
     return Scaffold(

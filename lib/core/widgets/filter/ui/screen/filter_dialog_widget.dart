@@ -30,7 +30,18 @@ class FilterDialogWidget extends StatelessWidget {
 
     final List<String> filteredLevelOrder = cubit.levelOrder.where((level) {
       if (index == 'Se') return level == 'Point';
-      return !((index == 'A-h' ||
+
+      // For 'Au' index, return levels from Area to Floor
+      if (index == 'Au') {
+        return level == 'Area' ||
+            level == 'City' ||
+            level == 'Organization' ||
+            level == 'Building' ||
+            level == 'Floor';
+      }
+
+      return !((index == 'Au' ||
+                  index == 'A-h' ||
                   index == 'A-hU' ||
                   index == 'A-l' ||
                   index == 'A-lU' ||
@@ -404,7 +415,7 @@ class FilterDialogWidget extends StatelessWidget {
                       ),
                       verticalSpace(10),
                     ],
-                    if (index == 'A-h' || index == 'A-hU') ...[
+                    if (index == 'A-h' || index == 'A-hU' || index == 'T') ...[
                       Text(
                         S.of(context).shiftBody,
                         style: TextStyles.font16BlackRegular,
@@ -537,6 +548,28 @@ class FilterDialogWidget extends StatelessWidget {
                         suffixIcon: IconBroken.arrowDown2,
                       ),
                       verticalSpace(10),
+                      Text(
+                        S.of(context).date,
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomTextFormField(
+                        hint: "--/--/---",
+                        controller: cubit.dateController,
+                        suffixPressed: () async {
+                          final selectedDate =
+                              await CustomDatePicker.show(context: context);
+
+                          if (selectedDate != null && context.mounted) {
+                            cubit.dateController.text = selectedDate;
+                          }
+                        },
+                        keyboardType: TextInputType.none,
+                        suffixIcon: Icons.calendar_today,
+                        onlyRead: true,
+                      ),
+                      verticalSpace(10),
+                    ],
+                    if (index == 'Da') ...[
                       Text(
                         S.of(context).date,
                         style: TextStyles.font16BlackRegular,
@@ -914,6 +947,40 @@ class FilterDialogWidget extends StatelessWidget {
                       ),
                       verticalSpace(10),
                     ],
+                    if (index == 'Q') ...[
+                      Text(
+                        S.of(context).question_type,
+                        style: TextStyles.font16BlackRegular,
+                      ),
+                      CustomDropDownList(
+                        onPressed: (selectedValue) {
+                          final items = [
+                            S.of(context).multiple_options,
+                            S.of(context).checkbox,
+                            S.of(context).text_input,
+                            S.of(context).rating,
+                            S.of(context).true_or_false,
+                          ];
+                          final selectedIndex = items.indexOf(selectedValue);
+                          if (selectedIndex != -1) {
+                            cubit.questionTypeIdController.text =
+                                selectedIndex.toString();
+                          }
+                        },
+                        hint: S.of(context).select_question_type,
+                        items: [
+                          S.of(context).multiple_options,
+                          S.of(context).checkbox,
+                          S.of(context).text_input,
+                          S.of(context).rating,
+                          S.of(context).true_or_false,
+                        ],
+                        controller: cubit.questionTypeController,
+                        keyboardType: TextInputType.text,
+                        suffixIcon: IconBroken.arrowDown2,
+                      ),
+                      verticalSpace(10),
+                    ],
                     if (index == 'U') ...[
                       Text(
                         S.of(context).addUserText8,
@@ -931,6 +998,7 @@ class FilterDialogWidget extends StatelessWidget {
                       verticalSpace(10),
                     ],
                     if (!(index == 'W-a' ||
+                            index == 'F' ||
                             index == 'W-c' ||
                             index == 'W-o' ||
                             index == 'W-b' ||
@@ -940,7 +1008,11 @@ class FilterDialogWidget extends StatelessWidget {
                             index == 'A' ||
                             index == 'S-c' ||
                             index == 'S-m' ||
-                            index == 'S-t') ||
+                            index == 'S-t' ||
+                            index == 'Q' ||
+                            index == 'Fee' ||
+                            index == 'De' ||
+                            index == 'Da') ||
                         index == 'Se') ...[
                       Text(S.of(context).workLocation,
                           style: TextStyles.font16BlackRegular),
@@ -1003,6 +1075,7 @@ class FilterDialogWidget extends StatelessWidget {
                     ],
                     if (((index == 'S' ||
                                 index == 'A-h' ||
+                                index == 'Au' ||
                                 index == 'A-hU' ||
                                 index == 'A-l' ||
                                 index == 'A-lU' ||
@@ -1095,7 +1168,9 @@ class FilterDialogWidget extends StatelessWidget {
                     ],
                     if (cubit.shouldShow('Building') ||
                         (index == 'W-f') ||
-                        (index == 'W-s')) ...[
+                        (index == 'W-s') ||
+                        index == 'Fee' ||
+                        index == 'Da') ...[
                       Text(S.of(context).Building,
                           style: TextStyles.font16BlackRegular),
                       CustomDropDownList(
@@ -1124,7 +1199,9 @@ class FilterDialogWidget extends StatelessWidget {
                     ],
                     if (cubit.shouldShow('Floor') ||
                         (index == 'W-s') ||
-                        (index == 'W-p')) ...[
+                        (index == 'W-p') ||
+                        index == 'Fee' ||
+                        index == 'Da') ...[
                       Text(S.of(context).Floor,
                           style: TextStyles.font16BlackRegular),
                       CustomDropDownList(
@@ -1150,7 +1227,12 @@ class FilterDialogWidget extends StatelessWidget {
                       ),
                       verticalSpace(10),
                     ],
-                    if (cubit.shouldShow('Section') || (index == 'W-p')) ...[
+                    if (cubit.shouldShow('Section') ||
+                        (index == 'W-p') ||
+                        index == 'Q' ||
+                        index == 'Fee' ||
+                        index == 'De' ||
+                        index == 'Da') ...[
                       Text(S.of(context).Section,
                           style: TextStyles.font16BlackRegular),
                       CustomDropDownList(
@@ -1176,7 +1258,7 @@ class FilterDialogWidget extends StatelessWidget {
                       ),
                       verticalSpace(10),
                     ],
-                    if (cubit.shouldShow('Point')) ...[
+                    if (cubit.shouldShow('Point') || index == 'Q') ...[
                       Text(S.of(context).Point,
                           style: TextStyles.font16BlackRegular),
                       CustomDropDownList(
@@ -1206,8 +1288,7 @@ class FilterDialogWidget extends StatelessWidget {
                       child: DefaultElevatedButton(
                         name: S.of(context).doneButton2,
                         onPressed: () {
-                          final date =
-                              DateTime.tryParse(cubit.dateController.text);
+                          final date = cubit.dateController.text;
                           final startDate =
                               DateTime.tryParse(cubit.startDateController.text);
                           final endDate =
@@ -1250,12 +1331,14 @@ class FilterDialogWidget extends StatelessWidget {
                                   ? cubit.nationalityController.text
                                   : null,
                               genderId: cubit.genderIdController.text.isNotEmpty ? _tryParseInt(cubit.genderIdController.text) : null,
+                              questionTypeId: cubit.questionTypeIdController.text.isNotEmpty ? _tryParseInt(cubit.questionTypeIdController.text) : null,
                               createdBy: cubit.createdByIdController.text.isNotEmpty ? _tryParseInt(cubit.createdByIdController.text) : null,
                               assignTo: cubit.assignToIdController.text.isNotEmpty ? _tryParseInt(cubit.assignToIdController.text) : null,
                               taskStatusId: cubit.taskStatusIdController.text.isNotEmpty ? _tryParseInt(cubit.taskStatusIdController.text) : null,
                               priorityId: cubit.priorityIdController.text.isNotEmpty ? _tryParseInt(cubit.priorityIdController.text) : null,
                               moduleId: cubit.moduleIdController.text.isNotEmpty ? _tryParseInt(cubit.moduleIdController.text) : null,
                               actionId: cubit.actionIdController.text.isNotEmpty ? _tryParseInt(cubit.actionIdController.text) : null,
+                              shiftId: cubit.shiftIdController.text.isNotEmpty ? _tryParseInt(cubit.shiftIdController.text) : null,
                               categoryId: cubit.parentCategoryIdController.text.isNotEmpty ? _tryParseInt(cubit.parentCategoryIdController.text) : null,
                               unitId: cubit.unitIdController.text.isNotEmpty ? _tryParseInt(cubit.unitIdController.text) : null,
                               transactionTypeId: cubit.transactionIdController.text.isNotEmpty ? _tryParseInt(cubit.transactionIdController.text) : null,
@@ -1276,7 +1359,6 @@ class FilterDialogWidget extends StatelessWidget {
                           context.pop();
                         },
                         color: AppColor.primaryColor,
-                      
                         textStyles: TextStyles.font20Whitesemimedium,
                       ),
                     ),

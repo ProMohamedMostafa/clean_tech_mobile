@@ -1,13 +1,14 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/task/add_task/data/models/create_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/building_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/floor_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/point_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/section_list_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/task/add_task/data/models/users_shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/data/models/organization_basic_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/data/models/tasks_basic_model.dart';
-import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/data/models/users_basic_model.dart';
 
 abstract class AddTaskState {}
 
@@ -32,9 +33,9 @@ class AddTaskErrorState extends AddTaskState {
 class AllUsersLoadingState extends AddTaskState {}
 
 class AllUsersSuccessState extends AddTaskState {
-  final UsersBasicModel usersBasicModel;
+  final UsersShiftModel usersShiftModel;
 
-  AllUsersSuccessState(this.usersBasicModel);
+  AllUsersSuccessState(this.usersShiftModel);
 }
 
 class AllUsersErrorState extends AddTaskState {
@@ -128,7 +129,18 @@ class GetPointErrorState extends AddTaskState {
   GetPointErrorState(this.error);
 }
 
+//*************************** */
+class ShiftLoadingState extends AddTaskState {}
 
+class ShiftSuccessState extends AddTaskState {
+  final ShiftModel allShiftsModel;
+  ShiftSuccessState(this.allShiftsModel);
+}
+
+class ShiftErrorState extends AddTaskState {
+  final String error;
+  ShiftErrorState(this.error);
+}
 //***************************** */
 
 class CameraSelectedState extends AddTaskState {

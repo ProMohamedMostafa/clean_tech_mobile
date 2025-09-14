@@ -22,8 +22,8 @@ import 'package:smart_cleaning_application/features/screens/dashboard/task/task_
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class TaskManagementBody extends StatelessWidget {
-  final int index;
-  const TaskManagementBody({super.key, required this.index});
+  final int selectedIndex;
+  const TaskManagementBody({super.key, required this.selectedIndex});
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,7 @@ class TaskManagementBody extends StatelessWidget {
                 final result = await context.pushNamed(Routes.addTaskScreen);
 
                 if (result == true) {
-                  cubit.refreshTasks(index);
+                  cubit.refreshTasks(selectedIndex);
                 }
               },
             ),
@@ -68,7 +68,7 @@ class TaskManagementBody extends StatelessWidget {
           }
           if (state is ForceDeleteTaskSuccessState) {
             toast(text: state.message, isSuccess: true);
-            cubit.getAllTasks(index);
+            cubit.getAllTasks(selectedIndex);
             cubit.getAllDeletedTasks();
           }
           if (state is ForceDeleteTaskErrorState) {
@@ -99,7 +99,7 @@ class TaskManagementBody extends StatelessWidget {
                   hintText: S.of(context).find_task,
                   searchController: cubit.searchController,
                   onSearchChanged: (value) {
-                    cubit.getAllTasks(index);
+                    cubit.getAllTasks(selectedIndex);
                   },
                   onFilterTap: () {
                     showDialog(
@@ -110,14 +110,15 @@ class TaskManagementBody extends StatelessWidget {
                               ..getArea()
                               ..getUsers()
                               ..getProviders()
-                              ..getDevices(),
+                              ..getDevices()
+                              ..getShifts(uId),
                             child: FilterDialogWidget(
                                 index: 'T',
                                 onPressed: (data) {
                                   cubit.filterModel = data;
                                   cubit.filterStartDate = data.startDate;
                                   cubit.filterEndDate = data.endDate;
-                                  cubit.getAllTasks(index);
+                                  cubit.getAllTasks(selectedIndex);
                                 }));
                       },
                     );
@@ -126,7 +127,7 @@ class TaskManagementBody extends StatelessWidget {
                   onClearFilter: () {
                     cubit.filterModel = null;
                     cubit.searchController.clear();
-                    cubit.getAllTasks(index);
+                    cubit.getAllTasks(selectedIndex);
                   },
                 ),
                 verticalSpace(10),
@@ -136,7 +137,7 @@ class TaskManagementBody extends StatelessWidget {
                 verticalSpace(10),
                 Expanded(
                   child: TaskListBuild(
-                    indexx: index,
+                    selectedIndex: selectedIndex,
                   ),
                 ),
                 verticalSpace(10)
@@ -154,7 +155,7 @@ class TaskManagementBody extends StatelessWidget {
       headerOptions: HeaderOptions(headerType: HeaderType.none),
       firstDate: DateTime(2025, 1, 1),
       lastDate: DateTime(3000, 3, 18),
-      focusedDate: cubit.selectedDate,
+      focusedDate: cubit.selectedDate ?? DateTime.now(),
       itemExtent: 69.0,
       itemBuilder: (context, date, isSelected, isDisabled, isToday, onTap) {
         String monthName = DateFormat.MMM().format(date);
@@ -171,7 +172,7 @@ class TaskManagementBody extends StatelessWidget {
         Color backgroundColor = Colors.white;
         Color textColor = Colors.black;
 
-        if (isSelected) {
+        if (cubit.selectedDate != null && isSelected) {
           backgroundColor = AppColor.primaryColor;
           textColor = Colors.white;
         } else if (isInRange) {
@@ -225,7 +226,7 @@ class TaskManagementBody extends StatelessWidget {
         cubit.selectedDate = date;
         cubit.currentPage = 1;
         cubit.allTasksModel = null;
-        cubit.getAllTasks(index);
+        cubit.getAllTasks(selectedIndex);
       },
     );
   }
@@ -243,7 +244,7 @@ class TaskManagementBody extends StatelessWidget {
         itemBuilder: (context, indexx) {
           final isSelected = cubit.selectedIndex == indexx;
           return GestureDetector(
-            onTap: () => cubit.changeTap(indexx, context, index),
+            onTap: () => cubit.changeTap(indexx, context, selectedIndex),
             child: Container(
               height: 50.h,
               padding: EdgeInsets.symmetric(horizontal: 20),

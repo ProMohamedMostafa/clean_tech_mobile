@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
@@ -27,6 +28,15 @@ class CalendarScreen extends StatelessWidget {
       body: BlocBuilder<CalendarCubit, CalendarState>(
         builder: (context, state) {
           final cubit = context.read<CalendarCubit>();
+
+          if (role == 'Auditor') {
+            return const Center(
+              child: Text(
+                "There's no tasks available",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              ),
+            );
+          }
 
           if (state is GetAllTasksLoadingState) {
             return const Loading();

@@ -18,7 +18,8 @@ class ShiftItemDetailsBuild extends StatelessWidget {
       children: [
         rowDetailsBuild(
             context, S.of(context).shiftName, shiftDetailsModel!.name!,
-            color: AppColor.primaryColor),
+            leadingColor: AppColor.primaryColor,
+            suffixColor: AppColor.primaryColor),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: Divider(),

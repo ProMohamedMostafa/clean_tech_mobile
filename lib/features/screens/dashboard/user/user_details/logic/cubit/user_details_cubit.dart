@@ -6,16 +6,17 @@ import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper
 import 'package:smart_cleaning_application/core/widgets/filter/data/model/filter_dialog_data_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attendance_history_management/data/models/attendance_history_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attendance_leaves_management/data/models/attendance_leaves_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/feedback_audit_view/feedback_audit_mangement/data/auditor_answer_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/task/task_management/data/models/all_tasks_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/user/user_managment/data/model/delete_user_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/user/user_details/data/models/user_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/user/user_details/data/models/user_shift_details_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/user/user_details/data/models/user_work_location_details.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/auditor/data/model/auditor_answer.dart';
 part 'user_details_state.dart';
 
 class UserDetailsCubit extends Cubit<UserDetailsState> {
   UserDetailsCubit() : super(UserDetailsInitial());
-
 
   FilterDialogDataModel? taskFilterModel;
   FilterDialogDataModel? attendanceFilterModel;
@@ -176,6 +177,18 @@ class UserDetailsCubit extends Cubit<UserDetailsState> {
     });
   }
 
+  AuditorAnswersModel? auditorsModel;
+  getAuditorAnswers(int id) {
+    emit(AuditorAnswersLoadingState());
+    DioHelper.getData(url: "audit/answers", query: {'UserId': id})
+        .then((value) {
+      auditorsModel = AuditorAnswersModel.fromJson(value!.data);
+      emit(AuditorAnswersSuccessState(auditorsModel!));
+    }).catchError((error) {
+      emit(AuditorAnswersErrorState(error.toString()));
+    });
+  }
+
   DeleteUserModel? deleteUserModel;
   userDelete(int id) {
     emit(UserDeleteLoadingState());
@@ -255,5 +268,39 @@ class UserDetailsCubit extends Cubit<UserDetailsState> {
     userWorkLocationDetailsModel = null;
     emit(UserWorkLocationDetailsLoadingState());
     await getUserWorkLocationDetails(id);
+  }
+
+  AuditorAnswerDetailsModel? auditorAnswerDetailsModel;
+
+  List<bool> expandedItems = [];
+
+  Future<void> getAnswerDetails(int id) async {
+    emit(AuditorAnswerDetailsLoadingState());
+    try {
+      final value = await DioHelper.getData(url: "audit/answers/$id");
+      auditorAnswerDetailsModel = AuditorAnswerDetailsModel.fromJson(value!.data);
+
+      final qCount = auditorAnswerDetailsModel?.data?.questions?.length ?? 0;
+      expandedItems = List<bool>.filled(qCount, false);
+
+      emit(AuditorAnswerDetailsSuccessState(auditorAnswerDetailsModel!));
+    } catch (e) {
+      emit(AuditorAnswerDetailsErrorState(e.toString()));
+    }
+  }
+
+  void toggleExpand(int index) {
+    if (index < 0) return;
+    if (index >= expandedItems.length) {
+      // grow safely if needed
+      final newList = List<bool>.from(expandedItems);
+      newList.length = index + 1;
+      for (int i = expandedItems.length; i < newList.length; i++) {
+        newList[i] = false;
+      }
+      expandedItems = newList;
+    }
+    expandedItems[index] = !expandedItems[index];
+    emit(QuestionToggleSelectAllState());
   }
 }

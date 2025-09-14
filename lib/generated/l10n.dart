@@ -589,6 +589,11 @@ class S {
     return Intl.message('Providers', name: 'integ10', desc: '', args: []);
   }
 
+  /// `Feedback`
+  String get integ11 {
+    return Intl.message('Feedback', name: 'integ11', desc: '', args: []);
+  }
+
   /// `Integrations`
   String get integrations {
     return Intl.message(
@@ -1849,10 +1854,10 @@ class S {
     );
   }
 
-  /// `Not Approval`
+  /// `Waiting for Approval`
   String get notApproval {
     return Intl.message(
-      'Not Approval',
+      'Waiting for Approval',
       name: 'notApproval',
       desc: '',
       args: [],
@@ -2084,11 +2089,6 @@ class S {
     );
   }
 
-  /// `Providers`
-  String get providers {
-    return Intl.message('Providers', name: 'providers', desc: '', args: []);
-  }
-
   /// `Add Provider`
   String get addProvider {
     return Intl.message(
@@ -2097,6 +2097,11 @@ class S {
       desc: '',
       args: [],
     );
+  }
+
+  /// `Providers`
+  String get providers {
+    return Intl.message('Providers', name: 'providers', desc: '', args: []);
   }
 
   /// `Provider Name`
@@ -4989,221 +4994,231 @@ class S {
     );
   }
 
-  /// `Country does not exist or device already assigned.`
-  String get country_or_device_already_assigned {
+  /// `Country does not exist.`
+  String get country_not_exists {
     return Intl.message(
-      'Country does not exist or device already assigned.',
-      name: 'country_or_device_already_assigned',
+      'Country does not exist.',
+      name: 'country_not_exists',
       desc: '',
       args: [],
     );
   }
 
-  /// `Role or parent task does not exist.`
-  String get role_or_parent_task_not_exists {
+  /// `Manager does not exist.`
+  String get manager_does_not_exist {
     return Intl.message(
-      'Role or parent task does not exist.',
-      name: 'role_or_parent_task_not_exists',
+      'Manager does not exist.',
+      name: 'manager_does_not_exist',
       desc: '',
       args: [],
     );
   }
 
-  /// `User cannot manage themselves or task does not exist.`
-  String get user_cannot_manage_themselves_or_task_not_exists {
+  /// `Role does not exist.`
+  String get role_does_not_exist {
     return Intl.message(
-      'User cannot manage themselves or task does not exist.',
-      name: 'user_cannot_manage_themselves_or_task_not_exists',
+      'Role does not exist.',
+      name: 'role_does_not_exist',
       desc: '',
       args: [],
     );
   }
 
-  /// `Area does not exist or reading out of allowed limit.`
-  String get area_not_exists_or_reading_out_of_limit {
+  /// `User cannot manage themselves.`
+  String get user_cannot_manage_themselves {
     return Intl.message(
-      'Area does not exist or reading out of allowed limit.',
-      name: 'area_not_exists_or_reading_out_of_limit',
+      'User cannot manage themselves.',
+      name: 'user_cannot_manage_themselves',
       desc: '',
       args: [],
     );
   }
 
-  /// `City does not exist or task is already completed.`
-  String get city_not_exists_or_task_completed {
+  /// `Area does not exist.`
+  String get area_not_exists {
     return Intl.message(
-      'City does not exist or task is already completed.',
-      name: 'city_not_exists_or_task_completed',
+      'Area does not exist.',
+      name: 'area_not_exists',
       desc: '',
       args: [],
     );
   }
 
-  /// `Organization or shift does not exist.`
-  String get organization_or_shift_not_exists {
+  /// `City does not exist.`
+  String get city_not_exists {
     return Intl.message(
-      'Organization or shift does not exist.',
-      name: 'organization_or_shift_not_exists',
+      'City does not exist.',
+      name: 'city_not_exists',
       desc: '',
       args: [],
     );
   }
 
-  /// `Building does not exist or cannot delete shift.`
-  String get building_not_exists_or_cannot_delete_shift {
+  /// `Organization does not exist.`
+  String get organization_not_exists {
     return Intl.message(
-      'Building does not exist or cannot delete shift.',
-      name: 'building_not_exists_or_cannot_delete_shift',
+      'Organization does not exist.',
+      name: 'organization_not_exists',
       desc: '',
       args: [],
     );
   }
 
-  /// `Floor does not exist or user not exists.`
-  String get floor_not_exists_or_user_not_exists {
+  /// `Building does not exist.`
+  String get building_not_exists {
     return Intl.message(
-      'Floor does not exist or user not exists.',
-      name: 'floor_not_exists_or_user_not_exists',
+      'Building does not exist.',
+      name: 'building_not_exists',
       desc: '',
       args: [],
     );
   }
 
-  /// `Section or tag does not exist.`
-  String get section_not_exists_or_tag_not_exists {
+  /// `Floor does not exist.`
+  String get floor_not_exists {
     return Intl.message(
-      'Section or tag does not exist.',
-      name: 'section_not_exists_or_tag_not_exists',
+      'Floor does not exist.',
+      name: 'floor_not_exists',
       desc: '',
       args: [],
     );
   }
 
-  /// `Point does not exist or leave does not exist.`
-  String get point_not_exists_or_leave_not_exists {
+  /// `Section does not exist.`
+  String get section_not_exists {
     return Intl.message(
-      'Point does not exist or leave does not exist.',
-      name: 'point_not_exists_or_leave_not_exists',
+      'Section does not exist.',
+      name: 'section_not_exists',
       desc: '',
       args: [],
     );
   }
 
-  /// `Users not found or leave overlaps.`
-  String get users_not_found_or_leave_overlaps {
+  /// `Point does not exist.`
+  String get point_not_exists {
     return Intl.message(
-      'Users not found or leave overlaps.',
-      name: 'users_not_found_or_leave_overlaps',
+      'Point does not exist.',
+      name: 'point_not_exists',
       desc: '',
       args: [],
     );
   }
 
-  /// `Shifts not found or shift overlaps.`
-  String get shifts_not_found_or_shift_overlaps {
+  /// `Users not found.`
+  String get users_not_found {
     return Intl.message(
-      'Shifts not found or shift overlaps.',
-      name: 'shifts_not_found_or_shift_overlaps',
+      'Users not found.',
+      name: 'users_not_found',
       desc: '',
       args: [],
     );
   }
 
-  /// `Organizations not found or quantity exceeds available.`
-  String get organizations_not_found_or_quantity_greater {
+  /// `Shifts not found.`
+  String get shifts_not_found {
     return Intl.message(
-      'Organizations not found or quantity exceeds available.',
-      name: 'organizations_not_found_or_quantity_greater',
+      'Shifts not found.',
+      name: 'shifts_not_found',
       desc: '',
       args: [],
     );
   }
 
-  /// `Buildings not found or already assigned limit reached.`
-  String get buildings_not_found_or_already_assign_limit {
+  /// `Organizations not found.`
+  String get organizations_not_found {
     return Intl.message(
-      'Buildings not found or already assigned limit reached.',
-      name: 'buildings_not_found_or_already_assign_limit',
+      'Organizations not found.',
+      name: 'organizations_not_found',
       desc: '',
       args: [],
     );
   }
 
-  /// `Floors not found or min/max not exists.`
-  String get floors_not_found_or_min_or_max_not_exists {
+  /// `Buildings not found.`
+  String get buildings_not_found {
     return Intl.message(
-      'Floors not found or min/max not exists.',
-      name: 'floors_not_found_or_min_or_max_not_exists',
+      'Buildings not found.',
+      name: 'buildings_not_found',
       desc: '',
       args: [],
     );
   }
 
-  /// `Sections not found or key not exists.`
-  String get sections_not_found_or_key_not_exists {
+  /// `Floors not found.`
+  String get floors_not_found {
     return Intl.message(
-      'Sections not found or key not exists.',
-      name: 'sections_not_found_or_key_not_exists',
+      'Floors not found.',
+      name: 'floors_not_found',
       desc: '',
       args: [],
     );
   }
 
-  /// `Not assigned to this task or limit not exists.`
-  String get not_assigned_to_task_or_limit_not_exists {
+  /// `Sections not found.`
+  String get sections_not_found {
     return Intl.message(
-      'Not assigned to this task or limit not exists.',
-      name: 'not_assigned_to_task_or_limit_not_exists',
+      'Sections not found.',
+      name: 'sections_not_found',
       desc: '',
       args: [],
     );
   }
 
-  /// `Category does not exist or leave starts in future.`
-  String get category_not_exists_or_leave_start_future {
+  /// `You are not assigned to this task.`
+  String get not_assigned_to_task {
     return Intl.message(
-      'Category does not exist or leave starts in future.',
-      name: 'category_not_exists_or_leave_start_future',
+      'You are not assigned to this task.',
+      name: 'not_assigned_to_task',
       desc: '',
       args: [],
     );
   }
 
-  /// `Provider or question does not exist.`
-  String get provider_not_exists_or_question_not_exists {
+  /// `Category does not exist.`
+  String get category_not_exists {
     return Intl.message(
-      'Provider or question does not exist.',
-      name: 'provider_not_exists_or_question_not_exists',
+      'Category does not exist.',
+      name: 'category_not_exists',
       desc: '',
       args: [],
     );
   }
 
-  /// `Material or choice does not exist.`
-  String get material_not_exists_or_choice_not_exists {
+  /// `Provider does not exist.`
+  String get provider_not_exists {
     return Intl.message(
-      'Material or choice does not exist.',
-      name: 'material_not_exists_or_choice_not_exists',
+      'Provider does not exist.',
+      name: 'provider_not_exists',
       desc: '',
       args: [],
     );
   }
 
-  /// `Currently reading or feedback device already assigned.`
-  String get currently_reading_or_feedback_device_assigned {
+  /// `Material does not exist.`
+  String get material_not_exists {
     return Intl.message(
-      'Currently reading or feedback device already assigned.',
-      name: 'currently_reading_or_feedback_device_assigned',
+      'Material does not exist.',
+      name: 'material_not_exists',
       desc: '',
       args: [],
     );
   }
 
-  /// `After reading or feedback device does not exist.`
-  String get after_reading_or_feedback_device_not_exists {
+  /// `Currently reading required countable point.`
+  String get currently_reading_required_countable_point {
     return Intl.message(
-      'After reading or feedback device does not exist.',
-      name: 'after_reading_or_feedback_device_not_exists',
+      'Currently reading required countable point.',
+      name: 'currently_reading_required_countable_point',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `After reading required countable point.`
+  String get after_reading_required_countable_point {
+    return Intl.message(
+      'After reading required countable point.',
+      name: 'after_reading_required_countable_point',
       desc: '',
       args: [],
     );
@@ -5254,6 +5269,256 @@ class S {
     return Intl.message(
       'Operation failed.',
       name: 'failed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Device does not exist.`
+  String get device_not_exists {
+    return Intl.message(
+      'Device does not exist.',
+      name: 'device_not_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Device is already assigned to a point.`
+  String get device_already_assigned_point {
+    return Intl.message(
+      'Device is already assigned to a point.',
+      name: 'device_already_assigned_point',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Parent task does not exist.`
+  String get parent_task_not_exists {
+    return Intl.message(
+      'Parent task does not exist.',
+      name: 'parent_task_not_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Task does not exist.`
+  String get task_not_exists {
+    return Intl.message(
+      'Task does not exist.',
+      name: 'task_not_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reading is out of the allowed limit range.`
+  String get reading_out_allowed_limit_range {
+    return Intl.message(
+      'Reading is out of the allowed limit range.',
+      name: 'reading_out_allowed_limit_range',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Task is already completed.`
+  String get task_is_completed {
+    return Intl.message(
+      'Task is already completed.',
+      name: 'task_is_completed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shift does not exist.`
+  String get shift_not_exists {
+    return Intl.message(
+      'Shift does not exist.',
+      name: 'shift_not_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cannot delete shift assigned to user work location.`
+  String get cannot_delete_shift_assigned_user_work_location {
+    return Intl.message(
+      'Cannot delete shift assigned to user work location.',
+      name: 'cannot_delete_shift_assigned_user_work_location',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User does not exist.`
+  String get user_not_exists {
+    return Intl.message(
+      'User does not exist.',
+      name: 'user_not_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tag does not exist.`
+  String get tag_not_exists {
+    return Intl.message(
+      'Tag does not exist.',
+      name: 'tag_not_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Leave does not exist.`
+  String get leave_not_exists {
+    return Intl.message(
+      'Leave does not exist.',
+      name: 'leave_not_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Leave overlaps with existing leave.`
+  String get leave_overlaps {
+    return Intl.message(
+      'Leave overlaps with existing leave.',
+      name: 'leave_overlaps',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shift overlaps with existing shift.`
+  String get shift_overlaps {
+    return Intl.message(
+      'Shift overlaps with existing shift.',
+      name: 'shift_overlaps',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quantity is greater than available.`
+  String get quantity_greater_available {
+    return Intl.message(
+      'Quantity is greater than available.',
+      name: 'quantity_greater_available',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Already assigned up to the limit.`
+  String get already_assign_limit {
+    return Intl.message(
+      'Already assigned up to the limit.',
+      name: 'already_assign_limit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Minimum or maximum value does not exist.`
+  String get min_or_max_not_exists {
+    return Intl.message(
+      'Minimum or maximum value does not exist.',
+      name: 'min_or_max_not_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Key does not exist.`
+  String get key_not_exists {
+    return Intl.message(
+      'Key does not exist.',
+      name: 'key_not_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Limit does not exist.`
+  String get limit_not_exists {
+    return Intl.message(
+      'Limit does not exist.',
+      name: 'limit_not_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Leave start date is in the future.`
+  String get leave_start_future {
+    return Intl.message(
+      'Leave start date is in the future.',
+      name: 'leave_start_future',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Question does not exist.`
+  String get question_not_exists {
+    return Intl.message(
+      'Question does not exist.',
+      name: 'question_not_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choice does not exist.`
+  String get choice_not_exists {
+    return Intl.message(
+      'Choice does not exist.',
+      name: 'choice_not_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Feedback device is already assigned to a section.`
+  String get feedback_device_already_assigned_section {
+    return Intl.message(
+      'Feedback device is already assigned to a section.',
+      name: 'feedback_device_already_assigned_section',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Feedback device does not exist.`
+  String get feedback_device_not_exists {
+    return Intl.message(
+      'Feedback device does not exist.',
+      name: 'feedback_device_not_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Section usage does not exist.`
+  String get section_usage_not_exists {
+    return Intl.message(
+      'Section usage does not exist.',
+      name: 'section_usage_not_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Section Is Already Assigned an another`
+  String get already_assigned_an_another {
+    return Intl.message(
+      'Section Is Already Assigned an another',
+      name: 'already_assigned_an_another',
       desc: '',
       args: [],
     );
@@ -5427,6 +5692,606 @@ class S {
       desc: '',
       args: [],
     );
+  }
+
+  /// `Feedback`
+  String get feedback {
+    return Intl.message('Feedback', name: 'feedback', desc: '', args: []);
+  }
+
+  /// `Feedback & Audit`
+  String get feedbackAndAudit {
+    return Intl.message(
+      'Feedback & Audit',
+      name: 'feedbackAndAudit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Devices`
+  String get devices {
+    return Intl.message('Devices', name: 'devices', desc: '', args: []);
+  }
+
+  /// `Auditor`
+  String get auditor {
+    return Intl.message('Auditor', name: 'auditor', desc: '', args: []);
+  }
+
+  /// `No auditors available`
+  String get no_auditors_available {
+    return Intl.message(
+      'No auditors available',
+      name: 'no_auditors_available',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Auditors`
+  String get auditors {
+    return Intl.message('Auditors', name: 'auditors', desc: '', args: []);
+  }
+
+  /// `Select auditors`
+  String get select_auditors {
+    return Intl.message(
+      'Select auditors',
+      name: 'select_auditors',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please add 4 choices`
+  String get please_add_4_choices {
+    return Intl.message(
+      'Please add 4 choices',
+      name: 'please_add_4_choices',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please select type of rating`
+  String get please_select_type_of_rating {
+    return Intl.message(
+      'Please select type of rating',
+      name: 'please_select_type_of_rating',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select type of rating`
+  String get select_type_of_rating {
+    return Intl.message(
+      'Select type of rating',
+      name: 'select_type_of_rating',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `⚈ Stars`
+  String get stars {
+    return Intl.message('⚈ Stars', name: 'stars', desc: '', args: []);
+  }
+
+  /// `⚈ Emotions`
+  String get emotions {
+    return Intl.message('⚈ Emotions', name: 'emotions', desc: '', args: []);
+  }
+
+  /// `Choices`
+  String get choices {
+    return Intl.message('Choices', name: 'choices', desc: '', args: []);
+  }
+
+  /// `write`
+  String get write {
+    return Intl.message('write', name: 'write', desc: '', args: []);
+  }
+
+  /// `answer is too long`
+  String get answer_too_long {
+    return Intl.message(
+      'answer is too long',
+      name: 'answer_too_long',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `answer is too short`
+  String get answer_too_short {
+    return Intl.message(
+      'answer is too short',
+      name: 'answer_too_short',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add More Option`
+  String get add_more_option {
+    return Intl.message(
+      'Add More Option',
+      name: 'add_more_option',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Question`
+  String get edit_question {
+    return Intl.message(
+      'Edit Question',
+      name: 'edit_question',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Good`
+  String get good {
+    return Intl.message('Good', name: 'good', desc: '', args: []);
+  }
+
+  /// `Normal`
+  String get normal {
+    return Intl.message('Normal', name: 'normal', desc: '', args: []);
+  }
+
+  /// `Bad`
+  String get bad {
+    return Intl.message('Bad', name: 'bad', desc: '', args: []);
+  }
+
+  /// `No options available`
+  String get no_options_available {
+    return Intl.message(
+      'No options available',
+      name: 'no_options_available',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select all`
+  String get select_all {
+    return Intl.message('Select all', name: 'select_all', desc: '', args: []);
+  }
+
+  /// `Audit`
+  String get audit {
+    return Intl.message('Audit', name: 'audit', desc: '', args: []);
+  }
+
+  /// `Audits`
+  String get audits {
+    return Intl.message('Audits', name: 'audits', desc: '', args: []);
+  }
+
+  /// `Question:`
+  String get question_label {
+    return Intl.message(
+      'Question:',
+      name: 'question_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Section:`
+  String get section {
+    return Intl.message('Section:', name: 'section', desc: '', args: []);
+  }
+
+  /// `Questions`
+  String get questions {
+    return Intl.message('Questions', name: 'questions', desc: '', args: []);
+  }
+
+  /// `Location`
+  String get location {
+    return Intl.message('Location', name: 'location', desc: '', args: []);
+  }
+
+  /// `Feedback Name`
+  String get feedback_name {
+    return Intl.message(
+      'Feedback Name',
+      name: 'feedback_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search`
+  String get search {
+    return Intl.message('Search', name: 'search', desc: '', args: []);
+  }
+
+  /// `Select type`
+  String get select_type {
+    return Intl.message('Select type', name: 'select_type', desc: '', args: []);
+  }
+
+  /// `There are no questions`
+  String get no_questions {
+    return Intl.message(
+      'There are no questions',
+      name: 'no_questions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Assign More Questions`
+  String get assign_more_questions {
+    return Intl.message(
+      'Assign More Questions',
+      name: 'assign_more_questions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select device`
+  String get select_device {
+    return Intl.message(
+      'Select device',
+      name: 'select_device',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create`
+  String get create {
+    return Intl.message('Create', name: 'create', desc: '', args: []);
+  }
+
+  /// `Assign Questions`
+  String get assign_questions {
+    return Intl.message(
+      'Assign Questions',
+      name: 'assign_questions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create Device`
+  String get create_device {
+    return Intl.message(
+      'Create Device',
+      name: 'create_device',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Device Answers`
+  String get device_answers {
+    return Intl.message(
+      'Device Answers',
+      name: 'device_answers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Answer`
+  String get answer {
+    return Intl.message('Answer', name: 'answer', desc: '', args: []);
+  }
+
+  /// `Question number`
+  String get question_number {
+    return Intl.message(
+      'Question number',
+      name: 'question_number',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Find device`
+  String get find_device {
+    return Intl.message('Find device', name: 'find_device', desc: '', args: []);
+  }
+
+  /// `Edit Device`
+  String get edit_device {
+    return Intl.message('Edit Device', name: 'edit_device', desc: '', args: []);
+  }
+
+  /// `Answer Details`
+  String get answer_details {
+    return Intl.message(
+      'Answer Details',
+      name: 'answer_details',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `True`
+  String get true_value {
+    return Intl.message('True', name: 'true_value', desc: '', args: []);
+  }
+
+  /// `False`
+  String get false_value {
+    return Intl.message('False', name: 'false_value', desc: '', args: []);
+  }
+
+  /// `Find location`
+  String get find_location {
+    return Intl.message(
+      'Find location',
+      name: 'find_location',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Audit History`
+  String get audit_history {
+    return Intl.message(
+      'Audit History',
+      name: 'audit_history',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start`
+  String get start {
+    return Intl.message('Start', name: 'start', desc: '', args: []);
+  }
+
+  /// `Auditor Questions`
+  String get auditor_questions {
+    return Intl.message(
+      'Auditor Questions',
+      name: 'auditor_questions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send`
+  String get send {
+    return Intl.message('Send', name: 'send', desc: '', args: []);
+  }
+
+  /// `Enter your answer...`
+  String get enter_your_answer {
+    return Intl.message(
+      'Enter your answer...',
+      name: 'enter_your_answer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name too short`
+  String get nameTooShort {
+    return Intl.message(
+      'Name too short',
+      name: 'nameTooShort',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name too long`
+  String get nameTooLong {
+    return Intl.message(
+      'Name too long',
+      name: 'nameTooLong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name is required`
+  String get nameRequired {
+    return Intl.message(
+      'Name is required',
+      name: 'nameRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Out of`
+  String get outOf {
+    return Intl.message('Out of', name: 'outOf', desc: '', args: []);
+  }
+
+  /// `Details`
+  String get details {
+    return Intl.message('Details', name: 'details', desc: '', args: []);
+  }
+
+  /// `Add Question`
+  String get addQuestion {
+    return Intl.message(
+      'Add Question',
+      name: 'addQuestion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `find question`
+  String get find_question {
+    return Intl.message(
+      'find question',
+      name: 'find_question',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The Question`
+  String get the_question {
+    return Intl.message(
+      'The Question',
+      name: 'the_question',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `write question here`
+  String get write_question_here {
+    return Intl.message(
+      'write question here',
+      name: 'write_question_here',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Question is Required`
+  String get question_required {
+    return Intl.message(
+      'Question is Required',
+      name: 'question_required',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Question too long`
+  String get question_too_long {
+    return Intl.message(
+      'Question too long',
+      name: 'question_too_long',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Question too short`
+  String get question_too_short {
+    return Intl.message(
+      'Question too short',
+      name: 'question_too_short',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Questions`
+  String get question {
+    return Intl.message('Questions', name: 'question', desc: '', args: []);
+  }
+
+  /// `Create questions`
+  String get create_question {
+    return Intl.message(
+      'Create questions',
+      name: 'create_question',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Multiple options`
+  String get multiple_options {
+    return Intl.message(
+      'Multiple options',
+      name: 'multiple_options',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Checkbox`
+  String get checkbox {
+    return Intl.message('Checkbox', name: 'checkbox', desc: '', args: []);
+  }
+
+  /// `Text input`
+  String get text_input {
+    return Intl.message('Text input', name: 'text_input', desc: '', args: []);
+  }
+
+  /// `Rating`
+  String get rating {
+    return Intl.message('Rating', name: 'rating', desc: '', args: []);
+  }
+
+  /// `True or false`
+  String get true_or_false {
+    return Intl.message(
+      'True or false',
+      name: 'true_or_false',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No work location assigned to this user`
+  String get no_work_location_assigned {
+    return Intl.message(
+      'No work location assigned to this user',
+      name: 'no_work_location_assigned',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Auditor Work Location`
+  String get auditor_work_location {
+    return Intl.message(
+      'Auditor Work Location',
+      name: 'auditor_work_location',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select question type`
+  String get select_question_type {
+    return Intl.message(
+      'Select question type',
+      name: 'select_question_type',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Question Type`
+  String get question_type {
+    return Intl.message(
+      'Question Type',
+      name: 'question_type',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select feedback`
+  String get select_feedback {
+    return Intl.message(
+      'Select feedback',
+      name: 'select_feedback',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Restart`
+  String get reStartButton {
+    return Intl.message('Restart', name: 'reStartButton', desc: '', args: []);
   }
 }
 

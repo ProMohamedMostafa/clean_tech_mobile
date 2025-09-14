@@ -7,6 +7,6 @@ class TaskManagementScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TaskManagementBody(index: index);
+    return TaskManagementBody(selectedIndex: index);
   }
 }

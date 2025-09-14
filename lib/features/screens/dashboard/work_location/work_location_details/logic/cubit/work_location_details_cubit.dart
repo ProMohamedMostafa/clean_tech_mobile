@@ -18,6 +18,7 @@ import 'package:smart_cleaning_application/features/screens/dashboard/work_locat
 import 'package:smart_cleaning_application/features/screens/dashboard/work_location/work_location_details/data/models/area_tree_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/work_location/work_location_details/data/models/building_tree_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/work_location/work_location_details/data/models/city_tree_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/work_location_details/data/models/work_location_questions_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/work_location/work_location_management/data/model/delete_area_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/work_location/work_location_management/data/model/delete_building_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/work_location/work_location_management/data/model/delete_city_model.dart';
@@ -34,6 +35,195 @@ part 'work_location_details_state.dart';
 class WorkLocationDetailsCubit extends Cubit<WorkLocationDetailsState> {
   WorkLocationDetailsCubit() : super(WorkLocationDetailsInitial());
 
+// ==================================================================
+  TextEditingController typeController = TextEditingController();
+  TextEditingController typeIdController = TextEditingController();
+  TextEditingController searchController = TextEditingController();
+  final List<String> items = [
+    "Multiple options",
+    "Checkbox",
+    "Text input",
+    "Rating",
+    "True or false"
+  ];
+  void updateType(String value) {
+    typeController.text = value;
+    emit(QuestionToggleSelectAllState());
+  }
+
+  int selectedQuestionSection = 0;
+  final tabs = ["Section Questions", "Feedback", "Audits"];
+  void changeSelectedQuestionSection(int id, int index) {
+    selectedQuestionSection = index;
+
+    // Clear search and type selection
+    searchController.clear();
+    typeController.clear();
+    typeIdController.clear();
+
+    // Reset model and expandedItems
+    sectionQuestionsModel = null;
+    expandedItems.clear();
+    emit(ChangeSelectedQuestionSectionState());
+
+    int? feedbackAuditId;
+    if (index == 1) {
+      feedbackAuditId = sectionUsersShiftDetailsModel?.data?.feedbackId;
+    } else if (index == 2) {
+      feedbackAuditId = sectionUsersShiftDetailsModel?.data?.auditId;
+    }
+
+    // Fetch fresh data
+    getQuestions(id, feedbackAuditId ?? 0);
+  }
+
+  bool checked = false;
+  List<bool> selectedItems = [];
+
+  void toggleSelectAll() {
+    checked = !checked;
+    for (int i = 0; i < selectedItems.length; i++) {
+      selectedItems[i] = checked;
+    }
+    emit(QuestionToggleSelectAllState());
+  }
+
+  List<bool> expandedItems = [];
+  void toggleItem(int index) {
+    selectedItems[index] = !selectedItems[index];
+
+    checked = selectedItems.every((e) => e);
+
+    emit(QuestionToggleSelectAllState());
+  }
+
+  void toggleExpand(int index) {
+    expandedItems[index] = !expandedItems[index];
+    emit(QuestionToggleSelectAllState());
+  }
+
+  WorkLocationQuestionsModel? sectionQuestionsModel;
+  getQuestions(int id, int feedbackAuditId) {
+    emit(QuestionLoadingState());
+    DioHelper.getData(url: "section/question", query: {
+      'Search': searchController.text,
+      'SectionId': id,
+      'SectionUsageId': feedbackAuditId,
+      if (typeIdController.text.isNotEmpty) "Type": typeIdController.text,
+    }).then((value) {
+      sectionQuestionsModel = WorkLocationQuestionsModel.fromJson(value!.data);
+      int length = sectionQuestionsModel?.data?.data?.length ?? 0;
+      expandedItems = List.generate(length, (_) => false);
+      selectedItems = List.generate(length, (_) => false);
+      emit(QuestionSuccessState());
+    }).catchError((error) {
+      emit(QuestionErrorState(error.toString()));
+    });
+  }
+
+  bool get hasSelection => selectedItems.contains(true);
+  List<int> getSelectedIds({required bool isSection}) {
+    final data = isSection
+        ? sectionQuestionsModel?.data?.data ?? []
+        : pointQuestionsModel?.data?.data ?? [];
+
+    final ids = <int>[];
+
+    for (int i = 0; i < selectedItems.length; i++) {
+      if (selectedItems[i]) {
+        final id = data[i].id;
+        if (id != null) ids.add(id);
+      }
+    }
+
+    return ids;
+  }
+
+  deleteQuestion(int id) {
+    final ids = getSelectedIds(isSection: true);
+    emit(DeleteQuestionLoadingState());
+
+    DioHelper.deleteData(
+      url: 'section/question/delete',
+      data: {"sectionId": id, "questionIds": ids},
+    ).then((value) {
+      final message = value?.data['message'] ?? "Question deleted successfully";
+
+      // Remove deleted questions locally
+      sectionQuestionsModel?.data?.data?.removeWhere((q) => ids.contains(q.id));
+
+      // Reset selection states
+      selectedItems.clear();
+      expandedItems.clear();
+
+      // Rebuild UI
+      emit(DeleteQuestionSuccessState(message));
+      emit(QuestionSuccessState());
+    }).catchError((error) {
+      emit(DeleteQuestionErrorState(error.toString()));
+    });
+  }
+
+  WorkLocationQuestionsModel? pointQuestionsModel;
+  getPointQuestions(int id) {
+    emit(QuestionLoadingState());
+    DioHelper.getData(url: "questions", query: {
+      'Search': searchController.text,
+      'PointId': id,
+      if (typeIdController.text.isNotEmpty) "Type": typeIdController.text,
+    }).then((value) {
+      pointQuestionsModel = WorkLocationQuestionsModel.fromJson(value!.data);
+      int length = pointQuestionsModel?.data?.data?.length ?? 0;
+      expandedItems = List.generate(length, (_) => false);
+      selectedItems = List.generate(length, (_) => false);
+      emit(QuestionSuccessState());
+    }).catchError((error) {
+      emit(QuestionErrorState(error.toString()));
+    });
+  }
+
+  Future<void> assignQuestionsToPoint(
+    int pointId,
+  ) async {
+    emit(AssignQuestionsLoadingState());
+    final ids = getSelectedIds(isSection: false);
+
+    try {
+      final response = await DioHelper.postData(
+        url: "questions/point",
+        data: {
+          "pointId": pointId,
+          "questionIds": ids,
+        },
+      );
+
+      final message = response?.data["message"] ?? "Assigned successfully";
+      emit(AssignQuestionsSuccessState(message));
+    } catch (error) {
+      emit(AssignQuestionsErrorState(error.toString()));
+    }
+  }
+
+  Future<void> deletePointQuestions(int id) async {
+    final ids = getSelectedIds(isSection: false);
+    emit(DeleteQuestionLoadingState());
+
+    DioHelper.deleteData(
+      url: 'questions/point',
+      data: {
+        "pointId": id,
+        "questionIds": ids,
+      },
+    ).then((value) {
+      final message = value?.data['message'] ?? "Question deleted successfully";
+
+      emit(DeleteQuestionSuccessState(message));
+    }).catchError((error) {
+      emit(DeleteQuestionErrorState(error.toString()));
+    });
+  }
+
+// ==================================================================
   AreaUsersDetailsModel? areaUsersDetailsModel;
   getAreaUsersDetails(int areaId) {
     emit(AreaUsersDetailsLoadingState());

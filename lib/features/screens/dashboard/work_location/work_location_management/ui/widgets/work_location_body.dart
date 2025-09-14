@@ -119,7 +119,7 @@ class WorkLocationBody extends StatelessWidget {
           if (state is DeleteForceAreaSuccessState) {
             toast(text: state.message, isSuccess: true);
             cubit.getArea();
-            cubit.getAllDeletedArea();
+            if (role == 'Admin') cubit.getAllDeletedArea();
           }
           if (state is DeleteForceAreaErrorState) {
             toast(text: state.error, isSuccess: false);
@@ -133,7 +133,7 @@ class WorkLocationBody extends StatelessWidget {
 
           if (state is AreaDeleteSuccessState) {
             toast(text: state.deleteAreaModel.message!, isSuccess: true);
-            cubit.getAllDeletedArea();
+            if (role == 'Admin') cubit.getAllDeletedArea();
           }
 
           if (state is AreaDeleteErrorState) {

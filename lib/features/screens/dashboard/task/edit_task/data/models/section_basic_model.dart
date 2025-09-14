@@ -5,7 +5,7 @@ class SectionBasicModel {
   String? message;
   String? error;
   int? businessErrorCode;
-  List<Data>? data;
+  List<SectionData>? data;
 
   SectionBasicModel(
       {this.statusCode,
@@ -24,9 +24,9 @@ class SectionBasicModel {
     error = json['error'];
     businessErrorCode = json['businessErrorCode'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <SectionData>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(SectionData.fromJson(v));
       });
     }
   }
@@ -46,13 +46,13 @@ class SectionBasicModel {
   }
 }
 
-class Data {
+class SectionData {
   int? id;
   String? name;
 
-  Data({this.id, this.name});
+  SectionData({this.id, this.name});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  SectionData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
   }

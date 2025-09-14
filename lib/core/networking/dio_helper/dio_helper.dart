@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:dio/io.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -26,13 +25,6 @@ class DioHelper {
 
     await setHeaders();
     addDioInterceptor();
-
-    (dio!.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-        (client) {
-      client.badCertificateCallback = (cert, host, port) => true;
-      return null;
-    };
-
     return dio!;
   }
 

@@ -443,6 +443,50 @@ class UserTaskDetailsErrorState extends WorkLocationDetailsState {
 }
 
 //************************************** */
+
+final class QuestionLoadingState extends WorkLocationDetailsState {}
+
+final class QuestionSuccessState extends WorkLocationDetailsState {}
+
+final class QuestionErrorState extends WorkLocationDetailsState {
+  final String error;
+
+  QuestionErrorState(this.error);
+}
+//***************************** */
+
+class DeleteQuestionLoadingState extends WorkLocationDetailsState {}
+
+class DeleteQuestionSuccessState extends WorkLocationDetailsState {
+  final String message;
+
+  DeleteQuestionSuccessState(this.message);
+}
+
+class DeleteQuestionErrorState extends WorkLocationDetailsState {
+  final String error;
+  DeleteQuestionErrorState(this.error);
+}
+
+//*********************** */
+
+class AssignQuestionsLoadingState extends WorkLocationDetailsState {}
+
+class AssignQuestionsSuccessState extends WorkLocationDetailsState {
+  final String message;
+  AssignQuestionsSuccessState(this.message);
+}
+
+class AssignQuestionsErrorState extends WorkLocationDetailsState {
+  final String error;
+  AssignQuestionsErrorState(this.error);
+}
+
+//***************** */
 class DescToggleState extends WorkLocationDetailsState {}
 
 class ChangeTreeIndexState extends WorkLocationDetailsState {}
+
+class QuestionToggleSelectAllState extends WorkLocationDetailsState {}
+
+class ChangeSelectedQuestionSectionState extends WorkLocationDetailsState {}

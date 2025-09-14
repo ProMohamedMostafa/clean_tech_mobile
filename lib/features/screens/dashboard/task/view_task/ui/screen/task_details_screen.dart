@@ -3,10 +3,15 @@ import 'package:smart_cleaning_application/features/screens/dashboard/task/view_
 
 class TaskDetailsScreen extends StatelessWidget {
   final int id;
-  const TaskDetailsScreen({super.key, required this.id});
+  final int? selectedIndex;
+  const TaskDetailsScreen(
+      {super.key, required this.id, required this.selectedIndex});
 
   @override
   Widget build(BuildContext context) {
-    return  TaskDetailsBody(id: id);
+    return TaskDetailsBody(
+      id: id,
+      selectedIndex: selectedIndex ?? 0,
+    );
   }
 }

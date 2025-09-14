@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
@@ -18,8 +19,12 @@ class ShowActivity extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = context.watch<HomeCubit>();
+
+    final isLoading = cubit.myActivities == null ||
+        ((role != 'Cleaner' && role != 'Auditor') &&
+            cubit.teamActivities == null);
     return Skeletonizer(
-      enabled: cubit.myActivities == null && cubit.teamActivities == null,
+      enabled: isLoading,
       child: GestureDetector(
         onTap: () {
           cubit.changeVisiability();
@@ -62,7 +67,9 @@ class ShowActivity extends StatelessWidget {
                     selectedIndex: cubit.selectedIndex,
                     onTap: cubit.changeTap,
                     firstLabel: S.of(context).myActivity,
-                    secondLabel: S.of(context).myTeamActivity,
+                    secondLabel: (role != 'Cleaner' && role != 'Auditor')
+                        ? S.of(context).myTeamActivity
+                        : null,
                   ),
                 ),
                 Divider(height: 1.h),
@@ -94,17 +101,20 @@ class ShowActivity extends StatelessWidget {
 
                           return InkWell(
                             onTap: () {
-                              if (routeName.isNotEmpty) {
-                                if (routeName ==
-                                    Routes.workLocationDetailsScreen) {
-                                  context.pushNamed(routeName, arguments: {
-                                    'id': activity.moduleId,
-                                    'selectedIndex': cubit
-                                        .getWorkLocationIndex(activity.module),
-                                  });
-                                } else {
-                                  context.pushNamed(routeName,
-                                      arguments: activity.moduleId);
+                              if (role != 'Auditor') {
+                                if (routeName.isNotEmpty) {
+                                  if (routeName ==
+                                      Routes.workLocationDetailsScreen) {
+                                    context.pushNamed(routeName, arguments: {
+                                      'id': activity.moduleId,
+                                      'selectedIndex':
+                                          cubit.getWorkLocationIndex(
+                                              activity.module),
+                                    });
+                                  } else {
+                                    context.pushNamed(routeName,
+                                        arguments: activity.moduleId);
+                                  }
                                 }
                               }
                             },
@@ -244,40 +254,44 @@ class ShowActivity extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: InkWell(
-                    onTap: () {
-                      context.pushNamed(Routes.activityScreen);
-                    },
-                    child: SizedBox(
-                      height: 30.h,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Expanded(
-                              child: Divider(
-                                height: 1.h,
-                                color: AppColor.primaryColor,
+                  child: (role != 'Auditor')
+                      ? InkWell(
+                          onTap: () {
+                            context.pushNamed(Routes.activityScreen);
+                          },
+                          child: SizedBox(
+                            height: 30.h,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Expanded(
+                                    child: Divider(
+                                      height: 1.h,
+                                      color: AppColor.primaryColor,
+                                    ),
+                                  ),
+                                  horizontalSpace(10),
+                                  Text(
+                                    S.of(context).seeMoreButton,
+                                    style: TextStyles.font12PrimSemi,
+                                  ),
+                                  horizontalSpace(10),
+                                  Expanded(
+                                    child: Divider(
+                                      height: 1.h,
+                                      color: AppColor.primaryColor,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            horizontalSpace(10),
-                            Text(
-                              S.of(context).seeMoreButton,
-                              style: TextStyles.font12PrimSemi,
-                            ),
-                            horizontalSpace(10),
-                            Expanded(
-                              child: Divider(
-                                height: 1.h,
-                                color: AppColor.primaryColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                          ),
+                        )
+                      : SizedBox.shrink(),
                 )
               ]
             ],

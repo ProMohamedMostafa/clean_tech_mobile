@@ -72,7 +72,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
     emit(AreaLoadingState());
     emit(DeletedAreaLoadingState());
     await getArea();
-    await getAllDeletedArea();
+    if (role == 'Admin') await getAllDeletedArea();
   }
 
   CityListModel? cityModel;
@@ -107,7 +107,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
     emit(CityLoadingState());
     emit(DeletedCityLoadingState());
     await getCity();
-    await getAllDeletedCity();
+    if (role == 'Admin') await getAllDeletedCity();
   }
 
   OrganizationListModel? organizationModel;
@@ -144,7 +144,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
     emit(OrganizationLoadingState());
     emit(DeletedOrganizationLoadingState());
     await getOrganization();
-    await getAllDeletedOrganization();
+    if (role == 'Admin') await getAllDeletedOrganization();
   }
 
   BuildingListModel? buildingModel;
@@ -179,7 +179,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
     emit(BuildingLoadingState());
     emit(DeletedBuildingLoadingState());
     await getBuilding();
-    await getAllDeletedBuilding();
+    if (role == 'Admin') await getAllDeletedBuilding();
   }
 
   FloorListModel? floorModel;
@@ -214,7 +214,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
     emit(FloorLoadingState());
     emit(DeletedFloorLoadingState());
     await getFloor();
-    await getAllDeletedFloor();
+    if (role == 'Admin') await getAllDeletedFloor();
   }
 
   SectionListModel? sectionModel;
@@ -249,7 +249,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
     emit(SectionLoadingState());
     emit(DeletedSectionLoadingState());
     await getSection();
-    await getAllDeletedSection();
+    if (role == 'Admin') await getAllDeletedSection();
   }
 
   PointListModel? pointModel;
@@ -285,7 +285,7 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
     emit(PointLoadingState());
     emit(DeletedPointLoadingState());
     await getPoint();
-    await getAllDeletedPoint();
+    if (role == 'Admin') await getAllDeletedPoint();
   }
 
   initialize(int? selectedIndex) {

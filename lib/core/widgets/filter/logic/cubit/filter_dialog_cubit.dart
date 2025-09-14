@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/networking/api_constants/api_constants.dart';
 import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/country_list_model.dart';
@@ -53,6 +54,8 @@ class FilterDialogCubit extends Cubit<FilterDialogState> {
   TextEditingController statusIdController = TextEditingController();
   TextEditingController genderController = TextEditingController();
   TextEditingController genderIdController = TextEditingController();
+  TextEditingController questionTypeController = TextEditingController();
+  TextEditingController questionTypeIdController = TextEditingController();
   TextEditingController startDateController = TextEditingController();
   TextEditingController endDateController = TextEditingController();
   TextEditingController startTimeController = TextEditingController();
@@ -236,9 +239,11 @@ class FilterDialogCubit extends Cubit<FilterDialogState> {
 
   ShiftModel? shiftsModel;
   List<ShiftItem> shiftData = [ShiftItem(name: 'No shifts available')];
-  getShifts() {
+  getShifts([int? userId]) {
     emit(FilterDialogLoading<ShiftModel>());
-    DioHelper.getData(url: ApiConstants.allShiftsUrl).then((value) {
+    DioHelper.getData(
+        url: ApiConstants.allShiftsUrl,
+        query: {'userId': role == 'Admin' ? null : userId}).then((value) {
       shiftsModel = ShiftModel.fromJson(value!.data);
       shiftData =
           shiftsModel?.data?.data ?? [ShiftItem(name: 'No shifts available')];

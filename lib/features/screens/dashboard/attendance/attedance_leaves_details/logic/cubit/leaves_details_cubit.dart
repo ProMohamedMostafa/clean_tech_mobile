@@ -21,9 +21,9 @@ class LeavesDetailsCubit extends Cubit<LeavesDetailsState> {
     });
   }
 
-  leavesDelete(int id) {
+  leavesRquestDelete(int id) {
     emit(LeavesDeleteLoadingState());
-    DioHelper.deleteData(url: 'leaves/delete/$id').then((value) {
+    DioHelper.deleteData(url: 'leaves/delete/$id/request').then((value) {
       final message = value?.data['message'] ?? "restored successfully";
       emit(LeavesDeleteSuccessState(message!));
     }).catchError((error) {
@@ -51,8 +51,12 @@ class LeavesDetailsCubit extends Cubit<LeavesDetailsState> {
   }
 
   Future<void> refresLeaves({int? id}) async {
-    leavesDetailsModel = null;
     emit(LeavesDetailsLoadingState());
-    await getLeavesDetails(id);
+    final previousData = leavesDetailsModel;
+    try {
+      await getLeavesDetails(id);
+    } catch (e) {
+      leavesDetailsModel = previousData;
+    }
   }
 }

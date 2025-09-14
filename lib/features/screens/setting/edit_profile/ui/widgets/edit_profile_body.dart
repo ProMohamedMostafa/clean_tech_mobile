@@ -39,7 +39,7 @@ class _EditProfileBodyState extends State<EditProfileBody> {
           S.of(context).edit_profile_details,
           style: TextStyles.font16BlackSemiBold,
         ),
-        centerTitle: true,
+      
         leading: CustomBackButton(),
       ),
       body: BlocConsumer<EditProfileCubit, EditProfileState>(
@@ -309,7 +309,8 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                                   selectedIndex.toString();
                             }
                           },
-                          hint: cubit.profileModel!.data!.gender!.toString(),
+                          hint:
+                              cubit.profileModel!.data!.genderName!.toString(),
                           items: [
                             S.of(context).genderMale,
                             S.of(context).genderFemale

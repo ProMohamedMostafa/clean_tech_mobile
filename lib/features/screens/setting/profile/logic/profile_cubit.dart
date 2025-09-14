@@ -7,6 +7,8 @@ import 'package:smart_cleaning_application/core/networking/dio_helper/dio_helper
 import 'package:smart_cleaning_application/core/widgets/filter/data/model/filter_dialog_data_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attendance_history_management/data/models/attendance_history_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attendance_leaves_management/data/models/attendance_leaves_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/feedback_audit_view/feedback_audit_mangement/data/auditor_answer_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/auditor/data/model/auditor_answer.dart';
 import 'package:smart_cleaning_application/features/screens/setting/profile/logic/profile_state.dart';
 import 'package:smart_cleaning_application/features/screens/setting/settings/data/model/profile_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/task/task_management/data/models/all_tasks_model.dart';
@@ -53,6 +55,19 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(UserShiftDetailsSuccessState(userShiftDetailsModel!));
     }).catchError((error) {
       emit(UserShiftDetailsErrorState(error.toString()));
+    });
+  }
+
+  AuditorAnswersModel? auditorsModel;
+  getAuditorAnswers() {
+    emit(AuditorAnswersLoadingState());
+    DioHelper.getData(url: "audit/answers")
+        .then((value) {
+      auditorsModel = AuditorAnswersModel.fromJson(value!.data);
+
+      emit(AuditorAnswersSuccessState(auditorsModel!));
+    }).catchError((error) {
+      emit(AuditorAnswersErrorState(error.toString()));
     });
   }
 
@@ -246,4 +261,41 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(UserWorkLocationDetailsLoadingState());
     await getUserWorkLocationDetails();
   }
+
+
+ AuditorAnswerDetailsModel? auditorAnswerDetailsModel;
+
+  List<bool> expandedItems = [];
+
+  Future<void> getAnswerDetails(int id) async {
+    emit(AuditorAnswerDetailsLoadingState());
+    try {
+      final value = await DioHelper.getData(url: "audit/answers/$id");
+      auditorAnswerDetailsModel = AuditorAnswerDetailsModel.fromJson(value!.data);
+
+      final qCount = auditorAnswerDetailsModel?.data?.questions?.length ?? 0;
+      expandedItems = List<bool>.filled(qCount, false);
+
+      emit(AuditorAnswerDetailsSuccessState(auditorAnswerDetailsModel!));
+    } catch (e) {
+      emit(AuditorAnswerDetailsErrorState(e.toString()));
+    }
+  }
+
+  void toggleExpand(int index) {
+    if (index < 0) return;
+    if (index >= expandedItems.length) {
+      // grow safely if needed
+      final newList = List<bool>.from(expandedItems);
+      newList.length = index + 1;
+      for (int i = expandedItems.length; i < newList.length; i++) {
+        newList[i] = false;
+      }
+      expandedItems = newList;
+    }
+    expandedItems[index] = !expandedItems[index];
+    emit(QuestionToggleSelectAllState());
+  }
+
+
 }

@@ -78,13 +78,42 @@ class Routes {
 
   static const String activityScreen = '/activityScreen';
 
-
   static const String sensorEditScreen = '/sensorEditScreen';
   static const String sensorDetailsScreen = '/sensorDetailsScreen';
 
   static const String providerScreen = '/providerScreen';
 
-
-
   static const String notificationScreen = '/notificationScreen';
+
+  static const String feedbackScreen = '/feedbackScreen';
+
+  static const String questionScreen = '/questionScreen';
+  static const String addQuestionScreen = '/addQuestionScreen';
+  static const String editQuestionScreen = '/editQuestionScreen';
+
+  static const String feedbackAndAuditViewScreen =
+      '/feedbackAndAuditViewScreen';
+  static const String addFeedbackAuditScreen = '/addFeedbackAuditScreen';
+  static const String editFeedbackAuditScreen = '/editFeedbackAuditScreen';
+  static const String feedbackAuditDetailsScreen =
+      '/feedbackAuditDetailsScreen';
+  static const String assignQuestionWithFeedbackAuditScreen =
+      '/assignQuestionWithFeedbackAuditScreen';
+
+  static const String devicesScreen = '/devicesScreen';
+  static const String addDevicesScreen = '/addDevicesScreen';
+  static const String editDevicesScreen = '/editDevicesScreen';
+  static const String deviceAnswersScreen = '/deviceAnswersScreen';
+  static const String feedbackAnswerScreen = '/feedbackAnswerScreen';
+  static const String auditorScreen = '/auditorScreen';
+  static const String auditLocationDetailsScreen = '/auditLocationDetailsScreen';
+  static const String auditorQuestionsScreen = '/auditorQuestionsScreen';
+  static const String auditorAnswerDetailsScreen = '/auditorAnswerDetailsScreen';
+
+
+
+
+    static const String workLocationAssignQuestionPoint =
+      '/workLocationAssignQuestionPoint';
+
 }

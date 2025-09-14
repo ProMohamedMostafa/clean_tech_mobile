@@ -42,7 +42,6 @@ class AllTasksModel {
   }
 }
 
-
 class PaginatedData {
   int? currentPage;
   int? totalPages;
@@ -110,7 +109,7 @@ class TaskData {
   String? startTime;
   String? endTime;
   double? currentReading;
-  String? readingAfter;
+  double? readingAfter;
   String? organizationName;
   String? buildingName;
   String? floorName;
@@ -119,9 +118,10 @@ class TaskData {
   String? parentTitle;
   int? createdBy;
   String? createdUserName;
+  String? role;
   String? deviceName;
-  String? duration;
   String? started;
+  String? duration;
   List<UserModel>? users;
 
   TaskData({
@@ -146,9 +146,10 @@ class TaskData {
     this.parentTitle,
     this.createdBy,
     this.createdUserName,
+    this.role,
     this.deviceName,
-    this.duration,
     this.started,
+    this.duration,
     this.users,
   });
 
@@ -164,8 +165,8 @@ class TaskData {
     endDate = json['endDate'];
     startTime = json['startTime'];
     endTime = json['endTime'];
-    currentReading = json['currentReading'];
-    readingAfter = json['readingAfter'];
+    currentReading = (json['currentReading'] as num?)?.toDouble();
+    readingAfter = (json['readingAfter'] as num?)?.toDouble();
     organizationName = json['organizationName'];
     buildingName = json['buildingName'];
     floorName = json['floorName'];
@@ -174,45 +175,48 @@ class TaskData {
     parentTitle = json['parentTitle'];
     createdBy = json['createdBy'];
     createdUserName = json['createdUserName'];
+    role = json['role'];
     deviceName = json['deviceName'];
-    duration = json['duration'];
     started = json['started'];
+    duration = json['duration'];
     if (json['users'] != null) {
-      users =
-          List<UserModel>.from(json['users'].map((v) => UserModel.fromJson(v)));
+      users = List<UserModel>.from(
+        json['users'].map((x) => UserModel.fromJson(x)),
+      );
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> result = {};
-    result['id'] = id;
-    result['title'] = title;
-    result['description'] = description;
-    result['priority'] = priority;
-    result['priorityId'] = priorityId;
-    result['status'] = status;
-    result['statusId'] = statusId;
-    result['startDate'] = startDate;
-    result['endDate'] = endDate;
-    result['startTime'] = startTime;
-    result['endTime'] = endTime;
-    result['currentReading'] = currentReading;
-    result['readingAfter'] = readingAfter;
-    result['organizationName'] = organizationName;
-    result['buildingName'] = buildingName;
-    result['floorName'] = floorName;
-    result['sectionName'] = sectionName;
-    result['pointName'] = pointName;
-    result['parentTitle'] = parentTitle;
-    result['createdBy'] = createdBy;
-    result['createdUserName'] = createdUserName;
-    result['deviceName'] = deviceName;
-    result['duration'] = duration;
-    result['started'] = started;
+    final Map<String, dynamic> data = {};
+    data['id'] = id;
+    data['title'] = title;
+    data['description'] = description;
+    data['priority'] = priority;
+    data['priorityId'] = priorityId;
+    data['status'] = status;
+    data['statusId'] = statusId;
+    data['startDate'] = startDate;
+    data['endDate'] = endDate;
+    data['startTime'] = startTime;
+    data['endTime'] = endTime;
+    data['currentReading'] = currentReading;
+    data['readingAfter'] = readingAfter;
+    data['organizationName'] = organizationName;
+    data['buildingName'] = buildingName;
+    data['floorName'] = floorName;
+    data['sectionName'] = sectionName;
+    data['pointName'] = pointName;
+    data['parentTitle'] = parentTitle;
+    data['createdBy'] = createdBy;
+    data['createdUserName'] = createdUserName;
+    data['role'] = role;
+    data['deviceName'] = deviceName;
+    data['started'] = started;
+    data['duration'] = duration;
     if (users != null) {
-      result['users'] = users!.map((v) => v.toJson()).toList();
+      data['users'] = users!.map((x) => x.toJson()).toList();
     }
-    return result;
+    return data;
   }
 }
 
@@ -246,14 +250,14 @@ class UserModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> result = {};
-    result['id'] = id;
-    result['userName'] = userName;
-    result['firstName'] = firstName;
-    result['lastName'] = lastName;
-    result['role'] = role;
-    result['email'] = email;
-    result['image'] = image;
-    return result;
+    final Map<String, dynamic> data = {};
+    data['id'] = id;
+    data['userName'] = userName;
+    data['firstName'] = firstName;
+    data['lastName'] = lastName;
+    data['role'] = role;
+    data['email'] = email;
+    data['image'] = image;
+    return data;
   }
 }

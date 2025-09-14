@@ -4,9 +4,7 @@ class BusinessErrorMapper {
   static String getMessage(int? code) {
     final s = S.current;
 
-    if (code == null) {
-      return s.unknown_error;
-    }
+    if (code == null) return s.unknown_error;
 
     switch (code) {
       case 1000:
@@ -15,74 +13,126 @@ class BusinessErrorMapper {
         return s.email_already_exists;
       case 1002:
         return s.password_reset_required;
-      case 1011:
+      case 1003:
         return s.name_already_exists;
-      case 1012:
+      case 1004:
         return s.phone_number_already_exists;
-      case 1013:
+      case 1005:
         return s.email_or_username_not_found;
-      case 1014:
+      case 1006:
         return s.password_is_incorrect;
-      case 1015:
+      case 1007:
         return s.id_number_already_exists;
-      case 1016:
+      case 1008:
         return s.nationality_not_exists;
-      case 1017:
+      case 1009:
         return s.end_date_greater_start_date;
+      case 1010:
+        return s.country_not_exists;
+      case 1011:
+        return s.manager_does_not_exist;
+      case 1012:
+        return s.role_does_not_exist;
+      case 1013:
+        return s.user_cannot_manage_themselves;
+      case 1014:
+        return s.area_not_exists;
+      case 1015:
+        return s.city_not_exists;
+      case 1016:
+        return s.organization_not_exists;
+      case 1017:
+        return s.building_not_exists;
       case 1018:
-        return s.country_or_device_already_assigned;
+        return s.floor_not_exists;
       case 1019:
-        return s.role_or_parent_task_not_exists;
+        return s.section_not_exists;
       case 1020:
-        return s.user_cannot_manage_themselves_or_task_not_exists;
+        return s.point_not_exists;
       case 1021:
-        return s.area_not_exists_or_reading_out_of_limit;
+        return s.users_not_found;
       case 1022:
-        return s.city_not_exists_or_task_completed;
+        return s.shifts_not_found;
       case 1023:
-        return s.organization_or_shift_not_exists;
+        return s.organizations_not_found;
       case 1024:
-        return s.building_not_exists_or_cannot_delete_shift;
+        return s.buildings_not_found;
       case 1025:
-        return s.floor_not_exists_or_user_not_exists;
+        return s.floors_not_found;
       case 1026:
-        return s.section_not_exists_or_tag_not_exists;
+        return s.sections_not_found;
       case 1027:
-        return s.point_not_exists_or_leave_not_exists;
+        return s.not_assigned_to_task;
       case 1028:
-        return s.users_not_found_or_leave_overlaps;
+        return s.category_not_exists;
       case 1029:
-        return s.shifts_not_found_or_shift_overlaps;
+        return s.provider_not_exists;
       case 1030:
-        return s.organizations_not_found_or_quantity_greater;
+        return s.material_not_exists;
       case 1031:
-        return s.buildings_not_found_or_already_assign_limit;
+        return s.currently_reading_required_countable_point;
       case 1032:
-        return s.floors_not_found_or_min_or_max_not_exists;
+        return s.after_reading_required_countable_point;
       case 1033:
-        return s.sections_not_found_or_key_not_exists;
-      case 1034:
-        return s.not_assigned_to_task_or_limit_not_exists;
-      case 1035:
-        return s.category_not_exists_or_leave_start_future;
-      case 1036:
-        return s.provider_not_exists_or_question_not_exists;
-      case 1037:
-        return s.material_not_exists_or_choice_not_exists;
-      case 1038:
-        return s.currently_reading_or_feedback_device_assigned;
-      case 1039:
-        return s.after_reading_or_feedback_device_not_exists;
-      case 1040:
         return s.category_cannot_be_own_parent;
-      case 1041:
+      case 1034:
         return s.task_cannot_be_own_parent;
-      case 1043:
+      case 1035:
         return s.invalid_otp;
-      case 1044:
+      case 1036:
         return s.otp_expired;
-      case 1045:
+      case 1037:
         return s.failed;
+      case 1038:
+        return s.device_not_exists;
+      case 1039:
+        return s.device_already_assigned_point;
+      case 1040:
+        return s.parent_task_not_exists;
+      case 1041:
+        return s.task_not_exists;
+      case 1042:
+        return s.reading_out_allowed_limit_range;
+      case 1043:
+        return s.task_is_completed;
+      case 1044:
+        return s.shift_not_exists;
+      case 1045:
+        return s.cannot_delete_shift_assigned_user_work_location;
+      case 1046:
+        return s.user_not_exists;
+      case 1047:
+        return s.tag_not_exists;
+      case 1048:
+        return s.leave_not_exists;
+      case 1049:
+        return s.leave_overlaps;
+      case 1050:
+        return s.shift_overlaps;
+      case 1051:
+        return s.quantity_greater_available;
+      case 1052:
+        return s.already_assign_limit;
+      case 1053:
+        return s.min_or_max_not_exists;
+      case 1054:
+        return s.key_not_exists;
+      case 1055:
+        return s.limit_not_exists;
+      case 1056:
+        return s.leave_start_future;
+      case 1057:
+        return s.question_not_exists;
+      case 1058:
+        return s.choice_not_exists;
+      case 1059:
+        return s.feedback_device_already_assigned_section;
+      case 1060:
+        return s.feedback_device_not_exists;
+      case 1061:
+        return s.section_usage_not_exists;
+      case 1062:
+        return s.already_assigned_an_another;
       default:
         return s.unknown_error;
     }

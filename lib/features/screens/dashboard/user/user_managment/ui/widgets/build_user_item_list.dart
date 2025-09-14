@@ -23,7 +23,10 @@ class BuildUserItemList extends StatelessWidget {
         if (cubit.selectedIndex == 0) {
           final result = await context.pushNamed(
             Routes.userDetailsScreen,
-            arguments: cubit.usersModel!.data!.users![index].id,
+            arguments: {
+              'id': cubit.usersModel!.data!.users![index].id,
+              'roleId': cubit.usersModel!.data!.users![index].roleId
+            },
           );
           if (result == true) {
             await cubit.refreshUsers();

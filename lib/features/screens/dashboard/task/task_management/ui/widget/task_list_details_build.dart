@@ -8,8 +8,8 @@ import 'package:smart_cleaning_application/features/screens/dashboard/task/task_
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class TaskListBuild extends StatelessWidget {
-  final int indexx;
-  const TaskListBuild({super.key, required this.indexx});
+  final int selectedIndex;
+  const TaskListBuild({super.key, required this.selectedIndex});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class TaskListBuild extends StatelessWidget {
     itemCount: itemCount,
     itemBuilder: (context, index) => Skeletonizer(
         enabled: cubit.allTasksModel == null,
-        child: TaskListItemBuild(index: index,indexx: indexx,)),
+        child: TaskListItemBuild(index: index,selectedIndex: selectedIndex,)),
   );
   }
 }

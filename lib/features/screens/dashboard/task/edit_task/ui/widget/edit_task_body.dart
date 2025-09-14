@@ -21,7 +21,8 @@ import 'package:smart_cleaning_application/core/widgets/custom_date_picker/custo
 import 'package:smart_cleaning_application/core/widgets/custom_description_text_form_field/custom_description_text_form_field.dart';
 import 'package:smart_cleaning_application/core/widgets/custom_drop_down_list/custom_drop_down_list.dart';
 import 'package:smart_cleaning_application/core/widgets/default_text_form_field/custom_text_form_field.dart';
-import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/data/models/users_basic_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/shift_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/task/add_task/data/models/users_shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/logic/edit_task_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/logic/edit_task_state.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/ui/widget/upload_files_dialog.dart';
@@ -37,9 +38,11 @@ class EditTaskBody extends StatefulWidget {
 }
 
 class _EditTaskBodyState extends State<EditTaskBody> {
+  bool _initialized = false;
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<EditTaskCubit>();
+
     return Scaffold(
         appBar: AppBar(
             title: Text(S.of(context).edit_task), leading: CustomBackButton()),
@@ -47,7 +50,12 @@ class _EditTaskBodyState extends State<EditTaskBody> {
           listener: (context, state) {
             if (state is GetTaskDetailsSuccessState) {
               cubit.initializeFiles();
+
+              cubit.getShifts();
+
+              cubit.getAllUsers();
             }
+
             if (state is EditTaskSuccessState) {
               toast(text: state.editTaskModel.message!, isSuccess: true);
               context.popWithTrueResult();
@@ -58,7 +66,6 @@ class _EditTaskBodyState extends State<EditTaskBody> {
           },
           builder: (context, state) {
             if (cubit.taskDetailsModel == null ||
-                cubit.usersBasicModel == null ||
                 cubit.tasksBasicModel == null ||
                 cubit.organizationBasicModel == null) {
               return Loading();
@@ -70,10 +77,13 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                   ? cubit.priority.indexOf(cubit.selectedPriority!)
                   : null;
             }
-            // Initialize controllers when data is ready
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              cubit.initializeUsersControllers();
-            });
+            if (!_initialized) {
+              _initialized = true;
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                cubit.initializeUsersControllers();
+                cubit.initializeShiftControllers();
+              });
+            }
             return SingleChildScrollView(
               child: SafeArea(
                 child: Padding(
@@ -186,6 +196,178 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                               controller: cubit.taskTitleController
                                 ..text = cubit.taskDetailsModel!.data!.title!,
                               keyboardType: TextInputType.text,
+                            ),
+                            verticalSpace(10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                    child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      S.of(context).startDate,
+                                      style: TextStyles.font16BlackRegular,
+                                    ),
+                                    verticalSpace(5),
+                                    CustomTextFormField(
+                                      onlyRead: true,
+                                      hint: cubit
+                                          .taskDetailsModel!.data!.startDate!,
+                                      controller: cubit.startDateController,
+                                      suffixIcon: Icons.calendar_today,
+                                      suffixPressed: () async {
+                                        final selectedDate =
+                                            await CustomDatePicker.show(
+                                                context: context);
+
+                                        if (selectedDate != null &&
+                                            context.mounted) {
+                                          cubit.startDateController.text =
+                                              selectedDate;
+                                        }
+                                      },
+                                      keyboardType: TextInputType.none,
+                                    ),
+                                  ],
+                                )),
+                                horizontalSpace(10),
+                                Expanded(
+                                    child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      S.of(context).endDate,
+                                      style: TextStyles.font16BlackRegular,
+                                    ),
+                                    verticalSpace(5),
+                                    CustomTextFormField(
+                                      onlyRead: true,
+                                      hint: cubit
+                                          .taskDetailsModel!.data!.endDate!,
+                                      controller: cubit.endDateController,
+                                      suffixIcon: Icons.calendar_today,
+                                      suffixPressed: () async {
+                                        final selectedDate =
+                                            await CustomDatePicker.show(
+                                                context: context);
+
+                                        if (selectedDate != null &&
+                                            context.mounted) {
+                                          cubit.endDateController.text =
+                                              selectedDate;
+                                        }
+                                      },
+                                      keyboardType: TextInputType.none,
+                                    ),
+                                  ],
+                                )),
+                              ],
+                            ),
+                            verticalSpace(10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                    child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      S.of(context).startTime,
+                                      style: TextStyles.font16BlackRegular,
+                                    ),
+                                    verticalSpace(5),
+                                    CustomTextFormField(
+                                      onlyRead: true,
+                                      hint: cubit
+                                          .taskDetailsModel!.data!.startTime!,
+                                      controller: cubit.startTimeController,
+                                      suffixIcon: Icons.timer_sharp,
+                                      suffixPressed: () async {
+                                        final selectedTime =
+                                            await CustomTimePicker.show(
+                                                context: context);
+
+                                        if (selectedTime != null &&
+                                            context.mounted) {
+                                          cubit.startTimeController.text =
+                                              selectedTime;
+                                        }
+                                      },
+                                      keyboardType: TextInputType.none,
+                                    ),
+                                  ],
+                                )),
+                                horizontalSpace(10),
+                                Expanded(
+                                    child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      S.of(context).endTime,
+                                      style: TextStyles.font16BlackRegular,
+                                    ),
+                                    verticalSpace(5),
+                                    CustomTextFormField(
+                                      onlyRead: true,
+                                      hint: cubit
+                                          .taskDetailsModel!.data!.endTime!,
+                                      controller: cubit.endTimeController,
+                                      suffixIcon: Icons.timer_sharp,
+                                      suffixPressed: () async {
+                                        final selectedTime =
+                                            await CustomTimePicker.show(
+                                                context: context);
+
+                                        if (selectedTime != null &&
+                                            context.mounted) {
+                                          cubit.endTimeController.text =
+                                              selectedTime;
+                                        }
+                                      },
+                                      keyboardType: TextInputType.none,
+                                    ),
+                                  ],
+                                )),
+                              ],
+                            ),
+                            verticalSpace(10),
+                            Text(
+                              S.of(context).status,
+                              style: TextStyles.font16BlackRegular,
+                            ),
+                            verticalSpace(5),
+                            CustomDropDownList(
+                              onChanged: (selectedValue) {
+                                final items = [
+                                  S.of(context).pending,
+                                  S.of(context).complete,
+                                  S.of(context).overdue,
+                                ];
+                                final selectedIndex =
+                                    items.indexOf(selectedValue!);
+                                if (selectedIndex != -1) {
+                                  if (selectedIndex == 1) {
+                                    cubit.statusIdController.text = '3';
+                                  } else if (selectedIndex == 2) {
+                                    cubit.statusIdController.text = '6';
+                                  } else {
+                                    cubit.statusIdController.text =
+                                        selectedIndex.toString();
+                                  }
+                                }
+
+                                cubit.statusController.text = selectedValue;
+                              },
+                              hint: cubit.taskDetailsModel!.data!.status!,
+                              items: [
+                                S.of(context).pending,
+                                S.of(context).complete,
+                                S.of(context).overdue,
+                              ],
+                              suffixIcon: IconBroken.arrowDown2,
+                              keyboardType: TextInputType.text,
+                              controller: cubit.statusController,
                             ),
                             verticalSpace(10),
                             RichText(
@@ -351,6 +533,7 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                   cubit.sectionIdController.text =
                                       selectedSection;
                                 }
+                                cubit.getPoint();
                               },
                               suffixIcon: IconBroken.arrowDown2,
                               keyboardType: TextInputType.text,
@@ -387,16 +570,111 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                         cubit.pointController.text)
                                     .id
                                     ?.toString();
-
                                 if (selectedPoint != null) {
                                   cubit.pointIdController.text = selectedPoint;
+                                  cubit.getShifts();
                                 }
                               },
                               suffixIcon: IconBroken.arrowDown2,
                               keyboardType: TextInputType.text,
                             ),
+                            verticalSpace(10),
+                            RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: S.of(context).shiftBody,
+                                    style: TextStyles.font16BlackRegular,
+                                  ),
+                                  TextSpan(
+                                    text: S.of(context).labelOptional,
+                                    style: TextStyles.font14GreyRegular,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            CustomMultiDropdown(
+                              items: cubit.shiftModel?.data?.data?.isEmpty ??
+                                      true
+                                  ? [
+                                      DropdownItem(
+                                        label: S.of(context).noShiftsAvailable,
+                                        value: ShiftItem(
+                                            id: null,
+                                            name: S
+                                                .of(context)
+                                                .noShiftsAvailable),
+                                      )
+                                    ]
+                                  : cubit.shiftModel!.data!.data!
+                                      .map((shift) => DropdownItem(
+                                            label: shift.name!,
+                                            value: shift,
+                                          ))
+                                      .toList(),
+                              controller: cubit.allShiftsController,
+                              onSelectionChange: (selectedItems) {
+                                cubit.selectedShiftsIds = selectedItems
+                                    .map((item) => item.id!)
+                                    .toList();
+                                if (cubit.selectedShiftsIds.length == 1) {
+                                  cubit.getAllUsers();
+                                } else {
+                                  cubit.usersShiftModel = null;
+                                  cubit.usersController.clearAll();
+                                  cubit.selectedUsersIds.clear();
+                                }
+                              },
+                              hint: S.of(context).selectShift,
+                            ),
+                            verticalSpace(10),
+                            RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: S.of(context).employee,
+                                    style: TextStyles.font16BlackRegular,
+                                  ),
+                                  TextSpan(
+                                    text: S.of(context).labelOptional,
+                                    style: TextStyles.font14GreyRegular,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            verticalSpace(5),
+                            CustomMultiDropdown(
+                              items: cubit.usersShiftModel?.data?.isEmpty ??
+                                      true
+                                  ? [
+                                      DropdownItem(
+                                        label:
+                                            S.of(context).noEmployeeValidation,
+                                        value: UserShiftData(
+                                            id: null,
+                                            userName: S
+                                                .of(context)
+                                                .noEmployeeValidation),
+                                      )
+                                    ]
+                                  : cubit.usersShiftModel!.data!
+                                      .map((emp) => DropdownItem(
+                                            label: emp.userName!,
+                                            value: emp,
+                                          ))
+                                      .toList(),
+                              controller: cubit.usersController,
+                              onSelectionChange: (selectedItems) {
+                                cubit.selectedUsersIds = selectedItems
+                                    .map((item) => (item).id!)
+                                    .toList();
+                              },
+                              hint: S.of(context).selectEmployee,
+                            ),
+                            verticalSpace(10),
                             if (cubit.isPointCountable) ...[
-                              verticalSpace(10),
                               Text(
                                 S.of(context).currently_reading,
                                 style: TextStyles.font16BlackRegular,
@@ -430,222 +708,6 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                               ),
                               verticalSpace(10),
                             ],
-                            Text(
-                              S.of(context).status,
-                              style: TextStyles.font16BlackRegular,
-                            ),
-                            verticalSpace(5),
-                            CustomDropDownList(
-                              onChanged: (selectedValue) {
-                                final items = [
-                                  S.of(context).pending,
-                                  S.of(context).complete,
-                                  S.of(context).overdue,
-                                ];
-                                final selectedIndex =
-                                    items.indexOf(selectedValue!);
-                                if (selectedIndex != -1) {
-                                  if (selectedIndex == 1) {
-                                    cubit.statusIdController.text = '3';
-                                  } else if (selectedIndex == 2) {
-                                    cubit.statusIdController.text = '6';
-                                  } else {
-                                    cubit.statusIdController.text =
-                                        selectedIndex.toString();
-                                  }
-                                }
-
-                                cubit.statusController.text = selectedValue;
-                              },
-                              hint: cubit.taskDetailsModel!.data!.status!,
-                              items: [
-                                S.of(context).pending,
-                                S.of(context).complete,
-                                S.of(context).overdue,
-                              ],
-                              suffixIcon: IconBroken.arrowDown2,
-                              keyboardType: TextInputType.text,
-                              controller: cubit.statusController,
-                            ),
-                            verticalSpace(10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                    child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      S.of(context).startDate,
-                                      style: TextStyles.font16BlackRegular,
-                                    ),
-                                    verticalSpace(5),
-                                    CustomTextFormField(
-                                      onlyRead: true,
-                                      hint: cubit
-                                          .taskDetailsModel!.data!.startDate!,
-                                      controller: cubit.startDateController,
-                                      suffixIcon: Icons.calendar_today,
-                                      suffixPressed: () async {
-                                        final selectedDate =
-                                            await CustomDatePicker.show(
-                                                context: context);
-
-                                        if (selectedDate != null &&
-                                            context.mounted) {
-                                          cubit.startDateController.text =
-                                              selectedDate;
-                                        }
-                                      },
-                                      keyboardType: TextInputType.none,
-                                    ),
-                                  ],
-                                )),
-                                horizontalSpace(10),
-                                Expanded(
-                                    child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      S.of(context).endDate,
-                                      style: TextStyles.font16BlackRegular,
-                                    ),
-                                    verticalSpace(5),
-                                    CustomTextFormField(
-                                      onlyRead: true,
-                                      hint: cubit
-                                          .taskDetailsModel!.data!.endDate!,
-                                      controller: cubit.endDateController,
-                                      suffixIcon: Icons.calendar_today,
-                                      suffixPressed: () async {
-                                        final selectedDate =
-                                            await CustomDatePicker.show(
-                                                context: context);
-
-                                        if (selectedDate != null &&
-                                            context.mounted) {
-                                          cubit.endDateController.text =
-                                              selectedDate;
-                                        }
-                                      },
-                                      keyboardType: TextInputType.none,
-                                    ),
-                                  ],
-                                )),
-                              ],
-                            ),
-                            verticalSpace(10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                    child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      S.of(context).startTime,
-                                      style: TextStyles.font16BlackRegular,
-                                    ),
-                                    verticalSpace(5),
-                                    CustomTextFormField(
-                                      onlyRead: true,
-                                      hint: cubit
-                                          .taskDetailsModel!.data!.startTime!,
-                                      controller: cubit.startTimeController,
-                                      suffixIcon: Icons.timer_sharp,
-                                      suffixPressed: () async {
-                                        final selectedTime =
-                                            await CustomTimePicker.show(
-                                                context: context);
-
-                                        if (selectedTime != null &&
-                                            context.mounted) {
-                                          cubit.startTimeController.text =
-                                              selectedTime;
-                                        }
-                                      },
-                                      keyboardType: TextInputType.none,
-                                    ),
-                                  ],
-                                )),
-                                horizontalSpace(10),
-                                Expanded(
-                                    child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      S.of(context).endTime,
-                                      style: TextStyles.font16BlackRegular,
-                                    ),
-                                    verticalSpace(5),
-                                    CustomTextFormField(
-                                      onlyRead: true,
-                                      hint: cubit
-                                          .taskDetailsModel!.data!.endTime!,
-                                      controller: cubit.endTimeController,
-                                      suffixIcon: Icons.timer_sharp,
-                                      suffixPressed: () async {
-                                        final selectedTime =
-                                            await CustomTimePicker.show(
-                                                context: context);
-
-                                        if (selectedTime != null &&
-                                            context.mounted) {
-                                          cubit.endTimeController.text =
-                                              selectedTime;
-                                        }
-                                      },
-                                      keyboardType: TextInputType.none,
-                                    ),
-                                  ],
-                                )),
-                              ],
-                            ),
-                            verticalSpace(10),
-                            RichText(
-                              textAlign: TextAlign.center,
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: S.of(context).employee,
-                                    style: TextStyles.font16BlackRegular,
-                                  ),
-                                  TextSpan(
-                                    text: S.of(context).labelOptional,
-                                    style: TextStyles.font14GreyRegular,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            verticalSpace(5),
-                            CustomMultiDropdown(
-                              items: cubit.usersBasicModel!.data!.isEmpty
-                                  ? [
-                                      DropdownItem(
-                                        label:
-                                            S.of(context).noEmployeeValidation,
-                                        value: UserItem(
-                                            id: null,
-                                            userName: S
-                                                .of(context)
-                                                .noEmployeeValidation),
-                                      )
-                                    ]
-                                  : cubit.usersBasicModel!.data!
-                                      .map((emp) => DropdownItem(
-                                            label: emp.userName!,
-                                            value: emp,
-                                          ))
-                                      .toList(),
-                              controller: cubit.usersController,
-                              onSelectionChange: (selectedItems) {
-                                cubit.selectedUsersIds = selectedItems
-                                    .map((item) => (item).id!)
-                                    .toList();
-                              },
-                              hint: S.of(context).selectEmployee,
-                            ),
-                            verticalSpace(10),
                             Text(
                               S.of(context).description,
                               style: TextStyles.font16BlackRegular,
@@ -916,11 +978,8 @@ class _EditTaskBodyState extends State<EditTaskBody> {
                                                           .of(context)
                                                           .taskbody,
                                                       onPressed: () {
-                                                        context
-                                                            .read<
-                                                                EditTaskCubit>()
-                                                            .editTask(
-                                                                widget.id);
+                                                        cubit.editTask(
+                                                            widget.id);
                                                       });
                                                 });
                                           }

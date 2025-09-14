@@ -10,8 +10,8 @@ import 'package:smart_cleaning_application/features/screens/setting/profile/logi
 import 'package:smart_cleaning_application/features/screens/setting/profile/ui/widgets/leaves/leaves_list_item_build.dart';
 import 'package:smart_cleaning_application/generated/l10n.dart';
 
-class UserLeavesDetails extends StatelessWidget {
-  const UserLeavesDetails({super.key});
+class UserLeavesProfileDetails extends StatelessWidget {
+  const UserLeavesProfileDetails({super.key});
 
   @override
   Widget build(BuildContext context) {

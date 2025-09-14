@@ -67,6 +67,7 @@ class Data {
   int? pointId;
   String? parentTitle;
   int? parentId;
+  int? shiftId;
   int? createdBy;
   String? createdUserName;
   int? deviceId;
@@ -103,6 +104,7 @@ class Data {
     this.pointId,
     this.parentTitle,
     this.parentId,
+    this.shiftId,
     this.createdBy,
     this.createdUserName,
     this.deviceId,
@@ -140,6 +142,7 @@ class Data {
     pointId = json['pointId'];
     parentTitle = json['parentTitle'];
     parentId = json['parentId'];
+    shiftId = json['shiftId'];
     createdBy = json['createdBy'];
     createdUserName = json['createdUserName'];
     deviceId = json['deviceId'];
@@ -193,6 +196,7 @@ class Data {
     data['pointId'] = pointId;
     data['parentTitle'] = parentTitle;
     data['parentId'] = parentId;
+    data['shiftId'] = shiftId;
     data['createdBy'] = createdBy;
     data['createdUserName'] = createdUserName;
     data['deviceId'] = deviceId;

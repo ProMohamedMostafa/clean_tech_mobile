@@ -56,6 +56,8 @@ class Data {
   String? cityName;
   int? areaId;
   String? areaName;
+  int? feedbackId;
+  int? auditId;
   String? countryName;
   List<Users>? users;
   List<Shifts>? shifts;
@@ -76,6 +78,8 @@ class Data {
       this.areaId,
       this.areaName,
       this.countryName,
+      this.feedbackId,
+      this.auditId,
       this.users,
       this.shifts});
 
@@ -95,6 +99,8 @@ class Data {
     areaId = json['areaId'];
     areaName = json['areaName'];
     countryName = json['countryName'];
+    feedbackId = json['feedbackId'];
+    auditId = json['auditId'];
     if (json['users'] != null) {
       users = <Users>[];
       json['users'].forEach((v) {
@@ -126,6 +132,8 @@ class Data {
     data['areaId'] = areaId;
     data['areaName'] = areaName;
     data['countryName'] = countryName;
+    data['feedbackId'] = feedbackId;
+    data['auditId'] = auditId;
     if (users != null) {
       data['users'] = users!.map((v) => v.toJson()).toList();
     }

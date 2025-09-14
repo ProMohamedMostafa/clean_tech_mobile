@@ -22,8 +22,13 @@ class BuildLeavesCardItem extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(11.r),
       onTap: () async {
-        final result = await context.pushNamed(Routes.leavesDetailsScreen,
-            arguments: cubit.attendanceLeavesModel!.data!.leaves![index].id!);
+        final result = await context.pushNamed(
+          Routes.leavesDetailsScreen,
+          arguments: {
+            'id': cubit.attendanceLeavesModel!.data!.leaves![index].id!,
+            'isProfile': true,
+          },
+        );
 
         if (result == true) {
           cubit.getAllLeaves();

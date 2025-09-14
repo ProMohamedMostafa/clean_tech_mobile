@@ -79,15 +79,19 @@ class BuildSensorItemList extends StatelessWidget {
                       ))
                 ],
               ),
-              title: Expanded(
-                child: Text(
-                  cubit.selectedIndex == 0
-                      ? cubit.sensorModel!.data!.data![index].name!
-                      : cubit.deletedSensorListModel!.data![index].name!,
-                  style: TextStyles.font14BlackSemiBold,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                ),
+              title: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      cubit.selectedIndex == 0
+                          ? cubit.sensorModel!.data!.data![index].name!
+                          : cubit.deletedSensorListModel!.data![index].name!,
+                      style: TextStyles.font14BlackSemiBold,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ),
+                ],
               ),
               subtitle: cubit.selectedIndex == 0
                   ? RichText(

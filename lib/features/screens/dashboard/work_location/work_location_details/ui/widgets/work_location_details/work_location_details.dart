@@ -60,7 +60,7 @@ class WorkLocationDetails extends StatelessWidget {
                 selectedIndex == 0
                     ? workLocationDetailsModel.name!
                     : workLocationDetailsModel.areaName!,
-                color: selectedIndex == 0 ? AppColor.primaryColor : null),
+                leadingColor: selectedIndex == 0 ? AppColor.primaryColor : null,suffixColor: selectedIndex == 0 ? AppColor.primaryColor : null),
             Divider(),
           ],
           if (selectedIndex >= 1) ...[
@@ -70,7 +70,7 @@ class WorkLocationDetails extends StatelessWidget {
                 selectedIndex == 1
                     ? workLocationDetailsModel.name!
                     : workLocationDetailsModel.cityName!,
-                color: selectedIndex == 1 ? AppColor.primaryColor : null),
+                leadingColor: selectedIndex == 1 ? AppColor.primaryColor : null,suffixColor: selectedIndex == 1 ? AppColor.primaryColor : null),
             Divider(),
           ],
           if (selectedIndex >= 2) ...[
@@ -80,7 +80,7 @@ class WorkLocationDetails extends StatelessWidget {
                 selectedIndex == 2
                     ? workLocationDetailsModel.name!
                     : workLocationDetailsModel.organizationName!,
-                color: selectedIndex == 2 ? AppColor.primaryColor : null),
+                leadingColor: selectedIndex == 2 ? AppColor.primaryColor : null ,suffixColor: selectedIndex == 2 ? AppColor.primaryColor : null),
             Divider(),
           ],
           if (selectedIndex >= 3) ...[
@@ -90,7 +90,7 @@ class WorkLocationDetails extends StatelessWidget {
                 selectedIndex == 3
                     ? workLocationDetailsModel.name!
                     : workLocationDetailsModel.buildingName!,
-                color: selectedIndex == 3 ? AppColor.primaryColor : null),
+                leadingColor: selectedIndex == 3 ? AppColor.primaryColor : null,suffixColor:selectedIndex == 3 ? AppColor.primaryColor : null ),
             Divider(),
           ],
           if (selectedIndex >= 4) ...[
@@ -100,7 +100,7 @@ class WorkLocationDetails extends StatelessWidget {
                 selectedIndex == 4
                     ? workLocationDetailsModel.name!
                     : workLocationDetailsModel.floorName!,
-                color: selectedIndex == 4 ? AppColor.primaryColor : null),
+                leadingColor: selectedIndex == 4 ? AppColor.primaryColor : null,suffixColor: selectedIndex == 4 ? AppColor.primaryColor:null),
             Divider(),
           ],
           if (selectedIndex >= 5) ...[
@@ -110,13 +110,13 @@ class WorkLocationDetails extends StatelessWidget {
                 selectedIndex == 5
                     ? workLocationDetailsModel.name!
                     : workLocationDetailsModel.sectionName!,
-                color: selectedIndex == 5 ? AppColor.primaryColor : null),
+                leadingColor: selectedIndex == 5 ? AppColor.primaryColor : null,suffixColor: selectedIndex == 5 ? AppColor.primaryColor : null),
             Divider(),
           ],
           if (selectedIndex >= 6) ...[
             rowDetailsBuild(
                 context, S.of(context).Point, workLocationDetailsModel.name!,
-                color: selectedIndex == 6 ? AppColor.primaryColor : null),
+                leadingColor: selectedIndex == 6 ? AppColor.primaryColor : null,suffixColor: selectedIndex == 6 ? AppColor.primaryColor : null),
             Divider(),
             if (cubit.pointUsersDetailsModel?.data?.isCountable == true) ...[
               rowDetailsBuild(
@@ -128,7 +128,7 @@ class WorkLocationDetails extends StatelessWidget {
               rowDetailsBuild(
                 context,
                 S.of(context).unitTitle,
-                cubit.pointUsersDetailsModel!.data!.unit ?? '__',
+                cubit.pointUsersDetailsModel!.data!.unit ?? '--',
               ),
               Divider(),
             ],

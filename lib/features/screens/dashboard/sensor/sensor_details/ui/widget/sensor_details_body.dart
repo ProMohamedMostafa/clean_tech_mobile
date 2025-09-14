@@ -85,24 +85,39 @@ class SensorDetailsBody extends StatelessWidget {
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            cubit.sensorDetailsModel!.data!.name!,
-                            style: TextStyles.font14BlackSemiBold,
-                          ),
-                          horizontalSpace(5),
-                          Container(
-                            width: 10.w,
-                            height: 10.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color:
-                                  cubit.sensorDetailsModel!.data!.active == true
-                                      ? Colors.green
-                                      : Colors.red,
+                          Expanded(
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 10.w,
+                                  height: 10.h,
+                                  margin: EdgeInsets.only(top: 4),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: cubit.sensorDetailsModel!.data!
+                                                .active ==
+                                            true
+                                        ? Colors.green
+                                        : Colors.red,
+                                  ),
+                                ),
+                                horizontalSpace(5),
+                                Expanded(
+                                  child: Text(
+                                    cubit.sensorDetailsModel!.data!.name!,
+                                    style: TextStyles.font14BlackSemiBold,
+                                    softWrap: true,
+                                    overflow: TextOverflow.visible,
+                                    maxLines: null,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          Spacer(),
+                          horizontalSpace(15),
                           GestureDetector(
                             onTap: () {
                               cubit.toggleSensor();
@@ -157,6 +172,7 @@ class SensorDetailsBody extends StatelessWidget {
                           ),
                         ],
                       ),
+                      verticalSpace(5),
                       RichText(
                         textAlign: TextAlign.start,
                         text: TextSpan(
@@ -587,7 +603,7 @@ class SensorDetailsBody extends StatelessWidget {
                       if (itemCount == 0)
                         Container(
                           width: double.infinity,
-                          height: 150,
+                          height: 150.h,
                           decoration: BoxDecoration(
                               color: Colors.grey[100],
                               borderRadius: BorderRadius.circular(11.r)),

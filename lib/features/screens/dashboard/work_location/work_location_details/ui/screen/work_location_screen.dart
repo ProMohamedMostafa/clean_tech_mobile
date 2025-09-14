@@ -17,6 +17,7 @@ import 'package:smart_cleaning_application/features/screens/dashboard/work_locat
 import 'package:smart_cleaning_application/features/screens/dashboard/work_location/work_location_details/ui/widgets/work_location_leaves/work_location_leaves_details.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/work_location/work_location_details/ui/widgets/work_location_details/work_location_details.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/work_location/work_location_details/ui/widgets/work_location_history/work_location_attendance_details.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/work_location_details/ui/widgets/work_location_questions/work_location_questions_list_item_build.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/work_location/work_location_details/ui/widgets/work_location_shifts/work_location_shifts.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/work_location/work_location_details/ui/widgets/work_location_tasks/work_location_tasks.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/work_location/work_location_details/ui/widgets/work_location_users/cleaners/work_location_cleaners.dart';
@@ -38,18 +39,49 @@ class WorkLocationDetailsScreen extends StatefulWidget {
 class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
     with TickerProviderStateMixin {
   late TabController controller;
+  late bool showShiftsTab;
+  late bool showQuestionsTab;
 
   @override
   void initState() {
-    final showShiftsTab = ![0, 1, 6].contains(widget.selectedIndex);
-    controller = TabController(length: showShiftsTab ? 8 : 7, vsync: this);
+    showShiftsTab = ![0, 1, 6].contains(widget.selectedIndex);
+    showQuestionsTab = widget.selectedIndex == 5 || widget.selectedIndex == 6;
+
+    int totalTabs = 7;
+    if (showShiftsTab) totalTabs++;
+    if (showQuestionsTab) totalTabs++;
+
+    controller = TabController(length: totalTabs, vsync: this);
 
     controller.addListener(() {
       final cubit = context.read<WorkLocationDetailsCubit>();
 
       if (controller.indexIsChanging) return;
-
       final index = controller.index;
+
+      // When Questions tab is selected
+      if (showQuestionsTab && index == controller.length - 1) {
+        if (cubit.sectionQuestionsModel == null) {
+          if (widget.selectedIndex == 5) {
+            // SECTION
+            int? feedbackAuditId;
+            if (cubit.selectedQuestionSection == 1) {
+              feedbackAuditId =
+                  cubit.sectionUsersShiftDetailsModel?.data?.feedbackId;
+            } else if (cubit.selectedQuestionSection == 2) {
+              feedbackAuditId =
+                  cubit.sectionUsersShiftDetailsModel?.data?.auditId;
+            }
+            cubit.getQuestions(widget.id, feedbackAuditId ?? 0);
+          } else if (widget.selectedIndex == 6) {
+            // POINT → Load questions with SectionId from point details
+            final pointId = cubit.pointUsersDetailsModel?.data?.id;
+            if (pointId != null) {
+              cubit.getPointQuestions(pointId);
+            }
+          }
+        }
+      }
       if (widget.selectedIndex == 0 ||
           widget.selectedIndex == 1 ||
           widget.selectedIndex == 6) {
@@ -445,16 +477,15 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                   (cubit.pointUsersDetailsModel == null))) {
             return Loading();
           }
-          final bool showShiftsTab = ![0, 1, 6].contains(widget.selectedIndex);
 
           return SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: SizedBox(
                     height: 42.h,
                     width: double.infinity,
                     child: AnimatedBuilder(
@@ -469,6 +500,7 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                           S.of(context).tasks,
                           S.of(context).attendance,
                           S.of(context).leaves,
+                          if (showQuestionsTab) S.of(context).questions,
                         ];
                         return TabBar(
                           controller: controller,
@@ -497,26 +529,60 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                       },
                     ),
                   ),
-                  verticalSpace(10),
-                  Expanded(
-                    child: TabBarView(controller: controller, children: [
-                      WorkLocationDetails(selectedIndex: widget.selectedIndex),
-                      WorkLocationManagers(selectedIndex: widget.selectedIndex),
-                      WorkLocationSupervisors(
+                ),
+                verticalSpace(10),
+                Expanded(
+                  child: TabBarView(controller: controller, children: [
+                    Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: WorkLocationDetails(
+                            selectedIndex: widget.selectedIndex)),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: WorkLocationManagers(
                           selectedIndex: widget.selectedIndex),
-                      WorkLocationCleaners(selectedIndex: widget.selectedIndex),
-                      if (showShiftsTab)
-                        WorkLocationShifts(selectedIndex: widget.selectedIndex),
-                      WorkLocationTasks(selectedIndex: widget.selectedIndex,id:widget.id),
-                      WorkLocationAttendanceDetails(
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: WorkLocationSupervisors(
                           selectedIndex: widget.selectedIndex),
-                      WorkLocationLeavesDetails(
-                          selectedIndex: widget.selectedIndex)
-                    ]),
-                  ),
-                  verticalSpace(15),
-                  if (role == 'Admin')
-                    DefaultElevatedButton(
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: WorkLocationCleaners(
+                          selectedIndex: widget.selectedIndex),
+                    ),
+                    if (showShiftsTab)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: WorkLocationShifts(
+                            selectedIndex: widget.selectedIndex),
+                      ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: WorkLocationTasks(
+                          selectedIndex: widget.selectedIndex, id: widget.id),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: WorkLocationAttendanceDetails(
+                          selectedIndex: widget.selectedIndex),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: WorkLocationLeavesDetails(
+                          selectedIndex: widget.selectedIndex),
+                    ),
+                    if (showQuestionsTab)
+                      WorkLocationQuestions(
+                          id: widget.id, selectedIndex: widget.selectedIndex)
+                  ]),
+                ),
+                verticalSpace(15),
+                if (role == 'Admin')
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: DefaultElevatedButton(
                         name: S.of(context).deleteButton,
                         onPressed: () {
                           showDialog(
@@ -573,9 +639,9 @@ class _WorkLocationDetailsScreenState extends State<WorkLocationDetailsScreen>
                         },
                         color: Colors.red,
                         textStyles: TextStyles.font20Whitesemimedium),
-                  verticalSpace(20),
-                ],
-              ),
+                  ),
+                verticalSpace(20),
+              ],
             ),
           );
         },

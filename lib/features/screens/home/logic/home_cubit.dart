@@ -10,6 +10,8 @@ import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_
 import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/data/models/users_basic_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/attendance_status.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/attendance_status_model.dart';
+import 'package:smart_cleaning_application/features/screens/home/data/model/auditor_location_count_model.dart';
+import 'package:smart_cleaning_application/features/screens/home/data/model/auditor_tasks_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/completetion_task.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/material_count_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/sensor_chart_model.dart';
@@ -65,11 +67,19 @@ class HomeCubit extends Cubit<HomeState> {
     if (role == 'Cleaner') {
       getUserDetails();
       getUnReadNotification();
+      getMyActivities();
       getUserStatus();
       getAttendanceStatus();
       getTaskData();
       getChartTaskData();
       getCompleteiontask();
+    }
+    if (role == 'Auditor') {
+      getUserDetails();
+      getUnReadNotification();
+      getMyActivities();
+      getAuditorTask();
+      getAuditorLocationCount();
     }
   }
 
@@ -728,5 +738,38 @@ class HomeCubit extends Cubit<HomeState> {
 
   bool isArabic() {
     return Intl.getCurrentLocale() == 'ar';
+  }
+
+  AuditorTaskData? auditorTaskData;
+  getAuditorTask({int? year}) {
+    emit(AuditorTaskLoadingState());
+    DioHelper.getData(url: 'audit/sum', query: {
+      'Year': year,
+    }).then((value) {
+      auditorTaskData = AuditorTaskData.fromJson(value!.data);
+      emit(AuditorTaskSuccessState(auditorTaskData!));
+    }).catchError((error) {
+      emit(AuditorTaskErrorState(error.toString()));
+    });
+  }
+
+  void changeDateRangeAuditor(String range) {
+    selectedDateRangeCompleteTask = range;
+    emit(ChangeChartTypeCompleteTaskState());
+    final selectedYear = _extractYearFromRange(range);
+
+    getAuditorTask(year: selectedYear);
+  }
+
+  AuditorLocationCountModel? auditorLocationCountModel;
+  getAuditorLocationCount() {
+    emit(AuditorLocationCountLoadingState());
+    DioHelper.getData(url: 'locations/count').then((value) {
+      auditorLocationCountModel =
+          AuditorLocationCountModel.fromJson(value!.data);
+      emit(AuditorLocationCountSuccessState(auditorLocationCountModel!));
+    }).catchError((error) {
+      emit(AuditorLocationCountErrorState(error.toString()));
+    });
   }
 }

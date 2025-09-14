@@ -3,6 +3,8 @@ import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_
 import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/data/models/users_basic_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/attendance_status.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/attendance_status_model.dart';
+import 'package:smart_cleaning_application/features/screens/home/data/model/auditor_location_count_model.dart';
+import 'package:smart_cleaning_application/features/screens/home/data/model/auditor_tasks_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/completetion_task.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/material_count_model.dart';
 import 'package:smart_cleaning_application/features/screens/home/data/model/sensor_chart_model.dart';
@@ -128,6 +130,35 @@ class CompletetionTaskSuccessState extends HomeState {
 class CompletetionTaskErrorState extends HomeState {
   final String error;
   CompletetionTaskErrorState(this.error);
+}
+
+//********************************* */
+
+class AuditorTaskLoadingState extends HomeState {}
+
+class AuditorTaskSuccessState extends HomeState {
+  final AuditorTaskData auditorTaskData;
+
+  AuditorTaskSuccessState(this.auditorTaskData);
+}
+
+class AuditorTaskErrorState extends HomeState {
+  final String error;
+  AuditorTaskErrorState(this.error);
+}
+//********************************* */
+
+class AuditorLocationCountLoadingState extends HomeState {}
+
+class AuditorLocationCountSuccessState extends HomeState {
+  final AuditorLocationCountModel auditorLocationCountModel;
+
+  AuditorLocationCountSuccessState(this.auditorLocationCountModel);
+}
+
+class AuditorLocationCountErrorState extends HomeState {
+  final String error;
+  AuditorLocationCountErrorState(this.error);
 }
 //********************************* */
 

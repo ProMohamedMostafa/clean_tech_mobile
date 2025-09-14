@@ -22,6 +22,40 @@ import 'package:smart_cleaning_application/features/screens/dashboard/attendance
 import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attendance_leaves_edit/logic/leaves_edit_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attendance_leaves_edit/ui/screen/leaves_edit_screen.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/attendance/select_view/ui/attendance_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/user/user_details/ui/widgets/audit_answers/auditor_answer_details.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/auditor/logic/cubit/auditor_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/auditor/ui/screen/audit_location_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/auditor/ui/widget/audit_location_details.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/auditor/ui/widget/auditor_questions.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/devices/create_devices/logic/cubit/add_device_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/devices/create_devices/ui/screen/create_feedback_audit_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/devices/devices_answers/logic/cubit/device_answers_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/devices/devices_answers/ui/screen/device_answers_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/devices/devices_management/logic/cubit/devices_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/devices/devices_management/ui/screen/devices_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/devices/edit_devices/logic/cubit/edit_devices_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/devices/edit_devices/ui/screen/edit_devices_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/devices/feedback_answer/logic/cubit/feedback_answer_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/devices/feedback_answer/ui/screen/feedback_answer_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/feedback_audit_view/assign_question/logic/cubit/assign_question_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/feedback_audit_view/assign_question/ui/screen/assign_question_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/feedback_audit_view/create_feedback_audit/logic/cubit/add_feedback_audit_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/feedback_audit_view/create_feedback_audit/ui/screen/create_feedback_audit_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/feedback_audit_view/edit_feedback_audit/logic/cubit/edit_feedback_audit_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/feedback_audit_view/edit_feedback_audit/ui/screen/edit_feedback_audit_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/feedback_audit_view/feedback_audit_details/logic/cubit/feedback_audit_details_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/feedback_audit_view/feedback_audit_details/ui/screen/feedback_audit_details_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/feedback_audit_view/feedback_audit_mangement/logic/feedback_audit_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/feedback_audit_view/feedback_audit_mangement/ui/screen/feedback_audit_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/questions/create_question/logic/cubit/add_question_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/questions/create_question/ui/screen/add_question_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/questions/edit_question/logic/cubit/edit_question_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/questions/edit_question/ui/screen/edit_question_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/questions/question_mangement/logic/question_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/questions/question_mangement/ui/screen/question_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/select_view/ui/feedback_view_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/work_location_details/ui/widgets/work_location_questions/assign_more_question_point/logic/cubit/assign_question_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/work_location/work_location_details/ui/widgets/work_location_questions/assign_more_question_point/ui/screen/assign_question_screen.dart';
 import 'package:smart_cleaning_application/features/screens/setting/edit_profile/logic/edit_profile_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/setting/edit_profile/ui/screen/edit_profile_screen.dart';
 import 'package:smart_cleaning_application/features/screens/setting/languages/ui/screen/languages_screen.dart';
@@ -233,6 +267,20 @@ class AppRouter {
             ),
           ),
         );
+
+      case Routes.workLocationAssignQuestionPoint:
+        final args = settings.arguments as Map<String, dynamic>;
+
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => AssignQuestionPointCubit()
+              ..getQuestionsSection(args['sectionId'], args['id']),
+            child: AssignQuestionPointScreen(
+              id: args['id']!,
+              sectionId: args['sectionId']!,
+            ),
+          ),
+        );
       case Routes.shiftScreen:
         final isActive = settings.arguments as String?;
         return MaterialPageRoute(
@@ -246,6 +294,177 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (context) => ProviderCubit()..initialize(),
             child: const ProviderScreen(),
+          ),
+        );
+      case Routes.feedbackScreen:
+        return MaterialPageRoute(
+          builder: (_) => FeedbackScreen(),
+        );
+      case Routes.questionScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => QuestionCubit()..initialize(),
+            child: const QuestionScreen(),
+          ),
+        );
+      case Routes.addQuestionScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => AddQuestionCubit(),
+            child: const AddQuestionScreen(),
+          ),
+        );
+
+      case Routes.editQuestionScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => EditQuestionCubit()..getQuestionDetails(id),
+            child: EditQuestionScreen(id: id),
+          ),
+        );
+
+      case Routes.feedbackAndAuditViewScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => FeedbackAuditCubit()..initialize(),
+            child: const FeedbackAuditScreen(),
+          ),
+        );
+
+      case Routes.addFeedbackAuditScreen:
+        var selectindex = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => AddFeedbackAuditCubit()
+              ..getOrganization()
+              ..getDevices(),
+            child: AddFeedbackAuditScreen(selectindex: selectindex),
+          ),
+        );
+      case Routes.editFeedbackAuditScreen:
+        final args = settings.arguments as Map<String, dynamic>;
+        final id = args['id'] as int;
+        final selectIndex = args['selectIndex'] as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => EditFeedbackAuditCubit()
+              ..getOrganization()
+              ..getFeedbackAuditDetails(selectIndex, id)
+              ..getDevices(),
+            child: EditFeedbackAuditScreen(id: id, selectIndex: selectIndex),
+          ),
+        );
+
+      case Routes.feedbackAuditDetailsScreen:
+        final args = settings.arguments as Map<String, dynamic>;
+        final id = args['id'] as int;
+        final selectIndex = args['selectIndex'] as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => FeedbackAuditDetailsCubit()
+              ..getFeedbackAuditDetails(selectIndex, id)
+              ..getQuestions(id),
+            child: FeedbackAuditDetailsScreen(id: id, selectIndex: selectIndex),
+          ),
+        );
+
+      case Routes.assignQuestionWithFeedbackAuditScreen:
+        final args = settings.arguments as Map<String, dynamic>;
+
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => AssignQuestionCubit()
+              ..getQuestionsWithSection(args['sectionId'], args['id']),
+            child: AssignQuestionWithFeedbackAuditScreen(
+              id: args['id']!,
+              sectionId: args['sectionId']!,
+            ),
+          ),
+        );
+      case Routes.devicesScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => DevicesCubit()..initialize(),
+            child: const DevicesScreen(),
+          ),
+        );
+
+      case Routes.addDevicesScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => AddDeviceCubit()..getBuilding(),
+            child: AddDeviceScreen(),
+          ),
+        );
+
+      case Routes.editDevicesScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => EditDevicesCubit()
+              ..getDeviceDetails(id)
+              ..getBuilding(),
+            child: EditDevicesScreen(id: id),
+          ),
+        );
+
+      case Routes.deviceAnswersScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => DeviceAnswersCubit()..getDeviceAnswers(id),
+            child: DeviceAnswersScreen(id: id),
+          ),
+        );
+
+      case Routes.feedbackAnswerScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => FeedbackAnswerCubit()..getAnswerDetails(id),
+            child: FeedbackAnswerScreen(),
+          ),
+        );
+
+      case Routes.auditorScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => AuditorCubit()..getAuditLocation(),
+            child: AuditLocationScreen(),
+          ),
+        );
+      case Routes.auditLocationDetailsScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => AuditorCubit()
+              ..getAuditLocationDetails(id)
+              ..getAuditorhistory(id),
+            child: AuditLocationDetailsScreen(
+              id: id,
+            ),
+          ),
+        );
+      case Routes.auditorQuestionsScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => AuditorCubit()..getAuditorQuestions(id),
+            child: AuditorQuestions(
+              id: id,
+            ),
+          ),
+        );
+
+      case Routes.auditorAnswerDetailsScreen:
+        var id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => UserDetailsCubit()..getAnswerDetails(id),
+            child: AudiorAnswerDetailsScreen(
+              id: id,
+            ),
           ),
         );
       case Routes.sensorScreen:
@@ -281,17 +500,21 @@ class AppRouter {
             create: (context) => AddUserCubit()
               ..getNationality()
               ..getRole()
-              ..getProviders(),
+              ..getProviders()
+              ..getArea(),
             child: const AddUserScreen(),
           ),
         );
       case Routes.userDetailsScreen:
-        var id = settings.arguments as int;
+        final args = settings.arguments as Map<String, dynamic>;
+        final id = args['id'] as int;
+        final roleId = args['roleId'] as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => UserDetailsCubit()..getUserDetails(id),
             child: UserDetailsScreen(
               id: id,
+              roleId: roleId,
             ),
           ),
         );
@@ -550,7 +773,6 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (context) => AddTaskCubit()
               ..getAllTasks()
-              ..getAllUsers()
               ..getOrganization(),
             child: AddTaskScreen(),
           ),
@@ -570,11 +792,13 @@ class AppRouter {
           ),
         );
       case Routes.taskDetailsScreen:
-        var id = settings.arguments as int;
+        final args = settings.arguments as Map<String, dynamic>;
+        final id = args['id'] as int;
+        final selectedIndex = args['selectedIndex'] as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => TaskDetailsCubit()..getTaskDetails(id),
-            child: TaskDetailsScreen(id: id),
+            child: TaskDetailsScreen(id: id, selectedIndex: selectedIndex),
           ),
         );
 
@@ -585,8 +809,7 @@ class AppRouter {
             create: (context) => EditTaskCubit()
               ..getTaskDetails(id)
               ..getAllTasks()
-              ..getOrganization()
-              ..getAllUsers(),
+              ..getOrganization(),
             child: EditTaskScreen(id: id),
           ),
         );
@@ -631,13 +854,18 @@ class AppRouter {
             ),
           ),
         );
+
       case Routes.leavesDetailsScreen:
-        var id = settings.arguments as int;
+        final args = settings.arguments as Map<String, dynamic>;
+        final id = args['id'] as int;
+        final isProfile = args['isProfile'] as bool;
+
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => LeavesDetailsCubit()..getLeavesDetails(id),
             child: LeavesDetailsScreen(
               id: id,
+              isProfile: isProfile,
             ),
           ),
         );

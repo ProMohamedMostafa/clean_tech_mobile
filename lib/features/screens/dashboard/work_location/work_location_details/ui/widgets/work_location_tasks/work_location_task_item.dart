@@ -59,6 +59,12 @@ class WorkLocationTaskItem extends StatelessWidget {
     } else {
       priorityColorForTask = Colors.black;
     }
+
+    String formatTime(String? time) {
+      if (time == null || time.isEmpty) return "--:--";
+      return time.substring(0, 5); 
+    }
+
     return InkWell(
       borderRadius: BorderRadius.circular(11.r),
       onTap: () async {
@@ -198,26 +204,35 @@ class WorkLocationTaskItem extends StatelessWidget {
                   ),
                 ],
               ),
-              Text(
-                selectedIndex == 0
-                    ? cubit.allAreaTasksModel!.data!.data![index].title!
-                    : selectedIndex == 1
-                        ? cubit.allCityTasksModel!.data!.data![index].title!
-                        : selectedIndex == 2
-                            ? cubit.allOrganizationTasksModel!.data!
-                                .data![index].title!
-                            : selectedIndex == 3
-                                ? cubit.allBuildingTasksModel!.data!
-                                    .data![index].title!
-                                : selectedIndex == 4
-                                    ? cubit.allFloorTasksModel!.data!
-                                        .data![index].title!
-                                    : selectedIndex == 5
-                                        ? cubit.allSectionTasksModel!.data!
-                                            .data![index].title!
-                                        : cubit.allPointTasksModel!.data!
-                                            .data![index].title!,
-                style: TextStyles.font16BlackSemiBold,
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      selectedIndex == 0
+                          ? cubit.allAreaTasksModel!.data!.data![index].title!
+                          : selectedIndex == 1
+                              ? cubit
+                                  .allCityTasksModel!.data!.data![index].title!
+                              : selectedIndex == 2
+                                  ? cubit.allOrganizationTasksModel!.data!
+                                      .data![index].title!
+                                  : selectedIndex == 3
+                                      ? cubit.allBuildingTasksModel!.data!
+                                          .data![index].title!
+                                      : selectedIndex == 4
+                                          ? cubit.allFloorTasksModel!.data!
+                                              .data![index].title!
+                                          : selectedIndex == 5
+                                              ? cubit.allSectionTasksModel!
+                                                  .data!.data![index].title!
+                                              : cubit.allPointTasksModel!.data!
+                                                  .data![index].title!,
+                      style: TextStyles.font16BlackSemiBold,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ),
+                ],
               ),
               verticalSpace(10),
               Text(
@@ -253,28 +268,83 @@ class WorkLocationTaskItem extends StatelessWidget {
                     size: 22.sp,
                   ),
                   horizontalSpace(5),
-                  Text(
-                    selectedIndex == 0
-                        ? cubit.allAreaTasksModel!.data!.data![index].startTime!
-                        : selectedIndex == 1
-                            ? cubit.allCityTasksModel!.data!.data![index]
-                                .startTime!
-                            : selectedIndex == 2
-                                ? cubit.allOrganizationTasksModel!.data!
-                                    .data![index].startTime!
-                                : selectedIndex == 3
-                                    ? cubit.allBuildingTasksModel!.data!
-                                        .data![index].startTime!
-                                    : selectedIndex == 4
-                                        ? cubit.allFloorTasksModel!.data!
-                                            .data![index].startTime!
-                                        : selectedIndex == 5
-                                            ? cubit.allSectionTasksModel!.data!
-                                                .data![index].startTime!
-                                            : cubit.allPointTasksModel!.data!
-                                                .data![index].startTime!,
-                    style: TextStyles.font11WhiteSemiBold
-                        .copyWith(color: AppColor.primaryColor),
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: selectedIndex == 0
+                              ? formatTime(cubit.allAreaTasksModel!.data!
+                                  .data![index].startTime!)
+                              : selectedIndex == 1
+                                  ? formatTime(cubit.allCityTasksModel!.data!
+                                      .data![index].startTime!)
+                                  : selectedIndex == 2
+                                      ? formatTime(cubit
+                                          .allOrganizationTasksModel!
+                                          .data!
+                                          .data![index]
+                                          .startTime!)
+                                      : selectedIndex == 3
+                                          ? formatTime(cubit
+                                              .allBuildingTasksModel!
+                                              .data!
+                                              .data![index]
+                                              .startTime!)
+                                          : selectedIndex == 4
+                                              ? formatTime(cubit
+                                                  .allFloorTasksModel!
+                                                  .data!
+                                                  .data![index]
+                                                  .startTime!)
+                                              : selectedIndex == 5
+                                                  ? formatTime(cubit
+                                                      .allSectionTasksModel!
+                                                      .data!
+                                                      .data![index]
+                                                      .startTime!)
+                                                  : formatTime(cubit
+                                                      .allPointTasksModel!
+                                                      .data!
+                                                      .data![index]
+                                                      .startTime!),
+                          style: TextStyles.font11PrimMedium,
+                        ),
+                        TextSpan(
+                          text: ' & ',
+                          style: TextStyles.font11BlackMedium,
+                        ),
+                        TextSpan(
+                          text: selectedIndex == 0
+                              ? cubit.allAreaTasksModel!.data!.data![index]
+                                  .startDate!
+                              : selectedIndex == 1
+                                  ? cubit.allCityTasksModel!.data!.data![index]
+                                      .startDate!
+                                  : selectedIndex == 2
+                                      ? cubit.allOrganizationTasksModel!.data!
+                                          .data![index].startDate!
+                                      : selectedIndex == 3
+                                          ? cubit.allBuildingTasksModel!.data!
+                                              .data![index].startDate!
+                                          : selectedIndex == 4
+                                              ? cubit.allFloorTasksModel!.data!
+                                                  .data![index].startDate!
+                                              : selectedIndex == 5
+                                                  ? cubit
+                                                      .allSectionTasksModel!
+                                                      .data!
+                                                      .data![index]
+                                                      .startDate!
+                                                  : cubit
+                                                      .allPointTasksModel!
+                                                      .data!
+                                                      .data![index]
+                                                      .startDate!,
+                          style: TextStyles.font11PrimMedium,
+                        ),
+                      ],
+                    ),
                   ),
                   Spacer(),
                   Text(

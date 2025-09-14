@@ -13,7 +13,7 @@ class IntegrationsBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<IntegrationItem> integrationItems = [
-      if (role != 'Cleaner')
+      if (role != 'Cleaner' && role != 'Auditor')
         IntegrationItem(
             onTap: () => context.pushNamed(Routes.userManagmentScreen),
             label: S.of(context).integ1,
@@ -23,47 +23,51 @@ class IntegrationsBody extends StatelessWidget {
           onTap: () => context.pushNamed(Routes.chooseViewWorkLocationScreen),
           label: S.of(context).integ2,
           image: 'assets/images/location.png'),
-      IntegrationItem(
-          onTap: () => context.pushNamed(Routes.shiftScreen),
-          label: S.of(context).integ4,
-          image: 'assets/images/shift.png',
-          padding: 10),
-      IntegrationItem(
-        onTap: () {
-          if (role == 'Cleaner') {
-            context.pushNamed(Routes.taskManagementScreen, arguments: 4);
-          } else if (role == 'Admin') {
-            context.pushNamed(Routes.taskManagementScreen, arguments: 1);
-          } else {
-            context.pushNamed(Routes.chooseViewTask);
-          }
-        },
-        label: S.of(context).integ5,
-        image: 'assets/images/task.png',
-        padding: 10,
-      ),
+      if (role != 'Auditor')
+        IntegrationItem(
+            onTap: () => context.pushNamed(Routes.shiftScreen),
+            label: S.of(context).integ4,
+            image: 'assets/images/shift.png',
+            padding: 10),
+      if (role != 'Auditor')
+        IntegrationItem(
+          onTap: () {
+            if (role == 'Cleaner') {
+              context.pushNamed(Routes.taskManagementScreen, arguments: 4);
+            } else if (role == 'Admin') {
+              context.pushNamed(Routes.taskManagementScreen, arguments: 1);
+            } else {
+              context.pushNamed(Routes.chooseViewTask);
+            }
+          },
+          label: S.of(context).integ5,
+          image: 'assets/images/task.png',
+          padding: 10,
+        ),
       if (role == 'Admin')
         IntegrationItem(
             onTap: () => context.pushNamed(Routes.sensorScreen),
             label: S.of(context).integ9,
             image: 'assets/images/sensor.png',
             padding: 10),
-      IntegrationItem(
-          onTap: () => context.pushNamed(Routes.attendanceScreen),
-          label: S.of(context).integ6,
-          image: 'assets/images/attendance.png',
-          padding: 10),
+      if (role != 'Auditor')
+        IntegrationItem(
+            onTap: () => context.pushNamed(Routes.attendanceScreen),
+            label: S.of(context).integ6,
+            image: 'assets/images/attendance.png',
+            padding: 10),
       if (role == 'Admin')
         IntegrationItem(
             onTap: () => context.pushNamed(Routes.viewStockScreen),
             label: S.of(context).integ7,
             image: 'assets/images/stock.png',
             padding: 10),
-      IntegrationItem(
-          onTap: () => context.pushNamed(Routes.activityScreen),
-          label: S.of(context).integ8,
-          image: 'assets/images/activity.png',
-          padding: 7),
+      if (role != 'Auditor')
+        IntegrationItem(
+            onTap: () => context.pushNamed(Routes.activityScreen),
+            label: S.of(context).integ8,
+            image: 'assets/images/activity.png',
+            padding: 7),
       if (role == 'Admin')
         IntegrationItem(
             onTap: () => context.pushNamed(Routes.providerScreen),
@@ -76,6 +80,12 @@ class IntegrationsBody extends StatelessWidget {
             label: S.of(context).integ3,
             image: 'assets/images/assign.png',
             padding: 5),
+      if (role == 'Admin')
+        IntegrationItem(
+            onTap: () => context.pushNamed(Routes.feedbackScreen),
+            label: S.of(context).integ11,
+            image: 'assets/images/feedback.png',
+            padding: 8),
     ];
 
     return Scaffold(

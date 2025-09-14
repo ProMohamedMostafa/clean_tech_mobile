@@ -1,9 +1,10 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/shift_model.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/task/add_task/data/models/users_shift_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/data/models/edit_task_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/data/models/organization_basic_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/data/models/tasks_basic_model.dart';
-import 'package:smart_cleaning_application/features/screens/dashboard/task/edit_task/data/models/users_basic_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/task/view_task/data/model/task_details.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/building_list_model.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/integrations/data/models/floor_list_model.dart';
@@ -132,9 +133,9 @@ class GetPointErrorState extends EditTaskState {
 class AllUsersLoadingState extends EditTaskState {}
 
 class AllUsersSuccessState extends EditTaskState {
-  final UsersBasicModel usersBasicModel;
+  final UsersShiftModel usersShiftModel;
 
-  AllUsersSuccessState(this.usersBasicModel);
+  AllUsersSuccessState(this.usersShiftModel);
 }
 
 class AllUsersErrorState extends EditTaskState {
@@ -142,6 +143,18 @@ class AllUsersErrorState extends EditTaskState {
   AllUsersErrorState(this.error);
 }
 
+//*************************** */
+class ShiftLoadingState extends EditTaskState {}
+
+class ShiftSuccessState extends EditTaskState {
+  final ShiftModel allShiftsModel;
+  ShiftSuccessState(this.allShiftsModel);
+}
+
+class ShiftErrorState extends EditTaskState {
+  final String error;
+  ShiftErrorState(this.error);
+}
 //***************************** */
 
 class CameraSelectedState extends EditTaskState {
@@ -159,3 +172,4 @@ class RemoveSelectedFileState extends EditTaskState {}
 class RemoveExistingFileState extends EditTaskState {}
 
 class FilesInitializedState extends EditTaskState {}
+class EditTaskInitializedState extends EditTaskState {}

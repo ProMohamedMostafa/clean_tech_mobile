@@ -18,4 +18,7 @@ class ChooseViewWorkLocationCubit extends Cubit<ChooseViewWorkLocationState> {
       emit(WorkLocationsDetailsErrorState(error.toString()));
     });
   }
+
+
+    
 }
