@@ -43,6 +43,13 @@ Widget listItemBuild(BuildContext context, selectedIndex, index) {
       case 'Device':
       case 'DeviceLimit':
         return Routes.sensorDetailsScreen;
+      case 'Question':
+        return Routes.questionScreen;
+      case 'FeedbackDevice':
+        return Routes.devicesScreen;
+      case 'Audit':
+      case 'Feedback':
+        return Routes.feedbackAuditDetailsScreen;
       default:
         return '';
     }

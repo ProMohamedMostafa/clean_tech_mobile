@@ -20,7 +20,8 @@ class SensorCubit extends Cubit<SensorState> {
   SensorModel? sensorModel;
   getSensorsData() {
     emit(SensorManagementLoading());
-    DioHelper.getData(url: "devices", query: {
+
+    final query = {
       'PageNumber': currentPage,
       'PageSize': 15,
       'SearchQuery': searchController.text,
@@ -32,11 +33,16 @@ class SensorCubit extends Cubit<SensorState> {
       'FloorId': filterModel?.floorId,
       'SectionId': filterModel?.sectionId,
       'PointId': filterModel?.pointId,
-      'MinBattery': filterModel?.minBattery ?? 0,
-      'MaxBattery': filterModel?.maxBattery ?? 100,
       'IsActive': filterModel?.activityStatus,
-      'IsAsign': filterModel?.isAsign
-    }).then((value) {
+      'IsAsign': filterModel?.isAsign,
+    };
+
+    if (filterModel?.minBattery != null || filterModel?.maxBattery != null) {
+      query['MinBattery'] = filterModel?.minBattery ?? 0;
+      query['MaxBattery'] = filterModel?.maxBattery ?? 100;
+    }
+
+    DioHelper.getData(url: "devices", query: query).then((value) {
       final newUsers = SensorModel.fromJson(value!.data);
 
       if (currentPage == 1 || sensorModel == null) {

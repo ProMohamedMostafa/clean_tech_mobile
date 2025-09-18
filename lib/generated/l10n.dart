@@ -6293,6 +6293,36 @@ class S {
   String get reStartButton {
     return Intl.message('Restart', name: 'reStartButton', desc: '', args: []);
   }
+
+  /// `No Battery`
+  String get noBattery {
+    return Intl.message('No Battery', name: 'noBattery', desc: '', args: []);
+  }
+
+  /// `Device Code`
+  String get deviceCode {
+    return Intl.message('Device Code', name: 'deviceCode', desc: '', args: []);
+  }
+
+  /// `Feedback per Month`
+  String get feedback_per_month {
+    return Intl.message(
+      'Feedback per Month',
+      name: 'feedback_per_month',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your locations`
+  String get your_locations {
+    return Intl.message(
+      'Your locations',
+      name: 'your_locations',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

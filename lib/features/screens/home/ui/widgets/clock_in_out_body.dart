@@ -116,7 +116,7 @@ class ClockInOutBody extends StatelessWidget {
                     Text(
                       clockIn != null
                           ? DateFormat('hh:mm a')
-                              .format(DateTime.parse(clockIn))
+                              .format(DateTime.parse(clockIn).toLocal())
                           : '--:-- --',
                       style: TextStyles.font14BlackSemiBold,
                     ),
@@ -149,7 +149,7 @@ class ClockInOutBody extends StatelessWidget {
                     Text(
                       clockOut != null
                           ? DateFormat('hh:mm a')
-                              .format(DateTime.parse(clockOut))
+                              .format(DateTime.parse(clockOut).toLocal())
                           : '--:-- --',
                       style: TextStyles.font14BlackSemiBold,
                     ),

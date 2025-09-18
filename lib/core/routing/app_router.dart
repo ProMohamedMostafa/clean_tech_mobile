@@ -792,9 +792,17 @@ class AppRouter {
           ),
         );
       case Routes.taskDetailsScreen:
-        final args = settings.arguments as Map<String, dynamic>;
-        final id = args['id'] as int;
-        final selectedIndex = args['selectedIndex'] as int;
+        final args = settings.arguments;
+        int id;
+        int? selectedIndex;
+        if (args is int) {
+          id = args;
+        } else if (args is Map<String, dynamic>) {
+          id = args['id'] as int;
+          selectedIndex = args['selectedIndex'] as int?;
+        } else {
+          throw Exception('Invalid arguments for ${Routes.taskDetailsScreen}');
+        }
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => TaskDetailsCubit()..getTaskDetails(id),

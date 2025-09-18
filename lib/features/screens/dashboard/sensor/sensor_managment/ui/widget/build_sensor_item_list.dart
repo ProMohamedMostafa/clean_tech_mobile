@@ -197,26 +197,32 @@ class BuildSensorItemList extends StatelessWidget {
                         ''),
             verticalSpace(5),
             rowDetailsBuild(
-              S.of(context).type,
+              S.of(context).Battery,
               cubit.selectedIndex == 0
-                  ? '${cubit.sensorModel?.data?.data?[index].battery?.toString() ?? ''}%'
-                  : '${cubit.deletedSensorListModel?.data?[index].battery?.toString() ?? ''}%',
-              icon: (cubit.selectedIndex == 0
-                          ? (cubit.sensorModel?.data?.data?[index].battery ?? 0)
-                          : (cubit.deletedSensorListModel?.data?[index]
-                                  .battery ??
-                              0)) >=
-                      50
-                  ? Icons.battery_charging_full_rounded
-                  : Icons.battery_2_bar_rounded,
-              color: (cubit.selectedIndex == 0
-                          ? (cubit.sensorModel?.data?.data?[index].battery ?? 0)
-                          : (cubit.deletedSensorListModel?.data?[index]
-                                  .battery ??
-                              0)) >=
-                      50
-                  ? Colors.green
-                  : Colors.deepOrange,
+                  ? (cubit.sensorModel?.data?.data?[index].battery != null
+                      ? '${cubit.sensorModel?.data?.data?[index].battery}%'
+                      : S.of(context).noBattery)
+                  : (cubit.deletedSensorListModel?.data?[index].battery != null
+                      ? '${cubit.deletedSensorListModel?.data?[index].battery}%'
+                      : S.of(context).noBattery),
+              icon: cubit.selectedIndex == 0
+                  ? (cubit.sensorModel?.data?.data?[index].battery != null
+                      ? _getBatteryIcon(
+                          cubit.sensorModel!.data!.data![index].battery!)
+                      : Icons.battery_unknown_rounded)
+                  : (cubit.deletedSensorListModel?.data?[index].battery != null
+                      ? _getBatteryIcon(
+                          cubit.deletedSensorListModel!.data![index].battery!)
+                      : Icons.battery_unknown_rounded),
+              color: cubit.selectedIndex == 0
+                  ? (cubit.sensorModel?.data?.data?[index].battery != null
+                      ? _getBatteryColor(
+                          cubit.sensorModel!.data!.data![index].battery!)
+                      : Colors.grey)
+                  : (cubit.deletedSensorListModel?.data?[index].battery != null
+                      ? _getBatteryColor(
+                          cubit.deletedSensorListModel!.data![index].battery!)
+                      : Colors.grey),
             ),
             if (cubit.selectedIndex == 0) ...[
               verticalSpace(10),
@@ -470,6 +476,19 @@ class BuildSensorItemList extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  IconData _getBatteryIcon(int battery) {
+    if (battery >= 80) return Icons.battery_full;
+    if (battery >= 50) return Icons.battery_charging_full_rounded;
+    if (battery >= 20) return Icons.battery_3_bar_rounded;
+    return Icons.battery_alert_rounded;
+  }
+
+  Color _getBatteryColor(int battery) {
+    if (battery >= 50) return Colors.green;
+    if (battery >= 20) return Colors.orange;
+    return Colors.red;
   }
 
   Widget _buildIconButton({

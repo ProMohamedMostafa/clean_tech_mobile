@@ -777,5 +777,9 @@
   "select_question_type": "اختر نوع السؤال",
   "question_type": "نوع السؤال",
   "select_feedback": "اختر التغذية الراجعة",
-  "reStartButton": "إعادة التشغيل"
+  "reStartButton": "إعادة التشغيل",
+  "noBattery": "لا توجد بطارية",
+  "deviceCode": "رمز الجهاز",
+  "feedback_per_month": "التعليقات لكل شهر",
+  "your_locations": "مواقعك"
 }

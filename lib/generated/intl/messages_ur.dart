@@ -375,6 +375,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "details": MessageLookupByLibrary.simpleMessage("تفصیلات"),
     "device": MessageLookupByLibrary.simpleMessage("آلہ"),
+    "deviceCode": MessageLookupByLibrary.simpleMessage("ڈیوائس کوڈ درج کریں"),
     "device_already_assigned_point": MessageLookupByLibrary.simpleMessage(
       "ڈیوائس پہلے ہی کسی نقطے پر مقرر ہے۔",
     ),
@@ -465,6 +466,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "فیڈبیک ڈیوائس موجود نہیں ہے۔",
     ),
     "feedback_name": MessageLookupByLibrary.simpleMessage("فیڈ بیک کا نام"),
+    "feedback_per_month": MessageLookupByLibrary.simpleMessage(
+      "فیڈ بیک فی مہینہ",
+    ),
     "female": MessageLookupByLibrary.simpleMessage("خاتون"),
     "file": MessageLookupByLibrary.simpleMessage("فائل"),
     "files": MessageLookupByLibrary.simpleMessage("فائلیں"),
@@ -705,6 +709,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noAdminsAvailable": MessageLookupByLibrary.simpleMessage(
       "کوئی ایڈمن دستیاب نہیں",
     ),
+    "noBattery": MessageLookupByLibrary.simpleMessage("بیٹری نہیں ہے"),
     "noButtton": MessageLookupByLibrary.simpleMessage("نہیں"),
     "noCleaners": MessageLookupByLibrary.simpleMessage(
       "کوئی صفائی کرنے والا دستیاب نہیں",
@@ -1370,5 +1375,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "yes": MessageLookupByLibrary.simpleMessage("ہاں"),
     "yesButtton": MessageLookupByLibrary.simpleMessage("ہاں، مجھے یقین ہے"),
+    "your_locations": MessageLookupByLibrary.simpleMessage("آپ کے مقامات"),
   };
 }

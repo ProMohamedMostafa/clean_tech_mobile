@@ -109,6 +109,7 @@ class DeviceData {
   int? questionCount;
   int? answerCount;
   String? feedbackName;
+  String? code;
 
   DeviceData(
       {this.id,
@@ -121,7 +122,8 @@ class DeviceData {
       this.buildingName,
       this.questionCount,
       this.answerCount,
-      this.feedbackName});
+      this.feedbackName,
+      this.code});
 
   DeviceData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -135,6 +137,7 @@ class DeviceData {
     questionCount = json['questionCount'];
     answerCount = json['answerCount'];
     feedbackName = json['feedbackName'];
+    code = json['code'];
   }
 
   Map<String, dynamic> toJson() {
@@ -150,6 +153,7 @@ class DeviceData {
     data['questionCount'] = questionCount;
     data['answerCount'] = answerCount;
     data['feedbackName'] = feedbackName;
+    data['code'] = code;
     return data;
   }
 }

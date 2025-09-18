@@ -777,5 +777,9 @@
   "select_question_type": "سوال کی قسم منتخب کریں",
   "question_type": "سوال کی قسم",
   "select_feedback": "فیڈبیک منتخب کریں",
-  "reStartButton": "دوبارہ شروع کریں"
+  "reStartButton": "دوبارہ شروع کریں",
+  "noBattery": "بیٹری نہیں ہے",
+  "deviceCode": "ڈیوائس کوڈ درج کریں",
+  "feedback_per_month": "فیڈ بیک فی مہینہ",
+  "your_locations": "آپ کے مقامات"
 }

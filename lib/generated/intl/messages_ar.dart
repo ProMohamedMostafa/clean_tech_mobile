@@ -365,6 +365,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "details": MessageLookupByLibrary.simpleMessage("التفاصيل"),
     "device": MessageLookupByLibrary.simpleMessage("الجهاز"),
+    "deviceCode": MessageLookupByLibrary.simpleMessage("رمز الجهاز"),
     "device_already_assigned_point": MessageLookupByLibrary.simpleMessage(
       "الجهاز معين بالفعل إلى نقطة.",
     ),
@@ -451,6 +452,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "جهاز الملاحظات غير موجود.",
     ),
     "feedback_name": MessageLookupByLibrary.simpleMessage("اسم الملاحظات"),
+    "feedback_per_month": MessageLookupByLibrary.simpleMessage(
+      "التعليقات لكل شهر",
+    ),
     "female": MessageLookupByLibrary.simpleMessage("أنثى"),
     "file": MessageLookupByLibrary.simpleMessage("الملف"),
     "files": MessageLookupByLibrary.simpleMessage("الملفات"),
@@ -673,6 +677,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noAdminsAvailable": MessageLookupByLibrary.simpleMessage(
       "لا يتوفر مسؤولون",
     ),
+    "noBattery": MessageLookupByLibrary.simpleMessage("لا توجد بطارية"),
     "noButtton": MessageLookupByLibrary.simpleMessage("لا"),
     "noCleaners": MessageLookupByLibrary.simpleMessage(
       "لا يوجد عمال نظافة متاحون",
@@ -1324,5 +1329,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "yes": MessageLookupByLibrary.simpleMessage("نعم"),
     "yesButtton": MessageLookupByLibrary.simpleMessage("نعم، أنا متأكد"),
+    "your_locations": MessageLookupByLibrary.simpleMessage("مواقعك"),
   };
 }

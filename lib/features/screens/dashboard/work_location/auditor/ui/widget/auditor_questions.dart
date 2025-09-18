@@ -342,7 +342,7 @@ class AuditorQuestions extends StatelessWidget {
             : Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: emotions.map<Widget>((emotion) {
-                  final idx = emotions.indexOf(emotion);
+                  final idx = emotions.indexOf(emotion) + 1;
                   final isSelected = selectedId == idx;
                   return GestureDetector(
                     onTap: () {
@@ -396,32 +396,7 @@ class AuditorQuestions extends StatelessWidget {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          GestureDetector(
-            onTap: () {
-              cubit.answerBoolQuestion(false);
-              cubit.setAnswer(question.id, question.typeId, false);
-            },
-            child: Container(
-              height: 33,
-              width: 80,
-              decoration: BoxDecoration(
-                color: selected == 0 ? AppColor.primaryColor : Colors.white,
-                borderRadius: BorderRadius.circular(5.r),
-                border: Border.all(
-                  color: selected == 0 ? AppColor.primaryColor : Colors.grey,
-                ),
-              ),
-              child: Center(
-                child: Text(
-                  S.of(context).true_value,
-                  style: TextStyle(
-                    color: selected == 0 ? Colors.white : Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-          ),
+          // TRUE button
           GestureDetector(
             onTap: () {
               cubit.answerBoolQuestion(true);
@@ -432,16 +407,44 @@ class AuditorQuestions extends StatelessWidget {
               width: 80,
               decoration: BoxDecoration(
                 color: selected == 1 ? AppColor.primaryColor : Colors.white,
-                borderRadius: BorderRadius.circular(5.r),
+                borderRadius: BorderRadius.circular(5),
                 border: Border.all(
                   color: selected == 1 ? AppColor.primaryColor : Colors.grey,
                 ),
               ),
               child: Center(
                 child: Text(
-                  S.of(context).false_value,
+                  S.of(context).true_value,
                   style: TextStyle(
                     color: selected == 1 ? Colors.white : Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+          // FALSE button
+          GestureDetector(
+            onTap: () {
+              cubit.answerBoolQuestion(false);
+              cubit.setAnswer(question.id, question.typeId, false);
+            },
+            child: Container(
+              height: 33,
+              width: 80,
+              decoration: BoxDecoration(
+                color: selected == 0 ? AppColor.primaryColor : Colors.white,
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(
+                  color: selected == 0 ? AppColor.primaryColor : Colors.grey,
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  S.of(context).false_value,
+                  style: TextStyle(
+                    color: selected == 0 ? Colors.white : Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

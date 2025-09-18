@@ -777,5 +777,9 @@
   "select_question_type": "Select question type",
   "question_type": "Question Type",
   "select_feedback": "Select feedback",
-  "reStartButton": "Restart"
+  "reStartButton": "Restart",
+  "noBattery": "No Battery",
+  "deviceCode": "Device Code",
+  "feedback_per_month": "Feedback per Month",
+  "your_locations": "Your locations"
 }

@@ -31,7 +31,6 @@ class _SplashScreenState extends State<SplashScreen>
       duration: const Duration(seconds: 2),
     );
 
-    // Only move logo left (not up)
     _iconPosition = Tween<double>(begin: 0, end: -70).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
@@ -44,12 +43,10 @@ class _SplashScreenState extends State<SplashScreen>
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
 
-    // Start animation after 1 second delay
     Future.delayed(const Duration(seconds: 2), () {
       _controller.forward();
     });
 
-    // Navigate to next screen after animation completes
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         Future.delayed(const Duration(seconds: 1), () {
@@ -78,7 +75,6 @@ class _SplashScreenState extends State<SplashScreen>
             return Stack(
               alignment: Alignment.center,
               children: [
-                // LOGO moving left only
                 Positioned(
                   left: (MediaQuery.of(context).size.width - 80) / 2 +
                       _iconPosition.value,
@@ -88,8 +84,6 @@ class _SplashScreenState extends State<SplashScreen>
                     height: 90.r,
                   ),
                 ),
-
-                // CLEAN text fades in and moves left slightly
                 Positioned(
                   left: MediaQuery.of(context).size.width / 2 -
                       _cleanPosition.value,

@@ -385,6 +385,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "details": MessageLookupByLibrary.simpleMessage("Details"),
     "device": MessageLookupByLibrary.simpleMessage("Device"),
+    "deviceCode": MessageLookupByLibrary.simpleMessage("Device Code"),
     "device_already_assigned_point": MessageLookupByLibrary.simpleMessage(
       "Device is already assigned to a point.",
     ),
@@ -471,6 +472,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Feedback device does not exist.",
     ),
     "feedback_name": MessageLookupByLibrary.simpleMessage("Feedback Name"),
+    "feedback_per_month": MessageLookupByLibrary.simpleMessage(
+      "Feedback per Month",
+    ),
     "female": MessageLookupByLibrary.simpleMessage("Female"),
     "file": MessageLookupByLibrary.simpleMessage("File"),
     "files": MessageLookupByLibrary.simpleMessage("Files"),
@@ -705,6 +709,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noAdminsAvailable": MessageLookupByLibrary.simpleMessage(
       "No Admins available",
     ),
+    "noBattery": MessageLookupByLibrary.simpleMessage("No Battery"),
     "noButtton": MessageLookupByLibrary.simpleMessage("NO"),
     "noCleaners": MessageLookupByLibrary.simpleMessage("No cleaners available"),
     "noCountry": MessageLookupByLibrary.simpleMessage("No country"),
@@ -1387,5 +1392,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "yes": MessageLookupByLibrary.simpleMessage("Yes"),
     "yesButtton": MessageLookupByLibrary.simpleMessage("Yes, i’m sure"),
+    "your_locations": MessageLookupByLibrary.simpleMessage("Your locations"),
   };
 }

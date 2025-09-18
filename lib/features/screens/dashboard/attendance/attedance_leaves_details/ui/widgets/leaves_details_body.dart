@@ -53,7 +53,8 @@ class LeavesDetailsBody extends StatelessWidget {
         }
 
         final status = cubit.leavesDetailsModel!.data!.status;
-        final isAuthorized = role == 'Admin' || role == 'Manager';
+        final isAuthorized =
+            role == 'Admin' || role == 'Manager' || role == 'Supervisor';
         return Scaffold(
           appBar: AppBar(
             title: Text(S.of(context).leaveDetails),

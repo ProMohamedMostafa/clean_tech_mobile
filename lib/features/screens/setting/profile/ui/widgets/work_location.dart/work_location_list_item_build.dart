@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/core/routing/routes.dart';
@@ -596,16 +597,18 @@ class WorkLocationItemBuild extends StatelessWidget {
                           InkWell(
                             borderRadius: BorderRadius.circular(5.r),
                             onTap: () async {
-                              final result = await context.pushNamed(
-                                  Routes.workLocationDetailsScreen,
-                                  arguments: {
-                                    'id': cubit.userWorkLocationDetailsModel!
-                                        .data!.sections![index].id,
-                                    'selectedIndex': 5
-                                  });
+                              if (role != 'Auditor') {
+                                final result = await context.pushNamed(
+                                    Routes.workLocationDetailsScreen,
+                                    arguments: {
+                                      'id': cubit.userWorkLocationDetailsModel!
+                                          .data!.sections![index].id,
+                                      'selectedIndex': 5
+                                    });
 
-                              if (result == true) {
-                                await cubit.refreshWorkLocations();
+                                if (result == true) {
+                                  await cubit.refreshWorkLocations();
+                                }
                               }
                             },
                             child: Container(

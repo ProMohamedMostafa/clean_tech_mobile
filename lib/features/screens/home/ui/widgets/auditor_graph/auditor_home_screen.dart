@@ -11,6 +11,7 @@ import 'package:smart_cleaning_application/features/screens/home/logic/home_cubi
 import 'package:smart_cleaning_application/features/screens/home/logic/home_state.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/auditor_graph/auditor_picker.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/auditor_graph/auditor_tasks_bar_chart.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class AuditorHomeScreen extends StatefulWidget {
   const AuditorHomeScreen({super.key});
@@ -79,7 +80,7 @@ class _AuditorHomeScreenState extends State<AuditorHomeScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Feedback per Month",
+                                  S.of(context).feedback_per_month,
                                   style: TextStyles.font14BlackSemiBold,
                                 ),
                                 verticalSpace(5),
@@ -97,7 +98,7 @@ class _AuditorHomeScreenState extends State<AuditorHomeScreen> {
                                     ),
                                     horizontalSpace(8),
                                     Text(
-                                      'Feedback',
+                                      S.of(context).feedback,
                                       style: TextStyles.font11BlackMedium,
                                     ),
                                   ],
@@ -174,7 +175,7 @@ class _AuditorHomeScreenState extends State<AuditorHomeScreen> {
                 ),
                 child: Center(
                   child: Text(
-                    "You have",
+                    S.of(context).your_locations,
                     style: TextStyles.font16BlackMedium,
                   ),
                 ),
