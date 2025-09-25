@@ -781,5 +781,20 @@
   "noBattery": "بیٹری نہیں ہے",
   "deviceCode": "ڈیوائس کوڈ درج کریں",
   "feedback_per_month": "فیڈ بیک فی مہینہ",
-  "your_locations": "آپ کے مقامات"
+  "your_locations": "آپ کے مقامات",
+  "feedback_overview": "فیڈبیک کا جائزہ",
+  "feedbacks_per_year": "سالانہ فیڈبیک",
+  "all_feedbacks": "تمام فیڈبیک",
+  "customer_satisfaction_rate": "صارف کی اطمینان کی شرح",
+  "total_devices": "کل ڈیوائسز",
+  "total_questions": "کل سوالات",
+  "total_feedbacks": "کل فیڈبیک",
+  "system_overview": "سسٹم کا جائزہ",
+  "filter": "فلٹر",
+  "buildings_name": "عمارتوں کے نام",
+  "total_sensors": "کل سینسر",
+  "total_answers": "کل جوابات",
+  "total_auditors": "کل آڈیٹرز",
+  "total_cleaners": "کل کلینرز",
+  "satisfaction_rate": "اطمینان کی شرح"
 }

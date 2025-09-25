@@ -27,67 +27,71 @@ class HomeAppBar extends StatelessWidget {
               cubit.notificationModel?.data == null),
           child: Row(
             children: [
-              Container(
-                width: 45.r,
-                height: 45.r,
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey[300]!,
-                      offset: const Offset(0, 1),
-                      blurRadius: 4,
-                    )
-                  ],
-                  border: Border.all(
-                    color: Colors.grey[100]!,
-                    width: 1.w,
-                  ),
-                  borderRadius: BorderRadius.circular(14.r),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(14.r),
-                  child: Image.network(
-                    cubit.profileModel?.data?.image ?? '',
-                    fit: BoxFit.fill,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Image.asset(
-                        'assets/images/person.png',
-                        fit: BoxFit.fill,
-                      );
-                    },
-                  ),
-                ),
-              ),
-              horizontalSpace(6),
               InkWell(
                 onTap: () {
                   context.read<BottomNavbarCubit>().changeBottomNavbar(3);
                 },
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
                   children: [
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: S.of(context).hey,
-                            style: TextStyles.font13Blackmedium,
-                          ),
-                          TextSpan(
-                            text: cubit.profileModel?.data?.firstName ?? '',
-                            style: TextStyles.font13Blackmedium,
-                          ),
-                          TextSpan(
-                            text: ' ..👋',
-                            style: TextStyles.font13Blackmedium,
-                          ),
+                    Container(
+                      width: 45.r,
+                      height: 45.r,
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey[300]!,
+                            offset: const Offset(0, 1),
+                            blurRadius: 4,
+                          )
                         ],
+                        border: Border.all(
+                          color: Colors.grey[100]!,
+                          width: 1.w,
+                        ),
+                        borderRadius: BorderRadius.circular(14.r),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(14.r),
+                        child: Image.network(
+                          cubit.profileModel?.data?.image ?? '',
+                          fit: BoxFit.fill,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Image.asset(
+                              'assets/images/person.png',
+                              fit: BoxFit.fill,
+                            );
+                          },
+                        ),
                       ),
                     ),
-                    verticalSpace(3),
-                    Text(
-                      cubit.profileModel?.data?.role ?? '',
-                      style: TextStyles.font11lightPrimary,
+                    horizontalSpace(6),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: S.of(context).hey,
+                                style: TextStyles.font13Blackmedium,
+                              ),
+                              TextSpan(
+                                text: cubit.profileModel?.data?.firstName ?? '',
+                                style: TextStyles.font13Blackmedium,
+                              ),
+                              TextSpan(
+                                text: ' ..👋',
+                                style: TextStyles.font13Blackmedium,
+                              ),
+                            ],
+                          ),
+                        ),
+                        verticalSpace(3),
+                        Text(
+                          cubit.profileModel?.data?.role ?? '',
+                          style: TextStyles.font11lightPrimary,
+                        ),
+                      ],
                     ),
                   ],
                 ),

@@ -122,6 +122,7 @@ class MessageLookup extends MessageLookupByLibrary {
         ),
     "all": MessageLookupByLibrary.simpleMessage("تمام"),
     "allTasks": MessageLookupByLibrary.simpleMessage("تمام کام"),
+    "all_feedbacks": MessageLookupByLibrary.simpleMessage("تمام فیڈبیک"),
     "alreadyMarkedAsRead": MessageLookupByLibrary.simpleMessage(
       "پڑھا ہوا نشان لگا دیا گیا",
     ),
@@ -221,6 +222,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "عمارت موجود نہیں ہے۔",
     ),
     "buildings": MessageLookupByLibrary.simpleMessage("عمارتیں"),
+    "buildings_name": MessageLookupByLibrary.simpleMessage("عمارتوں کے نام"),
     "buildings_not_found": MessageLookupByLibrary.simpleMessage(
       "عمارتیں نہیں ملیں۔",
     ),
@@ -352,6 +354,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "currently_reading_too_long": MessageLookupByLibrary.simpleMessage(
       "موجودہ ریڈنگ بہت لمبی ہے",
     ),
+    "customer_satisfaction_rate": MessageLookupByLibrary.simpleMessage(
+      "صارف کی اطمینان کی شرح",
+    ),
     "date": MessageLookupByLibrary.simpleMessage("تاریخ"),
     "deleteButton": MessageLookupByLibrary.simpleMessage("حذف کریں"),
     "deleteMessage": MessageLookupByLibrary.simpleMessage(
@@ -466,9 +471,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "فیڈبیک ڈیوائس موجود نہیں ہے۔",
     ),
     "feedback_name": MessageLookupByLibrary.simpleMessage("فیڈ بیک کا نام"),
+    "feedback_overview": MessageLookupByLibrary.simpleMessage(
+      "فیڈبیک کا جائزہ",
+    ),
     "feedback_per_month": MessageLookupByLibrary.simpleMessage(
       "فیڈ بیک فی مہینہ",
     ),
+    "feedbacks_per_year": MessageLookupByLibrary.simpleMessage("سالانہ فیڈبیک"),
     "female": MessageLookupByLibrary.simpleMessage("خاتون"),
     "file": MessageLookupByLibrary.simpleMessage("فائل"),
     "files": MessageLookupByLibrary.simpleMessage("فائلیں"),
@@ -476,6 +485,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "files_uploaded": MessageLookupByLibrary.simpleMessage(
       "فائلیں اپ لوڈ ہو چکی ہیں",
     ),
+    "filter": MessageLookupByLibrary.simpleMessage("فلٹر"),
     "findActivity": MessageLookupByLibrary.simpleMessage("سرگرمی تلاش کریں"),
     "findCategory": MessageLookupByLibrary.simpleMessage("زمرہ تلاش کریں"),
     "findHistory": MessageLookupByLibrary.simpleMessage("تاریخ تلاش کریں"),
@@ -940,6 +950,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "role_does_not_exist": MessageLookupByLibrary.simpleMessage(
       "کردار موجود نہیں ہے۔",
     ),
+    "satisfaction_rate": MessageLookupByLibrary.simpleMessage("اطمینان کی شرح"),
     "saveButton": MessageLookupByLibrary.simpleMessage("محفوظ کریں"),
     "saveButtton": MessageLookupByLibrary.simpleMessage("محفوظ کریں"),
     "search": MessageLookupByLibrary.simpleMessage("تلاش کریں"),
@@ -1131,6 +1142,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "submitButton": MessageLookupByLibrary.simpleMessage("جمع کریں"),
     "supervisor": MessageLookupByLibrary.simpleMessage("نگران"),
     "supervisors": MessageLookupByLibrary.simpleMessage("سپر وائزرز"),
+    "system_overview": MessageLookupByLibrary.simpleMessage("سسٹم کا جائزہ"),
     "tag_not_exists": MessageLookupByLibrary.simpleMessage(
       "ٹیگ موجود نہیں ہے۔",
     ),
@@ -1182,6 +1194,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "totalShiftss": MessageLookupByLibrary.simpleMessage("کل شفٹس"),
     "totalTask": MessageLookupByLibrary.simpleMessage("کل کام"),
     "totalUsers": MessageLookupByLibrary.simpleMessage("کل صارفین"),
+    "total_answers": MessageLookupByLibrary.simpleMessage("کل جوابات"),
+    "total_auditors": MessageLookupByLibrary.simpleMessage("کل آڈیٹرز"),
+    "total_cleaners": MessageLookupByLibrary.simpleMessage("کل کلینرز"),
+    "total_devices": MessageLookupByLibrary.simpleMessage("کل ڈیوائسز"),
+    "total_feedbacks": MessageLookupByLibrary.simpleMessage("کل فیڈبیک"),
+    "total_questions": MessageLookupByLibrary.simpleMessage("کل سوالات"),
+    "total_sensors": MessageLookupByLibrary.simpleMessage("کل سینسر"),
     "total_time": MessageLookupByLibrary.simpleMessage("کل وقت"),
     "transactionDetails": MessageLookupByLibrary.simpleMessage(
       "لین دین کی تفصیلات",

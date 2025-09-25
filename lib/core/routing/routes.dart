@@ -106,14 +106,13 @@ class Routes {
   static const String deviceAnswersScreen = '/deviceAnswersScreen';
   static const String feedbackAnswerScreen = '/feedbackAnswerScreen';
   static const String auditorScreen = '/auditorScreen';
-  static const String auditLocationDetailsScreen = '/auditLocationDetailsScreen';
+  static const String auditLocationDetailsScreen =
+      '/auditLocationDetailsScreen';
   static const String auditorQuestionsScreen = '/auditorQuestionsScreen';
-  static const String auditorAnswerDetailsScreen = '/auditorAnswerDetailsScreen';
+  static const String auditorAnswerDetailsScreen =
+      '/auditorAnswerDetailsScreen';
+  static const String feedbackOverviewScreen = '/feedbackOverviewScreen';
 
-
-
-
-    static const String workLocationAssignQuestionPoint =
+  static const String workLocationAssignQuestionPoint =
       '/workLocationAssignQuestionPoint';
-
 }

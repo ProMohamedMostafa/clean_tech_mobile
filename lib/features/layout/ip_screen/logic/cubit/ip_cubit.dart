@@ -28,15 +28,22 @@ class IpCubit extends Cubit<IpState> {
       ApiConstants.apiBaseUrl = "http://$ip:8080/api/v1/";
       DioHelper.dio = null;
       await DioHelper.initDio();
-      await DioHelper.dio!.post("auth/login");
-    } on DioException catch (e) {
-      if (e.response?.statusCode == 400) {
+
+      final response = await DioHelper.dio!.get("network/test");
+
+      if (response.statusCode == 200) {
         await CacheHelper.setData(key: SharedPrefKeys.ip, value: ip);
         emit(IpSuccessState("IP is valid and reachable"));
       } else {
         emit(
             IpErrorState("Failed to connect. Please check your IP or server."));
       }
+    } on DioException catch (e) {
+      emit(
+        IpErrorState(
+          "Failed to connect. ${e.message ?? "Please check your IP or server."}",
+        ),
+      );
     } catch (e) {
       emit(IpErrorState("Unexpected error occurred."));
     }

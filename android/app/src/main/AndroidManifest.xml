@@ -8,6 +8,8 @@
     <application
         android:label="CleanTech"
         android:name="${applicationName}"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
         android:enableOnBackInvokedCallback="true"
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"

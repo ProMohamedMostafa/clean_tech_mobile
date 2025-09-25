@@ -120,6 +120,7 @@ class MessageLookup extends MessageLookupByLibrary {
         ),
     "all": MessageLookupByLibrary.simpleMessage("All"),
     "allTasks": MessageLookupByLibrary.simpleMessage("All Tasks"),
+    "all_feedbacks": MessageLookupByLibrary.simpleMessage("All Feedbacks"),
     "alreadyMarkedAsRead": MessageLookupByLibrary.simpleMessage(
       "Already marked as read",
     ),
@@ -221,6 +222,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Building does not exist.",
     ),
     "buildings": MessageLookupByLibrary.simpleMessage("Buildings"),
+    "buildings_name": MessageLookupByLibrary.simpleMessage("Buildings Name"),
     "buildings_not_found": MessageLookupByLibrary.simpleMessage(
       "Buildings not found.",
     ),
@@ -358,6 +360,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "currently_reading_too_long": MessageLookupByLibrary.simpleMessage(
       "Currently reading too long",
     ),
+    "customer_satisfaction_rate": MessageLookupByLibrary.simpleMessage(
+      "Customer Satisfaction Rate",
+    ),
     "date": MessageLookupByLibrary.simpleMessage("Date"),
     "deleteButton": MessageLookupByLibrary.simpleMessage("Delete"),
     "deleteMessage": MessageLookupByLibrary.simpleMessage(
@@ -472,14 +477,21 @@ class MessageLookup extends MessageLookupByLibrary {
       "Feedback device does not exist.",
     ),
     "feedback_name": MessageLookupByLibrary.simpleMessage("Feedback Name"),
+    "feedback_overview": MessageLookupByLibrary.simpleMessage(
+      "Feedback Overview",
+    ),
     "feedback_per_month": MessageLookupByLibrary.simpleMessage(
       "Feedback per Month",
+    ),
+    "feedbacks_per_year": MessageLookupByLibrary.simpleMessage(
+      "Feedbacks per year",
     ),
     "female": MessageLookupByLibrary.simpleMessage("Female"),
     "file": MessageLookupByLibrary.simpleMessage("File"),
     "files": MessageLookupByLibrary.simpleMessage("Files"),
     "filesUploaded": MessageLookupByLibrary.simpleMessage("Files uploaded"),
     "files_uploaded": MessageLookupByLibrary.simpleMessage("files uploaded"),
+    "filter": MessageLookupByLibrary.simpleMessage("Filter"),
     "findActivity": MessageLookupByLibrary.simpleMessage("Find activity"),
     "findCategory": MessageLookupByLibrary.simpleMessage("Find category"),
     "findHistory": MessageLookupByLibrary.simpleMessage("Find history"),
@@ -951,6 +963,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "role_does_not_exist": MessageLookupByLibrary.simpleMessage(
       "Role does not exist.",
     ),
+    "satisfaction_rate": MessageLookupByLibrary.simpleMessage(
+      "Satisfaction Rate",
+    ),
     "saveButton": MessageLookupByLibrary.simpleMessage("Save"),
     "saveButtton": MessageLookupByLibrary.simpleMessage("Save"),
     "search": MessageLookupByLibrary.simpleMessage("Search"),
@@ -1136,6 +1151,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "submitButton": MessageLookupByLibrary.simpleMessage("Submit"),
     "supervisor": MessageLookupByLibrary.simpleMessage("Supervisor"),
     "supervisors": MessageLookupByLibrary.simpleMessage("Supervisors"),
+    "system_overview": MessageLookupByLibrary.simpleMessage("System Overview"),
     "tag_not_exists": MessageLookupByLibrary.simpleMessage(
       "Tag does not exist.",
     ),
@@ -1189,6 +1205,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "totalShiftss": MessageLookupByLibrary.simpleMessage("Total Shifts"),
     "totalTask": MessageLookupByLibrary.simpleMessage("Total Task"),
     "totalUsers": MessageLookupByLibrary.simpleMessage("Total Users"),
+    "total_answers": MessageLookupByLibrary.simpleMessage("Total Answers"),
+    "total_auditors": MessageLookupByLibrary.simpleMessage("Total Auditors"),
+    "total_cleaners": MessageLookupByLibrary.simpleMessage("Total Cleaners"),
+    "total_devices": MessageLookupByLibrary.simpleMessage("Total Devices"),
+    "total_feedbacks": MessageLookupByLibrary.simpleMessage("Total Feedbacks"),
+    "total_questions": MessageLookupByLibrary.simpleMessage("Total Questions"),
+    "total_sensors": MessageLookupByLibrary.simpleMessage("Total Sensors"),
     "total_time": MessageLookupByLibrary.simpleMessage("Total Time"),
     "transactionDetails": MessageLookupByLibrary.simpleMessage(
       "Transaction details",

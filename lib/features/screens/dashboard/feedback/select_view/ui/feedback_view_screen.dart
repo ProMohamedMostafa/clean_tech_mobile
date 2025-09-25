@@ -41,6 +41,13 @@ class FeedbackScreen extends StatelessWidget {
             verticalSpace(20),
             feedbackTile(
               context,
+              Icons.view_quilt_sharp,
+              S.of(context).feedback_overview,
+              () => context.pushNamed(Routes.feedbackOverviewScreen),
+            ),
+            verticalSpace(10),
+            feedbackTile(
+              context,
               Icons.question_answer_outlined,
               S.of(context).question,
               () => context.pushNamed(Routes.questionScreen),

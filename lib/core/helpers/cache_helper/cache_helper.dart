@@ -70,9 +70,15 @@ class CacheHelper {
   }
 
   /// Gets an String value from FlutterSecureStorage with given [key].
-  static getSecuredString(String key) async {
+  /// Gets a String value from FlutterSecureStorage with given [key].
+  static Future<String?> getSecuredString(String key) async {
     const flutterSecureStorage = FlutterSecureStorage();
-    return await flutterSecureStorage.read(key: key) ?? '';
+    try {
+      return await flutterSecureStorage.read(key: key);
+    } catch (e) {
+      await flutterSecureStorage.delete(key: key);
+      return null;
+    }
   }
 
   /// Removes all keys and values in the FlutterSecureStorage

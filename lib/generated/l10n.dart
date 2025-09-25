@@ -6323,6 +6323,151 @@ class S {
       args: [],
     );
   }
+
+  /// `Feedback Overview`
+  String get feedback_overview {
+    return Intl.message(
+      'Feedback Overview',
+      name: 'feedback_overview',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Feedbacks per year`
+  String get feedbacks_per_year {
+    return Intl.message(
+      'Feedbacks per year',
+      name: 'feedbacks_per_year',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All Feedbacks`
+  String get all_feedbacks {
+    return Intl.message(
+      'All Feedbacks',
+      name: 'all_feedbacks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Customer Satisfaction Rate`
+  String get customer_satisfaction_rate {
+    return Intl.message(
+      'Customer Satisfaction Rate',
+      name: 'customer_satisfaction_rate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total Devices`
+  String get total_devices {
+    return Intl.message(
+      'Total Devices',
+      name: 'total_devices',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total Questions`
+  String get total_questions {
+    return Intl.message(
+      'Total Questions',
+      name: 'total_questions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total Feedbacks`
+  String get total_feedbacks {
+    return Intl.message(
+      'Total Feedbacks',
+      name: 'total_feedbacks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `System Overview`
+  String get system_overview {
+    return Intl.message(
+      'System Overview',
+      name: 'system_overview',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Filter`
+  String get filter {
+    return Intl.message('Filter', name: 'filter', desc: '', args: []);
+  }
+
+  /// `Buildings Name`
+  String get buildings_name {
+    return Intl.message(
+      'Buildings Name',
+      name: 'buildings_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total Sensors`
+  String get total_sensors {
+    return Intl.message(
+      'Total Sensors',
+      name: 'total_sensors',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total Answers`
+  String get total_answers {
+    return Intl.message(
+      'Total Answers',
+      name: 'total_answers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total Auditors`
+  String get total_auditors {
+    return Intl.message(
+      'Total Auditors',
+      name: 'total_auditors',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total Cleaners`
+  String get total_cleaners {
+    return Intl.message(
+      'Total Cleaners',
+      name: 'total_cleaners',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Satisfaction Rate`
+  String get satisfaction_rate {
+    return Intl.message(
+      'Satisfaction Rate',
+      name: 'satisfaction_rate',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

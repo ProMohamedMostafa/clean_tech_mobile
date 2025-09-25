@@ -116,6 +116,7 @@ class MessageLookup extends MessageLookupByLibrary {
         ),
     "all": MessageLookupByLibrary.simpleMessage("الكل"),
     "allTasks": MessageLookupByLibrary.simpleMessage("كل المهام"),
+    "all_feedbacks": MessageLookupByLibrary.simpleMessage("جميع التعليقات"),
     "alreadyMarkedAsRead": MessageLookupByLibrary.simpleMessage(
       "تم تعليمها كمقروءة",
     ),
@@ -209,6 +210,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "المبنى غير موجود.",
     ),
     "buildings": MessageLookupByLibrary.simpleMessage("المباني"),
+    "buildings_name": MessageLookupByLibrary.simpleMessage("أسماء المباني"),
     "buildings_not_found": MessageLookupByLibrary.simpleMessage(
       "المباني غير موجودة.",
     ),
@@ -340,6 +342,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "currently_reading_too_long": MessageLookupByLibrary.simpleMessage(
       "القراءة الحالية طويلة جداً",
     ),
+    "customer_satisfaction_rate": MessageLookupByLibrary.simpleMessage(
+      "معدل رضا العملاء",
+    ),
     "date": MessageLookupByLibrary.simpleMessage("التاريخ"),
     "deleteButton": MessageLookupByLibrary.simpleMessage("حذف"),
     "deleteMessage": MessageLookupByLibrary.simpleMessage(
@@ -452,14 +457,21 @@ class MessageLookup extends MessageLookupByLibrary {
       "جهاز الملاحظات غير موجود.",
     ),
     "feedback_name": MessageLookupByLibrary.simpleMessage("اسم الملاحظات"),
+    "feedback_overview": MessageLookupByLibrary.simpleMessage(
+      "نظرة عامة على التعليقات",
+    ),
     "feedback_per_month": MessageLookupByLibrary.simpleMessage(
       "التعليقات لكل شهر",
+    ),
+    "feedbacks_per_year": MessageLookupByLibrary.simpleMessage(
+      "التعليقات لكل سنة",
     ),
     "female": MessageLookupByLibrary.simpleMessage("أنثى"),
     "file": MessageLookupByLibrary.simpleMessage("الملف"),
     "files": MessageLookupByLibrary.simpleMessage("الملفات"),
     "filesUploaded": MessageLookupByLibrary.simpleMessage("الملفات المرفوعة"),
     "files_uploaded": MessageLookupByLibrary.simpleMessage("ملفات مرفوعة"),
+    "filter": MessageLookupByLibrary.simpleMessage("تصفية"),
     "findActivity": MessageLookupByLibrary.simpleMessage("ابحث عن نشاط"),
     "findCategory": MessageLookupByLibrary.simpleMessage("ابحث عن فئة"),
     "findHistory": MessageLookupByLibrary.simpleMessage("ابحث في السجل"),
@@ -904,6 +916,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "role_does_not_exist": MessageLookupByLibrary.simpleMessage(
       "الدور غير موجود.",
     ),
+    "satisfaction_rate": MessageLookupByLibrary.simpleMessage("معدل الرضا"),
     "saveButton": MessageLookupByLibrary.simpleMessage("حفظ"),
     "saveButtton": MessageLookupByLibrary.simpleMessage("حفظ"),
     "search": MessageLookupByLibrary.simpleMessage("بحث"),
@@ -1085,6 +1098,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "submitButton": MessageLookupByLibrary.simpleMessage("إرسال"),
     "supervisor": MessageLookupByLibrary.simpleMessage("مشرف"),
     "supervisors": MessageLookupByLibrary.simpleMessage("المشرفون"),
+    "system_overview": MessageLookupByLibrary.simpleMessage(
+      "نظرة عامة على النظام",
+    ),
     "tag_not_exists": MessageLookupByLibrary.simpleMessage(
       "العلامة غير موجودة.",
     ),
@@ -1136,6 +1152,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "totalShiftss": MessageLookupByLibrary.simpleMessage("إجمالي الورديات"),
     "totalTask": MessageLookupByLibrary.simpleMessage("إجمالي المهام"),
     "totalUsers": MessageLookupByLibrary.simpleMessage("إجمالي المستخدمين"),
+    "total_answers": MessageLookupByLibrary.simpleMessage("إجمالي الإجابات"),
+    "total_auditors": MessageLookupByLibrary.simpleMessage("إجمالي المراجعين"),
+    "total_cleaners": MessageLookupByLibrary.simpleMessage("إجمالي المنظفين"),
+    "total_devices": MessageLookupByLibrary.simpleMessage("إجمالي الأجهزة"),
+    "total_feedbacks": MessageLookupByLibrary.simpleMessage("إجمالي التعليقات"),
+    "total_questions": MessageLookupByLibrary.simpleMessage("إجمالي الأسئلة"),
+    "total_sensors": MessageLookupByLibrary.simpleMessage("إجمالي المستشعرات"),
     "total_time": MessageLookupByLibrary.simpleMessage("الوقت الكلي"),
     "transactionDetails": MessageLookupByLibrary.simpleMessage(
       "تفاصيل المعاملة",

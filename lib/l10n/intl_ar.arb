@@ -781,5 +781,20 @@
   "noBattery": "لا توجد بطارية",
   "deviceCode": "رمز الجهاز",
   "feedback_per_month": "التعليقات لكل شهر",
-  "your_locations": "مواقعك"
+  "your_locations": "مواقعك",
+  "feedback_overview": "نظرة عامة على التعليقات",
+  "feedbacks_per_year": "التعليقات لكل سنة",
+  "all_feedbacks": "جميع التعليقات",
+  "customer_satisfaction_rate": "معدل رضا العملاء",
+  "total_devices": "إجمالي الأجهزة",
+  "total_questions": "إجمالي الأسئلة",
+  "total_feedbacks": "إجمالي التعليقات",
+  "system_overview": "نظرة عامة على النظام",
+  "filter": "تصفية",
+  "buildings_name": "أسماء المباني",
+  "total_sensors": "إجمالي المستشعرات",
+  "total_answers": "إجمالي الإجابات",
+  "total_auditors": "إجمالي المراجعين",
+  "total_cleaners": "إجمالي المنظفين",
+  "satisfaction_rate": "معدل الرضا"
 }

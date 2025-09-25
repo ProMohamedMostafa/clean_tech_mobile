@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -100,16 +99,6 @@ class _ProfileScreenState extends State<ProfileScreen>
         ),
         leading: CustomBackButton(),
         actions: [
-          IconButton(
-            onPressed: () {
-              // generateAndSavePDF(context);
-            },
-            icon: Icon(
-              CupertinoIcons.tray_arrow_down,
-              color: Colors.red,
-              size: 22.sp,
-            ),
-          ),
           IconButton(
               onPressed: () async {
                 final result = await context.pushNamed(Routes.editProfileScreen,

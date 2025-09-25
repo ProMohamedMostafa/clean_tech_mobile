@@ -104,20 +104,20 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Widget getStartWidget() {
-    if (isBoarding != null && isBoarding!.isNotEmpty) {
-      if (token != null && token!.isNotEmpty) {
-        return BlocProvider(
-          create: (context) => BottomNavbarCubit(),
-          child: const MainLayout(),
-        );
-      } else {
+    if (isBoarding == null || isBoarding!.isEmpty) {
+      return const OnBoardingScreen();
+    } else {
+      if (token == null || token!.isEmpty) {
         return BlocProvider(
           create: (context) => LoginCubit(),
           child: const LoginScreen(),
         );
+      } else {
+        return BlocProvider(
+          create: (context) => BottomNavbarCubit(),
+          child: const MainLayout(),
+        );
       }
-    } else {
-      return const OnBoardingScreen();
     }
   }
 }

@@ -48,6 +48,7 @@ class FilterAndSearchWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(10.r),
               onTap: isFilterActive ? onClearFilter : onFilterTap,
               child: Container(
+                height: 50.h,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8.r),
                   border: Border.all(color: AppColor.secondaryColor),

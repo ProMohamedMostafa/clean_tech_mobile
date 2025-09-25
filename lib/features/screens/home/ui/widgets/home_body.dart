@@ -3,6 +3,7 @@ import 'package:smart_cleaning_application/core/helpers/constants/constants.dart
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/auditor_graph/auditor_home_screen.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/clock_in_out_body.dart';
+import 'package:smart_cleaning_application/features/screens/home/ui/widgets/feedback_overview.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/graph_complete_task/complete_tasks_rate_body.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/graph_sensor/complete_tasks_rate_body.dart';
 import 'package:smart_cleaning_application/features/screens/home/ui/widgets/home_app_bar.dart';
@@ -27,7 +28,7 @@ class HomeBody extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              verticalSpace(5),
+              verticalSpace(8),
               HomeAppBar(),
               verticalSpace(15),
               if (role != 'Admin' && role != 'Auditor') ...[
@@ -46,6 +47,10 @@ class HomeBody extends StatelessWidget {
               ],
               if (role == 'Admin') ...[
                 Shift(),
+                verticalSpace(10),
+              ],
+              if (role == 'Admin') ...[
+                FeedbackOverview(),
                 verticalSpace(10),
               ],
               if (role == 'Admin') ...[

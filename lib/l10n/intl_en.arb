@@ -781,5 +781,20 @@
   "noBattery": "No Battery",
   "deviceCode": "Device Code",
   "feedback_per_month": "Feedback per Month",
-  "your_locations": "Your locations"
+  "your_locations": "Your locations",
+  "feedback_overview": "Feedback Overview",
+  "feedbacks_per_year": "Feedbacks per year",
+  "all_feedbacks": "All Feedbacks",
+  "customer_satisfaction_rate": "Customer Satisfaction Rate",
+  "total_devices": "Total Devices",
+  "total_questions": "Total Questions",
+  "total_feedbacks": "Total Feedbacks",
+  "system_overview": "System Overview",
+  "filter": "Filter",
+  "buildings_name": "Buildings Name",
+  "total_sensors": "Total Sensors",
+  "total_answers": "Total Answers",
+  "total_auditors": "Total Auditors",
+  "total_cleaners": "Total Cleaners",
+  "satisfaction_rate": "Satisfaction Rate"
 }

@@ -22,6 +22,8 @@ import 'package:smart_cleaning_application/features/screens/dashboard/attendance
 import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attendance_leaves_edit/logic/leaves_edit_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/attendance/attendance_leaves_edit/ui/screen/leaves_edit_screen.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/attendance/select_view/ui/attendance_screen.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/feedback_overview/logic/cubit/feedback_overview_cubit.dart';
+import 'package:smart_cleaning_application/features/screens/dashboard/feedback/feedback_overview/ui/screen/feedback_overview_screen.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/user/user_details/ui/widgets/audit_answers/auditor_answer_details.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/work_location/auditor/logic/cubit/auditor_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/dashboard/work_location/auditor/ui/screen/audit_location_screen.dart';
@@ -465,6 +467,15 @@ class AppRouter {
             child: AudiorAnswerDetailsScreen(
               id: id,
             ),
+          ),
+        );
+
+      case Routes.feedbackOverviewScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) =>
+                FeedbackOverviewCubit()..initializeFeedbackOverview(),
+            child: FeedbackOverviewScreen(),
           ),
         );
       case Routes.sensorScreen:

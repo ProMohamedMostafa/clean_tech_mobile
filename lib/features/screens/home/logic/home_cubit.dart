@@ -408,7 +408,7 @@ class HomeCubit extends Cubit<HomeState> {
   getChartSensorData({int? month, int? year}) {
     emit(SensorChartLoadingState());
     DioHelper.getData(url: 'devices/completion/tasks', query: {
-      'SectionId': sectionIdController.text,
+      'SectionId': selectedSectionId,
       'Year': year,
       'Month': month,
     }).then((value) {

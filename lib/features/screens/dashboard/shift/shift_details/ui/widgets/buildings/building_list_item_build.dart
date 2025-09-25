@@ -52,7 +52,7 @@ class BuildingItemListBuild extends StatelessWidget {
                     .shiftDetailsModel!
                     .data!
                     .building![index]
-                    .name ??
+                    .organizationName ??
                 '',
             style: TextStyles.font12GreyRegular,
           ),

@@ -17,6 +17,7 @@ class CustomTextFormField extends StatelessWidget {
   final Color? color;
   final Color? hintColor;
   final String? label;
+  final double? height;
 
   const CustomTextFormField({
     super.key,
@@ -33,20 +34,24 @@ class CustomTextFormField extends StatelessWidget {
     this.hintColor,
     this.label,
     this.obscureText,
+    this.height,
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      obscureText: obscureText ?? false,
-      readOnly: onlyRead,
-      controller: controller,
-      keyboardType: keyboardType,
-      textInputAction: TextInputAction.next,
-      validator: validator,
-      onChanged: onChanged,
-      style: TextStyle(color: Colors.black, fontSize: 14.sp),
-      decoration: _buildInputDecoration(),
+    return SizedBox(
+      height: height ?? 50.h,
+      child: TextFormField(
+        obscureText: obscureText ?? false,
+        readOnly: onlyRead,
+        controller: controller,
+        keyboardType: keyboardType,
+        textInputAction: TextInputAction.next,
+        validator: validator,
+        onChanged: onChanged,
+        style: TextStyle(color: Colors.black, fontSize: 14.sp),
+        decoration: _buildInputDecoration(),
+      ),
     );
   }
 
@@ -57,6 +62,7 @@ class CustomTextFormField extends StatelessWidget {
           ? FloatingLabelBehavior.always
           : FloatingLabelBehavior.never,
       labelStyle: TextStyles.font14BlackSemiBold,
+      contentPadding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 14.h),
       isDense: true,
       suffixIcon: _buildSuffixIcon(),
       prefixIcon: _buildPerffixIcon(),
