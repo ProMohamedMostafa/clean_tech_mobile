@@ -63,49 +63,71 @@ class BuildingsOverviewTable extends StatelessWidget {
                         thumbVisibility: true,
                         child: SingleChildScrollView(
                           scrollDirection: Axis.vertical,
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Colors.black12, width: 0.5),
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(10)),
-                              ),
-                              child: ClipRRect(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(10)),
-                                child: DataTable(
-                                  headingRowColor:
-                                      WidgetStateProperty.all(Colors.grey[50]),
-                                  columns:  [
-                                    DataColumn(
-                                        label: _TableHeader(S.of(context).buildingName)),
-                                    DataColumn(
-                                        label: _TableHeader(S.of(context).total_sensors)),
-                                    DataColumn(
-                                        label: _TableHeader(S.of(context).total_devices)),
-                                    DataColumn(
-                                        label: _TableHeader(S.of(context).total_answers)),
-                                    DataColumn(
-                                        label: _TableHeader(S.of(context).total_auditors)),
-                                    DataColumn(
-                                        label: _TableHeader(S.of(context).total_cleaners)),
-                                    DataColumn(
-                                        label:
-                                            _TableHeader(S.of(context).satisfaction_rate)),
-                                  ],
-                                  rows: data.map((item) {
-                                    return _buildRow(
-                                      item.name ?? "-",
-                                      item.totalSensor ?? 0,
-                                      item.totalDevice ?? 0,
-                                      item.totalAnswer ?? 0,
-                                      item.totalAuditor ?? 0,
-                                      item.totalCleaner ?? 0,
-                                      (item.rate ?? 0) / 100,
-                                    );
-                                  }).toList(),
+                          child: ScrollbarTheme(
+                            data: ScrollbarThemeData(
+                                thumbColor: WidgetStateProperty.all(
+                                    AppColor.primaryColor),
+                                trackVisibility: WidgetStateProperty.all(true),
+                                trackColor: WidgetStateProperty.all(
+                                    AppColor.fourthColor)),
+                            child: Scrollbar(
+                              thumbVisibility: true,
+                              interactive: true,
+                              thickness: 8,
+                              radius: const Radius.circular(50),
+                              scrollbarOrientation: ScrollbarOrientation.top,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Colors.black12, width: 0.5),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(10)),
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(10)),
+                                    child: DataTable(
+                                      headingRowColor: WidgetStateProperty.all(
+                                          Colors.grey[50]),
+                                      columns: [
+                                        DataColumn(
+                                            label: _TableHeader(
+                                                S.of(context).buildingName)),
+                                        DataColumn(
+                                            label: _TableHeader(
+                                                S.of(context).total_sensors)),
+                                        DataColumn(
+                                            label: _TableHeader(
+                                                S.of(context).total_devices)),
+                                        DataColumn(
+                                            label: _TableHeader(
+                                                S.of(context).total_answers)),
+                                        DataColumn(
+                                            label: _TableHeader(
+                                                S.of(context).total_auditors)),
+                                        DataColumn(
+                                            label: _TableHeader(
+                                                S.of(context).total_cleaners)),
+                                        DataColumn(
+                                            label: _TableHeader(S
+                                                .of(context)
+                                                .satisfaction_rate)),
+                                      ],
+                                      rows: data.map((item) {
+                                        return _buildRow(
+                                          item.name ?? "-",
+                                          item.totalSensor ?? 0,
+                                          item.totalDevice ?? 0,
+                                          item.totalAnswer ?? 0,
+                                          item.totalAuditor ?? 0,
+                                          item.totalCleaner ?? 0,
+                                          (item.rate ?? 0) / 100,
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),

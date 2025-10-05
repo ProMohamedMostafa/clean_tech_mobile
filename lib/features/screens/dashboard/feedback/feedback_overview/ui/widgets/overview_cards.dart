@@ -105,6 +105,7 @@ class OverviewCards extends StatelessWidget {
                   icon: 'assets/images/overview3.png',
                 ),
               ),
+              horizontalSpace(10),
               Expanded(
                 child: _OverviewCard(
                   title: S.of(context).total_feedbacks,

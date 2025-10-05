@@ -1,4 +1,4 @@
-package com.example.smart_cleaning_application
+package com.example.cleantech
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
