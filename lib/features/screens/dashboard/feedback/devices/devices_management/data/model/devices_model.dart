@@ -106,8 +106,8 @@ class DeviceData {
   String? floorName;
   int? buildingId;
   String? buildingName;
-  int? questionCount;
-  int? answerCount;
+  int? questionNumber;
+  int? deviceAnswer;
   String? feedbackName;
   String? code;
 
@@ -120,8 +120,8 @@ class DeviceData {
       this.floorName,
       this.buildingId,
       this.buildingName,
-      this.questionCount,
-      this.answerCount,
+      this.questionNumber,
+      this.deviceAnswer,
       this.feedbackName,
       this.code});
 
@@ -134,8 +134,8 @@ class DeviceData {
     floorName = json['floorName'];
     buildingId = json['buildingId'];
     buildingName = json['buildingName'];
-    questionCount = json['questionCount'];
-    answerCount = json['answerCount'];
+    questionNumber = json['questionNumber'];
+    deviceAnswer = json['deviceAnswer'];
     feedbackName = json['feedbackName'];
     code = json['code'];
   }
@@ -150,8 +150,8 @@ class DeviceData {
     data['floorName'] = floorName;
     data['buildingId'] = buildingId;
     data['buildingName'] = buildingName;
-    data['questionCount'] = questionCount;
-    data['answerCount'] = answerCount;
+    data['questionNumber'] = questionNumber;
+    data['deviceAnswer'] = deviceAnswer;
     data['feedbackName'] = feedbackName;
     data['code'] = code;
     return data;

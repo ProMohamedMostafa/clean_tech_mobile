@@ -113,13 +113,13 @@ class DevicesListItemBuild extends StatelessWidget {
             verticalSpace(5),
             rowDetailsBuild(
                 S.of(context).question_number,
-                (cubit.devicesModel!.data!.data![index].questionCount ?? 0)
+                (cubit.devicesModel!.data!.data![index].questionNumber ?? 0)
                     .toString(),
                 color: Colors.green),
             verticalSpace(5),
             rowDetailsBuild(
                 S.of(context).device_answers,
-                (cubit.devicesModel!.data!.data![index].answerCount ?? 0)
+                (cubit.devicesModel!.data!.data![index].deviceAnswer ?? 0)
                     .toString(),
                 color: Colors.green),
             verticalSpace(5),

@@ -20,7 +20,9 @@ class EditQuestionBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(leading: CustomBackButton(), title: Text(S.of(context).edit_question)),
+      appBar: AppBar(
+          leading: CustomBackButton(),
+          title: Text(S.of(context).edit_question)),
       body: BlocConsumer<EditQuestionCubit, EditQuestionState>(
         listener: (context, state) {
           if (state is EditQuestionSuccessState) {
@@ -94,9 +96,7 @@ class EditQuestionBody extends StatelessWidget {
                                           ),
                                           horizontalSpace(2),
                                           Text(
-                                            " ( ${cubit.selectedTabIndex != -1 
-      ? cubit.getOptions(context)[cubit.selectedTabIndex] 
-      : cubit.questionDetailsModel!.data!.type} )",
+                                            " ( ${cubit.selectedTabIndex != -1 ? cubit.getOptions(context)[cubit.selectedTabIndex] : cubit.questionDetailsModel!.data!.type} )",
                                             style: TextStyles.font13PrimRegular,
                                           ),
                                         ],
@@ -114,64 +114,66 @@ class EditQuestionBody extends StatelessWidget {
                                   )),
                                   verticalSpace(20),
                                   state is EditQuestionLoadingState
-                                      ? Loading()
+                                      ? const Loading()
                                       : Center(
                                           child: DefaultElevatedButton(
-                                              name: S.of(context).editButton,
-                                              onPressed: () {
-                                                if (cubit.formKey.currentState!
-                                                    .validate()) {
-                                                  // extra validation
-                                                  if (cubit.selectedTabIndex ==
-                                                          0 ||
-                                                      cubit.selectedTabIndex ==
-                                                          1) {
-                                                    // count non-empty text choices
-                                                    int textChoices = cubit
-                                                        .choiceControllers
-                                                        .where((c) => c.text
-                                                            .trim()
-                                                            .isNotEmpty)
-                                                        .length;
+                                            name: S.of(context).createButton,
+                                            onPressed: () {
+                                              if (cubit.formKey.currentState!
+                                                  .validate()) {
+                                                // ✅ Validate multiple or checkbox questions
+                                                if (cubit.selectedTabIndex ==
+                                                        0 ||
+                                                    cubit.selectedTabIndex ==
+                                                        1) {
+                                                  final textChoices = cubit
+                                                      .choiceControllers
+                                                      .where((c) => c.text
+                                                          .trim()
+                                                          .isNotEmpty)
+                                                      .length;
+                                                  final imageChoices = cubit
+                                                      .choiceImages
+                                                      .where(
+                                                          (img) => img != null)
+                                                      .length;
+                                                  final totalChoices =
+                                                      textChoices +
+                                                          imageChoices;
 
-                                                    // count non-null images
-                                                    int imageChoices = cubit
-                                                        .choiceImages
-                                                        .where((img) =>
-                                                            img != null)
-                                                        .length;
-
-                                                    // total valid choices
-                                                    int totalChoices =
-                                                        textChoices +
-                                                            imageChoices;
-
-                                                    if (totalChoices < 4) {
-                                                      toast(
-                                                        text:
-                                                            S.of(context).please_add_4_choices,
-                                                        isSuccess: false,
-                                                      );
-                                                      return;
-                                                    }
-                                                  }
-                                                  if (cubit.selectedTabIndex ==
-                                                          3 &&
-                                                      cubit.selectedRatingType ==
-                                                          -1) {
+                                                  if (totalChoices < 4) {
                                                     toast(
-                                                        text:
-                                                           S.of(context).please_select_type_of_rating,
-                                                        isSuccess: false);
+                                                      text: S
+                                                          .of(context)
+                                                          .please_add_4_choices,
+                                                      isSuccess: false,
+                                                    );
                                                     return;
                                                   }
-
-                                                  cubit.editQuestion(id);
                                                 }
-                                              },
-                                              color: AppColor.primaryColor,
-                                              textStyles: TextStyles
-                                                  .font16WhiteSemiBold),
+
+                                                // ✅ Validate rating question (type 4)
+                                                if (cubit.selectedTabIndex ==
+                                                        4 &&
+                                                    cubit.selectedRatingType ==
+                                                        -1) {
+                                                  toast(
+                                                    text: S
+                                                        .of(context)
+                                                        .please_select_type_of_rating,
+                                                    isSuccess: false,
+                                                  );
+                                                  return;
+                                                }
+
+                                                // Proceed to add question
+                                                cubit.editQuestion(id);
+                                              }
+                                            },
+                                            color: AppColor.primaryColor,
+                                            textStyles:
+                                                TextStyles.font16WhiteSemiBold,
+                                          ),
                                         ),
                                   verticalSpace(20),
                                 ])))))

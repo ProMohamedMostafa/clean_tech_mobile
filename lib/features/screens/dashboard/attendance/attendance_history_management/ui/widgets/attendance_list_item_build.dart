@@ -101,7 +101,7 @@ class HistoryListItem extends StatelessWidget {
             ),
             verticalSpace(10),
             Text(
-              cubit.attendanceHistoryModel!.data!.data![index].userName!,
+              '${cubit.attendanceHistoryModel!.data!.data![index].firstName!} ${cubit.attendanceHistoryModel!.data!.data![index].lastName!}',
               style: TextStyles.font16BlackSemiBold,
             ),
             verticalSpace(10),

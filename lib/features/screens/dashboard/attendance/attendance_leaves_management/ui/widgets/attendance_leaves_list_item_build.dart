@@ -93,7 +93,7 @@ class LeavesListItemBuild extends StatelessWidget {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                        text: item.userName!,
+                        text: '${item.firstName!} ${item.lastName!}',
                         style: TextStyles.font16BlackSemiBold),
                     TextSpan(
                         text: ' ( ${item.role} )',

@@ -18,14 +18,13 @@ class AddQuestionCubit extends Cubit<AddQuestionState> {
     TextEditingController()
   ];
   List<bool> isSelected = [true, false, false, false, false];
-  
- List<String> getOptions(BuildContext context) {
+  List<String> getOptions(BuildContext context) {
     return [
       S.of(context).multiple_options,
       S.of(context).checkbox,
       S.of(context).text_input,
-      S.of(context).rating,
       S.of(context).true_or_false,
+      S.of(context).rating,
     ];
   }
 
@@ -59,18 +58,36 @@ class AddQuestionCubit extends Cubit<AddQuestionState> {
     try {
       FormData formData = FormData();
 
-      // Add basic fields
-      formData.fields.add(MapEntry("text", questionController.text.trim()));
-      formData.fields.add(MapEntry("type", selectedTabIndex.toString()));
+      // Map UI selection + rating sub-type to final typeId required by API:
+      // 0 -> choose, 1 -> checkbox, 2 -> text, 3 -> true/false,
+      // 4 -> rating stars, 5 -> rating emotions
+      int typeId;
+      if (selectedTabIndex == 0) {
+        typeId = 0;
+      } else if (selectedTabIndex == 1) {
+        typeId = 1;
+      } else if (selectedTabIndex == 2) {
+        typeId = 2;
+      } else if (selectedTabIndex == 3) {
+        typeId = 3;
+      } else {
+        // selectedTabIndex == 4 => rating tab in UI
+        // selectedRatingType must decide between stars (4) and emotions (5)
+        typeId = (selectedRatingType == 0) ? 4 : 5;
+      }
 
-      // Add choices
-      if (selectedTabIndex == 0 || selectedTabIndex == 1) {
+      // Add main fields
+      formData.fields.add(MapEntry("text", questionController.text.trim()));
+      formData.fields.add(MapEntry("type", typeId.toString()));
+
+      // Add choices for choose, checkbox and true/false (if you want choices for true/false keep it — else remove 3)
+      if (selectedTabIndex == 0 ||
+          selectedTabIndex == 1 ||
+          selectedTabIndex == 3) {
         for (int i = 0; i < choiceControllers.length; i++) {
-          // Add choice text
           formData.fields.add(
               MapEntry("choices[$i].text", choiceControllers[i].text.trim()));
 
-          // Add choice image if exists
           if (choiceImages[i] != null) {
             formData.files.add(MapEntry(
               "choices[$i].image",
@@ -81,25 +98,21 @@ class AddQuestionCubit extends Cubit<AddQuestionState> {
             ));
           }
 
-          // Add empty icon (since we're not using it)
+          // icons are unused — send empty string as before
           formData.fields.add(MapEntry("choices[$i].icon", ""));
         }
-      } else if (selectedTabIndex == 3) {
-        // For rating type
-        formData.fields.add(MapEntry("choices[0].text", ""));
-        formData.fields.add(MapEntry("choices[0].image", ""));
-        formData.fields
-            .add(MapEntry("choices[0].icon", selectedRatingType.toString()));
+      } else {
+        // For rating types we don't send choices — keep behaviour unchanged
       }
 
-      DioHelper.postData2(
+      final response = await DioHelper.postData2(
         url: "questions/create",
         data: formData,
-      ).then((value) {
-        final message =
-            value?.data['message'] ?? "Question created successfully";
-        emit(AddQuestionSuccessState(message));
-      });
+      );
+
+      final message =
+          response?.data['message'] ?? "Question created successfully";
+      emit(AddQuestionSuccessState(message));
     } catch (error) {
       emit(AddQuestionErrorState(error.toString()));
     }
@@ -160,5 +173,4 @@ class AddQuestionCubit extends Cubit<AddQuestionState> {
     choiceImages.add(null);
     emit(ChoicesUpdatedState());
   }
-  
 }

@@ -39,11 +39,12 @@ class StockQuantityBody extends StatelessWidget {
                     (provider.id.toString(), provider.name ?? 'Unknown'))
                 .toList() ??
             [];
- String selectedProviderName = cubit.selectedProviderName ?? S.of(context).All_Providers;
+        String selectedProviderName =
+            cubit.selectedProviderName ?? S.of(context).All_Providers;
         return Skeletonizer(
           enabled: isLoading,
           child: Container(
-            height: 333.h,
+            height: 340.h,
             decoration: BoxDecoration(
               border: Border.all(color: Colors.black12),
               borderRadius: BorderRadius.circular(6.r),
@@ -69,7 +70,8 @@ class StockQuantityBody extends StatelessWidget {
                     onFilterSelected: (value) {
                       cubit.changeSelectedProvider(int.parse(value));
                     },
-                    scrollController: cubit.providerScrollController,showOnlyYear: true,
+                    scrollController: cubit.providerScrollController,
+                    showOnlyYear: true,
                   ),
                   _buildChart(context, cubit, isLoading),
                   Row(

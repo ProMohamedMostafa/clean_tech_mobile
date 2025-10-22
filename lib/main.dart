@@ -30,7 +30,7 @@ checkIfLoggedInUser() async {
   token = await CacheHelper.getSecuredString(SharedPrefKeys.userToken);
   isBoarding = await CacheHelper.getString(SharedPrefKeys.isOnBoarding);
   role = await CacheHelper.getString(SharedPrefKeys.userRole);
-
+       
   if (ip != null && ip!.isNotEmpty) {
     ApiConstants.apiBaseUrl = "http://$ip:8080/api/v1/";
   } else {

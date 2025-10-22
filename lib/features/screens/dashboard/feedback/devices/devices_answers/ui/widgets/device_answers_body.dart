@@ -88,6 +88,7 @@ class DeviceAnswersBody extends StatelessWidget {
               : ListView.separated(
                   padding: EdgeInsets.all(12),
                   itemCount: data.length,
+                  controller: cubit.scrollController,
                   separatorBuilder: (context, index) => verticalSpace(10),
                   itemBuilder: (context, index) {
                     final item = data[index];

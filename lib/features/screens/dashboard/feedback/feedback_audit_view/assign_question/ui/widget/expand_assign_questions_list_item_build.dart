@@ -86,129 +86,8 @@ class AssignQuestionsExpandListItemBuild extends StatelessWidget {
                   textColor: AppColor.primaryColor),
             ),
             if (isExpanded) ...[
-              (question.typeId == 0 || question.typeId == 1)
-                  ? (answers.isNotEmpty
-                      ? Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: answers.map((ans) {
-                              return Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: 50.r,
-                                    height: 50.r,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.white,
-                                      border:
-                                          Border.all(color: Colors.grey[200]!),
-                                    ),
-                                    child: ans.image != null
-                                        ? ClipOval(
-                                            child: Image.network(
-                                              ans.image!,
-                                              fit: BoxFit.fill,
-                                            ),
-                                          )
-                                        : Center(
-                                            child: Image.asset(
-                                              'assets/images/noPic.png',
-                                              width: 28.r,
-                                              height: 28.r,
-                                              fit: BoxFit.fill,
-                                            ),
-                                          ),
-                                  ),
-                                  verticalSpace(4),
-                                  SizedBox(
-                                    width: 50.w,
-                                    child: Text(
-                                      ans.text ?? "",
-                                      style: TextStyles.font11BlackMedium,
-                                      textAlign: TextAlign.center,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                    ),
-                                  )
-                                ],
-                              );
-                            }).toList(),
-                          ),
-                        )
-                      : _buildNoOptionsAvailable(context))
-                  : question.typeId == 3
-                      ? Center(
-                          child: (answers.isNotEmpty &&
-                                  answers.first.icon == "0")
-                              ? Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: List.generate(5, (i) {
-                                    return Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          width: 50.r,
-                                          height: 50.r,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Colors.white,
-                                            border: Border.all(
-                                                color: Colors.grey[200]!),
-                                          ),
-                                          child: Icon(
-                                            Icons.star_border_rounded,
-                                            size: 32.r,
-                                            color: AppColor.primaryColor,
-                                          ),
-                                        ),
-                                        verticalSpace(4),
-                                        Text(
-                                          "${i + 1}",
-                                          style: TextStyles.font14BlackMedium,
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ],
-                                    );
-                                  }),
-                                )
-                              : Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: emotions.map((emotion) {
-                                    return Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        SizedBox(
-                                          width: 50.r,
-                                          height: 50.r,
-                                          child: Center(
-                                            child: Image.asset(
-                                              emotion["icon"]!,
-                                              fit: BoxFit.fill,
-                                              width: 40.r,
-                                              height: 40.r,
-                                            ),
-                                          ),
-                                        ),
-                                        verticalSpace(4),
-                                        Text(
-                                          emotion["text"]!,
-                                          style: TextStyles.font14BlackMedium,
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ],
-                                    );
-                                  }).toList(),
-                                ),
-                        )
-                      : _buildNoOptionsAvailable(context),
+              _buildExpandedContent(
+                  context, question.typeId ?? -1, answers, emotions),
               verticalSpace(10),
             ]
           ],
@@ -217,10 +96,184 @@ class AssignQuestionsExpandListItemBuild extends StatelessWidget {
     );
   }
 
-  Widget _buildNoOptionsAvailable( BuildContext context) {
+  Widget _buildExpandedContent(
+    BuildContext context,
+    int typeId,
+    List<dynamic> answers,
+    List<Map<String, String>> emotions,
+  ) {
+    switch (typeId) {
+      case 0:
+      case 1:
+        // Multiple choice / checkbox
+        if (answers.isEmpty) return _buildNoOptionsAvailable(context);
+        return Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: answers.map((ans) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 50.r,
+                    height: 50.r,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                      border: Border.all(color: Colors.grey[200]!),
+                    ),
+                    child: ans.image != null
+                        ? ClipOval(
+                            child: Image.network(
+                              ans.image!,
+                              fit: BoxFit.fill,
+                            ),
+                          )
+                        : Center(
+                            child: Image.asset(
+                              'assets/images/noPic.png',
+                              width: 28.r,
+                              height: 28.r,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                  ),
+                  verticalSpace(4),
+                  SizedBox(
+                    width: 50.w,
+                    child: Text(
+                      ans.text ?? "",
+                      style: TextStyles.font11BlackMedium,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ),
+                ],
+              );
+            }).toList(),
+          ),
+        );
+
+      case 2:
+        // Text input
+        return _buildNoOptionsAvailable(context);
+
+      case 3:
+        // True or False
+        return Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                width: 50.r,
+                height: 50.r,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                  border: Border.all(color: Colors.grey[200]!),
+                ),
+                child: Center(
+                  child: Text(
+                    S.of(context).true_value,
+                    style: TextStyles.font14BlackMedium,
+                  ),
+                ),
+              ),
+              Container(
+                width: 50.r,
+                height: 50.r,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                  border: Border.all(color: Colors.grey[200]!),
+                ),
+                child: Center(
+                  child: Text(
+                    S.of(context).false_value,
+                    style: TextStyles.font14BlackMedium,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+
+      case 4:
+        // Rating (stars/numbers)
+        return Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: List.generate(5, (i) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 50.r,
+                    height: 50.r,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                      border: Border.all(color: Colors.grey[200]!),
+                    ),
+                    child: Icon(
+                      Icons.star_border_rounded,
+                      size: 32.r,
+                      color: AppColor.primaryColor,
+                    ),
+                  ),
+                  verticalSpace(4),
+                  Text(
+                    "${i + 1}",
+                    style: TextStyles.font14BlackMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              );
+            }),
+          ),
+        );
+
+      case 5:
+        // Rating (emotions)
+        return Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: emotions.map((emotion) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 50.r,
+                    height: 50.r,
+                    child: Image.asset(
+                      emotion["icon"]!,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                  verticalSpace(4),
+                  Text(
+                    emotion["text"]!,
+                    style: TextStyles.font14BlackMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              );
+            }).toList(),
+          ),
+        );
+
+      default:
+        return _buildNoOptionsAvailable(context);
+    }
+  }
+
+  Widget _buildNoOptionsAvailable(BuildContext context) {
     return Center(
       child: Text(
-       S.of(context).no_questions,
+        S.of(context).no_options_available,
         style: TextStyles.font13PrimRegular,
         textAlign: TextAlign.center,
       ),

@@ -20,23 +20,28 @@ class EditQuestionCubit extends Cubit<EditQuestionState> {
     TextEditingController()
   ];
   List<bool> isSelected = [false, false, false, false, false];
- List<String> getOptions(BuildContext context) {
+
+  List<String> getOptions(BuildContext context) {
     return [
       S.of(context).multiple_options,
       S.of(context).checkbox,
       S.of(context).text_input,
-      S.of(context).rating,
       S.of(context).true_or_false,
+      S.of(context).rating,
     ];
   }
+
   int selectedTabIndex = -1;
   int selectedRatingType = -1;
   final List<XFile?> choiceImages = [null];
 
   QuestionDetailsModel? questionDetailsModel;
-  getQuestionDetails(int? id) {
+
+  // ✅ Load question details and map typeId properly
+  Future<void> getQuestionDetails(int? id) async {
     emit(QuestionDetailsLoadingState());
-    DioHelper.getData(url: 'questions/$id').then((value) {
+    try {
+      final value = await DioHelper.getData(url: 'questions/$id');
       questionDetailsModel = QuestionDetailsModel.fromJson(value!.data);
 
       final typeId = questionDetailsModel?.data?.typeId;
@@ -44,24 +49,19 @@ class EditQuestionCubit extends Cubit<EditQuestionState> {
         _setInitialTab(typeId);
       }
 
-      // fill question text
       questionController.text = questionDetailsModel?.data?.text ?? "";
-
-      // hydrate choices
       _setInitialChoices();
 
-      if (typeId == 3) {
-        // Rating question
-        final icon = questionDetailsModel?.data?.choices?.first.icon;
-        if (icon != null && icon.isNotEmpty) {
-          selectedRatingType = int.tryParse(icon) ?? -1;
-          emit(RatingTypeChangedState(selectedRatingType));
-        }
+      // ✅ Handle rating types (stars/emotions)
+      if (typeId == 4 || typeId == 5) {
+        selectedRatingType = (typeId == 4) ? 0 : 1;
+        emit(RatingTypeChangedState(selectedRatingType));
       }
+
       emit(QuestionDetailsSuccessState(questionDetailsModel!));
-    }).catchError((error) {
+    } catch (error) {
       emit(QuestionDetailsErrorState(error.toString()));
-    });
+    }
   }
 
   void _setInitialChoices() {
@@ -72,24 +72,34 @@ class EditQuestionCubit extends Cubit<EditQuestionState> {
     if (choices.isNotEmpty) {
       for (var c in choices) {
         choiceControllers.add(TextEditingController(text: c.text ?? ""));
-        // store image url as "string" instead of XFile
         choiceImages.add(c.image != null ? XFile(c.image!) : null);
       }
     } else {
-      // keep at least one empty field
       choiceControllers.add(TextEditingController());
       choiceImages.add(null);
     }
-
     emit(ChoicesUpdatedState());
   }
 
   void _setInitialTab(int typeId) {
-    for (int i = 0; i < isSelected.length; i++) {
-      isSelected[i] = (i == typeId);
+    int index;
+    if (typeId == 0) {
+      index = 0;
+    } else if (typeId == 1) {
+      index = 1;
+    } else if (typeId == 2) {
+      index = 2;
+    } else if (typeId == 3) {
+      index = 3;
+    } else {
+      index = 4;
     }
-    selectedTabIndex = typeId;
-    emit(SelectedTabChangedState(typeId));
+
+    for (int i = 0; i < isSelected.length; i++) {
+      isSelected[i] = (i == index);
+    }
+    selectedTabIndex = index;
+    emit(SelectedTabChangedState(index));
   }
 
   void changeSelectedTab(int index) {
@@ -104,6 +114,11 @@ class EditQuestionCubit extends Cubit<EditQuestionState> {
     }
     selectedTabIndex = index;
     emit(SelectedTabChangedState(index));
+  }
+
+  void changeSelectedRatingType(int index) {
+    selectedRatingType = index;
+    emit(RatingTypeChangedState(index));
   }
 
   void removeChoiceImage(int index) {
@@ -126,7 +141,6 @@ class EditQuestionCubit extends Cubit<EditQuestionState> {
 
     choiceControllers.add(TextEditingController());
     choiceImages.add(null);
-
     emit(ChoicesUpdatedState());
   }
 
@@ -134,10 +148,8 @@ class EditQuestionCubit extends Cubit<EditQuestionState> {
     if (newIndex > oldIndex) newIndex--;
     final textItem = choiceControllers.removeAt(oldIndex);
     final imageItem = choiceImages.removeAt(oldIndex);
-
     choiceControllers.insert(newIndex, textItem);
     choiceImages.insert(newIndex, imageItem);
-
     emit(ChoicesUpdatedState());
   }
 
@@ -156,58 +168,57 @@ class EditQuestionCubit extends Cubit<EditQuestionState> {
     emit(ChoicesUpdatedState());
   }
 
-  void changeSelectedRatingType(int index) {
-    selectedRatingType = index;
-    emit(RatingTypeChangedState(index));
-  }
-
+  // ✅ Fully aligned edit logic with add logic
   Future<void> editQuestion(int id) async {
     emit(EditQuestionLoadingState());
 
     try {
       FormData formData = FormData();
-
-      // Add question ID
       formData.fields.add(MapEntry("id", id.toString()));
 
-      // Add question text (fallback to old if empty)
+      // Text
       formData.fields.add(MapEntry(
         "text",
         questionController.text.isEmpty
             ? questionDetailsModel!.data!.text!
-            : questionController.text,
+            : questionController.text.trim(),
       ));
 
-      // Add question type
-      formData.fields.add(MapEntry(
-        "type",
-        selectedTabIndex == -1
-            ? questionDetailsModel!.data!.typeId.toString()
-            : selectedTabIndex.toString(),
-      ));
+      // ✅ Determine typeId based on tab and rating type
+      int typeId;
+      if (selectedTabIndex == 0) {
+        typeId = 0;
+      } else if (selectedTabIndex == 1) {
+        typeId = 1;
+      } else if (selectedTabIndex == 2) {
+        typeId = 2;
+      } else if (selectedTabIndex == 3) {
+        typeId = 3;
+      } else {
+        typeId = (selectedRatingType == 0) ? 4 : 5;
+      }
 
-      // Handle choices (similar to addQuestion)
-      if (selectedTabIndex == 0 || selectedTabIndex == 1) {
+      formData.fields.add(MapEntry("type", typeId.toString()));
+
+      // ✅ Choices handling (same as add)
+      if (selectedTabIndex == 0 ||
+          selectedTabIndex == 1 ||
+          selectedTabIndex == 3) {
         for (int i = 0; i < choiceControllers.length; i++) {
           final text = choiceControllers[i].text.trim();
           final image = choiceImages[i];
-
-          // Add choice ID (if available from API)
           final existingChoice = questionDetailsModel?.data?.choices?[i];
-          final choiceId =
-              existingChoice?.id; // add `id` in Choices model if missing
+          final choiceId = existingChoice?.id;
+
           if (choiceId != null) {
             formData.fields
                 .add(MapEntry("choices[$i].id", choiceId.toString()));
           }
 
-          // Add choice text
           formData.fields.add(MapEntry("choices[$i].text", text));
 
-          // Handle image state
           if (image != null) {
             if (!image.path.startsWith("http")) {
-              // New uploaded image -> replace
               formData.files.add(MapEntry(
                 "choices[$i].image",
                 await MultipartFile.fromFile(
@@ -217,28 +228,25 @@ class EditQuestionCubit extends Cubit<EditQuestionState> {
               ));
               formData.fields.add(MapEntry("choices[$i].deleteImage", "false"));
             } else {
-              // Keep old image
               formData.fields.add(MapEntry("choices[$i].image", image.path));
               formData.fields.add(MapEntry("choices[$i].deleteImage", "false"));
             }
           } else {
-            // No image -> delete existing
             formData.fields.add(MapEntry("choices[$i].image", ""));
             formData.fields.add(MapEntry("choices[$i].deleteImage", "true"));
           }
 
-          // Icon (can be left empty)
-          formData.fields.add(MapEntry("choices[$i].icon", ""));
+          formData.fields.add(MapEntry("choices[0].icon", ""));
         }
-      } else if (selectedTabIndex == 3) {
-        // For rating type
-        formData.fields.add(MapEntry("choices[0].text", ""));
-        formData.fields.add(MapEntry("choices[0].image", ""));
-        formData.fields
-            .add(MapEntry("choices[0].icon", selectedRatingType.toString()));
       }
 
-      // Call API
+      // ✅ Rating (stars/emotions)
+      if (selectedTabIndex == 4) {
+        formData.fields.add(MapEntry("choices[0].text", ""));
+        formData.fields.add(MapEntry("choices[0].image", ""));
+        formData.fields.add(MapEntry("choices[0].icon", ""));
+      }
+
       final response =
           await DioHelper.putData2(url: "questions/edit", data: formData);
 

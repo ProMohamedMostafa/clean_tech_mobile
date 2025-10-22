@@ -91,7 +91,7 @@ class AddQuestionBody extends StatelessWidget {
                                           horizontalSpace(2),
                                           Text(
                                             cubit.selectedTabIndex != -1
-                                                ? " ( ${cubit.getOptions(context)[cubit.selectedTabIndex]}"
+                                                ? " ( ${cubit.getOptions(context)[cubit.selectedTabIndex]} )"
                                                 : "",
                                             style: TextStyles.font13PrimRegular,
                                           ),
@@ -110,66 +110,61 @@ class AddQuestionBody extends StatelessWidget {
                                   )),
                                   verticalSpace(20),
                                   state is AddQuestionLoadingState
-                                      ? Loading()
+                                      ? const Loading()
                                       : Center(
                                           child: DefaultElevatedButton(
-                                              name: S.of(context).createButton,
-                                              onPressed: () {
-                                                if (cubit.formKey.currentState!
-                                                    .validate()) {
-                                                  // extra validation
-                                                  if (cubit.selectedTabIndex ==
-                                                          0 ||
-                                                      cubit.selectedTabIndex ==
-                                                          1) {
-                                                    // count non-empty text choices
-                                                    int textChoices = cubit
-                                                        .choiceControllers
-                                                        .where((c) => c.text
-                                                            .trim()
-                                                            .isNotEmpty)
-                                                        .length;
+                                            name: S.of(context).createButton,
+                                            onPressed: () {
+                                              if (!cubit.formKey.currentState!
+                                                  .validate()) return;
 
-                                                    // count non-null images
-                                                    int imageChoices = cubit
-                                                        .choiceImages
-                                                        .where((img) =>
-                                                            img != null)
-                                                        .length;
+                                              // ✅ Validate multiple or checkbox questions
+                                              if (cubit.selectedTabIndex == 0 ||
+                                                  cubit.selectedTabIndex == 1) {
+                                                final textChoices = cubit
+                                                    .choiceControllers
+                                                    .where((c) => c.text
+                                                        .trim()
+                                                        .isNotEmpty)
+                                                    .length;
+                                                final imageChoices = cubit
+                                                    .choiceImages
+                                                    .where((img) => img != null)
+                                                    .length;
+                                                final totalChoices =
+                                                    textChoices + imageChoices;
 
-                                                    // total valid choices
-                                                    int totalChoices =
-                                                        textChoices +
-                                                            imageChoices;
-
-                                                    if (totalChoices < 4) {
-                                                      toast(
-                                                        text: S
-                                                            .of(context)
-                                                            .please_add_4_choices,
-                                                        isSuccess: false,
-                                                      );
-                                                      return;
-                                                    }
-                                                  }
-                                                  if (cubit.selectedTabIndex ==
-                                                          3 &&
-                                                      cubit.selectedRatingType ==
-                                                          -1) {
-                                                    toast(
-                                                        text: S
-                                                            .of(context)
-                                                            .please_select_type_of_rating,
-                                                        isSuccess: false);
-                                                    return;
-                                                  }
-
-                                                  cubit.addQuestion();
+                                                if (totalChoices < 4) {
+                                                  toast(
+                                                    text: S
+                                                        .of(context)
+                                                        .please_add_4_choices,
+                                                    isSuccess: false,
+                                                  );
+                                                  return;
                                                 }
-                                              },
-                                              color: AppColor.primaryColor,
-                                              textStyles: TextStyles
-                                                  .font16WhiteSemiBold),
+                                              }
+
+                                              // ✅ Validate rating question (type 4)
+                                              if (cubit.selectedTabIndex == 4 &&
+                                                  cubit.selectedRatingType ==
+                                                      -1) {
+                                                toast(
+                                                  text: S
+                                                      .of(context)
+                                                      .please_select_type_of_rating,
+                                                  isSuccess: false,
+                                                );
+                                                return;
+                                              }
+
+                                              // Proceed to add question
+                                              cubit.addQuestion();
+                                            },
+                                            color: AppColor.primaryColor,
+                                            textStyles:
+                                                TextStyles.font16WhiteSemiBold,
+                                          ),
                                         ),
                                   verticalSpace(20),
                                 ])))))

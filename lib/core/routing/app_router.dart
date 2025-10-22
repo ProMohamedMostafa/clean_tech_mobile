@@ -415,7 +415,7 @@ class AppRouter {
         var id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => DeviceAnswersCubit()..getDeviceAnswers(id),
+            create: (context) => DeviceAnswersCubit()..initialize(id),
             child: DeviceAnswersScreen(id: id),
           ),
         );

@@ -21,7 +21,7 @@ class ChoicesBody extends StatelessWidget {
       builder: (context, state) {
         if (selectedTabIndex == 0 || selectedTabIndex == 1) {
           return _buildChoicesList(cubit, context);
-        } else if (selectedTabIndex == 3) {
+        } else if (selectedTabIndex == 4) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -106,57 +106,51 @@ class ChoicesBody extends StatelessWidget {
             style: TextStyles.font16BlackRegular,
           ),
           verticalSpace(10),
-          BlocBuilder<AddQuestionCubit, AddQuestionState>(
-            builder: (context, state) {
-              final cubit = context.read<AddQuestionCubit>();
-              return ReorderableListView.builder(
-                shrinkWrap: true,
-                itemCount: cubit.choiceControllers.length,
-                onReorder: cubit.reorderChoices,
-                itemBuilder: (context, index) {
-                  final image = cubit.choiceImages[index];
-                  return ListTile(
-                    key: ValueKey("choice_$index"),
-                    contentPadding: EdgeInsets.zero,
-                    leading: const Icon(Icons.unfold_more_double_rounded,
-                        color: Colors.grey),
-                    title: Row(
-                      children: [
-                        InkWell(
-                          borderRadius: BorderRadius.circular(50.r),
-                          onTap: () => cubit.pickChoiceImage(index),
-                          child: image != null
-                              ? _buildFilePreview(context, cubit, index)
-                              : _buildPlaceholderImage(),
-                        ),
-                        horizontalSpace(8),
-                        Expanded(
-                          child: CustomTextFormField(
-                            onlyRead: false,
-                            hint: S.of(context).write,
-                            controller: cubit.choiceControllers[index],
-                            keyboardType: TextInputType.text,
-                            validator: (value) {
-                              if (value!.length > 155) {
-                                return S.of(context).answer_too_long;
-                              } else if (value.length < 2) {
-                                return S.of(context).answer_too_short;
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ],
+          ReorderableListView.builder(
+            shrinkWrap: true,
+            itemCount: cubit.choiceControllers.length,
+            onReorder: cubit.reorderChoices,
+            itemBuilder: (context, index) {
+              final image = cubit.choiceImages[index];
+              return ListTile(
+                key: ValueKey("choice_$index"),
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.unfold_more_double_rounded,
+                    color: Colors.grey),
+                title: Row(
+                  children: [
+                    InkWell(
+                      borderRadius: BorderRadius.circular(50.r),
+                      onTap: () => cubit.pickChoiceImage(index),
+                      child: image != null
+                          ? _buildFilePreview(context, cubit, index)
+                          : _buildPlaceholderImage(),
                     ),
-                    trailing: InkWell(
-                      onTap: () {
-                        cubit.removeChoiceField(index);
-                      },
-                      child:
-                          Icon(Icons.close, size: 16.sp, color: Colors.black),
+                    horizontalSpace(8),
+                    Expanded(
+                      child: CustomTextFormField(
+                        onlyRead: false,
+                        hint: S.of(context).write,
+                        controller: cubit.choiceControllers[index],
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value!.length > 155) {
+                            return S.of(context).answer_too_long;
+                          } else if (value.length < 2) {
+                            return S.of(context).answer_too_short;
+                          }
+                          return null;
+                        },
+                      ),
                     ),
-                  );
-                },
+                  ],
+                ),
+                trailing: InkWell(
+                  onTap: () {
+                    cubit.removeChoiceField(index);
+                  },
+                  child: Icon(Icons.close, size: 16.sp, color: Colors.black),
+                ),
               );
             },
           ),
@@ -165,8 +159,8 @@ class ChoicesBody extends StatelessWidget {
             TextButton.icon(
               onPressed: cubit.addChoiceField,
               icon: Icon(Icons.add, size: 22.sp, color: AppColor.primaryColor),
-              label:
-                  Text(S.of(context).add_more_option, style: TextStyles.font14Primarybold),
+              label: Text(S.of(context).add_more_option,
+                  style: TextStyles.font14Primarybold),
             ),
         ],
       ),
@@ -238,7 +232,7 @@ class ChoicesBody extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: Colors.black54,
               ),
-              child: const Icon(Icons.close, size: 12, color: Colors.white),
+              child: Icon(Icons.close, size: 12.sp, color: Colors.white),
             ),
           ),
         ),

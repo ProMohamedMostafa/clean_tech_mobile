@@ -17,8 +17,7 @@ class FeedbackAnswerBody extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title:  Text(S.of(context).answer_details),
-    
+        title: Text(S.of(context).answer_details),
       ),
       body: BlocBuilder<FeedbackAnswerCubit, FeedbackAnswerState>(
         builder: (context, state) {
@@ -110,12 +109,12 @@ class FeedbackAnswerBody extends StatelessWidget {
                               style: TextStyles.font13PrimRegular,
                             ),
                           ),
-                        if (question.typeId == 3)
-                          (answers.isNotEmpty && answers.first.icon == "0")
-                              ? _ratingRow(selected: question.rateAnswer)
-                              : _emotionsRow(context,selected: question.rateAnswer),
+                        if (question.typeId == 3 && answers.isNotEmpty)
+                          _boolRow(context, selected: question.boolAnswer),
                         if (question.typeId == 4)
-                          _boolRow(context,selected: question.boolAnswer),
+                          _ratingRow(selected: question.rateAnswer),
+                        if (question.typeId == 5)
+                          _emotionsRow(context, selected: question.rateAnswer),
                         verticalSpace(10),
                       ],
                     ],
@@ -233,7 +232,7 @@ class FeedbackAnswerBody extends StatelessWidget {
     );
   }
 
-  Widget _emotionsRow(context,{required int? selected}) {
+  Widget _emotionsRow(context, {required int? selected}) {
     final emotions = [
       {"icon": "assets/images/happy.png", "text": S.of(context).good},
       {"icon": "assets/images/normal.png", "text": S.of(context).normal},
@@ -272,14 +271,16 @@ class FeedbackAnswerBody extends StatelessWidget {
     );
   }
 
-  Widget _boolRow(context,{required bool? selected}) {
+  Widget _boolRow(context, {required bool? selected}) {
     return Center(
       child: Wrap(
         alignment: WrapAlignment.center,
         spacing: 12.w,
         children: [
-          _boolChip(label: S.of(context).true_value, isSelected: selected == true),
-          _boolChip(label: S.of(context).false_value, isSelected: selected == false),
+          _boolChip(
+              label: S.of(context).true_value, isSelected: selected == true),
+          _boolChip(
+              label: S.of(context).false_value, isSelected: selected == false),
         ],
       ),
     );

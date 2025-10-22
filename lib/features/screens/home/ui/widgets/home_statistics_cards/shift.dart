@@ -31,7 +31,7 @@ class Shift extends StatelessWidget {
           context.pushNamed(Routes.shiftScreen);
         },
         child: Container(
-          height: 95.h,
+          height: 97.h,
           decoration: BoxDecoration(
             border: Border.all(color: Colors.black12),
             borderRadius: BorderRadius.circular(6.r),
