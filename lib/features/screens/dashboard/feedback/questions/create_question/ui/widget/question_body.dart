@@ -116,7 +116,9 @@ class AddQuestionBody extends StatelessWidget {
                                             name: S.of(context).createButton,
                                             onPressed: () {
                                               if (!cubit.formKey.currentState!
-                                                  .validate()) return;
+                                                  .validate()) {
+                                                return;
+                                              }
 
                                               // ✅ Validate multiple or checkbox questions
                                               if (cubit.selectedTabIndex == 0 ||

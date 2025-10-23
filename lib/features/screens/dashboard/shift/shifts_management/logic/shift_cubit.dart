@@ -163,8 +163,9 @@ class ShiftCubit extends Cubit<ShiftState> {
             .indexWhere((user) => user.id! > restoredUser.id!);
 
         // If not found, add to end
-        if (insertIndex == -1)
+        if (insertIndex == -1) {
           insertIndex = allShiftsModel!.data!.data!.length;
+        }
 
         // Insert at correct position
         allShiftsModel?.data?.data?.insert(insertIndex, restoredUser);

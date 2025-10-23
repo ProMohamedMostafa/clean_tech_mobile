@@ -645,8 +645,9 @@ class HomeCubit extends Cubit<HomeState> {
 
       final monthPart1 = parts[0].trim();
       final monthPart2AndYear = parts[1].trim().split(' ');
-      if (monthPart2AndYear.length != 2)
+      if (monthPart2AndYear.length != 2) {
         return (startDate: null, endDate: null);
+      }
 
       final monthPart2 = monthPart2AndYear[0];
       final yearPart = monthPart2AndYear[1];

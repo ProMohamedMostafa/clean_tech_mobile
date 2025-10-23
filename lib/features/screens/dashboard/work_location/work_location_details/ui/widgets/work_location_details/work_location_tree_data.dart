@@ -104,8 +104,9 @@ class WorkLocationTreeData {
     if (model?.data == null) return counts;
 
     final cityCount = model!.data!.cities?.length ?? 0;
-    if (cityCount > 0)
+    if (cityCount > 0) {
       counts.add({"count": "$cityCount", "title": S.of(context).City});
+    }
 
     final organizationCount =
         model.data!.cities?.expand((city) => city.organizations ?? []).length ??
@@ -493,7 +494,7 @@ class WorkLocationTreeData {
       WorkLocationDetailsCubit cubit) {
     final organizationTreeModel = cubit.organizationTreeModel;
     if (organizationTreeModel == null || organizationTreeModel.data == null)
-      return [];
+      {return [];}
 
     switch (cubit.selectedTreeIndex) {
       case 0: // Building

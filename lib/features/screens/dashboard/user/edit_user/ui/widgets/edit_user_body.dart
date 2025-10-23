@@ -409,7 +409,9 @@ class _EditUserBodyState extends State<EditUserBody> {
                                 builder: (BuildContext context, Widget? child) {
                                   return Theme(
                                     data: Theme.of(context).copyWith(
-                                      dialogBackgroundColor: Colors.white,
+                                        dialogTheme: const DialogThemeData(
+            backgroundColor: Colors.white,
+          ),
                                       colorScheme: ColorScheme.light(
                                         primary: AppColor.primaryColor,
                                         onPrimary: Colors.white,

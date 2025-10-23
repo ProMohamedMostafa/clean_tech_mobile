@@ -39,7 +39,6 @@ class _EditProfileBodyState extends State<EditProfileBody> {
           S.of(context).edit_profile_details,
           style: TextStyles.font16BlackSemiBold,
         ),
-      
         leading: CustomBackButton(),
       ),
       body: BlocConsumer<EditProfileCubit, EditProfileState>(
@@ -357,7 +356,9 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                               builder: (BuildContext context, Widget? child) {
                                 return Theme(
                                   data: Theme.of(context).copyWith(
-                                    dialogBackgroundColor: Colors.white,
+                                    dialogTheme: const DialogThemeData(
+                                      backgroundColor: Colors.white,
+                                    ),
                                     colorScheme: ColorScheme.light(
                                       primary: AppColor.primaryColor,
                                       onPrimary: Colors.white,

@@ -15,12 +15,15 @@ class BuildingsOverviewTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final verticalController = ScrollController();
+    final horizontalController = ScrollController();
     return BlocBuilder<FeedbackOverviewCubit, FeedbackOverviewState>(
       builder: (context, state) {
         final cubit = context.watch<FeedbackOverviewCubit>();
         final data = cubit.statisticsModel?.data?.data;
         final model = cubit.statisticsModel;
         final isLoading = model == null || model.data == null;
+
         return Skeletonizer(
           enabled: isLoading,
           child: Container(
@@ -60,8 +63,10 @@ class BuildingsOverviewTable extends StatelessWidget {
                     ConstrainedBox(
                       constraints: BoxConstraints(maxHeight: 400.h),
                       child: Scrollbar(
+                        controller: verticalController,
                         thumbVisibility: true,
                         child: SingleChildScrollView(
+                          controller: verticalController,
                           scrollDirection: Axis.vertical,
                           child: ScrollbarTheme(
                             data: ScrollbarThemeData(
@@ -71,12 +76,14 @@ class BuildingsOverviewTable extends StatelessWidget {
                                 trackColor: WidgetStateProperty.all(
                                     AppColor.fourthColor)),
                             child: Scrollbar(
+                              controller: horizontalController,
                               thumbVisibility: true,
                               interactive: true,
                               thickness: 8,
                               radius: const Radius.circular(50),
                               scrollbarOrientation: ScrollbarOrientation.top,
                               child: SingleChildScrollView(
+                                controller: horizontalController,
                                 scrollDirection: Axis.horizontal,
                                 child: Container(
                                   decoration: BoxDecoration(

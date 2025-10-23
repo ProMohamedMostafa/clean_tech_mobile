@@ -117,8 +117,9 @@ class TransactionManagementCubit extends Cubit<TransactionManagementState> {
     required int index,
   }) {
     final model = transactionManagementModel;
-    if (model == null || model.data == null || model.data!.data == null)
+    if (model == null || model.data == null || model.data!.data == null) {
       return -1;
+    }
 
     final data = model.data!.data!;
     if (selectedIndex == 0) {

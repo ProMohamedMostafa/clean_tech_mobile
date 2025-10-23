@@ -907,8 +907,9 @@ class WorkLocationCubit extends Cubit<WorkLocationState> {
             .indexWhere((user) => user.id! > restoredUser.id!);
 
         // If not found, add to end
-        if (insertIndex == -1)
+        if (insertIndex == -1) {
           insertIndex = organizationModel!.data!.data!.length;
+        }
 
         // Insert at correct position
         organizationModel?.data?.data?.insert(insertIndex, restoredUser);

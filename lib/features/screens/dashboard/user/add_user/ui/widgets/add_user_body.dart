@@ -402,7 +402,9 @@ class _AddUserBodyState extends State<AddUserBody> {
                                           Widget? child) {
                                         return Theme(
                                           data: Theme.of(context).copyWith(
-                                            dialogBackgroundColor: Colors.white,
+                                              dialogTheme: const DialogThemeData(
+            backgroundColor: Colors.white,
+          ),
                                             colorScheme: ColorScheme.light(
                                               primary: AppColor.primaryColor,
                                               onPrimary: Colors.white,

@@ -14,7 +14,9 @@ class CustomDatePicker {
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            dialogBackgroundColor: Colors.white,
+           dialogTheme: const DialogThemeData(
+            backgroundColor: Colors.white,
+          ),
             colorScheme: ColorScheme.light(
               primary: AppColor.primaryColor, // Selected day circle color
               onPrimary: Colors.white, // Text color on selected day
