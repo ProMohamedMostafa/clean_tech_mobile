@@ -220,13 +220,24 @@ class TaskManagementBody extends StatelessWidget {
         );
       },
       onDateChange: (date) {
-        cubit.filterStartDate = null;
-        cubit.filterEndDate = null;
-        cubit.filterModel = null;
-        cubit.selectedDate = date;
-        cubit.currentPage = 1;
-        cubit.allTasksModel = null;
-        cubit.getAllTasks(selectedIndex);
+        if (cubit.selectedDate != null &&
+            DateUtils.isSameDay(cubit.selectedDate, date)) {
+          cubit.selectedDate = null;
+          cubit.filterStartDate = null;
+          cubit.filterEndDate = null;
+          cubit.filterModel = null;
+          cubit.currentPage = 1;
+          cubit.allTasksModel = null;
+          cubit.getAllTasks(selectedIndex);
+        } else {
+          cubit.selectedDate = date;
+          cubit.filterStartDate = null;
+          cubit.filterEndDate = null;
+          cubit.filterModel = null;
+          cubit.currentPage = 1;
+          cubit.allTasksModel = null;
+          cubit.getAllTasks(selectedIndex);
+        }
       },
     );
   }

@@ -506,12 +506,16 @@ class HomeCubit extends Cubit<HomeState> {
   void changeDateRangeProvider(String range) {
     selectedDateRangeProvider = range;
     emit(ChangeChartTypeStockState());
+
     final selectedYear = _extractYearFromRange(range);
-    final providerId = selectedProviderName != 'All Providers'
-        ? providersModel?.data?.data
-            ?.firstWhere((p) => p.name == selectedProviderName)
-            .id
-        : null;
+
+    int? providerId;
+    if (selectedProviderName != null &&
+        selectedProviderName != 'All Providers') {
+      final provider = providersModel?.data?.data
+          ?.firstWhere((p) => p.name == selectedProviderName);
+      providerId = provider?.id;
+    }
 
     getQuantity(year: selectedYear, providerId: providerId);
   }
@@ -526,8 +530,10 @@ class HomeCubit extends Cubit<HomeState> {
     }
 
     emit(ChangeProviderState());
+
     final selectedYear = _extractYearFromRange(selectedDateRangeProvider);
-    getQuantity(year: selectedYear, providerId: providerId);
+    getQuantity(
+        year: selectedYear, providerId: providerId == 0 ? null : providerId);
   }
 
   // completetion task part
@@ -571,14 +577,21 @@ class HomeCubit extends Cubit<HomeState> {
   void changeDateRangeUser(String range) {
     selectedDateRangeCompleteTask = range;
     emit(ChangeChartTypeCompleteTaskState());
-    final selectedYear = _extractYearFromRange(range);
-    final userId = selectedUserName != 'All Users'
-        ? usersBasicModel?.data
-            ?.firstWhere((u) => u.userName == selectedUserName)
-            .id
-        : null;
 
-    getCompleteiontask(year: selectedYear, userId: userId);
+    final selectedYear = _extractYearFromRange(range);
+
+    int? userId;
+    if (selectedUserName != null && selectedUserName != 'All Users') {
+      final user = usersBasicModel?.data?.firstWhere(
+        (u) => u.userName == selectedUserName,
+      );
+      userId = user?.id;
+    }
+
+    getCompleteiontask(
+      year: selectedYear,
+      userId: userId,
+    );
   }
 
   void changeSelectedUser(int userId) {
@@ -590,6 +603,7 @@ class HomeCubit extends Cubit<HomeState> {
     }
 
     emit(ChangeUserState());
+
     final selectedYear = _extractYearFromRange(selectedDateRangeCompleteTask);
     getCompleteiontask(year: selectedYear, userId: userId);
   }
@@ -682,11 +696,13 @@ class HomeCubit extends Cubit<HomeState> {
     final parsedDates = _parseDateRange(range);
     if (parsedDates.startDate == null || parsedDates.endDate == null) return;
 
-    final userId = selectedUserNametask != 'All Users'
-        ? usersBasicModel?.data
-            ?.firstWhere((u) => u.userName == selectedUserNametask)
-            .id
-        : null;
+    int? userId;
+    if (selectedUserNametask != null && selectedUserNametask != 'All Users') {
+      // safely find user
+      final user = usersBasicModel?.data
+          ?.firstWhere((u) => u.userName == selectedUserNametask);
+      userId = user?.id;
+    }
 
     getChartTaskData(
       userId: userId,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_cleaning_application/core/helpers/constants/constants.dart';
 import 'package:smart_cleaning_application/core/helpers/extenstions/extenstions.dart';
 import 'package:smart_cleaning_application/core/helpers/spaces/spaces.dart';
@@ -9,7 +10,6 @@ import 'package:smart_cleaning_application/core/routing/routes.dart';
 import 'package:smart_cleaning_application/core/theming/colors/color.dart';
 import 'package:smart_cleaning_application/core/theming/font_style/font_styles.dart';
 import 'package:smart_cleaning_application/core/widgets/default_back_button/back_button.dart';
-import 'package:smart_cleaning_application/core/widgets/loading/loading.dart';
 import 'package:smart_cleaning_application/features/screens/setting/settings/logic/settings_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/setting/settings/logic/settings_state.dart';
 import 'package:smart_cleaning_application/features/screens/setting/settings/ui/widgets/list_tile_widget.dart';
@@ -26,18 +26,19 @@ class SettingsBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<SettingsCubit>();
     return BlocConsumer<SettingsCubit, SettingsState>(
-      listener: (context, state) {
-        if (state is LogOutSuccessState) {
-          toast(text: state.messsage, isSuccess: true);
-          context.pushNamedAndRemoveUntil(Routes.loginScreen,
-              predicate: (route) => false);
-        }
-      },
-      builder: (context, state) {
-        if (cubit.profileModel == null) {
-          return Loading();
-        }
-        return SingleChildScrollView(
+        listener: (context, state) {
+      if (state is LogOutSuccessState) {
+        toast(text: state.messsage, isSuccess: true);
+        context.pushNamedAndRemoveUntil(Routes.loginScreen,
+            predicate: (route) => false);
+      }
+    }, builder: (context, state) {
+      final isLoading = cubit.profileModel == null;
+      final profile = cubit.profileModel?.data;
+
+      return Skeletonizer(
+        enabled: isLoading,
+        child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -47,6 +48,7 @@ class SettingsBody extends StatelessWidget {
                   children: [
                     GestureDetector(
                         onTap: () {
+                          if (isLoading) return;
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -57,7 +59,7 @@ class SettingsBody extends StatelessWidget {
                                 body: Center(
                                   child: PhotoView(
                                     imageProvider: NetworkImage(
-                                      '${cubit.profileModel?.data?.image}',
+                                      profile?.image ?? '',
                                     ),
                                     errorBuilder: (context, error, stackTrace) {
                                       return Image.asset(
@@ -66,8 +68,7 @@ class SettingsBody extends StatelessWidget {
                                       );
                                     },
                                     backgroundDecoration: const BoxDecoration(
-                                      color: Colors.white,
-                                    ),
+                                        color: Colors.white),
                                   ),
                                 ),
                               ),
@@ -75,24 +76,26 @@ class SettingsBody extends StatelessWidget {
                           );
                         },
                         child: Container(
-                            width: 100.r,
-                            height: 100.r,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                            ),
-                            child: ClipOval(
-                              child: Image.network(
-                                '${cubit.profileModel!.data!.image}',
-                                fit: BoxFit.fill,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Image.asset(
-                                    'assets/images/person.png',
+                          width: 100.r,
+                          height: 100.r,
+                          decoration:
+                              const BoxDecoration(shape: BoxShape.circle),
+                          child: ClipOval(
+                            child: isLoading
+                                ? Container(color: Colors.grey[300])
+                                : Image.network(
+                                    profile?.image ?? '',
                                     fit: BoxFit.fill,
-                                  );
-                                },
-                              ),
-                            ))),
-                    if (role != 'Admin')
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Image.asset(
+                                        'assets/images/person.png',
+                                        fit: BoxFit.fill,
+                                      );
+                                    },
+                                  ),
+                          ),
+                        )),
+                    if (!isLoading && role != 'Admin')
                       Positioned(
                         bottom: 1,
                         right: 10,
@@ -100,14 +103,14 @@ class SettingsBody extends StatelessWidget {
                           width: 15.w,
                           height: 15.h,
                           decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: cubit.profileModel!.data == null
-                                  ? Colors.red
-                                  : cubit.profileModel!.data!.isWorking == true
-                                      ? Colors.green
-                                      : Colors.red,
-                              border:
-                                  Border.all(color: Colors.white, width: 2.w)),
+                            shape: BoxShape.circle,
+                            color: profile == null
+                                ? Colors.red
+                                : profile.isWorking == true
+                                    ? Colors.green
+                                    : Colors.red,
+                            border: Border.all(color: Colors.white, width: 2.w),
+                          ),
                         ),
                       )
                   ],
@@ -117,16 +120,16 @@ class SettingsBody extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(cubit.profileModel?.data?.firstName ?? '',
+                  Text(profile?.firstName ?? '----',
                       style: TextStyles.font14Redbold
                           .copyWith(color: Colors.black)),
                   horizontalSpace(5),
-                  Text(cubit.profileModel?.data?.lastName ?? '',
+                  Text(profile?.lastName ?? '----',
                       style: TextStyles.font14Redbold
                           .copyWith(color: Colors.black)),
                 ],
               ),
-              Text(cubit.profileModel?.data?.role ?? '',
+              Text(profile?.role ?? '------',
                   style: TextStyles.font12GreyRegular
                       .copyWith(color: AppColor.primaryColor)),
               Padding(
@@ -143,17 +146,11 @@ class SettingsBody extends StatelessWidget {
                     listTileWidget(() {
                       context.pushNamed(Routes.changepasswordScreen);
                     }, S.of(context).settingTitle2, Icons.password_sharp),
-                    // listTileWidget(() {
-                    //   context.pushNamed(Routes.technicalSupportScreen);
-                    // }, S.of(context).settingTitle4, Icons.phone),
                     listTileWidget(() async {
                       Uri url = Uri.parse('https://ai-cloud.sa');
                       await launchUrl(url);
                     }, S.of(context).settingTitle5,
                         Icons.desktop_windows_outlined),
-                    // listTileWidget(() {
-                    //   Share.share('check out my website https://example.com');
-                    // }, S.of(context).settingTitle3, Icons.share),
                     listTileWidget(() {
                       context.pushNamed(Routes.languageScreen);
                     }, S.of(context).settingTitle6, Icons.language),
@@ -189,8 +186,8 @@ class SettingsBody extends StatelessWidget {
               ),
             ],
           ),
-        );
-      },
-    );
+        ),
+      );
+    });
   }
 }
