@@ -79,7 +79,7 @@ class Activity {
   String? userName;
   int? userId;
   String? role;
-  DateTime? createdAt;
+  String? createdAt;
 
   Activity({
     this.message,
@@ -103,8 +103,7 @@ class Activity {
       userName: json['userName'],
       userId: json['userId'],
       role: json['role'],
-      createdAt:
-          json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
+      createdAt: json['createdAt'],
     );
   }
 }

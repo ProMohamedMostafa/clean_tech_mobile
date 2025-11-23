@@ -77,6 +77,11 @@ class AttendanceHistoryCubit extends Cubit<AttendanceHistoryState> {
     getAllHistory(status: status);
   }
 
+  DateTime parseUtc(String dateString) {
+    // Force treat backend UTC time (no Z) as UTC
+    return DateTime.parse("${dateString}Z").toUtc().toLocal();
+  }
+
   // Format a duration string like "01:30" into "1 hr 30 min"
   String formatDuration(String? duration) {
     if (duration == null || duration.isEmpty || !duration.contains(':')) {

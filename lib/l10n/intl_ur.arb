@@ -796,5 +796,8 @@
   "total_answers": "کل جوابات",
   "total_auditors": "کل آڈیٹرز",
   "total_cleaners": "کل کلینرز",
-  "satisfaction_rate": "اطمینان کی شرح"
+  "satisfaction_rate": "اطمینان کی شرح",
+  "time2": "وقت",
+  "clock_in": "اندر آنے کا وقت",
+  "clock_out": "باہر جانے کا وقت"
 }

@@ -111,10 +111,27 @@ class FeedbackAnswerBody extends StatelessWidget {
                           ),
                         if (question.typeId == 3 && answers.isNotEmpty)
                           _boolRow(context, selected: question.boolAnswer),
-                        if (question.typeId == 4)
-                          _ratingRow(selected: question.rateAnswer),
-                        if (question.typeId == 5)
+                        if (question.typeId == 4) ...[
+                          _ratingRow(
+                            context,
+                            selected: question.rateAnswer,
+                          ),
+                          if (question.reason != null) ...[
+                            verticalSpace(5),
+                            reasonBuild(context,
+                                reasonId: question.reason!,
+                                reasonName: question.reasonName!)
+                          ]
+                        ],
+                        if (question.typeId == 5) ...[
                           _emotionsRow(context, selected: question.rateAnswer),
+                          if (question.reason != null) ...[
+                            verticalSpace(5),
+                            reasonBuild(context,
+                                reasonId: question.reason!,
+                                reasonName: question.reasonName!)
+                          ]
+                        ],
                         verticalSpace(10),
                       ],
                     ],
@@ -190,7 +207,7 @@ class FeedbackAnswerBody extends StatelessWidget {
     );
   }
 
-  Widget _ratingRow({required int? selected}) {
+  Widget _ratingRow(context, {required int? selected}) {
     return Center(
       child: Wrap(
         alignment: WrapAlignment.center,
@@ -268,6 +285,60 @@ class FeedbackAnswerBody extends StatelessWidget {
           );
         }),
       ),
+    );
+  }
+
+  Widget reasonBuild(BuildContext context,
+      {required int reasonId, required String reasonName}) {
+    Map<int, String> reasonImages = {
+      0: 'assets/images/tissues.png',
+      1: 'assets/images/basket.png',
+      2: 'assets/images/soap.png',
+      3: 'assets/images/temperature.png',
+      4: 'assets/images/cleaning.png',
+      5: 'assets/images/smelling.png',
+    };
+    final imagePath = reasonImages[reasonId];
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: _statusChip(
+            text: S.of(context).reason,
+            color: Colors.red.withOpacity(0.2),
+            textColor: Colors.red,
+          ),
+        ),
+        verticalSpace(5),
+        Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 50.r,
+                height: 50.r,
+                child: imagePath != null
+                    ? Image.asset(
+                        imagePath,
+                        fit: BoxFit.fill,
+                      )
+                    : Icon(Icons.image_not_supported,
+                        size: 50.r, color: Colors.grey),
+              ),
+              verticalSpace(4),
+              Text(
+                reasonName,
+                style: TextStyles.font14BlackMedium,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 

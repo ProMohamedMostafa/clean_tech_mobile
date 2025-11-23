@@ -101,7 +101,7 @@ class AttendanceCardItem extends StatelessWidget {
             ),
             verticalSpace(5),
             Text(
-              cubit.attendanceHistoryModel!.data!.data![index].userName!,
+              '${cubit.attendanceHistoryModel!.data!.data![index].firstName!} ${cubit.attendanceHistoryModel!.data!.data![index].lastName!}',
               style: TextStyles.font16BlackSemiBold,
             ),
             verticalSpace(10),
@@ -165,9 +165,16 @@ class AttendanceCardItem extends StatelessWidget {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: cubit.formatTime(cubit.attendanceHistoryModel!
-                                .data!.data![index].clockIn ??
-                            ''),
+                        text: cubit.attendanceHistoryModel!.data!.data![index]
+                                    .clockIn !=
+                                null
+                            ? DateFormat('HH:mm').format(
+                                cubit.parseUtc(
+                                  cubit.attendanceHistoryModel!.data!
+                                      .data![index].clockIn!,
+                                ),
+                              )
+                            : '',
                         style: TextStyles.font12GreyRegular
                             .copyWith(color: AppColor.primaryColor),
                       ),
@@ -177,9 +184,16 @@ class AttendanceCardItem extends StatelessWidget {
                             .copyWith(color: AppColor.primaryColor),
                       ),
                       TextSpan(
-                        text: cubit.formatTime(cubit.attendanceHistoryModel!
-                                .data!.data![index].clockOut ??
-                            ''),
+                        text: cubit.attendanceHistoryModel!.data!.data![index]
+                                    .clockOut !=
+                                null
+                            ? DateFormat('HH:mm').format(
+                                cubit.parseUtc(
+                                  cubit.attendanceHistoryModel!.data!
+                                      .data![index].clockOut!,
+                                ),
+                              )
+                            : '',
                         style: TextStyles.font12GreyRegular
                             .copyWith(color: AppColor.primaryColor),
                       ),

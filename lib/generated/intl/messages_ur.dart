@@ -297,6 +297,8 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cleaner": MessageLookupByLibrary.simpleMessage("صفائی کرنے والا"),
     "cleaners": MessageLookupByLibrary.simpleMessage("صفائی کرنے والے"),
+    "clock_in": MessageLookupByLibrary.simpleMessage("اندر آنے کا وقت"),
+    "clock_out": MessageLookupByLibrary.simpleMessage("باہر جانے کا وقت"),
     "cm": MessageLookupByLibrary.simpleMessage("سینٹی میٹر"),
     "comment_or_image_required": MessageLookupByLibrary.simpleMessage(
       "تبصرہ یا تصویر درکار ہے",
@@ -1183,6 +1185,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "text_input": MessageLookupByLibrary.simpleMessage("ٹیکسٹ ان پٹ"),
     "the_question": MessageLookupByLibrary.simpleMessage("سوال"),
     "time": MessageLookupByLibrary.simpleMessage("وقت"),
+    "time2": MessageLookupByLibrary.simpleMessage("وقت"),
     "total": MessageLookupByLibrary.simpleMessage("کل"),
     "totalCategories": MessageLookupByLibrary.simpleMessage("کل زمرے"),
     "totalMaterials": MessageLookupByLibrary.simpleMessage("کل مواد"),

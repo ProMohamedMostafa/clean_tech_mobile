@@ -796,5 +796,8 @@
   "total_answers": "إجمالي الإجابات",
   "total_auditors": "إجمالي المراجعين",
   "total_cleaners": "إجمالي المنظفين",
-  "satisfaction_rate": "معدل الرضا"
+  "satisfaction_rate": "معدل الرضا",
+  "time2": "الوقت",
+  "clock_in": "تسجيل الدخول",
+  "clock_out": "تسجيل الخروج"
 }

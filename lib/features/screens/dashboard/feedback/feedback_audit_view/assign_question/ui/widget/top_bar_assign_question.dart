@@ -30,8 +30,8 @@ class TopBarAssignQuestion extends StatelessWidget {
             GestureDetector(
               onTap: () => cubit.toggleSelectAll(),
               child: Container(
-                width: 16.w,
-                height: 16.h,
+                width: 20.w,
+                height: 20.h,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4.r),
                   border: Border.all(color: AppColor.primaryColor),
@@ -47,7 +47,8 @@ class TopBarAssignQuestion extends StatelessWidget {
             horizontalSpace(8),
             InkWell(
               onTap: () => cubit.toggleSelectAll(),
-              child: Text(S.of(context).select_all, style: TextStyles.font12PrimSemi),
+              child: Text(S.of(context).select_all,
+                  style: TextStyles.font12PrimSemi),
             ),
           ],
         ),

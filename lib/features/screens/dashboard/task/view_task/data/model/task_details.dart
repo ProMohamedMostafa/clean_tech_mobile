@@ -280,6 +280,7 @@ class Comments {
   String? userName;
   String? role;
   String? comment;
+  String? firstName;
   String? createdAt;
   String? image;
   String? file;
@@ -288,6 +289,7 @@ class Comments {
     this.userName,
     this.role,
     this.comment,
+    this.firstName,
     this.createdAt,
     this.image,
     this.file,
@@ -297,6 +299,7 @@ class Comments {
     userName = json['userName'];
     role = json['role'];
     comment = json['comment'];
+    firstName = json['firstName'];
     createdAt = json['createdAt'];
     image = json['image'];
     file = json['file'];
@@ -307,6 +310,7 @@ class Comments {
     data['userName'] = userName;
     data['role'] = role;
     data['comment'] = comment;
+    data['firstName'] = firstName;
     data['createdAt'] = createdAt;
     data['image'] = image;
     data['file'] = file;

@@ -222,19 +222,28 @@ class ShowActivity extends StatelessWidget {
                                   width: 80.w,
                                   child: Text(
                                     cubit.selectedIndex == 0
-                                        ? cubit.formatTimeDifference(cubit
-                                            .myActivities!
-                                            .data!
-                                            .activities![index]
-                                            .createdAt!)
-                                        : cubit.formatTimeDifference(cubit
-                                            .teamActivities!
-                                            .data!
-                                            .activities![index]
-                                            .createdAt!),
+                                        ? cubit.formatTimeDifferenceFromString(
+                                            cubit.myActivities!.data!
+                                                .activities![index].createdAt!)
+                                        : cubit.formatTimeDifferenceFromString(
+                                            cubit.teamActivities!.data!
+                                                .activities![index].createdAt!),
                                     style: TextStyles.font11GreyMedium,
                                   ),
                                 ),
+                                SizedBox(
+                                  width: 80.w,
+                                  child: Text(
+                                    cubit.selectedIndex == 0
+                                        ? cubit.formatTimeDifferenceFromString(
+                                            cubit.myActivities!.data!
+                                                .activities![index].createdAt!)
+                                        : cubit.formatTimeDifferenceFromString(
+                                            cubit.teamActivities!.data!
+                                                .activities![index].createdAt!),
+                                    style: TextStyles.font11GreyMedium,
+                                  ),
+                                )
                               ],
                             ),
                           );

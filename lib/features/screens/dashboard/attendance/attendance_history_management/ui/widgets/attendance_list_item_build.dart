@@ -160,8 +160,10 @@ class HistoryListItem extends StatelessWidget {
                     children: [
                       TextSpan(
                         text: DateFormat('HH:mm').format(
-                          DateTime.parse(cubit.attendanceHistoryModel!.data!
-                              .data![index].clockIn!),
+                          cubit.parseUtc(
+                            cubit.attendanceHistoryModel!.data!.data![index]
+                                .clockIn!,
+                          ),
                         ),
                         style: TextStyles.font12GreyRegular
                             .copyWith(color: AppColor.primaryColor),
@@ -176,8 +178,10 @@ class HistoryListItem extends StatelessWidget {
                                     .clockOut !=
                                 null
                             ? DateFormat('HH:mm').format(
-                                DateTime.parse(cubit.attendanceHistoryModel!
-                                    .data!.data![index].clockOut!),
+                                cubit.parseUtc(
+                                  cubit.attendanceHistoryModel!.data!
+                                      .data![index].clockOut!,
+                                ),
                               )
                             : '',
                         style: TextStyles.font12GreyRegular

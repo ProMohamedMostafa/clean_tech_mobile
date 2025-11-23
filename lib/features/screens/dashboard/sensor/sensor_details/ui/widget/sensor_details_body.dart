@@ -183,7 +183,9 @@ class SensorDetailsBody extends StatelessWidget {
                             ),
                             TextSpan(
                               text: cubit.getLastReadText(
-                                  cubit.sensorDetailsModel!.data!.lastSeenAt!),
+                                cubit.sensorDetailsModel!.data!.lastSeenAt
+                                    ?.toString(),
+                              ),
                               style: TextStyles.font12GreyRegular
                                   .copyWith(color: Colors.red),
                             ),

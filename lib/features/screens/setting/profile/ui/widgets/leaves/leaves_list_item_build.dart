@@ -81,7 +81,7 @@ class BuildLeavesCardItem extends StatelessWidget {
                     child: Center(
                       child: Text(
                         cubit.attendanceLeavesModel!.data!.leaves![index]
-                            .userName!,
+                            .status!,
                         style: TextStyles.font11WhiteSemiBold
                             .copyWith(color: AppColor.primaryColor),
                       ),
@@ -91,7 +91,7 @@ class BuildLeavesCardItem extends StatelessWidget {
               ),
               verticalSpace(5),
               Text(
-                cubit.attendanceLeavesModel!.data!.leaves![index].userName!,
+                '${cubit.attendanceLeavesModel!.data!.leaves![index].firstName!} ${cubit.attendanceLeavesModel!.data!.leaves![index].lastName!}',
                 style: TextStyles.font16BlackSemiBold,
               ),
               verticalSpace(10),

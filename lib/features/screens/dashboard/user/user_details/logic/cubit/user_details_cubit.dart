@@ -232,14 +232,9 @@ class UserDetailsCubit extends Cubit<UserDetailsState> {
     }
   }
 
-  // Format time string
-  String formatTime(String? time) {
-    if (time == null || time.isEmpty) return " ";
-    try {
-      return DateFormat('HH:mm').format(DateTime.parse(time));
-    } catch (e) {
-      return "Invalid Time";
-    }
+  DateTime parseUtc(String dateString) {
+    // Force treat backend UTC time (no Z) as UTC
+    return DateTime.parse("${dateString}Z").toUtc().toLocal();
   }
 
   // Get status color based on status string
@@ -278,7 +273,8 @@ class UserDetailsCubit extends Cubit<UserDetailsState> {
     emit(AuditorAnswerDetailsLoadingState());
     try {
       final value = await DioHelper.getData(url: "audit/answers/$id");
-      auditorAnswerDetailsModel = AuditorAnswerDetailsModel.fromJson(value!.data);
+      auditorAnswerDetailsModel =
+          AuditorAnswerDetailsModel.fromJson(value!.data);
 
       final qCount = auditorAnswerDetailsModel?.data?.questions?.length ?? 0;
       expandedItems = List<bool>.filled(qCount, false);

@@ -159,10 +159,9 @@ class _DateRangeSelector extends StatelessWidget {
   }
 }
 
-class _FilterDropdown extends StatelessWidget {
+class _FilterDropdown extends StatefulWidget {
   final double? width;
   final String label;
-
   final List<(String, String)> items;
   final ValueChanged<String>? onSelected;
 
@@ -174,83 +173,159 @@ class _FilterDropdown extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: 24.h,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.black12),
-        borderRadius: BorderRadius.circular(6.r),
+  State<_FilterDropdown> createState() => _FilterDropdownState();
+}
+
+class _FilterDropdownState extends State<_FilterDropdown> {
+  bool isOpen = false;
+  OverlayEntry? _overlayEntry;
+  final LayerLink _layerLink = LayerLink();
+  String? selectedLabel;
+
+  @override
+  void initState() {
+    super.initState();
+    final parts = widget.label.split(':');
+    selectedLabel = parts.length > 1 ? parts.last.trim() : widget.label;
+  }
+
+  void _toggleDropdown() {
+    if (isOpen) {
+      _removeOverlay();
+    } else {
+      _showOverlay();
+    }
+    setState(() {
+      isOpen = !isOpen;
+    });
+  }
+
+  void _showOverlay() {
+    _overlayEntry = _createOverlayEntry();
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void _removeOverlay() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+  }
+
+  OverlayEntry _createOverlayEntry() {
+    RenderBox renderBox = context.findRenderObject() as RenderBox;
+    var size = renderBox.size;
+    var offset = renderBox.localToGlobal(Offset.zero);
+
+    return OverlayEntry(
+      builder: (context) => Positioned(
+        width: widget.width ?? size.width,
+        left: offset.dx,
+        top: offset.dy + size.height,
+        child: CompositedTransformFollower(
+          link: _layerLink,
+          showWhenUnlinked: false,
+          offset: Offset(0.0, size.height + 5.0),
+          child: Material(
+            elevation: 4.0,
+            borderRadius: BorderRadius.circular(6.r),
+            child: Container(
+              constraints: BoxConstraints(
+                maxHeight: 120.h,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(6.r),
+                border: Border.all(color: Colors.black12),
+              ),
+              child: ListView.separated(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                itemCount: widget.items.length,
+                separatorBuilder: (_, __) => Divider(
+                  color: Colors.black12,
+                  height: 1,
+                  thickness: 1,
+                ),
+                itemBuilder: (context, index) {
+                  final item = widget.items[index];
+                  return InkWell(
+                    onTap: () {
+                      setState(() {
+                        selectedLabel = item.$2;
+                      });
+                      widget.onSelected?.call(item.$2);
+                      _toggleDropdown();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 6, vertical: 6),
+                      child: Text(
+                        item.$2,
+                        style: TextStyles.font12BlackSemi,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
       ),
-      child: PopupMenuButton<String>(
-        padding: EdgeInsets.zero,
-        color: Colors.white,
-        icon: Padding(
+    );
+  }
+
+  @override
+  void dispose() {
+    _removeOverlay();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CompositedTransformTarget(
+      link: _layerLink,
+      child: GestureDetector(
+        onTap: _toggleDropdown,
+        child: Container(
+          width: widget.width,
+          height: 24.h,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: Colors.black12),
+            borderRadius: BorderRadius.circular(6.r),
+          ),
           padding: EdgeInsets.symmetric(horizontal: 4.w),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                flex: 5,
                 child: RichText(
                   textAlign: TextAlign.left,
                   overflow: TextOverflow.ellipsis,
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: '${label.split(':').first}: ',
+                        text: '${widget.label.split(':').first}: ',
                         style: TextStyles.font12BlackSemi,
                       ),
                       TextSpan(
-                        text: label.split(':').last.trim(),
+                        text: selectedLabel ?? '',
                         style: TextStyles.font12PrimSemi,
                       ),
                     ],
                   ),
                 ),
               ),
-              Expanded(
-                flex: 1,
-                child: RotatedBox(
-                  quarterTurns: 1,
-                  child: Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    color: AppColor.primaryColor,
-                    size: 16.sp,
-                  ),
+              RotatedBox(
+                quarterTurns: isOpen ? 3 : 1,
+                child: Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  color: AppColor.primaryColor,
+                  size: 16.sp,
                 ),
               ),
             ],
           ),
-        ),
-        menuPadding: EdgeInsets.zero,
-        itemBuilder: (context) => [
-          for (int i = 0; i < items.length; i++) ...[
-            if (i > 0) PopupMenuDivider(height: 0.5.h),
-            PopupMenuItem<String>(
-              value: items[i].$1,
-              height: 28.h,
-              padding: EdgeInsets.symmetric(horizontal: 8.w),
-              child: Text(
-                items[i].$2,
-                style: TextStyles.font12BlackSemi,
-              ),
-            ),
-          ],
-        ],
-        onSelected: (value) {
-          // Find and return the display text
-          final selectedItem = items.firstWhere((item) => item.$1 == value);
-          onSelected?.call(selectedItem.$2);
-        },
-        offset: Offset(0, 23.h),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(6.r),
-        ),
-        constraints: BoxConstraints(
-          minWidth: width!,
-          maxHeight: 140.h,
         ),
       ),
     );

@@ -297,6 +297,8 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cleaner": MessageLookupByLibrary.simpleMessage("Cleaner"),
     "cleaners": MessageLookupByLibrary.simpleMessage("Cleaners"),
+    "clock_in": MessageLookupByLibrary.simpleMessage("Clock-In"),
+    "clock_out": MessageLookupByLibrary.simpleMessage("Clock-Out"),
     "cm": MessageLookupByLibrary.simpleMessage("Cm"),
     "comment_or_image_required": MessageLookupByLibrary.simpleMessage(
       "Comment or Image is required",
@@ -1194,6 +1196,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "text_input": MessageLookupByLibrary.simpleMessage("Text input"),
     "the_question": MessageLookupByLibrary.simpleMessage("The Question"),
     "time": MessageLookupByLibrary.simpleMessage("Time"),
+    "time2": MessageLookupByLibrary.simpleMessage("Time"),
     "total": MessageLookupByLibrary.simpleMessage("Total"),
     "totalCategories": MessageLookupByLibrary.simpleMessage("Total Categories"),
     "totalMaterials": MessageLookupByLibrary.simpleMessage("Total Materials"),

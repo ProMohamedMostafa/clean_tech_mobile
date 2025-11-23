@@ -281,6 +281,8 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cleaner": MessageLookupByLibrary.simpleMessage("عامل نظافة"),
     "cleaners": MessageLookupByLibrary.simpleMessage("عمال النظافة"),
+    "clock_in": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
+    "clock_out": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
     "cm": MessageLookupByLibrary.simpleMessage("سم"),
     "comment_or_image_required": MessageLookupByLibrary.simpleMessage(
       "التعليق أو الصورة مطلوبة",
@@ -1141,6 +1143,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "text_input": MessageLookupByLibrary.simpleMessage("إدخال نص"),
     "the_question": MessageLookupByLibrary.simpleMessage("السؤال"),
     "time": MessageLookupByLibrary.simpleMessage("الوقت"),
+    "time2": MessageLookupByLibrary.simpleMessage("الوقت"),
     "total": MessageLookupByLibrary.simpleMessage("الإجمالي"),
     "totalCategories": MessageLookupByLibrary.simpleMessage("إجمالي الفئات"),
     "totalMaterials": MessageLookupByLibrary.simpleMessage("إجمالي المواد"),

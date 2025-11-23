@@ -103,8 +103,10 @@ class BuildSensorItemList extends StatelessWidget {
                             style: TextStyles.font12GreyRegular,
                           ),
                           TextSpan(
-                            text: cubit.getLastReadText(cubit
-                                .sensorModel!.data!.data![index].lastSeenAt!),
+                            text: cubit.getLastReadText(
+                              cubit.sensorModel!.data!.data![index].lastSeenAt
+                                  ?.toString(),
+                            ),
                             style: TextStyles.font12GreyRegular
                                 .copyWith(color: Colors.red),
                           ),
@@ -115,7 +117,7 @@ class BuildSensorItemList extends StatelessWidget {
                         ],
                       ),
                     )
-                  : SizedBox.shrink(),
+                  : const SizedBox.shrink(),
               trailing: cubit.selectedIndex == 0
                   ? Row(
                       mainAxisSize: MainAxisSize.min,
@@ -531,7 +533,11 @@ class BuildSensorItemList extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              suffixTitle,
+              suffixTitle.length > 20
+                  ? '${suffixTitle.substring(0, 20)}…'
+                  : suffixTitle,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: TextStyles.font13Blackmedium.copyWith(
                 color: color ?? AppColor.primaryColor,
               ),

@@ -52,8 +52,8 @@ class QuestionListItemBuild extends StatelessWidget {
                     GestureDetector(
                       onTap: () => cubit.toggleItem(index),
                       child: Container(
-                        width: 16.w,
-                        height: 16.h,
+                        width: 20.w,
+                        height: 20.h,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4.r),
                           border: Border.all(color: Colors.grey[300]!),

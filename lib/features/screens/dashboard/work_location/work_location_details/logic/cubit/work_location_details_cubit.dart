@@ -832,14 +832,9 @@ class WorkLocationDetailsCubit extends Cubit<WorkLocationDetailsState> {
     }
   }
 
-  // Format time string
-  String formatTime(String? time) {
-    if (time == null || time.isEmpty) return " ";
-    try {
-      return DateFormat('HH:mm').format(DateTime.parse(time));
-    } catch (e) {
-      return "Invalid Time";
-    }
+   DateTime parseUtc(String dateString) {
+    // Force treat backend UTC time (no Z) as UTC
+    return DateTime.parse("${dateString}Z").toUtc().toLocal();
   }
 
   Color getStatusColor(String status) {

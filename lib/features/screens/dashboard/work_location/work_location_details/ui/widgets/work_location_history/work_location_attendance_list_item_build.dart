@@ -389,88 +389,101 @@ class WorkLocationAttendanceListItemBuild extends StatelessWidget {
                   textAlign: TextAlign.center,
                   text: TextSpan(
                     children: [
+                      // Clock In
                       TextSpan(
-                        text: cubit.formatTime(selectedIndex == 0
-                            ? cubit.attendanceHistoryAreaModel!.data!
-                                    .data![index].clockIn ??
-                                ''
-                            : selectedIndex == 1
-                                ? cubit.attendanceHistoryCityModel!.data!
-                                        .data![index].clockIn ??
-                                    ''
-                                : selectedIndex == 2
-                                    ? cubit.attendanceHistoryOrganizationModel!
-                                            .data!.data![index].clockIn ??
-                                        ''
-                                    : selectedIndex == 3
-                                        ? cubit.attendanceHistoryBuildingModel!
-                                                .data!.data![index].clockIn ??
-                                            ''
-                                        : selectedIndex == 4
+                        text: DateFormat('HH:mm').format(
+                          cubit.parseUtc(
+                            selectedIndex == 0
+                                ? cubit.attendanceHistoryAreaModel!.data!
+                                    .data![index].clockIn!
+                                : selectedIndex == 1
+                                    ? cubit.attendanceHistoryCityModel!.data!
+                                        .data![index].clockIn!
+                                    : selectedIndex == 2
+                                        ? cubit
+                                            .attendanceHistoryOrganizationModel!
+                                            .data!
+                                            .data![index]
+                                            .clockIn!
+                                        : selectedIndex == 3
                                             ? cubit
+                                                .attendanceHistoryBuildingModel!
+                                                .data!
+                                                .data![index]
+                                                .clockIn!
+                                            : selectedIndex == 4
+                                                ? cubit
                                                     .attendanceHistoryFloorModel!
                                                     .data!
                                                     .data![index]
-                                                    .clockIn ??
-                                                ''
-                                            : selectedIndex == 5
-                                                ? cubit
+                                                    .clockIn!
+                                                : selectedIndex == 5
+                                                    ? cubit
                                                         .attendanceHistorySectionModel!
                                                         .data!
                                                         .data![index]
-                                                        .clockIn ??
-                                                    ''
-                                                : cubit
+                                                        .clockIn!
+                                                    : cubit
                                                         .attendanceHistoryPointModel!
                                                         .data!
                                                         .data![index]
-                                                        .clockIn ??
-                                                    ''),
+                                                        .clockIn!,
+                          ),
+                        ),
                         style: TextStyles.font12GreyRegular
                             .copyWith(color: AppColor.primaryColor),
                       ),
+                      // Separator
                       TextSpan(
                         text: '  -  ',
                         style: TextStyles.font12GreyRegular
                             .copyWith(color: AppColor.primaryColor),
                       ),
+                      // Clock Out
                       TextSpan(
-                        text: cubit.formatTime(selectedIndex == 0
-                            ? cubit.attendanceHistoryAreaModel!.data!
-                                    .data![index].clockOut ??
-                                ''
-                            : selectedIndex == 1
-                                ? cubit.attendanceHistoryCityModel!.data!
+                        text: DateFormat('HH:mm').format(
+                          cubit.parseUtc(
+                            selectedIndex == 0
+                                ? cubit.attendanceHistoryAreaModel!.data!
                                         .data![index].clockOut ??
                                     ''
-                                : selectedIndex == 2
-                                    ? cubit.attendanceHistoryOrganizationModel!
-                                            .data!.data![index].clockOut ??
+                                : selectedIndex == 1
+                                    ? cubit.attendanceHistoryCityModel!.data!
+                                            .data![index].clockOut ??
                                         ''
-                                    : selectedIndex == 3
-                                        ? cubit.attendanceHistoryBuildingModel!
+                                    : selectedIndex == 2
+                                        ? cubit.attendanceHistoryOrganizationModel!
                                                 .data!.data![index].clockOut ??
                                             ''
-                                        : selectedIndex == 4
+                                        : selectedIndex == 3
                                             ? cubit
-                                                    .attendanceHistoryFloorModel!
+                                                    .attendanceHistoryBuildingModel!
                                                     .data!
                                                     .data![index]
                                                     .clockOut ??
                                                 ''
-                                            : selectedIndex == 5
+                                            : selectedIndex == 4
                                                 ? cubit
-                                                        .attendanceHistorySectionModel!
+                                                        .attendanceHistoryFloorModel!
                                                         .data!
                                                         .data![index]
                                                         .clockOut ??
                                                     ''
-                                                : cubit
-                                                        .attendanceHistoryPointModel!
-                                                        .data!
-                                                        .data![index]
-                                                        .clockOut ??
-                                                    ''),
+                                                : selectedIndex == 5
+                                                    ? cubit
+                                                            .attendanceHistorySectionModel!
+                                                            .data!
+                                                            .data![index]
+                                                            .clockOut ??
+                                                        ''
+                                                    : cubit
+                                                            .attendanceHistoryPointModel!
+                                                            .data!
+                                                            .data![index]
+                                                            .clockOut ??
+                                                        '',
+                          ),
+                        ),
                         style: TextStyles.font12GreyRegular
                             .copyWith(color: AppColor.primaryColor),
                       ),

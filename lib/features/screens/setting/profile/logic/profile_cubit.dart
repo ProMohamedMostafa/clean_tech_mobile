@@ -61,8 +61,7 @@ class ProfileCubit extends Cubit<ProfileState> {
   AuditorAnswersModel? auditorsModel;
   getAuditorAnswers() {
     emit(AuditorAnswersLoadingState());
-    DioHelper.getData(url: "audit/answers")
-        .then((value) {
+    DioHelper.getData(url: "audit/answers").then((value) {
       auditorsModel = AuditorAnswersModel.fromJson(value!.data);
 
       emit(AuditorAnswersSuccessState(auditorsModel!));
@@ -224,14 +223,9 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
-  // Format time string
-  String formatTime(String? time) {
-    if (time == null || time.isEmpty) return " ";
-    try {
-      return DateFormat('HH:mm').format(DateTime.parse(time));
-    } catch (e) {
-      return "Invalid Time";
-    }
+  DateTime parseUtc(String dateString) {
+    // Force treat backend UTC time (no Z) as UTC
+    return DateTime.parse("${dateString}Z").toUtc().toLocal();
   }
 
   // Get status color based on status string
@@ -262,8 +256,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     await getUserWorkLocationDetails();
   }
 
-
- AuditorAnswerDetailsModel? auditorAnswerDetailsModel;
+  AuditorAnswerDetailsModel? auditorAnswerDetailsModel;
 
   List<bool> expandedItems = [];
 
@@ -271,7 +264,8 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(AuditorAnswerDetailsLoadingState());
     try {
       final value = await DioHelper.getData(url: "audit/answers/$id");
-      auditorAnswerDetailsModel = AuditorAnswerDetailsModel.fromJson(value!.data);
+      auditorAnswerDetailsModel =
+          AuditorAnswerDetailsModel.fromJson(value!.data);
 
       final qCount = auditorAnswerDetailsModel?.data?.questions?.length ?? 0;
       expandedItems = List<bool>.filled(qCount, false);
@@ -296,6 +290,4 @@ class ProfileCubit extends Cubit<ProfileState> {
     expandedItems[index] = !expandedItems[index];
     emit(QuestionToggleSelectAllState());
   }
-
-
 }

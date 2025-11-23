@@ -796,5 +796,8 @@
   "total_answers": "Total Answers",
   "total_auditors": "Total Auditors",
   "total_cleaners": "Total Cleaners",
-  "satisfaction_rate": "Satisfaction Rate"
+  "satisfaction_rate": "Satisfaction Rate",
+  "time2": "Time",
+  "clock_in": "Clock-In",
+  "clock_out": "Clock-Out"
 }

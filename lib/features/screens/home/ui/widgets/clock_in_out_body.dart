@@ -9,6 +9,7 @@ import 'package:smart_cleaning_application/core/widgets/default_toast/default_to
 import 'package:smart_cleaning_application/core/widgets/pop_up_message/pop_up_message.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_cubit.dart';
 import 'package:smart_cleaning_application/features/screens/home/logic/home_state.dart';
+import 'package:smart_cleaning_application/generated/l10n.dart';
 
 class ClockInOutBody extends StatelessWidget {
   const ClockInOutBody({super.key});
@@ -33,7 +34,8 @@ class ClockInOutBody extends StatelessWidget {
         final isClockedIn = clockIn != null && clockOut == null;
         final isClockedOut = clockOut != null;
         final color = isClockedIn ? Colors.red : AppColor.primaryColor;
-        final text = isClockedIn ? 'Clock out' : 'Clock in';
+        final text =
+            isClockedIn ? S.of(context).clock_out : S.of(context).clock_in;
 
         Widget clockButton = Center(
           child: Container(
@@ -98,7 +100,7 @@ class ClockInOutBody extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          'Clock-In',
+                          S.of(context).clock_in,
                           style: TextStyles.font12GreyRegular,
                         ),
                         horizontalSpace(5),
@@ -116,7 +118,7 @@ class ClockInOutBody extends StatelessWidget {
                     Text(
                       clockIn != null
                           ? DateFormat('hh:mm a')
-                              .format(DateTime.parse(clockIn).toLocal())
+                              .format(cubit.parseUtc(clockIn))
                           : '--:-- --',
                       style: TextStyles.font14BlackSemiBold,
                     ),
@@ -131,7 +133,7 @@ class ClockInOutBody extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          'Clock-Out',
+                          S.of(context).clock_out,
                           style: TextStyles.font12GreyRegular,
                         ),
                         horizontalSpace(5),
@@ -149,7 +151,7 @@ class ClockInOutBody extends StatelessWidget {
                     Text(
                       clockOut != null
                           ? DateFormat('hh:mm a')
-                              .format(DateTime.parse(clockOut).toLocal())
+                              .format(cubit.parseUtc(clockOut))
                           : '--:-- --',
                       style: TextStyles.font14BlackSemiBold,
                     ),
@@ -162,7 +164,7 @@ class ClockInOutBody extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Duration',
+                      S.of(context).duration2,
                       style: TextStyles.font12GreyRegular,
                     ),
                     verticalSpace(5),
@@ -183,7 +185,7 @@ class ClockInOutBody extends StatelessWidget {
                         builder: (dialogContext) {
                           return PopUpMessage(
                             title: text,
-                            body: 'time',
+                            body: S.of(context).time2,
                             onPressed: () {
                               cubit.clockInOut();
                             },

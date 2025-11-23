@@ -254,16 +254,25 @@ class ActivityCubit extends Cubit<ActivityState> {
     }
   }
 
-  String formatTimeDifference(DateTime time) {
-    final now = DateTime.now();
-    final difference = now.difference(time);
+String formatTimeDifferenceFromString(String dateString) {
+  final time = parseUtc(dateString); // convert backend UTC to local
+  final now = DateTime.now();
+  final difference = now.difference(time);
 
-    if (difference.inMinutes < 60) {
-      return '${difference.inMinutes} minute${difference.inMinutes == 1 ? '' : 's'} ago';
-    } else if (difference.inHours < 24) {
-      return '${difference.inHours} hour${difference.inHours == 1 ? '' : 's'} ago';
-    } else {
-      return DateFormat('MMM d, y').format(time);
-    }
+  if (difference.inMinutes < 60) {
+    return '${difference.inMinutes} minute${difference.inMinutes == 1 ? '' : 's'} ago';
+  } else if (difference.inHours < 24) {
+    return '${difference.inHours} hour${difference.inHours == 1 ? '' : 's'} ago';
+  } else {
+    return DateFormat('MMM d, y').format(time);
   }
+}
+
+
+
+
+  DateTime parseUtc(String dateString) {
+  return DateTime.parse("${dateString}Z").toUtc().toLocal();
+}
+
 }

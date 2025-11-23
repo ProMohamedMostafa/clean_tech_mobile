@@ -101,8 +101,8 @@ class AttendanceCardItem extends StatelessWidget {
               ],
             ),
             verticalSpace(5),
-            Text(
-              cubit.attendanceHistoryModel!.data!.data![index].userName!,
+             Text(
+              '${cubit.attendanceHistoryModel!.data!.data![index].firstName!} ${cubit.attendanceHistoryModel!.data!.data![index].lastName!}',
               style: TextStyles.font16BlackSemiBold,
             ),
             verticalSpace(10),
@@ -162,31 +162,43 @@ class AttendanceCardItem extends StatelessWidget {
                 ),
                 horizontalSpace(5),
                 RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: cubit.formatTime(cubit.attendanceHistoryModel!
-                                .data!.data![index].clockIn ??
-                            ''),
-                        style: TextStyles.font12GreyRegular
-                            .copyWith(color: AppColor.primaryColor),
-                      ),
-                      TextSpan(
-                        text: '  -  ',
-                        style: TextStyles.font12GreyRegular
-                            .copyWith(color: AppColor.primaryColor),
-                      ),
-                      TextSpan(
-                        text: cubit.formatTime(cubit.attendanceHistoryModel!
-                                .data!.data![index].clockOut ??
-                            ''),
-                        style: TextStyles.font12GreyRegular
-                            .copyWith(color: AppColor.primaryColor),
-                      ),
-                    ],
-                  ),
+  textAlign: TextAlign.center,
+  text: TextSpan(
+    children: [
+      // Clock In
+      TextSpan(
+        text: cubit.attendanceHistoryModel!.data!.data![index].clockIn != null
+            ? DateFormat('HH:mm').format(
+                cubit.parseUtc(
+                  cubit.attendanceHistoryModel!.data!.data![index].clockIn!,
                 ),
+              )
+            : '--:--',
+        style: TextStyles.font12GreyRegular
+            .copyWith(color: AppColor.primaryColor),
+      ),
+      // Separator
+      TextSpan(
+        text: '  -  ',
+        style: TextStyles.font12GreyRegular
+            .copyWith(color: AppColor.primaryColor),
+      ),
+      // Clock Out
+      TextSpan(
+        text: cubit.attendanceHistoryModel!.data!.data![index].clockOut != null
+            ? DateFormat('HH:mm').format(
+                cubit.parseUtc(
+                  cubit.attendanceHistoryModel!.data!.data![index].clockOut!,
+                ),
+              )
+            : '--:--',
+        style: TextStyles.font12GreyRegular
+            .copyWith(color: AppColor.primaryColor),
+      ),
+    ],
+  ),
+),
+
                 Spacer(),
                 RichText(
                   textAlign: TextAlign.center,

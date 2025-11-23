@@ -7,13 +7,16 @@ class Loading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Lottie.asset(
-        'assets/images/loading.json',
-        width: 200.w,
-        height: 200.h,
-        repeat: true,
-        animate: true,
+    return ColoredBox(
+      color: Colors.white,
+      child: Center(
+        child: Lottie.asset(
+          'assets/images/loading.json',
+          width: 200.w,
+          height: 200.h,
+          repeat: true,
+          animate: true,
+        ),
       ),
     );
   }

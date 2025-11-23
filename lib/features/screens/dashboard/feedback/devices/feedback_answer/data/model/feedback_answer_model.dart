@@ -99,7 +99,8 @@ class Questions {
   String? type;
   int? typeId;
   List<Choices>? choices;
-
+  int? reason;
+  String? reasonName;
   String? textAnswer; // typeId == 2
   int? rateAnswer; // typeId == 3
   bool? boolAnswer; // typeId == 4
@@ -112,6 +113,8 @@ class Questions {
     this.questionText,
     this.type,
     this.typeId,
+    this.reason,
+    this.reasonName,
     this.choices,
     this.textAnswer,
     this.rateAnswer,
@@ -126,14 +129,14 @@ class Questions {
     questionText = json['questionText'];
     type = json['type'];
     typeId = json['typeId'];
-
+    reason = json['reason'];
+    reasonName = json['reasonName'];
     if (json['choices'] != null) {
       choices = <Choices>[];
       json['choices'].forEach((v) {
         choices!.add(Choices.fromJson(v));
       });
     }
-
     textAnswer = json['textAnswer'];
     rateAnswer = json['rateAnswer'];
     boolAnswer = json['boolAnswer'];
@@ -170,6 +173,8 @@ class Questions {
     data['questionText'] = questionText;
     data['type'] = type;
     data['typeId'] = typeId;
+    data['reason'] = reason;
+    data['reasonName'] = reasonName;
     if (choices != null) {
       data['choices'] = choices!.map((v) => v.toJson()).toList();
     }

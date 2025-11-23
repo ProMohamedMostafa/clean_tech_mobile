@@ -97,6 +97,11 @@ class HomeCubit extends Cubit<HomeState> {
     });
   }
 
+  DateTime parseUtc(String dateString) {
+    // Force treat backend UTC time (no Z) as UTC
+    return DateTime.parse("${dateString}Z").toUtc().toLocal();
+  }
+
   String formatDuration(String duration) {
     try {
       final parts = duration.split(':');
@@ -151,18 +156,20 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   // Home cards
-  String formatTimeDifference(DateTime time) {
-    final now = DateTime.now();
-    final difference = now.difference(time);
+  String formatTimeDifferenceFromString(String dateString) {
+  final time = parseUtc(dateString); // convert backend UTC to local
+  final now = DateTime.now();
+  final difference = now.difference(time);
 
-    if (difference.inMinutes < 60) {
-      return '${difference.inMinutes} minute${difference.inMinutes == 1 ? '' : 's'} ago';
-    } else if (difference.inHours < 24) {
-      return '${difference.inHours} hour${difference.inHours == 1 ? '' : 's'} ago';
-    } else {
-      return DateFormat('MMM d, y').format(time);
-    }
+  if (difference.inMinutes < 60) {
+    return '${difference.inMinutes} minute${difference.inMinutes == 1 ? '' : 's'} ago';
+  } else if (difference.inHours < 24) {
+    return '${difference.inHours} hour${difference.inHours == 1 ? '' : 's'} ago';
+  } else {
+    return DateFormat('MMM d, y').format(time);
   }
+}
+
 
   int? _extractYearFromRange(String range) {
     final match = RegExp(r'\d{4}$').firstMatch(range);

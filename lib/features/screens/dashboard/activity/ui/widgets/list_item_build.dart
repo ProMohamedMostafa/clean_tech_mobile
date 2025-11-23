@@ -112,13 +112,13 @@ class ActivityListItemBuild extends StatelessWidget {
             width: 80.w,
             child: Text(
               cubit.selectedIndex == 0
-                  ? cubit.formatTimeDifference(
+                  ? cubit.formatTimeDifferenceFromString(
                       cubit.myActivities!.data!.activities![index].createdAt!)
-                  : cubit.formatTimeDifference(cubit
+                  : cubit.formatTimeDifferenceFromString(cubit
                       .teamActivities!.data!.activities![index].createdAt!),
               style: TextStyles.font11GreyMedium,
             ),
-          ),
+          )
         ],
       ),
     );

@@ -16,16 +16,18 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   Future<void> toggleNotification() async {
     isNotificationEnabled = !isNotificationEnabled;
+    emit(NotificationToggleChangedState());
+
     await CacheHelper.setData(
-        key: 'notification', value: isNotificationEnabled);
+      key: 'notification',
+      value: isNotificationEnabled,
+    );
 
     if (isNotificationEnabled) {
       await FirebaseMessaging.instance.subscribeToTopic('notifications');
     } else {
       await FirebaseMessaging.instance.unsubscribeFromTopic('notifications');
     }
-
-    emit(NotificationToggleChangedState());
   }
 
   Future<void> initializeNotificationStatus() async {

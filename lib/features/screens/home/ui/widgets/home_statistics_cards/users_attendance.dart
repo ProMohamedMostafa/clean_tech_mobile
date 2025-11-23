@@ -184,6 +184,26 @@ class UsersAttendance extends StatelessWidget {
                               ),
                             ],
                           ),
+                          verticalSpace(8),
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {},
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    S.of(context).auditors,
+                                    style: TextStyles.font11lightblack,
+                                  ),
+                                  Text(
+                                    '${cubit.usersCountModel?.data?.values?[4] ?? 0}',
+                                    style: TextStyles.font11lightPrimary,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -324,6 +344,25 @@ class UsersAttendance extends StatelessWidget {
                               ),
                             ),
                           ],
+                        ),
+                        verticalSpace(8),
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {},
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Late",
+                                  style: TextStyles.font11lightblack,
+                                ),
+                                Text(
+                                  '0',
+                                  style: TextStyles.font11lightPrimary,
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ],
                     ),

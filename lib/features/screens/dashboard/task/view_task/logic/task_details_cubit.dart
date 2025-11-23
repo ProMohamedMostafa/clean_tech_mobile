@@ -132,33 +132,51 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
 
   String formatDuration(String duration) {
     try {
-      if (duration.contains(".")) {
-        duration = duration.split(".")[0];
+      int days = 0, hours = 0, minutes = 0;
+
+      // Split the fractional seconds (after last dot)
+      String mainPart = duration.contains(".")
+          ? duration.substring(0, duration.lastIndexOf('.'))
+          : duration;
+
+      // Check if days are present (dot before HH:MM:SS)
+      if (mainPart.contains(".") &&
+          mainPart.indexOf('.') < mainPart.indexOf(':')) {
+        // Example: "1.03:01:43"
+        var splitDay = mainPart.split('.');
+        days = int.parse(splitDay[0]);
+        mainPart = splitDay[1]; // HH:MM:SS
       }
 
-      List<String> parts = duration.split(":");
-      int hours = 0, minutes = 0, seconds = 0;
+      // Split hours, minutes, seconds
+      var parts = mainPart.split(':');
 
       if (parts.length == 3) {
         hours = int.parse(parts[0]);
         minutes = int.parse(parts[1]);
-        seconds = int.parse(parts[2]);
       } else if (parts.length == 2) {
         minutes = int.parse(parts[0]);
-        seconds = int.parse(parts[1]);
+      } else if (parts.length == 1) {
       } else {
-        throw FormatException("Invalid duration format");
+        return "Invalid duration";
       }
 
-      if (hours > 0) {
-        return "$hours hour${hours > 1 ? 's' : ''}";
-      } else if (minutes > 0) {
-        return "$minutes min${minutes > 1 ? 's' : ''}";
-      } else {
-        return "$seconds sec${seconds > 1 ? 's' : ''}";
-      }
+      // Add days to hours
+      hours += days * 24;
+
+      // Build a readable string
+      List<String> result = [];
+      if (hours > 0) result.add("$hours hour${hours > 1 ? 's' : ''}");
+      if (minutes > 0) result.add("$minutes min${minutes > 1 ? 's' : ''}");
+
+      return result.isEmpty ? "0 sec" : result.join(' ');
     } catch (e) {
       return "Invalid duration";
     }
+  }
+
+  DateTime parseUtc(String dateString) {
+    // Treat backend time as UTC
+    return DateTime.parse("${dateString}Z").toUtc().toLocal();
   }
 }

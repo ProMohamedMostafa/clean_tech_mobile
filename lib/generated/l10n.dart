@@ -6468,6 +6468,21 @@ class S {
       args: [],
     );
   }
+
+  /// `Time`
+  String get time2 {
+    return Intl.message('Time', name: 'time2', desc: '', args: []);
+  }
+
+  /// `Clock-In`
+  String get clock_in {
+    return Intl.message('Clock-In', name: 'clock_in', desc: '', args: []);
+  }
+
+  /// `Clock-Out`
+  String get clock_out {
+    return Intl.message('Clock-Out', name: 'clock_out', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

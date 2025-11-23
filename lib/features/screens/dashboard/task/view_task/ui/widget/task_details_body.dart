@@ -636,7 +636,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                   Row(
                                                     children: [
                                                       Text(
-                                                        task.userName ?? '',
+                                                        task.firstName ?? '',
                                                         style: TextStyles
                                                             .font14BlackSemiBold,
                                                       ),
@@ -664,8 +664,9 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                                                         Alignment.bottomRight,
                                                     child: Text(
                                                       DateFormat.jm().format(
-                                                          DateTime.parse(
-                                                              task.createdAt!)),
+                                                        cubit.parseUtc(task
+                                                            .createdAt!), // use your UTC parser
+                                                      ),
                                                       style: TextStyles
                                                           .font11BlackMedium,
                                                     ),

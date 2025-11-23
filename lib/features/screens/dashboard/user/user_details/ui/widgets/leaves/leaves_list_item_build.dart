@@ -22,11 +22,13 @@ class BuildLeavesCardItem extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(11.r),
       onTap: () async {
-        final result = await context.pushNamed( Routes.leavesDetailsScreen,
-          arguments:{
-    'id':  cubit.attendanceLeavesModel!.data!.leaves![index].id!,
-    'isProfile': false,
-  },);
+        final result = await context.pushNamed(
+          Routes.leavesDetailsScreen,
+          arguments: {
+            'id': cubit.attendanceLeavesModel!.data!.leaves![index].id!,
+            'isProfile': false,
+          },
+        );
 
         if (result == true) {
           cubit.getAllLeaves(cubit.userDetailsModel!.data!.id);
@@ -79,7 +81,7 @@ class BuildLeavesCardItem extends StatelessWidget {
                     child: Center(
                       child: Text(
                         cubit.attendanceLeavesModel!.data!.leaves![index]
-                            .userName!,
+                            .status!,
                         style: TextStyles.font11WhiteSemiBold
                             .copyWith(color: AppColor.primaryColor),
                       ),
@@ -89,7 +91,7 @@ class BuildLeavesCardItem extends StatelessWidget {
               ),
               verticalSpace(5),
               Text(
-                cubit.attendanceLeavesModel!.data!.leaves![index].userName!,
+                '${cubit.attendanceLeavesModel!.data!.leaves![index].firstName!} ${cubit.attendanceLeavesModel!.data!.leaves![index].lastName!}',
                 style: TextStyles.font16BlackSemiBold,
               ),
               verticalSpace(10),

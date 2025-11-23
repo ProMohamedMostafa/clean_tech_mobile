@@ -121,7 +121,7 @@ class SensorItem {
       description: json['description'],
       applicationName: json['applicationName'],
       lastSeenAt: json['lastSeenAt'] != null
-          ? DateTime.tryParse(json['lastSeenAt'])?.toLocal()
+          ? DateTime.tryParse(json['lastSeenAt'])
           : null,
       active: json['active'],
       battery: json['battery'],

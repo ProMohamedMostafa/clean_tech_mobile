@@ -16,7 +16,7 @@ Widget toggleListTile(
         if (onPressed != null) onPressed();
       },
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 375),
+        duration: const Duration(milliseconds: 180),
         height: 30.h,
         width: 50.w,
         decoration: BoxDecoration(
@@ -26,14 +26,14 @@ Widget toggleListTile(
         child: Stack(
           children: <Widget>[
             AnimatedPositioned(
-              duration: const Duration(milliseconds: 375),
+              duration: const Duration(milliseconds: 180),
               curve: Curves.easeIn,
               top: 0,
               bottom: 0,
               left: isSwitched ? 23.0.w : 0.0.w,
               right: isSwitched ? 0.0.w : 23.0.w,
               child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 375),
+                duration: const Duration(milliseconds: 180),
                 transitionBuilder: (Widget child, Animation<double> animation) {
                   return RotationTransition(
                     turns: animation,

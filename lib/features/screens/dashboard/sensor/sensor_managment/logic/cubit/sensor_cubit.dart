@@ -127,20 +127,32 @@ class SensorCubit extends Cubit<SensorState> {
     });
   }
 
-  String getLastReadText(DateTime? lastSeenAt) {
-    if (lastSeenAt == null) return 'N/A';
+  DateTime parseUtc(String dateString) {
+    // Treat backend time as UTC
+    return DateTime.parse("${dateString}Z").toUtc().toLocal();
+  }
 
-    final now = DateTime.now();
-    final difference = now.difference(lastSeenAt);
+  String getLastReadText(String? lastSeenAtString) {
+    if (lastSeenAtString == null || lastSeenAtString.isEmpty) return 'N/A';
 
-    if (difference.inDays >= 1) {
-      return '${difference.inDays} Day${difference.inDays > 1 ? 's' : ''}';
-    } else if (difference.inHours >= 1) {
-      return '${difference.inHours} Hr';
-    } else if (difference.inMinutes >= 1) {
-      return '${difference.inMinutes} Min';
-    } else {
-      return 'Just now';
+    try {
+      // ✅ Parse backend time as UTC and convert to local
+      final localLastSeen = parseUtc(lastSeenAtString);
+      final now = DateTime.now();
+
+      final difference = now.difference(localLastSeen);
+
+      if (difference.inDays >= 1) {
+        return '${difference.inDays} Day${difference.inDays > 1 ? 's' : ''}';
+      } else if (difference.inHours >= 1) {
+        return '${difference.inHours} Hr';
+      } else if (difference.inMinutes >= 1) {
+        return '${difference.inMinutes} Min';
+      } else {
+        return 'Just now';
+      }
+    } catch (e) {
+      return 'N/A';
     }
   }
 }

@@ -341,10 +341,9 @@ class _SensorTasksRateBodyState extends State<SensorTasksRateBody> {
 
 // _FilterDropdown class remains the same as in your original code
 
-class _FilterDropdown extends StatelessWidget {
+class _FilterDropdown extends StatefulWidget {
   final double? width;
   final String label;
-
   final List<(String, String)> items;
   final ValueChanged<String>? onSelected;
 
@@ -356,32 +355,144 @@ class _FilterDropdown extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: 36.h,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.black12),
-        borderRadius: BorderRadius.circular(6.r),
+  State<_FilterDropdown> createState() => _FilterDropdownState();
+}
+
+class _FilterDropdownState extends State<_FilterDropdown> {
+  bool isOpen = false;
+  OverlayEntry? _overlayEntry;
+  final LayerLink _layerLink = LayerLink();
+  String? selectedLabel;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedLabel = widget.label;
+  }
+
+  void _toggleDropdown() {
+    if (isOpen) {
+      _removeOverlay();
+    } else {
+      _showOverlay();
+    }
+    setState(() {
+      isOpen = !isOpen;
+    });
+  }
+
+  void _showOverlay() {
+    _overlayEntry = _createOverlayEntry();
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void _removeOverlay() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+  }
+
+  OverlayEntry _createOverlayEntry() {
+    RenderBox renderBox = context.findRenderObject() as RenderBox;
+    final size = renderBox.size;
+    final offset = renderBox.localToGlobal(Offset.zero);
+
+    return OverlayEntry(
+      builder: (context) => GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: _toggleDropdown,
+        child: Stack(
+          children: [
+            Positioned(
+              left: offset.dx,
+              top: offset.dy + size.height + 4,
+              width: widget.width ?? size.width,
+              child: CompositedTransformFollower(
+                link: _layerLink,
+                showWhenUnlinked: false,
+                offset: Offset(0, size.height + 4),
+                child: Material(
+                  color: Colors.transparent,
+                  child: Container(
+                    constraints: BoxConstraints(maxHeight: 150.h),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(6.r),
+                      border: Border.all(color: Colors.black12),
+                    ),
+                    child: ListView.separated(
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      itemCount: widget.items.length,
+                      separatorBuilder: (_, __) => Divider(
+                        color: Colors.black12,
+                        height: 1,
+                        thickness: 0.6,
+                      ),
+                      itemBuilder: (context, index) {
+                        final item = widget.items[index];
+                        return InkWell(
+                          onTap: () {
+                            setState(() {
+                              selectedLabel = item.$2;
+                            });
+                            widget.onSelected?.call(item.$2);
+                            _toggleDropdown();
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 8.h, horizontal: 10.w),
+                            child: Text(
+                              item.$2,
+                              style: TextStyles.font12BlackSemi,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
-      child: PopupMenuButton<String>(
-        padding: EdgeInsets.zero,
-        color: Colors.white,
-        icon: Padding(
+    );
+  }
+
+  @override
+  void dispose() {
+    _removeOverlay();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CompositedTransformTarget(
+      link: _layerLink,
+      child: GestureDetector(
+        onTap: _toggleDropdown,
+        child: Container(
+          width: widget.width,
+          height: 36.h,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: Colors.black12),
+            borderRadius: BorderRadius.circular(6.r),
+          ),
           padding: EdgeInsets.symmetric(horizontal: 5.w),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
                 child: Text(
-                  label,
+                  selectedLabel ?? widget.label,
                   style: TextStyles.font12PrimSemi,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
               RotatedBox(
-                quarterTurns: 1,
+                quarterTurns: isOpen ? 3 : 1,
                 child: Icon(
                   Icons.arrow_forward_ios_rounded,
                   color: AppColor.primaryColor,
@@ -390,34 +501,6 @@ class _FilterDropdown extends StatelessWidget {
               ),
             ],
           ),
-        ),
-        menuPadding: EdgeInsets.zero,
-        itemBuilder: (context) => [
-          for (int i = 0; i < items.length; i++) ...[
-            if (i > 0) PopupMenuDivider(height: 0.5.h),
-            PopupMenuItem<String>(
-              value: items[i].$1,
-              height: 36.h,
-              padding: EdgeInsets.symmetric(horizontal: 8.w),
-              child: Text(
-                items[i].$2,
-                style: TextStyles.font12BlackSemi,
-              ),
-            ),
-          ],
-        ],
-        onSelected: (value) {
-          // Find and return the display text
-          final selectedItem = items.firstWhere((item) => item.$1 == value);
-          onSelected?.call(selectedItem.$2);
-        },
-        offset: Offset(0, 36.h),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(6.r),
-        ),
-        constraints: BoxConstraints(
-          minWidth: width!,
-          maxHeight: 140.h,
         ),
       ),
     );
