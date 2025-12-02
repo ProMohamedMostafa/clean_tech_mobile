@@ -204,6 +204,7 @@ class WorkLocationTaskItem extends StatelessWidget {
                   ),
                 ],
               ),
+              verticalSpace(5),
               Row(
                 children: [
                   Expanded(
@@ -347,41 +348,84 @@ class WorkLocationTaskItem extends StatelessWidget {
                     ),
                   ),
                   Spacer(),
-                  Text(
-                    "+1",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  horizontalSpace(25),
-                  Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      Container(
-                        width: 30.r,
-                        height: 30.r,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.blue,
-                          border: Border.all(color: Colors.white, width: 1.w),
-                        ),
-                      ),
-                      // Second circle (overlapping)
-                      Positioned(
-                        left: -20,
-                        child: Container(
-                          width: 30.w,
+                  Builder(builder: (_) {
+                    final users = selectedIndex == 0
+                        ? cubit.allAreaTasksModel!.data!.data![index].users ??
+                            []
+                        : selectedIndex == 1
+                            ? cubit.allCityTasksModel!.data!.data![index]
+                                    .users ??
+                                []
+                            : selectedIndex == 2
+                                ? cubit.allOrganizationTasksModel!.data!
+                                        .data![index].users ??
+                                    []
+                                : selectedIndex == 3
+                                    ? cubit.allBuildingTasksModel!.data!
+                                            .data![index].users ??
+                                        []
+                                    : selectedIndex == 4
+                                        ? cubit.allFloorTasksModel!.data!
+                                                .data![index].users ??
+                                            []
+                                        : selectedIndex == 5
+                                            ? cubit.allSectionTasksModel!.data!
+                                                    .data![index].users ??
+                                                []
+                                            : cubit.allPointTasksModel!.data!
+                                                    .data![index].users ??
+                                                [];
+                    final visibleUsers = users.take(2).toList();
+                    final extraCount = users.length > 2 ? users.length - 2 : 0;
+
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (extraCount > 0)
+                          Padding(
+                            padding: EdgeInsets.only(right: 8.w),
+                            child: Text(
+                              '+$extraCount',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        SizedBox(
+                          width: users.length == 1 ? 30.w : 50.w,
                           height: 30.h,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.red,
-                            border: Border.all(color: Colors.white, width: 1.w),
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            children: List.generate(visibleUsers.length, (i) {
+                              return Positioned(
+                                left: i * 20.0,
+                                child: Container(
+                                  width: 30.r,
+                                  height: 30.r,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                        color: Colors.white, width: 1.w),
+                                  ),
+                                  child: ClipOval(
+                                    child: Image.network(
+                                      visibleUsers[i].image ?? '',
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (_, __, ___) => Image.asset(
+                                        'assets/images/person.png',
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    );
+                  }),
                 ],
               ),
             ],

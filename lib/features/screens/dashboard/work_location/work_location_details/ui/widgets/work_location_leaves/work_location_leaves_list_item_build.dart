@@ -48,8 +48,6 @@ class WorkLocationLeavesListItemBuild extends StatelessWidget {
                                         .leaves![index].id!,
             'isProfile': false,
           },
-          
-          
         );
 
         if (result == true) {
@@ -195,26 +193,7 @@ class WorkLocationLeavesListItemBuild extends StatelessWidget {
               ),
               verticalSpace(5),
               Text(
-                selectedIndex == 0
-                    ? cubit.attendanceLeavesAreaModel!.data!.leaves![index]
-                        .userName!
-                    : selectedIndex == 1
-                        ? cubit.attendanceLeavesCityModel!.data!.leaves![index]
-                            .userName!
-                        : selectedIndex == 2
-                            ? cubit.attendanceLeavesOrganizationModel!.data!
-                                .leaves![index].userName!
-                            : selectedIndex == 3
-                                ? cubit.attendanceLeavesBuildingModel!.data!
-                                    .leaves![index].userName!
-                                : selectedIndex == 4
-                                    ? cubit.attendanceLeavesFloorModel!.data!
-                                        .leaves![index].userName!
-                                    : selectedIndex == 5
-                                        ? cubit.attendanceLeavesSectionModel!
-                                            .data!.leaves![index].userName!
-                                        : cubit.attendanceLeavesPointModel!
-                                            .data!.leaves![index].userName!,
+                "${selectedIndex == 0 ? cubit.attendanceLeavesAreaModel!.data!.leaves![index].firstName! : selectedIndex == 1 ? cubit.attendanceLeavesCityModel!.data!.leaves![index].firstName! : selectedIndex == 2 ? cubit.attendanceLeavesOrganizationModel!.data!.leaves![index].firstName! : selectedIndex == 3 ? cubit.attendanceLeavesBuildingModel!.data!.leaves![index].firstName! : selectedIndex == 4 ? cubit.attendanceLeavesFloorModel!.data!.leaves![index].firstName! : selectedIndex == 5 ? cubit.attendanceLeavesSectionModel!.data!.leaves![index].firstName! : cubit.attendanceLeavesPointModel!.data!.leaves![index].firstName!} ${selectedIndex == 0 ? cubit.attendanceLeavesAreaModel!.data!.leaves![index].lastName! : selectedIndex == 1 ? cubit.attendanceLeavesCityModel!.data!.leaves![index].lastName! : selectedIndex == 2 ? cubit.attendanceLeavesOrganizationModel!.data!.leaves![index].lastName! : selectedIndex == 3 ? cubit.attendanceLeavesBuildingModel!.data!.leaves![index].lastName! : selectedIndex == 4 ? cubit.attendanceLeavesFloorModel!.data!.leaves![index].lastName! : selectedIndex == 5 ? cubit.attendanceLeavesSectionModel!.data!.leaves![index].lastName! : cubit.attendanceLeavesPointModel!.data!.leaves![index].lastName!}",
                 style: TextStyles.font16BlackSemiBold,
               ),
               verticalSpace(10),

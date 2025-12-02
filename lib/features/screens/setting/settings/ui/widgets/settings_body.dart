@@ -155,12 +155,10 @@ class SettingsBody extends StatelessWidget {
                       context.pushNamed(Routes.languageScreen);
                     }, S.of(context).settingTitle6, Icons.language),
                     toggleListTile(
-                      () {
-                        cubit.toggleNotification();
-                      },
+                      () => cubit.toggleNotification(),
                       S.of(context).settingTitle7,
                       Icons.notifications_active,
-                      !cubit.isNotificationEnabled,
+                      cubit.isNotificationEnabled,
                     ),
                     ListTile(
                       onTap: () {

@@ -54,11 +54,12 @@ class BuildManagersItemList extends StatelessWidget {
     final manager = managers![index];
 
     return InkWell(
-      onTap: ()async {
+      onTap: () async {
         final result = await context.pushNamed(
           Routes.userDetailsScreen,
-          arguments: manager.id,
-        );if (result == true) {
+          arguments: {'id': manager.id, 'roleId': 2},
+        );
+        if (result == true) {
           selectedIndex == 0
               ? cubit.getAreaUsersDetails(manager.id)
               : selectedIndex == 1
@@ -95,11 +96,11 @@ class BuildManagersItemList extends StatelessWidget {
           ),
         ),
         title: Text(
-          manager.userName,
+          "${manager.firstName} ${manager.lastName}",
           style: TextStyles.font14BlackSemiBold,
         ),
         subtitle: Text(
-          manager.email,
+          manager.userName,
           style: TextStyles.font12GreyRegular,
           overflow: TextOverflow.ellipsis,
           maxLines: 1,

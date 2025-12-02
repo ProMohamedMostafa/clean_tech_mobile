@@ -57,7 +57,7 @@ class BuildCleanersItemList extends StatelessWidget {
       onTap: () async {
         final result = await context.pushNamed(
           Routes.userDetailsScreen,
-          arguments: cleaner.id,
+          arguments: {'id': cleaner.id, 'roleId': 4},
         );
         if (result == true) {
           selectedIndex == 0
@@ -96,11 +96,11 @@ class BuildCleanersItemList extends StatelessWidget {
           ),
         ),
         title: Text(
-          cleaner.userName,
+          "${cleaner.firstName} ${cleaner.lastName}",
           style: TextStyles.font14BlackSemiBold,
         ),
         subtitle: Text(
-          cleaner.email,
+          cleaner.userName,
           style: TextStyles.font12GreyRegular,
           overflow: TextOverflow.ellipsis,
           maxLines: 1,

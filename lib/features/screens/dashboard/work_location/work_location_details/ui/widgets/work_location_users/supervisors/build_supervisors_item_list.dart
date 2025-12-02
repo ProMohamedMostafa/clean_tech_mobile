@@ -57,7 +57,7 @@ class BuildSupervisorsItemList extends StatelessWidget {
       onTap: () async {
         final result = await context.pushNamed(
           Routes.userDetailsScreen,
-          arguments: supervisor.id,
+          arguments: {'id': supervisor.id, 'roleId': 3},
         );
         if (result == true) {
           selectedIndex == 0
@@ -96,11 +96,11 @@ class BuildSupervisorsItemList extends StatelessWidget {
           ),
         ),
         title: Text(
-          supervisor.userName,
+          "${supervisor.firstName} ${supervisor.lastName}",
           style: TextStyles.font14BlackSemiBold,
         ),
         subtitle: Text(
-          supervisor.email,
+          supervisor.userName,
           style: TextStyles.font12GreyRegular,
           overflow: TextOverflow.ellipsis,
           maxLines: 1,

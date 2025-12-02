@@ -236,26 +236,7 @@ class WorkLocationAttendanceListItemBuild extends StatelessWidget {
             ),
             verticalSpace(15),
             Text(
-              selectedIndex == 0
-                  ? cubit
-                      .attendanceHistoryAreaModel!.data!.data![index].userName!
-                  : selectedIndex == 1
-                      ? cubit.attendanceHistoryCityModel!.data!.data![index]
-                          .userName!
-                      : selectedIndex == 2
-                          ? cubit.attendanceHistoryOrganizationModel!.data!
-                              .data![index].userName!
-                          : selectedIndex == 3
-                              ? cubit.attendanceHistoryBuildingModel!.data!
-                                  .data![index].userName!
-                              : selectedIndex == 4
-                                  ? cubit.attendanceHistoryFloorModel!.data!
-                                      .data![index].userName!
-                                  : selectedIndex == 5
-                                      ? cubit.attendanceHistorySectionModel!
-                                          .data!.data![index].userName!
-                                      : cubit.attendanceHistoryPointModel!.data!
-                                          .data![index].userName!,
+              "${selectedIndex == 0 ? cubit.attendanceHistoryAreaModel!.data!.data![index].firstName! : selectedIndex == 1 ? cubit.attendanceHistoryCityModel!.data!.data![index].firstName! : selectedIndex == 2 ? cubit.attendanceHistoryOrganizationModel!.data!.data![index].firstName! : selectedIndex == 3 ? cubit.attendanceHistoryBuildingModel!.data!.data![index].firstName! : selectedIndex == 4 ? cubit.attendanceHistoryFloorModel!.data!.data![index].firstName! : selectedIndex == 5 ? cubit.attendanceHistorySectionModel!.data!.data![index].firstName! : cubit.attendanceHistoryPointModel!.data!.data![index].firstName!} ${selectedIndex == 0 ? cubit.attendanceHistoryAreaModel!.data!.data![index].lastName! : selectedIndex == 1 ? cubit.attendanceHistoryCityModel!.data!.data![index].lastName! : selectedIndex == 2 ? cubit.attendanceHistoryOrganizationModel!.data!.data![index].lastName! : selectedIndex == 3 ? cubit.attendanceHistoryBuildingModel!.data!.data![index].lastName! : selectedIndex == 4 ? cubit.attendanceHistoryFloorModel!.data!.data![index].lastName! : selectedIndex == 5 ? cubit.attendanceHistorySectionModel!.data!.data![index].lastName! : cubit.attendanceHistoryPointModel!.data!.data![index].lastName!}",
               style: TextStyles.font16BlackSemiBold,
             ),
             verticalSpace(5),

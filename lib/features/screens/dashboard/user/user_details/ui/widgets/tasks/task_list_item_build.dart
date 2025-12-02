@@ -96,19 +96,18 @@ class TaskCardItem extends StatelessWidget {
                 ],
               ),
               verticalSpace(5),
-                 Row(
+              Row(
                 children: [
                   Expanded(
                     child: Text(
                       cubit.userTaskDetailsModel!.data!.data![index].title!,
-                style: TextStyles.font16BlackSemiBold,
+                      style: TextStyles.font16BlackSemiBold,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
                   ),
                 ],
               ),
-             
               verticalSpace(10),
               Text(
                 cubit.userTaskDetailsModel!.data!.data![index].description!,
@@ -125,18 +124,13 @@ class TaskCardItem extends StatelessWidget {
                     size: 22.sp,
                   ),
                   horizontalSpace(5),
-                  Text(
-                    cubit.userTaskDetailsModel!.data!.data![index].startTime!,
-                    style: TextStyles.font11WhiteSemiBold
-                        .copyWith(color: AppColor.primaryColor),
-                  ),
                   RichText(
                     textAlign: TextAlign.center,
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: formatTime(cubit.userTaskDetailsModel!.data!.data![index].startTime!)
-                              ,
+                          text: formatTime(cubit.userTaskDetailsModel!.data!
+                              .data![index].startTime!),
                           style: TextStyles.font11PrimMedium,
                         ),
                         TextSpan(
@@ -144,8 +138,8 @@ class TaskCardItem extends StatelessWidget {
                           style: TextStyles.font11BlackMedium,
                         ),
                         TextSpan(
-                          text: cubit.userTaskDetailsModel!.data!.data![index].startDate!
-                             ,
+                          text: cubit.userTaskDetailsModel!.data!.data![index]
+                              .startDate!,
                           style: TextStyles.font11PrimMedium,
                         ),
                       ],
